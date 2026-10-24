@@ -50,3 +50,6 @@ Event id là idempotency key, revision là optimistic lock. Transaction batch b�
 ## Ranh giới simulation
 
 Runtime position/activity không được ghi DB mỗi frame. Actor plan ưu tiên trong thời gian còn hiệu lực; hết plan quay lại routine từ đích plan. Chuyển tiếp khi kế hoạch mới đến giữa routine còn cần QA. Cơ chế hiện chưa xác thực toàn bộ social co-location ở server; tác nhân được hướng dẫn, renderer chỉ hiện timed speech khi robot đứng tại location phù hợp.
+
+## Bản v2 animation
+Robot.tsx có rig joints và motion props, RobotWorkshop dùng để QA minh họa; SpeechBubble.tsx/lib/speech.ts quản lý text và speaker; Vehicle.tsx/lib/traffic.ts quản lý lane/phase. Không thêm dependencies. Chi tiết design/ràng buộc tại ANIMATION_SOURCES.md.

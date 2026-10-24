@@ -2,6 +2,8 @@
 
 Dự án mô phỏng một khu phố 2D có ba robot AI An, Bình, Chi, cùng mèo Mướp, chó Cún và đàn sẻ. Nhân vật có mục tiêu, ký ức, quan hệ; đi lại qua đường phố, làm việc và gặp nhau. Mục tiêu dài hạn là một thế giới có câu chuyện tiếp nối, đủ thú vị để theo dõi và sau này làm nội dung mạng xã hội.
 
+**Bản cuối cập nhật thiết kế:** có robot khớp tay/chân, xưởng xem trước, lời thoại đầy đủ, môi trường/động vật và xe chuyển động riêng; xem [docs/ANIMATION_SOURCES.md](docs/ANIMATION_SOURCES.md) và [docs/CHARACTER_DESIGN.md](docs/CHARACTER_DESIGN.md).
+
 **Đọc đầu tiên khi chuyển sang Codex: [CODEX_HANDOFF.md](CODEX_HANDOFF.md).**
 
 ## Trạng thái của bản ZIP
@@ -35,6 +37,7 @@ Lệnh migration ở trên chỉ chạy **một lần trên database local mới
 ```bash
 node scripts/test-life.mjs
 node scripts/test-events.mjs
+node scripts/test-animation.mjs
 node node_modules/typescript/bin/tsc --noEmit
 node node_modules/vinext/dist/cli.js build
 ```

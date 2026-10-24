@@ -19,3 +19,7 @@ Xem MEMORY_LONG.md cho URL, stack, test standards, deploy, theme và giới hạ
 - Đã hoàn tất cập nhật tài liệu và baseline checks cho bản ZIP; live stable không đổi.
 - Đọc CODEX_HANDOFF.md để tiếp tục lớp sinh hoạt: chạy checks, QA motion/camera/pause, sửa plan transition, integration local, mobile.
 
+
+## Bản v2 đang hoàn thiện
+- Robot redesign/rig/Workshop, speech, môi trường và traffic đã hoàn tất vòng nguồn bàn giao; có browser evidence và ảnh cuối. Nguồn tham khảo trong docs/CHARACTER_DESIGN.md và docs/ANIMATION_SOURCES.md.
+- Quan trọng: traffic chưa có collision avoidance với pedestrian. Camera-aware bubble offset đã có; cần thêm viewport QA.

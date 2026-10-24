@@ -101,3 +101,20 @@
 - ZIP không chứa production DB hoặc lịch sử Git, không tự tạo lại automation. Không tự train model; no paid API/video.
 
 - Kiểm tra cuối trước ZIP: test-life, test-events, TypeScript noEmit và production build đều PASS. Chưa có chứng cứ live integration hoặc browser freeze/resume hoàn chỉnh.
+
+## Animated handoff v2
+- User yêu cầu robot đa dạng/chi tiết, cử động tay chân, ô chữ trên đầu khi nói, môi trường/xe/động vật hoạt động riêng và nguồn tài liệu bổ sung.
+- Robot rig dùng các nhóm head/torso/arms/legs độc lập; RobotWorkshop trong tab Cư dân cho xem motion và dialogue sample, không ghi world.
+- SpeechBubble và lib/speech.ts: full text tspan, một speaker, ưu tiên timed AI/location trước rule dialogue.
+- Traffic.ts và Vehicle.tsx: 4 xe, 4 lane, mutually exclusive phases, stop points; chưa đồng bộ walker crossings, chưa collision solver.
+- Tree canopy/house details/animal joints chạy riêng, pause và reduced-motion CSS hỗ trợ. Không làm nhà di chuyển.
+- Node tests thêm scripts/test-animation.mjs; tsconfig allowImportingTsExtensions cho runtime test imports .ts. Source vẫn Vinext/React/SVG, không thêm dependency hoặc paid API.
+- Chi tiết nguồn/giới hạn trong docs/ANIMATION_SOURCES.md; Boids là tài liệu roadmap, chưa được triển khai.
+
+## Checkpoint thiết kế theo nguồn cuối
+- Đã truy cập trang Pixar WALL-E, Disney Learn to Draw Baymax, StarWars BB-8 và tác giả rig Chimot; image search thêm turnaround để tham khảo, không nhúng tài sản bên thứ ba vào ZIP.
+- Redesign cuối thay silhouette/optics/body: An kính đôi, Bình sensor tròn, Chi thân quả lê/găng tay. Dùng gradients useId không trùng ID.
+- Browser evidence: khớp tay social An đổi computed matrix ở hai lần đọc; cây canopy và xe có transform thay đổi riêng. Đã chụp/gửi ảnh Workshop v2, ảnh cuối sẽ thay trong docs/screenshots.
+- Bubble có full-text wrap và offset theo camera; Node tests thêm long words/camera edges.
+
+- Thiết kế cuối đã chụp preview tại docs/screenshots/character-design-final.jpg. Không thay đổi production deployment trong đợt handoff này. Tất cả bản nguồn bàn giao được sync Git; ZIP không chứa DB/credentials.

@@ -33,3 +33,17 @@
 - Added cat/dog/sparrow behavior rules with source references and explicit simulation labels.
 - Added pure simulation/schema tests and comprehensive Codex handoff documentation.
 - Exported source without runtime DB, dependencies, Git internals, or credentials. The live Site remains the prior stable city version.
+
+## Animated character handoff v2 (source only)
+- Redesigned all three AI robots with distinct silhouettes, panels, sensors and articulated limbs.
+- Added a character workshop for walk/work/garden/wave previews and sample speech without world writes.
+- Added full-text, wrapped speech bubbles with pop animation and a single active map speaker.
+- Added independent tree canopies, windows, awnings, rooftop fan, cafe steam, animal limbs/tails/wings.
+- Added four lane-based vehicles and traffic phases, with stop-before-intersection behavior.
+- Added animation/traffic/speech tests and primary-source design references; general pedestrian/vehicle collision avoidance remains pending.
+
+### Final character design pass
+- Reviewed official Pixar, Disney and Star Wars pages and an author's Chimot rig portfolio; recorded original links and usage in docs/CHARACTER_DESIGN.md.
+- Rebuilt silhouettes: An with angular dual optics/tool belt, Bình with a central round sensor/slim body, Chi with pear-shaped ceramic shell/rounded hands.
+- Added unique gradient IDs, camera-aware bubble placement, long-word wrapping, and phase offsets for opposite limbs.
+- Captured final Workshop screenshot and added it to the source handoff.

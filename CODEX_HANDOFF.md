@@ -1,5 +1,9 @@
 # Bàn giao sang Codex
 
+## Bổ sung v2
+
+Đã làm robot articulated chi tiết, Workshop trong Cư dân, speech wrapped single-speaker, môi trường/động vật và 4 xe theo phase. Đọc docs/ANIMATION_SOURCES.md. Chạy thêm node scripts/test-animation.mjs. Bản v2 là nguồn bàn giao, chưa publish. Ưu tiên tiếp theo: đồng bộ pedestrian crossings với đèn xe, xử lý bubble sát biên camera, QA plan transition và pause/resume. Không gọi traffic hiện tại là collision-free.
+
 ## Mục tiêu ngay khi mở ZIP
 
 Tiếp tục lớp sinh hoạt đang viết, kiểm tra chính xác chuyển động/camera/tạm dừng rồi cho ra một bản dùng được. Không bắt đầu bằng dựng lại UI hoặc thay framework. Đọc AGENTS.md và bộ nhớ trước.
@@ -37,3 +41,6 @@ Tiếp tục lớp sinh hoạt đang viết, kiểm tra chính xác chuyển đ�
 ## Prompt khởi động gợi ý
 
 “Đọc AGENTS.md, CODEX_HANDOFF.md, MEMORY_SHORT.md, MEMORY_LONG.md và ROADMAP.md. Tiếp tục dự án Xóm AI từ checkpoint này, không dựng lại từ đầu. Tất cả không phát sinh phí, video tạm hoãn. Làm lần lượt local tests → browser QA có ảnh → sửa motion/camera/pause/plan transition → tài liệu → deploy private nếu có quyền. Luôn phân biệt luật mô phỏng và LLM. Không chạy test có ghi lên production, không tạo automation trùng.”
+
+## Checkpoint thiết kế cuối
+An: kính đôi/đầu đa giác/đai dụng cụ; Bình: cảm biến tròn/thân hẹp; Chi: vỏ quả lê/tay tròn. Đã truy cập các nguồn chính chủ về thiết kế, ghi tại docs/CHARACTER_DESIGN.md. Camera-aware text wrapping đã bổ sung; cần kiểm tra layout ở viewport hẹp hơn nữa. Traffic vẫn chưa có pedestrian reservation/collision solver.

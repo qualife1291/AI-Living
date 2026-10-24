@@ -34,3 +34,11 @@ scripts/test-world.mjs và verify-live.py có ghi. Một lần test stale dùng 
 ## Test commands
 
 Dùng Node 24+, pnpm lock. Không cần network/LLM cho test-life và test-events. npm run check = TypeScript. npm run test:unit chạy cả hai test thuần.
+
+## Kiểm thử animation và thiết kế cuối
+
+- test-animation.mjs PASS: signal phases không xung đột, xe move/wait, pause projection ổn định, wrap giữ đủ text kể cả chuỗi dài không khoảng trắng, timed AI speech có walking guard; bubble offset biên camera và actor ngoài view.
+- Browser Workshop: Vẫy tay/Lời thoại mẫu controls pressed; arm-right computed matrix thay đổi từ matrix(-0.353912,-0.935279,0.935279,-0.353912,0,0) sang matrix(-0.486518,-0.873671,0.873671,-0.486518,0,0).
+- Browser scene: tree canopy computed matrix thay đổi độc lập; main-west vehicle transform đổi vị trí qua hai lần quan sát, main-east đã có waiting=true tại stop point. Chưa test right-of-way với người đi bộ.
+- Ảnh thiết kế cuối ở docs/screenshots/character-design-final.jpg; snapshot preview, không phải bằng chứng live đã xuất bản.
+- Ba bộ Node tests, TypeScript và production build được chạy ở vòng cuối. Các giới hạn API/live/mobile/plan-transition ghi phía trên vẫn chưa tự động được giải quyết bởi animation update.
