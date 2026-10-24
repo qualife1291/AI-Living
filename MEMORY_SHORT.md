@@ -1,18 +1,14 @@
 # Bộ nhớ ngắn hạn
 
-## Yêu cầu đang áp dụng
-- Chủ dự án Hoang Long: toàn bộ hạ tầng và AI không phát sinh phí; chưa triển khai xuất video.
-- Xóm AI: 3 người trưởng thành, hoạt hình 2D, khu trọ Việt Nam, website owner-private.
-- Lưu nguồn bằng Git; tài liệu phải đi cùng thay đổi. Xóa mục ngắn hạn khi hoàn thành, xóa file khi không còn việc.
+## Context mới
+- Phát triển theo phase trong ROADMAP.md; mỗi đợt test giao diện gửi ảnh thực tế trực tiếp cho người dùng.
+- Toàn bộ miễn phí; xuất video tạm hoãn; web owner-private.
 
-## Đang thực hiện
-- Kiểm tra TypeScript, build và migrations D1.
-- Kiểm tra giao diện desktop/mobile, lưu trữ, pause và chống lặp sự kiện.
-- Xuất bản riêng, xác minh writer qua service access.
-- Thử lượt AI thật; chỉ tạo lịch sau khi writer và quyền truy cập độc lập được xác minh.
-- Cập nhật kết quả trong MEMORY_LONG.md và CHANGELOG.md.
+## Việc chưa xong
+- Phase 2: Sites create_schedule trả invalid_project hai lần, chưa bật lịch. Request ID đã thử: 2026-10-24:03897a510e1348161cf32711ddca5134. Không tạo schedule trùng; kiểm tra automations trước mọi retry.
+- Hoàn tất xác minh kết quả scripts/verify-live.py; test đọc/ghi live chậm. Không tự tuyên bố pass nếu chưa có kết quả.
+- Dọn bản ghi test id ai-first-20261024-stale nếu còn; test revision sai ban đầu đã tạo lặp nội dung. Đối chiếu snapshot và ký ức trước khi sửa.
+- Phase 3: QA mobile thật; kiểm tra nhiều lượt AI nối tiếp, tăng độ tương phản nếu cần.
 
-## Nguyên tắc
-- Không thay thế AI thật bằng hội thoại viết sẵn mà không ghi rõ.
-- Không mua dịch vụ, không tích hợp API trả phí, không hứa miễn phí vô hạn.
-- Không ghi credentials vào repo, tài liệu, logs hay prompts lịch.
+## Đã xong (tham chiếu dài hạn)
+Xem MEMORY_LONG.md cho URL, stack, test standards, deploy, theme và giới hạn. Xóa các việc trên khi hoàn thành; xóa file khi không còn việc.

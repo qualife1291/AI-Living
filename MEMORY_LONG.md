@@ -62,3 +62,13 @@
 - MEMORY_SHORT.md: chỉ việc chưa xong, context mới và blockers; xóa mục khi xong, xóa file khi trống.
 - MEMORY_LONG.md: quyết định, kiến trúc, chuẩn test, kết quả, giới hạn; không lưu bí mật.
 - CHANGELOG.md: thay đổi sản phẩm theo ngày, đi cùng commit.
+
+## Checkpoint 2026-10-24
+- Phase 1 đã xuất bản owner-private: https://xom-ai-long.bouncyslug18.chatgpt.site
+- Production build và TypeScript đã qua; migration D1 đã được áp dụng khi deploy.
+- Đã xác minh private service access đọc world; một cảnh AI đã ghi thành công và readback thấy ký ức, kỹ năng, quan hệ thay đổi.
+- Phát hiện ngày khởi tạo 1970 do Date ở module scope của Worker; đã chuyển ngày khởi tạo vào request và thêm sửa snapshot cũ có đúng epoch này.
+- Browser QA: điều hướng cư dân/bản đồ, chọn nhân vật, xem hồ sơ thành công. Ảnh desktop đã gửi người dùng. Mobile chưa QA bằng viewport thật.
+- Bộ kiểm thử live đang chạy; chưa công bố toàn bộ đã qua. Test stale ban đầu dùng revision còn hiện hành làm ghi thêm sự kiện lặp nội dung với id hậu tố -stale; đã sửa test dùng revision-1. Cần dọn bản ghi test này có kiểm soát ở phase tiếp theo, không gọi là sinh hoạt AI tự phát.
+- Sites create_schedule thất bại 2 lần cùng request_id với INVALID_ARGUMENT/invalid_project. Không có lịch được xác nhận; chưa có tự chạy khi đóng web.
+- Người dùng yêu cầu chia phase, triển khai tuần tự và gửi ảnh mỗi lần test giao diện. ROADMAP.md là kế hoạch hiện hành.

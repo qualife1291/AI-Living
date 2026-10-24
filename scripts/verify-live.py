@@ -8,10 +8,10 @@ def call(path,data=None,extra=None):
   with opener.open(urllib.request.Request(origin+path,data=json.dumps(data).encode() if data is not None else None,headers=h),timeout=40) as r:return r.status,json.loads(r.read())
  except urllib.error.HTTPError as e:return e.code,{'error':e.read().decode()[:200]}
 status,s=call('/api/world');assert status==200,(status,s)
-event=c['event'];event['revision']=s['revision'];status,r=call('/api/events',event);assert status==200,(status,r)
+event=c.get('event') or {**s['events'][0],'source':'ai'};event['revision']=s['revision'];status,r=call('/api/events',event);assert status==200,(status,r)
 _,a=call('/api/world');assert any(e['id']==event['id'] for e in a['events']);assert a['revision']==s['revision']+(0 if r.get('duplicate') else 1)
 status,r=call('/api/events',event);assert status==200 and r.get('duplicate');assert call('/api/world')[1]['revision']==a['revision']
-status,_=call('/api/events',{**event,'id':event['id']+'-stale'});assert status==409
+status,_=call('/api/events',{**event,'id':event['id']+'-stale','revision':a['revision']-1});assert status==409
 bad={**event,'id':event['id']+'-bad','revision':a['revision'],'changes':[{**event['changes'][0],'moneyDelta':-999999}]};assert call('/api/events',bad)[0]==400
 assert call('/api/world',{'revision':a['revision'],'paused':True})[0]==200
 _,b=call('/api/world');assert call('/api/events',{**event,'id':event['id']+'-paused','revision':b['revision']})[0]==409
