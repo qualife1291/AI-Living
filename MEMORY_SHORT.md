@@ -12,3 +12,7 @@
 
 ## Đã xong (tham chiếu dài hạn)
 Xem MEMORY_LONG.md cho URL, stack, test standards, deploy, theme và giới hạn. Xóa các việc trên khi hoàn thành; xóa file khi không còn việc.
+
+## Phase hình ảnh hiện tại
+- Robot SVG và khu phố mở rộng đã xong, TypeScript/build và browser QA đã qua. Ảnh đã gửi.
+- Đang lưu nguồn và deploy. Sau đó tiếp tục phase tự động; không bỏ các blockers ghi phía trên.

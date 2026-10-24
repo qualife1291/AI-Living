@@ -14,3 +14,9 @@
 - Added ROADMAP.md and screenshot-based UI review workflow.
 - Schedule activation is blocked by Sites invalid_project; unattended operation is not active.
 - Recorded a test-generated duplicate scene for controlled cleanup; mobile QA remains pending.
+
+## Robot residents and expanded neighborhood
+- Replaced human portraits with three distinct AI robots, shared across map, profiles, and dialogue.
+- Expanded the map with streets, a pedestrian lane, plaza, park, cafe, library, workshop, and community garden.
+- Added district views, zoom/reset controls, and matching AI location validation.
+- Preserved existing state and memories; passed TypeScript, production build, and desktop map navigation QA.

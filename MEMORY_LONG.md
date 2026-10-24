@@ -72,3 +72,12 @@
 - Bộ kiểm thử live đang chạy; chưa công bố toàn bộ đã qua. Test stale ban đầu dùng revision còn hiện hành làm ghi thêm sự kiện lặp nội dung với id hậu tố -stale; đã sửa test dùng revision-1. Cần dọn bản ghi test này có kiểm soát ở phase tiếp theo, không gọi là sinh hoạt AI tự phát.
 - Sites create_schedule thất bại 2 lần cùng request_id với INVALID_ARGUMENT/invalid_project. Không có lịch được xác nhận; chưa có tự chạy khi đóng web.
 - Người dùng yêu cầu chia phase, triển khai tuần tự và gửi ảnh mỗi lần test giao diện. ROADMAP.md là kế hoạch hiện hành.
+
+## Phase hình ảnh — robot và khu phố mở rộng
+- Thay toàn bộ avatar và nhân vật bản đồ bằng robot SVG đồng nhất; An cam mắt LED, Bình xanh đầu vuông, Chi xanh lá mắt cười và mầm cây.
+- components/world/Robot.tsx dùng chung cho avatar, bản đồ và nhật ký. components/world/CityMap.tsx chứa cảnh và điều khiển góc nhìn.
+- Bản đồ viewBox 1200×780 có hai đường chính, phố đi bộ, quảng trường, công viên hồ nước, quán cà phê, thư viện, xưởng sáng tạo, khu nhà và vườn cộng đồng.
+- UI chọn khu nhà/phố cà phê/công viên/toàn cảnh; zoom và reset. Vị trí robot tiếp tục lấy world thật; chọn khu vực chỉ thay góc nhìn, không tự di chuyển robot.
+- API và hướng dẫn AI chấp nhận 6 địa điểm mới. Không reset world hoặc sửa ký ức cũ.
+- TypeScript và build qua. Browser QA đã xác minh chuyển phố cà phê bằng viewBox, reset toàn cảnh, avatar robot hiển thị. Ảnh đã gửi người dùng.
+- Chưa kiểm thử viewport mobile thật; CSS có layout responsive và thao tác chọn khu vực để phóng cảnh.
