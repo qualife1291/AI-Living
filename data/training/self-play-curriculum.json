@@ -1,0 +1,90 @@
+[
+  {
+    "level": 1,
+    "code": "L1_BASIC_COLOCATION",
+    "title": "Đồng bộ điểm hẹn và khoảng thời gian đi bộ",
+    "objective": "Tạo cảnh có 2 nhân vật xuất phát từ 2 nơi khác nhau, đi bộ tới cùng một địa điểm trong bước đầu của plan rồi mới bắt đầu thoại ở atSecond >= 35.",
+    "requiredConstraints": [
+      "Tất cả dòng dialogue có atSecond >= 30 và cách nhau >= 6 giây",
+      "location của dialogue khớp với bước plan tương ứng của người nói và người nghe"
+    ],
+    "targetScore": 85
+  },
+  {
+    "level": 2,
+    "code": "L2_WITNESS_MEMORY_ISOLATION",
+    "title": "Cách ly ký ức theo người chứng kiến",
+    "objective": "Hai nhân vật trò chuyện ở Thư viện trong khi nhân vật thứ ba làm việc riêng ở Vườn nhỏ. Ký ức của nhân vật thứ ba chỉ phản ánh việc ở Vườn nhỏ.",
+    "requiredConstraints": [
+      "Không rò rỉ thông tin từ cuộc trò chuyện ở Thư viện sang memory của người ở Vườn nhỏ",
+      "Mỗi memory dài 10–240 ký tự, cụ thể và không chung chung"
+    ],
+    "targetScore": 88
+  },
+  {
+    "level": 3,
+    "code": "L3_WEATHER_ADAPTATION",
+    "title": "Thích ứng hành vi và hoạt cảnh với thời tiết thực tế",
+    "objective": "Khi bối cảnh thời tiết là mưa rào ('rain'), các nhân vật chuyển hoạt động ngoài trời vào không gian có mái che (Bếp chung, Quán cà phê, Thư viện, Xưởng sáng tạo).",
+    "requiredConstraints": [
+      "Không xếp bước nghỉ dài ngoài Công viên khi đang mưa",
+      "Nội dung hội thoại và hoạt động phản ánh tự nhiên thời tiết hiện tại"
+    ],
+    "targetScore": 88
+  },
+  {
+    "level": 4,
+    "code": "L4_NEEDS_RECOVERY_BALANCE",
+    "title": "Cân bằng năng lượng và độ đói theo hành động",
+    "objective": "Khi một nhân vật có energy < 35 hoặc hunger > 65, kế hoạch ưu tiên bước ăn ('eat') hoặc nghỉ ('rest') với energyDelta > 0 hoặc hungerDelta < 0 hợp lý.",
+    "requiredConstraints": [
+      "Không bắt nhân vật làm việc nặng ('work') liên tục khi energy thấp",
+      "Dấu của energyDelta và hungerDelta khớp với bản chất hoạt động"
+    ],
+    "targetScore": 90
+  },
+  {
+    "level": 5,
+    "code": "L5_COMMITMENT_CONTINUITY",
+    "title": "Thực hiện lời hứa từ lượt trước (Commitment Fulfillment)",
+    "objective": "Đọc danh sách cam kết đang mở (ví dụ An hứa rửa bát, Bình hứa kiểm sổ) và đưa hành động hoàn thành lời hứa đó vào cảnh mới.",
+    "requiredConstraints": [
+      "Nhắc lại tự nhiên lời hứa đã thực hiện trong hội thoại hoặc memory",
+      "Tăng nhẹ chỉ số tin tưởng (relationship.delta > 0) khi giữ đúng lời hứa"
+    ],
+    "targetScore": 90
+  },
+  {
+    "level": 6,
+    "code": "L6_MICRO_ECONOMY_INTEGRITY",
+    "title": "Tính đúng đắn của kinh tế vi mô và kỹ năng",
+    "objective": "Xử lý một hoạt động có chi tiêu/thu nhập nhỏ (mua hạt giống, nguyên liệu trà) mà không làm âm tiền, và chỉ tăng skillDelta (1..2) khi thực sự thực hành.",
+    "requiredConstraints": [
+      "money + moneyDelta >= 0 với mọi nhân vật",
+      "skillDelta > 0 đi kèm hoạt động kind thuộc work, read hoặc garden"
+    ],
+    "targetScore": 92
+  },
+  {
+    "level": 7,
+    "code": "L7_ETHICAL_ECOLOGY_INTERACTION",
+    "title": "Tương tác tôn trọng tập tính động vật và cây trồng",
+    "objective": "Lồng ghép quan sát hoặc chăm sóc Mướp, Cún, đàn sẻ hoặc luống húng quế đúng tập tính khoa học, không nhân cách hóa.",
+    "requiredConstraints": [
+      "Động vật không nói tiếng người, không bị ép tương tác hay săn đuổi nhau",
+      "Hành động chăm cây/thú cưng phù hợp khung giờ sinh học"
+    ],
+    "targetScore": 92
+  },
+  {
+    "level": 8,
+    "code": "L8_GENTLE_CONFLICT_RESOLUTION",
+    "title": "Hóa giải hiểu lầm nhỏ bằng đối thoại thấu cảm",
+    "objective": "Giải quyết một khúc mắc đời thường (quên ghi phiếu chợ, làm ướt dụng cụ, trễ giờ hẹn) bằng thái độ lắng nghe và giải pháp cụ thể.",
+    "requiredConstraints": [
+      "Giữ đúng giọng điệu cá nhân: An nhiệt tình, Bình rõ ràng, Chi ấm áp",
+      "Kết thúc cảnh bằng một quy ước nhỏ hoặc việc làm cụ thể"
+    ],
+    "targetScore": 94
+  }
+]

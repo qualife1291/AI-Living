@@ -1,0 +1,602 @@
+[
+  {
+    "id": "golden-sft-001",
+    "contextId": "ctx-econ-stall-costing",
+    "revision": 1,
+    "source": "ai",
+    "title": "Tính thử giá vốn ly trà tắc húng quế",
+    "summary": "An mang bản nháp chi phí sang Thư viện nhờ Bình rà soát. Hai bạn nhận ra nếu dùng bình thủy tinh rửa sạch tại chỗ sẽ tiết kiệm hơn ly dùng một lần, rồi ghé Bếp chung kể cho Chi nghe.",
+    "dialogue": [
+      {
+        "speaker": "an",
+        "text": "Bình ơi, mình cộng thử tiền tắc và mật ong rồi, nhưng tiền ly mang đi chiếm gần một phần ba luôn.",
+        "atSecond": 42,
+        "location": "Thư viện"
+      },
+      {
+        "speaker": "binh",
+        "text": "Để mình xem sổ nào. Nếu khách uống ngay ở Sân chung hoặc Quán cà phê, mình dùng ly thủy tinh có sẵn thì giảm được 2.000đ mỗi phần đó.",
+        "atSecond": 50,
+        "location": "Thư viện"
+      },
+      {
+        "speaker": "an",
+        "text": "Hay quá! Vậy mình ghi hai mức giá rõ ràng. Để mình qua Bếp chung hỏi Chi xem lượng lá húng quế mỗi ấm cần bao nhiêu.",
+        "atSecond": 58,
+        "location": "Thư viện"
+      },
+      {
+        "speaker": "chi",
+        "text": "Nếu hái lá bánh tẻ buổi sáng thì thơm lâu lắm, chỉ cần năm sáu lá cho một bình nhỏ thôi An ạ.",
+        "atSecond": 135,
+        "location": "Bếp chung"
+      }
+    ],
+    "changes": [
+      {
+        "id": "an",
+        "moneyDelta": 0,
+        "energyDelta": -4,
+        "hungerDelta": 4,
+        "skillDelta": 1,
+        "activity": "Hoàn thiện bảng tính giá vốn quầy nước",
+        "location": "Bếp chung",
+        "memory": "Bình gợi ý dùng ly thủy tinh tại chỗ để giảm 2.000đ chi phí mỗi phần nước; Chi chỉ cách chọn lá húng quế bánh tẻ.",
+        "plan": [
+          {
+            "location": "Thư viện",
+            "activity": "Cùng Bình rà soát bảng giá vốn",
+            "duration": 90,
+            "kind": "read"
+          },
+          {
+            "location": "Bếp chung",
+            "activity": "Hỏi Chi định lượng lá húng quế",
+            "duration": 80,
+            "kind": "social"
+          }
+        ]
+      },
+      {
+        "id": "binh",
+        "moneyDelta": 0,
+        "energyDelta": -3,
+        "hungerDelta": 3,
+        "skillDelta": 1,
+        "activity": "Kiểm tra bảng tính chi phí giúp An",
+        "location": "Thư viện",
+        "memory": "Đã giúp An tách chi phí nguyên liệu và bao bì cho quầy nước nhỏ tại Thư viện.",
+        "plan": [
+          {
+            "location": "Thư viện",
+            "activity": "Rà soát sổ chi phí cùng An",
+            "duration": 110,
+            "kind": "read"
+          },
+          {
+            "location": "Quán cà phê",
+            "activity": "Ghi chép lại mẫu sổ thu chi",
+            "duration": 70,
+            "kind": "work"
+          }
+        ]
+      },
+      {
+        "id": "chi",
+        "moneyDelta": 0,
+        "energyDelta": -2,
+        "hungerDelta": 2,
+        "skillDelta": 0,
+        "activity": "Chia sẻ cách chọn lá húng quế pha trà",
+        "location": "Bếp chung",
+        "memory": "Hướng dẫn An dùng 5–6 lá húng quế bánh tẻ hái buổi sáng cho mỗi bình trà.",
+        "plan": [
+          {
+            "location": "Vườn nhỏ",
+            "activity": "Kiểm tra luống húng quế buổi sáng",
+            "duration": 75,
+            "kind": "garden"
+          },
+          {
+            "location": "Bếp chung",
+            "activity": "Sơ chế lá thảo mộc và đón An",
+            "duration": 95,
+            "kind": "work"
+          }
+        ]
+      }
+    ],
+    "relationship": {
+      "a": "an",
+      "b": "binh",
+      "delta": 3,
+      "note": "Bình tận tình giúp An tháo gỡ bài toán chi phí bao bì"
+    }
+  },
+  {
+    "id": "golden-sft-002",
+    "contextId": "ctx-weather-afternoon-rain",
+    "revision": 2,
+    "source": "ai",
+    "title": "Ấm trà gừng bên hiên bếp ngày mưa rào",
+    "summary": "Cơn mưa chiều bất chợt đổ xuống khu phố. An phụ Chi che tấm bạt nhỏ ở Vườn nhỏ rồi cả ba cùng tụ về Bếp chung thưởng thức trà gừng nóng và nghe tiếng mưa rơi.",
+    "dialogue": [
+      {
+        "speaker": "an",
+        "text": "Chi ơi, mình gài xong nẹp bạt che luống cây non rồi, mưa lớn mấy cũng không sợ dập lá đâu!",
+        "atSecond": 38,
+        "location": "Vườn nhỏ"
+      },
+      {
+        "speaker": "chi",
+        "text": "May có An chạy ra kịp. Mình vào Bếp chung đi, nước gừng mình đun trên bếp chắc vừa sôi tới rồi.",
+        "atSecond": 46,
+        "location": "Vườn nhỏ"
+      },
+      {
+        "speaker": "binh",
+        "text": "Mình mang sẵn khăn khô ở Bếp chung đây. Hai bạn lau nước mưa trên vỏ máy đi rồi ngồi uống trà cho ấm.",
+        "atSecond": 118,
+        "location": "Bếp chung"
+      },
+      {
+        "speaker": "chi",
+        "text": "Trời mưa mà ngồi nghe tiếng nước rơi trên mái hiên thế này thấy xóm mình bình yên ghê.",
+        "atSecond": 128,
+        "location": "Bếp chung"
+      }
+    ],
+    "changes": [
+      {
+        "id": "an",
+        "moneyDelta": 0,
+        "energyDelta": 3,
+        "hungerDelta": -6,
+        "skillDelta": 1,
+        "activity": "Uống trà gừng ấm sau khi che mưa cho vườn",
+        "location": "Bếp chung",
+        "memory": "Cùng Chi che bạt cho luống rau kịp trước khi mưa nặng hạt rồi vào Bếp chung uống trà gừng với Bình.",
+        "plan": [
+          {
+            "location": "Vườn nhỏ",
+            "activity": "Phụ Chi gài bạt che mưa cho luống rau",
+            "duration": 65,
+            "kind": "garden"
+          },
+          {
+            "location": "Bếp chung",
+            "activity": "Lau khô vỏ máy và uống trà gừng",
+            "duration": 95,
+            "kind": "eat"
+          }
+        ]
+      },
+      {
+        "id": "chi",
+        "moneyDelta": -5000,
+        "energyDelta": 4,
+        "hungerDelta": -8,
+        "skillDelta": 1,
+        "activity": "Pha trà gừng mật ong mời hai bạn",
+        "location": "Bếp chung",
+        "memory": "Nhờ An phụ che bạt vườn rau lúc mưa chiều, sau đó pha ấm trà gừng nóng cho cả ba tại Bếp chung.",
+        "plan": [
+          {
+            "location": "Vườn nhỏ",
+            "activity": "Cất dụng cụ làm vườn trước cơn mưa",
+            "duration": 65,
+            "kind": "garden"
+          },
+          {
+            "location": "Bếp chung",
+            "activity": "Nấu trà gừng ấm mời An và Bình",
+            "duration": 95,
+            "kind": "eat"
+          }
+        ]
+      },
+      {
+        "id": "binh",
+        "moneyDelta": 0,
+        "energyDelta": 5,
+        "hungerDelta": -6,
+        "skillDelta": 0,
+        "activity": "Chuẩn bị khăn khô và thưởng trà ngày mưa",
+        "location": "Bếp chung",
+        "memory": "Chuẩn bị khăn khô đón An và Chi từ vườn vào Bếp chung giữa cơn mưa rào buổi chiều.",
+        "plan": [
+          {
+            "location": "Bếp chung",
+            "activity": "Đóng cửa sổ chắn mưa và chuẩn bị khăn",
+            "duration": 160,
+            "kind": "rest"
+          }
+        ]
+      }
+    ],
+    "relationship": {
+      "a": "an",
+      "b": "chi",
+      "delta": 3,
+      "note": "Cùng nhau che chắn vườn rau giữa cơn mưa chiều"
+    }
+  },
+  {
+    "id": "golden-sft-003",
+    "contextId": "ctx-eco-muop-trust",
+    "revision": 3,
+    "source": "ai",
+    "title": "Khoảng lặng bên ghế đá để Mướp tự làm quen",
+    "summary": "Chi và Bình mang sách ra Công viên Lá Non ngồi đọc yên tĩnh. Nhờ không bị làm ồn, mèo Mướp thong thả đi ngang rồi nằm cuộn tròn dưới chân ghế.",
+    "dialogue": [
+      {
+        "speaker": "chi",
+        "text": "Bình nhìn kìa, Mướp đang đi dọc lối cỏ. Mình cứ ngồi yên đọc sách nhé, đừng gọi to kẻo em ấy ngại.",
+        "atSecond": 45,
+        "location": "Công viên"
+      },
+      {
+        "speaker": "binh",
+        "text": "Ừ, tài liệu cũng bảo mèo thích tự chủ động kiểm tra khoảng cách an toàn. Để mình đặt cuộn len nhỏ ở góc ghế thôi.",
+        "atSecond": 54,
+        "location": "Công viên"
+      },
+      {
+        "speaker": "chi",
+        "text": "Mướp vờn cuộn len rồi nằm xuống bóng râm cạnh ghế mình luôn kìa. Cảm giác được tin tưởng vui thật đó.",
+        "atSecond": 64,
+        "location": "Công viên"
+      }
+    ],
+    "changes": [
+      {
+        "id": "chi",
+        "moneyDelta": 0,
+        "energyDelta": 6,
+        "hungerDelta": 2,
+        "skillDelta": 0,
+        "activity": "Ngồi đọc sách yên tĩnh bên cạnh Mướp",
+        "location": "Công viên",
+        "memory": "Ngồi yên ở ghế đá Công viên cùng Bình để Mướp tự lại gần vờn cuộn len và nằm nghỉ.",
+        "plan": [
+          {
+            "location": "Công viên",
+            "activity": "Đọc sách và giữ yên lặng cho Mướp lại gần",
+            "duration": 120,
+            "kind": "rest"
+          }
+        ]
+      },
+      {
+        "id": "binh",
+        "moneyDelta": 0,
+        "energyDelta": 5,
+        "hungerDelta": 2,
+        "skillDelta": 0,
+        "activity": "Đọc sách và quan sát Mướp từ khoảng cách an toàn",
+        "location": "Công viên",
+        "memory": "Cùng Chi giữ không gian yên tĩnh ở Công viên Lá Non, thấy Mướp thoải mái nằm nghỉ gần ghế.",
+        "plan": [
+          {
+            "location": "Công viên",
+            "activity": "Đọc sách buổi chiều tại ghế đá công viên",
+            "duration": 120,
+            "kind": "read"
+          }
+        ]
+      }
+    ],
+    "relationship": {
+      "a": "binh",
+      "b": "chi",
+      "delta": 2,
+      "note": "Cùng chia sẻ sự kiên nhẫn và yêu quý thiên nhiên ở công viên"
+    }
+  },
+  {
+    "id": "golden-sft-004",
+    "contextId": "ctx-econ-recycle-materials",
+    "revision": 4,
+    "source": "ai",
+    "title": "Chiếc kệ gỗ nhỏ tặng góc bếp chung",
+    "summary": "An và Bình tận dụng mấy thanh gỗ thông dư ở Xưởng sáng tạo để đóng một chiếc kệ hai tầng đựng lọ gia vị, rồi mang sang Bếp chung lắp cho Chi.",
+    "dialogue": [
+      {
+        "speaker": "an",
+        "text": "Bình giữ giúp mình đầu thanh gỗ này nhé, mình bắt thêm hai vít nữa là chiếc kệ gia vị đứng vững luôn.",
+        "atSecond": 40,
+        "location": "Xưởng sáng tạo"
+      },
+      {
+        "speaker": "binh",
+        "text": "Vừa khít số gỗ thừa hôm trước luôn, không tốn đồng nào của quỹ xóm. Mình mang qua Bếp chung cho Chi bất ngờ đi.",
+        "atSecond": 49,
+        "location": "Xưởng sáng tạo"
+      },
+      {
+        "speaker": "chi",
+        "text": "Ôi chiếc kệ xinh quá! Có tầng thấp để vừa mấy lọ tiêu và húng quế sấy khô luôn. Cảm ơn An và Bình nhiều nhé!",
+        "atSecond": 140,
+        "location": "Bếp chung"
+      }
+    ],
+    "changes": [
+      {
+        "id": "an",
+        "moneyDelta": 0,
+        "energyDelta": -6,
+        "hungerDelta": 5,
+        "skillDelta": 2,
+        "activity": "Đóng kệ gia vị bằng gỗ tái chế cho Bếp chung",
+        "location": "Bếp chung",
+        "memory": "Cùng Bình đóng kệ gia vị hai tầng từ gỗ thừa ở Xưởng sáng tạo và mang sang tặng góc bếp của Chi.",
+        "plan": [
+          {
+            "location": "Xưởng sáng tạo",
+            "activity": "Đo cắt và lắp kệ gỗ hai tầng",
+            "duration": 95,
+            "kind": "work"
+          },
+          {
+            "location": "Bếp chung",
+            "activity": "Đặt kệ gia vị lên bàn bếp cùng Bình",
+            "duration": 75,
+            "kind": "social"
+          }
+        ]
+      },
+      {
+        "id": "binh",
+        "moneyDelta": 0,
+        "energyDelta": -4,
+        "hungerDelta": 4,
+        "skillDelta": 1,
+        "activity": "Phụ An lắp kệ gỗ và sắp xếp lọ gia vị",
+        "location": "Bếp chung",
+        "memory": "Phụ An tận dụng gỗ thừa đóng kệ bếp, tiết kiệm chi phí mua sắm cho quỹ sinh hoạt chung.",
+        "plan": [
+          {
+            "location": "Xưởng sáng tạo",
+            "activity": "Giữ khung gỗ và chà nhám cạnh kệ",
+            "duration": 95,
+            "kind": "work"
+          },
+          {
+            "location": "Bếp chung",
+            "activity": "Xếp lọ gia vị lên kệ mới",
+            "duration": 75,
+            "kind": "social"
+          }
+        ]
+      },
+      {
+        "id": "chi",
+        "moneyDelta": 0,
+        "energyDelta": 2,
+        "hungerDelta": 2,
+        "skillDelta": 0,
+        "activity": "Sắp xếp các lọ thảo mộc lên kệ gỗ mới",
+        "location": "Bếp chung",
+        "memory": "Nhận chiếc kệ gia vị hai tầng do An và Bình tự đóng từ gỗ thừa tại Xưởng sáng tạo.",
+        "plan": [
+          {
+            "location": "Bếp chung",
+            "activity": "Lau sạch lọ gia vị và xếp lên kệ mới",
+            "duration": 165,
+            "kind": "work"
+          }
+        ]
+      }
+    ],
+    "relationship": {
+      "a": "an",
+      "b": "chi",
+      "delta": 2,
+      "note": "An và Bình làm kệ gỗ tặng góc bếp của Chi"
+    }
+  },
+  {
+    "id": "golden-sft-005",
+    "contextId": "ctx-empathy-misunderstanding-note",
+    "revision": 5,
+    "source": "ai",
+    "title": "Chiếc kẹp hóa đơn nhỏ hóa giải băn khoăn",
+    "summary": "Bình thấy lệch 15.000đ trong sổ quỹ nên hỏi nhẹ ở Bếp chung. An nhớ ra tối qua mua giúp Chi túi đất trồng cây mà quên đưa phiếu, cả ba liền làm một kẹp gỗ giữ phiếu ngay cạnh sổ.",
+    "dialogue": [
+      {
+        "speaker": "binh",
+        "text": "An và Chi ơi, sáng nay mình cộng sổ quỹ thấy thiếu một khoản 15.000đ, không biết hôm qua nhà mình có mua thêm gì không nhỉ?",
+        "atSecond": 36,
+        "location": "Bếp chung"
+      },
+      {
+        "speaker": "an",
+        "text": "Ôi mình xin lỗi! Chiều qua mình ghé mua túi đất trộn xơ dừa giúp Chi mà để quên tờ phiếu trong túi đai dụng cụ.",
+        "atSecond": 45,
+        "location": "Bếp chung"
+      },
+      {
+        "speaker": "chi",
+        "text": "Tại mình nhờ An lúc An đang vội về xưởng đó Bình. Hay mình gắn một chiếc kẹp nhỏ ngay bìa sổ bếp để ai mua gì kẹp phiếu vào liền nhé?",
+        "atSecond": 54,
+        "location": "Bếp chung"
+      },
+      {
+        "speaker": "binh",
+        "text": "Cách đó gọn mà chẳng ai sợ quên nữa. Để mình ghi bổ sung khoản đất trồng vào sổ ngay đây.",
+        "atSecond": 62,
+        "location": "Bếp chung"
+      }
+    ],
+    "changes": [
+      {
+        "id": "binh",
+        "moneyDelta": 0,
+        "energyDelta": -2,
+        "hungerDelta": 2,
+        "skillDelta": 1,
+        "activity": "Cập nhật sổ quỹ và gắn kẹp hóa đơn tại bếp",
+        "location": "Bếp chung",
+        "memory": "Hỏi nhẹ nhàng về khoản 15.000đ mua đất trồng cây và cùng An, Chi gắn kẹp giữ phiếu ngay trên bìa sổ bếp.",
+        "plan": [
+          {
+            "location": "Bếp chung",
+            "activity": "Đối chiếu phiếu mua đất trồng và ghi sổ",
+            "duration": 100,
+            "kind": "read"
+          }
+        ]
+      },
+      {
+        "id": "an",
+        "moneyDelta": -15000,
+        "energyDelta": -1,
+        "hungerDelta": 2,
+        "skillDelta": 0,
+        "activity": "Đưa phiếu mua đất trồng và làm kẹp giữ hóa đơn",
+        "location": "Bếp chung",
+        "memory": "Rút kinh nghiệm kẹp hóa đơn ngay sau khi mua đồ chung để Bình không phải băn khoăn khi cộng sổ.",
+        "plan": [
+          {
+            "location": "Bếp chung",
+            "activity": "Gắn chiếc kẹp nhỏ vào sổ chi tiêu chung",
+            "duration": 100,
+            "kind": "work"
+          }
+        ]
+      },
+      {
+        "id": "chi",
+        "moneyDelta": 0,
+        "energyDelta": 1,
+        "hungerDelta": 2,
+        "skillDelta": 0,
+        "activity": "Cùng hai bạn thống nhất quy tắc kẹp phiếu chợ",
+        "location": "Bếp chung",
+        "memory": "Đề xuất gắn kẹp hóa đơn vào bìa sổ ở Bếp chung để mọi khoản chi đều rõ ràng, dễ nhớ.",
+        "plan": [
+          {
+            "location": "Bếp chung",
+            "activity": "Sắp xếp góc để sổ và chuẩn bị nấu nước",
+            "duration": 100,
+            "kind": "social"
+          }
+        ]
+      }
+    ],
+    "relationship": {
+      "a": "an",
+      "b": "binh",
+      "delta": 2,
+      "note": "Trao đổi thẳng thắn, nhẹ nhàng và thống nhất cách kẹp phiếu thu chi"
+    }
+  },
+  {
+    "id": "golden-sft-006",
+    "contextId": "ctx-culture-lantern-night",
+    "revision": 6,
+    "source": "ai",
+    "title": "Ánh đèn lồng giấy trên Sân chung đêm rằm",
+    "summary": "Buổi tối trời trong, An treo mấy chiếc đèn lồng giấy nhỏ ở Sân chung, Chi bưng khay trà húng quế nóng và bánh nướng ra mời Bình cùng ngồi ngắm trăng.",
+    "dialogue": [
+      {
+        "speaker": "an",
+        "text": "Mình bật thử dây đèn vàng rồi nè, ánh sáng dịu vừa đủ nhìn thấy lối đi mà không làm chói mắt.",
+        "atSecond": 40,
+        "location": "Sân chung"
+      },
+      {
+        "speaker": "chi",
+        "text": "Mình mang trà húng quế ấm với mấy miếng bánh đậu xanh ra rồi đây. Mời Bình và An dùng thử nhé.",
+        "atSecond": 49,
+        "location": "Sân chung"
+      },
+      {
+        "speaker": "binh",
+        "text": "Hương trà quyện với gió tối dễ chịu thật. Nhìn lại từ hôm mới về xóm đến giờ, góc sân này ấm cúng hơn hẳn.",
+        "atSecond": 58,
+        "location": "Sân chung"
+      }
+    ],
+    "changes": [
+      {
+        "id": "an",
+        "moneyDelta": -8000,
+        "energyDelta": 5,
+        "hungerDelta": -10,
+        "skillDelta": 1,
+        "activity": "Treo đèn lồng giấy và thưởng trà đêm rằm",
+        "location": "Sân chung",
+        "memory": "Mắc dây đèn lồng giấy ở Sân chung và cùng Bình, Chi uống trà húng quế ngắm trăng tối rằm.",
+        "plan": [
+          {
+            "location": "Sân chung",
+            "activity": "Treo đèn lồng và trò chuyện đêm rằm",
+            "duration": 120,
+            "kind": "social"
+          },
+          {
+            "location": "Phòng An",
+            "activity": "Nghỉ ngơi và sạc pin cuối ngày",
+            "duration": 80,
+            "kind": "rest"
+          }
+        ]
+      },
+      {
+        "id": "chi",
+        "moneyDelta": -10000,
+        "energyDelta": 6,
+        "hungerDelta": -12,
+        "skillDelta": 1,
+        "activity": "Mời hai bạn thưởng thức trà và bánh đậu xanh",
+        "location": "Sân chung",
+        "memory": "Chuẩn bị khay trà húng quế và bánh đậu xanh cho buổi tối ngắm đèn lồng tại Sân chung.",
+        "plan": [
+          {
+            "location": "Sân chung",
+            "activity": "Thưởng trà đêm rằm cùng An và Bình",
+            "duration": 120,
+            "kind": "eat"
+          },
+          {
+            "location": "Phòng Chi",
+            "activity": "Nghỉ đêm tại trạm riêng",
+            "duration": 80,
+            "kind": "rest"
+          }
+        ]
+      },
+      {
+        "id": "binh",
+        "moneyDelta": 0,
+        "energyDelta": 6,
+        "hungerDelta": -10,
+        "skillDelta": 0,
+        "activity": "Ngắm đèn lồng và trò chuyện cùng bạn",
+        "location": "Sân chung",
+        "memory": "Tận hưởng đêm rằm ấm áp dưới ánh đèn lồng giấy ở Sân chung cùng An và Chi.",
+        "plan": [
+          {
+            "location": "Sân chung",
+            "activity": "Trò chuyện và thưởng trà tối",
+            "duration": 120,
+            "kind": "social"
+          },
+          {
+            "location": "Phòng Bình",
+            "activity": "Sạc pin và nghỉ đêm",
+            "duration": 80,
+            "kind": "rest"
+          }
+        ]
+      }
+    ],
+    "relationship": {
+      "a": "binh",
+      "b": "chi",
+      "delta": 3,
+      "note": "Buổi tối thưởng trà ngắm đèn lồng giúp Bình và Chi thân thiết hơn"
+    }
+  }
+]

@@ -1,0 +1,25 @@
+# Changelog
+
+## 2026-10-24 — Cập nhật mã nguồn toàn diện, Đồng hồ thế giới, Tổng hợp bối cảnh & Bộ AI Tự Training
+- **Định dạng mã & Sửa lỗi ESLint:** Định dạng sạch toàn bộ các tệp mã nguồn trước đây bị nén 1 dòng (`CityMap.tsx`, `app/page.tsx`, `lib/life.ts`, `app/globals.css`...); sửa triệt để 20 lỗi ESLint và 6 cảnh báo (loại bỏ `any`, sửa `react-hooks/refs`, `set-state-in-effect`, `purity`, `@next/next/no-html-link-for-pages`, `prefer-const`).
+- **Khắc phục lỗi logic & kiến trúc L1–L10:**
+  - **L1 (P0):** Thêm `resolveTransitionOrigin()` trong `lib/life.ts` và `lib/apply-event.ts` để kế hoạch AI mới xuất phát từ đúng vị trí mô phỏng hiện tại, chấm dứt hiện tượng nhảy vị trí (teleport).
+  - **L2 (P1):** Lưu đầy đủ `relationship`, `contextId`, `revisionBefore`, `revisionAfter` vào bảng `episodes`.
+  - **L3 (P1):** Bắt ngoại lệ `UNIQUE`/`PRIMARY KEY` khi hai request trùng `id` đến cùng lúc để trả về `{ ok: true, duplicate: true, id }`.
+  - **L4 (P2):** Kiểm tra độ dài byte UTF-8 thực tế của body (`<= 20.000` byte) và trả danh sách đường dẫn lỗi Zod an toàn khi mã `400`.
+  - **L5 & L7 (P2):** Tách câu lệnh khởi tạo khỏi đường đọc thường xuyên trong `readWorld()` và trả thêm `serverNow` để đồng bộ đồng hồ client–server.
+  - **L6 & L9 (P1/P2):** Tách component `StaticScene` bọc `React.memo` và đổi `<svg role="group">` trong `CityMap.tsx`; thống nhất chính sách `prefers-reduced-motion` và bỏ transition gây trễ trên `.map-person`.
+- **Đồng hồ thế giới & Thời tiết tất định (`lib/clock.ts`, `data/scenes.json`):** Bổ sung chu kỳ 7 pha ngày/đêm theo giờ Việt Nam, thời tiết tất định theo mùa mưa/mùa khô TP.HCM (`mulberry32`), lớp phủ ánh sáng/mưa trên bản đồ và danh mục 16 hoạt cảnh chuẩn.
+- **Tổng hợp bối cảnh đa chiều & Bộ AI Tự Training (`lib/training.ts`, `data/contexts/`, `data/training/`):**
+  - Thêm 24 bối cảnh đa chiều (`neighborhood-contexts.json`), 6 mẫu SFT Golden Episodes (`sft-golden-episodes.json`), 6 cặp đối chiếu DPO (`dpo-preference-pairs.json`), giáo trình tự luyện 8 cấp độ (`self-play-curriculum.json`) và hàm chấm điểm phản tư `evaluateCandidateEvent()`.
+  - Thêm bộ kiểm thử đơn vị thứ 4: `scripts/test-training.mjs`.
+- **Database & Vận hành:** Thêm migration `drizzle/0001_living_world_and_training.sql` (`memories`, `tick_runs`, `commitments`, `nudges`) và endpoint `GET /api/health`.
+- **Cơ cấu lại hệ thống tài liệu & Bổ sung Dotfiles:** Hoàn thiện đầy đủ các mục §3–§8 và Phụ lục G của `DESIGN_PROPOSALS.md`; tạo bản đồ tài liệu `docs/INDEX.md`, `API.md`, `DATA_MODEL.md`, `GLOSSARY.md`, `RUNBOOK.md`, `SECURITY.md`, `CONTRIBUTING.md`, `AI_TRAINING_AND_CONTEXTS.md` và 8 hồ sơ quyết định kiến trúc `docs/DECISIONS/ADR-0001..0008.md`; đưa `.gitignore` và `.npmrc` (kèm `gitignore.txt`, `npmrc.txt`) vào gói ZIP.
+
+## 2026-10-24 — Review kỹ thuật toàn diện (trước khi cập nhật mã)
+- Cài sạch từ lockfile (pnpm 11.25.0, Node 22.22.2): `test-life`, `test-events`, `test-animation` PASS; `tsc` 0 lỗi; `build` PASS.
+- Phát hiện 20 lỗi ESLint, 6 cảnh báo; phát hiện lỗi L1–L10 và thiếu `.gitignore`/`.npmrc` trong bản nén cũ.
+
+## 2026-10-24 — Initial implementation & Animated character handoff v2
+- Xây dựng khu phố 2D với 3 robot AI An, Bình, Chi, mèo Mướp, chó Cún, đàn sẻ, 4 xe giao thông theo pha đèn, Xưởng nhân vật và bong bóng thoại.
+- Lưu trữ trạng thái trong D1 (`worlds`, `episodes`), kiểm tra Zod, khóa lạc quan `revision` và chống trùng `id`.

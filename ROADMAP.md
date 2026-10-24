@@ -1,0 +1,29 @@
+# Roadmap và Lộ trình Sprint bàn giao
+
+## Phase 1 — Nền tảng và hình ảnh (Đã xuất bản)
+- Owner-private web, D1 snapshots/events, hồ sơ, ký ức, quan hệ, journal, pause/export.
+- Ba robot SVG, khu phố rộng, các địa điểm, district views và zoom.
+- Build, TypeScript và desktop navigation QA đã qua; ảnh đã gửi.
+
+## Phase 2 — AI tiếp nối & Vệ sinh kỹ thuật (Sprint 0 & Sprint 1 — Đã hoàn thành trong mã nguồn)
+- Một scene AI đã ghi/readback qua service access; tác vụ ChatGPT độc lập đã bật (08:00/14:00/20:00 giờ Việt Nam).
+- **Sprint 0 (Đã xong):** Định dạng sạch toàn bộ mã nguồn, sửa hết 20 lỗi ESLint + 6 cảnh báo, chuẩn hóa import, bổ sung `.gitignore`/`.npmrc` và cơ cấu lại toàn bộ tài liệu vào 6 mục chuyên đề (`docs/INDEX.md`).
+- **Sprint 1 (Đã xong):** Sửa lỗi L1 (`resolveTransitionOrigin` chống nhảy vị trí khi có plan mới), L2 (lưu đầy đủ `relationship` vào `episodes`), L3 (bắt race condition trùng `id`), L4 (kiểm tra kích thước byte UTF-8 thực tế), L5 (bỏ lệnh ghi thừa khi đọc `GET`), L6 (tách `StaticScene` `React.memo`), L7 (`serverNow` chống lệch đồng hồ), L9 (`role="group"` cho SVG), L10 (chuẩn hóa `seed` bio và hướng dẫn schema).
+- Bổ sung migration `0001_living_world_and_training.sql` (`memories`, `tick_runs`, `commitments`, `nudges`) và endpoint `GET /api/health`.
+
+## Phase 3 — Thế giới sinh động & Đồng hồ thế giới (Sprint 2 — Đã hoàn thành trong mã nguồn)
+- Đã viết graph đường đi, interpolation, routines, AI plans, công việc theo nơi đến, mèo/chó/sẻ theo tài liệu tập tính, follow camera, overlay đường đi và live board.
+- **Đồng hồ thế giới (`lib/clock.ts`):** Chu kỳ 7 pha ngày/đêm, độ sáng `daylight`, mùa mưa/mùa khô TP.HCM, thời tiết tất định theo hạt giống (`mulberry32`) và hiển thị trạng thái đèn đường/lối đi bộ.
+- **Danh mục 16 hoạt cảnh (`data/scenes.json`):** Chuẩn hóa hoạt cảnh theo khung giờ trong ngày.
+
+## Phase 4 — Tổng hợp bối cảnh, Planner & Bộ AI Tự Training (Sprint 3 — Đã tích hợp bộ dữ liệu & đánh giá)
+- **Thư viện 24 bối cảnh đa chiều (`data/contexts/neighborhood-contexts.json`):** Thời tiết, kinh tế vi mô, lời hứa xã hội, sinh thái động vật, văn hóa Việt Nam và thấu cảm.
+- **Bộ dữ liệu AI tự training (`data/training/` & `lib/training.ts`):**
+  - 6 mẫu Golden Episodes chuẩn SFT (`sft-golden-episodes.json`).
+  - 6 cặp đối chiếu ưu tiên DPO (`dpo-preference-pairs.json`).
+  - Giáo trình tự luyện 8 cấp độ (`self-play-curriculum.json`).
+  - Hàm chấm điểm phản tư tự động `evaluateCandidateEvent()` trên thang 100 điểm.
+- **Việc tiếp theo khi triển khai live:** Áp dụng migration `0001`, xác minh bản ghi `tick_runs` thực tế qua nhiều ngày, và thực hiện QA trình duyệt trên thiết bị di động.
+
+## Phase 5 — Video và social (Tạm hoãn theo yêu cầu)
+- Chưa bật video rendering, TTS thời gian thực hoặc auto-post. Thiết kế tiếng ríu Web Audio và kiến trúc âm thanh đường phố đã sẵn sàng tại [docs/DESIGN_PROPOSALS.md](docs/DESIGN_PROPOSALS.md) (§5–§6).

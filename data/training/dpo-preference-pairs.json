@@ -1,0 +1,146 @@
+[
+  {
+    "id": "dpo-pair-001",
+    "dimension": "witness_bound_memory",
+    "scenario": "An và Bình bàn chuyện làm kệ gỗ ở Xưởng sáng tạo trong khi Chi đang tưới rau ở Vườn nhỏ.",
+    "chosen": {
+      "summary": "An và Bình chỉ ghi ký ức của hai người tại Xưởng sáng tạo; Chi ở Vườn nhỏ chỉ nhớ chuyện chăm luống rau cho đến khi được hai bạn mang kệ sang kể.",
+      "memory_chi": "Tưới luống húng quế ở Vườn nhỏ và tỉa bớt lá già trước khi vào Bếp chung."
+    },
+    "rejected": {
+      "summary": "Chi đang ở Vườn nhỏ nhưng lại có ký ức biết rõ từng con số mà An và Bình vừa nói riêng với nhau ở Xưởng sáng tạo.",
+      "memory_chi": "Biết An và Bình đang bàn chuyện đóng kệ gỗ bằng 4 thanh gỗ thông ở Xưởng sáng tạo."
+    },
+    "critique": "Vi phạm nguyên tắc Ký ức gắn người chứng kiến (VISION.md): nhân vật không được biết nội dung hội thoại diễn ra ở địa điểm khác mà mình không có mặt hoặc chưa được nghe kể lại."
+  },
+  {
+    "id": "dpo-pair-002",
+    "dimension": "co_location_and_timing",
+    "scenario": "An đi từ Phòng An đến Quán cà phê để gặp Bình trò chuyện.",
+    "chosen": {
+      "dialogue": [
+        {
+          "speaker": "an",
+          "text": "Chào Bình, mình vừa từ phòng đi bộ qua, trời sáng nay mát ghê.",
+          "atSecond": 45,
+          "location": "Quán cà phê"
+        },
+        {
+          "speaker": "binh",
+          "text": "An ngồi nghỉ đi, mình vừa pha xong bình trà ấm đây.",
+          "atSecond": 53,
+          "location": "Quán cà phê"
+        }
+      ]
+    },
+    "rejected": {
+      "dialogue": [
+        {
+          "speaker": "an",
+          "text": "Chào Bình!",
+          "atSecond": 2,
+          "location": "Quán cà phê"
+        },
+        {
+          "speaker": "binh",
+          "text": "Chào An!",
+          "atSecond": 3,
+          "location": "Phòng Bình"
+        }
+      ]
+    },
+    "critique": "Vi phạm điều kiện co-location và thời gian di chuyển: cần dành ít nhất 20–45 giây đầu cảnh để nhân vật đi bộ tới điểm hẹn, hai lượt thoại cách nhau 6–8 giây và phải ở cùng một địa điểm."
+  },
+  {
+    "id": "dpo-pair-003",
+    "dimension": "animal_non_anthropomorphism",
+    "scenario": "Cún chạy lại gần An ở Công viên Lá Non.",
+    "chosen": {
+      "dialogue": [
+        {
+          "speaker": "an",
+          "text": "Cún cúi hai chân trước vẫy đuôi kìa, chắc muốn rủ mình lăn quả bóng nhỏ đây mà.",
+          "atSecond": 40,
+          "location": "Công viên"
+        }
+      ]
+    },
+    "rejected": {
+      "dialogue": [
+        {
+          "speaker": "cun",
+          "text": "An ơi ném bóng cho tôi chơi đi!",
+          "atSecond": 40,
+          "location": "Công viên"
+        }
+      ]
+    },
+    "critique": "Vi phạm schema và nguyên tắc mô phỏng động vật: động vật không nói tiếng người, speaker chỉ thuộc ['an', 'binh', 'chi'], và hành vi động vật được mô tả qua ngôn ngữ cơ thể tự nhiên."
+  },
+  {
+    "id": "dpo-pair-004",
+    "dimension": "earned_outcomes_not_plans",
+    "scenario": "An mới chỉ lập kế hoạch tuần sau sẽ mở quầy nước.",
+    "chosen": {
+      "moneyDelta": 0,
+      "skillDelta": 0,
+      "memory": "Lên danh sách những vật dụng cần chuẩn bị để tuần tới dựng thử quầy nước nhỏ."
+    },
+    "rejected": {
+      "moneyDelta": 30000,
+      "skillDelta": 3,
+      "memory": "Đã kiếm được 30.000đ và thành thạo pha chế nhờ dự định mở quầy nước vào tuần tới."
+    },
+    "critique": "Vi phạm nguyên tắc nhân quả thực tế: kế hoạch tương lai chưa thực hiện không được cộng sẵn tiền hay kỹ năng; chỉ cộng khi hoạt động học/làm đã thực sự diễn ra trong cảnh."
+  },
+  {
+    "id": "dpo-pair-005",
+    "dimension": "natural_vietnamese_dialogue",
+    "scenario": "Ba người bạn bàn việc dọn bữa tối ở Bếp chung.",
+    "chosen": {
+      "dialogue": [
+        {
+          "speaker": "chi",
+          "text": "Canh rau mình nấu xong rồi, chỉ chờ cơm chín thêm năm phút nữa thôi.",
+          "atSecond": 38,
+          "location": "Bếp chung"
+        },
+        {
+          "speaker": "an",
+          "text": "Để mình xếp chén đũa ra bàn trước cho. Tối nay xong bữa mình nhận phần rửa bát như đã hứa nhé.",
+          "atSecond": 46,
+          "location": "Bếp chung"
+        }
+      ]
+    },
+    "rejected": {
+      "dialogue": [
+        {
+          "speaker": "an",
+          "text": "Hôm nay chúng ta đã hoàn thành mục tiêu tối ưu hóa quy trình sinh hoạt cộng đồng một cách xuất sắc.",
+          "atSecond": 38,
+          "location": "Bếp chung"
+        },
+        {
+          "speaker": "binh",
+          "text": "Đúng vậy, sự gắn kết chiến lược của ba cư dân sẽ nâng cao hiệu suất toàn diện.",
+          "atSecond": 46,
+          "location": "Bếp chung"
+        }
+      ]
+    },
+    "critique": "Câu thoại rejected mang giọng văn khẩu hiệu/báo cáo máy móc. Câu thoại chosen ngắn gọn, tự nhiên, đúng cá tính từng nhân vật và gắn với việc cụ thể."
+  },
+  {
+    "id": "dpo-pair-006",
+    "dimension": "animal_safety_ethics",
+    "scenario": "Mướp và đàn sẻ cùng có mặt gần Vườn nhỏ.",
+    "chosen": {
+      "summary": "Đàn sẻ nhảy kiếm hạt ở luống rau phía đông, còn Mướp nằm sưởi nắng yên bình trên bậc thềm phía tây dưới sự quan sát của Chi."
+    },
+    "rejected": {
+      "summary": "An và Chi cổ vũ Mướp rượt đuổi bắt đàn sẻ quanh vườn làm trò tiêu khiển."
+    },
+    "critique": "Vi phạm nguyên tắc đạo đức sinh thái trong VISION.md và lifeInstructions: tuyệt đối không cho mèo săn hoặc chó đuổi đàn sẻ như trò chơi."
+  }
+]
