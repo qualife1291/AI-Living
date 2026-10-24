@@ -2,7 +2,7 @@
 
 ## Sản phẩm và yêu cầu đã chốt
 - Chủ dự án: Hoang Long. Ngôn ngữ: tiếng Việt; múi giờ Asia/Ho_Chi_Minh.
-- Ba nhân vật trưởng thành An, Bình, Chi sống trong khu trọ Việt Nam; tính cách, mục tiêu, ký ức và quan hệ riêng.
+- Ba robot AI An, Bình, Chi sống trong khu phố Việt Nam; tính cách, mục tiêu, ký ức và quan hệ riêng. Người dùng đã yêu cầu đổi hình người thành AI và mở rộng đường phố.
 - Phong cách 2D nhìn chéo từ trên xuống, dịu mắt, không pixel art.
 - Website riêng chỉ chủ sở hữu truy cập. Không thay đổi audience khi sửa nguồn.
 - Không phát sinh phí hạ tầng, AI; không đăng ký dịch vụ trả phí. Giới hạn tài khoản vẫn áp dụng.
@@ -56,7 +56,7 @@
 10. Không credentials, .env, runtime DB hay token trong Git/artifact.
 
 ## Kết quả xác minh
-- Đang triển khai; chưa xác nhận build, publication hoặc schedule. Cập nhật phần này sau mỗi kết quả thực tế.
+- Xem các checkpoint theo thứ tự thời gian phía dưới và docs/TESTING.md cho trạng thái mới nhất.
 
 ## Quy tắc bộ nhớ
 - MEMORY_SHORT.md: chỉ việc chưa xong, context mới và blockers; xóa mục khi xong, xóa file khi trống.
@@ -89,3 +89,15 @@
 - Chưa có last_run_time hoặc next_run_time được trả; chỉ xác minh đã lưu/bật, chưa chứng minh lần chạy theo lịch thành công. Không tuyên bố chạy 24/7.
 - Tác vụ đọc /api/instructions và /api/world qua private service access, tự tạo một cảnh và readback. Không cần source checkout hoặc token của phiên thiết lập.
 - Readback production đã xác nhận world.schedule hiển thị lịch mới và paused=false. Browser QA xác nhận zoom công viên đổi viewBox từ 35 355 680 440 thành 137 421 476 308.
+
+## Bàn giao nguồn — lớp sinh hoạt
+- User yêu cầu ZIP để mang sang Codex, cập nhật toàn bộ docs/công nghệ/tầm nhìn. Không xuất bản lớp sinh hoạt trong bước export này; live vẫn bản robot/khu phố stable.
+- Thêm lib/life.ts graph + Dijkstra cached paths, interpolation, routines, AI plans và followView. Thêm Animal/useLife, event-schema, persistent pause clock. API cũ tương thích.
+- Một vòng routine khoảng 570s; không phải ngày thật. Động vật theo luật, không có ML chuyên loài/DB riêng. Nguồn và chi tiết trong docs/ANIMAL_BEHAVIOR.md.
+- Browser smoke mới: nhìn thấy nhịp sống, 3 loài, Follow An pressed và overlay đường đi; có giá trị transform/viewBox quan sát. Pause request đã bấm ở preview nhưng freeze/resume chưa được xác minh đầy đủ.
+- UI sidebar profile là snapshot, live board là projection; cần làm rõ thêm để người dùng không hiểu nhầm vị trí.
+- Plan insertion dùng from là stored location, có thể nhảy từ vị trí routine đang đi; đây là P1 QA/fix khi tiếp tục.
+- CODEX_HANDOFF.md là thứ tự việc tiếp theo; AGENTS.md bắt buộc bộ nhớ và ảnh QA. README mới là hướng dẫn app, starter docs giữ tại docs/STARTER_REFERENCE.md.
+- ZIP không chứa production DB hoặc lịch sử Git, không tự tạo lại automation. Không tự train model; no paid API/video.
+
+- Kiểm tra cuối trước ZIP: test-life, test-events, TypeScript noEmit và production build đều PASS. Chưa có chứng cứ live integration hoặc browser freeze/resume hoàn chỉnh.

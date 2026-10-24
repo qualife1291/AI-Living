@@ -1,29 +1,30 @@
-# Kế hoạch phát triển Xóm AI
+# Roadmap và trạng thái bàn giao
 
-## Phase 1 — Có sản phẩm xem và dùng được
-- Bản đồ 2D, ba cư dân, hồ sơ, ký ức, quan hệ, nhật ký.
-- Lưu máy chủ D1, owner-private, pause/resume, tải JSON.
-- Đầu ra: URL riêng, ảnh thực tế sau kiểm thử, build và kiểm tra dữ liệu.
+## Phase 1 — Nền tảng và hình ảnh (đã xuất bản)
+- Owner-private web, D1 snapshots/events, hồ sơ, ký ức, quan hệ, journal, pause/export.
+- Ba robot SVG, khu phố rộng, các địa điểm, district views và zoom.
+- Build, TypeScript và desktop navigation QA đã qua; ảnh đã gửi.
 
-## Phase 2 — Cuộc sống AI tiếp nối
-- Đọc trạng thái thật, tạo cảnh mới từ ký ức và mục tiêu; kiểm tra luật rồi ghi transaction.
-- Tác vụ theo lịch 08:00, 14:00, 20:00 giờ Việt Nam, phụ thuộc hạn mức ChatGPT.
-- Đầu ra: một lượt ghi/readback đã xác minh, lịch đã lưu; không coi tạo lịch là bằng chứng lịch đã chạy.
+## Phase 2 — AI tiếp nối (cấu hình đã có, cần xác minh)
+- Một scene AI đã ghi/readback qua service access.
+- ChatGPT automation độc lập enabled, 08:00/14:00/20:00 giờ Việt Nam.
+- Site-linked scheduler từng lỗi invalid_project; không tạo trùng. Chưa có scheduled result được xác minh.
+- Bổ sung kế hoạch bước/hội thoại tự nhiên vào API và instructions trong mã mới.
 
-## Phase 3 — Theo dõi phát triển và hoàn thiện
-- Kiểm tra tiến triển kỹ năng, quan hệ và tính liên tục qua nhiều lượt.
-- Tinh chỉnh mobile, độ tương phản, hoạt cảnh và trạng thái lỗi theo bằng chứng kiểm thử.
-- Mỗi đợt test giao diện gửi ảnh thực tế, nêu phần đã kiểm tra và giới hạn.
+## Phase 3 — Thế giới sinh động (đang bàn giao nguồn)
+- Đã viết graph đường đi, interpolation, routines, AI plans, công việc theo nơi đến.
+- Đã viết mèo/chó/sẻ theo tài liệu tập tính, follow camera, overlay đường đi và live board.
+- Unit checks, TypeScript/build đã qua ở vòng phát triển; smoke UI nhìn thấy actors/animals và follow.
+- Chưa publish lớp này; cần freeze/resume QA, continuity khi plan thay thế, mobile/performance và local API integration.
 
-## Tạm hoãn
-- Xuất video, giọng đọc, tự đăng mạng xã hội.
+## Phase 4 — Planner và chiều sâu xã hội (chưa triển khai)
+- Nhu cầu → mục tiêu → việc làm; ký ức liên quan; lời hứa và việc chưa xong.
+- Gặp gỡ và lượt nói được kiểm tra tại server, hạn chế hội thoại lặp.
+- Animal state/needs/quan hệ riêng lưu bền; chuyển động theo loài tốt hơn.
+- Quan sát nhiều lượt, đánh giá mâu thuẫn và chi phí/quota.
+
+## Phase 5 — Video và social (tạm hoãn theo yêu cầu)
+- Chưa có video rendering, TTS hoặc auto-post.
 
 ## Quy trình
-- Làm tuần tự; cập nhật MEMORY_SHORT.md khi có yêu cầu mới và việc chưa xong.
-- Ghi quyết định, kết quả và chuẩn test vào MEMORY_LONG.md; thay đổi vào CHANGELOG.md.
-- Không phát sinh dịch vụ trả phí. Không trình bày hoạt cảnh như AI đang suy nghĩ liên tục.
-
-## Checkpoint robot / khu phố
-- Phase 1 mở rộng đã xuất bản: robot, đường phố và bối cảnh đa dạng; bản đồ có chọn khu và zoom.
-- Phase 2: tác vụ độc lập đã bật, chờ xác minh lượt chạy đầu; Sites-linked schedule vẫn không dùng được.
-- Phase 3 tiếp theo: kiểm chứng nhiều lượt nối tiếp và QA mobile thật.
+Mỗi phase có source, tài liệu, test evidence và ảnh UI; hoàn thiện phase hiện tại trước khi mở rộng. Không dùng mock/animation như bằng chứng inference liên tục. Handoff priority ở CODEX_HANDOFF.md.

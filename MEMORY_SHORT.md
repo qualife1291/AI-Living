@@ -14,3 +14,8 @@
 Xem MEMORY_LONG.md cho URL, stack, test standards, deploy, theme và giới hạn. Xóa các việc trên khi hoàn thành; xóa file khi không còn việc.
 
 
+
+## Bàn giao sang Codex
+- Đã hoàn tất cập nhật tài liệu và baseline checks cho bản ZIP; live stable không đổi.
+- Đọc CODEX_HANDOFF.md để tiếp tục lớp sinh hoạt: chạy checks, QA motion/camera/pause, sửa plan transition, integration local, mobile.
+

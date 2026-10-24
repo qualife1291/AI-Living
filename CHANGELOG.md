@@ -25,3 +25,11 @@
 - Created an enabled standalone ChatGPT automation for 08:00, 14:00, and 20:00 Vietnam time after the Site-linked scheduler failed.
 - The first scheduled execution remains unverified; the world does not think continuously between runs.
 - Fixed zoom behavior for every district, and retained the profile panel at tablet widths.
+
+## Living neighborhood — source handoff (not published)
+- Added a connected pedestrian graph, deterministic activity projection, walking interpolation, and a persistent pause clock.
+- Added bounded AI action plans and timed, location-aware dialogue fields with legacy event support.
+- Added contextual rule-based greetings, job props/animation, follow camera, route overlay, and activity board.
+- Added cat/dog/sparrow behavior rules with source references and explicit simulation labels.
+- Added pure simulation/schema tests and comprehensive Codex handoff documentation.
+- Exported source without runtime DB, dependencies, Git internals, or credentials. The live Site remains the prior stable city version.
