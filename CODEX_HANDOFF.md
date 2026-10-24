@@ -15,11 +15,11 @@ Tiếp tục lớp sinh hoạt đang viết, kiểm tra chính xác chuyển đ�
 - Snapshot world và episodes lưu trong D1, kiểm tra Zod, revision guard, transaction, event id chống retry.
 - Lớp mới: shortest paths trên pedestrian graph; hoạt động theo bước; nội suy tọa độ; AI plans được ưu tiên; fallback routines; 3 động vật theo luật; camera theo robot; overlay đường đi, bong bóng và bảng nhịp sống.
 - Đồng hồ có pausedAt/pausedMs được lưu để pause không nhảy thời gian khi resume.
-- Hai bộ test thuần, TypeScript noEmit và production build đã qua ở vòng cuối trước khi tạo ZIP; Codex mới vẫn nên chạy lại baseline trên môi trường của mình.
+- Ba bộ test thuần, TypeScript noEmit và production build đã qua ở vòng cuối trước khi tạo ZIP; Codex mới vẫn nên chạy lại baseline trên môi trường của mình.
 
 ## Việc làm theo thứ tự
 
-1. Cài dependencies từ pnpm-lock.yaml, chạy test-life, test-events, TypeScript và build.
+1. Cài dependencies từ pnpm-lock.yaml, chạy test-life, test-events, test-animation, TypeScript và build.
 2. Khởi tạo DB LOCAL mới bằng migration (không production), chạy preview.
 3. Browser QA: đo transform robot ở hai thời điểm; bật Theo và kiểm tra viewBox dịch; đổi robot; tắt Theo/chọn khu; pause phải đứng yên, resume tiếp nối. Chụp ảnh thực tế cho người dùng.
 4. Kiểm tra các kế hoạch AI mới đến có khớp vị trí đang mô phỏng không; hiện plan.from dùng location đã lưu, có thể gây nhảy khi kế hoạch mới thay routine giữa chừng. Sửa chuyển tiếp trước khi gọi là hoàn thiện.

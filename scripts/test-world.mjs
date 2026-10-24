@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 const origin=process.env.TEST_ORIGIN||'http://localhost:4173';
+if(!['localhost','127.0.0.1','[::1]','terminal.local'].includes(new URL(origin).hostname)&&process.env.ALLOW_REMOTE_TEST_WRITES!=='1')throw Error('Remote test writes disabled. Use an isolated local test database.');
 async function read(){const r=await fetch(origin+'/api/world');assert.equal(r.status,200);return r.json()}
 async function post(path,data){return fetch(origin+path,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(data)})}
 let s=await read();if(s.world.paused){await post('/api/world',{revision:s.revision,paused:false});s=await read()}

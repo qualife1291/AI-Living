@@ -33,7 +33,7 @@ scripts/test-world.mjs và verify-live.py có ghi. Một lần test stale dùng 
 
 ## Test commands
 
-Dùng Node 24+, pnpm lock. Không cần network/LLM cho test-life và test-events. npm run check = TypeScript. npm run test:unit chạy cả hai test thuần.
+Dùng Node 24+, pnpm lock. Không cần network/LLM cho test-life và test-events. npm run check = TypeScript. npm run test:unit chạy cả ba bộ test thuần.
 
 ## Kiểm thử animation và thiết kế cuối
 
@@ -42,3 +42,7 @@ Dùng Node 24+, pnpm lock. Không cần network/LLM cho test-life và test-event
 - Browser scene: tree canopy computed matrix thay đổi độc lập; main-west vehicle transform đổi vị trí qua hai lần quan sát, main-east đã có waiting=true tại stop point. Chưa test right-of-way với người đi bộ.
 - Ảnh thiết kế cuối ở docs/screenshots/character-design-final.jpg; snapshot preview, không phải bằng chứng live đã xuất bản.
 - Ba bộ Node tests, TypeScript và production build được chạy ở vòng cuối. Các giới hạn API/live/mobile/plan-transition ghi phía trên vẫn chưa tự động được giải quyết bởi animation update.
+
+## Guard cho test có ghi sau review ZIP
+
+verify-live.py mặc định từ chối origin ngoài localhost/127.0.0.1/::1/terminal.local trước mọi request; chỉ cho phép khi input có allow_remote_writes=true. test-world.mjs mặc định tương tự; ngoại lệ yêu cầu ALLOW_REMOTE_TEST_WRITES=1. Guard chỉ ngăn chạy nhầm từ xa, không làm bộ test trở thành an toàn cho production hoặc thay thế backup. Đã thử hai script với example.invalid và xác minh dừng ở guard, không gọi network.

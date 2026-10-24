@@ -1,7 +1,10 @@
 import sys,json,urllib.request,urllib.error
+from urllib.parse import urlparse
 class NoRedirect(urllib.request.HTTPRedirectHandler):
  def redirect_request(self,*args,**kwargs):return None
 opener=urllib.request.build_opener(NoRedirect());c=json.loads(sys.stdin.readline());origin=c['origin'];token=c['token']
+if urlparse(origin).hostname not in {'localhost','127.0.0.1','::1','terminal.local'} and c.get('allow_remote_writes') is not True:
+ raise SystemExit('Remote test writes disabled. Use an isolated local test database; explicit allow_remote_writes is required otherwise.')
 def call(path,data=None,extra=None):
  h={'OAI-Sites-Authorization':'Bearer '+token,'Content-Type':'application/json'};h.update(extra or {})
  try:

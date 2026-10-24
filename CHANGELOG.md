@@ -47,3 +47,8 @@
 - Rebuilt silhouettes: An with angular dual optics/tool belt, Bình with a central round sensor/slim body, Chi with pear-shaped ceramic shell/rounded hands.
 - Added unique gradient IDs, camera-aware bubble placement, long-word wrapping, and phase offsets for opposite limbs.
 - Captured final Workshop screenshot and added it to the source handoff.
+
+### ZIP completeness review
+- Verified all source files against the archive, checksums, ZIP integrity, and internal documentation links.
+- Extracted the archive into a fresh portable checkout; all three unit suites, TypeScript, build, and first local D1 migration passed using existing installed dependencies.
+- Corrected outdated two-suite wording, added a ZIP review report, and guarded legacy write-test scripts against accidental remote execution.

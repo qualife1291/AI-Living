@@ -42,9 +42,11 @@ node node_modules/typescript/bin/tsc --noEmit
 node node_modules/vinext/dist/cli.js build
 ```
 
-Hai bộ test đầu không ghi production. `scripts/verify-live.py` và `scripts/test-world.mjs` là kiểm thử có ghi, chưa đạt chuẩn an toàn cho production; xem docs/TESTING.md trước khi dùng.
+Cả ba bộ test thuần không ghi production. `scripts/verify-live.py` và `scripts/test-world.mjs` là kiểm thử có ghi, chưa đạt chuẩn an toàn cho production; xem docs/TESTING.md trước khi dùng.
 
 ## Tài liệu
+
+- [Báo cáo kiểm tra đầy đủ ZIP](docs/ZIP_REVIEW.md)
 
 - [Tầm nhìn và nguyên tắc sản phẩm](docs/VISION.md)
 - [Kiến trúc, dữ liệu và công nghệ](docs/ARCHITECTURE.md)

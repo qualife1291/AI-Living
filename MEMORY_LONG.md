@@ -118,3 +118,9 @@
 - Bubble có full-text wrap và offset theo camera; Node tests thêm long words/camera edges.
 
 - Thiết kế cuối đã chụp preview tại docs/screenshots/character-design-final.jpg. Không thay đổi production deployment trong đợt handoff này. Tất cả bản nguồn bàn giao được sync Git; ZIP không chứa DB/credentials.
+
+## Review gói ZIP cuối
+- Đã đối chiếu toàn bộ source tracked với ZIP, checksum, archive integrity và links nội bộ: không thiếu file.
+- Từ thư mục giải nén mới (portable default), ba tests + TypeScript + build PASS; migration tạo D1 local mới PASS. Dùng lại dependency installation qua symlink, chưa clean-install qua Internet.
+- Sửa mô tả còn ghi hai bộ test thành ba bộ. Thêm docs/ZIP_REVIEW.md.
+- Legacy write tests có guard reject remote mặc định; thử example.invalid xác nhận dừng trước network. Không tuyên bố live integration pass.
