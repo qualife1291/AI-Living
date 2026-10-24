@@ -815,7 +815,7 @@ export function CityMap({
             {world.paused
               ? 'Đang tạm nghỉ'
               : 'Đi lại & công việc theo luật'}{' '}
-            · 1 vòng sinh hoạt ≈ 10 phút
+            · Sinh hoạt theo giờ Việt Nam
           </span>
         </div>
         <div className="life-actors">

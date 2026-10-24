@@ -1,6 +1,7 @@
-import type { World } from './world';
-import type { EventInput } from './event-schema';
-import { resolveTransitionOrigin } from './life';
+import { computeSimMs } from "./clock.ts";
+import type { World } from "./world";
+import type { EventInput } from "./event-schema";
+import { transitionPath } from "./life.ts";
 
 export type ApplyEventOutcome =
   | {
@@ -17,7 +18,7 @@ export type ApplyEventOutcome =
 
 /**
  * Pure deterministic state transition for applying a validated EventInput to a World snapshot.
- * - Fixes L1: Resolves each actor's simulated position at `nowMs` (`resolveTransitionOrigin`)
+ * - Fixes L1: Resolves each actor's simulated position at `nowMs` (`transitionPath`)
  *   before mutating `p.location`, preventing instant teleports when a plan starts mid-routine.
  * - Fixes L2: Preserves `relationship`, `contextId`, and `revisionBefore/After` in `episodePayload`.
  */
@@ -28,15 +29,13 @@ export function applyEventToWorld(
   nowMs = Date.now(),
 ): ApplyEventOutcome {
   if (currentWorld.paused) {
-    return { ok: false, status: 409, error: 'Xóm đang tạm nghỉ' };
+    return { ok: false, status: 409, error: "Xóm đang tạm nghỉ" };
   }
   if (currentRevision !== input.revision) {
-    return { ok: false, status: 409, error: 'Revision conflict' };
+    return { ok: false, status: 409, error: "Revision conflict" };
   }
-  if (
-    new Set(input.changes.map((c) => c.id)).size !== input.changes.length
-  ) {
-    return { ok: false, status: 400, error: 'Nhân vật bị lặp' };
+  if (new Set(input.changes.map((c) => c.id)).size !== input.changes.length) {
+    return { ok: false, status: 400, error: "Nhân vật bị lặp" };
   }
 
   const world: World = JSON.parse(JSON.stringify(currentWorld));
@@ -45,14 +44,14 @@ export function applyEventToWorld(
   for (const c of input.changes) {
     const p = world.people.find((person) => person.id === c.id);
     if (!p) {
-      return { ok: false, status: 400, error: 'Nhân vật không hợp lệ' };
+      return { ok: false, status: 400, error: "Nhân vật không hợp lệ" };
     }
     if (p.money + c.moneyDelta < 0) {
-      return { ok: false, status: 400, error: 'Không đủ tiền mô phỏng' };
+      return { ok: false, status: 400, error: "Không đủ tiền mô phỏng" };
     }
 
     // Resolve simulated location BEFORE mutating p.location (Fixes L1)
-    const transitionFrom = resolveTransitionOrigin(currentWorld, p.id, nowMs);
+    const transitionFrom = transitionPath(currentWorld, p.id, nowMs);
 
     p.money += c.moneyDelta;
     p.energy = Math.max(0, Math.min(100, p.energy + c.energyDelta));
@@ -63,7 +62,8 @@ export function applyEventToWorld(
       p.plan = {
         createdAt: nowIso,
         pausedMs: world.clock?.pausedMs ?? 0,
-        from: transitionFrom,
+        ...transitionFrom,
+        simStartedAt: computeSimMs(world.born, world.clock, nowMs),
         steps: c.plan,
       };
     }
@@ -80,13 +80,13 @@ export function applyEventToWorld(
         (rel.a === c.a && rel.b === c.b) || (rel.a === c.b && rel.b === c.a),
     );
     if (!r) {
-      return { ok: false, status: 400, error: 'Quan hệ không hợp lệ' };
+      return { ok: false, status: 400, error: "Quan hệ không hợp lệ" };
     }
     r.trust = Math.max(0, Math.min(100, r.trust + c.delta));
     r.note = c.note;
   }
 
-  if (input.source === 'ai') {
+  if (input.source === "ai") {
     world.lastAI = nowIso;
   }
 
@@ -97,6 +97,7 @@ export function applyEventToWorld(
     changes: input.changes,
     ...(input.relationship ? { relationship: input.relationship } : {}),
     ...(input.contextId ? { contextId: input.contextId } : {}),
+    simStartedAt: computeSimMs(world.born, world.clock, nowMs),
     revisionBefore: currentRevision,
     revisionAfter: currentRevision + 1,
   };

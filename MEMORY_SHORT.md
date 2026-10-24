@@ -1,10 +1,14 @@
-# Bộ nhớ ngắn hạn (`MEMORY_SHORT.md`)
+# Bộ nhớ ngắn hạn
 
-## Việc chưa xong (Ưu tiên tiếp theo khi mở trên môi trường có quyền deploy)
-1. **Áp dụng migration `0001` và chạy thử local preview:** Chạy `drizzle/0001_living_world_and_training.sql` trên DB local, mở giao diện kiểm tra trực quan lớp phủ ánh sáng ngày/đêm, thời tiết và mục bối cảnh gợi ý trong tab Nhịp sống.
-2. **Xác minh lượt chạy theo lịch (Scheduled Run):** Kiểm tra tác vụ ChatGPT độc lập (ID trong `MEMORY_LONG.md`) qua `automations.peek` hoặc kết nối Server Tick ghi vào bảng `tick_runs`.
-3. **Sao lưu D1 đầy đủ trước khi dọn bản ghi `-stale`:** Thực hiện theo đúng quy trình trong [docs/RUNBOOK.md](docs/RUNBOOK.md) mục 3 & 4 trước khi xóa bản ghi test trùng lặp `ai-first-20261024-stale` trên production.
-4. **Browser QA trên viewport di động thật (360–430 px):** Chụp ảnh thực tế gửi người dùng kèm nhãn `preview`/`production` theo quy tắc `AGENTS.md`.
+Đọc [docs/CLOUD_REVIEW.md](docs/CLOUD_REVIEW.md) để phân biệt kết quả đã kiểm chứng trên Codex Cloud và tài liệu bàn giao lịch sử.
 
-## Blocker hiện hành
-- Môi trường đóng gói gói bàn giao không kết nối trực tiếp vào production D1 và không tự publish lên Sites (tuân thủ `AGENTS.md`).
+## Việc tiếp theo
+- Sinh thái: động vật phản ứng mưa/ngày đêm và cây trồng tiến triển, giữ liên tục đường đi.
+- Nối sự kiện vào structured memories/commitments/nudges bằng giao dịch nguyên tử, thêm kiểm thử witness-bound retrieval.
+- Lượt AI server và tick audit; chuẩn hóa idempotency khi revision thay đổi đồng thời.
+- Phân biệt health missing-migration/lỗi DB với chưa có tick.
+- Production: xác minh automation hiện có, backup D1 thật rồi kiểm tra migration/bản ghi `-stale`. Không dùng dữ liệu seed/local để suy luận live.
+
+## Blocker
+- Phiên hiện tại không có công cụ Sites/automations; chưa xác minh production hoặc lịch AI.
+- Cấu hình cloud đã lưu draft; cần người dùng review/save và Publish trong Environment settings để task mới dùng snapshot.

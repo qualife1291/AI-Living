@@ -1,5 +1,7 @@
 # Roadmap và Lộ trình Sprint bàn giao
 
+> Cập nhật Codex Cloud: xem [docs/CLOUD_REVIEW.md](docs/CLOUD_REVIEW.md) cho ba phase mới, bằng chứng local và các phần còn thiếu. Các trạng thái live trong tài liệu bàn giao dưới đây chưa được xác minh lại.
+
 ## Phase 1 — Nền tảng và hình ảnh (Đã xuất bản)
 - Owner-private web, D1 snapshots/events, hồ sơ, ký ức, quan hệ, journal, pause/export.
 - Ba robot SVG, khu phố rộng, các địa điểm, district views và zoom.

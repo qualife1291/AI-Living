@@ -23,3 +23,10 @@
 ## 2026-10-24 — Initial implementation & Animated character handoff v2
 - Xây dựng khu phố 2D với 3 robot AI An, Bình, Chi, mèo Mướp, chó Cún, đàn sẻ, 4 xe giao thông theo pha đèn, Xưởng nhân vật và bong bóng thoại.
 - Lưu trữ trạng thái trong D1 (`worlds`, `episodes`), kiểm tra Zod, khóa lạc quan `revision` và chống trùng `id`.
+
+## Codex Cloud — nhập source và phát triển nhịp sống
+- Nhập source gốc lên GitHub main; chuẩn bị Workers/D1 local có thể khởi động lại.
+- Sửa nhảy đồng hồ khi đổi tốc độ, vị trí khi thay kế hoạch; đồng bộ kế hoạch/thoại mới với simulation clock.
+- Thêm lịch 24 giờ riêng cho ba cư dân: ăn uống, làm việc, nghỉ trưa, gặp gỡ và ngủ đêm.
+- Kiểm tra chặt điều khiển thế giới; thêm hai bộ regression test và ảnh Chromium desktop/mobile thực tế.
+- Xem docs/CLOUD_REVIEW.md cho kết quả, giới hạn và phần chưa triển khai.

@@ -37,3 +37,11 @@
 3. Migration chỉ thêm mới (`0001`), không sửa migration đã áp dụng (`0000`).
 4. Không có số tiền âm, chỉ số trong giới hạn `0–100`, retry trùng `id` an toàn kể cả khi gọi đồng thời (L3).
 5. Không có credentials, `.env`, runtime DB hay token trong Git/ZIP (`scripts/package-handoff.py` tự động quét và kiểm tra `.gitignore`/`.npmrc`).
+
+## Codex Cloud — kết quả đã kiểm chứng
+- Checkout mới: `/workspace/AI-Living`, GitHub `qualife1291/AI-Living`, nhánh `main`; source ZIP gốc commit `702a7ba`.
+- Node 24.19.0/pnpm 11.25.0. Six test suites, TypeScript, lint, build và API local đạt; Chromium desktop/mobile 390 px đạt, ảnh thật ở `docs/screenshots/cloud-*-preview.png`.
+- Đồng hồ đổi tốc độ/pause/resume giữ liên tục; kế hoạch mới lưu `originPath` và `simStartedAt`, sự kiện mới đồng bộ thời gian thoại theo simulation clock. Không sửa SQL migration cũ.
+- Lịch cư dân 24 giờ Việt Nam ở `lib/daily-routines.ts`; AI plan ưu tiên và nối về lịch nền không nhảy vị trí. Động vật chưa được nối lịch ngày đêm.
+- `scripts/setup-local.mjs` khởi tạo D1 local lặp lại an toàn; startup dùng XDG trong `.sites-runtime`, không cần thay HOME.
+- Nguồn sự thật của đợt này: `docs/CLOUD_REVIEW.md`. Không có bằng chứng mới về production, scheduler hay model training.

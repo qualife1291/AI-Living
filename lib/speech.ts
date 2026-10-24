@@ -1,21 +1,21 @@
-import type { World, EpisodeEvent } from './world';
-import { nearby, contextualLine, simulationTime, type Actor } from './life.ts';
+import type { World, EpisodeEvent } from "./world";
+import { nearby, contextualLine, simulationTime, type Actor } from "./life.ts";
 
 export type Speech = {
   speaker: string;
   text: string;
-  source: 'ai' | 'routine';
+  source: "ai" | "routine";
   key: string;
 };
 
 export function wrapSpeech(text: string, max = 36): string[] {
   const lines: string[] = [];
-  let current = '';
+  let current = "";
   const words = text
     .trim()
     .split(/\s+/)
     .flatMap((w) =>
-      w.length > max ? (w.match(new RegExp(`.{1,${max}}`, 'gu')) ?? [w]) : [w],
+      w.length > max ? (w.match(new RegExp(`.{1,${max}}`, "gu")) ?? [w]) : [w],
     );
 
   for (const word of words) {
@@ -23,7 +23,7 @@ export function wrapSpeech(text: string, max = 36): string[] {
       lines.push(current);
       current = word;
     } else {
-      current += (current ? ' ' : '') + word;
+      current += (current ? " " : "") + word;
     }
   }
   if (current) lines.push(current);
@@ -33,13 +33,19 @@ export function wrapSpeech(text: string, max = 36): string[] {
 export function speechAt(
   world: World,
   actors: Actor[],
-  events: Pick<EpisodeEvent, 'id' | 'source' | 'createdAt' | 'dialogue'>[],
+  events: Pick<
+    EpisodeEvent,
+    "id" | "source" | "createdAt" | "dialogue" | "simStartedAt"
+  >[],
   now: number,
 ): Speech | null {
   const wall = world.clock?.pausedAt ?? now;
   for (const e of events) {
-    if (e.source !== 'ai') continue;
-    const elapsed = (wall - Date.parse(e.createdAt)) / 1000;
+    if (e.source !== "ai") continue;
+    const elapsed =
+      e.simStartedAt !== undefined
+        ? (simulationTime(world, now) - e.simStartedAt) / 1000
+        : (wall - Date.parse(e.createdAt)) / 1000;
     if (elapsed < 0 || elapsed > 1206) continue;
     for (let index = 0; index < (e.dialogue?.length ?? 0); index++) {
       const d = e.dialogue[index];
@@ -47,7 +53,7 @@ export function speechAt(
       if (
         a &&
         !a.walking &&
-        typeof d.atSecond === 'number' &&
+        typeof d.atSecond === "number" &&
         elapsed >= d.atSecond &&
         elapsed < d.atSecond + 6 &&
         (!d.location || d.location === a.location)
@@ -55,7 +61,7 @@ export function speechAt(
         return {
           speaker: a.id,
           text: d.text,
-          source: 'ai',
+          source: "ai",
           key: `${e.id}-${index}`,
         };
       }
@@ -76,7 +82,7 @@ export function speechAt(
   return {
     speaker: a.id,
     text: contextualLine(a, b, Math.floor(slot / pairs.length)),
-    source: 'routine',
+    source: "routine",
     key: `routine-${slot}-${a.id}`,
   };
 }
@@ -86,7 +92,7 @@ export function bubbleOffset(
   view: string,
   text: string,
 ): [number, number] | null {
-  const [x, y, w, h] = view.split(' ').map(Number);
+  const [x, y, w, h] = view.split(" ").map(Number);
   const [px, py] = position;
   if (px < x || px > x + w || py < y || py > y + h) return null;
 

@@ -1,15 +1,17 @@
-import type { Step } from './life';
-import type { WorldClockConfig } from './clock';
+import type { Step } from "./life";
+import type { WorldClockConfig } from "./clock";
 import type {
   DialogueLine,
   PersonChange,
   RelationshipChange,
-} from './event-schema';
+} from "./event-schema";
 
 export type PersonPlan = {
   createdAt: string;
   pausedMs: number;
   from: string;
+  originPath?: [number, number][];
+  simStartedAt?: number;
   steps: Step[];
 };
 
@@ -43,7 +45,7 @@ export type CommitmentItem = {
   toId: string;
   text: string;
   dueAt?: string;
-  status: 'open' | 'done';
+  status: "open" | "done";
   eventId: string;
 };
 
@@ -62,91 +64,92 @@ export type World = {
 export type EpisodeEvent = {
   id: string;
   createdAt: string;
-  source: 'ai' | 'opening' | string;
+  source: "ai" | "opening" | string;
   contextId?: string;
   title: string;
   summary: string;
   dialogue: DialogueLine[];
   changes: PersonChange[];
   relationship?: RelationshipChange;
+  simStartedAt?: number;
   revisionBefore?: number;
   revisionAfter?: number;
 };
 
 export const seed: World = {
-  born: '',
+  born: "",
   paused: false,
-  schedule: 'Chưa bật lịch AI',
-  weather: 'Nắng nhẹ',
+  schedule: "Chưa bật lịch AI",
+  weather: "Nắng nhẹ",
   lastAI: null,
   people: [
     {
-      id: 'an',
-      name: 'An',
-      role: 'Người ươm ý tưởng',
-      bio: 'Robot AI · Lạc quan, thích thử điều mới. Muốn mở một quầy nước nhỏ, nhưng đang học cách tính chi phí.',
-      color: '#ed9e6f',
+      id: "an",
+      name: "An",
+      role: "Người ươm ý tưởng",
+      bio: "Robot AI · Lạc quan, thích thử điều mới. Muốn mở một quầy nước nhỏ, nhưng đang học cách tính chi phí.",
+      color: "#ed9e6f",
       money: 200000,
       energy: 82,
       hunger: 25,
       skill: 12,
-      goal: 'Dành dụm 500.000đ mở quầy nước',
-      activity: 'Phác thảo quầy nước',
-      location: 'Sân chung',
-      memories: ['Vừa chuyển vào xóm. Muốn làm quen với Bình và Chi.'],
+      goal: "Dành dụm 500.000đ mở quầy nước",
+      activity: "Phác thảo quầy nước",
+      location: "Sân chung",
+      memories: ["Vừa chuyển vào xóm. Muốn làm quen với Bình và Chi."],
     },
     {
-      id: 'binh',
-      name: 'Bình',
-      role: 'Người giữ nhịp xóm',
-      bio: 'Robot AI · Điềm tĩnh, kỹ tính. Thích mọi thứ rõ ràng, nhưng luôn sẵn lòng giúp bạn khi cần.',
-      color: '#8f9bc4',
+      id: "binh",
+      name: "Bình",
+      role: "Người giữ nhịp xóm",
+      bio: "Robot AI · Điềm tĩnh, kỹ tính. Thích mọi thứ rõ ràng, nhưng luôn sẵn lòng giúp bạn khi cần.",
+      color: "#8f9bc4",
       money: 350000,
       energy: 75,
       hunger: 35,
       skill: 22,
-      goal: 'Lập quỹ sinh hoạt chung minh bạch',
-      activity: 'Sắp xếp sổ chi tiêu',
-      location: 'Phòng Bình',
-      memories: ['Dự định rủ cả xóm bàn về bữa cơm chung.'],
+      goal: "Lập quỹ sinh hoạt chung minh bạch",
+      activity: "Sắp xếp sổ chi tiêu",
+      location: "Phòng Bình",
+      memories: ["Dự định rủ cả xóm bàn về bữa cơm chung."],
     },
     {
-      id: 'chi',
-      name: 'Chi',
-      role: 'Đầu bếp mộng mơ',
-      bio: 'Robot AI · Ấm áp, sáng tạo và hơi ngại mở lời. Tin rằng một bữa ăn ngon có thể làm mọi người gần nhau hơn.',
-      color: '#98b789',
+      id: "chi",
+      name: "Chi",
+      role: "Đầu bếp mộng mơ",
+      bio: "Robot AI · Ấm áp, sáng tạo và hơi ngại mở lời. Tin rằng một bữa ăn ngon có thể làm mọi người gần nhau hơn.",
+      color: "#98b789",
       money: 180000,
       energy: 88,
       hunger: 20,
       skill: 18,
-      goal: 'Nấu một bữa cơm được cả xóm yêu thích',
-      activity: 'Chăm vườn rau',
-      location: 'Vườn nhỏ',
-      memories: ['Mang một chậu húng quế đến khu trọ.'],
+      goal: "Nấu một bữa cơm được cả xóm yêu thích",
+      activity: "Chăm vườn rau",
+      location: "Vườn nhỏ",
+      memories: ["Mang một chậu húng quế đến khu trọ."],
     },
   ],
   relationships: [
-    { a: 'an', b: 'binh', trust: 40, note: 'Bạn cùng xóm mới quen' },
-    { a: 'an', b: 'chi', trust: 45, note: 'Cùng thích những ý tưởng nhỏ' },
-    { a: 'binh', b: 'chi', trust: 42, note: 'Chưa có dịp trò chuyện nhiều' },
+    { a: "an", b: "binh", trust: 40, note: "Bạn cùng xóm mới quen" },
+    { a: "an", b: "chi", trust: 45, note: "Cùng thích những ý tưởng nhỏ" },
+    { a: "binh", b: "chi", trust: 42, note: "Chưa có dịp trò chuyện nhiều" },
   ],
   commitments: [
     {
-      id: 'commit-seed-1',
-      fromId: 'an',
-      toId: 'binh',
-      text: 'Cùng Bình rà soát bảng tính chi phí nguyên liệu quầy nước',
-      status: 'open',
-      eventId: 'seed',
+      id: "commit-seed-1",
+      fromId: "an",
+      toId: "binh",
+      text: "Cùng Bình rà soát bảng tính chi phí nguyên liệu quầy nước",
+      status: "open",
+      eventId: "seed",
     },
     {
-      id: 'commit-seed-2',
-      fromId: 'binh',
-      toId: 'chi',
-      text: 'Bàn quy tắc ghi sổ quỹ bữa cơm chung tại Bếp chung',
-      status: 'open',
-      eventId: 'seed',
+      id: "commit-seed-2",
+      fromId: "binh",
+      toId: "chi",
+      text: "Bàn quy tắc ghi sổ quỹ bữa cơm chung tại Bếp chung",
+      status: "open",
+      eventId: "seed",
     },
   ],
 };

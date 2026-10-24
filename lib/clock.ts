@@ -1,15 +1,9 @@
 export type DayPhase =
-  | 'dawn'
-  | 'morning'
-  | 'noon'
-  | 'afternoon'
-  | 'dusk'
-  | 'evening'
-  | 'night';
+  "dawn" | "morning" | "noon" | "afternoon" | "dusk" | "evening" | "night";
 
-export type Season = 'dry' | 'rainy';
+export type Season = "dry" | "rainy";
 
-export type WeatherKind = 'clear' | 'cloudy' | 'rain' | 'fog' | 'windy';
+export type WeatherKind = "clear" | "cloudy" | "rain" | "fog" | "windy";
 
 export type WeatherState = {
   kind: WeatherKind;
@@ -77,7 +71,8 @@ export function computeSimMs(
   clock: WorldClockConfig | undefined,
   nowMs: number,
 ): number {
-  const bornMs = Date.parse(bornIso) || nowMs;
+  const parsedBorn = Date.parse(bornIso);
+  const bornMs = Number.isFinite(parsedBorn) ? parsedBorn : nowMs;
   if (clock?.anchors && clock.anchors.length > 0) {
     const last = clock.anchors[clock.anchors.length - 1];
     const effectiveNow = clock.pausedAt ?? nowMs;
@@ -86,7 +81,10 @@ export function computeSimMs(
   }
   const effectiveNow = clock?.pausedAt ?? nowMs;
   const scale = clock?.scale ?? 1;
-  const rawElapsed = Math.max(0, effectiveNow - bornMs - (clock?.pausedMs ?? 0));
+  const rawElapsed = Math.max(
+    0,
+    effectiveNow - bornMs - (clock?.pausedMs ?? 0),
+  );
   return rawElapsed * scale;
 }
 
@@ -94,13 +92,19 @@ export function phaseFromHour(hour: number): {
   phase: DayPhase;
   phaseLabel: string;
 } {
-  if (hour >= 5.5 && hour < 7) return { phase: 'dawn', phaseLabel: 'Bình minh' };
-  if (hour >= 7 && hour < 11) return { phase: 'morning', phaseLabel: 'Buổi sáng' };
-  if (hour >= 11 && hour < 14) return { phase: 'noon', phaseLabel: 'Buổi trưa' };
-  if (hour >= 14 && hour < 17.5) return { phase: 'afternoon', phaseLabel: 'Buổi chiều' };
-  if (hour >= 17.5 && hour < 18.5) return { phase: 'dusk', phaseLabel: 'Hoàng hôn' };
-  if (hour >= 18.5 && hour < 22) return { phase: 'evening', phaseLabel: 'Buổi tối' };
-  return { phase: 'night', phaseLabel: 'Ban đêm' };
+  if (hour >= 5.5 && hour < 7)
+    return { phase: "dawn", phaseLabel: "Bình minh" };
+  if (hour >= 7 && hour < 11)
+    return { phase: "morning", phaseLabel: "Buổi sáng" };
+  if (hour >= 11 && hour < 14)
+    return { phase: "noon", phaseLabel: "Buổi trưa" };
+  if (hour >= 14 && hour < 17.5)
+    return { phase: "afternoon", phaseLabel: "Buổi chiều" };
+  if (hour >= 17.5 && hour < 18.5)
+    return { phase: "dusk", phaseLabel: "Hoàng hôn" };
+  if (hour >= 18.5 && hour < 22)
+    return { phase: "evening", phaseLabel: "Buổi tối" };
+  return { phase: "night", phaseLabel: "Ban đêm" };
 }
 
 export function daylightFromHour(hour: number): number {
@@ -123,7 +127,8 @@ export function worldTime(
   nowMs: number,
 ): WorldTime {
   const simMs = computeSimMs(world.born, world.clock, nowMs);
-  const bornMs = Date.parse(world.born) || nowMs;
+  const parsedBorn = Date.parse(world.born);
+  const bornMs = Number.isFinite(parsedBorn) ? parsedBorn : nowMs;
   const virtualEpochMs = bornMs + simMs;
   const vnMs = virtualEpochMs + VN_OFFSET_MS;
   const dayIndex = Math.max(0, Math.floor(simMs / DAY_MS));
@@ -133,8 +138,8 @@ export function worldTime(
   const daylight = daylightFromHour(hour);
 
   const month = new Date(vnMs).getUTCMonth() + 1; // 1..12
-  const season: Season = month >= 5 && month <= 11 ? 'rainy' : 'dry';
-  const seasonLabel = season === 'rainy' ? 'Mùa mưa TP.HCM' : 'Mùa khô TP.HCM';
+  const season: Season = month >= 5 && month <= 11 ? "rainy" : "dry";
+  const seasonLabel = season === "rainy" ? "Mùa mưa TP.HCM" : "Mùa khô TP.HCM";
 
   return {
     simMs,
@@ -149,11 +154,11 @@ export function worldTime(
 }
 
 const WEATHER_LABELS: Record<WeatherKind, string> = {
-  clear: 'Nắng nhẹ',
-  cloudy: 'Trời dịu nhiều mây',
-  rain: 'Mưa rào bất chợt',
-  fog: 'Sương mỏng đầu ngày',
-  windy: 'Gió mát thổi qua xóm',
+  clear: "Nắng nhẹ",
+  cloudy: "Trời dịu nhiều mây",
+  rain: "Mưa rào bất chợt",
+  fog: "Sương mỏng đầu ngày",
+  windy: "Gió mát thổi qua xóm",
 };
 
 /**
@@ -168,8 +173,8 @@ export function weatherAt(
     return {
       kind: override,
       label: WEATHER_LABELS[override],
-      intensity: override === 'rain' ? 0.75 : 0.4,
-      tempC: override === 'rain' ? 26 : 30,
+      intensity: override === "rain" ? 0.75 : 0.4,
+      tempC: override === "rain" ? 26 : 30,
     };
   }
 
@@ -177,32 +182,35 @@ export function weatherAt(
   const rng = mulberry32(hashSeed(`${seedKey}-day-${t.dayIndex}-slot-${slot}`));
   const roll = rng();
 
-  let kind: WeatherKind = 'clear';
-  if (t.phase === 'dawn') {
-    kind = roll < 0.28 ? 'fog' : roll < 0.65 ? 'clear' : 'cloudy';
-  } else if (t.season === 'rainy' && (t.phase === 'afternoon' || t.phase === 'dusk')) {
-    if (roll < 0.42) kind = 'rain';
-    else if (roll < 0.72) kind = 'cloudy';
-    else if (roll < 0.88) kind = 'windy';
-    else kind = 'clear';
-  } else if (t.phase === 'noon') {
-    kind = roll < 0.7 ? 'clear' : roll < 0.9 ? 'cloudy' : 'windy';
+  let kind: WeatherKind = "clear";
+  if (t.phase === "dawn") {
+    kind = roll < 0.28 ? "fog" : roll < 0.65 ? "clear" : "cloudy";
+  } else if (
+    t.season === "rainy" &&
+    (t.phase === "afternoon" || t.phase === "dusk")
+  ) {
+    if (roll < 0.42) kind = "rain";
+    else if (roll < 0.72) kind = "cloudy";
+    else if (roll < 0.88) kind = "windy";
+    else kind = "clear";
+  } else if (t.phase === "noon") {
+    kind = roll < 0.7 ? "clear" : roll < 0.9 ? "cloudy" : "windy";
   } else {
-    if (roll < 0.55) kind = 'clear';
-    else if (roll < 0.8) kind = 'cloudy';
-    else if (roll < 0.93) kind = 'windy';
-    else kind = 'rain';
+    if (roll < 0.55) kind = "clear";
+    else if (roll < 0.8) kind = "cloudy";
+    else if (roll < 0.93) kind = "windy";
+    else kind = "rain";
   }
 
   const baseTemp =
-    t.phase === 'noon'
+    t.phase === "noon"
       ? 33
-      : t.phase === 'morning' || t.phase === 'afternoon'
+      : t.phase === "morning" || t.phase === "afternoon"
         ? 31
-        : t.phase === 'dawn' || t.phase === 'night'
+        : t.phase === "dawn" || t.phase === "night"
           ? 25
           : 28;
-  const tempOffset = kind === 'rain' ? -3 : kind === 'cloudy' ? -1 : 0;
+  const tempOffset = kind === "rain" ? -3 : kind === "cloudy" ? -1 : 0;
 
   return {
     kind,
@@ -210,4 +218,28 @@ export function weatherAt(
     intensity: Number((0.3 + rng() * 0.6).toFixed(2)),
     tempC: baseTemp + tempOffset,
   };
+}
+
+/** Preserve simulated time when changing speed or resuming after a pause. */
+export function updateClock(
+  world: { born: string; paused: boolean; clock?: WorldClockConfig },
+  nowMs: number,
+  patch: { paused?: boolean; speedScale?: number },
+): WorldClockConfig {
+  const clock = { pausedAt: null, pausedMs: 0, ...world.clock };
+  const simMs = computeSimMs(world.born, clock, nowMs);
+  const paused = patch.paused ?? world.paused;
+  const scale = patch.speedScale ?? clock.scale ?? 1;
+  if (patch.speedScale !== undefined || (world.paused && !paused)) {
+    clock.anchors = [
+      { realMs: paused ? (clock.pausedAt ?? nowMs) : nowMs, simMs, scale },
+    ];
+  }
+  clock.scale = scale;
+  if (paused && !world.paused) clock.pausedAt = nowMs;
+  if (!paused && world.paused) {
+    clock.pausedMs += Math.max(0, nowMs - (clock.pausedAt ?? nowMs));
+    clock.pausedAt = null;
+  }
+  return clock;
 }

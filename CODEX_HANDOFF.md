@@ -1,5 +1,7 @@
 # Bàn giao sang Codex (`CODEX_HANDOFF.md`)
 
+> Cập nhật Codex Cloud: xem [docs/CLOUD_REVIEW.md](docs/CLOUD_REVIEW.md) cho ba phase mới, bằng chứng local và các phần còn thiếu. Các trạng thái live trong tài liệu bàn giao dưới đây chưa được xác minh lại.
+
 ## Trạng thái bản bàn giao hiện tại (Đã cập nhật mã nguồn, tài liệu & bộ AI tự training — 24/10/2026)
 
 Bản ZIP này đã hoàn tất việc **định dạng sạch toàn bộ mã nguồn**, **sửa triệt để các lỗi L1–L10 và 20 lỗi ESLint**, **bổ sung Đồng hồ thế giới (`lib/clock.ts`) + 16 hoạt cảnh (`data/scenes.json`)**, **tích hợp thư viện 24 bối cảnh đa chiều & bộ dữ liệu AI tự training (`lib/training.ts`, `data/contexts/`, `data/training/`)**, đồng thời **cơ cấu lại toàn bộ hệ thống tài liệu vào 6 mục chuyên đề** (xem [docs/INDEX.md](docs/INDEX.md)).

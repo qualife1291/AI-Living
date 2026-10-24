@@ -1,21 +1,22 @@
-import type { World } from './world';
-import { computeSimMs } from './clock.ts';
+import type { World } from "./world";
+import { computeSimMs, worldTime } from "./clock.ts";
+import { dailyRoutine, routineAfterPlan } from "./daily-routines.ts";
 
 export type Point = [number, number];
 
 export const places: Record<string, Point> = {
-  'Sân chung': [380, 286],
-  'Phòng An': [207, 228],
-  'Phòng Bình': [408, 183],
-  'Phòng Chi': [589, 255],
-  'Bếp chung': [603, 610],
-  'Vườn nhỏ': [876, 613],
-  'Công viên': [277, 565],
-  'Quán cà phê': [979, 322],
-  'Thư viện': [1013, 538],
-  'Xưởng sáng tạo': [804, 219],
-  'Quảng trường': [633, 407],
-  'Phố đi bộ': [465, 432],
+  "Sân chung": [380, 286],
+  "Phòng An": [207, 228],
+  "Phòng Bình": [408, 183],
+  "Phòng Chi": [589, 255],
+  "Bếp chung": [603, 610],
+  "Vườn nhỏ": [876, 613],
+  "Công viên": [277, 565],
+  "Quán cà phê": [979, 322],
+  "Thư viện": [1013, 538],
+  "Xưởng sáng tạo": [804, 219],
+  "Quảng trường": [633, 407],
+  "Phố đi bộ": [465, 432],
 };
 
 // Pedestrian graph: doors connect to lanes; crossings bridge the two street sides.
@@ -38,32 +39,32 @@ const nodes: Record<string, Point> = {
 };
 
 const edges: [string, string][] = [
-  ['Phòng An', 'h1'],
-  ['Phòng Bình', 'h2'],
-  ['Phòng Chi', 'h3'],
-  ['h1', 'Sân chung'],
-  ['Sân chung', 'h2'],
-  ['h2', 'h3'],
-  ['h3', 'north'],
-  ['north', 'cross'],
-  ['cross', 'south'],
-  ['south', 'Phố đi bộ'],
-  ['Phố đi bộ', 'west'],
-  ['west', 'park'],
-  ['park', 'Công viên'],
-  ['south', 'kitchen'],
-  ['kitchen', 'Bếp chung'],
-  ['kitchen', 'garden'],
-  ['garden', 'Vườn nhỏ'],
-  ['garden', 'library'],
-  ['library', 'Thư viện'],
-  ['south', 'Quảng trường'],
-  ['Quảng trường', 'east'],
-  ['east', 'cafe'],
-  ['cafe', 'Quán cà phê'],
-  ['h3', 'work'],
-  ['work', 'Xưởng sáng tạo'],
-  ['work', 'cafe'],
+  ["Phòng An", "h1"],
+  ["Phòng Bình", "h2"],
+  ["Phòng Chi", "h3"],
+  ["h1", "Sân chung"],
+  ["Sân chung", "h2"],
+  ["h2", "h3"],
+  ["h3", "north"],
+  ["north", "cross"],
+  ["cross", "south"],
+  ["south", "Phố đi bộ"],
+  ["Phố đi bộ", "west"],
+  ["west", "park"],
+  ["park", "Công viên"],
+  ["south", "kitchen"],
+  ["kitchen", "Bếp chung"],
+  ["kitchen", "garden"],
+  ["garden", "Vườn nhỏ"],
+  ["garden", "library"],
+  ["library", "Thư viện"],
+  ["south", "Quảng trường"],
+  ["Quảng trường", "east"],
+  ["east", "cafe"],
+  ["cafe", "Quán cà phê"],
+  ["h3", "work"],
+  ["work", "Xưởng sáng tạo"],
+  ["work", "cafe"],
 ];
 
 export const distance = (a: Point, b: Point): number =>
@@ -75,7 +76,7 @@ export function route(from: string, to: string): Point[] {
   const key = `${from}→${to}`;
   const cached = routeCache.get(key);
   if (cached) return cached;
-  if (!nodes[from] || !nodes[to]) return [places['Sân chung']];
+  if (!nodes[from] || !nodes[to]) return [places["Sân chung"]];
 
   const costs: Record<string, number> = { [from]: 0 };
   const previous: Record<string, string> = {};
@@ -131,13 +132,13 @@ export type Step = {
   location: string;
   activity: string;
   duration: number;
-  kind: 'work' | 'eat' | 'rest' | 'social' | 'garden' | 'read' | 'play';
+  kind: "work" | "eat" | "rest" | "social" | "garden" | "read" | "play";
 };
 
 const step = (
   location: string,
   activity: string,
-  kind: Step['kind'],
+  kind: Step["kind"],
   duration = 65,
 ): Step => ({
   location,
@@ -148,34 +149,34 @@ const step = (
 
 export const routines: Record<string, Step[]> = {
   an: [
-    step('Bếp chung', 'Chuẩn bị bữa sáng cùng bạn', 'eat'),
-    step('Xưởng sáng tạo', 'Thử bản vẽ quầy nước', 'work', 95),
-    step('Quán cà phê', 'Quan sát cách phục vụ', 'social'),
-    step('Thư viện', 'Đọc cách tính chi phí', 'read'),
-    step('Công viên', 'Nghỉ và chơi cùng Cún', 'play'),
-    step('Vườn nhỏ', 'Phụ Chi chăm rau', 'garden'),
-    step('Bếp chung', 'Rửa bát như đã hứa', 'work'),
-    step('Phòng An', 'Sạc pin và nghỉ ngơi', 'rest', 85),
+    step("Bếp chung", "Chuẩn bị bữa sáng cùng bạn", "eat"),
+    step("Xưởng sáng tạo", "Thử bản vẽ quầy nước", "work", 95),
+    step("Quán cà phê", "Quan sát cách phục vụ", "social"),
+    step("Thư viện", "Đọc cách tính chi phí", "read"),
+    step("Công viên", "Nghỉ và chơi cùng Cún", "play"),
+    step("Vườn nhỏ", "Phụ Chi chăm rau", "garden"),
+    step("Bếp chung", "Rửa bát như đã hứa", "work"),
+    step("Phòng An", "Sạc pin và nghỉ ngơi", "rest", 85),
   ],
   binh: [
-    step('Bếp chung', 'Dọn bàn cho bữa sáng', 'eat'),
-    step('Thư viện', 'Kiểm tra sổ chi tiêu', 'read', 95),
-    step('Quán cà phê', 'Hỏi thăm bạn cùng xóm', 'social'),
-    step('Xưởng sáng tạo', 'Sắp xếp vật liệu dùng chung', 'work'),
-    step('Công viên', 'Đi bộ và quan sát chim', 'rest'),
-    step('Quảng trường', 'Kiểm tra bảng tin của xóm', 'social'),
-    step('Bếp chung', 'Ghi chi phí bữa cơm', 'work'),
-    step('Phòng Bình', 'Sạc pin và nghỉ ngơi', 'rest', 85),
+    step("Bếp chung", "Dọn bàn cho bữa sáng", "eat"),
+    step("Thư viện", "Kiểm tra sổ chi tiêu", "read", 95),
+    step("Quán cà phê", "Hỏi thăm bạn cùng xóm", "social"),
+    step("Xưởng sáng tạo", "Sắp xếp vật liệu dùng chung", "work"),
+    step("Công viên", "Đi bộ và quan sát chim", "rest"),
+    step("Quảng trường", "Kiểm tra bảng tin của xóm", "social"),
+    step("Bếp chung", "Ghi chi phí bữa cơm", "work"),
+    step("Phòng Bình", "Sạc pin và nghỉ ngơi", "rest", 85),
   ],
   chi: [
-    step('Bếp chung', 'Chuẩn bị bữa sáng', 'eat'),
-    step('Vườn nhỏ', 'Tưới rau húng quế', 'garden', 95),
-    step('Quán cà phê', 'Trao đổi công thức trà', 'social'),
-    step('Thư viện', 'Tìm công thức mới', 'read'),
-    step('Công viên', 'Ngồi yên để Mướp lại gần', 'rest'),
-    step('Vườn nhỏ', 'Kiểm tra đất và tỉa lá', 'garden'),
-    step('Bếp chung', 'Nấu bữa tối cho cả xóm', 'work'),
-    step('Phòng Chi', 'Sạc pin và nghỉ ngơi', 'rest', 85),
+    step("Bếp chung", "Chuẩn bị bữa sáng", "eat"),
+    step("Vườn nhỏ", "Tưới rau húng quế", "garden", 95),
+    step("Quán cà phê", "Trao đổi công thức trà", "social"),
+    step("Thư viện", "Tìm công thức mới", "read"),
+    step("Công viên", "Ngồi yên để Mướp lại gần", "rest"),
+    step("Vườn nhỏ", "Kiểm tra đất và tỉa lá", "garden"),
+    step("Bếp chung", "Nấu bữa tối cho cả xóm", "work"),
+    step("Phòng Chi", "Sạc pin và nghỉ ngơi", "rest", 85),
   ],
 };
 
@@ -190,10 +191,10 @@ export type Actor = {
   from: string;
   location: string;
   activity: string;
-  kind: Step['kind'];
+  kind: Step["kind"];
   walking: boolean;
   progress: number;
-  source: 'plan' | 'routine';
+  source: "plan" | "routine";
   path: Point[];
 };
 
@@ -202,8 +203,9 @@ function project(
   name: string,
   list: Step[],
   time: number,
-  source: Actor['source'],
+  source: Actor["source"],
   initial?: string,
+  originPath?: Point[],
 ): Actor {
   const total = list.reduce((n, s) => n + s.duration, 0);
   let t = time % total;
@@ -215,12 +217,14 @@ function project(
   const current = list[index];
   const from =
     index === 0
-      ? (time < total ? initial : undefined) ?? list[list.length - 1].location
+      ? ((time < total ? initial : undefined) ?? list[list.length - 1].location)
       : list[index - 1].location;
-  const path = route(from, current.location);
-  const length = path
-    .slice(1)
-    .reduce((n, p, i) => n + distance(p, path[i]), 0);
+  const basePath = route(from, current.location);
+  const path =
+    index === 0 && time < total && originPath?.length
+      ? [...originPath, ...basePath.slice(1)]
+      : basePath;
+  const length = path.slice(1).reduce((n, p, i) => n + distance(p, path[i]), 0);
   const moveSeconds = Math.min(current.duration * 0.62, length / 27);
   const walking = moveSeconds > 0 && t < moveSeconds;
 
@@ -255,12 +259,15 @@ export function actorsAt(world: World, now: number): Actor[] {
   const time = simulationTime(world, now) / 1000;
   return world.people.map((p, index) => {
     const plan = p.plan;
-    const planElapsed = plan
-      ? ((world.clock?.pausedAt ?? now) -
-          Date.parse(plan.createdAt) -
-          ((world.clock?.pausedMs ?? 0) - (plan.pausedMs ?? 0))) /
-        1000
-      : Infinity;
+    const planElapsed =
+      plan?.simStartedAt !== undefined
+        ? Math.max(0, time - plan.simStartedAt / 1000)
+        : plan
+          ? ((world.clock?.pausedAt ?? now) -
+              Date.parse(plan.createdAt) -
+              ((world.clock?.pausedMs ?? 0) - (plan.pausedMs ?? 0))) /
+            1000
+          : Infinity;
 
     if (
       plan &&
@@ -268,22 +275,38 @@ export function actorsAt(world: World, now: number): Actor[] {
       planElapsed < plan.steps.reduce((n, s) => n + s.duration, 0)
     ) {
       return offset(
-        project(p.id, p.name, plan.steps, planElapsed, 'plan', plan.from),
+        project(
+          p.id,
+          p.name,
+          plan.steps,
+          planElapsed,
+          "plan",
+          plan.from,
+          plan.originPath,
+        ),
         index,
       );
     }
 
     const elapsedAfterPlan = plan
-      ? Math.max(0, planElapsed - plan.steps.reduce((n, s) => n + s.duration, 0))
+      ? Math.max(
+          0,
+          planElapsed - plan.steps.reduce((n, s) => n + s.duration, 0),
+        )
       : time;
 
     return offset(
       project(
         p.id,
         p.name,
-        routines[p.id] ?? routines.an,
-        elapsedAfterPlan,
-        'routine',
+        plan
+          ? routineAfterPlan(
+              p.id,
+              worldTime(world, now).hour * 3600 - elapsedAfterPlan,
+            )
+          : dailyRoutine(p.id),
+        plan ? elapsedAfterPlan : worldTime(world, now).hour * 3600,
+        "routine",
         plan?.steps.at(-1)?.location,
       ),
       index,
@@ -302,7 +325,7 @@ export function resolveTransitionOrigin(
 ): string {
   const currentActor = actorsAt(world, now).find((a) => a.id === personId);
   if (!currentActor) {
-    return world.people.find((p) => p.id === personId)?.location ?? 'Sân chung';
+    return world.people.find((p) => p.id === personId)?.location ?? "Sân chung";
   }
   if (!currentActor.walking) {
     return currentActor.location;
@@ -322,22 +345,22 @@ export function resolveTransitionOrigin(
 
 export const animals = [
   {
-    id: 'muop',
-    name: 'Mướp',
-    species: 'cat',
-    description: 'Nghỉ ở chỗ yên tĩnh, khám phá và chơi với đồ chơi.',
+    id: "muop",
+    name: "Mướp",
+    species: "cat",
+    description: "Nghỉ ở chỗ yên tĩnh, khám phá và chơi với đồ chơi.",
   },
   {
-    id: 'cun',
-    name: 'Cún',
-    species: 'dog',
-    description: 'Đánh hơi dọc đường, mời chơi và gần gũi khi thấy an toàn.',
+    id: "cun",
+    name: "Cún",
+    species: "dog",
+    description: "Đánh hơi dọc đường, mời chơi và gần gũi khi thấy an toàn.",
   },
   {
-    id: 'se',
-    name: 'Đàn sẻ',
-    species: 'bird',
-    description: 'Đi cùng đàn, nhảy và kiếm hạt ở mặt đất.',
+    id: "se",
+    name: "Đàn sẻ",
+    species: "bird",
+    description: "Đi cùng đàn, nhảy và kiếm hạt ở mặt đất.",
   },
 ] as const;
 
@@ -345,26 +368,26 @@ export function animalsAt(world: World, now: number) {
   const t = simulationTime(world, now) / 1000;
   const lists: Step[][] = [
     [
-      step('Công viên', 'Nằm nghỉ ở bóng cây', 'rest', 110),
-      step('Vườn nhỏ', 'Khám phá quanh luống rau', 'play', 80),
-      step('Bếp chung', 'Ngồi quan sát từ xa', 'rest', 70),
-      step('Công viên', 'Vờn quả bóng đồ chơi', 'play', 90),
+      step("Công viên", "Nằm nghỉ ở bóng cây", "rest", 110),
+      step("Vườn nhỏ", "Khám phá quanh luống rau", "play", 80),
+      step("Bếp chung", "Ngồi quan sát từ xa", "rest", 70),
+      step("Công viên", "Vờn quả bóng đồ chơi", "play", 90),
     ],
     [
-      step('Công viên', 'Đánh hơi lối đi', 'play', 80),
-      step('Phố đi bộ', 'Khám phá mùi mới', 'play', 80),
-      step('Quảng trường', 'Mời bạn chơi bằng tư thế cúi đầu', 'social', 100),
-      step('Công viên', 'Uống nước và nằm nghỉ', 'rest', 90),
+      step("Công viên", "Đánh hơi lối đi", "play", 80),
+      step("Phố đi bộ", "Khám phá mùi mới", "play", 80),
+      step("Quảng trường", "Mời bạn chơi bằng tư thế cúi đầu", "social", 100),
+      step("Công viên", "Uống nước và nằm nghỉ", "rest", 90),
     ],
     [
-      step('Công viên', 'Cùng đàn tìm hạt trên đất', 'eat', 70),
-      step('Vườn nhỏ', 'Nhảy và mổ hạt rơi', 'eat', 70),
-      step('Quảng trường', 'Đậu quan sát cùng đàn', 'rest', 60),
+      step("Công viên", "Cùng đàn tìm hạt trên đất", "eat", 70),
+      step("Vườn nhỏ", "Nhảy và mổ hạt rơi", "eat", 70),
+      step("Quảng trường", "Đậu quan sát cùng đàn", "rest", 60),
     ],
   ];
   return animals.map((a, i) => ({
     ...a,
-    ...project(a.id, a.name, lists[i], t + i * 28, 'routine'),
+    ...project(a.id, a.name, lists[i], t + i * 28, "routine"),
   }));
 }
 
@@ -383,43 +406,83 @@ export function followView(p: Point): string {
   return `${Math.max(0, Math.min(1200 - width, p[0] - width / 2))} ${Math.max(0, Math.min(780 - height, p[1] - height / 2))} ${width} ${height}`;
 }
 
-export function contextualLine(actor: Actor, peer: Actor, cycle: number): string {
+export function contextualLine(
+  actor: Actor,
+  peer: Actor,
+  cycle: number,
+): string {
   const messages: Record<string, string[]> = {
-    'Bếp chung': [
-      'Để mình phụ một tay nhé.',
-      'Mình dọn bàn, bạn làm nốt nhé?',
-      'Ăn xong mình cùng dọn nhé.',
+    "Bếp chung": [
+      "Để mình phụ một tay nhé.",
+      "Mình dọn bàn, bạn làm nốt nhé?",
+      "Ăn xong mình cùng dọn nhé.",
     ],
-    'Quán cà phê': [
-      'Ngồi nghỉ một chút cùng mình không?',
-      'Hôm nay công việc của bạn thế nào?',
-      'Mình nghe đây, bạn kể tiếp đi.',
+    "Quán cà phê": [
+      "Ngồi nghỉ một chút cùng mình không?",
+      "Hôm nay công việc của bạn thế nào?",
+      "Mình nghe đây, bạn kể tiếp đi.",
     ],
-    'Công viên': [
-      'Ở đây yên tĩnh thật.',
-      'Mình để Mướp tự lại gần nhé.',
-      'Đi một vòng rồi về nhé?',
+    "Công viên": [
+      "Ở đây yên tĩnh thật.",
+      "Mình để Mướp tự lại gần nhé.",
+      "Đi một vòng rồi về nhé?",
     ],
-    'Vườn nhỏ': [
-      'Đất còn ẩm, mình kiểm tra trước nhé.',
-      'Bạn giữ giúp mình cái bình nhé.',
-      'Làm từng chút thôi, không cần vội.',
+    "Vườn nhỏ": [
+      "Đất còn ẩm, mình kiểm tra trước nhé.",
+      "Bạn giữ giúp mình cái bình nhé.",
+      "Làm từng chút thôi, không cần vội.",
     ],
-    'Thư viện': [
-      'Quyển sổ này ghi rõ ràng thật đó.',
-      'Mình đọc thêm mục này rồi bàn tiếp nhé.',
-      'Cảm ơn bạn đã tra cứu giúp mình.',
+    "Thư viện": [
+      "Quyển sổ này ghi rõ ràng thật đó.",
+      "Mình đọc thêm mục này rồi bàn tiếp nhé.",
+      "Cảm ơn bạn đã tra cứu giúp mình.",
     ],
-    'Xưởng sáng tạo': [
-      'Giữ giúp mình mối ghép này một chút nhé.',
-      'Mình thử lắp khung này xem vừa không.',
-      'Dụng cụ mình xếp lại trên kệ rồi đó.',
+    "Xưởng sáng tạo": [
+      "Giữ giúp mình mối ghép này một chút nhé.",
+      "Mình thử lắp khung này xem vừa không.",
+      "Dụng cụ mình xếp lại trên kệ rồi đó.",
     ],
   };
   const pool = messages[actor.location] ?? [
-    'Bạn cần mình giúp phần nào?',
-    'Mình làm xong rồi sẽ qua giúp bạn.',
-    'Ừ, mình cùng thử nhé.',
+    "Bạn cần mình giúp phần nào?",
+    "Mình làm xong rồi sẽ qua giúp bạn.",
+    "Ừ, mình cùng thử nhé.",
   ];
   return `${peer.name}, ${pool[cycle % pool.length]}`;
+}
+
+/** Keep the unfinished pedestrian route when a plan interrupts another activity. */
+export function transitionPath(world: World, personId: string, now: number) {
+  const index = world.people.findIndex((p) => p.id === personId);
+  const actor = actorsAt(world, now)[index];
+  const position: Point = [
+    actor.position[0] - (index - 1) * 25,
+    actor.position[1] - index * 7,
+  ];
+  if (!actor.walking) return { from: actor.location, originPath: [position] };
+  let nearest = 1;
+  let best = Infinity;
+  for (let i = 1; i < actor.path.length; i++) {
+    const a = actor.path[i - 1],
+      b = actor.path[i];
+    const dx = b[0] - a[0],
+      dy = b[1] - a[1];
+    const fraction = Math.max(
+      0,
+      Math.min(
+        1,
+        ((position[0] - a[0]) * dx + (position[1] - a[1]) * dy) /
+          (dx * dx + dy * dy || 1),
+      ),
+    );
+    const d = distance(position, [a[0] + dx * fraction, a[1] + dy * fraction]);
+    if (d < best) {
+      best = d;
+      nearest = i;
+    }
+  }
+  return {
+    from: actor.location,
+    originPath: [position, ...actor.path.slice(nearest)],
+  };
 }

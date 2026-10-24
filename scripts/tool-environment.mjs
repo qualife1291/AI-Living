@@ -1,3 +1,4 @@
+import { mkdirSync } from "node:fs";
 import path from "node:path";
 
 // Shared defaults for Vite and standalone Wrangler commands. Managed Linux
@@ -5,7 +6,10 @@ import path from "node:path";
 export function configureToolEnvironment(projectRoot) {
   const runtimeRoot =
     process.env.SITES_RUNTIME_ROOT || path.join(projectRoot, ".sites-runtime");
+  const configRoot = path.join(runtimeRoot, "xdg-config");
+  mkdirSync(configRoot, { recursive: true });
   const defaults = {
+    XDG_CONFIG_HOME: configRoot,
     CLOUDFLARE_CF_FETCH_ENABLED: "false",
     WRANGLER_SEND_METRICS: "false",
     WRANGLER_WRITE_LOGS: "false",
