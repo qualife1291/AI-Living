@@ -22,3 +22,8 @@
 - Làm tuần tự; cập nhật MEMORY_SHORT.md khi có yêu cầu mới và việc chưa xong.
 - Ghi quyết định, kết quả và chuẩn test vào MEMORY_LONG.md; thay đổi vào CHANGELOG.md.
 - Không phát sinh dịch vụ trả phí. Không trình bày hoạt cảnh như AI đang suy nghĩ liên tục.
+
+## Checkpoint robot / khu phố
+- Phase 1 mở rộng đã xuất bản: robot, đường phố và bối cảnh đa dạng; bản đồ có chọn khu và zoom.
+- Phase 2: tác vụ độc lập đã bật, chờ xác minh lượt chạy đầu; Sites-linked schedule vẫn không dùng được.
+- Phase 3 tiếp theo: kiểm chứng nhiều lượt nối tiếp và QA mobile thật.

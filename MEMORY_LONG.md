@@ -81,3 +81,11 @@
 - API và hướng dẫn AI chấp nhận 6 địa điểm mới. Không reset world hoặc sửa ký ức cũ.
 - TypeScript và build qua. Browser QA đã xác minh chuyển phố cà phê bằng viewBox, reset toàn cảnh, avatar robot hiển thị. Ảnh đã gửi người dùng.
 - Chưa kiểm thử viewport mobile thật; CSS có layout responsive và thao tác chọn khu vực để phóng cảnh.
+
+## Phase tự động — fallback đã thiết lập
+- Sites-linked schedule vẫn lỗi invalid_project. Đã kiểm tra automations.peek không có tác vụ, rồi tạo tác vụ ChatGPT độc lập thành công.
+- Tác vụ: Xóm AI sinh hoạt. ID nội bộ: 6adcbdcc81cc819188a4a2ae65392369. Enabled=true; múi giờ Asia/Ho_Chi_Minh; 08:00, 14:00, 20:00.
+- Được tạo qua Automations, KHÔNG nằm trong get_site.automations. Khi kiểm tra trùng phải dùng automations.peek với ID này, không chỉ dựa metadata Sites.
+- Chưa có last_run_time hoặc next_run_time được trả; chỉ xác minh đã lưu/bật, chưa chứng minh lần chạy theo lịch thành công. Không tuyên bố chạy 24/7.
+- Tác vụ đọc /api/instructions và /api/world qua private service access, tự tạo một cảnh và readback. Không cần source checkout hoặc token của phiên thiết lập.
+- Readback production đã xác nhận world.schedule hiển thị lịch mới và paused=false. Browser QA xác nhận zoom công viên đổi viewBox từ 35 355 680 440 thành 137 421 476 308.

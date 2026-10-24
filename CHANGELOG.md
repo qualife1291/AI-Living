@@ -20,3 +20,8 @@
 - Expanded the map with streets, a pedestrian lane, plaza, park, cafe, library, workshop, and community garden.
 - Added district views, zoom/reset controls, and matching AI location validation.
 - Preserved existing state and memories; passed TypeScript, production build, and desktop map navigation QA.
+
+### Scheduled life setup
+- Created an enabled standalone ChatGPT automation for 08:00, 14:00, and 20:00 Vietnam time after the Site-linked scheduler failed.
+- The first scheduled execution remains unverified; the world does not think continuously between runs.
+- Fixed zoom behavior for every district, and retained the profile panel at tablet widths.
