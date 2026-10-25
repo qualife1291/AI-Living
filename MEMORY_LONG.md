@@ -82,3 +82,11 @@
 - Nội thất Three.js mặt cắt với furniture/cabin minh họa; hồ sơ tuổi mô phỏng/ký ức. Chưa indoor graph hay vận chuyển NPC bằng cabin. Nhân vật hiển thị lấy occupancy thật; không giả tạo cuộc sống để làm ảnh.
 - Unit/check/lint/build và API isolated local240 samples/admin403 đạt; Chromium SwiftShader desktop/mobile390 city/profile/interior/floor không lỗi/tràn. Ảnh thật docs/screenshots/hardening. Chưa production hoặc benchmark điện thoại vật lý.
 - Người dùng yêu cầu chủ động push checkpoints và memory để tránh mất context; làm theo AGENTS.md mục13. Nhánh `work`; không tự merge/deploy bằng sự có mặt của source.
+
+## Production version6 và OSM3D — 25/10/2026
+- Đã phát hành Sites native succeeded lúc17:30 giờ Việt Nam, giữ owner-private. IDs/SHA/kết quả ở docs/releases/latest.json; quy trình phục hồi docs/PRODUCTION_RUNBOOK.md. Source đang chạy71d657f; các commit nhật ký sau đó không phải thay source đang chạy.
+- Backup đầy đủ world+2events trước additive migration; DB từ2 lên9 bảng qua0004 schema-only/idempotent, không sửa SQL0000–0003. Journal trước đây chỉ0000; snapshot0004 nối snapshot0000. Healthready/worldrevision3/lịch sử/nhân vật giữ nguyên; writer service POSTlearning200/updated0.
+- Runtime XOM_OWNER_PRIVATE_ORIGIN khớp Site được native xác nhận chỉowner; cần gỡ trước đổi audience và chuyển owner ID cụ thể. Local flags không lên production.
+- OSM khảo sát3D912 polygon kín, mergegeometry <=8drawcalls, không hiển thị cư dân chưa mapmatch. Snapshot cũ height không có: tất cảước lượng12m, không gán chiều cao đo đạc. Importer giữ height/levels cho lần cập nhật sau. Tài liệu nghiên cứu nguồn chính thức tại MAP_3D_SOURCES.
+- Frozen/check/lint/unit/build đạt; migration4 lặp trên old/extendedDB không mấtworld. Chromium desktop/mobile390 OSM912/estimated/noJS/nooverflow đạt; ảnh local docs/screenshots/map3d. Production API/native verified, chưa browser owner login.
+- Automation cũ paused đã xác minh qua peek; giữpaused, không duplicate. Chưa cron/paidAI/video. Source Sites main có lịch sử riêng đã giữ bằng merge ancestry; checkpoint GitHub nhánhwork và Site source được phân biệt trong runbook.

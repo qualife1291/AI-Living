@@ -61,3 +61,8 @@
 - Cải thiện màu trời và ánh nắng theo giờ; giới hạn công việc render khi tab ẩn.
 - Sửa archive batch lớn, proposal cũ, duplicate event, health/schema, context timeout/cache và polling; thêm gate owner và scheduler rules opt-in.
 - Chưa deploy production; thang máy chưa điều phối cư dân thực. Chi tiết `docs/INTERIORS_AND_RELEASE.md`.
+
+## 25/10/2026 — Production version6 và bản đồ khảo sát3D
+- Phát hành owner-private với additive schema reconciliation và kiểm chứng bảo toàn lịch sử.
+- Thêm khảo sát OSM3D912 công trình, ghi rõ heightước lượng, không lẫn vị trí cư dân mô phỏng.
+- Lưu runbook, releaseledger/SHA, scriptbuild-package-source-sync và nghiên cứu nguồn3D/bối cảnh không phí.

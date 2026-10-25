@@ -48,3 +48,6 @@
 - Đã dựng renderer Three.js, 282 khối nhà/151 cao ốc, nhân vật và phương tiện trên graph cũ, camera orbit/follow/skyline/overview, chế độ 2D nhẹ và fallback WebGL.
 - Tiếp theo: kiểm tra thiết bị thật, LOD hình học, nội thất, đa dạng xe và thời tiết 3D. Không coi thành phố này là khảo sát công trình thật.
 - Chi tiết và bằng chứng: [docs/THREE_WORLD.md](docs/THREE_WORLD.md).
+
+## Production version6 — 25/10/2026
+Đã phát hành hardening/nội thất/hồ sơ/OSM3D, giữ owner-private. Kết quả thực ở docs/releases/latest.json. Chưa indoor routing, height coverage thật, cron/Qwen production hoặc public viewer. Nguồn phát triển tiếp MAP_3D_SOURCES.md.
