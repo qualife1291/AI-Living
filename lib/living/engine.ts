@@ -126,7 +126,7 @@ export function planLivingTurn(
   world: World,
   context: RealContext,
   now: number,
-): { state: LivingState; turn: LivingTurn; world: World } {
+): { state: LivingState; turn: LivingTurn; world: World; newExperiences: import("./learning").Experience[] } {
   const state = structuredClone(world.living ?? initializeLiving(now));
   // Add new built-in content without overwriting user roles or erasing residents.
   for (const role of defaultCatalog.roles)
@@ -136,7 +136,8 @@ export function planLivingTurn(
     )
       state.catalog.roles.push(structuredClone(role));
   state.residents = population(state, context.date);
-  const learning = prepareLearning(world, state, now);
+  const newExperiences: import("./learning").Experience[] = [];
+  const learning = prepareLearning(world, state, now, (e) => newExperiences.push(e));
   state.energy = learning.an.energy;
   state.hunger = learning.an.hunger;
   // Needs are simulated, elapsed in real time. Bound catch-up, never invent meals or earnings.
@@ -357,7 +358,7 @@ export function planLivingTurn(
   updateAnimalLearning(world, state, context, now);
   next.livingTurn = turn;
   next.living = state;
-  return { state, turn, world: next };
+  return { state, turn, world: next, newExperiences };
 }
 
 /** Crowd members stay stable across ticks; only the visible budget is rendered. */

@@ -40,6 +40,7 @@ async function resource<T>(
 ) {
   const old = await cache.read(key);
   if (old && old.expires_at > now) {
+    if (old.data === "null") return { data: null, status: "unavailable" as const };
     const parsed = schema.safeParse(safeJson(old.data));
     if (parsed.success) return { data: parsed.data, status: "fresh" as const };
   }
@@ -59,6 +60,7 @@ async function resource<T>(
       if (parsed.success)
         return { data: parsed.data, status: "stale" as const };
     }
+    await cache.write(key, "null", now + 60000);
     return { data: null, status: "unavailable" as const };
   }
 }
@@ -201,6 +203,7 @@ export function fetchProviders(
     return fetchFestivalMonth(
       Number(url.searchParams.get("year")),
       Number(url.searchParams.get("month")),
+      (input, options) => fetch(input, { ...options, signal: init?.signal ?? options?.signal }),
     ).then((data) => Response.json(data));
   return fetch(input, init);
 }

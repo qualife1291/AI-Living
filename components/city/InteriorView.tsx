@@ -2,6 +2,7 @@
 import { useEffect, useRef, useState } from "react";
 import type { World } from "@/lib/world";
 import { actorsAt } from "@/lib/life";
+import { useLifeClock } from "@/components/world/useLife";
 import { crowdAt } from "@/lib/living/engine";
 
 export function InteriorView({ world, venue, clockOffset = 0 }: { world: World; venue: string; clockOffset?: number }) {
@@ -17,7 +18,8 @@ export function InteriorView({ world, venue, clockOffset = 0 }: { world: World; 
     }).catch(() => setFailed(true));
     return () => { cancelled = true; stop?.(); };
   }, [venue, floor, clockOffset]);
-  const now = Date.now() + clockOffset;
+  const clock = useLifeClock(world.paused, clockOffset);
+  const now = clock ?? Date.parse(world.born);
   const present = [...actorsAt(world, now), ...(world.living ? crowdAt(world.living, world, now) : [])].filter((p) => !p.walking && p.location === venue);
   return <section className="interior-view">
     <div className="interior-heading"><div><small>GÓC QUAN SÁT NỘI THẤT</small><h3>{venue}</h3></div><span>{present.length} người đang ở đây</span></div>

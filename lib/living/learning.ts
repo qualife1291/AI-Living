@@ -189,7 +189,7 @@ export function settleLearning(
   return true;
 }
 /** Train completed plans for everyone, then schedule a bounded rotating cohort. */
-export function prepareLearning(world: World, state: LivingState, now: number) {
+export function prepareLearning(world: World, state: LivingState, now: number, collect?: (e: Experience) => void) {
   const learning: LearningPopulation = structuredClone(state.learning ?? {});
   const simMs = computeSimMs(world.born, world.clock, now);
   const all = [
@@ -221,7 +221,7 @@ export function prepareLearning(world: World, state: LivingState, now: number) {
     );
     if (trained && agent.pending) {
       const action = agent.actions[agent.pending.scenarioId];
-      experiences.push({
+      const experience: Experience = {
         id: agent.pending.id,
         actorId: person.id,
         scenarioId: agent.pending.scenarioId,
@@ -229,7 +229,9 @@ export function prepareLearning(world: World, state: LivingState, now: number) {
         reward: agent.lastReward ?? action.meanReward,
         source: "simulation",
         model: "contextual-bandit-v1",
-      });
+      };
+      experiences.push(experience);
+      collect?.(experience);
       const npc = state.residents.find((r) => r.id === person.id);
       if (npc)
         npc.memories = [...npc.memories, agent.memories.at(-1)!].slice(-20);

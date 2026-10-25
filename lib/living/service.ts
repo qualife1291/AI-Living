@@ -59,8 +59,9 @@ function archiveStatements(
   state: LivingState,
   nonce: string,
   revision: number,
+  extra: import("./learning").Experience[] = [],
 ) {
-  return (state.experiences ?? [])
+  return [...new Map([...(state.experiences ?? []), ...extra].map((e) => [e.id, e])).values()]
     
     .map((e) =>
       database()
@@ -213,7 +214,7 @@ export async function tickLiving(proposal?: unknown, basis?: { revision: number;
           id,
           id,
         ),
-      ...archiveStatements(result.state, learningCommit, current.revision + 1),
+      ...archiveStatements(result.state, learningCommit, current.revision + 1, result.newExperiences),
     ]);
     if (!results[1].meta.changes) {
       const duplicate = await db
@@ -271,7 +272,8 @@ export async function learnCompleted() {
     (s, a) => s + a.samples,
     0,
   );
-  const learning = prepareLearning(current.world, state, Date.now());
+  const newExperiences: import("./learning").Experience[] = [];
+  const learning = prepareLearning(current.world, state, Date.now(), (e) => newExperiences.push(e));
   const trained =
     Object.values(learning).reduce((s, a) => s + a.samples, 0) - previous;
   const animals = settleAnimalLearning(current.world, state, Date.now());
@@ -297,7 +299,7 @@ export async function learnCompleted() {
         "UPDATE worlds SET data=?,revision=revision+1 WHERE id=? AND revision=?",
       )
       .bind(JSON.stringify(current.world), "home", current.revision),
-    ...archiveStatements(state, nonce, current.revision + 1),
+    ...archiveStatements(state, nonce, current.revision + 1, newExperiences),
   ]);
   const result = batch[0];
   return result.meta.changes

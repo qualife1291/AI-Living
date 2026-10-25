@@ -20,3 +20,4 @@
 - Đã đồng bộ frozen dependency Three.js. Source đang sửa: archive bỏ cap 32, proposal kèm basis revision/turnId, health kiểm tra schema, polling chống chồng, admin gate tại Worker, scheduled handler opt-in rules.
 - Nội thất Three.js mặt cắt + 3 tầng + cabin hoạt cảnh, đồ đạc theo loại địa điểm; nhân vật lấy occupancy thật, chỉ tầng trệt. Thang máy chưa là tuyến di chuyển cư dân. Hồ sơ tuổi hư cấu tăng theo simulation clock; chưa có sinh/tử/gia đình.
 - CHƯA HOÀN TẤT KIỂM TRA: cần tsc/lint/unit/build, API local và browser QA. Chưa deploy, không đổi audience, không bật scheduler/paid AI. Quyền production mới yêu cầu XOM_ADMIN_USER_ID; local dùng XOM_LOCAL_ADMIN=true + loopback.
+- Checkpoint mới: push WIP 5b58c6e trên nhánh work đã thành công. Sau đó tsc/lint/12 suite/build đều đạt; thêm test-hardening tái hiện 240 outcomes vượt snapshot 200 và xác nhận collector giữ đủ để archive. Chuẩn bị API/browser QA tại port 5174, D1 cô lập work/review-qa; không chạm DB thật.

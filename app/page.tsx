@@ -131,7 +131,7 @@ export default function Page() {
         })) ?? []),
       ]
     : [];
-  const story = world ? lifeStory(world, selected, Date.now() + clockOffset) : null;
+  const story = world ? lifeStory(world, selected, Date.parse(data!.serverNow)) : null;
   const person = people.find((p) => p.id === selected) ?? people[0],
     agent = world?.living?.learning?.[selected];
   const titles: Record<Exclude<Panel, null>, string> = {
