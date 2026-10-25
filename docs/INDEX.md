@@ -22,6 +22,7 @@ Toàn bộ tài liệu của dự án **Xóm AI** được cơ cấu thành **6 
 
 | Tài liệu | Nội dung chính |
 |---|---|
+| [THREE_WORLD.md](THREE_WORLD.md) | Renderer 3D mặc định, cao ốc, camera, fallback và bằng chứng kiểm thử |
 | [VISION.md](VISION.md) | Trải nghiệm đích, nguyên tắc nhân quả, ký ức gắn người chứng kiến và đạo đức mô phỏng |
 | [DESIGN_PROPOSALS.md](DESIGN_PROPOSALS.md) | **Thiết kế mở rộng hoàn chỉnh (§0–§8 & Phụ lục G):** Đồng hồ thế giới, chu kỳ ngày/đêm, thời tiết TP.HCM, 16 hoạt cảnh, vòng đời cây trồng, Utility AI động vật, tiếng ríu Web Audio, âm thanh đường phố và phân quyền Viewer/Admin |
 | [CHARACTER_DESIGN.md](CHARACTER_DESIGN.md) | Thiết kế hình khối, khớp xương (rig) và cá tính của 3 robot An, Bình, Chi |

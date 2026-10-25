@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-10-25 — Thành phố 3D và khu cao ốc
+- Đổi không gian sống mặc định sang Three.js/WebGL2; 282 khối nhà, gồm 151 cao ốc, cửa hàng tầng trệt, cây và công trình dịch vụ. Bố trí tất định chừa đường đi và khu vực quanh địa điểm.
+- Nhân vật khối 3D đọc trang phục hiện có; giữ hoạt động, thoại, động vật và phương tiện trên cùng dữ liệu mô phỏng. Camera xoay/dịch/zoom, theo nhân vật, khu cao ốc và toàn cảnh theo tỷ lệ màn hình.
+- HUD toàn viewport, biển tên thu gọn theo khoảng cách; chuyển 2D nhẹ và tự fallback khi WebGL không khả dụng/mất context. Giải phóng tài nguyên khi chuyển renderer. OSM vẫn là khảo sát 2D riêng có attribution.
+- Instancing và runtime tải động; thêm kiểm thử hình học/đường đi và QA WebGL desktop/mobile. Chi tiết: [docs/THREE_WORLD.md](docs/THREE_WORLD.md). Không đổi DB hoặc phương pháp học AI.
+
 ## 2026-10-24 — Cập nhật mã nguồn toàn diện, Đồng hồ thế giới, Tổng hợp bối cảnh & Bộ AI Tự Training
 - **Định dạng mã & Sửa lỗi ESLint:** Định dạng sạch toàn bộ các tệp mã nguồn trước đây bị nén 1 dòng (`CityMap.tsx`, `app/page.tsx`, `lib/life.ts`, `app/globals.css`...); sửa triệt để 20 lỗi ESLint và 6 cảnh báo (loại bỏ `any`, sửa `react-hooks/refs`, `set-state-in-effect`, `purity`, `@next/next/no-html-link-for-pages`, `prefer-const`).
 - **Khắc phục lỗi logic & kiến trúc L1–L10:**

@@ -1,8 +1,10 @@
 # Xóm AI — Khu phố của những trí tuệ nhỏ
 
+> Mới nhất: [Thành phố 3D và cao ốc](docs/THREE_WORLD.md) — renderer mặc định mới, điều khiển và bằng chứng local.
+
 > Cập nhật Codex Cloud: xem [docs/CLOUD_REVIEW.md](docs/CLOUD_REVIEW.md) cho ba phase mới, bằng chứng local và các phần còn thiếu. Các trạng thái live trong tài liệu bàn giao dưới đây chưa được xác minh lại.
 
-Dự án mô phỏng một khu phố 2D tại TP.HCM có ba robot AI **An, Bình, Chi**, cùng mèo **Mướp**, chó **Cún** và **Đàn sẻ**. Nhân vật có mục tiêu, ký ức gắn người chứng kiến, lời hứa và quan hệ; đi lại qua mạng lưới đường phố, làm việc theo nhịp đồng hồ thế giới và gặp nhau trò chuyện.
+Dự án mô phỏng một thành phố 3D lấy bối cảnh TP.HCM (có chế độ 2D nhẹ) có ba robot AI **An, Bình, Chi**, cùng mèo **Mướp**, chó **Cún** và **Đàn sẻ**. Nhân vật có mục tiêu, ký ức gắn người chứng kiến, lời hứa và quan hệ; đi lại qua mạng lưới đường phố, làm việc theo nhịp đồng hồ thế giới và gặp nhau trò chuyện.
 
 - **Bản đồ toàn bộ hệ thống tài liệu (đã cơ cấu thành 6 mục chuyên đề):** xem [docs/INDEX.md](docs/INDEX.md).
 - **Đọc đầu tiên khi tiếp nhận dự án:** [CODEX_HANDOFF.md](CODEX_HANDOFF.md) và [AGENTS.md](AGENTS.md).

@@ -1,6 +1,8 @@
 # Bàn giao sang Codex (`CODEX_HANDOFF.md`)
 
-> Mới nhất: [Thành phố, tạo hình và học hành vi](docs/URBAN_WORLD.md), [ba hướng sản phẩm](docs/DECISIONS/ADR-0009-shared-world-three-product-directions.md). Ưu tiên các tài liệu này trước ghi chú lịch sử.
+> Mới nhất: [Thành phố 3D](docs/THREE_WORLD.md) — Three.js mặc định, skyline 282 khối nhà, WebGL2/2D fallback, không đổi dữ liệu mô phỏng.
+
+> Thành phố 2D trước đó: [Thành phố, tạo hình và học hành vi](docs/URBAN_WORLD.md), [ba hướng sản phẩm](docs/DECISIONS/ADR-0009-shared-world-three-product-directions.md). Ưu tiên các tài liệu này trước ghi chú lịch sử.
 
 > Bản mở rộng mới nhất: [An và RealContext TP.HCM](docs/LIVING_REALTIME.md) — đọc trước các ghi chú lịch sử dưới đây.
 

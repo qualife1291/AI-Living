@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import { Wardrobe } from "@/components/characters/Wardrobe";
 import { UrbanMap } from "@/components/city/UrbanMap";
+import { City3D } from "@/components/city/City3D";
 import { LivingPanel } from "@/components/living/LivingPanel";
 import { venues, type Venue } from "@/lib/city/world";
 import sources from "@/data/city/sources.json";
@@ -36,6 +37,7 @@ export default function Page() {
     [selected, setSelected] = useState("an"),
     [panel, setPanel] = useState<Panel>(null),
     [mode, setMode] = useState<"city" | "osm">("city"),
+    [renderer, setRenderer] = useState<"3d" | "2d">("3d"),
     [hidden, setHidden] = useState(false),
     [venue, setVenue] = useState<Venue | null>(null),
     [busy, setBusy] = useState(false),
@@ -133,10 +135,11 @@ export default function Page() {
     learning: "Trải nghiệm & thói quen",
     sources: "Nguồn mở cho thế giới",
   };
+  const CityView = mode === "city" && renderer === "3d" ? City3D : UrbanMap;
   return (
     <main className={`live-world ${hidden ? "hud-hidden" : ""}`}>
       {world ? (
-        <UrbanMap
+        <CityView
           world={world}
           selected={selected}
           onSelect={(id) => {
@@ -331,6 +334,31 @@ export default function Page() {
                   }}
                 >
                   Tái dựng từ OpenStreetMap
+                </button>
+              </div>
+              <div
+                className="scene-choice"
+                aria-label="Cách hiển thị thành phố"
+              >
+                <button
+                  className={renderer === "3d" ? "active" : ""}
+                  onClick={() => {
+                    setRenderer("3d");
+                    setMode("city");
+                    setPanel(null);
+                  }}
+                >
+                  Không gian 3D
+                </button>
+                <button
+                  className={renderer === "2d" ? "active" : ""}
+                  onClick={() => {
+                    setRenderer("2d");
+                    setMode("city");
+                    setPanel(null);
+                  }}
+                >
+                  Bản đồ 2D · nhẹ
                 </button>
               </div>
               {venue && (

@@ -43,3 +43,8 @@
 - **Hướng 2:** AI chia bài học thành script, stage branch/cast/shot list, preview và duyệt trước render/xuất bản.
 - **Hướng 3:** nhân vật cá nhân, xác thực/ownership, ký ức/policy riêng và chia sẻ có kiểm soát.
 - Bằng chứng và ranh giới: docs/URBAN_WORLD.md; quyết định nền tảng chung: docs/DECISIONS/ADR-0009-shared-world-three-product-directions.md.
+
+## Phase 3D — theo yêu cầu chuyển 2D sang 3D
+- Đã dựng renderer Three.js, 282 khối nhà/151 cao ốc, nhân vật và phương tiện trên graph cũ, camera orbit/follow/skyline/overview, chế độ 2D nhẹ và fallback WebGL.
+- Tiếp theo: kiểm tra thiết bị thật, LOD hình học, nội thất, đa dạng xe và thời tiết 3D. Không coi thành phố này là khảo sát công trình thật.
+- Chi tiết và bằng chứng: [docs/THREE_WORLD.md](docs/THREE_WORLD.md).

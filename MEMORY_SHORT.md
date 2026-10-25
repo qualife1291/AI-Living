@@ -5,7 +5,7 @@
 ## Việc tiếp theo
 - Đánh giá chất lượng policy/hội thoại, mục tiêu dài hạn và quan hệ hai chiều. Cư dân học mô hình hành vi từ phản hồi mô phỏng; Qwen vẫn chỉ inference, chưa fine-tune.
 - Nối nguồn giao thông thật, lịch âm/nghỉ bù và lịch hoạt động từng cơ sở. OSM là snapshot hình học; mô phỏng chưa map-match nhân vật vào graph OSM thật.
-- Mở rộng cảnh/đạo cụ/render, phương tiện và sinh thái cây. Động vật đã có policy nhỏ và trú mưa/nghỉ đêm theo tick; chưa phải model sinh học.
+- Renderer mặc định đã chuyển Three.js; tiếp tục LOD hình học, nội thất, mô hình phương tiện/hiệu ứng thời tiết 3D và sinh thái cây. Động vật đã có policy nhỏ và trú mưa/nghỉ đêm theo tick; chưa phải model sinh học.
 - Triển khai các hướng theo ADR-0009: tách Viewer/Admin và scheduler bền vững trước public; stage branch riêng trước video; ownership/cách ly trước multi-user.
 - Tiếp tục structured commitments/nudges của API AI cũ; migration 0003 hiện lưu archive trải nghiệm học cư dân.
 

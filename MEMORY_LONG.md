@@ -68,3 +68,11 @@
 - Migration append-only 0003_agent_experiences lưu audit dataset cùng policy update theo CAS/nonce. Snapshot giữ 200 mẫu đọc nhanh; archive phân trang JSONL và CLI export toàn bộ. Backup SQLite online đã kiểm tra trước migration.
 - Nguồn mới nhất docs/URBAN_WORLD.md. Kiểm thử: 11 suite thuần, TypeScript/lint/build, API học đồng thời/không trùng/archive/phân trang, wardrobe lưu/reload/không đổi model và Chromium desktop/mobile; ảnh city/osm/wardrobe là local preview.
 - ADR-0009 ghi định hướng chủ dự án: live quan sát An; studio kịch bản giáo dục riêng timeline; nhân vật người dùng có ownership/memory riêng. Chưa mở public, chưa tạo multi-user, chưa render/upload video.
+
+## Thành phố 3D — 25/10/2026
+- Theo yêu cầu chuyển 2D sang 3D: `/` mặc định City3D, runtime Three.js 0.186.1/OrbitControls tải ở client. Không thêm backend GPU, dịch vụ trả phí, migration hoặc thay đổi dữ liệu lưu.
+- 257 khối sinh tất định (151 cao ốc) + 25 nhà dịch vụ = 282; giữ 33 địa điểm và graph cũ. Unit kiểm tra tất cả đoạn đường/venue clearance, độ cao/mật độ, hình học hữu hạn và podium tách nhau.
+- Body parts/công trình/cửa sổ/cây dùng instancing; cap DPR mobile1/desktop1.5, render mục tiêu ~30Hz/projection10Hz. Biển tên giới hạn kích thước và ẩn xa. Cư dân đọc appearance, projection/thoại/động vật hiện có; xe bối cảnh/rider đơn giản hóa, chưa có vật lý/nội thất.
+- Camera orbit/pan/zoom/follow/skyline/overview, HUD/modal cũ, đổi 2D nhẹ, fallback không WebGL2/mất context, dispose context/resources khi tháo. OSM vẫn là khảo sát 2D, không map-match; skyline/chiều cao là hư cấu.
+- Hướng dẫn tiếp nhận và kiểm chứng: docs/THREE_WORLD.md. Kiểm tra thiết bị thật/LOD/nội thất/thời tiết 3D tiếp tục là backlog; không tuyên bố fps hardware hay fine-tune Qwen.
+- 12 suite thuần, TypeScript/lint/build và frozen-lockfile đạt. Chromium SwiftShader WebGL2 desktop/mobile chạy cả dev và Workers build local; kiểm tra chọn cư dân/địa điểm, camera/HUD/panel, 3D↔2D, OSM và fallback không/mất WebGL. Lưu browser QA có thể chạy lại ở scripts/qa-three.mjs; sáu ảnh three-*-preview.png là cloud local, không phải production. Font Google bị CA lỗi trong QA, dùng fallback; không bỏ TLS. Chunk Three >500KB đã tải động; chưa benchmark thiết bị thật.
