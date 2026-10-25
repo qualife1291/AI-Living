@@ -8,3 +8,8 @@
 - Automation6adcbdcc81cc819188a4a2ae65392369 đang paused; giữ nguyên, không tạo trùng. Chưa kích hoạt cron/Qwen production; local daemon không phải24/7.
 - Các script Sites helper chưa cài trong env này: fallback Git transport stdin ẩn/package đã thêm; dùng native Sites để cấp credential và deploy. Mỗi lần phát hành kiểm tra đúng remote và SHA, không chỉ push GitHub.
 - Chưa browser QA production với phiên owner; chưa benchmark điện thoại thật. Build có cảnh báo chunkThree lớn/static route classification, không có lỗi build.
+
+## Đang sửa phản hồi An đứng yên/đồ họa — 25/10/2026
+- Đã đọc live: paused=false, revision3, lastAI từ24/10, không livingTurn; mới chỉ initialize living trong GET, chưa có lượt persist. 3D chỉ đọc livingSpeechAt và bỏ speechAt nền. Người40 units, car19units: sai tỷ lệ.
+- Đang thêm scale chuẩn10units/m (người17.5,car44), DPRquality, ít blur, tương tác hội thoại có lưu/rules và view session khôngIP; pulse idempotent cho viewer. Migration0005 do Drizzlegenerate, không sửa cũ.
+- Cần test/backend/QA/perf và publish, chưa coi WIP là live. User mới yêu cầu24/7: có thể cập nhật/resume automation cũ sau xác minh writer; không tạo lịch trùng, không paid API.

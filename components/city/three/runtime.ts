@@ -1,3 +1,5 @@
+import { HUMAN_SCALE, VEHICLES, pixelRatio, type Quality } from "@/lib/city/scale";
+import { speechAt } from "@/lib/speech";
 import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import {
@@ -25,6 +27,7 @@ import type { World } from "@/lib/world";
 
 export type SceneInput = {
   world: World;
+  quality?: Quality;
   selected: string;
   clockOffsetMs?: number;
   target?: { x: number; y: number; key: number } | null;
@@ -37,6 +40,8 @@ export type SceneStatus = {
   x: number;
   y: number;
   visible: boolean;
+  walking: boolean;
+  location: string;
 };
 export type CityRuntime = {
   zoom: (factor: number) => void;
@@ -73,7 +78,7 @@ export function createCity(
     powerPreference: "low-power",
   });
   renderer.setPixelRatio(
-    Math.min(devicePixelRatio, innerWidth < 700 ? 1 : 1.5),
+    pixelRatio(input().quality, devicePixelRatio),
   );
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
@@ -84,7 +89,7 @@ export function createCity(
   host.appendChild(renderer.domElement);
   const scene = new THREE.Scene();
   scene.background = new THREE.Color("#d6e4df");
-  const fog = new THREE.Fog("#d6e4df", 1800, 4500);
+  const fog = new THREE.Fog("#d6e4df", 3200, 8500);
   scene.fog = fog;
   const camera = new THREE.PerspectiveCamera(43, 1, 2, 20000);
   const controls = new OrbitControls(camera, renderer.domElement);
@@ -153,7 +158,7 @@ export function createCity(
       );
     }
   };
-  box(1200, -4, 570, 3150, 7, 2300, "#c2d0b4");
+  box(1200, -4, 570, 3150, 7, 2300, "#a7cd87");
   // River and a broad promenade at the southern edge of the fictional district.
   road(
     [
@@ -164,7 +169,7 @@ export function createCity(
     ],
     180,
     0.1,
-    "#8cbbb6",
+    "#55b8d1",
   );
   for (const p of boulevards) {
     road(p, 68, 0.5, "#e6dfcc");
@@ -292,7 +297,7 @@ export function createCity(
       w: 25,
       h: 32,
       d: 25,
-      color: seed % 2 ? "#82a77c" : "#689c83",
+      color: seed % 2 ? "#89b966" : "#48a481",
     });
   }
   for (const v of venues) {
@@ -494,7 +499,7 @@ export function createCity(
   scene.add(trafficBody, trafficGlass);
   trafficBody.frustumCulled = trafficGlass.frustumCulled = false;
   const ring = new THREE.Mesh(
-    new THREE.RingGeometry(15, 17, 40),
+    new THREE.RingGeometry(6, 7, 32),
     new THREE.MeshBasicMaterial({ color: "#ffe0a0", side: THREE.DoubleSide }),
   );
   ring.rotation.x = -Math.PI / 2;
@@ -507,12 +512,12 @@ export function createCity(
       color: ["#cda17a", "#807f73", "#748c94", "#bdac8e"][i],
     });
     const body = new THREE.Mesh(boxGeo, mat);
-    body.scale.set(10, 6, 6);
-    body.position.y = 5;
+    body.scale.set(6, 3.5, 3.5);
+    body.position.y = 2.5;
     g.add(body);
     const head = new THREE.Mesh(boxGeo, mat);
-    head.scale.set(5, 5, 5);
-    head.position.set(5, 9, 0);
+    head.scale.set(3, 3, 3);
+    head.position.set(3, 5, 0);
     g.add(head);
     animalGroup.add(g);
     return g;
@@ -531,7 +536,7 @@ export function createCity(
   const previousPositions = new Map<string, Point>();
   let lastTime = Date.parse(input().world.born);
   let lastStatus = 0;
-  const viewOffset = new THREE.Vector3(200, 255, 350);
+  const viewOffset = new THREE.Vector3(125, 140, 190);
   function focus(x: number, z: number, offset = viewOffset) {
     scene.fog = fog;
     controls.target.set(x, 15, z);
@@ -627,6 +632,7 @@ export function createCity(
     mesh.userData.ids[index] = id;
   }
   const heading = new Map<string, number>();
+  const renderedPositions = new Map<string, THREE.Vector2>();
   function drawActors(seconds: number, world: World) {
     for (const mesh of Object.values(bodyParts)) mesh.count = actors.length;
     riderVehicles.count = actors.length;
@@ -652,12 +658,16 @@ export function createCity(
       previousPositions.set(a.id, a.position);
       const riding = a.walking && a.transport && a.transport !== "walk";
       const yaw = heading.get(a.id) ?? 0.35,
-        s = core ? 1 : 0.83;
-      position.set(a.position[0], riding ? 8 : 2, a.position[1]);
+        s = HUMAN_SCALE;
+      const smooth = renderedPositions.get(a.id) ?? new THREE.Vector2(...a.position);
+      if (!world.paused) smooth.lerp(new THREE.Vector2(...a.position), 0.5);
+      else smooth.set(...a.position);
+      renderedPositions.set(a.id, smooth);
+      position.set(smooth.x, riding ? 8 : 2, smooth.y);
       rotation.setFromAxisAngle(up, yaw);
       scale.setScalar(s);
       root.compose(position, rotation, scale);
-      const swing = a.walking && !riding ? Math.sin(seconds * 8 + i) * 0.55 : 0;
+      const swing = a.walking && !riding ? Math.sin(seconds * 8 + i) * 0.55 : Math.sin(seconds * 1.5 + i) * 0.045;
       part("torso", i, a.id, 0, 20, 0, 13, 13, 8, appearance.shirt);
       part("head", i, a.id, 0, 32, 0, 9, 10, 9, appearance.skin);
       part(
@@ -832,21 +842,23 @@ export function createCity(
             (n, p, j) => n + Math.hypot(p[0] - path[j][0], p[1] - path[j][1]),
             0,
           ),
-        at = (seconds * (metro ? 38 : 22 + (i % 5) * 3) + i * 139) % length;
+        phase = (seconds * (metro ? 38 : 22 + (i % 5) * 3) + i * 139) % (length * 2),
+        at = phase < length ? phase : length * 2 - phase;
       const a = along(path, at),
-        b = along(path, Math.min(length, at + 3));
+        b = along(path, Math.max(0, Math.min(length, at + (phase < length ? 3 : -3))));
       const angle = Math.atan2(b[0] - a[0], b[1] - a[1]),
         bus = i % 7 === 0;
+      const dimensions = metro ? VEHICLES.metro : bus ? VEHICLES.bus : VEHICLES.car;
       dummy.rotation.set(0, angle, 0);
       dummy.position.set(
         a[0] + (metro ? 0 : Math.cos(angle) * 10),
-        metro ? 11 : 7,
+        metro ? 17 : (metro || bus ? 16 : 9),
         a[1] - (metro ? 0 : Math.sin(angle) * 10),
       );
       dummy.scale.set(
-        metro || bus ? 16 : 10,
-        metro || bus ? 14 : 9,
-        metro ? 40 : bus ? 32 : 19,
+        dimensions.width,
+        dimensions.height,
+        dimensions.length,
       );
       dummy.updateMatrix();
       trafficBody.setMatrixAt(i, dummy.matrix);
@@ -858,7 +870,7 @@ export function createCity(
             : ["#c58c72", "#d5bb77", "#97b7a2", "#a8bcc4"][i % 4],
         ),
       );
-      dummy.position.y += 5;
+      dummy.position.y += dimensions.height * 0.4;
       dummy.scale.multiply(new THREE.Vector3(0.86, 0.45, 0.66));
       dummy.updateMatrix();
       trafficGlass.setMatrixAt(i, dummy.matrix);
@@ -867,6 +879,7 @@ export function createCity(
       trafficGlass.instanceMatrix.needsUpdate = true;
     if (trafficBody.instanceColor) trafficBody.instanceColor.needsUpdate = true;
   }
+  let activeQuality = input().quality;
   function tick(stamp: number) {
     if (dead) return;
     frame = requestAnimationFrame(tick);
@@ -875,6 +888,11 @@ export function createCity(
     const state = input(),
       { world, selected } = state,
       now = Date.now() + (state.clockOffsetMs ?? 0);
+    if (activeQuality !== state.quality) {
+      activeQuality = state.quality;
+      renderer.setPixelRatio(pixelRatio(activeQuality, devicePixelRatio));
+      renderer.setSize(host.clientWidth, host.clientHeight);
+    }
     lastTime = now; // simulationTime/worldTime apply the persisted pause anchor.
     if (stamp - lastState > 100 || selected !== lastSelected) {
       actors = [
@@ -896,7 +914,7 @@ export function createCity(
       sun.intensity = 0.25 + daylight * 2.95;
       windowMaterial.emissiveIntensity = 0.15 + (1 - daylight) * 0.7;
       const golden = time.phase === "dawn" || time.phase === "dusk";
-      (scene.background as THREE.Color).set("#142638").lerp(new THREE.Color(golden ? "#efbea0" : "#b4d5e2"), daylight);
+      (scene.background as THREE.Color).set("#142638").lerp(new THREE.Color(golden ? "#ffd4ac" : "#94d4f1"), daylight);
       sun.color.set(golden ? "#ffb77e" : "#fff0d8");
       sun.position.set(Math.cos(time.hour / 24 * Math.PI * 2) * 1000, 200 + daylight * 1100, 600);
       renderer.toneMappingExposure = .85 + daylight * .35;
@@ -921,7 +939,7 @@ export function createCity(
       });
     if (current) {
       ring.position.set(current.position[0], 2, current.position[1]);
-      selectedLabel.position.set(current.position[0], 55, current.position[1]);
+      selectedLabel.position.set(current.position[0], 30, current.position[1]);
       if (lastLabel !== current.name) {
         // Reuse the single selected label texture.
         lastLabel = current.name;
@@ -965,17 +983,19 @@ export function createCity(
     renderer.render(scene, camera);
     if (stamp - lastStatus > 180) {
       lastStatus = stamp;
-      const speech = livingSpeechAt(world, lastTime),
+      const speech = livingSpeechAt(world, lastTime) ?? speechAt(world, actors, [], lastTime),
         speaker = actors.find((a) => a.id === speech?.speaker);
       const p = new THREE.Vector3(
         speaker?.position[0] ?? 0,
-        74,
+        37,
         speaker?.position[1] ?? 0,
       ).project(camera);
       callbacks.status({
         name: current?.name ?? "An",
         activity: current?.activity ?? "Đang sinh hoạt",
         following,
+        walking: current?.walking ?? false,
+        location: current?.location ?? "",
         speech: speech?.text ?? "",
         x: ((p.x + 1) * host.clientWidth) / 2,
         y: ((1 - p.y) * host.clientHeight) / 2,
@@ -988,6 +1008,14 @@ export function createCity(
       });
     }
     host.dataset.ready = "true";
+    host.dataset.pixelRatio = String(renderer.getPixelRatio());
+    host.dataset.triangles = String(renderer.info.render.triangles);
+    host.dataset.geometries = String(renderer.info.memory.geometries);
+    host.dataset.textures = String(renderer.info.memory.textures);
+    host.dataset.walking = String(current?.walking ?? false);
+    host.dataset.position = current?.position.map(n=>n.toFixed(2)).join(",") ?? "";
+    host.dataset.personHeight = String(40 * HUMAN_SCALE);
+    host.dataset.carLength = String(VEHICLES.car.length);
     host.dataset.actors = String(actors.length);
     host.dataset.selected = current?.id ?? "";
     host.dataset.drawCalls = String(renderer.info.render.calls);
