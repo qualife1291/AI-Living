@@ -192,7 +192,7 @@ export async function cycle() {
     const write = await fetch(origin + "/api/living/tick", {
       method: "POST",
       headers: { "content-type": "application/json" },
-      body: JSON.stringify(proposal ? { proposal } : {}),
+      body: JSON.stringify(proposal ? { proposal, basis: { revision: view.revision, turnId: result.turn.id } } : {}),
       signal: AbortSignal.timeout(20000),
     });
     const data = await write.json();

@@ -14,3 +14,9 @@
 - Chưa có công cụ/credential deploy Sites hoặc kiểm tra automation production; không tạo lịch trùng, không đổi owner-private hay bật upload video.
 - Daemon chỉ chạy khi process/môi trường còn sống; không có cam kết production 24/7.
 - Bộ dataset archive chứa phản hồi mô phỏng, cần đánh giá chất lượng trước khi dùng fine-tune. Không tuyên bố mọi cư dân đã có cùng số mẫu học chỉ vì đều được khởi tạo policy.
+
+## Đang thực hiện — hardening và đời sống nội thất (25/10/2026)
+- Người dùng yêu cầu sửa các điểm rà soát, bổ sung nội thất/thang máy, hình ảnh và hồ sơ tuổi/trưởng thành; yêu cầu luôn push code và lưu context để phục hồi khi env lỗi.
+- Đã đồng bộ frozen dependency Three.js. Source đang sửa: archive bỏ cap 32, proposal kèm basis revision/turnId, health kiểm tra schema, polling chống chồng, admin gate tại Worker, scheduled handler opt-in rules.
+- Nội thất Three.js mặt cắt + 3 tầng + cabin hoạt cảnh, đồ đạc theo loại địa điểm; nhân vật lấy occupancy thật, chỉ tầng trệt. Thang máy chưa là tuyến di chuyển cư dân. Hồ sơ tuổi hư cấu tăng theo simulation clock; chưa có sinh/tử/gia đình.
+- CHƯA HOÀN TẤT KIỂM TRA: cần tsc/lint/unit/build, API local và browser QA. Chưa deploy, không đổi audience, không bật scheduler/paid AI. Quyền production mới yêu cầu XOM_ADMIN_USER_ID; local dùng XOM_LOCAL_ADMIN=true + loopback.

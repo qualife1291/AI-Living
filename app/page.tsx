@@ -13,6 +13,8 @@ import {
   Users,
   X,
 } from "lucide-react";
+import { InteriorView } from "@/components/city/InteriorView";
+import { lifeStory } from "@/lib/city/lifestory";
 import { Wardrobe } from "@/components/characters/Wardrobe";
 import { UrbanMap } from "@/components/city/UrbanMap";
 import { City3D } from "@/components/city/City3D";
@@ -49,9 +51,12 @@ export default function Page() {
     } | null>(null);
   const dialog = useRef<HTMLDialogElement>(null),
     restoreFocus = useRef<HTMLElement | null>(null);
+  const loading = useRef(false);
   const load = useCallback(async () => {
+    if (loading.current) return;
+    loading.current = true;
     try {
-      const response = await fetch("/api/world");
+      const response = await fetch("/api/world", { signal: AbortSignal.timeout(10000) });
       if (!response.ok) throw Error("Chưa kết nối được với thành phố.");
       const snapshot = (await response.json()) as Snapshot;
       setClockOffset(Date.parse(snapshot.serverNow) - Date.now());
@@ -59,7 +64,7 @@ export default function Page() {
       setError("");
     } catch (e) {
       setError(e instanceof Error ? e.message : "Lỗi kết nối");
-    }
+    } finally { loading.current = false; }
   }, []);
   useEffect(() => {
     const initial = setTimeout(() => void load(), 0),
@@ -126,6 +131,7 @@ export default function Page() {
         })) ?? []),
       ]
     : [];
+  const story = world ? lifeStory(world, selected, Date.now() + clockOffset) : null;
   const person = people.find((p) => p.id === selected) ?? people[0],
     agent = world?.living?.learning?.[selected];
   const titles: Record<Exclude<Panel, null>, string> = {
@@ -281,6 +287,7 @@ export default function Page() {
                 Chọn một người để theo dõi trong không gian sống. Nhân vật trong
                 mô phỏng này đều là người trưởng thành.
               </p>
+              {story && <article className="life-story"><small>HỒ SƠ CUỘC ĐỜI · {story.chapter}</small><h3>{person?.name} · {story.age} tuổi mô phỏng</h3><p>Đến xóm ngày {story.arrivedOn} · {story.days} ngày mô phỏng · {story.samples} trải nghiệm đã học.</p><p className="muted">Tuổi khởi đầu hư cấu {story.baseline}; mỗi năm mô phỏng tăng một tuổi. Không suy ra tuổi từ số lượt học.</p><h4>Những điều còn nhớ</h4><ol>{story.memories.slice(-5).map((m, i) => <li key={i}>{m}</li>)}</ol>{!story.memories.length && <p>Chưa có ký ức được lưu.</p>}</article>}
               <details className="wardrobe-details">
                 <summary>Tạo hình của {person?.name ?? "An"}</summary>
                 {person && (
@@ -370,6 +377,7 @@ export default function Page() {
                     .join(" · ") || "Sinh hoạt và gặp gỡ trong thành phố."}
                 </p>
               )}
+              {venue && world && <InteriorView key={venue.name} world={world} venue={venue.name} clockOffset={clockOffset} />}
               <div className="venue-grid">
                 {venues.map((v) => (
                   <button
@@ -382,7 +390,6 @@ export default function Page() {
                         key: (old?.key ?? 0) + 1,
                       }));
                       setMode("city");
-                      setPanel(null);
                     }}
                   >
                     <b>{v.name}</b>

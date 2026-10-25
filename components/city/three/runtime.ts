@@ -870,7 +870,7 @@ export function createCity(
   function tick(stamp: number) {
     if (dead) return;
     frame = requestAnimationFrame(tick);
-    if (stamp - lastDraw < 32) return;
+    if (document.hidden || stamp - lastDraw < 32) return;
     lastDraw = stamp;
     const state = input(),
       { world, selected } = state,
@@ -890,13 +890,16 @@ export function createCity(
       }
       lastSelected = selected;
       lastState = stamp;
-      const daylight = worldTime(world, lastTime).daylight;
+      const time = worldTime(world, lastTime);
+      const daylight = time.daylight;
       ambient.intensity = 1.0 + daylight * 1.6;
       sun.intensity = 0.25 + daylight * 2.95;
       windowMaterial.emissiveIntensity = 0.15 + (1 - daylight) * 0.7;
-      (scene.background as THREE.Color).set(
-        daylight < 0.35 ? "#6f8796" : "#d6e4df",
-      );
+      const golden = time.phase === "dawn" || time.phase === "dusk";
+      (scene.background as THREE.Color).set("#142638").lerp(new THREE.Color(golden ? "#efbea0" : "#b4d5e2"), daylight);
+      sun.color.set(golden ? "#ffb77e" : "#fff0d8");
+      sun.position.set(Math.cos(time.hour / 24 * Math.PI * 2) * 1000, 200 + daylight * 1100, 600);
+      renderer.toneMappingExposure = .85 + daylight * .35;
       fog.color.copy(scene.background as THREE.Color);
     }
     if (state.target && state.target.key !== targetKey) {

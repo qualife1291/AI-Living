@@ -6,7 +6,7 @@ import { realContext, fetchProviders, type ContextCache } from "./realtime";
 import { initializeLiving, planLivingTurn, turnId, population } from "./engine";
 import { proposalSchema, type LivingTurn, type LivingState } from "./schema";
 
-function fetchContext(input: RequestInfo | URL, init?: RequestInit) {
+export function fetchContext(input: RequestInfo | URL, init?: RequestInit) {
   const relay = env.XOM_CONTEXT_RELAY;
   if (relay) {
     const base = new URL(relay);
@@ -61,7 +61,7 @@ function archiveStatements(
   revision: number,
 ) {
   return (state.experiences ?? [])
-    .slice(-32)
+    
     .map((e) =>
       database()
         .prepare(
@@ -70,7 +70,7 @@ function archiveStatements(
         .bind(e.id, e.actorId, e.at, JSON.stringify(e), revision, nonce),
     );
 }
-export async function tickLiving(proposal?: unknown) {
+export async function tickLiving(proposal?: unknown, basis?: { revision: number; turnId: string }) {
   const now = Date.now(),
     id = turnId(now),
     db = database();
@@ -80,6 +80,8 @@ export async function tickLiving(proposal?: unknown) {
     .first();
   if (existing) return { status: 200, data: { ok: true, duplicate: true, id } };
   const current = await readWorld();
+  if (proposal !== undefined && (!basis || basis.revision !== current.revision || basis.turnId !== id))
+    return { status: 409, data: { error: "Cảnh đã thay đổi; hãy sinh lại hội thoại." } };
   if (current.world.paused)
     return { status: 409, data: { error: "Xóm đang tạm nghỉ" } };
   const context = await realContext(now, contextCache(), fetchContext);

@@ -1,5 +1,5 @@
 import { realContext, observedWeather } from "@/lib/living/realtime";
-import { contextCache } from "@/lib/living/service";
+import { contextCache, fetchContext } from "@/lib/living/service";
 import { initializeLiving } from "@/lib/living/engine";
 import { z } from "zod";
 import { readWorld, database, json, validOrigin } from "@/lib/store";
@@ -25,7 +25,7 @@ export async function GET() {
   const data = await readWorld();
   const nowMs = Date.parse(data.serverNow);
   const wt = worldTime(data.world, nowMs);
-  const context = await realContext(nowMs, contextCache());
+  const context = await realContext(nowMs, contextCache(), fetchContext);
   data.world.realContext = context;
   data.world.living ??= initializeLiving(nowMs);
   const weather =

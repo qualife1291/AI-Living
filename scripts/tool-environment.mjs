@@ -10,6 +10,7 @@ export function configureToolEnvironment(projectRoot) {
   mkdirSync(configRoot, { recursive: true });
   const defaults = {
     XDG_CONFIG_HOME: configRoot,
+    COREPACK_HOME: path.join(runtimeRoot, "corepack"),
     CLOUDFLARE_CF_FETCH_ENABLED: "false",
     WRANGLER_SEND_METRICS: "false",
     WRANGLER_WRITE_LOGS: "false",

@@ -28,6 +28,7 @@ export type ContextCache = {
 };
 export const WEATHER_URL =
   "https://api.open-meteo.com/v1/forecast?latitude=10.7769&longitude=106.7009&current=temperature_2m,relative_humidity_2m,precipitation,weather_code,wind_speed_10m&timezone=Asia%2FHo_Chi_Minh";
+function safeJson(value: string): unknown { try { return JSON.parse(value); } catch { return null; } }
 async function resource<T>(
   key: string,
   url: string,
@@ -39,12 +40,12 @@ async function resource<T>(
 ) {
   const old = await cache.read(key);
   if (old && old.expires_at > now) {
-    const parsed = schema.safeParse(JSON.parse(old.data));
+    const parsed = schema.safeParse(safeJson(old.data));
     if (parsed.success) return { data: parsed.data, status: "fresh" as const };
   }
   try {
     const response = await fetcher(url, {
-      signal: AbortSignal.timeout(8000),
+      signal: AbortSignal.timeout(2500),
       headers: { accept: "application/json" },
     });
     if (!response.ok) throw new Error("upstream HTTP " + response.status);
@@ -54,7 +55,7 @@ async function resource<T>(
   } catch (error) {
     void error;
     if (old && now - old.expires_at < 86400000) {
-      const parsed = schema.safeParse(JSON.parse(old.data));
+      const parsed = schema.safeParse(safeJson(old.data));
       if (parsed.success)
         return { data: parsed.data, status: "stale" as const };
     }

@@ -56,3 +56,7 @@ execute([
   "--command",
   "INSERT OR IGNORE INTO agent_experiences (id,actor_id,created_at,data) SELECT json_extract(value,'$.id'),json_extract(value,'$.actorId'),json_extract(value,'$.at'),value FROM worlds,json_each(worlds.data,'$.living.experiences') WHERE worlds.id='home'",
 ]);
+
+// Explicit local-only authorization. Worker also requires a loopback URL.
+const localVars = existsSync(".dev.vars") ? readFileSync(".dev.vars", "utf8") : "";
+if (!/^XOM_LOCAL_ADMIN=/m.test(localVars)) appendFileSync(".dev.vars", "\nXOM_LOCAL_ADMIN=true\n");
