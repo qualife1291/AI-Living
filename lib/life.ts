@@ -20,6 +20,24 @@ export const places: Record<string, Point> = {
   "Lớp học cộng đồng": [1080, 580],
   "Phòng khám": [170, 490],
   "Chợ nhỏ": [735, 515],
+  "Trường nghề": [1420, 260],
+  "Bệnh viện": [1710, 260],
+  "Rạp phim": [2040, 260],
+  "Trụ sở công an": [2310, 390],
+  "Nhà máy": [2240, 700],
+  "Văn phòng": [1940, 610],
+  "Trung tâm việc làm": [1630, 610],
+  "Bến xe buýt": [1370, 730],
+  "Ga metro": [1530, 1040],
+  "Sân bay": [2140, 1270],
+  "Nhà hàng": [1100, 960],
+  "Siêu thị": [800, 1000],
+  "Sân thể thao": [440, 1030],
+  "Xưởng xe máy": [1830, 890],
+  "Nhà văn hóa": [300, 1300],
+  "Bưu điện": [720, 1300],
+  "Trạm cứu hỏa": [1100, 1300],
+  "Khu dân cư": [1450, 1340],
 };
 
 // Pedestrian graph: doors connect to lanes; crossings bridge the two street sides.
@@ -39,6 +57,14 @@ const nodes: Record<string, Point> = {
   kitchen: [596, 534],
   garden: [826, 569],
   library: [1019, 497],
+  civic: [1340, 450],
+  learning: [1700, 450],
+  eastCity: [2120, 450],
+  industry: [2120, 800],
+  transit: [1500, 900],
+  southCity: [1050, 1140],
+  westCity: [450, 1140],
+  airportLane: [1950, 1140],
 };
 
 const edges: [string, string][] = [
@@ -71,6 +97,35 @@ const edges: [string, string][] = [
   ["library", "Lớp học cộng đồng"],
   ["park", "Phòng khám"],
   ["kitchen", "Chợ nhỏ"],
+  ["east", "civic"],
+  ["civic", "learning"],
+  ["learning", "eastCity"],
+  ["eastCity", "industry"],
+  ["industry", "transit"],
+  ["transit", "civic"],
+  ["transit", "southCity"],
+  ["southCity", "westCity"],
+  ["southCity", "airportLane"],
+  ["airportLane", "industry"],
+  ["kitchen", "southCity"],
+  ["civic", "Trường nghề"],
+  ["learning", "Bệnh viện"],
+  ["eastCity", "Rạp phim"],
+  ["eastCity", "Trụ sở công an"],
+  ["industry", "Nhà máy"],
+  ["industry", "Văn phòng"],
+  ["learning", "Trung tâm việc làm"],
+  ["civic", "Bến xe buýt"],
+  ["transit", "Ga metro"],
+  ["airportLane", "Sân bay"],
+  ["southCity", "Nhà hàng"],
+  ["southCity", "Siêu thị"],
+  ["westCity", "Sân thể thao"],
+  ["industry", "Xưởng xe máy"],
+  ["westCity", "Nhà văn hóa"],
+  ["westCity", "Bưu điện"],
+  ["southCity", "Trạm cứu hỏa"],
+  ["southCity", "Khu dân cư"],
 ];
 
 export const distance = (a: Point, b: Point): number =>
@@ -202,7 +257,54 @@ export type Actor = {
   progress: number;
   source: "plan" | "routine";
   path: Point[];
+  transport?: "walk" | "bicycle" | "motorbike" | "bus" | "metro";
 };
+
+type Transport = NonNullable<Actor["transport"]>;
+const segmentLength = (path: Point[]) =>
+  path.slice(1).reduce((sum, p, i) => sum + distance(p, path[i]), 0);
+function transportPath(from: string, to: string, mode: Transport) {
+  const stops =
+    mode === "metro"
+      ? ["westCity", "southCity", "Ga metro", "airportLane"]
+      : [
+          "civic",
+          "learning",
+          "eastCity",
+          "industry",
+          "transit",
+          "southCity",
+          "westCity",
+          "airportLane",
+        ];
+  const nearest = (name: string) =>
+    stops
+      .slice()
+      .sort(
+        (a, b) =>
+          distance(nodes[a], nodes[name] ?? places["Sân chung"]) -
+          distance(nodes[b], nodes[name] ?? places["Sân chung"]),
+      )[0];
+  if (from === to) return { path: route(from, to), board: 0, ride: 0 };
+  const start = nearest(from),
+    end = nearest(to),
+    first = route(from, start),
+    last = route(end, to);
+  if (start === end) return { path: route(from, to), board: 0, ride: 0 };
+  let middle: Point[];
+  if (mode === "metro") {
+    const a = stops.indexOf(start),
+      b = stops.indexOf(end);
+    const sequence = stops.slice(Math.min(a, b), Math.max(a, b) + 1);
+    if (a > b) sequence.reverse();
+    middle = sequence.map((name) => nodes[name]);
+  } else middle = route(start, end);
+  return {
+    path: [...first, ...middle.slice(1), ...last.slice(1)],
+    board: segmentLength(first),
+    ride: segmentLength(middle),
+  };
+}
 
 export function project(
   id: string,
@@ -212,6 +314,7 @@ export function project(
   source: Actor["source"],
   initial?: string,
   originPath?: Point[],
+  transport: Transport = "walk",
 ): Actor {
   const total = list.reduce((n, s) => n + s.duration, 0);
   let t = time % total;
@@ -225,23 +328,50 @@ export function project(
     index === 0
       ? ((time < total ? initial : undefined) ?? list[list.length - 1].location)
       : list[index - 1].location;
-  const basePath = route(from, current.location);
-  const path =
-    index === 0 && time < total && originPath?.length
-      ? [...originPath, ...basePath.slice(1)]
-      : basePath;
-  const length = path.slice(1).reduce((n, p, i) => n + distance(p, path[i]), 0);
-  const moveSeconds = Math.min(current.duration * 0.62, length / 27);
+  const trip =
+    transport === "walk"
+      ? { path: route(from, current.location), board: 0, ride: 0 }
+      : transportPath(from, current.location, transport);
+  const basePath = trip.path;
+  const prefix =
+    index === 0 && time < total && originPath?.length ? originPath : null;
+  const path = prefix ? [...prefix, ...basePath.slice(1)] : basePath;
+  const length = segmentLength(path),
+    board = trip.board + (prefix ? segmentLength(prefix) : 0),
+    ride = trip.ride;
+  const nominal = (length - ride) / 27 + ride / 55;
+  const moveSeconds = Math.min(current.duration * 0.62, nominal);
   const walking = moveSeconds > 0 && t < moveSeconds;
+  const elapsed = walking ? (t / moveSeconds) * nominal : nominal;
+  const beforeTime = board / 27,
+    rideTime = ride / 55;
+  const travel =
+    transport === "walk"
+      ? walking
+        ? (length * t) / moveSeconds
+        : length
+      : elapsed < beforeTime
+        ? elapsed * 27
+        : elapsed < beforeTime + rideTime
+          ? board + (elapsed - beforeTime) * 55
+          : board + ride + (elapsed - beforeTime - rideTime) * 27;
+  const mode: Transport =
+    walking &&
+    ride > 0 &&
+    elapsed >= beforeTime &&
+    elapsed < beforeTime + rideTime
+      ? transport
+      : "walk";
 
   return {
     id,
     name,
-    position: along(path, walking ? (length * t) / moveSeconds : length),
+    position: along(path, walking ? travel : length),
+    transport: mode,
     from,
     location: current.location,
     activity: walking
-      ? `Đi đến ${current.location.toLowerCase()}`
+      ? `${mode === "walk" ? "Đi đến" : mode === "metro" ? "Đi metro đến" : mode === "bus" ? "Đi xe buýt đến" : mode === "motorbike" ? "Đi xe máy đến" : "Đi xe đạp đến"} ${current.location.toLowerCase()}`
       : current.activity,
     kind: current.kind,
     walking,
@@ -289,6 +419,7 @@ export function actorsAt(world: World, now: number): Actor[] {
           "plan",
           plan.from,
           plan.originPath,
+          plan.transport,
         ),
         index,
       );
@@ -391,10 +522,34 @@ export function animalsAt(world: World, now: number) {
       step("Quảng trường", "Đậu quan sát cùng đàn", "rest", 60),
     ],
   ];
-  return animals.map((a, i) => ({
-    ...a,
-    ...project(a.id, a.name, lists[i], t + i * 28, "routine"),
-  }));
+  return animals.map((a, i) => {
+    const plan = world.living?.animalLearning?.[a.id]?.plan;
+    const elapsed =
+      plan?.simStartedAt !== undefined
+        ? (simulationTime(world, now) - plan.simStartedAt) / 1000
+        : Infinity;
+    const total = plan?.steps.reduce((sum, s) => sum + s.duration, 0) ?? 0;
+    const actor =
+      plan && elapsed < total
+        ? project(
+            a.id,
+            a.name,
+            plan.steps,
+            elapsed,
+            "plan",
+            plan.from,
+            plan.originPath,
+          )
+        : project(
+            a.id,
+            a.name,
+            lists[i],
+            plan ? Math.max(0, elapsed - total) : t + i * 28,
+            "routine",
+            plan?.steps.at(-1)?.location,
+          );
+    return { ...a, ...actor };
+  });
 }
 
 export function nearby(a: Actor, b: Actor): boolean {
@@ -468,7 +623,10 @@ export function transitionPath(world: World, personId: string, now: number) {
   return actorTransition(actor, position);
 }
 
-export function actorTransition(actor: Actor, position: Point = actor.position) {
+export function actorTransition(
+  actor: Actor,
+  position: Point = actor.position,
+) {
   if (!actor.walking) return { from: actor.location, originPath: [position] };
   let nearest = 1;
   let best = Infinity;

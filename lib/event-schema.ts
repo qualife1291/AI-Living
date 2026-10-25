@@ -18,6 +18,25 @@ export const PLACES = [
   "Lớp học cộng đồng",
   "Phòng khám",
   "Chợ nhỏ",
+  "Trường nghề",
+  "Bệnh viện",
+  "Rạp phim",
+  "Trụ sở công an",
+  "Nhà máy",
+  "Văn phòng",
+  "Trung tâm việc làm",
+  "Bến xe buýt",
+  "Ga metro",
+  "Sân bay",
+  "Nhà hàng",
+  "Siêu thị",
+  "Sân thể thao",
+  "Xưởng xe máy",
+  "Nhà văn hóa",
+  "Bưu điện",
+  "Trạm cứu hỏa",
+  "Khu dân cư",
+
 ] as const;
 
 export const STEP_KINDS = [

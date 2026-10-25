@@ -1,3 +1,10 @@
+import { updateAnimalLearning } from "./animal-learning.ts";
+import {
+  prepareLearning,
+  chooseScenario,
+  cohortIds,
+  scenarios,
+} from "./learning.ts";
 import defaults from "../../data/living/catalog.json" with { type: "json" };
 import {
   catalogSchema,
@@ -121,7 +128,17 @@ export function planLivingTurn(
   now: number,
 ): { state: LivingState; turn: LivingTurn; world: World } {
   const state = structuredClone(world.living ?? initializeLiving(now));
+  // Add new built-in content without overwriting user roles or erasing residents.
+  for (const role of defaultCatalog.roles)
+    if (
+      !state.catalog.roles.some((r) => r.id === role.id) &&
+      state.catalog.roles.length < 40
+    )
+      state.catalog.roles.push(structuredClone(role));
   state.residents = population(state, context.date);
+  const learning = prepareLearning(world, state, now);
+  state.energy = learning.an.energy;
+  state.hunger = learning.an.hunger;
   // Needs are simulated, elapsed in real time. Bound catch-up, never invent meals or earnings.
   const minutes = Math.min(
     360,
@@ -135,6 +152,9 @@ export function planLivingTurn(
   state.hunger = Math.max(0, Math.min(100, state.hunger + 0.04 * minutes));
   state.social = Math.max(0, Math.min(100, state.social - 0.02 * minutes));
   const role = chooseRole(state, context);
+  learning.an.energy = state.energy;
+  learning.an.hunger = state.hunger;
+  const chosen = chooseScenario(learning.an, "an", context, role.place);
   const peers = state.residents.filter((r) => r.roleId === role.id);
   const resident =
     peers[hashSeed(turnId(now)) % peers.length] ?? state.residents[0];
@@ -148,25 +168,26 @@ export function planLivingTurn(
             item.startDate <= context.date && item.endDate >= context.date,
         )
       : undefined;
-  const location = sleeping
-    ? "Phòng An"
-    : festival
-      ? "Quảng trường"
-      : role.place;
-  const activity = festival
+  let location = sleeping ? "Phòng An" : festival ? "Quảng trường" : role.place;
+  let activity = festival
     ? `Tìm hiểu ${festival.title.slice(0, 55)}`
     : sleeping
       ? "Sạc pin và nghỉ đêm"
       : state.hunger > 70
         ? "Mua và ăn một bữa nhẹ"
         : role.activity;
-  const kind = festival
+  let kind = festival
     ? "social"
     : sleeping
       ? "rest"
       : state.hunger > 70
         ? "eat"
         : role.kind;
+  if (!sleeping && !festival && state.energy >= 28 && state.hunger <= 70) {
+    location = chosen.place;
+    activity = chosen.title;
+    kind = chosen.kind as Step["kind"];
+  }
   const dialogue = sleeping
     ? []
     : [
@@ -196,6 +217,16 @@ export function planLivingTurn(
     residentId: resident.id,
     dialogue,
     generator: "rules",
+    scenarioId: !festival
+      ? sleeping
+        ? "rest-home"
+        : state.energy < 28
+          ? "hospital-check"
+          : state.hunger > 70
+            ? "lunch"
+            : chosen.id
+      : undefined,
+    transport: chosen.transport,
     context,
     simStartedAt: computeSimMs(world.born, world.clock, now),
   };
@@ -211,6 +242,7 @@ export function planLivingTurn(
       ...transitionPath(world, "an", now),
       simStartedAt: turn.simStartedAt,
       generator: "rules",
+      transport: chosen.transport === "plane" ? "bus" : chosen.transport,
       steps: [{ location, activity, kind, duration: 180 }],
     };
     an.activity = activity;
@@ -241,6 +273,88 @@ export function planLivingTurn(
       };
     }
   }
+  if (turn.scenarioId)
+    learning.an.pending = {
+      id: turn.id,
+      scenarioId: turn.scenarioId,
+      startedSimMs: turn.simStartedAt!,
+      durationMs: 180000,
+      completed: false,
+    };
+  const slot = Math.floor(now / 900000);
+  for (const id of ["binh", "chi", ...cohortIds(state, slot)]) {
+    if (id === resident.id) continue; // The conversation partner keeps its encounter route.
+    const agent = learning[id];
+    if (!agent) continue;
+    const person = next.people.find((p) => p.id === id);
+    const npc = state.residents.find((r) => r.id === id);
+    const rolePlace = npc
+      ? state.catalog.roles.find((r) => r.id === npc.roleId)?.place
+      : person?.location;
+    const scenario = chooseScenario(agent, id, context, rolePlace);
+    const previous = person
+      ? actorsAt(world, now).find((a) => a.id === id)
+      : crowdAt(state, { ...world, livingTurn: turn }, now).find(
+          (a) => a.id === id,
+        );
+    // Off-screen residents still receive a route based on their last destination.
+    const origin = person
+      ? transitionPath(world, id, now)
+      : previous
+        ? actorTransition(previous, [
+            previous.position[0] - ((hashSeed(id) % 9) - 4) * 7,
+            previous.position[1] - ((Math.floor(hashSeed(id) / 9) % 7) - 3) * 5,
+          ])
+        : {
+            from: npc?.plan?.steps.at(-1)?.location ?? rolePlace ?? "Sân chung",
+          };
+    const target =
+      scenario.id === "rest-home" && person
+        ? `Phòng ${person.name}`
+        : scenario.id === "rest-home"
+          ? "Khu dân cư"
+          : scenario.place;
+    const plan = {
+      createdAt: turn.createdAt,
+      pausedMs: next.clock?.pausedMs ?? 0,
+      simStartedAt: turn.simStartedAt,
+      ...origin,
+      generator: "rules" as const,
+      transport: scenario.transport === "plane" ? "bus" : scenario.transport,
+      steps: [
+        {
+          location: target,
+          activity: scenario.title,
+          kind: scenario.kind as Step["kind"],
+          duration: 180,
+        },
+      ],
+    };
+    if (person) {
+      person.plan = plan;
+      person.activity = scenario.title;
+    }
+    if (npc) npc.plan = plan;
+    agent.pending = {
+      id: `${turn.id}-${id}`,
+      scenarioId: scenario.id,
+      startedSimMs: turn.simStartedAt!,
+      durationMs: 180000,
+      completed: false,
+    };
+  }
+  // Keep each partner's learning tied to an activity that actually has a plan.
+  if (resident.plan && !sleeping) {
+    const socialScenario = scenarios.find((s) => s.id === "friendship")!;
+    learning[resident.id].pending = {
+      id: `${turn.id}-${resident.id}`,
+      scenarioId: socialScenario.id,
+      startedSimMs: turn.simStartedAt!,
+      durationMs: 180000,
+      completed: false,
+    };
+  }
+  updateAnimalLearning(world, state, context, now);
   next.livingTurn = turn;
   next.living = state;
   return { state, turn, world: next };
@@ -251,15 +365,20 @@ export function crowdAt(
   state: LivingState,
   world: World,
   now: number,
+  focusId?: string,
 ): Actor[] {
   const seconds = computeSimMs(world.born, world.clock, now) / 1000;
   const visible = state.residents.slice(0, 60);
   const partner = state.residents.find(
     (r) => r.id === world.livingTurn?.residentId,
   );
-  if (partner && !visible.some((r) => r.id === partner.id))
-    visible[visible.length - 1] = partner;
-  return visible.map((r, i) => {
+  const focused = state.residents.find((r) => r.id === focusId);
+  let replaced = 0;
+  for (const preferred of [partner, focused])
+    if (preferred && !visible.some((r) => r.id === preferred.id))
+      visible[visible.length - 1 - replaced++] = preferred;
+  return visible.map((r) => {
+    const i = state.residents.findIndex((person) => person.id === r.id);
     const role =
       state.catalog.roles.find((x) => x.id === r.roleId) ??
       state.catalog.roles[0];
@@ -299,6 +418,7 @@ export function crowdAt(
             "plan",
             r.plan.from,
             r.plan.originPath,
+            r.plan.transport,
           )
         : project(
             r.id,

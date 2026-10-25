@@ -1,3 +1,5 @@
+import { scenarios, prepareLearning, initializeAgent } from "./learning";
+import { settleAnimalLearning } from "./animal-learning";
 import { env } from "cloudflare:workers";
 import { database, readWorld } from "../store";
 import { realContext, fetchProviders, type ContextCache } from "./realtime";
@@ -53,6 +55,21 @@ export async function livingView() {
     turns: rows.results.map((r) => JSON.parse(r.data) as LivingTurn),
   };
 }
+function archiveStatements(
+  state: LivingState,
+  nonce: string,
+  revision: number,
+) {
+  return (state.experiences ?? [])
+    .slice(-32)
+    .map((e) =>
+      database()
+        .prepare(
+          "INSERT OR IGNORE INTO agent_experiences (id,actor_id,created_at,data) SELECT ?,?,?,? WHERE EXISTS (SELECT 1 FROM worlds WHERE id='home' AND revision=? AND json_extract(data,'$.living.learningCommit')=?)",
+        )
+        .bind(e.id, e.actorId, e.at, JSON.stringify(e), revision, nonce),
+    );
+}
 export async function tickLiving(proposal?: unknown) {
   const now = Date.now(),
     id = turnId(now),
@@ -91,6 +108,9 @@ export async function tickLiving(proposal?: unknown) {
         result.state.catalog.roles.push({ ...newRole, id });
         result.state.lastExpansionOn = context.date;
         result.state.residents = population(result.state, context.date);
+        result.state.learning ??= {};
+        for (const resident of result.state.residents)
+          result.state.learning[resident.id] ??= initializeAgent(resident.id);
       }
       const an = result.world.people.find((p) => p.id === "an");
       if (an?.plan) an.plan.generator = "local-llm";
@@ -115,25 +135,34 @@ export async function tickLiving(proposal?: unknown) {
       const state = result.state;
       const person = state.residents.find((r) => r.id === previous.residentId);
       const memory = `${previous.date}: Dành thời gian ${previous.activity.toLowerCase()} tại ${previous.location}.`;
-      if (person && person.plan?.simStartedAt === previous.simStartedAt) {
+      if (
+        person &&
+        current.world.living?.residents.find((r) => r.id === person.id)?.plan
+          ?.simStartedAt === previous.simStartedAt
+      ) {
         person.familiarity = Math.min(100, person.familiarity + 1);
         person.memories = [...person.memories, memory].slice(-20);
       }
-      if (previous.kind === "read" || previous.kind === "work")
-        state.skills[previous.kind] = Math.min(
-          100,
-          (state.skills[previous.kind] ?? 0) + 1,
-        );
-      if (previous.kind === "rest")
-        state.energy = Math.min(100, state.energy + 15);
-      if (previous.kind === "eat")
-        state.hunger = Math.max(0, state.hunger - 15);
-      if (previous.kind === "social")
-        state.social = Math.min(100, state.social + 10);
       const an = result.world.people.find((p) => p.id === "an");
       if (an) an.memories = [...an.memories, memory].slice(-60);
       result.world.living = state;
     }
+  }
+  const learned = result.state.learning?.an;
+  if (learned) {
+    result.state.energy = learned.energy;
+    result.state.hunger = learned.hunger;
+    result.state.skills.learning = learned.skill;
+    for (const kind of ["read", "work"])
+      result.state.skills[kind] = Math.min(
+        100,
+        Object.entries(learned.actions).reduce((sum, [id, action]) => {
+          const scenario = scenarios.find((s) => s.id === id);
+          return (
+            sum + (scenario?.kind === kind ? action.trials * scenario.skill : 0)
+          );
+        }, 0),
+      );
   }
   const anState = result.world.people.find((p) => p.id === "an");
   if (anState) {
@@ -147,6 +176,8 @@ export async function tickLiving(proposal?: unknown) {
       ),
     );
   }
+  const learningCommit = crypto.randomUUID();
+  result.state.learningCommit = learningCommit;
   try {
     const results = await db.batch([
       db
@@ -180,6 +211,7 @@ export async function tickLiving(proposal?: unknown) {
           id,
           id,
         ),
+      ...archiveStatements(result.state, learningCommit, current.revision + 1),
     ]);
     if (!results[1].meta.changes) {
       const duplicate = await db
@@ -224,4 +256,57 @@ export async function saveCatalog(
     .bind(JSON.stringify(current.world), "home", revision)
     .run();
   return Boolean(res.meta.changes);
+}
+
+/** Finalize completed experiences independently from the 15-minute narrative slot. */
+export async function learnCompleted() {
+  const current = await readWorld();
+  if (current.world.paused)
+    return { status: 409, data: { error: "Xóm đang tạm nghỉ" } };
+  const state = current.world.living;
+  if (!state) return { status: 200, data: { ok: true, updated: 0 } };
+  const previous = Object.values(state.learning ?? {}).reduce(
+    (s, a) => s + a.samples,
+    0,
+  );
+  const learning = prepareLearning(current.world, state, Date.now());
+  const trained =
+    Object.values(learning).reduce((s, a) => s + a.samples, 0) - previous;
+  const animals = settleAnimalLearning(current.world, state, Date.now());
+  if (!trained && !animals)
+    return { status: 200, data: { ok: true, updated: 0 } };
+  if (learning.an) {
+    state.energy = learning.an.energy;
+    state.hunger = learning.an.hunger;
+  }
+  for (const person of current.world.people) {
+    const agent = learning[person.id];
+    if (agent) {
+      person.energy = agent.energy;
+      person.hunger = agent.hunger;
+      person.skill = Math.max(person.skill, agent.skill);
+    }
+  }
+  const nonce = crypto.randomUUID();
+  state.learningCommit = nonce;
+  const batch = await database().batch([
+    database()
+      .prepare(
+        "UPDATE worlds SET data=?,revision=revision+1 WHERE id=? AND revision=?",
+      )
+      .bind(JSON.stringify(current.world), "home", current.revision),
+    ...archiveStatements(state, nonce, current.revision + 1),
+  ]);
+  const result = batch[0];
+  return result.meta.changes
+    ? {
+        status: 200,
+        data: {
+          ok: true,
+          updated: trained + animals,
+          humanExperiences: trained,
+          animalExperiences: animals,
+        },
+      }
+    : { status: 409, data: { error: "Revision conflict" } };
 }

@@ -1,7 +1,7 @@
-import { readWorld, database, json } from '@/lib/store';
-import { worldTime, weatherAt } from '@/lib/clock';
+import { readWorld, database, json } from "@/lib/store";
+import { worldTime, weatherAt } from "@/lib/clock";
 
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
 
 type TickRunRow = {
   id: string;
@@ -17,13 +17,17 @@ export async function GET() {
   const { world, revision, serverNow, events } = await readWorld();
   const nowMs = Date.parse(serverNow);
   const wt = worldTime(world, nowMs);
-  const weather = weatherAt(world.born || 'xom-ai', wt, world.clock?.weatherOverride);
+  const weather = weatherAt(
+    world.born || "xom-ai",
+    wt,
+    world.clock?.weatherOverride,
+  );
 
   let lastTick: TickRunRow | null = null;
   try {
     lastTick = await database()
       .prepare(
-        'SELECT id, started_at, finished_at, status, model, event_id, neurons_est FROM tick_runs ORDER BY started_at DESC LIMIT 1',
+        "SELECT id, started_at, finished_at, status, model, event_id, neurons_est FROM tick_runs ORDER BY started_at DESC LIMIT 1",
       )
       .first<TickRunRow>();
   } catch {
@@ -40,6 +44,20 @@ export async function GET() {
     episodeCountRecent: events.length,
     worldTime: wt,
     weather,
+    weatherSource:
+      "simulation (diagnostic clock); use /api/world realContext for observed HCMC data",
     lastTick,
+    learning: {
+      agents: Object.keys(world.living?.learning ?? {}).length,
+      samples: Object.values(world.living?.learning ?? {}).reduce(
+        (sum, agent) => sum + agent.samples,
+        0,
+      ),
+      animalPolicies: Object.keys(world.living?.animalLearning ?? {}).length,
+      animalSamples: Object.values(world.living?.animalLearning ?? {}).reduce(
+        (sum, agent) => sum + agent.samples,
+        0,
+      ),
+    },
   });
 }

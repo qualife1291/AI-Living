@@ -13,11 +13,14 @@
     "lint": "eslint . --ignore-pattern dist --ignore-pattern .next",
     "db:generate": "drizzle-kit generate",
     "check": "tsc --noEmit",
-    "test:unit": "node scripts/test-life.mjs && node scripts/test-events.mjs && node scripts/test-animation.mjs && node scripts/test-training.mjs && node scripts/test-continuity.mjs && node scripts/test-daily-routines.mjs && node scripts/test-living.mjs && node scripts/test-festivals.mjs",
+    "test:unit": "node scripts/test-life.mjs && node scripts/test-events.mjs && node scripts/test-animation.mjs && node scripts/test-training.mjs && node scripts/test-continuity.mjs && node scripts/test-daily-routines.mjs && node scripts/test-living.mjs && node scripts/test-festivals.mjs && node scripts/test-learning.mjs && node scripts/test-city.mjs && node scripts/test-appearance.mjs",
     "living:daemon": "node scripts/living-daemon.mjs",
     "living:ai": "bash scripts/start-local-ai.sh",
     "living:relay": "node --use-env-proxy scripts/context-relay.mjs",
-    "living:up": "node scripts/start-living.mjs"
+    "living:up": "node scripts/start-living.mjs",
+    "map:import": "python3 scripts/import-osm.py",
+    "training:export": "node scripts/export-learning.mjs",
+    "db:backup:local": "python3 scripts/backup-local.py"
   },
   "dependencies": {
     "@base-ui/react": "^1.7.0",

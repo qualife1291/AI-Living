@@ -58,3 +58,13 @@
 - Bổ sung nguồn VisitHCMC công khai: cache sáu giờ, kiểm tra khoảng ngày/URL, loại ngày không xác định. Đã xác minh tháng 5/2026 có 3 mục và tháng 10/2026 trả rỗng. Tổng tám bộ test thuần; không dùng lịch rỗng để khẳng định thành phố không có sự kiện.
 
 - Daemon thực trong cloud local đã ghi lượt `living-2026-10-25-30` với generator=local-llm và mở vai trò mới ngày 25/10. Browser QA cuối có 26 NPC phụ, không dùng số cố định 24 để phủ nhận tăng dân số.
+
+## Thành phố khối và ba hướng — 25/10/2026
+- Giao diện / là live canvas toàn viewport; mặc định theo An, HUD nhỏ và panel modal ẩn. /dashboard giữ công cụ cũ. Có pan/zoom/follow, camera fit viewport và lazy OSM.
+- 33 địa điểm/32 tình huống theo dữ liệu; graph mở rộng, hiển thị xe máy/buýt/metro/máy bay và cơ chế tiếp cận/đi phương tiện/đi bộ cuối trong mạng mô phỏng.
+- OSM trung tâm HCMC: 2.106 feature, dataset ODbL + attribution/source/timestamp; không dùng bản đồ đó để giả báo cáo giao thông hay gán sai vị trí cư dân.
+- 14 theme tạo hình khối do dự án tự vẽ; lấy cảm hứng đồ chơi lắp ghép, không nhập logo/model/video LEGO. Appearance từng actor có schema/Origin/revision và giữ qua tick.
+- Từng cư dân có contextual bandit, ba động vật có policy nhỏ; phản hồi fit sau khi kế hoạch hoàn tất. Có cảnh theo dõi nghề/nghỉ/học/chấn thương nhẹ/việc làm. Đây là học policy, không phải fine-tune Qwen.
+- Migration append-only 0003_agent_experiences lưu audit dataset cùng policy update theo CAS/nonce. Snapshot giữ 200 mẫu đọc nhanh; archive phân trang JSONL và CLI export toàn bộ. Backup SQLite online đã kiểm tra trước migration.
+- Nguồn mới nhất docs/URBAN_WORLD.md. Kiểm thử: 11 suite thuần, TypeScript/lint/build, API học đồng thời/không trùng/archive/phân trang, wardrobe lưu/reload/không đổi model và Chromium desktop/mobile; ảnh city/osm/wardrobe là local preview.
+- ADR-0009 ghi định hướng chủ dự án: live quan sát An; studio kịch bản giáo dục riêng timeline; nhân vật người dùng có ownership/memory riêng. Chưa mở public, chưa tạo multi-user, chưa render/upload video.

@@ -51,6 +51,11 @@ export type LivingState = {
   skills: Record<string, number>;
   daysExperienced: number;
   lastExpansionOn?: string;
+  learning?: import("./learning").LearningPopulation;
+  experiences?: import("./learning").Experience[];
+  learningCommit?: string;
+  appearances?: Record<string, import("../city/appearance").Appearance>;
+  animalLearning?: Record<string, import("./animal-learning").AnimalPolicy>;
 };
 export type RealContext = {
   date: string;
@@ -121,6 +126,8 @@ export type LivingTurn = {
   residentId: string;
   dialogue: { speaker: string; text: string }[];
   generator: "rules" | "local-llm";
+  scenarioId?: string;
+  transport?: import("./learning").Scenario["transport"];
   context: RealContext;
   simStartedAt?: number;
 };

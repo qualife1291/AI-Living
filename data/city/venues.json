@@ -1,0 +1,200 @@
+[
+  {
+    "name": "Sân chung",
+    "x": 380,
+    "y": 286,
+    "type": "square"
+  },
+  {
+    "name": "Phòng An",
+    "x": 207,
+    "y": 228,
+    "type": "home"
+  },
+  {
+    "name": "Phòng Bình",
+    "x": 408,
+    "y": 183,
+    "type": "home"
+  },
+  {
+    "name": "Phòng Chi",
+    "x": 589,
+    "y": 255,
+    "type": "home"
+  },
+  {
+    "name": "Bếp chung",
+    "x": 603,
+    "y": 610,
+    "type": "restaurant"
+  },
+  {
+    "name": "Vườn nhỏ",
+    "x": 876,
+    "y": 613,
+    "type": "garden"
+  },
+  {
+    "name": "Công viên",
+    "x": 277,
+    "y": 565,
+    "type": "park"
+  },
+  {
+    "name": "Quán cà phê",
+    "x": 979,
+    "y": 322,
+    "type": "cafe"
+  },
+  {
+    "name": "Thư viện",
+    "x": 1013,
+    "y": 538,
+    "type": "library"
+  },
+  {
+    "name": "Xưởng sáng tạo",
+    "x": 804,
+    "y": 219,
+    "type": "workshop"
+  },
+  {
+    "name": "Quảng trường",
+    "x": 633,
+    "y": 407,
+    "type": "square"
+  },
+  {
+    "name": "Phố đi bộ",
+    "x": 465,
+    "y": 432,
+    "type": "square"
+  },
+  {
+    "name": "Lớp học cộng đồng",
+    "x": 1080,
+    "y": 580,
+    "type": "school"
+  },
+  {
+    "name": "Phòng khám",
+    "x": 170,
+    "y": 490,
+    "type": "clinic"
+  },
+  {
+    "name": "Chợ nhỏ",
+    "x": 735,
+    "y": 515,
+    "type": "market"
+  },
+  {
+    "name": "Trường nghề",
+    "x": 1420,
+    "y": 260,
+    "type": "school"
+  },
+  {
+    "name": "Bệnh viện",
+    "x": 1710,
+    "y": 260,
+    "type": "hospital"
+  },
+  {
+    "name": "Rạp phim",
+    "x": 2040,
+    "y": 260,
+    "type": "cinema"
+  },
+  {
+    "name": "Trụ sở công an",
+    "x": 2310,
+    "y": 390,
+    "type": "police"
+  },
+  {
+    "name": "Nhà máy",
+    "x": 2240,
+    "y": 700,
+    "type": "factory"
+  },
+  {
+    "name": "Văn phòng",
+    "x": 1940,
+    "y": 610,
+    "type": "office"
+  },
+  {
+    "name": "Trung tâm việc làm",
+    "x": 1630,
+    "y": 610,
+    "type": "office"
+  },
+  {
+    "name": "Bến xe buýt",
+    "x": 1370,
+    "y": 730,
+    "type": "bus"
+  },
+  {
+    "name": "Ga metro",
+    "x": 1530,
+    "y": 1040,
+    "type": "metro"
+  },
+  {
+    "name": "Sân bay",
+    "x": 2140,
+    "y": 1270,
+    "type": "airport"
+  },
+  {
+    "name": "Nhà hàng",
+    "x": 1100,
+    "y": 960,
+    "type": "restaurant"
+  },
+  {
+    "name": "Siêu thị",
+    "x": 800,
+    "y": 1000,
+    "type": "market"
+  },
+  {
+    "name": "Sân thể thao",
+    "x": 440,
+    "y": 1030,
+    "type": "sport"
+  },
+  {
+    "name": "Xưởng xe máy",
+    "x": 1830,
+    "y": 890,
+    "type": "workshop"
+  },
+  {
+    "name": "Nhà văn hóa",
+    "x": 300,
+    "y": 1300,
+    "type": "culture"
+  },
+  {
+    "name": "Bưu điện",
+    "x": 720,
+    "y": 1300,
+    "type": "post"
+  },
+  {
+    "name": "Trạm cứu hỏa",
+    "x": 1100,
+    "y": 1300,
+    "type": "fire"
+  },
+  {
+    "name": "Khu dân cư",
+    "x": 1450,
+    "y": 1340,
+    "type": "home"
+  }
+]

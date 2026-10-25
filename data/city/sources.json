@@ -1,0 +1,44 @@
+[
+  {
+    "name": "OpenStreetMap / Overpass",
+    "url": "https://www.openstreetmap.org/copyright",
+    "license": "ODbL-1.0",
+    "use": "Trích xuất đường và công trình thật; dữ liệu dẫn xuất có attribution và giấy phép riêng."
+  },
+  {
+    "name": "Kenney City Kit — Commercial",
+    "url": "https://kenney.nl/assets/city-kit-commercial",
+    "license": "CC0",
+    "use": "Nguồn tham khảo/mẫu tài sản có thể nhập cho công trình; chưa bundle model 3D vào renderer SVG."
+  },
+  {
+    "name": "Kenney City Kit — Roads",
+    "url": "https://kenney.nl/assets/city-kit-roads",
+    "license": "CC0",
+    "use": "Nguồn đường/phụ kiện thành phố cho các renderer tương lai."
+  },
+  {
+    "name": "Kenney Car Kit",
+    "url": "https://kenney.nl/assets/car-kit",
+    "license": "CC0",
+    "use": "Nguồn xe cho renderer 3D tương lai; xe hiện tại do dự án tự vẽ SVG."
+  },
+  {
+    "name": "ambientCG",
+    "url": "https://docs.ambientcg.com/license/",
+    "license": "CC0-1.0",
+    "use": "Nguồn vật liệu mặt đường/tường cho các cảnh 3D; không tải texture nặng vào bản SVG."
+  },
+  {
+    "name": "PettingZoo",
+    "url": "https://pettingzoo.farama.org/",
+    "license": "MIT (thư viện)",
+    "use": "Tham khảo cấu trúc huấn luyện/đánh giá đa tác nhân; không tuyên bố đã tích hợp thư viện."
+  },
+  {
+    "name": "LEGO City / Minifigures — tham khảo hình khối",
+    "url": "https://www.lego.com/en-us/themes/minifigures",
+    "license": "Nguồn tham khảo, không nhập tài sản/logo",
+    "use": "Tham khảo tạo hình đồ chơi lắp ghép. Nhân vật, đồng phục và SVG trong dự án được tự vẽ; không sao chép video hoặc model của LEGO."
+  }
+]

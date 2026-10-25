@@ -40,3 +40,12 @@
 - Thêm kiểm thử provenance, mất nguồn, dân số, nhu cầu, đồng vị trí, đồng thời và fixture AI; chụp ảnh Chromium desktop/mobile thực tế. Chưa deploy production.
 
 - Nối lịch sự kiện VisitHCMC với khoảng ngày có kiểm tra, cache sáu giờ và nguồn/link trong UI; chỉ lấy cảm hứng cho An khi ngày thực nằm trong khoảng sự kiện.
+
+## 25/10/2026 — Thành phố toàn màn hình, tạo hình và học hành vi
+- Chuyển trang chủ sang canvas toàn viewport với HUD nhỏ, panel ẩn, camera pan/zoom/follow và chế độ ẩn UI. Giữ bảng cũ ở /dashboard.
+- Vẽ thư viện công trình/phương tiện SVG cho 33 điểm đến và 32 tình huống. Nối graph trường, bệnh viện, công an, nhà máy, rạp phim, sân bay, bến buýt và metro; có chuyển tiếp tiếp cận/đi phương tiện/đi bộ cuối.
+- Thêm snapshot OSM 2.106 đối tượng có attribution ODbL, tải khi mở khảo sát; tách rõ hình học thật với thành phố mô phỏng.
+- Thêm 14 theme nhân vật khối, có đồng phục cảnh sát/tài xế công nghệ/công nhân/giáo viên/người chú. Đổi và lưu màu áo, quần, da, tóc, kính/râu theo từng nhân vật.
+- Thêm contextual bandit từng cư dân và policy động vật, fit phản hồi từ hoạt động hoàn tất; không học sớm/trùng/hủy. Qwen chưa fine-tune.
+- Thêm migration 0003 archive trải nghiệm, cập nhật policy + dataset nguyên tử, phân trang JSONL, helper backup SQLite và export local.
+- Ghi ADR-0009 cho ba hướng chung nền thế giới: live viewer, studio giáo dục tách nhánh và nhân vật cá nhân; chưa bật public/video/multi-user.

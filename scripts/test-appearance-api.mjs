@@ -1,0 +1,15 @@
+import assert from 'node:assert/strict';
+const origin=process.env.TEST_ORIGIN;if(!origin||!['localhost','127.0.0.1','[::1]'].includes(new URL(origin).hostname))throw Error('Set TEST_ORIGIN to an isolated local database');
+const get=async path=>{const r=await fetch(origin+path);assert.equal(r.status,200);return r.json();};
+const post=async body=>{const r=await fetch(origin+'/api/living/appearance',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(body)});await r.text();return r.status;};
+const original=await get('/api/living/appearance?id=an'),before=await get('/api/living/learning');
+const appearance={...original.appearance,theme:'delivery',shirt:'#4caa78',trousers:'#405070'};
+assert.equal(await post({id:'an',revision:original.revision+100,appearance}),409);
+assert.equal(await post({id:'unknown-character',revision:original.revision,appearance}),404);
+assert.equal(await post({id:'an',revision:original.revision,appearance:{...appearance,shirt:'url(javascript:bad)'}}),400);
+assert.equal(await post({id:'an',revision:original.revision,appearance}),200);
+const saved=await get('/api/living/appearance?id=an');assert.deepEqual(saved.appearance,appearance);
+assert.equal(await post({id:'an',revision:original.revision,appearance}),409);
+const after=await get('/api/living/learning');assert.deepEqual(after.models,before.models);assert.deepEqual(after.experiences,before.experiences);
+assert.equal(await post({id:'an',revision:saved.revision,appearance:original.appearance}),200);
+console.log('PASS: wardrobe persisted readback, known-actor guard, invalid color/revision rejection, atomic update and preservation of learned models/experiences.');

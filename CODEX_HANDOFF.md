@@ -1,5 +1,7 @@
 # Bàn giao sang Codex (`CODEX_HANDOFF.md`)
 
+> Mới nhất: [Thành phố, tạo hình và học hành vi](docs/URBAN_WORLD.md), [ba hướng sản phẩm](docs/DECISIONS/ADR-0009-shared-world-three-product-directions.md). Ưu tiên các tài liệu này trước ghi chú lịch sử.
+
 > Bản mở rộng mới nhất: [An và RealContext TP.HCM](docs/LIVING_REALTIME.md) — đọc trước các ghi chú lịch sử dưới đây.
 
 > Cập nhật Codex Cloud: xem [docs/CLOUD_REVIEW.md](docs/CLOUD_REVIEW.md) cho ba phase mới, bằng chứng local và các phần còn thiếu. Các trạng thái live trong tài liệu bàn giao dưới đây chưa được xác minh lại.

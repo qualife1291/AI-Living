@@ -36,3 +36,10 @@
 - **Phase C — Planner và AI local:** đã có CPU inference, daemon idempotent, câu chuyện/vai trò mới có kiểm tra, ký ức và kỹ năng từ hoạt động hoàn tất trong mô phỏng. Không phải fine-tune hay chạy production 24/7.
 - **Phase D — Hệ sinh thái và vận hành thực:** tiếp tục nguồn realtime còn thiếu, chất lượng/mục tiêu dài hạn, động vật/cây, deploy và lịch production sau khi có quyền truy cập đúng project.
 - Bằng chứng/giới hạn: [docs/LIVING_REALTIME.md](docs/LIVING_REALTIME.md).
+
+## Thành phố và ba hướng — cập nhật theo yêu cầu mới
+- **Đã triển khai local:** live canvas toàn viewport, 33 nơi/32 tình huống, dữ liệu OSM và SVG, 14 theme khối, học policy từng cư dân/động vật, archive trải nghiệm.
+- **Hướng 1:** public viewer đọc trạng thái An + scheduler production bền vững, sau khi tách quyền ở máy chủ.
+- **Hướng 2:** AI chia bài học thành script, stage branch/cast/shot list, preview và duyệt trước render/xuất bản.
+- **Hướng 3:** nhân vật cá nhân, xác thực/ownership, ký ức/policy riêng và chia sẻ có kiểm soát.
+- Bằng chứng và ranh giới: docs/URBAN_WORLD.md; quyết định nền tảng chung: docs/DECISIONS/ADR-0009-shared-world-three-product-directions.md.

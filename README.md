@@ -83,3 +83,11 @@ npm run living:up
 ```
 
 Cần Node 24+, Python 3.12 và khoảng 2 GiB đĩa cho model/binary/cache AI. Giữ `living:up` chạy để relay, model và daemon hoạt động. Đây là quy trình cloud local; Publish môi trường không phải deploy Site hoặc tạo scheduler production.
+
+## Thành phố và tạo hình — cập nhật mới
+
+Trang chủ nay là không gian live gần toàn màn hình: 33 địa điểm, 32 tình huống, di chuyển đi bộ/xe máy/buýt/metro trong mô phỏng, 14 bộ tạo hình khối có thể đổi màu và lưu riêng. Có chế độ khảo sát trung tâm TP.HCM từ 2.106 đường/công trình OpenStreetMap, giữ attribution ODbL.
+
+Mỗi cư dân có mô hình hành vi học từ phản hồi đã hoàn tất; ba động vật có policy theo loài. Archive trải nghiệm có thể xuất bằng `npm run training:export`. Đây chưa phải fine-tune trọng số Qwen.
+
+Đọc [báo cáo thành phố](docs/URBAN_WORLD.md) và [ba hướng sản phẩm](docs/DECISIONS/ADR-0009-shared-world-three-product-directions.md): quan sát An, phim trường giáo dục và nhân vật cá nhân. Các hướng public/video/multi-user chưa được mở trong đợt này.

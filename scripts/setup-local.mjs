@@ -40,6 +40,7 @@ else if (tables.length !== 2)
   throw new Error("Partial base schema; inspect and back up before repair.");
 execute(["--file", "drizzle/0001_living_world_and_training.sql"]);
 execute(["--file", "drizzle/0002_living_context_and_turns.sql"]);
+execute(["--file", "drizzle/0003_agent_experiences.sql"]);
 console.log(
   "Local D1 schema ready; existing snapshots and episodes preserved.",
 );
@@ -50,3 +51,8 @@ if (process.env.HTTPS_PROXY) {
   if (!/^XOM_CONTEXT_RELAY=/m.test(existing))
     appendFileSync(file, "\nXOM_CONTEXT_RELAY=http://127.0.0.1:8091\n");
 }
+
+execute([
+  "--command",
+  "INSERT OR IGNORE INTO agent_experiences (id,actor_id,created_at,data) SELECT json_extract(value,'$.id'),json_extract(value,'$.actorId'),json_extract(value,'$.at'),value FROM worlds,json_each(worlds.data,'$.living.experiences') WHERE worlds.id='home'",
+]);

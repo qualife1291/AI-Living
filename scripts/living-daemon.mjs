@@ -17,10 +17,22 @@ export async function cycle() {
   try {
     const response = await fetch(origin + "/api/living");
     if (!response.ok) throw Error("Living service unavailable");
-    const view = await response.json();
+    let view = await response.json();
     if (view.world.paused) {
       console.log("Paused; no turn written.");
       return;
+    }
+    const learned = await fetch(origin + "/api/living/learning", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: "{}",
+    });
+    if (learned.ok) {
+      const report = await learned.json();
+      if (report.updated) {
+        console.log(JSON.stringify({ learned: report.updated }));
+        view = await (await fetch(origin + "/api/living")).json();
+      }
     }
     const result = planLivingTurn(
       view.world,

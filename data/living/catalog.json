@@ -3,15 +3,216 @@
   "initialPopulation": 24,
   "newResidentsPerDay": 3,
   "maxPopulation": 240,
-  "names": ["Minh", "Linh", "Hải", "Mai", "Phúc", "Vy", "Hương", "Tuấn", "Thảo", "Khôi", "Ngọc", "Duy", "Quỳnh", "Sơn", "Lan", "Huy"],
+  "names": [
+    "Minh",
+    "Linh",
+    "Hải",
+    "Mai",
+    "Phúc",
+    "Vy",
+    "Hương",
+    "Tuấn",
+    "Thảo",
+    "Khôi",
+    "Ngọc",
+    "Duy",
+    "Quỳnh",
+    "Sơn",
+    "Lan",
+    "Huy"
+  ],
   "roles": [
-    {"id":"teacher","label":"Người hướng dẫn","place":"Lớp học cộng đồng","activity":"Học một kỹ năng mới","kind":"read","greeting":"Mình cùng thử từng bước nhé, có gì chưa rõ cứ hỏi mình."},
-    {"id":"doctor","label":"Bác sĩ trong thế giới mô phỏng","place":"Phòng khám","activity":"Khám sức khỏe định kỳ","kind":"rest","greeting":"Bạn nghỉ một chút rồi kể mình nghe hôm nay thấy thế nào nhé."},
-    {"id":"colleague","label":"Bạn đồng nghiệp","place":"Xưởng sáng tạo","activity":"Cùng làm một công việc nhỏ","kind":"work","greeting":"Mình giữ khung, bạn thử lắp phần còn lại nhé?"},
-    {"id":"vendor","label":"Người bán hàng","place":"Chợ nhỏ","activity":"Đi chợ, hỏi chuyện hàng xóm","kind":"social","greeting":"Bạn cần ít rau cho bữa tối hay chỉ ghé dạo một vòng?"},
-    {"id":"librarian","label":"Người giữ sách","place":"Thư viện","activity":"Đọc sách và trao đổi điều vừa học","kind":"read","greeting":"Mình để dành một quyển dễ đọc, bạn xem cùng mình không?"},
-    {"id":"gardener","label":"Người chăm vườn","place":"Vườn nhỏ","activity":"Quan sát đất và chăm vườn","kind":"garden","greeting":"Mình xem đất còn ẩm không rồi mới tưới thêm nhé."},
-    {"id":"neighbor","label":"Hàng xóm","place":"Công viên","activity":"Đi dạo và nghe chuyện trong xóm","kind":"play","greeting":"Đi chậm một vòng cùng mình nhé, hôm nay bạn có chuyện gì vui không?"},
-    {"id":"barista","label":"Người pha cà phê","place":"Quán cà phê","activity":"Nghỉ chân và trò chuyện","kind":"social","greeting":"Bạn ngồi chỗ trong hiên nhé, mình pha một ly nhẹ thôi."}
+    {
+      "id": "teacher",
+      "label": "Người hướng dẫn",
+      "place": "Lớp học cộng đồng",
+      "activity": "Học một kỹ năng mới",
+      "kind": "read",
+      "greeting": "Mình cùng thử từng bước nhé, có gì chưa rõ cứ hỏi mình."
+    },
+    {
+      "id": "doctor",
+      "label": "Bác sĩ trong thế giới mô phỏng",
+      "place": "Phòng khám",
+      "activity": "Khám sức khỏe định kỳ",
+      "kind": "rest",
+      "greeting": "Bạn nghỉ một chút rồi kể mình nghe hôm nay thấy thế nào nhé."
+    },
+    {
+      "id": "colleague",
+      "label": "Bạn đồng nghiệp",
+      "place": "Xưởng sáng tạo",
+      "activity": "Cùng làm một công việc nhỏ",
+      "kind": "work",
+      "greeting": "Mình giữ khung, bạn thử lắp phần còn lại nhé?"
+    },
+    {
+      "id": "vendor",
+      "label": "Người bán hàng",
+      "place": "Chợ nhỏ",
+      "activity": "Đi chợ, hỏi chuyện hàng xóm",
+      "kind": "social",
+      "greeting": "Bạn cần ít rau cho bữa tối hay chỉ ghé dạo một vòng?"
+    },
+    {
+      "id": "librarian",
+      "label": "Người giữ sách",
+      "place": "Thư viện",
+      "activity": "Đọc sách và trao đổi điều vừa học",
+      "kind": "read",
+      "greeting": "Mình để dành một quyển dễ đọc, bạn xem cùng mình không?"
+    },
+    {
+      "id": "gardener",
+      "label": "Người chăm vườn",
+      "place": "Vườn nhỏ",
+      "activity": "Quan sát đất và chăm vườn",
+      "kind": "garden",
+      "greeting": "Mình xem đất còn ẩm không rồi mới tưới thêm nhé."
+    },
+    {
+      "id": "neighbor",
+      "label": "Hàng xóm",
+      "place": "Công viên",
+      "activity": "Đi dạo và nghe chuyện trong xóm",
+      "kind": "play",
+      "greeting": "Đi chậm một vòng cùng mình nhé, hôm nay bạn có chuyện gì vui không?"
+    },
+    {
+      "id": "barista",
+      "label": "Người pha cà phê",
+      "place": "Quán cà phê",
+      "activity": "Nghỉ chân và trò chuyện",
+      "kind": "social",
+      "greeting": "Bạn ngồi chỗ trong hiên nhé, mình pha một ly nhẹ thôi."
+    },
+    {
+      "id": "factory-worker",
+      "label": "Công nhân",
+      "place": "Nhà máy",
+      "activity": "Cùng hoàn thành ca làm",
+      "kind": "work",
+      "greeting": "Mình cùng làm từng bước nhé, nếu bạn cần nghỉ thì cứ nói mình biết."
+    },
+    {
+      "id": "vocational-teacher",
+      "label": "Giáo viên dạy nghề",
+      "place": "Trường nghề",
+      "activity": "Chuẩn bị lớp học",
+      "kind": "read",
+      "greeting": "Mình cùng làm từng bước nhé, nếu bạn cần nghỉ thì cứ nói mình biết."
+    },
+    {
+      "id": "nurse",
+      "label": "Điều dưỡng trong mô phỏng",
+      "place": "Bệnh viện",
+      "activity": "Hỗ trợ nghỉ ngơi và phục hồi",
+      "kind": "rest",
+      "greeting": "Mình cùng làm từng bước nhé, nếu bạn cần nghỉ thì cứ nói mình biết."
+    },
+    {
+      "id": "cinema-staff",
+      "label": "Nhân viên rạp phim",
+      "place": "Rạp phim",
+      "activity": "Giới thiệu buổi chiếu mô phỏng",
+      "kind": "play",
+      "greeting": "Mình cùng làm từng bước nhé, nếu bạn cần nghỉ thì cứ nói mình biết."
+    },
+    {
+      "id": "police-officer",
+      "label": "Cán bộ an ninh trong mô phỏng",
+      "place": "Trụ sở công an",
+      "activity": "Tìm hiểu quy tắc cộng đồng",
+      "kind": "read",
+      "greeting": "Mình cùng làm từng bước nhé, nếu bạn cần nghỉ thì cứ nói mình biết."
+    },
+    {
+      "id": "bus-driver",
+      "label": "Tài xế xe buýt",
+      "place": "Bến xe buýt",
+      "activity": "Hướng dẫn lên xe đúng hàng",
+      "kind": "social",
+      "greeting": "Mình cùng làm từng bước nhé, nếu bạn cần nghỉ thì cứ nói mình biết."
+    },
+    {
+      "id": "metro-staff",
+      "label": "Nhân viên ga metro",
+      "place": "Ga metro",
+      "activity": "Hướng dẫn hành trình mô phỏng",
+      "kind": "read",
+      "greeting": "Mình cùng làm từng bước nhé, nếu bạn cần nghỉ thì cứ nói mình biết."
+    },
+    {
+      "id": "pilot",
+      "label": "Phi công trong mô phỏng",
+      "place": "Sân bay",
+      "activity": "Giới thiệu hoạt động hàng không",
+      "kind": "read",
+      "greeting": "Mình cùng làm từng bước nhé, nếu bạn cần nghỉ thì cứ nói mình biết."
+    },
+    {
+      "id": "job-counsellor",
+      "label": "Người hướng nghiệp",
+      "place": "Trung tâm việc làm",
+      "activity": "Luyện phỏng vấn và tìm việc",
+      "kind": "social",
+      "greeting": "Mình cùng làm từng bước nhé, nếu bạn cần nghỉ thì cứ nói mình biết."
+    },
+    {
+      "id": "motorbike-mechanic",
+      "label": "Thợ sửa xe máy",
+      "place": "Xưởng xe máy",
+      "activity": "Kiểm tra xe trước khi đi",
+      "kind": "work",
+      "greeting": "Mình cùng làm từng bước nhé, nếu bạn cần nghỉ thì cứ nói mình biết."
+    },
+    {
+      "id": "chef",
+      "label": "Đầu bếp",
+      "place": "Nhà hàng",
+      "activity": "Chuẩn bị bữa trưa",
+      "kind": "eat",
+      "greeting": "Mình cùng làm từng bước nhé, nếu bạn cần nghỉ thì cứ nói mình biết."
+    },
+    {
+      "id": "office-worker",
+      "label": "Nhân viên văn phòng",
+      "place": "Văn phòng",
+      "activity": "Chia sẻ việc cần hoàn thành",
+      "kind": "work",
+      "greeting": "Mình cùng làm từng bước nhé, nếu bạn cần nghỉ thì cứ nói mình biết."
+    },
+    {
+      "id": "coach",
+      "label": "Người hướng dẫn thể thao",
+      "place": "Sân thể thao",
+      "activity": "Vận động vừa sức",
+      "kind": "play",
+      "greeting": "Mình cùng làm từng bước nhé, nếu bạn cần nghỉ thì cứ nói mình biết."
+    },
+    {
+      "id": "postal-worker",
+      "label": "Nhân viên bưu điện",
+      "place": "Bưu điện",
+      "activity": "Sắp xếp thư trong mô phỏng",
+      "kind": "work",
+      "greeting": "Mình cùng làm từng bước nhé, nếu bạn cần nghỉ thì cứ nói mình biết."
+    },
+    {
+      "id": "firefighter",
+      "label": "Người hướng dẫn phòng cháy",
+      "place": "Trạm cứu hỏa",
+      "activity": "Luyện kỹ năng an toàn",
+      "kind": "read",
+      "greeting": "Mình cùng làm từng bước nhé, nếu bạn cần nghỉ thì cứ nói mình biết."
+    },
+    {
+      "id": "culture-guide",
+      "label": "Người hướng dẫn văn hóa",
+      "place": "Nhà văn hóa",
+      "activity": "Khám phá triển lãm",
+      "kind": "read",
+      "greeting": "Mình cùng làm từng bước nhé, nếu bạn cần nghỉ thì cứ nói mình biết."
+    }
   ]
 }

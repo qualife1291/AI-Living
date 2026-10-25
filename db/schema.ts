@@ -63,3 +63,11 @@ export const livingTurns = sqliteTable("living_turns", {
   createdAt: text("created_at").notNull(),
   data: text("data").notNull(),
 });
+
+export const agentExperiences = sqliteTable("agent_experiences", {
+  seq: integer("seq").primaryKey({ autoIncrement: true }),
+  id: text("id").notNull().unique(),
+  actorId: text("actor_id").notNull(),
+  createdAt: text("created_at").notNull(),
+  data: text("data").notNull(),
+});

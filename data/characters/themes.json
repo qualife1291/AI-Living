@@ -1,0 +1,128 @@
+[
+  {
+    "id": "an",
+    "label": "An · người khám phá",
+    "shirt": "#d99b6c",
+    "trousers": "#6f8496",
+    "headgear": "none",
+    "pattern": "pocket",
+    "face": "smile"
+  },
+  {
+    "id": "police",
+    "label": "Cảnh sát mô phỏng",
+    "shirt": "#7897b8",
+    "trousers": "#4b647d",
+    "headgear": "police",
+    "pattern": "uniform",
+    "face": "smile"
+  },
+  {
+    "id": "delivery",
+    "label": "Tài xế công nghệ · áo xanh",
+    "shirt": "#4caa78",
+    "trousers": "#4c6873",
+    "headgear": "helmet",
+    "pattern": "delivery",
+    "face": "smile"
+  },
+  {
+    "id": "elder",
+    "label": "Người chú trong xóm",
+    "shirt": "#c4aa87",
+    "trousers": "#6b786f",
+    "headgear": "none",
+    "pattern": "check",
+    "face": "moustache"
+  },
+  {
+    "id": "teacher",
+    "label": "Giáo viên",
+    "shirt": "#c7a08e",
+    "trousers": "#7d8e9b",
+    "headgear": "none",
+    "pattern": "cardigan",
+    "face": "glasses"
+  },
+  {
+    "id": "worker",
+    "label": "Công nhân",
+    "shirt": "#c99b67",
+    "trousers": "#6f8590",
+    "headgear": "hardhat",
+    "pattern": "vest",
+    "face": "smile"
+  },
+  {
+    "id": "doctor",
+    "label": "Bác sĩ trong mô phỏng",
+    "shirt": "#e7e9df",
+    "trousers": "#8faab2",
+    "headgear": "none",
+    "pattern": "coat",
+    "face": "glasses"
+  },
+  {
+    "id": "office",
+    "label": "Văn phòng · quần tây",
+    "shirt": "#aabac8",
+    "trousers": "#596a82",
+    "headgear": "none",
+    "pattern": "tie",
+    "face": "smile"
+  },
+  {
+    "id": "pilot",
+    "label": "Phi công trong mô phỏng",
+    "shirt": "#e5e4d9",
+    "trousers": "#596b80",
+    "headgear": "pilot",
+    "pattern": "tie",
+    "face": "smile"
+  },
+  {
+    "id": "metro",
+    "label": "Nhân viên metro",
+    "shirt": "#81aaa0",
+    "trousers": "#5c7474",
+    "headgear": "cap",
+    "pattern": "uniform",
+    "face": "smile"
+  },
+  {
+    "id": "chef",
+    "label": "Đầu bếp",
+    "shirt": "#e5dfcf",
+    "trousers": "#7d8580",
+    "headgear": "chef",
+    "pattern": "coat",
+    "face": "smile"
+  },
+  {
+    "id": "firefighter",
+    "label": "Đội cứu hỏa mô phỏng",
+    "shirt": "#c28c70",
+    "trousers": "#788476",
+    "headgear": "hardhat",
+    "pattern": "vest",
+    "face": "smile"
+  },
+  {
+    "id": "casual",
+    "label": "Thường ngày · xanh dịu",
+    "shirt": "#95b18c",
+    "trousers": "#738893",
+    "headgear": "none",
+    "pattern": "pocket",
+    "face": "smile"
+  },
+  {
+    "id": "sport",
+    "label": "Thể thao",
+    "shirt": "#caa17f",
+    "trousers": "#788fa2",
+    "headgear": "cap",
+    "pattern": "stripe",
+    "face": "smile"
+  }
+]
