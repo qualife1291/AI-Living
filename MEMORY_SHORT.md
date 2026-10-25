@@ -1,15 +1,10 @@
-# Đang phát triển: nhân vật và tương tác xã hội sau version7
+# Việc còn lại sau production version 8
 
-- Người dùng yêu cầu review repo yihui-dev/awesome-opus5-5-videos và dùng AI agent miễn phí để biên kịch. Hai agent đã hỗ trợ,12cảnh/56lượt; đã nối socialFrame/slots14units/gesture vào2D3D, crowd24h.18suite/check/lint/build đạt; QA broad desktop/mobile/fallback + target social desktop/mobile đạt; ảnh local đã gửi. Qwenlocal3vai thực có criticfalsepositive, guard bác near-repeat; không ghi world. Chuẩn bị release8, chưa deploy; production7source18350eb. Backup trước8 backups/pre-v8-20261025-social.json hash805eb3203e24d1c01b607c7a92041ba9fee1f3a8b5e93715bd46afb127bcd01c;3events/memories5,4,4/revision12. Không commitbackup.
-- Automation cũ đã có recordedrun completed25/10 15:00UTC, output readback revision7/living88/eventai22; không còn blocker lần chạy đầu. Chưa phải uptime24h. Giữ cùng ID, không tạo trùng.
+Đọc docs/releases/latest.json, SOCIAL_REVIEW, SOCIAL_SCRIPT_BIBLE, VISUAL_DIRECTION và PRODUCTION_RUNBOOK. Source đang chạy c9c41676b7f947cb631831ee804aa27f50c2b7bb; commit nhật ký sau phát hành khác SHA source là bình thường. Luôn push checkpoint trên nhánh work; không commit DB/backup/credential.
 
-# Việc tiếp theo sau production version7
-
-Đọc docs/releases/latest.json, docs/EXPERIENCE_REVIEW.md, docs/PRODUCTION_RUNBOOK.md và MEMORY_LONG.md. Repo qualife1291/AI-Living, nhánh work. Người dùng yêu cầu luôn push code/memory; nativeGitHub đã xác minh quyền admin/push và origin trong phiên này. Không commit backup/credential.
-
-- Scheduler6adcbdcc81cc819188a4a2ae65392369 đã enable và đổi thành mỗi giờ theo yêu cầu24/7; đang chờ lần chạy đầu được ghi nhận. Kiểm tra bằng automations.peek, không tạo lịch trùng. Lịch lưu không chứng minh SLA24/7 hay model suy nghĩ liên tục. Workerclock/routine và pulsevisible tiếp tục tách với lượtLLM tự động.
-- Indoorgraph/elevatoroccupancy/call-serve-clean/va chạm/IK vẫn chưa hoàn chỉnh. Tuổi/hoạt động/phản hồi đang là mô phỏng; visitorchat dùng luật có lưu, không phải freeformLLM.
-- Cần benchmark GPU/điện thoại vật lý và soak dài; SwiftShaderQA không phải chứng nhận nhà phát triển game. Theo dõi giới hạnquota và scheduler/logs.
-- Trước public: tách UIviewer/admin, ownerID/rate limits/cache theo tải; gỡ XOM_OWNER_PRIVATE_ORIGIN trước đổi audience. Giữ owner-private hiện tại.
-- Map912footprint vẫnheightước lượng, chưa mapmatch hoặc terrain; nguồn ở MAP_3D_SOURCES. Giữ scale10units/m khi nhập assets, đừng để nhân vật khổng lồ lại.
-- LocalQA: phải dùng contextrelayNode qua sessionproxy, restartpreview sau rebuilddist; testDB work/liveness-qa, port5177, seed-experience-fixture.mjs chỉ local. Source/releaseSHA đang chạy18350eb; commit nhật ký sau phát hành khác SHA source là bình thường.
+- Theo dõi lượt cloud tiếp theo sau prompt ba vai mới (đã lưu, chưa có recorded run dùng prompt mới). Automation 6adcbdcc81cc819188a4a2ae65392369 enabled mỗi giờ, có hai recorded runs cũ thành công; không tạo trùng. Không cam kết uptime/SLA24h. Đêm mô phỏng22–06 giữ yên tĩnh.
+- Còn indoor graph/elevator occupancy, call-serve-clean, va chạm/IK và đạo cụ có trạng thái. Slot spacing là visual staging, chưa tránh va chạm toàn tuyến; thay đổi đám đông có thể đổi cặp. Visitor chat theo luật, không phải freeform LLM.
+- Qwen local1.5B đã thử ba vai nhưng critic có false positive; guard mới bác mẫu lặp. Không coi nhiều vai là bảo đảm ngữ nghĩa. Chưa deploy modelCPU; thư viện agent-authored và lượt cloud có nguồn riêng.
+- Cần GPU/điện thoại vật lý và soak dài. Browser evidence là SwiftShader/synthetic local, không production owner login. Theo dõi quota/task logs.
+- Trước public: viewer/admin, ownerID/rate limits/cache; gỡ XOM_OWNER_PRIVATE_ORIGIN trước đổi audience. Giữ owner-private. OSM912footprint vẫn heightước lượng, chưa terrain/mapmatch.
+- Local QA cần Node context relay qua session proxy, restart preview sau build. TestDB work/liveness-qa/port5177; seed-experience-fixture chỉ local. qa-social dùng response synthetic, không ghi production. Model/preview/relay của lượt này đã dừng khi bàn giao.

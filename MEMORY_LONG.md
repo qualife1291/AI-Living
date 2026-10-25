@@ -107,3 +107,8 @@
 -18suite/check/lint/build đạt, social20cases +60792poses,63cùngvenue/240population/continuity/pause/night/AIpriority/partner/metadata/repeatguards. Broadbrowserdesktop/mobilemove/DPR/chat/pause/offline/lifecycle/fallbackđạt trướcfixhair/name; targetedbrowser saufixđạt2speakerturn/1.4m/source/noJS/nooverflow.34/32drawcalls,416k triangles,14geometries trênSwiftShader; khônghardwareFPS/longsoak.
 - Ảnhthựcsyntheticnoonlocal ởdocs/screenshots/social đãgửi, khôngbằngchứngproduction. QAmockresponsebịthiếuweatherStateđãsửa; nhiều cặp khácnhau đượcphépnóicùnglúcnênasserttheopair.
 - Automationhourly córecordedruncompleted15:00UTC25/10, outputrevision7/living88/eventai22readback. Pre8read16:14UTChealthready/revision12/3events/memories5,4,4; snapshotbackupgitignoredhashtrongMEMORY_SHORT. Giữownerprivate1owner0external.
+
+## Production version 8 — đã phát hành
+- Native succeeded16:19:02UTC25/10/2026, sourcec9c41676b7f947cb631831ee804aa27f50c2b7bb. IDs/env1/backuphash nằm latest.json và ledger. Owner-private1owner0external không đổi; không migration.
+- Post readback healthready/revision13/3eventscũ/memories6,4,4, instructions3vai đã lên. Authenticatedpulse200duplicate/living93/learning0; GET xác minh không mất history/memory, stale=false. Browserảnh vẫn local, không nhận thànhproductionQA.
+- Automationcũhourlyenabled,2recordedruns15:00+16:00UTCcompleted trước promptmới. Đã update/readback prompt3vai, dùngworldTime.hourquiet22–06, không duplicate schedule/paidAPI. Chưa có run dùngpromptmới, tiếp tục theo dõi. ModelCPU/preview/relay lượt này đãdừng, production không phụ thuộcenv.

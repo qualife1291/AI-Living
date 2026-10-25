@@ -30,3 +30,7 @@ Version7 chưa có production CPU Qwen/Workercron; automation cũ đã enable th
 
 ## Kiểm thử nhịp sống bản7
 WorldGET chỉ đọccache để tránh upstreamstall; pulse/automation refreshcontext. Viewcounter là lượt mở theo phiên30min, không phải số người. QA phải táchbuild/restartpreview/API/browser và dùng frame-state để xác nhậnpause; không suy luận lỗi chỉ từscreenshot. Xem scripts/qa-experience.py và EXPERIENCE_REVIEW.
+
+## Nhân vật và kịch bản bản8
+
+`scripts/production-readback.py` nhận token bằng hiddenstdin, chỉ GET world/health/instructions và tùy chọn snapshotbackup gitignored; không dùng verify-live.py để thử production. `/api/living/pulse` có thể xác minh quyền writer bằng lượt trùng hiện hành, đọc lại history/memory. Ảnh social là response synthetic/local, không phải ảnh production. Cloudtask dùng chỉ đạo3vai đã commit qua `/api/instructions`, giữ quiet theo giờ mô phỏng và source riêng; Qwenlocal không chạy trong Worker. Xem SOCIAL_REVIEW và ledger8.

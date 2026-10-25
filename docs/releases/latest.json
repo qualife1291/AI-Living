@@ -2,31 +2,45 @@
   "project_id": "appgprj_6adc7dc364d48191a09202c5b43309e4",
   "production_url": "https://xom-ai-long.bouncyslug18.chatgpt.site",
   "audience": "owner-private",
-  "version_number": 7,
-  "source_commit": "18350eb351e6249d905907b5f8b52a655c068007",
-  "version_id": "appgprj_6adc7dc364d48191a09202c5b43309e4~appgver_6d24289db0b88191ab7c7b1b8f539092",
-  "deployment_id": "appgdep_6ade16530c4c81919567a75da59b0333",
+  "version_number": 8,
+  "source_commit": "c9c41676b7f947cb631831ee804aa27f50c2b7bb",
+  "version_id": "appgprj_6adc7dc364d48191a09202c5b43309e4~appgver_8045a9af68bc8191a113b1ffa3750262",
+  "deployment_id": "appgdep_6ade2be1dfc48191905322fc98220d77",
   "status": "succeeded",
-  "deployed_at_utc": "2026-10-25T14:46:59.979270+00:00",
+  "deployed_at_utc": "2026-10-25T16:19:02.753636+00:00",
   "runtime_env_revision": 1,
   "post_deploy": {
     "health": "ready",
     "tables": 12,
-    "revision": 4,
-    "historical_events_preserved": 2,
+    "revision": 13,
+    "historical_events_preserved": 3,
     "character_memories_preserved": true,
+    "memory_counts": {
+      "an": 6,
+      "binh": 4,
+      "chi": 4
+    },
     "pulse_status": 200,
+    "pulse_duplicate": true,
+    "pulse_learning_updated": 0,
     "has_persisted_living": true,
+    "lastTurnId": "living-2026-10-25-93",
     "stale": false,
-    "views_endpoint": 200,
-    "read_latency_sample_ms": 288
+    "director_instructions_present": true,
+    "read_latency_sample_ms": 1781,
+    "production_browser_qa": false,
+    "local_browser_qa": "desktop/mobile experience and social passed"
   },
-  "backup_sha256": "bf22bc531e0345e216c683d20f906ca2d2dad293ebcf74d2f90da6607bd7a530",
+  "backup_sha256": "805eb3203e24d1c01b607c7a92041ba9fee1f3a8b5e93715bd46afb127bcd01c",
   "automation": {
     "id": "6adcbdcc81cc819188a4a2ae65392369",
     "is_enabled": true,
     "cadence": "hourly",
     "timezone": "Asia/Ho_Chi_Minh",
-    "first_recorded_run": null
+    "first_recorded_run": "2026-10-25T15:00:00Z",
+    "latest_recorded_run": "2026-10-25T16:00:00Z",
+    "latest_recorded_status": "completed",
+    "prompt": "director/characters/critic; simulation night quiet; read latest Site instructions",
+    "new_prompt_verified_in_run": false
   }
 }

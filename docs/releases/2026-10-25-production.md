@@ -29,3 +29,12 @@
 - Chat/ratio/DPR/UI/pulse/cachedfeed trongEXPERIENCE_REVIEW. Bằng chứngảnh làlocalpreview. Native/API kiểm chứngproduction, chưa browserownerloggedin.
 - Theo yêu cầu mới24/7, đã enable/reuse automation cũ và đổi lịchmỗigiờ,AsiaHoChiMinh; chưa có recordedfirstrun. Không cam kếtSLA,không bậtcrontrùng/paidAPI.
 - MốcGitpush/prodbuild/package/sourceSite/deploy được lưu; góiđãbuild từđúngSHA. Nhật kýcommit saudeployment không phải thay source đang chạy.
+
+## Version 8 — 23:19 ngày 25/10/2026 (giờ Việt Nam)
+
+- Native succeeded lúc16:19:02UTC, source `c9c41676b7f947cb631831ee804aa27f50c2b7bb`. Version `appgprj_6adc7dc364d48191a09202c5b43309e4~appgver_8045a9af68bc8191a113b1ffa3750262`; deployment `appgdep_6ade2be1dfc48191905322fc98220d77`; env revision1. URL https://xom-ai-long.bouncyslug18.chatgpt.site. Giữ owner-private,1owner/0external.
+- Nguồn đã push GitHubwork và Sitesmain trước native deploy. Release package từ đúng SHA, không có fixture/DB/backup/token. Không thêm migration. Backup pre8 gitignored, hash `805eb3203e24d1c01b607c7a92041ba9fee1f3a8b5e93715bd46afb127bcd01c`.
+- Sau deploy healthready,12tables,revision13,3events trước còn đủ; ký ức An6/Bình4/Chi4, tăng của An đến từ lượt sinh hoạt thật. `/api/instructions` đã có chỉ đạo3vai. POSTpulse200duplicate/living93/learning0, revision13 giữ nguyên; GET readback xác minh history/memories/stale=false. Một mẫu worldread1781ms, không SLA.
+- Nhân vật bo góc/tóc/cử chỉ, crowd24h/slot1.4m và thư viện12cảnh/56lượt;18suite/check/lint/build đạt. 20socialcases +60792poses. Broad/targeted browserdesktop/mobile/fallback đạt, ảnh đã gửi là localpreview; chưa owner-browserQAproduction. Nguồn tham khảo thực trong VISUAL_DIRECTION.
+- Qwenlocal ba vai có mẫu kém, critic phê duyệt sai; guard mới chặn near-repeat và không ghi world. Không thêm paidAPI/video/productionCPUmodel. Giữ nhãn nguồn kịch bản/AI riêng.
+- Reuse automation cũ, hourly/enabled không đổi; prompt mới đọc hướng dẫn3vai và tôn trọng giờ ngủ mô phỏng. Có2recordedruns cũ completed (15:00 và16:00UTC); chưa có run xác minh prompt mới. Không tuyên bố AI suy nghĩ/uptime24h.
