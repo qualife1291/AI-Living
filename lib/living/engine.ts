@@ -14,7 +14,8 @@ import {
   type RealContext,
   type Resident,
 } from "./schema.ts";
-import { hashSeed, computeSimMs } from "../clock.ts";
+import { hashSeed, computeSimMs, worldTime } from "../clock.ts";
+import { routineFrom } from "../daily-routines.ts";
 import {
   transitionPath,
   actorTransition,
@@ -361,6 +362,28 @@ export function planLivingTurn(
   return { state, turn, world: next, newExperiences };
 }
 
+/** Staggered 24h agendas: residents work, eat, take separate breaks and go home.
+ * Unlike the old eight-minute loop, the whole crowd never gathers at one plaza. */
+export function residentRoutine(state: LivingState, r: Resident): Step[] {
+  const role = state.catalog.roles.find(x => x.id === r.roleId) ?? state.catalog.roles[0];
+  const h = hashSeed(r.id), shift = (h % 45) / 60;
+  const breakPlace = ["Công viên", "Quán cà phê", "Phố đi bộ", "Quảng trường", "Thư viện"][h % 5];
+  const home = "Khu dân cư", workplace = role.id === "rest" ? home : role.place;
+  const slots: [number, string, string, Step["kind"]][] = [
+    [0, home, "Nghỉ đêm trong khu dân cư", "rest"],
+    [6 + shift, h % 2 ? "Chợ nhỏ" : "Quán cà phê", "Ăn sáng trước giờ làm", "eat"],
+    [7.5 + shift, workplace, role.activity, role.kind],
+    [11.25 + shift, h % 2 ? "Nhà hàng" : "Chợ nhỏ", "Ăn trưa, nghỉ một lát", "eat"],
+    [12.25 + shift, workplace, role.activity, role.kind],
+    [15.5 + shift, breakPlace, "Tạm nghỉ, trò chuyện nếu gặp bạn", breakPlace === "Thư viện" ? "read" : "social"],
+    [16.25 + shift, workplace, role.activity, role.kind],
+    [18 + shift, h % 3 ? "Nhà hàng" : "Siêu thị", "Ăn tối và mua đồ dùng", "eat"],
+    [19 + shift, breakPlace, "Đi dạo thư giãn cuối ngày", "social"],
+    [21 + shift, home, "Về nhà nghỉ, giữ yên tĩnh", "rest"],
+  ];
+  return slots.map(([hour, location, activity, kind], i) => ({ location, activity, kind, duration: ((slots[i + 1]?.[0] ?? 24) - hour) * 3600 }));
+}
+
 /** Crowd members stay stable across ticks; only the visible budget is rendered. */
 export function crowdAt(
   state: LivingState,
@@ -383,26 +406,7 @@ export function crowdAt(
     const role =
       state.catalog.roles.find((x) => x.id === r.roleId) ??
       state.catalog.roles[0];
-    const list: Step[] = [
-      {
-        location: role.place,
-        activity: role.activity,
-        kind: role.kind,
-        duration: 240,
-      },
-      {
-        location: "Quảng trường",
-        activity: "Đi dạo và gặp hàng xóm",
-        kind: "social",
-        duration: 90,
-      },
-      {
-        location: "Sân chung",
-        activity: "Nghỉ chân trong xóm",
-        kind: "rest",
-        duration: 150,
-      },
-    ];
+    const list = residentRoutine(state, r);
     const elapsed =
       r.plan?.simStartedAt !== undefined
         ? Math.max(0, seconds - r.plan.simStartedAt / 1000)
@@ -424,8 +428,8 @@ export function crowdAt(
         : project(
             r.id,
             r.name,
-            list,
-            r.plan ? elapsed - total : seconds + i * 31,
+            r.plan ? routineFrom(list, worldTime(world, now).hour * 3600 - (elapsed - total)) : list,
+            r.plan ? elapsed - total : worldTime(world, now).hour * 3600,
             "routine",
             r.plan?.steps.at(-1)?.location,
           );

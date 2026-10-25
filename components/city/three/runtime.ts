@@ -1,10 +1,10 @@
 import { HUMAN_SCALE, VEHICLES, pixelRatio, type Quality } from "@/lib/city/scale";
-import { speechAt } from "@/lib/speech";
+import { socialFrame, type SocialPose, type Exchange } from "@/lib/living/social";
+import { createHumanGeometry, humanPose } from "./humans";
 import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import {
   actorsAt,
-  nearby,
   animalsAt,
   along,
   simulationTime,
@@ -39,6 +39,9 @@ export type SceneStatus = {
   activity: string;
   following: boolean;
   speech: string;
+  speaker: string;
+  listener: string;
+  conversationSource: string;
   x: number;
   y: number;
   visible: boolean;
@@ -446,8 +449,7 @@ export function createCity(
   // A shared mesh per body part keeps dozens of residents affordable on mobile.
   const capacity = 72,
     bodyParts: Record<string, THREE.InstancedMesh> = {};
-  const boxGeo = new THREE.BoxGeometry(1, 1, 1),
-    headGeo = new THREE.CylinderGeometry(0.5, 0.5, 1, 12);
+  const humanGeo = createHumanGeometry(), boxGeo = humanGeo.box;
   for (const part of [
     "torso",
     "head",
@@ -470,7 +472,7 @@ export function createCity(
     "glassesR",
   ]) {
     const mesh = new THREE.InstancedMesh(
-      part === "head" || part === "hat" ? headGeo : boxGeo,
+      part === "head" || part === "hair" ? humanGeo.head : /Arm|Leg|Hand/.test(part) ? humanGeo.limb : /Shoe/.test(part) ? humanGeo.shoe : ["torso", "hat"].includes(part) ? humanGeo.round : boxGeo,
       new THREE.MeshStandardMaterial({ roughness: 0.8 }),
       capacity,
     );
@@ -539,10 +541,11 @@ export function createCity(
   let current: Actor | undefined,
     actors: Actor[] = [],
     lastSelected = "";
+  let socialPoses = new Map<string, SocialPose>(), exchanges: Exchange[] = [];
   const previousPositions = new Map<string, Point>();
   let lastTime = Date.parse(input().world.born);
   let lastStatus = 0;
-  const viewOffset = new THREE.Vector3(125, 140, 190);
+  const viewOffset = new THREE.Vector3(82, 70, 112);
   function focus(x: number, z: number, offset = viewOffset) {
     scene.fog = fog;
     controls.target.set(x, 15, z);
@@ -611,7 +614,8 @@ export function createCity(
     rotation = new THREE.Quaternion(),
     root = new THREE.Matrix4(),
     local = new THREE.Matrix4(),
-    result = new THREE.Matrix4();
+    result = new THREE.Matrix4(), faceRoot = new THREE.Matrix4(), faceRotation = new THREE.Matrix4(), faceBack = new THREE.Matrix4().makeTranslation(0, -30, 0);
+  const faceParts = new Set(["head", "hair", "hat", "eyeL", "eyeR", "detail", "glassesL", "glassesR"]);
   function part(
     name: string,
     index: number,
@@ -632,7 +636,7 @@ export function createCity(
     dummy.rotation.set(angle, 0, 0);
     dummy.updateMatrix();
     local.copy(dummy.matrix);
-    result.multiplyMatrices(root, local);
+    result.multiplyMatrices(faceParts.has(name) ? faceRoot : root, local);
     mesh.setMatrixAt(index, result);
     mesh.setColorAt(index, color.set(tint));
     mesh.userData.ids[index] = id;
@@ -663,20 +667,27 @@ export function createCity(
         );
       previousPositions.set(a.id, a.position);
       const riding = a.walking && a.transport && a.transport !== "walk";
-      const yaw = heading.get(a.id) ?? 0.35,
+      const social = socialPoses.get(a.id), peer = social && social.gesture !== "idle" ? actors.find(p => p.id === social.peerId) : undefined;
+      const wantedYaw = peer ? Math.atan2(peer.position[0] - a.position[0], peer.position[1] - a.position[1]) : heading.get(a.id) ?? .35;
+      const oldYaw = heading.get(a.id) ?? wantedYaw;
+      const yaw = oldYaw + Math.atan2(Math.sin(wantedYaw - oldYaw), Math.cos(wantedYaw - oldYaw)) * (world.paused ? 1 : .18),
         s = HUMAN_SCALE;
+      heading.set(a.id, yaw);
+      const pose = humanPose(a, seconds, i, social?.gesture === "idle" ? undefined : social);
       const smooth = renderedPositions.get(a.id) ?? new THREE.Vector2(...a.position);
       if (!world.paused) smooth.lerp(new THREE.Vector2(...a.position), 0.5);
       else smooth.set(...a.position);
       renderedPositions.set(a.id, smooth);
-      position.set(smooth.x, riding ? 8 : 2, smooth.y);
+      position.set(smooth.x, (riding ? 8 : 2) + pose.breath * s, smooth.y);
       rotation.setFromAxisAngle(up, yaw);
       scale.setScalar(s);
       root.compose(position, rotation, scale);
+      faceRotation.makeRotationFromEuler(new THREE.Euler(pose.headTilt, pose.headTurn, 0));
+      faceRoot.copy(root).multiply(new THREE.Matrix4().makeTranslation(0, 30, 0)).multiply(faceRotation).multiply(faceBack);
       const swing = a.walking && !riding ? Math.sin(seconds * 8 + i) * 0.55 : Math.sin(seconds * 1.5 + i) * 0.045;
       const usingProp = !a.walking && ["read", "garden", "eat", "work"].includes(a.kind);
       part("prop", i, a.id, 0, 15.5, 8, usingProp ? 7 : 0, a.kind === "read" ? 1 : 3, 5, a.kind === "read" ? "#e9b549" : a.kind === "garden" ? "#50adba" : "#fff5cf");
-      part("torso", i, a.id, 0, 20, 0, 13, 13, 8, appearance.shirt);
+      part("torso", i, a.id, 0, 20, 0, 11.5, 13, 7.5, appearance.shirt);
       part("head", i, a.id, 0, 32, 0, 9, 10, 9, appearance.skin);
       part(
         "hair",
@@ -728,15 +739,15 @@ export function createCity(
           12,
           5,
           appearance.shirt,
-          usingProp ? -0.55 : sign * swing,
+          side === "left" ? pose.leftArm : pose.rightArm,
         );
         part(
           `${side}Hand`,
           i,
           a.id,
           sign * 9,
-          13,
-          Math.sin(sign * swing) * 6,
+          13 + (side === "left" ? pose.leftHandY : pose.rightHandY),
+          side === "left" ? pose.leftHandZ : pose.rightHandZ,
           4,
           4,
           4,
@@ -768,8 +779,8 @@ export function createCity(
           "#505d59",
         );
       }
-      part("eyeL", i, a.id, -2, 33, 4.5, 1.2, 1.5, 0.8, "#35473d");
-      part("eyeR", i, a.id, 2, 33, 4.5, 1.2, 1.5, 0.8, "#35473d");
+      part("eyeL", i, a.id, -2, 33, 4.1, 1.2, 1.5 * pose.blink, 0.8, "#35473d");
+      part("eyeR", i, a.id, 2, 33, 4.1, 1.2, 1.5 * pose.blink, 0.8, "#35473d");
       part(
         "detail",
         i,
@@ -915,12 +926,16 @@ export function createCity(
     }
     lastTime = now; // simulationTime/worldTime apply the persisted pause anchor.
     if (stamp - lastState > 100 || selected !== lastSelected) {
-      actors = [
+      const rawActors = [
         ...actorsAt(world, lastTime),
         ...(world.living
           ? crowdAt(world.living, world, lastTime, selected)
           : []),
       ].slice(0, capacity);
+      const social = socialFrame(world, rawActors, state.events ?? [], lastTime, livingSpeechAt(world, lastTime));
+      actors = social.actors;
+      socialPoses = social.poses;
+      exchanges = social.exchanges;
       current = actors.find((a) => a.id === selected) ?? actors[0];
       if (lastSelected !== selected) {
         following = true;
@@ -1003,10 +1018,13 @@ export function createCity(
     renderer.render(scene, camera);
     if (stamp - lastStatus > 180) {
       lastStatus = stamp;
-      const selectedActor = current;
-      const companions = selectedActor ? actors.filter(a=>a.id!==selectedActor.id && nearby(selectedActor,a)) : [];
-      const speech = livingSpeechAt(world, lastTime) ?? speechAt(world, current && companions.length ? [current, companions[0]] : actors, state.events ?? [], lastTime),
+      const exchange = exchanges.find(e => e.a === current?.id || e.b === current?.id) ?? exchanges.find(e => {
+        const a = actors.find(a => a.id === e.a);
+        return a && current && Math.hypot(a.position[0] - current.position[0], a.position[1] - current.position[1]) < 75;
+      });
+      const speech = exchange?.speech,
         speaker = actors.find((a) => a.id === speech?.speaker);
+      const listener = actors.find(a => a.id === (exchange?.a === speaker?.id ? exchange?.b : exchange?.a));
       const p = new THREE.Vector3(
         speaker?.position[0] ?? 0,
         37,
@@ -1019,6 +1037,9 @@ export function createCity(
         walking: current?.walking ?? false,
         location: current?.location ?? "",
         speech: speech?.text ?? "",
+        speaker: speaker?.name ?? "",
+        listener: listener?.name ?? "",
+        conversationSource: exchange?.source ?? "",
         x: ((p.x + 1) * host.clientWidth) / 2,
         y: ((1 - p.y) * host.clientHeight) / 2,
         visible:
@@ -1041,6 +1062,8 @@ export function createCity(
     host.dataset.personHeight = String(40 * HUMAN_SCALE);
     host.dataset.carLength = String(VEHICLES.car.length);
     host.dataset.actors = String(actors.length);
+    host.dataset.exchanges = String(exchanges.length);
+    host.dataset.socialCast = JSON.stringify(actors.filter(a => socialPoses.get(a.id)?.gesture !== "idle" && socialPoses.has(a.id)).map(a => ({ id: a.id, position: a.position, ...socialPoses.get(a.id) })));
     host.dataset.selected = current?.id ?? "";
     host.dataset.drawCalls = String(renderer.info.render.calls);
     host.dataset.camera = [

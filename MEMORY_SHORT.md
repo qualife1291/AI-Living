@@ -1,3 +1,8 @@
+# Đang phát triển: nhân vật và tương tác xã hội sau version7
+
+- Người dùng yêu cầu review repo yihui-dev/awesome-opus5-5-videos và dùng AI agent miễn phí để biên kịch. Đã dùng hai agent phát triển (biên kịch + đồ họa), không thêm paid API. data/social-scenes.json có12cảnh/56lượt, SOCIAL_SCRIPT_BIBLE và VISUAL_DIRECTION ghi prompt/nguồn. Đang nối socialFrame/standing slots14units/gesture vào2D3D, thay crowdloop8phút bằng lịch24h xen kẽ. Chưa test/build/deploy bản này.
+- Automation cũ đã có recordedrun completed25/10 15:00UTC, output readback revision7/living88/eventai22; không còn blocker lần chạy đầu. Chưa phải uptime24h. Giữ cùng ID, không tạo trùng.
+
 # Việc tiếp theo sau production version7
 
 Đọc docs/releases/latest.json, docs/EXPERIENCE_REVIEW.md, docs/PRODUCTION_RUNBOOK.md và MEMORY_LONG.md. Repo qualife1291/AI-Living, nhánh work. Người dùng yêu cầu luôn push code/memory; nativeGitHub đã xác minh quyền admin/push và origin trong phiên này. Không commit backup/credential.

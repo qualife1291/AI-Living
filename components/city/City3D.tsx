@@ -63,7 +63,8 @@ export function City3D(props: Props) {
           className="three-speech live-speech"
           style={{ left: status.x, top: status.y }}
         >
-          {status.speech}
+          <strong>{status.speaker} <span aria-hidden="true">→</span> {status.listener}</strong>
+          <span>{status.speech}</span>
         </div>
       )}
       <div className="live-hud live-person">
