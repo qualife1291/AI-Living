@@ -17,6 +17,9 @@ export const places: Record<string, Point> = {
   "Xưởng sáng tạo": [804, 219],
   "Quảng trường": [633, 407],
   "Phố đi bộ": [465, 432],
+  "Lớp học cộng đồng": [1080, 580],
+  "Phòng khám": [170, 490],
+  "Chợ nhỏ": [735, 515],
 };
 
 // Pedestrian graph: doors connect to lanes; crossings bridge the two street sides.
@@ -65,6 +68,9 @@ const edges: [string, string][] = [
   ["h3", "work"],
   ["work", "Xưởng sáng tạo"],
   ["work", "cafe"],
+  ["library", "Lớp học cộng đồng"],
+  ["park", "Phòng khám"],
+  ["kitchen", "Chợ nhỏ"],
 ];
 
 export const distance = (a: Point, b: Point): number =>
@@ -198,7 +204,7 @@ export type Actor = {
   path: Point[];
 };
 
-function project(
+export function project(
   id: string,
   name: string,
   list: Step[],
@@ -459,6 +465,10 @@ export function transitionPath(world: World, personId: string, now: number) {
     actor.position[0] - (index - 1) * 25,
     actor.position[1] - index * 7,
   ];
+  return actorTransition(actor, position);
+}
+
+export function actorTransition(actor: Actor, position: Point = actor.position) {
   if (!actor.walking) return { from: actor.location, originPath: [position] };
   let nearest = 1;
   let best = Infinity;

@@ -1,5 +1,7 @@
 # Rà soát và phát triển trong Codex Cloud
 
+> Bản mở rộng mới nhất: [An và RealContext TP.HCM](LIVING_REALTIME.md) — đọc trước các ghi chú lịch sử dưới đây.
+
 Báo cáo này phản ánh kiểm tra trên checkout `/workspace/AI-Living`, không phải trạng thái production. Các tuyên bố trong tài liệu bàn giao cũ là lịch sử do bên bàn giao cung cấp; chỉ những kết quả dưới đây đã được kiểm chứng lại trong môi trường này.
 
 ## Phase 1 — Tiếp nhận và môi trường local

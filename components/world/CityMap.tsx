@@ -1,28 +1,25 @@
-'use client';
+"use client";
 
-import { memo, useState } from 'react';
-import { Maximize2, MapPin, Minus, Plus } from 'lucide-react';
-import type { World, EpisodeEvent } from '@/lib/world';
-import { vehiclesAt, signalAt } from '@/lib/traffic';
-import { speechAt, bubbleOffset } from '@/lib/speech';
-import { worldTime, weatherAt } from '@/lib/clock';
-import { SpeechBubble } from './SpeechBubble';
-import { Vehicle } from './Vehicle';
-import { Robot } from './Robot';
-import { Animal } from './Animal';
-import { useLifeClock } from './useLife';
-import {
-  actorsAt,
-  animalsAt,
-  followView,
-  simulationTime,
-} from '@/lib/life';
+import { crowdAt, livingSpeechAt } from "@/lib/living/engine";
+import { observedWeather } from "@/lib/living/realtime";
+import { memo, useState } from "react";
+import { Maximize2, MapPin, Minus, Plus } from "lucide-react";
+import type { World, EpisodeEvent } from "@/lib/world";
+import { vehiclesAt, signalAt } from "@/lib/traffic";
+import { speechAt, bubbleOffset } from "@/lib/speech";
+import { worldTime, weatherAt } from "@/lib/clock";
+import { SpeechBubble } from "./SpeechBubble";
+import { Vehicle } from "./Vehicle";
+import { Robot } from "./Robot";
+import { Animal } from "./Animal";
+import { useLifeClock } from "./useLife";
+import { actorsAt, animalsAt, followView, simulationTime } from "@/lib/life";
 
 export const districts = [
-  { id: 'all', name: 'Toàn khu phố', view: '0 0 1200 780' },
-  { id: 'home', name: 'Khu nhà', view: '65 30 640 420' },
-  { id: 'social', name: 'Phố cà phê', view: '530 40 650 430' },
-  { id: 'park', name: 'Công viên', view: '35 355 680 440' },
+  { id: "all", name: "Toàn khu phố", view: "0 0 1200 780" },
+  { id: "home", name: "Khu nhà", view: "65 30 640 420" },
+  { id: "social", name: "Phố cà phê", view: "530 40 650 430" },
+  { id: "park", name: "Công viên", view: "35 355 680 440" },
 ];
 
 function Tree({ x, y, s = 1 }: { x: number; y: number; s?: number }) {
@@ -55,7 +52,7 @@ function House({
   y,
   color,
   label,
-  kind = 'home',
+  kind = "home",
 }: {
   x: number;
   y: number;
@@ -86,7 +83,7 @@ function House({
         stroke="#fff9e9"
         strokeWidth="3"
       />
-      {kind === 'cafe' && (
+      {kind === "cafe" && (
         <>
           <g className="cafe-awning">
             <path d="M-6 -12L88 26L88 38L-6 0Z" fill="#d79b76" />
@@ -107,7 +104,7 @@ function House({
           </g>
         </>
       )}
-      {kind === 'lab' && (
+      {kind === "lab" && (
         <>
           <path
             d="M35 -60L70 -77L112 -60L78 -43Z"
@@ -118,11 +115,7 @@ function House({
           <path d="M56 -69L97 -52m-7-15L55 -50" stroke="#b4d6d4" />
           <g className="roof-fan">
             <circle cx="143" cy="-43" r="11" fill="#708e91" />
-            <path
-              d="M143-52v18m-9-9h18"
-              stroke="#d7e7dc"
-              strokeWidth="3"
-            />
+            <path d="M143-52v18m-9-9h18" stroke="#d7e7dc" strokeWidth="3" />
           </g>
         </>
       )}
@@ -164,14 +157,7 @@ function Lamp({ x, y, lit = false }: { x: number; y: number; lit?: boolean }) {
     <g transform={`translate(${x} ${y})`}>
       <ellipse rx="9" ry="4" fill="#45665a" opacity=".13" />
       {lit && (
-        <ellipse
-          cx="12"
-          cy="2"
-          rx="32"
-          ry="14"
-          fill="#ffe699"
-          opacity=".22"
-        />
+        <ellipse cx="12" cy="2" rx="32" ry="14" fill="#ffe699" opacity=".22" />
       )}
       <path
         d="M0 0v-46q0-10 13-10"
@@ -179,10 +165,7 @@ function Lamp({ x, y, lit = false }: { x: number; y: number; lit?: boolean }) {
         strokeWidth="4"
         fill="none"
       />
-      <path
-        d="M6 -55q5 -13 15 0Z"
-        fill={lit ? '#ffe28a' : '#efc783'}
-      />
+      <path d="M6 -55q5 -13 15 0Z" fill={lit ? "#ffe28a" : "#efc783"} />
     </g>
   );
 }
@@ -210,7 +193,11 @@ const TREE_POSITIONS: readonly [number, number][] = [
 /**
  * Memoized static neighborhood layer (Fixes L6: avoids re-rendering buildings/trees/roads every 75ms).
  */
-const StaticScene = memo(function StaticScene({ lampsLit }: { lampsLit: boolean }) {
+const StaticScene = memo(function StaticScene({
+  lampsLit,
+}: {
+  lampsLit: boolean;
+}) {
   return (
     <>
       <defs>
@@ -220,12 +207,7 @@ const StaticScene = memo(function StaticScene({ lampsLit }: { lampsLit: boolean 
           height="28"
           patternUnits="userSpaceOnUse"
         >
-          <path
-            d="M28 0H0V28"
-            fill="none"
-            stroke="#ddd9c7"
-            strokeWidth=".8"
-          />
+          <path d="M28 0H0V28" fill="none" stroke="#ddd9c7" strokeWidth=".8" />
         </pattern>
         <pattern
           id="grass"
@@ -233,11 +215,7 @@ const StaticScene = memo(function StaticScene({ lampsLit }: { lampsLit: boolean 
           height="40"
           patternUnits="userSpaceOnUse"
         >
-          <path
-            d="M12 18l2 -3m2 4l2 -3"
-            stroke="#9fb68a"
-            opacity=".35"
-          />
+          <path d="M12 18l2 -3m2 4l2 -3" stroke="#9fb68a" opacity=".35" />
         </pattern>
         <pattern
           id="rain-pattern"
@@ -289,14 +267,8 @@ const StaticScene = memo(function StaticScene({ lampsLit }: { lampsLit: boolean 
           strokeWidth="5"
         />
       ))}
-      <path
-        d="M100 160L332 76L619 172L410 279L100 239Z"
-        fill="#e9e2cc"
-      />
-      <path
-        d="M100 160L332 76L619 172L410 279L100 239Z"
-        fill="url(#tiles)"
-      />
+      <path d="M100 160L332 76L619 172L410 279L100 239Z" fill="#e9e2cc" />
+      <path d="M100 160L332 76L619 172L410 279L100 239Z" fill="url(#tiles)" />
       <Tree x={86} y={207} />
       <Tree x={644} y={236} />
       <House x={123} y={143} color="#c28d72" label="01 · Trạm của An" />
@@ -340,10 +312,7 @@ const StaticScene = memo(function StaticScene({ lampsLit }: { lampsLit: boolean 
         </text>
       </g>
       <g transform="translate(108 466)">
-        <path
-          d="M0 22Q80 -76 223 20L305 105L139 181L-20 100Z"
-          fill="#c8dcb9"
-        />
+        <path d="M0 22Q80 -76 223 20L305 105L139 181L-20 100Z" fill="#c8dcb9" />
         <path
           d="M5 96Q120 -25 255 95"
           stroke="#eee2bf"
@@ -456,41 +425,52 @@ export function CityMap({
   const now = useLifeClock(world.paused, clockOffsetMs);
   const time = now ?? Date.parse(world.born);
   const wt = worldTime(world, time);
-  const weather = weatherAt(
-    world.born || 'xom-ai',
-    wt,
-    world.clock?.weatherOverride,
-  );
+  const baseWeather =
+    (!world.clock?.weatherOverride &&
+      world.realContext &&
+      observedWeather(world.realContext)) ||
+    weatherAt(world.born || "xom-ai", wt, world.clock?.weatherOverride);
+  const weather = {
+    ...baseWeather,
+    label:
+      baseWeather.label +
+      (world.clock?.weatherOverride
+        ? " · thử nghiệm"
+        : !world.realContext || world.realContext.weather.status !== "fresh"
+          ? " · mô phỏng"
+          : ""),
+  };
   const actors = actorsAt(world, time);
   const wildlife = animalsAt(world, time);
-  const speech = speechAt(world, actors, events, time);
+  const crowd = world.living ? crowdAt(world.living, world, time) : [];
+  const speech =
+    livingSpeechAt(world, time) ?? speechAt(world, actors, events, time);
   const traffic = vehiclesAt(world, time);
   const signal = signalAt(simulationTime(world, time) / 1000);
 
   const [follow, setFollow] = useState(false);
   const [showPaths, setShowPaths] = useState(false);
   const [showInfo, setShowInfo] = useState(false);
-  const [area, setArea] = useState('all');
+  const [area, setArea] = useState("all");
   const [zoom, setZoom] = useState(false);
 
-  const selectedActor =
-    actors.find((a) => a.id === selected) ?? actors[0];
+  const selectedActor = actors.find((a) => a.id === selected) ?? actors[0];
   const camera: [number, number] = selectedActor
     ? selectedActor.position
     : [600, 390];
 
   const d = districts.find((dist) => dist.id === area) ?? districts[0];
-  const [vx, vy, vw, vh] = d.view.split(' ').map(Number);
+  const [vx, vy, vw, vh] = d.view.split(" ").map(Number);
   const view = zoom
     ? `${vx + vw * 0.15} ${vy + vh * 0.15} ${vw * 0.7} ${vh * 0.7}`
     : d.view;
   const activeViewBox = follow ? followView(camera) : view;
   const lampsLit =
-    wt.phase === 'dusk' || wt.phase === 'evening' || wt.phase === 'night';
+    wt.phase === "dusk" || wt.phase === "evening" || wt.phase === "night";
   const nightOpacity = Number(((1 - wt.daylight) * 0.24).toFixed(3));
 
   return (
-    <div className={`city-experience ${world.paused ? 'scene-paused' : ''}`}>
+    <div className={`city-experience ${world.paused ? "scene-paused" : ""}`}>
       <div className="districts" aria-label="Khu vực bản đồ">
         {districts.map((dist) => (
           <button
@@ -500,20 +480,20 @@ export function CityMap({
               setZoom(false);
               setFollow(false);
             }}
-            className={area === dist.id && !follow ? 'current' : ''}
+            className={area === dist.id && !follow ? "current" : ""}
           >
-            {dist.id === 'all' && <MapPin size={13} />} {dist.name}
+            {dist.id === "all" && <MapPin size={13} />} {dist.name}
           </button>
         ))}
         <button
-          className={follow ? 'current' : ''}
+          className={follow ? "current" : ""}
           onClick={() => setFollow(!follow)}
           aria-pressed={follow}
         >
           ◎ Theo {world.people.find((p) => p.id === selected)?.name}
         </button>
         <button
-          className={showPaths ? 'current' : ''}
+          className={showPaths ? "current" : ""}
           onClick={() => setShowPaths(!showPaths)}
           aria-pressed={showPaths}
         >
@@ -529,8 +509,91 @@ export function CityMap({
           role="group"
           aria-label="Khu phố AI rộng mở: khu nhà, đường phố, công viên, quán cà phê, xưởng sáng tạo, thư viện và vườn cộng đồng"
         >
-          <title>Bản đồ Khu phố Xóm AI ({wt.phaseLabel} · {weather.label})</title>
+          <title>
+            Bản đồ Khu phố Xóm AI ({wt.phaseLabel} · {weather.label})
+          </title>
           <StaticScene lampsLit={lampsLit} />
+          {[
+            { x: 170, y: 490, label: "Phòng khám", icon: "+" },
+            { x: 1080, y: 580, label: "Lớp học", icon: "▤" },
+            { x: 735, y: 515, label: "Chợ nhỏ", icon: "◇" },
+          ].map((place) => (
+            <g
+              key={place.label}
+              transform={`translate(${place.x} ${place.y - 22})`}
+            >
+              <rect
+                x="-26"
+                y="-30"
+                width="52"
+                height="33"
+                rx="7"
+                fill="#faf5e7"
+                stroke="#8fa797"
+              />
+              <text y="-9" textAnchor="middle" fill="#567566" fontSize="20">
+                {place.icon}
+              </text>
+              <text y="16" textAnchor="middle" fill="#476553" fontSize="10">
+                {place.label}
+              </text>
+            </g>
+          ))}
+          {crowd.map((actor) => {
+            const resident = world.living!.residents.find(
+              (r) => r.id === actor.id,
+            )!;
+            return (
+              <g
+                key={actor.id}
+                transform={`translate(${actor.position[0]} ${actor.position[1]})`}
+                className={
+                  actor.walking ? "crowd-neighbor walking" : "crowd-neighbor"
+                }
+              >
+                <title>
+                  {resident.name} · {actor.activity}
+                </title>
+                {speech?.speaker === actor.id && (
+                  <SpeechBubble
+                    speech={speech}
+                    shift={
+                      bubbleOffset(
+                        actor.position,
+                        activeViewBox,
+                        speech.text,
+                      ) ?? [0, 0]
+                    }
+                  />
+                )}
+                <ellipse cy="7" rx="8" ry="4" fill="#34534b" opacity=".12" />
+                <rect
+                  x="-6"
+                  y="-11"
+                  width="12"
+                  height="16"
+                  rx="4"
+                  fill={resident.color}
+                />
+                <rect
+                  x="-7"
+                  y="-23"
+                  width="14"
+                  height="12"
+                  rx="5"
+                  fill="#eff2e7"
+                  stroke={resident.color}
+                />
+                <circle cx="-3" cy="-17" r="1.3" fill="#506e64" />
+                <circle cx="3" cy="-17" r="1.3" fill="#506e64" />
+                <path
+                  d="M-3 3v7m6-7v7"
+                  stroke={resident.color}
+                  strokeWidth="3"
+                />
+              </g>
+            );
+          })}
 
           {traffic.map((v) => (
             <Vehicle key={v.id} vehicle={v} />
@@ -539,21 +602,13 @@ export function CityMap({
           <g
             transform="translate(530 328)"
             aria-label={
-              signal.main ? 'Đèn xe đường chính xanh' : 'Đèn xe đường chính đỏ'
+              signal.main ? "Đèn xe đường chính xanh" : "Đèn xe đường chính đỏ"
             }
           >
             <path d="M0 0v-33" stroke="#6e8780" strokeWidth="4" />
             <rect x="-6" y="-50" width="12" height="26" rx="4" fill="#506a67" />
-            <circle
-              cy="-43"
-              r="3"
-              fill={signal.main ? '#936c64' : '#e4a18b'}
-            />
-            <circle
-              cy="-31"
-              r="3"
-              fill={signal.main ? '#b0d995' : '#61776d'}
-            />
+            <circle cy="-43" r="3" fill={signal.main ? "#936c64" : "#e4a18b"} />
+            <circle cy="-31" r="3" fill={signal.main ? "#b0d995" : "#61776d"} />
           </g>
           <g transform="translate(649 404)">
             <path d="M0 0v-33" stroke="#6e8780" strokeWidth="4" />
@@ -561,12 +616,12 @@ export function CityMap({
             <circle
               cy="-43"
               r="3"
-              fill={signal.avenue ? '#936c64' : '#e4a18b'}
+              fill={signal.avenue ? "#936c64" : "#e4a18b"}
             />
             <circle
               cy="-31"
               r="3"
-              fill={signal.avenue ? '#b0d995' : '#61776d'}
+              fill={signal.avenue ? "#b0d995" : "#61776d"}
             />
           </g>
 
@@ -574,7 +629,7 @@ export function CityMap({
             actors.map((a) => (
               <polyline
                 key={a.id}
-                points={a.path.map((p) => p.join(',')).join(' ')}
+                points={a.path.map((p) => p.join(",")).join(" ")}
                 fill="none"
                 stroke={world.people.find((p) => p.id === a.id)!.color}
                 strokeWidth="4"
@@ -587,28 +642,23 @@ export function CityMap({
             <g
               key={a.id}
               transform={`translate(${a.position[0] + 35} ${a.position[1] + 24})`}
-              className={a.walking ? 'animal-walking' : ''}
+              className={a.walking ? "animal-walking" : ""}
             >
               <title>
                 {a.name}: {a.activity}
               </title>
               <g
                 transform={
-                  a.walking && a.position[0] < 600 ? 'scale(-1 1)' : undefined
+                  a.walking && a.position[0] < 600 ? "scale(-1 1)" : undefined
                 }
               >
                 <Animal
                   species={a.species}
                   walking={a.walking}
-                  resting={!a.walking && a.kind === 'rest'}
+                  resting={!a.walking && a.kind === "rest"}
                 />
               </g>
-              <text
-                y="31"
-                textAnchor="middle"
-                fontSize="10"
-                fill="#6b8168"
-              >
+              <text y="31" textAnchor="middle" fontSize="10" fill="#6b8168">
                 {a.name}
               </text>
             </g>
@@ -619,14 +669,9 @@ export function CityMap({
             .sort((a, b) => a.position[1] - b.position[1])
             .map((a) => {
               const p = world.people.find((person) => person.id === a.id)!;
-              const activeSpeech =
-                speech?.speaker === a.id ? speech : null;
+              const activeSpeech = speech?.speaker === a.id ? speech : null;
               const bubbleShift = activeSpeech
-                ? bubbleOffset(
-                    a.position,
-                    activeViewBox,
-                    activeSpeech.text,
-                  )
+                ? bubbleOffset(a.position, activeViewBox, activeSpeech.text)
                 : null;
 
               return (
@@ -634,16 +679,16 @@ export function CityMap({
                   key={p.id}
                   transform={`translate(${a.position[0]} ${a.position[1]})`}
                   className={
-                    'map-person ' +
-                    (a.walking ? 'walking ' : '') +
-                    (world.paused ? 'resting' : '')
+                    "map-person " +
+                    (a.walking ? "walking " : "") +
+                    (world.paused ? "resting" : "")
                   }
                   role="button"
                   tabIndex={0}
                   aria-label={`Xem robot ${p.name}`}
                   onClick={() => onSelect(p.id)}
                   onKeyDown={(e) => {
-                    if (e.key === 'Enter' || e.key === ' ') {
+                    if (e.key === "Enter" || e.key === " ") {
                       e.preventDefault();
                       onSelect(p.id);
                     }
@@ -662,21 +707,18 @@ export function CityMap({
                   )}
                   <g
                     className={
-                      'character ' + (!a.walking ? 'doing-' + a.kind : '')
+                      "character " + (!a.walking ? "doing-" + a.kind : "")
                     }
                   >
                     <Robot
                       person={p}
-                      motion={a.walking ? 'walk' : a.kind}
+                      motion={a.walking ? "walk" : a.kind}
                       speaking={!!activeSpeech}
                       paused={world.paused}
                     />
-                    {!a.walking && a.kind === 'garden' && (
+                    {!a.walking && a.kind === "garden" && (
                       <>
-                        <path
-                          d="M18 2l14 8-4 7-13-7Z"
-                          fill="#8cafa7"
-                        />
+                        <path d="M18 2l14 8-4 7-13-7Z" fill="#8cafa7" />
                         <path
                           d="M33 10l15 8"
                           stroke="#9bc6cd"
@@ -685,14 +727,14 @@ export function CityMap({
                         />
                       </>
                     )}
-                    {!a.walking && a.kind === 'read' && (
+                    {!a.walking && a.kind === "read" && (
                       <path
                         d="M-14 3l14 3 14-3v17L0 23l-14-3Z"
                         fill="#e4d4a3"
                         stroke="#968b65"
                       />
                     )}
-                    {!a.walking && a.kind === 'work' && (
+                    {!a.walking && a.kind === "work" && (
                       <>
                         <path
                           d="M18 -4l12 10"
@@ -704,7 +746,7 @@ export function CityMap({
                         </text>
                       </>
                     )}
-                    {!a.walking && a.kind === 'rest' && (
+                    {!a.walking && a.kind === "rest" && (
                       <text x="28" y="-27" fill="#879c94" fontSize="13">
                         z z
                       </text>
@@ -735,7 +777,7 @@ export function CityMap({
               );
             })}
 
-          {weather.kind === 'rain' && (
+          {weather.kind === "rain" && (
             <rect
               width="1200"
               height="780"
@@ -747,7 +789,7 @@ export function CityMap({
             <rect
               width="1200"
               height="780"
-              fill={wt.phase === 'dusk' ? '#4a3b5c' : '#1d2d44'}
+              fill={wt.phase === "dusk" ? "#4a3b5c" : "#1d2d44"}
               opacity={nightOpacity}
               pointerEvents="none"
             />
@@ -765,13 +807,13 @@ export function CityMap({
         <div className="map-controls">
           <button
             onClick={() => setZoom(!zoom)}
-            aria-label={zoom ? 'Thu nhỏ bản đồ' : 'Phóng to bản đồ'}
+            aria-label={zoom ? "Thu nhỏ bản đồ" : "Phóng to bản đồ"}
           >
             {zoom ? <Minus size={18} /> : <Plus size={18} />}
           </button>
           <button
             onClick={() => {
-              setArea('all');
+              setArea("all");
               setZoom(false);
               setFollow(false);
             }}
@@ -783,26 +825,26 @@ export function CityMap({
       </div>
 
       <div className="traffic-status">
-        <span className={signal.main ? 'green-light' : ''} />
-        Đường chính {signal.main ? 'đang xanh' : 'đang đỏ'}
-        <span className={signal.avenue ? 'green-light' : ''} />
-        Đường dọc {signal.avenue ? 'đang xanh' : 'đang đỏ'}
-        <span className={signal.pedestrian ? 'green-light' : ''} />
-        Lối đi bộ {signal.pedestrian ? 'được qua' : 'chờ đèn'}
+        <span className={signal.main ? "green-light" : ""} />
+        Đường chính {signal.main ? "đang xanh" : "đang đỏ"}
+        <span className={signal.avenue ? "green-light" : ""} />
+        Đường dọc {signal.avenue ? "đang xanh" : "đang đỏ"}
+        <span className={signal.pedestrian ? "green-light" : ""} />
+        Lối đi bộ {signal.pedestrian ? "được qua" : "chờ đèn"}
         <small>Xe chờ đèn tại giao lộ · chuyển động mô phỏng</small>
       </div>
 
       <div className="map-legend">
         <span>
-          <i style={{ background: '#c28d72' }} />
+          <i style={{ background: "#c28d72" }} />
           Khu sinh hoạt
         </span>
         <span>
-          <i style={{ background: '#82a584' }} />
+          <i style={{ background: "#82a584" }} />
           Thiên nhiên
         </span>
         <span>
-          <i style={{ background: '#8ca9ad' }} />
+          <i style={{ background: "#8ca9ad" }} />
           Học tập & sáng tạo
         </span>
         <span>Chọn robot · bật Theo để camera di chuyển</span>
@@ -812,10 +854,8 @@ export function CityMap({
         <div className="life-heading">
           <b>Nhịp sống trong xóm (Đang mô phỏng)</b>
           <span>
-            {world.paused
-              ? 'Đang tạm nghỉ'
-              : 'Đi lại & công việc theo luật'}{' '}
-            · Sinh hoạt theo giờ Việt Nam
+            {world.paused ? "Đang tạm nghỉ" : "Đi lại & công việc theo luật"} ·
+            Sinh hoạt theo giờ Việt Nam
           </span>
         </div>
         <div className="life-actors">
@@ -826,7 +866,7 @@ export function CityMap({
                 onSelect(a.id);
                 setFollow(true);
               }}
-              className={a.id === selected ? 'active' : ''}
+              className={a.id === selected ? "active" : ""}
             >
               <i
                 style={{
@@ -837,10 +877,13 @@ export function CityMap({
                 <b>{a.name}</b>
                 <span>{a.activity}</span>
                 <small>
-                  {a.walking
-                    ? `Từ ${a.from} → ${a.location}`
-                    : a.location}{' '}
-                  · {a.source === 'plan' ? 'Kế hoạch AI' : 'Lịch sinh hoạt'}
+                  {a.walking ? `Từ ${a.from} → ${a.location}` : a.location} ·{" "}
+                  {a.source === "plan"
+                    ? world.people.find((p) => p.id === a.id)?.plan
+                        ?.generator === "rules"
+                      ? "Kế hoạch sinh hoạt"
+                      : "Kế hoạch AI"
+                    : "Lịch sinh hoạt"}
                 </small>
               </div>
             </button>
@@ -853,9 +896,7 @@ export function CityMap({
             <p>{events[0].summary}</p>
             {events[0].dialogue?.map((d, i) => (
               <p key={i}>
-                <b>
-                  {world.people.find((p) => p.id === d.speaker)?.name}:{' '}
-                </b>
+                <b>{world.people.find((p) => p.id === d.speaker)?.name}: </b>
                 {d.text}
               </p>
             ))}
@@ -875,7 +916,7 @@ export function CityMap({
           onClick={() => setShowInfo(!showInfo)}
           aria-expanded={showInfo}
         >
-          Tập tính động vật & cách mô phỏng {showInfo ? '−' : '+'}
+          Tập tính động vật & cách mô phỏng {showInfo ? "−" : "+"}
         </button>
 
         {showInfo && (

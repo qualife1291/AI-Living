@@ -30,3 +30,13 @@
 - Thêm lịch 24 giờ riêng cho ba cư dân: ăn uống, làm việc, nghỉ trưa, gặp gỡ và ngủ đêm.
 - Kiểm tra chặt điều khiển thế giới; thêm hai bộ regression test và ảnh Chromium desktop/mobile thực tế.
 - Xem docs/CLOUD_REVIEW.md cho kết quả, giới hạn và phần chưa triển khai.
+
+## 25/10/2026 — An và khu phố mở rộng
+- Thêm cư dân phụ có danh tính ổn định, dân số tăng theo ngày, mức quen thuộc và ký ức riêng; thêm vai trò từ dữ liệu/giao diện mà không sửa code.
+- An chọn sinh hoạt theo giờ TP.HCM, lịch, thời tiết còn mới và nhu cầu; có học, làm việc, khám mô phỏng, đi chợ, ăn và chơi. Người gặp cùng đi tới điểm hẹn trước khi phát thoại.
+- Kết nối thời tiết Open-Meteo, ngày lễ Nager.Date, cache/timestamp và trạng thái nguồn rõ ràng. Kẹt xe/lễ hội chưa có nguồn được ghi unavailable.
+- Thêm AI CPU mã nguồn mở llama.cpp/Qwen, xác minh artifact SHA-256, output JSON/tiếng Việt có kiểm tra và fallback quy tắc; hỗ trợ đề xuất vai trò mới mỗi ngày.
+- Thêm migration 0002, API living/catalog/tick và tick audit nguyên tử; supervisor local khởi động relay/model/web/daemon.
+- Thêm kiểm thử provenance, mất nguồn, dân số, nhu cầu, đồng vị trí, đồng thời và fixture AI; chụp ảnh Chromium desktop/mobile thực tế. Chưa deploy production.
+
+- Nối lịch sự kiện VisitHCMC với khoảng ngày có kiểm tra, cache sáu giờ và nguồn/link trong UI; chỉ lấy cảm hứng cho An khi ngày thực nằm trong khoảng sự kiện.

@@ -22,6 +22,7 @@ import {
   Sparkles,
   type LucideIcon,
 } from 'lucide-react';
+import { LivingPanel } from '@/components/living/LivingPanel';
 import { Avatar } from '@/components/world/Robot';
 import { RobotWorkshop } from '@/components/world/RobotWorkshop';
 import { CityMap as Map } from '@/components/world/CityMap';
@@ -265,12 +266,13 @@ export default function Page() {
             <>
               {tab === 'home' && (
                 <div className="dashboard">
+                  <LivingPanel onUpdated={load} />
                   <section className="scene-card">
                     <div className="card-top">
                       <div>
                         <span className="live-dot" />
                         <b>Khu phố AI</b>
-                        <span className="muted">· 3 cư dân</span>
+                        <span className="muted">· {3 + (w.living?.residents.length ?? 0)} cư dân</span>
                       </div>
                       <span className="weather">
                         <CloudSun size={17} />

@@ -29,3 +29,10 @@
 
 ## Phase 5 — Video và social (Tạm hoãn theo yêu cầu)
 - Chưa bật video rendering, TTS thời gian thực hoặc auto-post. Thiết kế tiếng ríu Web Audio và kiến trúc âm thanh đường phố đã sẵn sàng tại [docs/DESIGN_PROPOSALS.md](docs/DESIGN_PROPOSALS.md) (§5–§6).
+
+## Mở rộng từ 25/10/2026 — An là nhân vật chính
+- **Phase A — Nội dung và cư dân theo dữ liệu:** đã triển khai local (24 NPC, tăng theo ngày, danh mục vai trò, ba điểm dịch vụ mới, UI mở rộng).
+- **Phase B — RealContext TP.HCM:** đã nối thời tiết/ngày lễ/VisitHCMC và cache; traffic, lịch âm/nghỉ bù còn thiếu nguồn hoặc chưa đủ.
+- **Phase C — Planner và AI local:** đã có CPU inference, daemon idempotent, câu chuyện/vai trò mới có kiểm tra, ký ức và kỹ năng từ hoạt động hoàn tất trong mô phỏng. Không phải fine-tune hay chạy production 24/7.
+- **Phase D — Hệ sinh thái và vận hành thực:** tiếp tục nguồn realtime còn thiếu, chất lượng/mục tiêu dài hạn, động vật/cây, deploy và lịch production sau khi có quyền truy cập đúng project.
+- Bằng chứng/giới hạn: [docs/LIVING_REALTIME.md](docs/LIVING_REALTIME.md).

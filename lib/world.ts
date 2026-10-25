@@ -12,6 +12,7 @@ export type PersonPlan = {
   from: string;
   originPath?: [number, number][];
   simStartedAt?: number;
+  generator?: "rules" | "local-llm";
   steps: Step[];
 };
 
@@ -50,6 +51,9 @@ export type CommitmentItem = {
 };
 
 export type World = {
+  living?: import("./living/schema").LivingState;
+  livingTurn?: import("./living/schema").LivingTurn;
+  realContext?: import("./living/schema").RealContext;
   clock?: WorldClockConfig;
   born: string;
   paused: boolean;

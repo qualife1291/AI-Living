@@ -1,3 +1,6 @@
+import { realContext, observedWeather } from "@/lib/living/realtime";
+import { contextCache } from "@/lib/living/service";
+import { initializeLiving } from "@/lib/living/engine";
 import { z } from "zod";
 import { readWorld, database, json, validOrigin } from "@/lib/store";
 import { selectActiveContexts } from "@/lib/training";
@@ -22,11 +25,18 @@ export async function GET() {
   const data = await readWorld();
   const nowMs = Date.parse(data.serverNow);
   const wt = worldTime(data.world, nowMs);
-  const weather = weatherAt(
-    data.world.born || "xom-ai",
-    wt,
-    data.world.clock?.weatherOverride,
-  );
+  const context = await realContext(nowMs, contextCache());
+  data.world.realContext = context;
+  data.world.living ??= initializeLiving(nowMs);
+  const weather =
+    (!data.world.clock?.weatherOverride && observedWeather(context)) ||
+    weatherAt(
+      data.world.born || "xom-ai",
+      wt,
+      data.world.clock?.weatherOverride,
+    );
+  if (data.world.clock?.weatherOverride) weather.label += " · thử nghiệm";
+  else if (context.weather.status !== "fresh") weather.label += " · mô phỏng";
   const activeContexts = selectActiveContexts(data.world, nowMs, 2);
 
   return json({
@@ -34,6 +44,7 @@ export async function GET() {
     worldTime: wt,
     weatherState: weather,
     activeContexts,
+    realContext: context,
   });
 }
 

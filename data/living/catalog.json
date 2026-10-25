@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "initialPopulation": 24,
+  "newResidentsPerDay": 3,
+  "maxPopulation": 240,
+  "names": ["Minh", "Linh", "Hải", "Mai", "Phúc", "Vy", "Hương", "Tuấn", "Thảo", "Khôi", "Ngọc", "Duy", "Quỳnh", "Sơn", "Lan", "Huy"],
+  "roles": [
+    {"id":"teacher","label":"Người hướng dẫn","place":"Lớp học cộng đồng","activity":"Học một kỹ năng mới","kind":"read","greeting":"Mình cùng thử từng bước nhé, có gì chưa rõ cứ hỏi mình."},
+    {"id":"doctor","label":"Bác sĩ trong thế giới mô phỏng","place":"Phòng khám","activity":"Khám sức khỏe định kỳ","kind":"rest","greeting":"Bạn nghỉ một chút rồi kể mình nghe hôm nay thấy thế nào nhé."},
+    {"id":"colleague","label":"Bạn đồng nghiệp","place":"Xưởng sáng tạo","activity":"Cùng làm một công việc nhỏ","kind":"work","greeting":"Mình giữ khung, bạn thử lắp phần còn lại nhé?"},
+    {"id":"vendor","label":"Người bán hàng","place":"Chợ nhỏ","activity":"Đi chợ, hỏi chuyện hàng xóm","kind":"social","greeting":"Bạn cần ít rau cho bữa tối hay chỉ ghé dạo một vòng?"},
+    {"id":"librarian","label":"Người giữ sách","place":"Thư viện","activity":"Đọc sách và trao đổi điều vừa học","kind":"read","greeting":"Mình để dành một quyển dễ đọc, bạn xem cùng mình không?"},
+    {"id":"gardener","label":"Người chăm vườn","place":"Vườn nhỏ","activity":"Quan sát đất và chăm vườn","kind":"garden","greeting":"Mình xem đất còn ẩm không rồi mới tưới thêm nhé."},
+    {"id":"neighbor","label":"Hàng xóm","place":"Công viên","activity":"Đi dạo và nghe chuyện trong xóm","kind":"play","greeting":"Đi chậm một vòng cùng mình nhé, hôm nay bạn có chuyện gì vui không?"},
+    {"id":"barista","label":"Người pha cà phê","place":"Quán cà phê","activity":"Nghỉ chân và trò chuyện","kind":"social","greeting":"Bạn ngồi chỗ trong hiên nhé, mình pha một ly nhẹ thôi."}
+  ]
+}

@@ -1,5 +1,7 @@
 # Bàn giao sang Codex (`CODEX_HANDOFF.md`)
 
+> Bản mở rộng mới nhất: [An và RealContext TP.HCM](docs/LIVING_REALTIME.md) — đọc trước các ghi chú lịch sử dưới đây.
+
 > Cập nhật Codex Cloud: xem [docs/CLOUD_REVIEW.md](docs/CLOUD_REVIEW.md) cho ba phase mới, bằng chứng local và các phần còn thiếu. Các trạng thái live trong tài liệu bàn giao dưới đây chưa được xác minh lại.
 
 ## Trạng thái bản bàn giao hiện tại (Đã cập nhật mã nguồn, tài liệu & bộ AI tự training — 24/10/2026)

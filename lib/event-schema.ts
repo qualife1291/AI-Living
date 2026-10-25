@@ -1,30 +1,33 @@
-import { z } from 'zod';
+import { z } from "zod";
 
-export const RESIDENT_IDS = ['an', 'binh', 'chi'] as const;
+export const RESIDENT_IDS = ["an", "binh", "chi"] as const;
 
 export const PLACES = [
-  'Sân chung',
-  'Phòng An',
-  'Phòng Bình',
-  'Phòng Chi',
-  'Bếp chung',
-  'Vườn nhỏ',
-  'Công viên',
-  'Quán cà phê',
-  'Thư viện',
-  'Xưởng sáng tạo',
-  'Quảng trường',
-  'Phố đi bộ',
+  "Sân chung",
+  "Phòng An",
+  "Phòng Bình",
+  "Phòng Chi",
+  "Bếp chung",
+  "Vườn nhỏ",
+  "Công viên",
+  "Quán cà phê",
+  "Thư viện",
+  "Xưởng sáng tạo",
+  "Quảng trường",
+  "Phố đi bộ",
+  "Lớp học cộng đồng",
+  "Phòng khám",
+  "Chợ nhỏ",
 ] as const;
 
 export const STEP_KINDS = [
-  'work',
-  'eat',
-  'rest',
-  'social',
-  'garden',
-  'read',
-  'play',
+  "work",
+  "eat",
+  "rest",
+  "social",
+  "garden",
+  "read",
+  "play",
 ] as const;
 
 const who = z.enum(RESIDENT_IDS);
@@ -68,7 +71,7 @@ export const eventSchema = z.object({
   id: z.string().regex(/^[a-zA-Z0-9_-]{1,100}$/),
   contextId: z.string().max(100).optional(),
   revision: z.number().int().nonnegative(),
-  source: z.enum(['ai', 'opening']),
+  source: z.enum(["ai", "opening"]),
   title: z.string().min(1).max(120),
   summary: z.string().min(1).max(800),
   dialogue: z.array(dialogueLineSchema).min(1).max(12),

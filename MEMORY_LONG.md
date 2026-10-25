@@ -45,3 +45,16 @@
 - Lịch cư dân 24 giờ Việt Nam ở `lib/daily-routines.ts`; AI plan ưu tiên và nối về lịch nền không nhảy vị trí. Động vật chưa được nối lịch ngày đêm.
 - `scripts/setup-local.mjs` khởi tạo D1 local lặp lại an toàn; startup dùng XDG trong `.sites-runtime`, không cần thay HOME.
 - Nguồn sự thật của đợt này: `docs/CLOUD_REVIEW.md`. Không có bằng chứng mới về production, scheduler hay model training.
+
+## An và thế giới mở rộng — 25/10/2026
+- Đã xác minh môi trường được Publish (runtime source spec revision 4). Phát triển tiếp trong cùng checkout, không tạo worktree.
+- Nguồn hiện hành: `docs/LIVING_REALTIME.md`. 24 NPC ban đầu, +3/ngày TP.HCM, tối đa 240; tối đa 60 hiển thị và ưu tiên người đang gặp An. Vai trò thêm qua dữ liệu/UI hoặc đề xuất local LLM tối đa một lần/ngày.
+- Lớp RealContext tách giờ thực Việt Nam khỏi simulation clock. Open-Meteo và Nager.Date đã đọc thành công qua relay đi đúng session proxy; có cache, timestamp, stale/unavailable. Chưa có traffic/festival feed; lịch âm/nghỉ bù chưa đầy đủ.
+- llama.cpp b11856 + Qwen2.5-1.5B-Instruct Q4_K_M CPU đã chạy và xác minh SHA-256. Fixture đầu-cuối sinh hội thoại tiếng Việt và vai trò mới đạt; model nhỏ, chất lượng có thể khuôn mẫu. Không fine-tune hoặc paid AI API.
+- `npm run living:up` khởi động web, bounded context relay, model và daemon local. Daemon 15 phút/lượt có ID idempotent, không phải scheduler production.
+- Migration append-only 0002 thêm context_cache/living_turns. Scene/snapshot/tick audit ghi nguyên tử; tiến triển chỉ cập nhật sau hoạt động đã hoàn tất trong mô phỏng. Không thay đổi SQL migration cũ hay dữ liệu production.
+- Bảy bộ test thuần và kiểm thử API cũ/mới, Chromium desktop/mobile đạt trong đợt này; ảnh `docs/screenshots/living-*-preview.png` là local preview. Giữ các giới hạn trong báo cáo, không suy luận production hoạt động.
+
+- Bổ sung nguồn VisitHCMC công khai: cache sáu giờ, kiểm tra khoảng ngày/URL, loại ngày không xác định. Đã xác minh tháng 5/2026 có 3 mục và tháng 10/2026 trả rỗng. Tổng tám bộ test thuần; không dùng lịch rỗng để khẳng định thành phố không có sự kiện.
+
+- Daemon thực trong cloud local đã ghi lượt `living-2026-10-25-30` với generator=local-llm và mở vai trò mới ngày 25/10. Browser QA cuối có 26 NPC phụ, không dùng số cố định 24 để phủ nhận tăng dân số.

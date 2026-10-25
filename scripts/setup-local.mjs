@@ -1,3 +1,4 @@
+import { readFileSync, appendFileSync, existsSync } from "node:fs";
 import "./sites-env.mjs";
 import { spawnSync } from "node:child_process";
 
@@ -38,6 +39,14 @@ if (tables.length === 0) execute(["--file", "drizzle/0000_deep_firebird.sql"]);
 else if (tables.length !== 2)
   throw new Error("Partial base schema; inspect and back up before repair.");
 execute(["--file", "drizzle/0001_living_world_and_training.sql"]);
+execute(["--file", "drizzle/0002_living_context_and_turns.sql"]);
 console.log(
   "Local D1 schema ready; existing snapshots and episodes preserved.",
 );
+
+if (process.env.HTTPS_PROXY) {
+  const file = ".dev.vars";
+  const existing = existsSync(file) ? readFileSync(file, "utf8") : "";
+  if (!/^XOM_CONTEXT_RELAY=/m.test(existing))
+    appendFileSync(file, "\nXOM_CONTEXT_RELAY=http://127.0.0.1:8091\n");
+}

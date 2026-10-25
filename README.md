@@ -69,3 +69,17 @@ Xem danh mục đầy đủ tại **[docs/INDEX.md](docs/INDEX.md)**:
 - **Mục IV — Hồ sơ Quyết định Kiến trúc (ADR):** `docs/DECISIONS/ADR-0001` → `ADR-0008`
 - **Mục V — Vận hành, Bảo mật & Đóng góp:** [OPERATIONS.md](docs/OPERATIONS.md) · [RUNBOOK.md](docs/RUNBOOK.md) · [SECURITY.md](docs/SECURITY.md) · [CONTRIBUTING.md](docs/CONTRIBUTING.md) · [STARTER_REFERENCE.md](docs/STARTER_REFERENCE.md)
 - **Mục VI — Kiểm thử & Báo cáo Đánh giá:** [TESTING.md](docs/TESTING.md) · [TECHNICAL_REVIEW.md](docs/TECHNICAL_REVIEW.md) · [ZIP_REVIEW.md](docs/ZIP_REVIEW.md)
+
+## An và bối cảnh TP.HCM — bản mở rộng 25/10/2026
+
+Đã thêm cư dân phụ tăng theo ngày, điểm học/khám/chợ, planner theo giờ Việt Nam, dữ liệu Open-Meteo/Nager.Date và AI local không gọi API tính phí. Xem [thiết kế, nguồn dữ liệu và kiểm chứng](docs/LIVING_REALTIME.md), gồm các giới hạn về kẹt xe, lịch âm, lễ hội và production.
+
+```bash
+corepack pnpm install --frozen-lockfile
+npm run build
+node scripts/setup-local.mjs
+python3 scripts/setup-local-ai.py
+npm run living:up
+```
+
+Cần Node 24+, Python 3.12 và khoảng 2 GiB đĩa cho model/binary/cache AI. Giữ `living:up` chạy để relay, model và daemon hoạt động. Đây là quy trình cloud local; Publish môi trường không phải deploy Site hoặc tạo scheduler production.
