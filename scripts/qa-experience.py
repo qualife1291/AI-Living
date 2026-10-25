@@ -26,15 +26,24 @@ with sync_playwright() as p:
    page.locator('.conversation blockquote').wait_for(timeout=15000);assert 'quầy nước' in page.locator('.conversation blockquote').inner_text()
    page.screenshot(path=str(out/f'conversation-{name}-preview.png'))
    page.get_by_role('button',name='Đóng bảng thông tin',exact=True).click()
-   page.get_by_role('button',name='Tạm nghỉ',exact=True).click();page.wait_for_timeout(400);paused=host.get_attribute('data-position');page.wait_for_timeout(700);assert paused==host.get_attribute('data-position')
-   page.get_by_role('button',name='Tiếp tục',exact=True).click()
+   page.get_by_role('button',name='Tạm nghỉ',exact=True).click();page.get_by_role('button',name='Tiếp tục',exact=True).wait_for(timeout=15000);page.wait_for_timeout(500);paused=host.get_attribute('data-position');page.wait_for_timeout(700);assert paused==host.get_attribute('data-position')
+   page.get_by_role('button',name='Tiếp tục',exact=True).click();page.get_by_role('button',name='Tạm nghỉ',exact=True).wait_for(timeout=15000)
    page.screenshot(path=str(out/f'city-{name}-preview.png'))
+   page.context.set_offline(True);page.get_by_role('button',name='Tạm nghỉ',exact=True).click();page.get_by_role('alert').wait_for(timeout=10000);assert host.count()==1
+   page.context.set_offline(False);page.get_by_role('button',name='Thử kết nối lại',exact=True).click();page.get_by_role('alert').wait_for(state='hidden',timeout=20000)
    # Browser performance samples are software-rendered evidence, not hardware FPS claims.
    cdp=page.context.new_cdp_session(page);cdp.send('Performance.enable');before_metrics=cdp.send('Performance.getMetrics');page.wait_for_timeout(6000);after_metrics=cdp.send('Performance.getMetrics')
    metrics={m['name']:m['value'] for m in after_metrics['metrics']};stats=host.evaluate('(e)=>({...e.dataset})')
    assert page.evaluate('document.documentElement.scrollWidth<=window.innerWidth')
    assert not errors,errors
    report.append({'viewport':name,'stats':stats,'jsHeapBytes':metrics.get('JSHeapUsedSize'),'taskDurationSeconds':metrics.get('TaskDuration')})
+   if name=='desktop':
+    initial_geometry=int(host.get_attribute('data-geometries'))
+    for cycle in range(3):
+     page.get_by_role('button',name='Địa điểm',exact=True).click();page.get_by_role('button',name='Bản đồ 2D · nhẹ',exact=True).click();page.locator('.urban-map').wait_for(timeout=20000)
+     page.get_by_role('button',name='Địa điểm',exact=True).click();page.get_by_role('button',name='Không gian 3D',exact=True).click();host=page.locator('.three-canvas[data-ready="true"]');host.wait_for(timeout=60000)
+     assert int(host.get_attribute('data-geometries'))<=initial_geometry+2
+    canvas=host.locator('canvas')
    # Context loss must leave the world usable in 2D.
    canvas.evaluate('(c)=>c.getContext("webgl2").getExtension("WEBGL_lose_context").loseContext()');page.locator('.urban-map').wait_for(timeout=20000)
    assert page.locator('.three-canvas canvas').count()==0

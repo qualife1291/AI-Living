@@ -59,20 +59,24 @@ export default function Page() {
     } | null>(null);
   const dialog = useRef<HTMLDialogElement>(null),
     restoreFocus = useRef<HTMLElement | null>(null);
-  const loading = useRef(false);
-  const load = useCallback(async () => {
-    if (loading.current) return;
-    loading.current = true;
+  const loading = useRef(0);
+  const newest = useRef({revision:-1,serverMs:0});
+  const load = useCallback(async (force = false) => {
+    if (loading.current > 0 && !force) return;
+    loading.current++;
     try {
       const response = await fetch("/api/world?compact=1", { signal: AbortSignal.timeout(10000) });
       if (!response.ok) throw Error("Chưa kết nối được với thành phố.");
       const snapshot = (await response.json()) as Snapshot;
-      setClockOffset(Date.parse(snapshot.serverNow) - Date.now());
+      const serverMs=Date.parse(snapshot.serverNow);
+      if(snapshot.revision < newest.current.revision || (snapshot.revision === newest.current.revision && serverMs < newest.current.serverMs))return;
+      newest.current={revision:snapshot.revision,serverMs};
+      setClockOffset(serverMs - Date.now());
       setData(snapshot);
       setError("");
     } catch (e) {
       setError(e instanceof Error ? e.message : "Lỗi kết nối");
-    } finally { loading.current = false; }
+    } finally { loading.current--; }
   }, []);
   useEffect(() => {
     let cancelled=false;
@@ -130,7 +134,7 @@ export default function Page() {
         }),
       });
       if (!r.ok) throw Error("Trạng thái vừa đổi, hãy thử lại.");
-      await load();
+      await load(true);
     } catch (e) {
       setError(e instanceof Error ? e.message : "Lỗi thao tác");
     } finally {
@@ -312,11 +316,8 @@ export default function Page() {
           {panel === "context" && <LivingPanel onUpdated={load} />}
           {panel === "people" && (
             <>
-              <p>
-                Chọn một người để theo dõi trong không gian sống. Nhân vật trong
-                mô phỏng này đều là người trưởng thành.
-              </p>
-              {story && <article className="life-story"><small>HỒ SƠ CUỘC ĐỜI · {story.chapter}</small><h3>{person?.name} · {story.age} tuổi mô phỏng</h3><p>Đến xóm ngày {story.arrivedOn} · {story.days} ngày mô phỏng · {story.samples} trải nghiệm đã học.</p><p className="muted">Tuổi khởi đầu hư cấu {story.baseline}; mỗi năm mô phỏng tăng một tuổi. Không suy ra tuổi từ số lượt học.</p><h4>Những điều còn nhớ</h4><ol>{story.memories.slice(-5).map((m, i) => <li key={i}>{m}</li>)}</ol>{!story.memories.length && <p>Chưa có ký ức được lưu.</p>}</article>}
+              <p>Hỏi chuyện, xem ký ức hoặc chọn một cư dân để theo dõi.</p>
+              {story && <details className="life-story"><summary><b>{person?.name} · {story.age} tuổi mô phỏng</b><small>{story.chapter} · {story.samples} trải nghiệm</small></summary><p>Đến xóm ngày {story.arrivedOn} · {story.days} ngày mô phỏng · {story.samples} trải nghiệm đã học.</p><p className="muted">Tuổi khởi đầu hư cấu {story.baseline}; mỗi năm mô phỏng tăng một tuổi. Không suy ra tuổi từ số lượt học.</p><h4>Những điều còn nhớ</h4><ol>{story.memories.slice(-5).map((m, i) => <li key={i}>{m}</li>)}</ol>{!story.memories.length && <p>Chưa có ký ức được lưu.</p>}</details>}
               {person && world && <Conversation key={person.id} actorId={person.id} name={person.name} paused={world.paused}/>}
               <details className="wardrobe-details">
                 <summary>Tạo hình của {person?.name ?? "An"}</summary>
