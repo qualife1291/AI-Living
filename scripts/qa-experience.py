@@ -14,12 +14,12 @@ with sync_playwright() as p:
   for name,width,height,dpr in [('desktop',1280,800,1.5),('mobile',390,844,3)]:
    page=b.new_page(viewport={'width':width,'height':height},device_scale_factor=dpr,is_mobile=name=='mobile',has_touch=name=='mobile');errors=[];page.on('pageerror',lambda e:errors.append(str(e)))
    page.goto(base,wait_until='domcontentloaded',timeout=60000);host=page.locator('.three-canvas[data-ready="true"]');host.wait_for(timeout=90000)
-   before=host.get_attribute('data-position');page.wait_for_function('(p)=>document.querySelector(".three-canvas")?.dataset.position!==p',before,timeout=20000)
+   before=host.get_attribute('data-position');page.wait_for_function('(p)=>document.querySelector(".three-canvas")?.dataset.position!==p',arg=before,timeout=20000)
    assert float(host.get_attribute('data-person-height'))<float(host.get_attribute('data-car-length'))/2
    assert int(host.get_attribute('data-draw-calls'))<90
    canvas=host.locator('canvas');assert canvas.evaluate('(c)=>c.width/c.clientWidth')>=1.4
    page.get_by_role('button',name='Chất lượng đồ họa',exact=True).click()
-   page.wait_for_function('(dpr)=>Number(document.querySelector(".three-canvas")?.dataset.pixelRatio)===Math.min(dpr,2.5)',dpr,timeout=20000)
+   page.wait_for_function('(dpr)=>Number(document.querySelector(".three-canvas")?.dataset.pixelRatio)===Math.min(dpr,2.5)',arg=dpr,timeout=20000)
    page.get_by_role('button',name='Chất lượng đồ họa',exact=True).click();page.wait_for_function('Number(document.querySelector(".three-canvas")?.dataset.pixelRatio)===1')
    page.get_by_role('button',name='Chất lượng đồ họa',exact=True).click()
    page.get_by_role('button',name='Trò chuyện với An',exact=True).click();page.get_by_role('button',name='Bạn có dự định gì?',exact=True).click()

@@ -1002,7 +1002,8 @@ export function createCity(
     renderer.render(scene, camera);
     if (stamp - lastStatus > 180) {
       lastStatus = stamp;
-      const companions = current ? actors.filter(a=>a.id!==current.id && nearby(current,a)) : [];
+      const selectedActor = current;
+      const companions = selectedActor ? actors.filter(a=>a.id!==selectedActor.id && nearby(selectedActor,a)) : [];
       const speech = livingSpeechAt(world, lastTime) ?? speechAt(world, current && companions.length ? [current, companions[0]] : actors, state.events ?? [], lastTime),
         speaker = actors.find((a) => a.id === speech?.speaker);
       const p = new THREE.Vector3(
