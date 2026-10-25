@@ -9,3 +9,8 @@
 - Automation cũ 6adcbdcc81cc819188a4a2ae65392369 hiện paused, giữ paused; không tạo bản trùng. Chưa cam kết AI24/7.
 - Phạm vi bản mới: hardening, nội thất, hồ sơ tuổi mô phỏng, OSM3D snapshot và registry nghiên cứu nguồn.
 - Trạng thái hiện tại: đang chuẩn bị; chỉ ghi thành công khi native deployment trả succeeded. Metadata phiên bản cuối được ghi bổ sung sau publish.
+
+## Kiểm tra trước phát hành
+- TypeScript/lint/build, test mô phỏng và test-map-release đạt. Drizzle reader nhận migration0 và4, migration4 có10 statement riêng; thử fresh/legacy + lặp lại giữ world nguyên vẹn.
+- Chromium desktop1440/mobile390: OSM3D912 footprint,912 chiều cao ước lượng, <=8 draw calls, không cư dân giả/JS error/overflow. Ảnh local docs/screenshots/map3d.
+- Lần upload đầu bị từ chối trước deploy vì entrypoint archive ở server/index.js, trong khi native yêu cầu dist/server/index.js. Đang sửa cấu trúc package; chưa có deployment thành công từ lần này. Không coi push source là đã lên production.

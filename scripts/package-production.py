@@ -16,6 +16,6 @@ for path in (root/'dist').rglob('*'):
         raise SystemExit('Disallowed deployment artifact')
 out=root/'work/production.tar.gz';out.parent.mkdir(exist_ok=True)
 with tarfile.open(out,'w:gz') as archive:
-    for folder in ['server','client','.openai']:
-        archive.add(root/'dist'/folder,arcname=folder)
+    archive.add(root/'dist',arcname='dist')
+    archive.add(root/'dist'/'.openai',arcname='.openai')
 print(json.dumps({'archive':str(out),'commit_sha':subprocess.check_output(['git','rev-parse','HEAD'],cwd=root,text=True).strip(),'project_id':manifest['project_id'],'sha256':hashlib.sha256(out.read_bytes()).hexdigest()}))
