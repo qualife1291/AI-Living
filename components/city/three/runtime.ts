@@ -4,6 +4,7 @@ import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import {
   actorsAt,
+  nearby,
   animalsAt,
   along,
   simulationTime,
@@ -498,7 +499,10 @@ export function createCity(
       new THREE.MeshStandardMaterial({ color: "#496d77", roughness: 0.3 }),
       26,
     );
-  scene.add(trafficBody, trafficGlass);
+  const trafficWheels = new THREE.InstancedMesh(new THREE.CylinderGeometry(1,1,1,10),new THREE.MeshStandardMaterial({color:"#273c49",roughness:.9}),104);
+  const trafficLights = new THREE.InstancedMesh(boxGeo,new THREE.MeshStandardMaterial({emissive:"#ffe5a0",emissiveIntensity:.25}),104);
+  trafficWheels.frustumCulled=trafficLights.frustumCulled=false;
+  scene.add(trafficBody, trafficGlass, trafficWheels, trafficLights);
   trafficBody.frustumCulled = trafficGlass.frustumCulled = false;
   const ring = new THREE.Mesh(
     new THREE.RingGeometry(6, 7, 32),
@@ -878,7 +882,18 @@ export function createCity(
       dummy.scale.multiply(new THREE.Vector3(0.86, 0.45, 0.66));
       dummy.updateMatrix();
       trafficGlass.setMatrixAt(i, dummy.matrix);
+      for(let wheel=0;wheel<4;wheel++) {
+        const side=wheel%2===0?-1:1, end=wheel<2?-1:1;
+        const dx=side*dimensions.width*.48, dz=end*dimensions.length*.3;
+        dummy.position.set(a[0]+(metro?0:Math.cos(angle)*10)+dx*Math.cos(angle)+dz*Math.sin(angle),4,a[1]-(metro?0:Math.sin(angle)*10)-dx*Math.sin(angle)+dz*Math.cos(angle));
+        dummy.rotation.set(0,angle,Math.PI/2);dummy.scale.set(3.5,2.5,3.5);dummy.updateMatrix();trafficWheels.setMatrixAt(i*4+wheel,dummy.matrix);
+        const ldx=side*dimensions.width*.32,ldz=end*dimensions.length*.505;
+        dummy.position.set(a[0]+(metro?0:Math.cos(angle)*10)+ldx*Math.cos(angle)+ldz*Math.sin(angle),9,a[1]-(metro?0:Math.sin(angle)*10)-ldx*Math.sin(angle)+ldz*Math.cos(angle));
+        dummy.rotation.set(0,angle,0);dummy.scale.set(3,2,1);dummy.updateMatrix();trafficLights.setMatrixAt(i*4+wheel,dummy.matrix);trafficLights.setColorAt(i*4+wheel,color.set(end>0?"#fff1b5":"#ed7864"));
+      }
     }
+    trafficWheels.instanceMatrix.needsUpdate=trafficLights.instanceMatrix.needsUpdate=true;
+    if(trafficLights.instanceColor)trafficLights.instanceColor.needsUpdate=true;
     trafficBody.instanceMatrix.needsUpdate =
       trafficGlass.instanceMatrix.needsUpdate = true;
     if (trafficBody.instanceColor) trafficBody.instanceColor.needsUpdate = true;
@@ -987,7 +1002,8 @@ export function createCity(
     renderer.render(scene, camera);
     if (stamp - lastStatus > 180) {
       lastStatus = stamp;
-      const speech = livingSpeechAt(world, lastTime) ?? speechAt(world, actors, state.events ?? [], lastTime),
+      const companions = current ? actors.filter(a=>a.id!==current.id && nearby(current,a)) : [];
+      const speech = livingSpeechAt(world, lastTime) ?? speechAt(world, current && companions.length ? [current, companions[0]] : actors, state.events ?? [], lastTime),
         speaker = actors.find((a) => a.id === speech?.speaker);
       const p = new THREE.Vector3(
         speaker?.position[0] ?? 0,
