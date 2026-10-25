@@ -1,6 +1,6 @@
 # Xóm AI — Khu phố của những trí tuệ nhỏ
 
-> Production version6 (25/10/2026), owner-private: xem [nhật ký phát hành](docs/releases/2026-10-25-production.md), [quy trình phục hồi](docs/PRODUCTION_RUNBOOK.md) và [khảo sát nguồn map3D](docs/MAP_3D_SOURCES.md).
+> Production version7 (25/10/2026), owner-private: xem [nhật ký phát hành](docs/releases/2026-10-25-production.md), [quy trình phục hồi](docs/PRODUCTION_RUNBOOK.md) và [khảo sát nguồn map3D](docs/MAP_3D_SOURCES.md).
 
 > Mới nhất: [Thành phố 3D và cao ốc](docs/THREE_WORLD.md) — renderer mặc định mới, điều khiển và bằng chứng local.
 
@@ -97,3 +97,5 @@ Mỗi cư dân có mô hình hành vi học từ phản hồi đã hoàn tất; 
 
 ## Độ tin cậy, nội thất và hồ sơ cuộc đời
 Xem `docs/INTERIORS_AND_RELEASE.md` cho phạm vi đã làm, cách cấu hình quyền chủ sở hữu, scheduler opt-in và bằng chứng kiểm thử. Không mở public chỉ bằng đổi audience.
+
+> Bản7 sửa tỷ lệ/độ nét, thêm chat và lượt mở theo phiên; xem [báo cáo trải nghiệm và kiểm thử](docs/EXPERIENCE_REVIEW.md). Lịchcloud mỗi giờ đã bật, lần chạy đầu cần theo dõi; không coi đây là SLA24/7.

@@ -1,20 +1,10 @@
-# Việc tiếp theo sau production version6
+# Việc tiếp theo sau production version7
 
-Đọc docs/PRODUCTION_RUNBOOK.md, docs/releases/latest.json, docs/MAP_3D_SOURCES.md và MEMORY_LONG.md trước khi sửa. Checkout /workspace/AI-Living, GitHub nhánh work. Người dùng yêu cầu luôn push checkpoint và memory để phục hồi khi env lỗi.
+Đọc docs/releases/latest.json, docs/EXPERIENCE_REVIEW.md, docs/PRODUCTION_RUNBOOK.md và MEMORY_LONG.md. Repo qualife1291/AI-Living, nhánh work. Người dùng yêu cầu luôn push code/memory; nativeGitHub đã xác minh quyền admin/push và origin trong phiên này. Không commit backup/credential.
 
-- Tiếp tục indoor graph: sảnh/chờ cabin/chọn tầng/bàn/gọi món/ăn/dọn; hiện nội thất và cabin chỉ là hoạt cảnh, cư dân chỉ bố trí tầng trệt. Tuổi là mô phỏng, chưa family/birth/death.
-- Map: OSM3D912 footprint từ snapshot; height đều ước lượng. Chưa map-match cư dân, terrain hoặc floorplan thật. Nguồn đã khảo sát trong MAP_3D_SOURCES; ưu tiên height coverage và bộ asset CC0 nhỏ trước thêm engine.
-- Production version6 đã xác minh health/history/writer. XOM_OWNER_PRIVATE_ORIGIN dựa vào owner-private dispatch; PHẢI gỡ trước mở audience. Không đưa local admin/relay lên production. Quyền owner-ID cụ thể và tách UI viewer/admin vẫn cần trước public.
-- Automation6adcbdcc81cc819188a4a2ae65392369 đang paused; giữ nguyên, không tạo trùng. Chưa kích hoạt cron/Qwen production; local daemon không phải24/7.
-- Các script Sites helper chưa cài trong env này: fallback Git transport stdin ẩn/package đã thêm; dùng native Sites để cấp credential và deploy. Mỗi lần phát hành kiểm tra đúng remote và SHA, không chỉ push GitHub.
-- Chưa browser QA production với phiên owner; chưa benchmark điện thoại thật. Build có cảnh báo chunkThree lớn/static route classification, không có lỗi build.
-
-## Đang sửa phản hồi An đứng yên/đồ họa — 25/10/2026
-- Đã đọc live: paused=false, revision3, lastAI từ24/10, không livingTurn; mới chỉ initialize living trong GET, chưa có lượt persist. 3D chỉ đọc livingSpeechAt và bỏ speechAt nền. Người40 units, car19units: sai tỷ lệ.
-- Đang thêm scale chuẩn10units/m (người17.5,car44), DPRquality, ít blur, tương tác hội thoại có lưu/rules và view session khôngIP; pulse idempotent cho viewer. Migration0005 do Drizzlegenerate, không sửa cũ.
-- Cần test/backend/QA/perf và publish, chưa coi WIP là live. User mới yêu cầu24/7: có thể cập nhật/resume automation cũ sau xác minh writer; không tạo lịch trùng, không paid API.
-- Tiến độ: có compact world feed, UI chat + quick prompts, DPR3 mức, HUD bỏ blur và nhãn ngắn, đạo cụ theo hoạt động. Cần kiểm thử bất đồng bộ, view concurrency, avatar scale, DPR, offline/contextloss, soak/heap. Thang máy và indoor graph chưa được nâng cấp trong mốc này.
-- Đã thêm test-liveness thuần (quét24h, scale, reply); test concurrency API đang thực hiện, lần đầu bị worker restart khi build thaydist nên chưa tính là đạt. Không chạy build cùng lúc API/browser. Migration5 đã generate3table mới; backup trước migrationproduction ở backups/pre-liveness-20261025.json (gitignored), livebefore revision3,2events.
-- Đã fixharddeadline/cached-onlyGET; testcontext mockneverfetch đạt. API+bench qua relay đúng cấu hình đã PASS:64GET0error,p50~216ms,p95~357ms(max358), so với coldoldp95~13.3s. Browser đã xác nhận chat/proportion/DPR nhưng bắt lỗiUIpause nhậnresponsecũ; đã thêm forcedrefresh + revision/timeguard và đang kiểm tra lại. Ảnh chatdesktop tạm đã gửi làlocalfixture.
-- Đã PASS QA Chromium desktop1280/mobile390DPR3: movement/ratio/DPR/chat/pause/resume/offline/contextloss; desktop3D↔2D3vòng resourcecounts ổn định, noWebGL/reducedmotionfallback. Ảnh/metrics docs/screenshots/experience làQAfixturetrưa slowmotion, không phải production. 36/33drawcalls,10geometries,heap12–13MB mẫu; chưaGPU thật/24hsoak.
-- Tiếp: commit/pushmốcQA+releasebuild/package/sourceSitespush -> privatepublish -> health/history/pulse/metrics readback -> update/resumeautomation cũhourly theo yêu cầu24/7 -> ledger/memory/push. Không tạoSite/lịchtrùng; preserveownerprivate.
+- Scheduler6adcbdcc81cc819188a4a2ae65392369 đã enable và đổi thành mỗi giờ theo yêu cầu24/7; đang chờ lần chạy đầu được ghi nhận. Kiểm tra bằng automations.peek, không tạo lịch trùng. Lịch lưu không chứng minh SLA24/7 hay model suy nghĩ liên tục. Workerclock/routine và pulsevisible tiếp tục tách với lượtLLM tự động.
+- Indoorgraph/elevatoroccupancy/call-serve-clean/va chạm/IK vẫn chưa hoàn chỉnh. Tuổi/hoạt động/phản hồi đang là mô phỏng; visitorchat dùng luật có lưu, không phải freeformLLM.
+- Cần benchmark GPU/điện thoại vật lý và soak dài; SwiftShaderQA không phải chứng nhận nhà phát triển game. Theo dõi giới hạnquota và scheduler/logs.
+- Trước public: tách UIviewer/admin, ownerID/rate limits/cache theo tải; gỡ XOM_OWNER_PRIVATE_ORIGIN trước đổi audience. Giữ owner-private hiện tại.
+- Map912footprint vẫnheightước lượng, chưa mapmatch hoặc terrain; nguồn ở MAP_3D_SOURCES. Giữ scale10units/m khi nhập assets, đừng để nhân vật khổng lồ lại.
+- LocalQA: phải dùng contextrelayNode qua sessionproxy, restartpreview sau rebuilddist; testDB work/liveness-qa, port5177, seed-experience-fixture.mjs chỉ local. Source/releaseSHA đang chạy18350eb; commit nhật ký sau phát hành khác SHA source là bình thường.

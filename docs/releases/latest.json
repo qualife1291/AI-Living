@@ -2,21 +2,31 @@
   "project_id": "appgprj_6adc7dc364d48191a09202c5b43309e4",
   "production_url": "https://xom-ai-long.bouncyslug18.chatgpt.site",
   "audience": "owner-private",
-  "version_number": 6,
-  "source_commit": "71d657f4b110bf2f77f220c5bf6e4e1566cae573",
-  "version_id": "appgprj_6adc7dc364d48191a09202c5b43309e4~appgver_fcb8a3709c388191b751b22b8e687803",
-  "deployment_id": "appgdep_6addda36033881918d1902aa27758e4a",
+  "version_number": 7,
+  "source_commit": "18350eb351e6249d905907b5f8b52a655c068007",
+  "version_id": "appgprj_6adc7dc364d48191a09202c5b43309e4~appgver_6d24289db0b88191ab7c7b1b8f539092",
+  "deployment_id": "appgdep_6ade16530c4c81919567a75da59b0333",
   "status": "succeeded",
-  "deployed_at_utc": "2026-10-25T10:30:45.007378+00:00",
+  "deployed_at_utc": "2026-10-25T14:46:59.979270+00:00",
   "runtime_env_revision": 1,
   "post_deploy": {
     "health": "ready",
-    "tables": 9,
+    "tables": 12,
+    "revision": 4,
     "historical_events_preserved": 2,
     "character_memories_preserved": true,
-    "writer_status": 200,
-    "writer_updated": 0
+    "pulse_status": 200,
+    "has_persisted_living": true,
+    "stale": false,
+    "views_endpoint": 200,
+    "read_latency_sample_ms": 288
   },
-  "backup_sha256": "6073702182eaebc654ced6387b010bdfd16f01ac20bcf097de1e590f60b9033e",
-  "automation": "existing automation remains paused"
+  "backup_sha256": "bf22bc531e0345e216c683d20f906ca2d2dad293ebcf74d2f90da6607bd7a530",
+  "automation": {
+    "id": "6adcbdcc81cc819188a4a2ae65392369",
+    "is_enabled": true,
+    "cadence": "hourly",
+    "timezone": "Asia/Ho_Chi_Minh",
+    "first_recorded_run": null
+  }
 }

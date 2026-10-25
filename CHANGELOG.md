@@ -72,3 +72,5 @@
 - Khôi phục thoại nền3D, thêm chat có lưu theo ngữ cảnh/luật, lượt mở theo phiên và pulseidempotent.
 - WorldGET chỉ đọccache bối cảnh, compact8events; giới hạn refreshcontext và chặn responsecũ sau điều khiển.
 - Kiểm thử concurrency/API, viewportDPR, pause/offline/contextloss/lifecycle và các giới hạn tại EXPERIENCE_REVIEW.md.
+
+- Productionversion7 đã nativepublish/readback; reuse lịchcloud mỗi giờ để cập nhật khi đóng trang. Lịchchưa có recordedrun đầu tại thời điểm bàn giao, không có cam kếtSLA24/7.

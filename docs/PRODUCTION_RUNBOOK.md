@@ -26,4 +26,7 @@
 - Credential hết hạn: xin native credential mới; không tìm token trong env/files, không phát hành từ GitHub chỉ vì push thành công.
 
 ## Giới hạn
-Version6 chưa có production CPU Qwen hay cron được kích hoạt. Automation cũ đang paused, giữ nguyên. Ba tầng nội thất/cabin chưa phải indoor routing thật. OSM3D dùng footprint thật nhưng height snapshot cũ đều ước lượng; chưa có terrain/indoor survey/map matching. Tiếp tục theo docs/MAP_3D_SOURCES.md.
+Version7 chưa có production CPU Qwen/Workercron; automation cũ đã enable theo yêu cầu24/7 và chạy mỗi giờ. Kiểm tra recordedrun, không tạo lịch trùng. Ba tầng nội thất/cabin chưa phải indoor routing thật. OSM3D dùng footprint thật nhưng height snapshot cũ đều ước lượng; chưa có terrain/indoor survey/map matching. Tiếp tục theo docs/MAP_3D_SOURCES.md.
+
+## Kiểm thử nhịp sống bản7
+WorldGET chỉ đọccache để tránh upstreamstall; pulse/automation refreshcontext. Viewcounter là lượt mở theo phiên30min, không phải số người. QA phải táchbuild/restartpreview/API/browser và dùng frame-state để xác nhậnpause; không suy luận lỗi chỉ từscreenshot. Xem scripts/qa-experience.py và EXPERIENCE_REVIEW.

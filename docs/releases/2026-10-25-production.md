@@ -22,3 +22,10 @@
 - get_site xác nhận owner-private, chỉ owner,0 external visitors. DB overview có đủ9 bảng. Health200/database ready, world revision3;2 sự kiện cũ và ký ức nhân vật được giữ. POST learning bằng service access trả200/updated0, không thêm test scene.
 - SHA256 backup private lưu trong latest.json; payload backup/token không nằm Git. Source Sites main đã push đúng SHA; GitHub checkpoint và nhật ký cập nhật riêng.
 - Chưa bật scheduler hoặc resume automation, chưa tuyên bố AI24/7. Browser QA là local preview; production được xác minh native deploy + API, chưa browser QA phiên đăng nhập owner.
+
+## Version7 — 21:46 ngày25/10/2026 (giờ Việt Nam)
+- Source18350eb351e6249d905907b5f8b52a655c068007. Native succeeded, deploymentappgdep_6ade16530c4c81919567a75da59b0333; versionappgprj_6adc7dc364d48191a09202c5b43309e4~appgver_6d24289db0b88191ab7c7b1b8f539092; envrevision1/owner-private không đổi.
+- Migration0005 thêm analytics/conversation. Backupworld+history giữ riêng/gitignored; hash ởlatest.json. Nativeoverview12table; healthready,2eventcũ/kýức giữnguyên,revision4,persistedlivingTurn/stale=false,pulse200,views200. Worldcompactreadsample288ms qua serviceaccess. Không chạy fixture trênprod.
+- Chat/ratio/DPR/UI/pulse/cachedfeed trongEXPERIENCE_REVIEW. Bằng chứngảnh làlocalpreview. Native/API kiểm chứngproduction, chưa browserownerloggedin.
+- Theo yêu cầu mới24/7, đã enable/reuse automation cũ và đổi lịchmỗigiờ,AsiaHoChiMinh; chưa có recordedfirstrun. Không cam kếtSLA,không bậtcrontrùng/paidAPI.
+- MốcGitpush/prodbuild/package/sourceSite/deploy được lưu; góiđãbuild từđúngSHA. Nhật kýcommit saudeployment không phải thay source đang chạy.
