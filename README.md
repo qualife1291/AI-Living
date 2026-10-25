@@ -36,10 +36,9 @@ Yêu cầu: **Node.js `>=22.13.0`** (khuyến nghị Node 22.18+ hoặc Node 24+
 # Nếu công cụ giải nén của bạn ẩn dotfile, khôi phục từ bản dự phòng:
 # cp -n gitignore.txt .gitignore && cp -n npmrc.txt .npmrc
 
-corepack pnpm install --frozen-lockfile
-node node_modules/vinext/dist/cli.js build
-node --import ./scripts/sites-env.mjs ./node_modules/wrangler/bin/wrangler.js d1 execute DB --local --config dist/server/wrangler.json --persist-to .wrangler/state --file drizzle/0000_deep_firebird.sql
-node --import ./scripts/sites-env.mjs ./node_modules/wrangler/bin/wrangler.js d1 execute DB --local --config dist/server/wrangler.json --persist-to .wrangler/state --file drizzle/0001_living_world_and_training.sql
+npm run install:ci
+npm run build
+node scripts/setup-local.mjs # migration 0000–0003, không reset dữ liệu
 npm run dev
 ```
 
@@ -93,3 +92,6 @@ Trang chủ nay là không gian live gần toàn màn hình: 33 địa điểm, 
 Mỗi cư dân có mô hình hành vi học từ phản hồi đã hoàn tất; ba động vật có policy theo loài. Archive trải nghiệm có thể xuất bằng `npm run training:export`. Đây chưa phải fine-tune trọng số Qwen.
 
 Đọc [báo cáo thành phố](docs/URBAN_WORLD.md) và [ba hướng sản phẩm](docs/DECISIONS/ADR-0009-shared-world-three-product-directions.md): quan sát An, phim trường giáo dục và nhân vật cá nhân. Các hướng public/video/multi-user chưa được mở trong đợt này.
+
+## Độ tin cậy, nội thất và hồ sơ cuộc đời
+Xem `docs/INTERIORS_AND_RELEASE.md` cho phạm vi đã làm, cách cấu hình quyền chủ sở hữu, scheduler opt-in và bằng chứng kiểm thử. Không mở public chỉ bằng đổi audience.

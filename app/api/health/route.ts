@@ -14,6 +14,10 @@ type TickRunRow = {
 };
 
 export async function GET() {
+  try { return await health(); }
+  catch { return json({ ok: false, database: "unavailable", error: "Không đọc được trạng thái cơ sở dữ liệu." }, 503); }
+}
+async function health() {
   const { world, revision, serverNow, events } = await readWorld();
   const nowMs = Date.parse(serverNow);
   const wt = worldTime(world, nowMs);

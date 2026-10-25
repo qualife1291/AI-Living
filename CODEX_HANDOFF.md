@@ -46,7 +46,7 @@ Bản ZIP này đã hoàn tất việc **định dạng sạch toàn bộ mã ng
    npm run build
    ```
 2. **Khởi tạo hoặc nâng cấp DB Local:**
-   - Áp dụng `0000_deep_firebird.sql` (nếu DB mới) và `0001_living_world_and_training.sql`.
+   - Chạy `node scripts/setup-local.mjs` sau build để áp dụng đủ 0000–0003; không reset DB.
 3. **Browser QA (Desktop & Mobile 360–430 px):**
    - Kiểm tra hiển thị pha ngày/đêm, thời tiết, chuyển động robot, chế độ Theo (`Follow`), tạm dừng (`Pause`) và mục Bối cảnh & Tự huấn luyện AI trong tab **Nhịp sống**.
    - Chụp ảnh thực tế gửi người dùng kèm nhãn `preview` hoặc `production`.

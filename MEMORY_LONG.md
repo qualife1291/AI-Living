@@ -76,3 +76,9 @@
 - Camera orbit/pan/zoom/follow/skyline/overview, HUD/modal cũ, đổi 2D nhẹ, fallback không WebGL2/mất context, dispose context/resources khi tháo. OSM vẫn là khảo sát 2D, không map-match; skyline/chiều cao là hư cấu.
 - Hướng dẫn tiếp nhận và kiểm chứng: docs/THREE_WORLD.md. Kiểm tra thiết bị thật/LOD/nội thất/thời tiết 3D tiếp tục là backlog; không tuyên bố fps hardware hay fine-tune Qwen.
 - 12 suite thuần, TypeScript/lint/build và frozen-lockfile đạt. Chromium SwiftShader WebGL2 desktop/mobile chạy cả dev và Workers build local; kiểm tra chọn cư dân/địa điểm, camera/HUD/panel, 3D↔2D, OSM và fallback không/mất WebGL. Lưu browser QA có thể chạy lại ở scripts/qa-three.mjs; sáu ảnh three-*-preview.png là cloud local, không phải production. Font Google bị CA lỗi trong QA, dùng fallback; không bỏ TLS. Chunk Three >500KB đã tải động; chưa benchmark thiết bị thật.
+
+## Hardening và nội thất — 25/10/2026
+- Xem docs/INTERIORS_AND_RELEASE.md: collector archive giữ batch>200, bound proposal, fail-closed owner gate Worker, health503, context deadline/negative cache, scheduled rules opt-in.
+- Nội thất Three.js mặt cắt với furniture/cabin minh họa; hồ sơ tuổi mô phỏng/ký ức. Chưa indoor graph hay vận chuyển NPC bằng cabin. Nhân vật hiển thị lấy occupancy thật; không giả tạo cuộc sống để làm ảnh.
+- Unit/check/lint/build và API isolated local240 samples/admin403 đạt; Chromium SwiftShader desktop/mobile390 city/profile/interior/floor không lỗi/tràn. Ảnh thật docs/screenshots/hardening. Chưa production hoặc benchmark điện thoại vật lý.
+- Người dùng yêu cầu chủ động push checkpoints và memory để tránh mất context; làm theo AGENTS.md mục13. Nhánh `work`; không tự merge/deploy bằng sự có mặt của source.

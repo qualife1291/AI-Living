@@ -55,3 +55,9 @@
 - Thêm contextual bandit từng cư dân và policy động vật, fit phản hồi từ hoạt động hoàn tất; không học sớm/trùng/hủy. Qwen chưa fine-tune.
 - Thêm migration 0003 archive trải nghiệm, cập nhật policy + dataset nguyên tử, phân trang JSONL, helper backup SQLite và export local.
 - Ghi ADR-0009 cho ba hướng chung nền thế giới: live viewer, studio giáo dục tách nhánh và nhân vật cá nhân; chưa bật public/video/multi-user.
+
+## 25/10/2026 — Độ tin cậy và góc quan sát nội thất
+- Thêm mặt cắt 3D nội thất, lựa chọn tầng và hoạt cảnh cabin thang máy; hồ sơ tuổi mô phỏng/chương đời sống/ký ức.
+- Cải thiện màu trời và ánh nắng theo giờ; giới hạn công việc render khi tab ẩn.
+- Sửa archive batch lớn, proposal cũ, duplicate event, health/schema, context timeout/cache và polling; thêm gate owner và scheduler rules opt-in.
+- Chưa deploy production; thang máy chưa điều phối cư dân thực. Chi tiết `docs/INTERIORS_AND_RELEASE.md`.

@@ -83,9 +83,9 @@ export async function POST(req: Request) {
         .bind(JSON.stringify(outcome.world), 'home', revision),
     ]);
 
-    return results[1].meta.changes
-      ? json({ ok: true, id: input.id, revision: revision + 1 })
-      : json({ error: 'Revision conflict' }, 409);
+    if (results[1].meta.changes) return json({ ok: true, id: input.id, revision: revision + 1 });
+    const duplicate = await db.prepare('SELECT id FROM episodes WHERE id = ?').bind(input.id).first();
+    return duplicate ? json({ ok: true, duplicate: true, id: input.id }) : json({ error: 'Revision conflict' }, 409);
   } catch (err: unknown) {
     // Fixes L3: Handle concurrent duplicate ID race cleanly as idempotent success
     const message = err instanceof Error ? err.message : String(err);

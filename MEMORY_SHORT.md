@@ -15,9 +15,10 @@
 - Daemon chỉ chạy khi process/môi trường còn sống; không có cam kết production 24/7.
 - Bộ dataset archive chứa phản hồi mô phỏng, cần đánh giá chất lượng trước khi dùng fine-tune. Không tuyên bố mọi cư dân đã có cùng số mẫu học chỉ vì đều được khởi tạo policy.
 
-## Đang thực hiện — hardening và đời sống nội thất (25/10/2026)
-- Người dùng yêu cầu sửa các điểm rà soát, bổ sung nội thất/thang máy, hình ảnh và hồ sơ tuổi/trưởng thành; yêu cầu luôn push code và lưu context để phục hồi khi env lỗi.
-- Đã đồng bộ frozen dependency Three.js. Source đang sửa: archive bỏ cap 32, proposal kèm basis revision/turnId, health kiểm tra schema, polling chống chồng, admin gate tại Worker, scheduled handler opt-in rules.
-- Nội thất Three.js mặt cắt + 3 tầng + cabin hoạt cảnh, đồ đạc theo loại địa điểm; nhân vật lấy occupancy thật, chỉ tầng trệt. Thang máy chưa là tuyến di chuyển cư dân. Hồ sơ tuổi hư cấu tăng theo simulation clock; chưa có sinh/tử/gia đình.
-- CHƯA HOÀN TẤT KIỂM TRA: cần tsc/lint/unit/build, API local và browser QA. Chưa deploy, không đổi audience, không bật scheduler/paid AI. Quyền production mới yêu cầu XOM_ADMIN_USER_ID; local dùng XOM_LOCAL_ADMIN=true + loopback.
-- Checkpoint mới: push WIP 5b58c6e trên nhánh work đã thành công. Sau đó tsc/lint/12 suite/build đều đạt; thêm test-hardening tái hiện 240 outcomes vượt snapshot 200 và xác nhận collector giữ đủ để archive. Chuẩn bị API/browser QA tại port 5174, D1 cô lập work/review-qa; không chạm DB thật.
+## Mốc hardening/nội thất đã push — 25/10/2026
+- Yêu cầu mới: luôn push các mốc source và bộ nhớ ngắn hạn; đã ghi vào AGENTS.md. Nhánh hiện hành `work`, remote qualife1291/AI-Living. Checkpoint 5b58c6e, b991c3e; mốc cuối xem git log.
+- Đã sửa archive batch lớn (collector giữ 240 mới ngoài cap snapshot200), proposal basis revision/turnId, event duplicate, health503, context timeout/cache/relay, request polling; owner gate Worker và scheduled handler rules opt-in.
+- Frozen dependencies, tsc/lint/12 suite cũ + test-hardening/build đạt. DB kiểm thử work/review-qa (0000–0003), API living/appearance/learning archive 240 mẫu/concurrency/proposal và built Worker admin403 đạt. Chromium desktop + mobile390: city/profile/interior/floor/no errors/no overflow đạt; ảnh thật docs/screenshots/hardening đã gửi trong chat.
+- Nguồn tiếp nhận mới: docs/INTERIORS_AND_RELEASE.md. Nội thất mặt cắt3D, ba tầng chung template, cabin kiến trúc; chỉ bố trí cư dân thật tầng trệt. Tuổi hư cấu tăng theo simulation clock, không có family/birth/death. Chưa có indoor routing/elevator occupancy/call-serve-clean; tiếp tục ưu tiên các luồng đó rồi animation/weather/LOD/benchmark.
+- Chưa deploy, chưa gắn cron, chưa đổi audience. Trước deploy cần cấu hình XOM_ADMIN_USER_ID qua cơ chế runtime và xác minh hosting identity headers; thiếu thì fail-closed403. XOM_LOCAL_ADMIN=true chỉ dành local, không đưa lên production. Scheduler chỉ rules, không Qwen24/7; chưa xác minh Sites cron. Bản production cũ chưa được kiểm tra.
+- API/browser QA dùng DB fixture riêng tại port5174; port5175 test no-admin. Không sử dụng DB này làm dữ liệu thật. Build có cảnh báo chunkThree>500KB/static route classification; không có lỗi build.
