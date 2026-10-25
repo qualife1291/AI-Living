@@ -13,6 +13,7 @@ import {
   Users,
   X,
 } from "lucide-react";
+import { Osm3D } from "@/components/city/Osm3D";
 import { InteriorView } from "@/components/city/InteriorView";
 import { lifeStory } from "@/lib/city/lifestory";
 import { Wardrobe } from "@/components/characters/Wardrobe";
@@ -141,7 +142,7 @@ export default function Page() {
     learning: "Trải nghiệm & thói quen",
     sources: "Nguồn mở cho thế giới",
   };
-  const CityView = mode === "city" && renderer === "3d" ? City3D : UrbanMap;
+  const CityView = mode === "osm" && renderer === "3d" ? Osm3D : mode === "city" && renderer === "3d" ? City3D : UrbanMap;
   return (
     <main className={`live-world ${hidden ? "hud-hidden" : ""}`}>
       {world ? (

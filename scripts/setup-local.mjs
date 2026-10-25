@@ -41,6 +41,7 @@ else if (tables.length !== 2)
 execute(["--file", "drizzle/0001_living_world_and_training.sql"]);
 execute(["--file", "drizzle/0002_living_context_and_turns.sql"]);
 execute(["--file", "drizzle/0003_agent_experiences.sql"]);
+execute(["--file", "drizzle/0004_release_schema_reconciliation.sql"]);
 console.log(
   "Local D1 schema ready; existing snapshots and episodes preserved.",
 );

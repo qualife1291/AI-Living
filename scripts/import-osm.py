@@ -2,7 +2,11 @@
 python3 scripts/import-osm.py --input /tmp/xom-hcm-osm.json
 Without --input, fetch the fixed central HCMC bbox once through inherited HTTPS proxy.
 """
-import argparse,datetime,json,pathlib,urllib.request,urllib.parse
+import argparse,datetime,json,pathlib,urllib.request,urllib.parse,re
+def positive_number(value):
+ match=re.fullmatch(r"\s*(\d+(?:\.\d+)?)\s*(?:m)?\s*",str(value or ""))
+ number=float(match[1]) if match else None
+ return number if number is not None and 0<number<=1000 else None
 parser=argparse.ArgumentParser();parser.add_argument('--input');args=parser.parse_args()
 root=pathlib.Path(__file__).resolve().parents[1]
 bbox=[10.770,106.692,10.782,106.707]
@@ -21,7 +25,7 @@ for element in data['elements']:
  for p in geometry:
   if not(-90<=p['lat']<=90 and -180<=p['lon']<=180):raise ValueError('Invalid coordinates')
   points.append([round(80+(p['lon']-bbox[1])/(bbox[3]-bbox[1])*2240,2),round(1380-(p['lat']-bbox[0])/(bbox[2]-bbox[0])*1260,2)])
- features.append({'id':f"way/{element['id']}",'kind':kind,'category':tags.get('highway',tags.get('building','yes')),'name':tags.get('name','')[:160],'points':points})
+ features.append({'id':f"way/{element['id']}",'kind':kind,'category':tags.get('highway',tags.get('building','yes')),'name':tags.get('name','')[:160],'points':points,'heightM':positive_number(tags.get('height')),'levels':positive_number(tags.get('building:levels'))})
 result={'name':'Trung tâm TP.HCM — trích đoạn OpenStreetMap','bbox':bbox,'source':'https://overpass-api.de/api/interpreter','license':'ODbL-1.0','licenseUrl':'https://opendatacommons.org/licenses/odbl/1-0/','attribution':'© OpenStreetMap contributors','attributionUrl':'https://www.openstreetmap.org/copyright','fetchedAt':datetime.datetime.now(datetime.timezone.utc).isoformat(),'osmBaseTime':data.get('osm3s',{}).get('timestamp_osm_base'),'features':features}
 (root/'data/city/hcm-district1.json').write_text(json.dumps(result,ensure_ascii=False,separators=(',',':'))+'\n')
 print('Imported',len(features),'OSM features; source/ODbL attribution retained')
