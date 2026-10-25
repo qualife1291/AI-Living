@@ -66,3 +66,9 @@
 - Phát hành owner-private với additive schema reconciliation và kiểm chứng bảo toàn lịch sử.
 - Thêm khảo sát OSM3D912 công trình, ghi rõ heightước lượng, không lẫn vị trí cư dân mô phỏng.
 - Lưu runbook, releaseledger/SHA, scriptbuild-package-source-sync và nghiên cứu nguồn3D/bối cảnh không phí.
+
+## 25/10/2026 — Tỷ lệ, tương tác và nhịp sống
+- Sửa tỷ lệ người–xe–nhà; thêm bánh/đèn xe, đạo cụ và preset độ nét; HUD sáng rõ, chữ gọn và ít blur.
+- Khôi phục thoại nền3D, thêm chat có lưu theo ngữ cảnh/luật, lượt mở theo phiên và pulseidempotent.
+- WorldGET chỉ đọccache bối cảnh, compact8events; giới hạn refreshcontext và chặn responsecũ sau điều khiển.
+- Kiểm thử concurrency/API, viewportDPR, pause/offline/contextloss/lifecycle và các giới hạn tại EXPERIENCE_REVIEW.md.

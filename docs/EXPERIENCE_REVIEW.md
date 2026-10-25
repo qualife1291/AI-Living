@@ -30,3 +30,14 @@
 
 ## Còn thiếu cần ghi rõ
 Indoor routing/elevatoroccupancy/call-serve-clean, animation tương tác vật thể và hội thoại LLM tự do chưa hoàn chỉnh. Không thể bảo đảm SLA24/7 hoặc zero-lag từ một phiên test; phải theo dõi scheduler/logs và benchmark GPU thật. Trước mở public cần tách quyềnviewer/admin, rate limits và cache theo tải thực.
+
+## Kết quả đã kiểm chứng
+-16suite thuần (gồm contextdeadline) đạt, TypeScript/lint/build đạt. Migration5 chỉ thêm3bảng và không sửa migration cũ.
+- API fixture local:16viewretry+8uniquesessions,8pulseconcurrent, durablechat/retry/invalid/pause/resume đạt. Benchmark64read0error: p50~216ms,p95~357ms,max~358ms. Số đo env này, không phải SLA mạng thật; benchmark trước sửa coldcontext từng p95~13.3s.
+- Chromium SwiftShader: desktop1280×800DPR1.5 và mobile390×844DPR3; movement/physicalproportions/DPRpresets/chat/pause/resume/offline/recovery/contextloss đạt. Desktop3D↔2D3vòng không tăng số geometry. KhôngWebGL và reducedmotion fallback đạt.
+- Frame-state based pause test bắt được race response cũ; UI nay force refresh và bỏ snapshotrevision/timecũ. Test đợi renderer nhận pause và nhiều frame ổn định, không lấy sleep400ms làm bằng chứng.
+- Desktop36drawcalls/10geometries/7textures, mobile33drawcalls/10geometries/6textures; JSheap khoảng12–13MB tại mẫu. Không suy ra FPSGPUthật, memoryleak-free dài hạn hay24hsoak.
+- Ảnh và metrics: docs/screenshots/experience; fixture đang đi sân bay ở giờ trưa mô phỏng, slowmotion0.1 chỉ dànhQA, khôngdeploy statefixture. Counter trong ảnh là datafixture.
+
+### Tái chạy fixture
+Sau build, tạo DBlocal ở work/liveness-qa với migration0,4,5 (chỉ DBkiểm thử); chạy `node scripts/seed-experience-fixture.mjs` khi preview đã dừng. Khởi động Workerlocal port5177, statework/liveness-qa, XOM_LOCAL_ADMIN=true và contextrelayloopback theo LIVING_REALTIME. Chạy `python3 scripts/qa-experience.py`. Không chạy seed hoặc testAPI trênproduction. Nếu rebuilddist phải restartpreview để manifestassets đồng bộ.

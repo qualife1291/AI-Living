@@ -1,0 +1,50 @@
+[
+  {
+    "viewport": "desktop",
+    "stats": {
+      "buildings": "282",
+      "towers": "151",
+      "ready": "true",
+      "paused": "false",
+      "frame": "53",
+      "pixelRatio": "1.5",
+      "triangles": "381680",
+      "geometries": "10",
+      "textures": "7",
+      "walking": "true",
+      "position": "507.49,271.45",
+      "personHeight": "17.5",
+      "carLength": "44",
+      "actors": "27",
+      "selected": "an",
+      "drawCalls": "36",
+      "camera": "624,155,460"
+    },
+    "jsHeapBytes": 12880384,
+    "taskDurationSeconds": 0.083558
+  },
+  {
+    "viewport": "mobile",
+    "stats": {
+      "buildings": "282",
+      "towers": "151",
+      "ready": "true",
+      "paused": "false",
+      "frame": "55",
+      "pixelRatio": "1.75",
+      "triangles": "381674",
+      "geometries": "10",
+      "textures": "6",
+      "walking": "true",
+      "position": "500.49,320.88",
+      "personHeight": "17.5",
+      "carLength": "44",
+      "actors": "27",
+      "selected": "an",
+      "drawCalls": "33",
+      "camera": "630,155,508"
+    },
+    "jsHeapBytes": 12115944,
+    "taskDurationSeconds": 0.197763
+  }
+]

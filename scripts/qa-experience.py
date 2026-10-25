@@ -26,7 +26,7 @@ with sync_playwright() as p:
    page.locator('.conversation blockquote').wait_for(timeout=15000);assert 'quầy nước' in page.locator('.conversation blockquote').inner_text()
    page.screenshot(path=str(out/f'conversation-{name}-preview.png'))
    page.get_by_role('button',name='Đóng bảng thông tin',exact=True).click()
-   page.get_by_role('button',name='Tạm nghỉ',exact=True).click();page.get_by_role('button',name='Tiếp tục',exact=True).wait_for(timeout=15000);page.wait_for_timeout(500);paused=host.get_attribute('data-position');page.wait_for_timeout(700);assert paused==host.get_attribute('data-position')
+   page.get_by_role('button',name='Tạm nghỉ',exact=True).click();page.get_by_role('button',name='Tiếp tục',exact=True).wait_for(timeout=15000);page.wait_for_function('document.querySelector(".three-canvas")?.dataset.paused==="true"',timeout=20000);paused_frame=int(host.get_attribute('data-frame'));page.wait_for_function('(f)=>Number(document.querySelector(".three-canvas")?.dataset.frame)>f+5',arg=paused_frame,timeout=30000);paused=host.get_attribute('data-position');paused_frame=int(host.get_attribute('data-frame'));page.wait_for_function('(f)=>Number(document.querySelector(".three-canvas")?.dataset.frame)>f+5',arg=paused_frame,timeout=30000);assert paused==host.get_attribute('data-position')
    page.get_by_role('button',name='Tiếp tục',exact=True).click();page.get_by_role('button',name='Tạm nghỉ',exact=True).wait_for(timeout=15000)
    page.screenshot(path=str(out/f'city-{name}-preview.png'))
    page.context.set_offline(True);page.get_by_role('button',name='Tạm nghỉ',exact=True).click();page.get_by_role('alert').wait_for(timeout=10000);assert host.count()==1

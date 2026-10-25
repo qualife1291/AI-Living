@@ -899,6 +899,7 @@ export function createCity(
     if (trafficBody.instanceColor) trafficBody.instanceColor.needsUpdate = true;
   }
   let activeQuality = input().quality;
+  let drawnFrames = 0;
   function tick(stamp: number) {
     if (dead) return;
     frame = requestAnimationFrame(tick);
@@ -1029,6 +1030,8 @@ export function createCity(
       });
     }
     host.dataset.ready = "true";
+    host.dataset.paused = String(world.paused);
+    host.dataset.frame = String(++drawnFrames);
     host.dataset.pixelRatio = String(renderer.getPixelRatio());
     host.dataset.triangles = String(renderer.info.render.triangles);
     host.dataset.geometries = String(renderer.info.memory.geometries);
