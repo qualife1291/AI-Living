@@ -13,3 +13,4 @@
 - Đã đọc live: paused=false, revision3, lastAI từ24/10, không livingTurn; mới chỉ initialize living trong GET, chưa có lượt persist. 3D chỉ đọc livingSpeechAt và bỏ speechAt nền. Người40 units, car19units: sai tỷ lệ.
 - Đang thêm scale chuẩn10units/m (người17.5,car44), DPRquality, ít blur, tương tác hội thoại có lưu/rules và view session khôngIP; pulse idempotent cho viewer. Migration0005 do Drizzlegenerate, không sửa cũ.
 - Cần test/backend/QA/perf và publish, chưa coi WIP là live. User mới yêu cầu24/7: có thể cập nhật/resume automation cũ sau xác minh writer; không tạo lịch trùng, không paid API.
+- Tiến độ: có compact world feed, UI chat + quick prompts, DPR3 mức, HUD bỏ blur và nhãn ngắn, đạo cụ theo hoạt động. Cần kiểm thử bất đồng bộ, view concurrency, avatar scale, DPR, offline/contextloss, soak/heap. Thang máy và indoor graph chưa được nâng cấp trong mốc này.

@@ -21,8 +21,8 @@ const controlsSchema = z
   })
   .strict();
 
-export async function GET() {
-  const data = await readWorld();
+export async function GET(req: Request) {
+  const data = await readWorld({eventLimit: new URL(req.url).searchParams.get("compact") === "1" ? 8 : 80});
   const nowMs = Date.parse(data.serverNow);
   const wt = worldTime(data.world, nowMs);
   const context = await realContext(nowMs, contextCache(), fetchContext);

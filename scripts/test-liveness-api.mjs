@@ -1,0 +1,17 @@
+import assert from 'node:assert/strict';
+const origin=process.env.TEST_ORIGIN;if(!origin||!['127.0.0.1','localhost'].includes(new URL(origin).hostname))throw Error('Isolated local fixture only');
+const get=async path=>{const r=await fetch(origin+path);assert.equal(r.status,200);return r.json();};
+const post=async(path,body)=>{const r=await fetch(origin+path,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(body)});return {status:r.status,data:await r.json()};};
+const start=await get('/api/visits'),session=crypto.randomUUID();
+const repeats=await Promise.all(Array.from({length:16},()=>post('/api/visits',{session})));assert.ok(repeats.every(x=>x.status===200));assert.equal((await get('/api/visits')).views,start.views+1);
+await Promise.all(Array.from({length:8},()=>post('/api/visits',{session:crypto.randomUUID()})));assert.equal((await get('/api/visits')).views,start.views+9);
+assert.equal((await post('/api/visits',{session:'bad'})).status,400);
+const ticks=await Promise.all(Array.from({length:8},()=>post('/api/living/pulse',{})));assert.ok(ticks.every(x=>[200,409].includes(x.status)));
+const current=await get('/api/living');assert.ok(current.world.living);assert.ok(current.turns.length>=1);assert.equal(new Set(current.turns.map(t=>t.id)).size,current.turns.length);
+const body={id:crypto.randomUUID(),actorId:'an',message:'Bạn có dự định gì?'};
+const [a,b]=await Promise.all([post('/api/living/interact',body),post('/api/living/interact',body)]);assert.equal(a.status,200);assert.equal(b.status,200);assert.deepEqual(a.data.reply,b.data.reply);assert.match(a.data.reply,/quầy nước/);assert.equal(a.data.source,'rules');
+assert.equal((await post('/api/living/interact',{...body,id:crypto.randomUUID(),actorId:'missing'})).status,404);
+assert.equal((await post('/api/living/interact',{...body,message:'x'.repeat(281)})).status,400);
+const paused=await post('/api/world',{revision:(await get('/api/world')).revision,paused:true});assert.equal(paused.status,200);assert.equal((await post('/api/living/interact',{...body,id:crypto.randomUUID()})).status,409);assert.equal((await post('/api/living/pulse',{})).status,409);
+await post('/api/world',{revision:(await get('/api/world')).revision,paused:false});
+console.log('PASS: 16-way view dedupe, 8 unique sessions, atomic pulse/turn, durable exchange retry, unknown actor/length/pause guards and resume.');

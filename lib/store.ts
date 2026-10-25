@@ -17,7 +17,7 @@ export function database() {
  * Fixes L5: Only runs seed INSERT or 1970 epoch repair when needed instead of every read.
  * Fixes L7: Returns `serverNow` so clients can align their simulation clock.
  */
-export async function readWorld(): Promise<{
+export async function readWorld(options: {eventLimit?: number} = {}): Promise<{
   revision: number;
   serverNow: string;
   world: World;
@@ -53,8 +53,9 @@ export async function readWorld(): Promise<{
 
   const eventsQuery = await db
     .prepare(
-      'SELECT id, created_at, source, data FROM episodes ORDER BY created_at DESC LIMIT 80',
+      'SELECT id, created_at, source, data FROM episodes ORDER BY created_at DESC LIMIT ?',
     )
+    .bind(Math.max(1, Math.min(80, options.eventLimit ?? 80)))
     .all<EpisodeRow>();
 
   const events: EpisodeEvent[] = (eventsQuery.results ?? []).map((e) => {

@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
-import { Building2, LocateFixed, Minus, Plus, Scan } from "lucide-react";
+import { Building2, LocateFixed, Minus, Plus, Scan, MessageCircle, Footprints, Coffee } from "lucide-react";
 import { UrbanMap } from "./UrbanMap";
 import type { CityRuntime, SceneInput, SceneStatus } from "./three/runtime";
 import type { Venue } from "@/lib/city/world";
@@ -67,11 +67,12 @@ export function City3D(props: Props) {
         </div>
       )}
       <div className="live-hud live-person">
-        <span className="person-indicator" />
+        <span className="person-indicator">{status?.walking ? <Footprints size={16}/> : <Coffee size={16}/>}</span>
         <button onClick={props.onInspect}>
           <b>{status?.name ?? "An"}</b>
-          <small>{status?.activity ?? "Đang mở không gian 3D"}</small>
+          <small>{props.world.paused ? "Đang tạm nghỉ · Nhấn ▶ để tiếp tục" : status?.activity ?? "Đang mở không gian 3D"}</small>
         </button>
+        <button className="person-talk" aria-label={`Trò chuyện với ${status?.name ?? "An"}`} title="Trò chuyện" onClick={props.onInspect}><MessageCircle size={20}/></button>
         <span className="live-person-count">
           {props.world.people.length +
             (props.world.living?.residents.length ?? 0)}{" "}

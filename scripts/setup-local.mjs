@@ -42,6 +42,9 @@ execute(["--file", "drizzle/0001_living_world_and_training.sql"]);
 execute(["--file", "drizzle/0002_living_context_and_turns.sql"]);
 execute(["--file", "drizzle/0003_agent_experiences.sql"]);
 execute(["--file", "drizzle/0004_release_schema_reconciliation.sql"]);
+const visits = JSON.parse(execute(["--json", "--command", "SELECT name FROM sqlite_master WHERE type='table' AND name IN ('site_metrics','view_sessions','visitor_exchanges')"]));
+if (visits[0].results.length === 0) execute(["--file", "drizzle/0005_visits_and_interactions.sql"]);
+else if (visits[0].results.length !== 3) throw new Error("Partial interaction schema; inspect before repair.");
 console.log(
   "Local D1 schema ready; existing snapshots and episodes preserved.",
 );

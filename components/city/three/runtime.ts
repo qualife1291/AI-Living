@@ -23,11 +23,12 @@ import {
   pedestrianSegments,
   buildingAllowed,
 } from "@/lib/city/three-layout";
-import type { World } from "@/lib/world";
+import type { World, EpisodeEvent } from "@/lib/world";
 
 export type SceneInput = {
   world: World;
   quality?: Quality;
+  events?: EpisodeEvent[];
   selected: string;
   clockOffsetMs?: number;
   target?: { x: number; y: number; key: number } | null;
@@ -334,13 +335,13 @@ export function createCity(
           {
             hospital: "#e1e8de",
             clinic: "#d9e6d8",
-            school: "#e7c58e",
+            school: "#f2c75c",
             police: "#a4b8c8",
-            cinema: "#bf9294",
+            cinema: "#dc8ba2",
             factory: "#a9b8b4",
-            home: "#e1c3a3",
+            home: "#f0bb89",
           } as Record<string, string>
-        )[v.type] ?? "#d0d7bc";
+        )[v.type] ?? "#8fc7b3";
       box(v.x, height / 2 + 2, v.y - 47, 104, height, 72, color);
       box(v.x, height + 4, v.y - 47, 110, 5, 78, "#e9e3cf");
       box(v.x, 6, v.y - 7, 34, 12, 12, "#b0bba5");
@@ -463,6 +464,7 @@ export function createCity(
     "eyeR",
     "detail",
     "badge",
+    "prop",
     "glassesL",
     "glassesR",
   ]) {
@@ -668,6 +670,8 @@ export function createCity(
       scale.setScalar(s);
       root.compose(position, rotation, scale);
       const swing = a.walking && !riding ? Math.sin(seconds * 8 + i) * 0.55 : Math.sin(seconds * 1.5 + i) * 0.045;
+      const usingProp = !a.walking && ["read", "garden", "eat", "work"].includes(a.kind);
+      part("prop", i, a.id, 0, 15.5, 8, usingProp ? 7 : 0, a.kind === "read" ? 1 : 3, 5, a.kind === "read" ? "#e9b549" : a.kind === "garden" ? "#50adba" : "#fff5cf");
       part("torso", i, a.id, 0, 20, 0, 13, 13, 8, appearance.shirt);
       part("head", i, a.id, 0, 32, 0, 9, 10, 9, appearance.skin);
       part(
@@ -720,7 +724,7 @@ export function createCity(
           12,
           5,
           appearance.shirt,
-          sign * swing,
+          usingProp ? -0.55 : sign * swing,
         );
         part(
           `${side}Hand`,
@@ -983,7 +987,7 @@ export function createCity(
     renderer.render(scene, camera);
     if (stamp - lastStatus > 180) {
       lastStatus = stamp;
-      const speech = livingSpeechAt(world, lastTime) ?? speechAt(world, actors, [], lastTime),
+      const speech = livingSpeechAt(world, lastTime) ?? speechAt(world, actors, state.events ?? [], lastTime),
         speaker = actors.find((a) => a.id === speech?.speaker);
       const p = new THREE.Vector3(
         speaker?.position[0] ?? 0,

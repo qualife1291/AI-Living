@@ -135,6 +135,8 @@ export function UrbanMap({
   onInspect: () => void;
   mode?: "city" | "osm";
   clockOffsetMs?: number;
+  quality?: import("@/lib/city/scale").Quality;
+  events?: import("@/lib/world").EpisodeEvent[];
   target?: { x: number; y: number; key: number } | null;
 }) {
   const now = useLifeClock(world.paused, clockOffsetMs),

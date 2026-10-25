@@ -10,9 +10,13 @@ import {
   Pause,
   Play,
   RefreshCw,
+  Eye,
+  Sparkles,
   Users,
   X,
 } from "lucide-react";
+import { Conversation } from "@/components/city/Conversation";
+import type { Quality } from "@/lib/city/scale";
 import { Osm3D } from "@/components/city/Osm3D";
 import { InteriorView } from "@/components/city/InteriorView";
 import { lifeStory } from "@/lib/city/lifestory";
@@ -45,6 +49,9 @@ export default function Page() {
     [venue, setVenue] = useState<Venue | null>(null),
     [busy, setBusy] = useState(false),
     [clockOffset, setClockOffset] = useState(0),
+    [quality, setQuality] = useState<Quality>("balanced"),
+    [views, setViews] = useState<number | null>(null),
+    [pulseError, setPulseError] = useState(""),
     [navigation, setNavigation] = useState<{
       x: number;
       y: number;
@@ -57,7 +64,7 @@ export default function Page() {
     if (loading.current) return;
     loading.current = true;
     try {
-      const response = await fetch("/api/world", { signal: AbortSignal.timeout(10000) });
+      const response = await fetch("/api/world?compact=1", { signal: AbortSignal.timeout(10000) });
       if (!response.ok) throw Error("Chưa kết nối được với thành phố.");
       const snapshot = (await response.json()) as Snapshot;
       setClockOffset(Date.parse(snapshot.serverNow) - Date.now());
@@ -68,8 +75,25 @@ export default function Page() {
     } finally { loading.current = false; }
   }, []);
   useEffect(() => {
+    let cancelled=false;
+    async function pulse(){
+      if(document.hidden)return;
+      try{
+        const r=await fetch('/api/living/pulse',{method:'POST',headers:{'content-type':'application/json'},body:'{}',signal:AbortSignal.timeout(12000)});
+        if(!cancelled){if(!r.ok&&r.status!==409)setPulseError('Nhịp sống chưa cập nhật. Thử kết nối lại.');else setPulseError('');await load();}
+      }catch{if(!cancelled)setPulseError('Mất kết nối nhịp sống. Thành phố vẫn giữ trạng thái đã lưu.');}
+    }
+    async function visit(){
+      let session=crypto.randomUUID();
+      try{const old=JSON.parse(sessionStorage.getItem('xom-view')??'null');if(old&&Date.now()-old.at<1800000)session=old.id;else sessionStorage.setItem('xom-view',JSON.stringify({id:session,at:Date.now()}));}catch{/* storage is optional */}
+      try{const r=await fetch('/api/visits',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({session})});if(r.ok&&!cancelled)setViews(((await r.json()) as {views:number}).views);}catch{/* counter does not block viewing */}
+    }
+    const initial=setTimeout(()=>{void pulse();void visit();},0),timer=setInterval(()=>void pulse(),60000);
+    return()=>{cancelled=true;clearTimeout(initial);clearInterval(timer);};
+  },[load]);
+  useEffect(() => {
     const initial = setTimeout(() => void load(), 0),
-      timer = setInterval(() => void load(), 15000);
+      timer = setInterval(() => { if(!document.hidden) void load(); }, 15000);
     return () => {
       clearTimeout(initial);
       clearInterval(timer);
@@ -148,6 +172,8 @@ export default function Page() {
       {world ? (
         <CityView
           world={world}
+          quality={quality}
+          events={data?.events ?? []}
           selected={selected}
           onSelect={(id) => {
             setSelected(id);
@@ -179,6 +205,7 @@ export default function Page() {
             </small>
           </div>
         </div>
+        {views!==null&&<div className="view-count" title="Lượt mở theo phiên 30 phút, không phải số người duy nhất"><Eye size={15}/><span>{views.toLocaleString('vi-VN')}</span></div>}
         <div className="live-status">
           <CloudSun size={16} />
           <span>{data?.weatherState.label ?? "TP.HCM"}</span>
@@ -201,9 +228,9 @@ export default function Page() {
           {world?.paused ? <Play size={17} /> : <Pause size={17} />}
         </button>
       </header>
-      {error && (
+      {(error || pulseError) && (
         <div className="live-alert" role="alert">
-          {error}
+          {error || pulseError}
           <button onClick={() => void load()} aria-label="Thử kết nối lại">
             <RefreshCw size={15} />
           </button>
@@ -231,6 +258,7 @@ export default function Page() {
           <BookOpen size={19} />
           <span>Bối cảnh</span>
         </button>
+        <button aria-label="Chất lượng đồ họa" title={`Đồ họa: ${quality === 'sharp' ? 'Nét' : quality === 'eco' ? 'Nhẹ' : 'Cân bằng'}`} onClick={()=>setQuality(q=>q==='balanced'?'sharp':q==='sharp'?'eco':'balanced')}><Sparkles size={19}/><span>{quality==='sharp'?'Nét':quality==='eco'?'Nhẹ':'Đồ họa'}</span></button>
         <button aria-label="Học hỏi" onClick={() => setPanel("learning")}>
           <GraduationCap size={19} />
           <span>Học hỏi</span>
@@ -289,6 +317,7 @@ export default function Page() {
                 mô phỏng này đều là người trưởng thành.
               </p>
               {story && <article className="life-story"><small>HỒ SƠ CUỘC ĐỜI · {story.chapter}</small><h3>{person?.name} · {story.age} tuổi mô phỏng</h3><p>Đến xóm ngày {story.arrivedOn} · {story.days} ngày mô phỏng · {story.samples} trải nghiệm đã học.</p><p className="muted">Tuổi khởi đầu hư cấu {story.baseline}; mỗi năm mô phỏng tăng một tuổi. Không suy ra tuổi từ số lượt học.</p><h4>Những điều còn nhớ</h4><ol>{story.memories.slice(-5).map((m, i) => <li key={i}>{m}</li>)}</ol>{!story.memories.length && <p>Chưa có ký ức được lưu.</p>}</article>}
+              {person && world && <Conversation key={person.id} actorId={person.id} name={person.name} paused={world.paused}/>}
               <details className="wardrobe-details">
                 <summary>Tạo hình của {person?.name ?? "An"}</summary>
                 {person && (
