@@ -6,22 +6,24 @@
       "towers": "151",
       "ready": "true",
       "paused": "false",
-      "frame": "53",
+      "frame": "49",
       "pixelRatio": "1.5",
-      "triangles": "381680",
-      "geometries": "10",
-      "textures": "7",
+      "triangles": "417302",
+      "geometries": "13",
+      "textures": "6",
       "walking": "true",
-      "position": "507.49,271.45",
+      "position": "593.99,283.00",
       "personHeight": "17.5",
       "carLength": "44",
       "actors": "27",
+      "exchanges": "1",
+      "socialCast": "[{\"id\":\"neighbor-5\",\"position\":[1100,974.0000000000002],\"peerId\":\"neighbor-12\",\"gesture\":\"point\",\"speaking\":true,\"source\":\"script\"},{\"id\":\"neighbor-12\",\"position\":[1100,988],\"peerId\":\"neighbor-5\",\"gesture\":\"listen\",\"speaking\":false,\"source\":\"script\"}]",
       "selected": "an",
-      "drawCalls": "36",
-      "camera": "624,155,460"
+      "drawCalls": "35",
+      "camera": "666,85,393"
     },
-    "jsHeapBytes": 12880384,
-    "taskDurationSeconds": 0.083558
+    "jsHeapBytes": 12488800,
+    "taskDurationSeconds": 0.040279
   },
   {
     "viewport": "mobile",
@@ -30,21 +32,23 @@
       "towers": "151",
       "ready": "true",
       "paused": "false",
-      "frame": "55",
+      "frame": "56",
       "pixelRatio": "1.75",
-      "triangles": "381674",
-      "geometries": "10",
-      "textures": "6",
+      "triangles": "417298",
+      "geometries": "13",
+      "textures": "5",
       "walking": "true",
-      "position": "500.49,320.88",
+      "position": "548.61,389.19",
       "personHeight": "17.5",
       "carLength": "44",
       "actors": "27",
+      "exchanges": "2",
+      "socialCast": "[{\"id\":\"neighbor-5\",\"position\":[1100,974.0000000000002],\"peerId\":\"neighbor-12\",\"gesture\":\"listen\",\"speaking\":false,\"source\":\"script\"},{\"id\":\"neighbor-12\",\"position\":[1100,988],\"peerId\":\"neighbor-5\",\"gesture\":\"explain\",\"speaking\":true,\"source\":\"script\"},{\"id\":\"neighbor-16\",\"position\":[1128,988],\"peerId\":\"neighbor-18\",\"gesture\":\"listen\",\"speaking\":false,\"source\":\"script\"},{\"id\":\"neighbor-18\",\"position\":[1142,988],\"peerId\":\"neighbor-16\",\"gesture\":\"laugh\",\"speaking\":true,\"source\":\"script\"}]",
       "selected": "an",
       "drawCalls": "33",
-      "camera": "630,155,508"
+      "camera": "630,85,495"
     },
-    "jsHeapBytes": 12115944,
-    "taskDurationSeconds": 0.197763
+    "jsHeapBytes": 13091272,
+    "taskDurationSeconds": 0.148415
   }
 ]

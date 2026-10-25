@@ -318,6 +318,33 @@ export function createCity(
             ? 48
             : 43;
     box(v.x, 1, v.y - 25, 125, 2, 112, open ? "#c8d3b4" : "#e6dec9");
+    // Functional details at the edges; the central door/frontage slots stay open.
+    if (["cafe", "restaurant"].includes(v.type)) {
+      for (const side of [-1, 1]) {
+        const x = v.x + side * 65, z = v.y + 20;
+        cylinder(x, 7.5, z, 13, 1, "#e7c88b");
+        cylinder(x, 4.5, z, 1.3, 6, "#638783");
+        cylinder(x, 8.6, z, 1.8, 1.4, "#fff4dc");
+        cylinder(x + 3, 8.5, z + 2, 2.4, .35, "#da8970");
+        for (const dz of [-10, 10]) {
+          box(x, 4.5, z + dz, 5, 1, 5, "#69a48f");
+          box(x, 7, z + dz + Math.sign(dz) * 2, 5, 5, 1, "#69a48f");
+          for (const dx of [-1.8, 1.8]) cylinder(x + dx, 2.5, z + dz, .7, 4, "#587a74");
+        }
+      }
+    }
+    if (["park", "square", "bus", "metro", "library"].includes(v.type)) {
+      const x = v.x + 65, z = v.y + 12;
+      box(x, 5, z, 18, 1.5, 5, "#d49b66");
+      box(x, 8, z - 2, 18, 5, 1.5, "#d49b66");
+      for (const dx of [-6, 6]) box(x + dx, 2.8, z, 1.2, 5, 4, "#5f7c75");
+    }
+    if (!open) {
+      for (const side of [-1, 1]) {
+        cylinder(v.x + side * 53, 3, v.y - 4, 5, 5, "#c68668");
+        leaves.push({ x: v.x + side * 53, y: 7.5, z: v.y - 4, w: 6, h: 7, d: 6, color: "#68a879" });
+      }
+    }
     if (open) {
       tree(v.x - 45, v.y - 47, 1);
       tree(v.x + 45, v.y - 47, 2);
@@ -472,7 +499,7 @@ export function createCity(
     "glassesR",
   ]) {
     const mesh = new THREE.InstancedMesh(
-      part === "head" || part === "hair" ? humanGeo.head : /Arm|Leg|Hand/.test(part) ? humanGeo.limb : /Shoe/.test(part) ? humanGeo.shoe : ["torso", "hat"].includes(part) ? humanGeo.round : boxGeo,
+      part === "head" ? humanGeo.head : part === "hair" ? humanGeo.hair : /Arm|Leg|Hand/.test(part) ? humanGeo.limb : /Shoe/.test(part) ? humanGeo.shoe : ["torso", "hat"].includes(part) ? humanGeo.round : boxGeo,
       new THREE.MeshStandardMaterial({ roughness: 0.8 }),
       capacity,
     );
@@ -530,7 +557,7 @@ export function createCity(
     animalGroup.add(g);
     return g;
   });
-  const selectedLabel = label("An", 0, 62, 0, 48)!;
+  const selectedLabel = label("An", 0, 25, 0, 14)!;
   let lastLabel = "",
     following = true,
     dead = false,
@@ -614,7 +641,7 @@ export function createCity(
     rotation = new THREE.Quaternion(),
     root = new THREE.Matrix4(),
     local = new THREE.Matrix4(),
-    result = new THREE.Matrix4(), faceRoot = new THREE.Matrix4(), faceRotation = new THREE.Matrix4(), faceBack = new THREE.Matrix4().makeTranslation(0, -30, 0);
+    result = new THREE.Matrix4(), faceRoot = new THREE.Matrix4(), faceRotation = new THREE.Matrix4(), faceFront = new THREE.Matrix4().makeTranslation(0, 30, 0), faceBack = new THREE.Matrix4().makeTranslation(0, -30, 0);
   const faceParts = new Set(["head", "hair", "hat", "eyeL", "eyeR", "detail", "glassesL", "glassesR"]);
   function part(
     name: string,
@@ -683,8 +710,8 @@ export function createCity(
       scale.setScalar(s);
       root.compose(position, rotation, scale);
       faceRotation.makeRotationFromEuler(new THREE.Euler(pose.headTilt, pose.headTurn, 0));
-      faceRoot.copy(root).multiply(new THREE.Matrix4().makeTranslation(0, 30, 0)).multiply(faceRotation).multiply(faceBack);
-      const swing = a.walking && !riding ? Math.sin(seconds * 8 + i) * 0.55 : Math.sin(seconds * 1.5 + i) * 0.045;
+      faceRoot.copy(root).multiply(faceFront).multiply(faceRotation).multiply(faceBack);
+      const swing = a.walking && !riding ? pose.rightArm : 0;
       const usingProp = !a.walking && ["read", "garden", "eat", "work"].includes(a.kind);
       part("prop", i, a.id, 0, 15.5, 8, usingProp ? 7 : 0, a.kind === "read" ? 1 : 3, 5, a.kind === "read" ? "#e9b549" : a.kind === "garden" ? "#50adba" : "#fff5cf");
       part("torso", i, a.id, 0, 20, 0, 11.5, 13, 7.5, appearance.shirt);
@@ -694,10 +721,10 @@ export function createCity(
         i,
         a.id,
         0,
-        38,
-        -1,
+        35.8,
+        -.4,
         appearance.hair === "bald" ? 0 : 10,
-        4,
+        6,
         9,
         {
           black: "#4a4e48",
@@ -732,7 +759,7 @@ export function createCity(
           `${side}Arm`,
           i,
           a.id,
-          sign * 9,
+          sign * 7.5,
           21,
           0,
           4,
@@ -745,7 +772,7 @@ export function createCity(
           `${side}Hand`,
           i,
           a.id,
-          sign * 9,
+          sign * 7.5,
           13 + (side === "left" ? pose.leftHandY : pose.rightHandY),
           side === "left" ? pose.leftHandZ : pose.rightHandZ,
           4,
@@ -771,8 +798,8 @@ export function createCity(
           i,
           a.id,
           sign * 3.6,
-          2,
-          1 + Math.sin(-sign * swing) * 5,
+          2 + 6 * (1 - Math.cos(-sign * swing)),
+          1 - Math.sin(-sign * swing) * 6,
           6,
           3,
           9,
@@ -974,7 +1001,7 @@ export function createCity(
       });
     if (current) {
       ring.position.set(current.position[0], 2, current.position[1]);
-      selectedLabel.position.set(current.position[0], 30, current.position[1]);
+      selectedLabel.position.set(current.position[0], 25, current.position[1]);
       if (lastLabel !== current.name) {
         // Reuse the single selected label texture.
         lastLabel = current.name;
@@ -1027,7 +1054,7 @@ export function createCity(
       const listener = actors.find(a => a.id === (exchange?.a === speaker?.id ? exchange?.b : exchange?.a));
       const p = new THREE.Vector3(
         speaker?.position[0] ?? 0,
-        37,
+        25,
         speaker?.position[1] ?? 0,
       ).project(camera);
       callbacks.status({

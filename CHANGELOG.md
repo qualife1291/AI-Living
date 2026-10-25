@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-10-25 — Nhân vật mềm hơn và hội thoại có lượt
+- Đầu cầu/tóc ôm đầu, thân bo góc, tay chân capsule; thở/chớp mắt, quay mặt về đúng bạn, cử chỉ nói/nghe. Sửa vai, giày và tên quá lớn; thêm bàn/ghế/ly/chậu ở rìa địa điểm.
+- Đám đông theo lịch24giờ và nghề, bữa ăn/nghỉ xen kẽ; vị trí riêng cách1,4m, vào vị trí liên tục, giới hạn cả người cuối dân số240.
+- Hai agent phát triển biên kịch/review;12cảnh/56lượt, có khoảng yên và chờ câu mở đầu khi vừa tới. 2D/3D dùng chung điều phối; eventAI ưu tiên, đúng người nghe và nhãn nguồn.
+- Prompt đạo diễn–nhân vật–phản biện cho cloud/local, guard chặn lặp gần nguyên văn. Qwenlocal3vai đã chạy thật nhưng có mẫu kém bị guard bác, không ghi world. Không thêm paidAPI/video.
+- Nguồn tham khảo và hướng tạo hình trong VISUAL_DIRECTION; bằng chứng/test và giới hạn trong SOCIAL_REVIEW.
+
 ## 2026-10-25 — Thành phố 3D và khu cao ốc
 - Đổi không gian sống mặc định sang Three.js/WebGL2; 282 khối nhà, gồm 151 cao ốc, cửa hàng tầng trệt, cây và công trình dịch vụ. Bố trí tất định chừa đường đi và khu vực quanh địa điểm.
 - Nhân vật khối 3D đọc trang phục hiện có; giữ hoạt động, thoại, động vật và phương tiện trên cùng dữ liệu mô phỏng. Camera xoay/dịch/zoom, theo nhân vật, khu cao ốc và toàn cảnh theo tỷ lệ màn hình.

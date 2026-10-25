@@ -94,7 +94,7 @@ export async function tickLiving(proposal?: unknown, basis?: { revision: number;
     const allowed = new Set(["an", result.turn.residentId]);
     if (parsed.data.dialogue.every((d) => allowed.has(d.speaker))) {
       const { newRole, ...narrative } = parsed.data;
-      result.turn = { ...result.turn, ...narrative, generator: "local-llm" };
+      result.turn = { ...result.turn, ...narrative, generator: "local-llm", scriptId: undefined };
       result.world.lastAI = result.turn.createdAt;
       if (
         newRole &&

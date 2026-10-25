@@ -6,6 +6,7 @@ import {
   scenarios,
 } from "./learning.ts";
 import defaults from "../../data/living/catalog.json" with { type: "json" };
+import socialScripts from "../../data/social-scenes.json" with { type: "json" };
 import {
   catalogSchema,
   type LivingCatalog,
@@ -190,18 +191,21 @@ export function planLivingTurn(
     activity = chosen.title;
     kind = chosen.kind as Step["kind"];
   }
+  const matchingScripts = socialScripts.scenes.filter(s => s.places.includes(location) && s.kinds.includes(kind));
+  const script = matchingScripts[hashSeed(turnId(now)) % matchingScripts.length];
   const dialogue = sleeping
     ? []
-    : [
+    : script ? script.turns.map(line => ({ speaker: line.speaker === "a" ? "an" : resident.id, text: line.text.replaceAll("{a}", "An").replaceAll("{b}", resident.name) })) : [
         {
           speaker: "an",
-          text: `${resident.name}, mình ghé ${location.toLowerCase()} một lát nhé.`,
+          text: `${resident.name}, mình dành một lát ở ${location.toLowerCase()} cùng bạn nhé?`,
         },
-        { speaker: resident.id, text: role.greeting },
+        { speaker: resident.id, text: "Được chứ, mình cùng làm từng việc nhỏ thôi." },
         {
           speaker: "an",
-          text: "Ừ, mình làm từ từ thôi. Có gì mới mình sẽ kể bạn nghe.",
+          text: "Vậy mình bắt đầu từ phần đơn giản trước nhé?",
         },
+        { speaker: resident.id, text: "Ừ, không cần vội. Xong rồi mình nghỉ một chút." },
       ];
   const turn: LivingTurn = {
     id: turnId(now),
@@ -219,6 +223,7 @@ export function planLivingTurn(
     residentId: resident.id,
     dialogue,
     generator: "rules",
+    scriptId: script?.id,
     scenarioId: !festival
       ? sleeping
         ? "rest-home"
@@ -402,10 +407,6 @@ export function crowdAt(
     if (preferred && !visible.some((r) => r.id === preferred.id))
       visible[visible.length - 1 - replaced++] = preferred;
   return visible.map((r) => {
-    const i = state.residents.findIndex((person) => person.id === r.id);
-    const role =
-      state.catalog.roles.find((x) => x.id === r.roleId) ??
-      state.catalog.roles[0];
     const list = residentRoutine(state, r);
     const elapsed =
       r.plan?.simStartedAt !== undefined

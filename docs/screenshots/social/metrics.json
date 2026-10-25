@@ -1,0 +1,58 @@
+[
+  {
+    "viewport": "desktop",
+    "renderer": "Chromium SwiftShader",
+    "fixture": "synthetic-workshop-no-world-writes",
+    "first": "An → Bình\nKịch bản\nBình, mình đang phân vân nên bắt đầu từ đâu.",
+    "reply": "Bình → An\nKịch bản\nMình chia việc thành từng bước trước nhé?",
+    "stats": {
+      "buildings": "282",
+      "towers": "151",
+      "ready": "true",
+      "paused": "false",
+      "frame": "13",
+      "pixelRatio": "1.5",
+      "triangles": "416328",
+      "geometries": "14",
+      "textures": "5",
+      "walking": "false",
+      "position": "804.00,219.00",
+      "personHeight": "17.5",
+      "carLength": "44",
+      "actors": "27",
+      "exchanges": "2",
+      "socialCast": "[{\"id\":\"neighbor-8\",\"position\":[706.9999999999998,529],\"peerId\":\"neighbor-22\",\"gesture\":\"wave\",\"speaking\":true,\"source\":\"script\"},{\"id\":\"neighbor-16\",\"position\":[1128,988],\"peerId\":\"neighbor-18\",\"gesture\":\"wave\",\"speaking\":true,\"source\":\"script\"},{\"id\":\"neighbor-18\",\"position\":[1142,988],\"peerId\":\"neighbor-16\",\"gesture\":\"listen\",\"speaking\":false,\"source\":\"script\"},{\"id\":\"neighbor-22\",\"position\":[706.9999999999999,557],\"peerId\":\"neighbor-8\",\"gesture\":\"listen\",\"speaking\":false,\"source\":\"script\"}]",
+      "selected": "an",
+      "drawCalls": "34",
+      "camera": "886,85,331"
+    }
+  },
+  {
+    "viewport": "mobile",
+    "renderer": "Chromium SwiftShader",
+    "fixture": "synthetic-workshop-no-world-writes",
+    "first": "An → Bình\nKịch bản\nBình, mình đang phân vân nên bắt đầu từ đâu.",
+    "reply": "Bình → An\nKịch bản\nMình chia việc thành từng bước trước nhé?",
+    "stats": {
+      "buildings": "282",
+      "towers": "151",
+      "ready": "true",
+      "paused": "false",
+      "frame": "17",
+      "pixelRatio": "1.75",
+      "triangles": "416324",
+      "geometries": "14",
+      "textures": "3",
+      "walking": "false",
+      "position": "804.00,219.00",
+      "personHeight": "17.5",
+      "carLength": "44",
+      "actors": "27",
+      "exchanges": "3",
+      "socialCast": "[{\"id\":\"an\",\"position\":[804,219],\"peerId\":\"binh\",\"gesture\":\"listen\",\"speaking\":false,\"source\":\"script\"},{\"id\":\"binh\",\"position\":[790,219],\"peerId\":\"an\",\"gesture\":\"nod\",\"speaking\":true,\"source\":\"script\"},{\"id\":\"neighbor-8\",\"position\":[706.9999999999998,529],\"peerId\":\"neighbor-22\",\"gesture\":\"wave\",\"speaking\":true,\"source\":\"script\"},{\"id\":\"neighbor-16\",\"position\":[1128,988],\"peerId\":\"neighbor-18\",\"gesture\":\"wave\",\"speaking\":true,\"source\":\"script\"},{\"id\":\"neighbor-18\",\"position\":[1142,988],\"peerId\":\"neighbor-16\",\"gesture\":\"listen\",\"speaking\":false,\"source\":\"script\"},{\"id\":\"neighbor-22\",\"position\":[706.9999999999999,557],\"peerId\":\"neighbor-8\",\"gesture\":\"listen\",\"speaking\":false,\"source\":\"script\"}]",
+      "selected": "an",
+      "drawCalls": "32",
+      "camera": "886,85,331"
+    }
+  }
+]

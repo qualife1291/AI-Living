@@ -258,6 +258,7 @@ export type Actor = {
   source: "plan" | "routine";
   path: Point[];
   transport?: "walk" | "bicycle" | "motorbike" | "bus" | "metro";
+  stationaryFor?: number;
 };
 
 type Transport = NonNullable<Actor["transport"]>;
@@ -375,6 +376,7 @@ export function project(
       : current.activity,
     kind: current.kind,
     walking,
+    stationaryFor: walking ? 0 : Math.max(0, t - moveSeconds),
     progress: t / current.duration,
     source,
     path,

@@ -54,3 +54,6 @@
 
 ## Production version7 — 25/10/2026
 Đã sửa tỷ lệ/độ nét/thoại nền, chat có lưu/rules, lượt mở và pulse. Cloudautomation mỗi giờ enabled theo yêu cầu mới; cần theo dõi run đầu/soak và quota. Còn indoorgraph,collision/IK,physicalGPUbenchmark/freeformLLM và publicpermission.
+
+## Nhân vật và xã hội — bản8
+Nguồn đã hoàn thiện12cảnh/56lượt doagentbiênkịch, crowd24h, spacing1.4m, hỏiđáp/nghe/cửchỉ/nguồnAIriêng, geometrybo vàpropsngoàihiên; test/preview ởSOCIAL_REVIEW. Kiểm tra releaseledger để biết bảnproduction. Còn indoorroute/physics/IK, phục vụ/đạo cụ có trạng thái, giữ encounter trước crowdchange, vàmodelsemanticquality/thiếtbịthật/soak.

@@ -2033,6 +2033,9 @@ footer span:first-child {
 .three-canvas canvas { display: block; width: 100%; height: 100%; outline-offset: -3px; }
 .three-notice { position: absolute; top: 100px; left: 24px; z-index: 3; padding: 9px 14px; border-radius: 12px; background: #f4f0e2e8; color: #466451; font-size: 12px; pointer-events: none; }
 .three-speech { position: absolute; z-index: 2; width: 220px; transform: translate(-50%, -100%); pointer-events: none; }
+.three-speech strong { display:block; font-size:11px; color:#47706b; margin-bottom:4px; }
+.three-speech > span { display:block; }
+.three-speech em { float:right; font-size:9px; font-weight:500; font-style:normal; color:#687d75; }
 .city-three .map-credit { max-width: calc(100% - 48px); font-size: 10px; }
 @media (max-width: 700px) { .city-three .map-credit { font-size: 8px; max-width: calc(100% - 24px); left: 12px; } .three-notice { left: 12px; top: 85px; } }
 

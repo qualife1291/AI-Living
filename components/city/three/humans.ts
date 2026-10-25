@@ -25,6 +25,7 @@ export function createHumanGeometry(): {
   box: BufferGeometry;
   round: BufferGeometry;
   head: BufferGeometry;
+  hair: BufferGeometry;
   limb: BufferGeometry;
   shoe: BufferGeometry;
 } {
@@ -32,6 +33,7 @@ export function createHumanGeometry(): {
     box: new BoxGeometry(1, 1, 1),
     round: unitBounds(new RoundedBoxGeometry(1, 1, 1, 1, 0.15)),
     head: unitBounds(new SphereGeometry(0.5, 12, 8)),
+    hair: unitBounds(new SphereGeometry(0.5, 12, 6, 0, Math.PI * 2, 0, Math.PI / 2)),
     limb: unitBounds(new CapsuleGeometry(0.25, 0.5, 2, 8)),
     shoe: unitBounds(new RoundedBoxGeometry(1, 1, 1, 1, 0.2)),
   };

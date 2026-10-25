@@ -9,19 +9,25 @@ export type Exchange = { a: string; b: string; title: string; speech: Speech; so
 
 /** A stable frontage slot, in metres × 10. No two visible residents share a slot.
  * This is visual staging, not a change to the durable navigation/history model. */
-export function standingOffset(world: World, id: string): Point {
+function actorOrdinal(world: World, id: string) {
   const core = world.people.findIndex(p => p.id === id);
-  const ordinal = core >= 0 ? core : world.people.length + Math.max(0, world.living?.residents.findIndex(p => p.id === id) ?? 0);
+  return core >= 0 ? core : world.people.length + Math.max(0, world.living?.residents.findIndex(p => p.id === id) ?? 0);
+}
+export function standingOffset(world: World, id: string, reservedIndex?: number): Point {
+  const original = actorOrdinal(world, id);
+  // Slots63–71 are reserved for focused/turn partners beyond the visible cohort.
+  const ordinal = reservedIndex ?? (original < 63 ? original : 63 + original % 9);
   const columns = [0, -1, 1, -2, 2, -3, 3];
   return [columns[ordinal % 7] * 14, Math.floor(ordinal / 7) * 14];
 }
 
 export function spaceActors(world: World, actors: Actor[]): Actor[] {
+  const late = actors.filter(a => actorOrdinal(world, a.id) >= 63).map(a => a.id).sort();
   return actors.map(actor => {
     // Undo the legacy renderer offsets. Keep the simulation API/plan origins intact.
     const core = world.people.findIndex(p => p.id === actor.id), jitter = hashSeed(actor.id);
     const old: Point = core >= 0 ? [(core - 1) * 25, core * 7] : [((jitter % 9) - 4) * 7, ((Math.floor(jitter / 9) % 7) - 3) * 5];
-    const raw: Point = [actor.position[0] - old[0], actor.position[1] - old[1]], offset = standingOffset(world, actor.id);
+    const raw: Point = [actor.position[0] - old[0], actor.position[1] - old[1]], offset = standingOffset(world, actor.id, late.includes(actor.id) ? 63 + late.indexOf(actor.id) : undefined);
     const first = actor.path[0] ?? places[actor.from] ?? raw, last = actor.path.at(-1) ?? places[actor.location] ?? raw;
     // Ease into/out of the same slot. No position jump when walking becomes idle.
     const weight = actor.walking ? Math.min(1, Math.max(0, 1 - distance(raw, first) / 80) + Math.max(0, 1 - distance(raw, last) / 80)) : 1;
@@ -42,11 +48,15 @@ export function socialFrame(world: World, actors: Actor[], events: EpisodeEvent[
     poses.set(b.id, { peerId: a.id, gesture: speech.speaker === b.id ? gesture : "listen", speaking: speech.speaker === b.id, source });
     exchanges.push({ a: a.id, b: b.id, speech, title, source });
   };
-  const persisted = livingSpeech ?? speechAt(world, spaced, events, now);
+  const eventSpeech = speechAt(world, spaced, events, now);
+  const aiEvent = eventSpeech?.source === "ai" ? events.find(e => e.dialogue?.some((_, i) => eventSpeech.key === `${e.id}-${i}`)) : undefined;
+  const persisted = aiEvent ? eventSpeech : livingSpeech;
   if (persisted && (livingSpeech || persisted.source === "ai")) {
     const a = spaced.find(a => a.id === persisted.speaker && !a.walking);
-    const b = a && spaced.filter(b => a.id !== b.id && !b.walking && a.location === b.location && distance(a.position, b.position) <= 60).sort((x, y) => distance(a.position, x.position) - distance(a.position, y.position))[0];
-    if (a && b) claim(a, b, persisted, world.livingTurn?.title ?? "Chuyện trong xóm", persisted.source === "ai" ? "ai" : "script");
+    const lineIndex = aiEvent?.dialogue?.findIndex((_, i) => persisted.key === `${aiEvent.id}-${i}`) ?? -1;
+    const otherSpeaker = aiEvent ? [...aiEvent.dialogue.slice(lineIndex + 1), ...aiEvent.dialogue.slice(0, lineIndex)].find(d => d.speaker !== persisted.speaker)?.speaker : persisted.speaker === "an" ? world.livingTurn?.residentId : "an";
+    const b = a && spaced.find(b => b.id === otherSpeaker && !b.walking && a.location === b.location && distance(a.position, b.position) <= 60);
+    if (a && b) claim(a, b, persisted, aiEvent?.title ?? world.livingTurn?.title ?? "Chuyện trong xóm", persisted.source === "ai" ? "ai" : "script");
   }
   const hour = worldTime(world, now).hour;
   if (hour >= scripts.quietHours[1] && hour < scripts.quietHours[0]) {
@@ -67,7 +77,8 @@ export function socialFrame(world: World, actors: Actor[], events: EpisodeEvent[
       for (let i = 0; i < scene.turns.length; i++) {
         const turn = scene.turns[i];
         if (phase >= cursor && phase < cursor + turn.seconds) {
-          if (phase - cursor < turn.seconds - 1) {
+          // A new arrival waits for the next opening instead of starting on a reply.
+          if (phase - cursor < turn.seconds - 1 && phase <= Math.min(a.stationaryFor ?? Infinity, b.stationaryFor ?? Infinity)) {
             const speaker = turn.speaker === "a" ? a : b;
             claim(a, b, { speaker: speaker.id, text: format(turn.text, a, b), source: "routine", key: `${key}:${slot}:${i}` }, scene.title, "script", turn.gesture);
           }

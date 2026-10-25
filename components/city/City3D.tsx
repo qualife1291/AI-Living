@@ -63,7 +63,7 @@ export function City3D(props: Props) {
           className="three-speech live-speech"
           style={{ left: status.x, top: status.y }}
         >
-          <strong>{status.speaker} <span aria-hidden="true">→</span> {status.listener}</strong>
+          <strong>{status.speaker} <span aria-hidden="true">→</span> {status.listener} <em title={status.conversationSource === "ai" ? "Hội thoại do model sinh và đã lưu" : "Cảnh biên soạn bởi agent, phát theo mô phỏng"}>{status.conversationSource === "ai" ? "AI" : "Kịch bản"}</em></strong>
           <span>{status.speech}</span>
         </div>
       )}
