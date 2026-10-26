@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-10-26 — Sửa thoại bị ngắt, chuyển động và đường đi
+- Giữ trọn4–6lượt qua polling; nhịp2,4–4giây/câu, nghỉ0,3giây, cooldown20–45giây; đọc đầy đủ eventAI và dừng khi pause.
+- Di chuyển theo từngframe với đường vòng quanh footprint, camera theo dt và clockoffset bùRTT. Render/layout/nav dùng chung dấu chân công trình; không đặt nhà trên đường xe.
+- Xe đúng làn trên vòng khép kín, góc bo, có phanh/nhường người/khoảng cách; bỏ xe buýt/metro minh họa ở tuyến chưa có hình học an toàn.
+- Khung cửa/bậu/viền mái/mái hiên sọc/bóng tiếp xúc, ánh sáng rõ khối; vật liệu nhẹ/chunkLOD chi tiết xa. Bằng chứng và giới hạn trong GROUND_AND_MOTION_REVIEW.
+
 ## 2026-10-25 — Nhân vật mềm hơn và hội thoại có lượt
 - Đầu cầu/tóc ôm đầu, thân bo góc, tay chân capsule; thở/chớp mắt, quay mặt về đúng bạn, cử chỉ nói/nghe. Sửa vai, giày và tên quá lớn; thêm bàn/ghế/ly/chậu ở rìa địa điểm.
 - Đám đông theo lịch24giờ và nghề, bữa ăn/nghỉ xen kẽ; vị trí riêng cách1,4m, vào vị trí liên tục, giới hạn cả người cuối dân số240.

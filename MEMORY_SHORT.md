@@ -3,7 +3,7 @@
 ## Đang sửa phản hồi kiểm thử ngày26/10
 
 - Người dùng thấy thoại1–2câu/rấtchậm, di chuyểnlag, người/xe xuyênnhà vàbối cảnhkém. Đã xác định: actorprojection10Hz, pollingclockoffsetchưa bùRTT, ambientpairgreedy đứtchuỗi; roadlayout cắt trực tiếp một sốvenuebody.
-- Nguồn WIP thêm SocialDirector giữ nguyên4–6lượt trênwallpresentationclock, WalkDirectorAstar/sweptfootprint + TrafficDirector rightlane/closedloop/yield/follow; sharedfootprints dịch côngtrìnhhưcấu khỏiđường, renderer dùngcùngrect; frameprojectionmỗiframe, ánhsáng/chi tiếtmặtđứng/contactshadow. Chưa phát hành. Kiểm thử social28cases/traffic đã đạt; fullwalkmatrix/browser/performance đang kiểm.
+- Nguồn thêm SocialDirector giữ nguyên4–6lượt, WalkDirectorAstar/sweep + TrafficDirector yield/follow; sharedfootprints vàrendercùngrect; projectionmỗiframe.20suite/check/lint/build đạt,1089routes/22740carstates0hit; replay30liveactors/1800frames0overlap. Browser đủ6lượtqua15spoll desktop/mobile, motionstale0; LOD119ktriangles/24frames9s so369k/12trước. Đây vẫnSwiftShaderchậm, chưaphysicalFPS. FullQAcontrol/fallbackđạt; sửa nốt zfighting/cửa sổ sauxemảnh, đangbuildsmoke cuối. Chưa deploy9;production8sourcec9c4167. Backuphash trongMEMORY_LONG.
 - Giữsourceproduction8 c9c4167, owner-private. Đừng coi checkpointWIP là deploy. Đọc docs/releases/latest.json. Hai agent được tiếp tục theo ủy quyền dùngagent trước đó; không paidAPI/DBreset.
 
 Đọc docs/releases/latest.json, SOCIAL_REVIEW, SOCIAL_SCRIPT_BIBLE, VISUAL_DIRECTION và PRODUCTION_RUNBOOK. Source đang chạy c9c41676b7f947cb631831ee804aa27f50c2b7bb; commit nhật ký sau phát hành khác SHA source là bình thường. Luôn push checkpoint trên nhánh work; không commit DB/backup/credential.

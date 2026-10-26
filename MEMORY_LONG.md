@@ -112,3 +112,11 @@
 - Native succeeded16:19:02UTC25/10/2026, sourcec9c41676b7f947cb631831ee804aa27f50c2b7bb. IDs/env1/backuphash nằm latest.json và ledger. Owner-private1owner0external không đổi; không migration.
 - Post readback healthready/revision13/3eventscũ/memories6,4,4, instructions3vai đã lên. Authenticatedpulse200duplicate/living93/learning0; GET xác minh không mất history/memory, stale=false. Browserảnh vẫn local, không nhận thànhproductionQA.
 - Automationcũhourlyenabled,2recordedruns15:00+16:00UTCcompleted trước promptmới. Đã update/readback prompt3vai, dùngworldTime.hourquiet22–06, không duplicate schedule/paidAPI. Chưa có run dùngpromptmới, tiếp tục theo dõi. ModelCPU/preview/relay lượt này đãdừng, production không phụ thuộcenv.
+
+## Sửa phản hồi thực tế sau8 — đang kiểm thử bản9
+- User báo1–2câu/chậm, lagdi chuyển, xuyênnhà/xe vàbốicảnhkém. Test2lượt trướcchưa đủ. Đã dùnglại2agent theoủyquyềntrước; sourcecheckpoint4b1400b GitHubwork.
+- SocialDirector statefulpresentation2.4–4s+gap.3, cooldown20–45, khóa cặp/fullscene qua polling/slowclock, actualAI/fullstoredliving. Runtime giữinstance vàdùnggroundactorpositions;2D cũnggiữdirector.
+- WalkDirector shared279bodyfootprints, A*/circle4.8sweeps, routesởlạiquapoll; traffic12car vòngthật/rightlane/brake/yield/follow,4apron42units. Dời bodyvenue khỏiroad, geometrymọilớpchung. Backendhistorykhôngđổi. Navreconstructionlỗi104routes đãbịtestbắt+sửa.
+-20suite/check/lint/build đạt; social28,walk8/1089routes+5401frames,traffic22740states0collision. Replayprivateworld30actors/1800frames0house/caroverlap khôngghi. ColdA*p9511–15ms/cache256; khôngSLA.
+- Browserđãthấy6lượt đầy đủ desktop/mobilequapolling. MẫuchuyểnđộngtrướcLOD khôngstale10HznhưngSwiftShaderchỉ12frames/9s; khôngcoilàhếtlag. ThêmchunkLOD vàLambert/Phongchoenvironment, giảmfill/roofwindowdetails/contactshadow. Đangđolạicùngfixture, metrics/ảnhlocalkhôngprod.
+- Backup trước9:pre-v9-20261026-ground.json hash331e1532845874a6120c64d84c0b56600a1513a0f52dd20afc781cd88bc580be,revision33,5events,memories15/6/5; giữgitignored. Prod8sourcec9c4167chođếnnativebảnsau.

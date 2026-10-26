@@ -117,6 +117,7 @@ export function createCity(
   sun.position.set(-400, 1200, 600);
   scene.add(sun);
   const solids: Solid[] = [],
+    facadeDetails: Solid[] = [],
     cylinders: Solid[] = [],
     leaves: Solid[] = [],
     windows: Solid[] = [],
@@ -139,6 +140,7 @@ export function createCity(
     h: number,
     color: string,
   ) => cylinders.push({ x, y, z, w, h, d: w, color });
+  const detailBox = (...args: Parameters<typeof box>) => { box(...args); facadeDetails.push(solids.pop()!); };
   const windowBox = (
     x: number,
     y: number,
@@ -233,8 +235,8 @@ export function createCity(
       for (let c = 0; c < cols; c++) {
         const wx = x - w / 2 + ((c + 0.5) * w) / cols,
           y = 25 + f * 30;
-        box(wx, y, z + d / 2 + .3, 9.5, 14, .8, "#e4e1cf");
-        box(wx, y, z - d / 2 - .3, 9.5, 14, .8, "#e4e1cf");
+        detailBox(wx, y, z + d / 2 + .3, 9.5, 14, .8, "#e4e1cf");
+        detailBox(wx, y, z - d / 2 - .3, 9.5, 14, .8, "#e4e1cf");
         windowBox(wx, y, z + d / 2 + 0.6, 7, 9, 1, i + c + f);
         windowBox(wx, y, z - d / 2 - 0.6, 7, 9, 1, i + c + f + 1);
       }
@@ -380,15 +382,16 @@ export function createCity(
       box(v.x, height / 2 + 2, v.y - 47, 104, height, 72, color);
       box(v.x, height + 4, v.y - 47, 110, 5, 78, "#e9e3cf");
       for (const dx of [-53, 53]) box(v.x + dx, height + 7, v.y - 47, 2, 5, 76, "#c1b899");
-      for (const dz of [-85, -9]) box(v.x, height + 7, v.y + dz, 108, 5, 2, "#c1b899");
+      for (const dz of [-86.5, -7.5]) box(v.x, height + 7, v.y + dz, 108, 5, 2, "#c1b899");
       box(v.x, 3.5, v.y - 10, 104, 4, 2, "#b8a68d");
       box(v.x, 6, v.y - 7, 34, 12, 12, "#b0bba5");
       windowBox(v.x, 15, v.y - 10, 17, 26, 2, 1);
-      for (let f = 0; f < Math.floor(height / 22); f++)
+      for (let f = 0; f < Math.floor(height / 30); f++)
         for (const dx of [-35, -12, 12, 35]) {
-          box(v.x + dx, 20 + f * 22, v.y - 10.5, 15, 15, 2, "#f3e6cc");
-          windowBox(v.x + dx, 20 + f * 22, v.y - 10, 12, 12, 1, f);
-          box(v.x + dx, 12.5 + f * 22, v.y - 8, 16, 1.5, 4, "#d0b997");
+          if (f === 0 && Math.abs(dx) < 20) continue;
+          detailBox(v.x + dx, 20 + f * 30, v.y - 10.5, 15, 15, 2, "#f3e6cc");
+          windowBox(v.x + dx, 20 + f * 30, v.y - 9.7, 12, 12, 1, f);
+          detailBox(v.x + dx, 12.5 + f * 30, v.y - 8, 16, 1.5, 4, "#d0b997");
         }
       box(
         v.x,
@@ -442,11 +445,19 @@ export function createCity(
     }
   const dummy = new THREE.Object3D(),
     color = new THREE.Color();
+  const detailChunks: { mesh: THREE.InstancedMesh; x: number; z: number }[] = [];
   function batch(
     geometry: THREE.BufferGeometry,
     list: Solid[],
-    material = new THREE.MeshStandardMaterial({ roughness: 0.85 }),
+    material: THREE.Material = new THREE.MeshLambertMaterial(),
+    detail = false,
   ) {
+    if (detail) {
+      const groups = new Map<string, Solid[]>();
+      for (const s of list) { const key = `${Math.floor(s.x / 256)}:${Math.floor(s.z / 256)}`, group = groups.get(key) ?? []; group.push(s); groups.set(key, group); }
+      for (const [key, group] of groups) { const mesh = batch(geometry, group, material); const [x, z] = key.split(":").map(Number); detailChunks.push({ mesh, x: x * 256 + 128, z: z * 256 + 128 }); }
+      return new THREE.InstancedMesh(geometry, material, 0);
+    }
     const mesh = new THREE.InstancedMesh(
       geometry,
       material,
@@ -467,15 +478,15 @@ export function createCity(
   }
   batch(new THREE.CylinderGeometry(0.5, 0.5, 1, 16), shadows);
   batch(new THREE.BoxGeometry(1, 1, 1), solids);
+  batch(new THREE.BoxGeometry(1, 1, 1), facadeDetails, new THREE.MeshLambertMaterial(), true);
   batch(new THREE.CylinderGeometry(0.5, 0.5, 1, 8), cylinders);
   batch(new THREE.IcosahedronGeometry(0.5, 1), leaves);
-  const windowMaterial = new THREE.MeshStandardMaterial({
-    roughness: 0.35,
-    metalness: 0.15,
+  const windowMaterial = new THREE.MeshPhongMaterial({
+    shininess: 40,
     emissive: "#638082",
     emissiveIntensity: 0.12,
   });
-  batch(new THREE.BoxGeometry(1, 1, 1), windows, windowMaterial);
+  batch(new THREE.BoxGeometry(1, 1, 1), windows, windowMaterial, true);
   host.dataset.buildings = String(
     buildings.length +
       venues.filter(
@@ -600,6 +611,7 @@ export function createCity(
     controls.target.set(x, 15, z);
     camera.position.copy(controls.target).add(offset);
     controls.update();
+    for (const chunk of detailChunks) chunk.mesh.visible = Math.hypot(camera.position.x - chunk.x, camera.position.z - chunk.z) < 520;
   }
   focus(350, 280);
   const onStart = () => {
