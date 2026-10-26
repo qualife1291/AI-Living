@@ -3,6 +3,7 @@ import { SocialDirector, type SocialPose, type Exchange } from "@/lib/living/soc
 import { WalkDirector } from "@/lib/city/walkability";
 import { TrafficDirector, TRAFFIC_COUNT, trafficJunctions, type TrafficVehicle } from "@/lib/city/traffic";
 import { venueGeometry, openVenue } from "@/lib/city/footprints";
+import { characterShot } from "@/lib/city/cinematography";
 import { createHumanGeometry, humanPose } from "./humans";
 import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
@@ -98,7 +99,7 @@ export function createCity(
   scene.background = new THREE.Color("#d6e4df");
   const fog = new THREE.Fog("#d6e4df", 3200, 8500);
   scene.fog = fog;
-  const camera = new THREE.PerspectiveCamera(43, 1, 2, 20000);
+  const camera = new THREE.PerspectiveCamera(38, 1, 2, 20000);
   const controls = new OrbitControls(camera, renderer.domElement);
   controls.enableDamping = true;
   controls.dampingFactor = 0.09;
@@ -605,7 +606,8 @@ export function createCity(
   const previousPositions = new Map<string, Point>();
   let lastTime = Date.parse(input().world.born);
   let lastStatus = 0;
-  const viewOffset = new THREE.Vector3(82, 70, 112);
+  const viewOffset = new THREE.Vector3(48, 34, 62);
+  const cameraBuildings = [...venues.filter(v => !openVenue(v)).map(venueGeometry), ...buildings.map(b => ({ x:b.x,z:b.z,width:b.width,depth:b.depth }))];
   function focus(x: number, z: number, offset = viewOffset) {
     scene.fog = fog;
     controls.target.set(x, 15, z);
@@ -1022,14 +1024,11 @@ export function createCity(
         selectedLabel.material.map!.needsUpdate = true;
       }
       if (following) {
-        const next = new THREE.Vector3(
-            current.position[0],
-            15,
-            current.position[1],
-          ),
-          delta = next.sub(controls.target).multiplyScalar(1 - Math.exp(-14 * dt));
-        controls.target.add(delta);
-        camera.position.add(delta);
+        const partnerId = socialPoses.get(current.id)?.peerId;
+        const shot = characterShot(current, actors.find(a => a.id === partnerId), heading.get(current.id) ?? .35, cameraBuildings);
+        const alpha = 1 - Math.exp(-2.8 * dt);
+        controls.target.lerp(new THREE.Vector3(...shot.target), alpha);
+        camera.position.lerp(new THREE.Vector3(...shot.position), alpha);
       }
     }
     controls.update();
@@ -1114,6 +1113,7 @@ export function createCity(
       camera.position.copy(controls.target).add(offset);
     },
     follow() {
+      callbacks.select("an");
       host.dataset.view = "follow";
       following = true;
       if (current) focus(current.position[0], current.position[1]);

@@ -1,5 +1,9 @@
 # Việc còn lại sau production version9
 
+## Đang làm bản10 theo phản hồi mới
+- Người dùng yêu cầu cây/đồ vật/người không xuyên nhau, camera điện ảnh bámAn, hoạt động/học chủ động hơn. Root thêmcharacterShot; agentvisual đanglàm sharedscenery và avoidance, agentstory đanglàm policy/needs/pendingguard/cohort và5minslotprefixv2. Chưa phát hành/testđủ. KhôngpaidAPI/DBreset.
+- Backup trước10:pre-v10-20261026-space.json gitignored; hashc39c1ac9c401e207a9b9b82f8d6996a0d4022df74d365354f18cfee876346918;revision65/12events/memories28,10,10. Sourceprod9vẫngiữ287f2d8.
+
 Source đang chạy287f2d837a830f56d7dc71c2013cf7748fa22464; đọc docs/releases/latest.json và GROUND_AND_MOTION_REVIEW. Nhật ký Git sau deploy khác SHA source là bình thường. Luôn push checkpoints nhánhwork, không commit DB/backup/credential.
 
 - Cần benchmark GPU/điện thoại người dùng: SwiftShader từ12 lên26frames/9s, geometry369k xuống118k nhưng vẫn chậm; không gọi đã hếtlag/60FPS. Cần soak dài và theo dõi quota/automation.
