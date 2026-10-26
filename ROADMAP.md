@@ -57,3 +57,6 @@
 
 ## Nhân vật và xã hội — bản8
 Nguồn đã hoàn thiện12cảnh/56lượt doagentbiênkịch, crowd24h, spacing1.4m, hỏiđáp/nghe/cửchỉ/nguồnAIriêng, geometrybo vàpropsngoàihiên; test/preview ởSOCIAL_REVIEW. Kiểm tra releaseledger để biết bảnproduction. Còn indoorroute/physics/IK, phục vụ/đạo cụ có trạng thái, giữ encounter trước crowdchange, vàmodelsemanticquality/thiếtbịthật/soak.
+
+## Sửa phản hồi thực tế — production9,26/10/2026
+Đã giữ đủcuộc thoại qua polling, groundnavigation quanhnhà, trafficnhườngngười/giữlàn, chi tiếtmặtđứng vàchunkLOD. XemGROUND_AND_MOTION_REVIEW vàledger26/10. CònphysicalGPUbenchmark, smallprop/animal/indoorcollision, bus/metroboardinghìnhhọcthật, đồngbộplayback giữa viewers vàbackendcompletion theooccupancy.

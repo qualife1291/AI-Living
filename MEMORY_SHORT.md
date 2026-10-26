@@ -1,16 +1,11 @@
-# Việc còn lại sau production version 8
+# Việc còn lại sau production version9
 
-## Đang sửa phản hồi kiểm thử ngày26/10
+Source đang chạy287f2d837a830f56d7dc71c2013cf7748fa22464; đọc docs/releases/latest.json và GROUND_AND_MOTION_REVIEW. Nhật ký Git sau deploy khác SHA source là bình thường. Luôn push checkpoints nhánhwork, không commit DB/backup/credential.
 
-- Người dùng thấy thoại1–2câu/rấtchậm, di chuyểnlag, người/xe xuyênnhà vàbối cảnhkém. Đã xác định: actorprojection10Hz, pollingclockoffsetchưa bùRTT, ambientpairgreedy đứtchuỗi; roadlayout cắt trực tiếp một sốvenuebody.
-- Nguồn thêm SocialDirector giữ nguyên4–6lượt, WalkDirectorAstar/sweep + TrafficDirector yield/follow; sharedfootprints vàrendercùngrect; projectionmỗiframe.20suite/check/lint/build đạt,1089routes/22740carstates0hit; replay30liveactors/1800frames0overlap. Browser đủ6lượtqua15spoll desktop/mobile, motionstale0; LOD119ktriangles/24frames9s so369k/12trước. Đây vẫnSwiftShaderchậm, chưaphysicalFPS. FullQAcontrol/fallbackđạt; sửa nốt zfighting/cửa sổ sauxemảnh, đangbuildsmoke cuối. Chưa deploy9;production8sourcec9c4167. Backuphash trongMEMORY_LONG.
-- Giữsourceproduction8 c9c4167, owner-private. Đừng coi checkpointWIP là deploy. Đọc docs/releases/latest.json. Hai agent được tiếp tục theo ủy quyền dùngagent trước đó; không paidAPI/DBreset.
-
-Đọc docs/releases/latest.json, SOCIAL_REVIEW, SOCIAL_SCRIPT_BIBLE, VISUAL_DIRECTION và PRODUCTION_RUNBOOK. Source đang chạy c9c41676b7f947cb631831ee804aa27f50c2b7bb; commit nhật ký sau phát hành khác SHA source là bình thường. Luôn push checkpoint trên nhánh work; không commit DB/backup/credential.
-
-- Theo dõi lượt cloud tiếp theo sau prompt ba vai mới (đã lưu, chưa có recorded run dùng prompt mới). Automation 6adcbdcc81cc819188a4a2ae65392369 enabled mỗi giờ, có hai recorded runs cũ thành công; không tạo trùng. Không cam kết uptime/SLA24h. Đêm mô phỏng22–06 giữ yên tĩnh.
-- Còn indoor graph/elevator occupancy, call-serve-clean, va chạm/IK và đạo cụ có trạng thái. Slot spacing là visual staging, chưa tránh va chạm toàn tuyến; thay đổi đám đông có thể đổi cặp. Visitor chat theo luật, không phải freeform LLM.
-- Qwen local1.5B đã thử ba vai nhưng critic có false positive; guard mới bác mẫu lặp. Không coi nhiều vai là bảo đảm ngữ nghĩa. Chưa deploy modelCPU; thư viện agent-authored và lượt cloud có nguồn riêng.
-- Cần GPU/điện thoại vật lý và soak dài. Browser evidence là SwiftShader/synthetic local, không production owner login. Theo dõi quota/task logs.
-- Trước public: viewer/admin, ownerID/rate limits/cache; gỡ XOM_OWNER_PRIVATE_ORIGIN trước đổi audience. Giữ owner-private. OSM912footprint vẫn heightước lượng, chưa terrain/mapmatch.
-- Local QA cần Node context relay qua session proxy, restart preview sau build. TestDB work/liveness-qa/port5177; seed-experience-fixture chỉ local. qa-social dùng response synthetic, không ghi production. Model/preview/relay của lượt này đã dừng khi bàn giao.
+- Cần benchmark GPU/điện thoại người dùng: SwiftShader từ12 lên26frames/9s, geometry369k xuống118k nhưng vẫn chậm; không gọi đã hếtlag/60FPS. Cần soak dài và theo dõi quota/automation.
+- Điều phối3D mới tránh footprint nhà/xe ở lớp hiển thị. Cần collision cho đồ nhỏ/cây/động vật, indoorgraph/elevator/call-serve-clean/IK; backend ghi nhận hoàn tất hoạt động còn theo lịch mô phỏng, chưa dựa occupancy vật lý.2D dùng thoại mới nhưng chưa tuyên bố cùng hệ collision3D.
+- Hội thoại viewer-local dùngwallpresentationclock giữ đủ4–6lượt; nhiềuviewer chưa đồng bộ playback. Visitorchat vẫnrules, Qwenlocal1.5B semanticquality yếu; không coi modelcritic là bảo đảm chất lượng.
+- Xeambient hiện12car trên1vòng an toàn. Bus/metro chưa có tuyếnquayđầu/boardinghìnhhọc hợp lệ nên không vẽ phương tiện giả chạy xuyên công trình; cần làm thật sau này.
+- Automation6adcbdcc81cc819188a4a2ae65392369 enabledhourly, latestrecorded01:00UTC26/10completed dùngpromptmới; không tạo trùng. Giữownerprivate, khôngpaidAPI. Trướcpublic phảigỡ XOM_OWNER_PRIVATE_ORIGIN và tách quyền/rate limit.
+- OSM912footprint vẫnheightước lượng, riêng với thànhphốmôphỏng; giữ10units/m.
+- LocalQA: Nodecontextrelay theo sessionproxy, restartpreview sau build; testDBwork/liveness-qa/5177. qa-social/qa-motion syntheticresponse khôngghi production.20suite/check/lint/build đạt, ảnh local đãgửi; chưa ownerloggedinbrowserQAproduction. Preview/relay của lượt này đã dừng.

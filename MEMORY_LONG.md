@@ -120,3 +120,9 @@
 -20suite/check/lint/build đạt; social28,walk8/1089routes+5401frames,traffic22740states0collision. Replayprivateworld30actors/1800frames0house/caroverlap khôngghi. ColdA*p9511–15ms/cache256; khôngSLA.
 - Browserđãthấy6lượt đầy đủ desktop/mobilequapolling. MẫuchuyểnđộngtrướcLOD khôngstale10HznhưngSwiftShaderchỉ12frames/9s; khôngcoilàhếtlag. ThêmchunkLOD vàLambert/Phongchoenvironment, giảmfill/roofwindowdetails/contactshadow. Đangđolạicùngfixture, metrics/ảnhlocalkhôngprod.
 - Backup trước9:pre-v9-20261026-ground.json hash331e1532845874a6120c64d84c0b56600a1513a0f52dd20afc781cd88bc580be,revision33,5events,memories15/6/5; giữgitignored. Prod8sourcec9c4167chođếnnativebảnsau.
+
+## Production version9 — hoàn tất
+- NativeSucceeded01:14:56UTC26/10, source287f2d837a830f56d7dc71c2013cf7748fa22464; version/deployment/env1 tronglatest.json vàledger26/10. Giữownerprivate1owner0external; khôngmigration/DBrepair.
+- PostAPIhealthready/revision37, đủ5eventcũ/memories17,6,5, living33/stalefalse. ChưaownerbrowserQAprod; ảnh/testsyntheticlocal đãgửi. ModelCPUkhôngbật, preview/relaytest đãdừng.
+- Source/QAbundle cuối đủ6lượtquapoll desktop/mobile, motion26frames9s/stale0/0footprintcollision,118418triangles vs369600/12frames trướcLOD. Hơn2xsoftwarethroughput nhưngvẫnchậm vàchưaphysicalGPU; khôngquảngcáohếtlag/60FPS.
+- Cloudtasklatest01:00UTCcompleted, promptmới đượcchạy; khôngtạotrùngcảnhAIgiờ07, readbackrevision35. Khôngđổi schedule/paidAPI tronglượt9. Chưađồngbộviewerplayback hoặcbackendoccupancyphysical.

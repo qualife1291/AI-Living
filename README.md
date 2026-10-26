@@ -1,8 +1,10 @@
 # Xóm AI — Khu phố của những trí tuệ nhỏ
 
+> Sửa phản hồi thực tế về thoại/lag/xuyên nhà: [bằng chứng và giới hạn bản9](docs/GROUND_AND_MOTION_REVIEW.md).
+
 > Cập nhật nhân vật/đối thoại: [review và bằng chứng](docs/SOCIAL_REVIEW.md), [biên kịch bằng agent](docs/SOCIAL_SCRIPT_BIBLE.md), [prompt và chỉ đạo hình ảnh](docs/VISUAL_DIRECTION.md). Nguồn production đang chạy được ghi riêng trong docs/releases/latest.json.
 
-> Production version8 (25/10/2026), owner-private: xem [nhật ký phát hành](docs/releases/2026-10-25-production.md), [quy trình phục hồi](docs/PRODUCTION_RUNBOOK.md) và [khảo sát nguồn map3D](docs/MAP_3D_SOURCES.md).
+> Production version9 (26/10/2026), owner-private: xem [nhật ký phát hành](docs/releases/2026-10-26-production.md), [quy trình phục hồi](docs/PRODUCTION_RUNBOOK.md) và [khảo sát nguồn map3D](docs/MAP_3D_SOURCES.md).
 
 > Mới nhất: [Thành phố 3D và cao ốc](docs/THREE_WORLD.md) — renderer mặc định mới, điều khiển và bằng chứng local.
 
