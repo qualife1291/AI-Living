@@ -19,22 +19,23 @@
       "towers": "150",
       "ready": "true",
       "paused": "false",
-      "frame": "50",
+      "frame": "35",
       "pixelRatio": "1.5",
-      "triangles": "121442",
+      "triangles": "129392",
       "geometries": "16",
-      "textures": "6",
+      "textures": "4",
       "walking": "false",
-      "position": "804.00,219.00",
+      "position": "804.00,223.00",
       "personHeight": "17.5",
       "carLength": "44",
       "actors": "27",
       "exchanges": "0",
       "socialCast": "[]",
       "selected": "an",
-      "drawCalls": "40",
-      "camera": "886,85,331"
-    }
+      "drawCalls": "41",
+      "camera": "765,46,293"
+    },
+    "cameraControls": "select Bình → follow An; zoom exits follow; follow resumes"
   },
   {
     "viewport": "mobile",
@@ -56,21 +57,22 @@
       "towers": "150",
       "ready": "true",
       "paused": "false",
-      "frame": "93",
+      "frame": "72",
       "pixelRatio": "1.75",
-      "triangles": "118498",
+      "triangles": "121856",
       "geometries": "16",
-      "textures": "4",
+      "textures": "5",
       "walking": "false",
-      "position": "804.00,219.00",
+      "position": "804.00,223.00",
       "personHeight": "17.5",
       "carLength": "44",
       "actors": "27",
       "exchanges": "0",
       "socialCast": "[]",
       "selected": "an",
-      "drawCalls": "37",
-      "camera": "886,85,331"
-    }
+      "drawCalls": "38",
+      "camera": "764,48,294"
+    },
+    "cameraControls": "select Bình → follow An; zoom exits follow; follow resumes"
   }
 ]

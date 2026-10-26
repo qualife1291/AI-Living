@@ -126,3 +126,13 @@
 - PostAPIhealthready/revision37, đủ5eventcũ/memories17,6,5, living33/stalefalse. ChưaownerbrowserQAprod; ảnh/testsyntheticlocal đãgửi. ModelCPUkhôngbật, preview/relaytest đãdừng.
 - Source/QAbundle cuối đủ6lượtquapoll desktop/mobile, motion26frames9s/stale0/0footprintcollision,118418triangles vs369600/12frames trướcLOD. Hơn2xsoftwarethroughput nhưngvẫnchậm vàchưaphysicalGPU; khôngquảngcáohếtlag/60FPS.
 - Cloudtasklatest01:00UTCcompleted, promptmới đượcchạy; khôngtạotrùngcảnhAIgiờ07, readbackrevision35. Khôngđổi schedule/paidAPI tronglượt9. Chưađồngbộviewerplayback hoặcbackendoccupancyphysical.
+
+
+## Va chạm, camera và hoạt động — source bản10
+- Shared scenery94 cây/507 footprint +279 công trình; renderer dùng venueSceneryPose/sceneryTrees/sceneryLamps. Shelter bus dịch50units về sân,13 đèn duy nhất ngoài làn/nút quay. Foliage cao khỏi đầu, trunk chắn; thêm model phải cập nhật footprint tương ứng.
+- WalkDirector dùng disc4,8units, khoảng riêng9,95; swept collision với người, sidepass/yield/replan, goal đứng cách20,4 để không tạo vòng chặn người đến sau. ID/reorder/poll ổn định, chỉ tìm spawn riêng khi khởi tạo; không dịch chuyển đẩy chồng giữa frame. Grid12/cached256,1.089venue routes đạt.
+- Camera FOV38, tracking gần An, target lệch30% tới listener, chọn góc không xuyên nhà, lùi theo aspect dọc; initial shot đúng ngay, eased movement. Theo chọn lạiAn; zoom thoátfollow/min42, bubble clamp theo viewport, chunkLOD cập nhật khi camera di chuyển.
+- Needs drift có anchor riêng; policy xem nhu cầu/reward/novelty/related-tag/role, loại tai nạn/vi phạm khỏi ý định thường. Giữ pending chưa hoàn tất, cohort12–24 luân phiên cả callers5min/hourly. NPC agenda3–7min, lệchID/quietnight/cache512. Không nhân skill/reward, không nâng model/fine-tune.
+- living-v2 slot5phút tránh ID lịch sử15phút; visiblepulse30giây. Không cron/paidAPI; lúc đóng trang phụ thuộc automationhourly. Backend completion vẫn tính simulationtime, không occupancy vật lý renderer.
+-23suite/check/lint/build đạt; personal-space7, autonomy8, camera180 projection/aspect; traffic22.740states với786obstacles0collision. Browserdesktop/mobile6lượt qua polling/selectBình→followAn/zoom/bubbleclamp đạt; motion20frame/9s,0stale,0collision,stepmax2,408units. SwiftShader chậm/biến thiên20–29frames giữa lượt, chưahardwareGPU/24hsoak. Ảnh thực local synthetic đã gửi; không browserproduction.
+- Backup pre10 gitignored hashc39c1ac9c401e207a9b9b82f8d6996a0d4022df74d365354f18cfee876346918,revision65/12events/memories28,10,10. Khôngmigration/reset/repair. Trạng thái phát hành ởlatest.json/ledger.

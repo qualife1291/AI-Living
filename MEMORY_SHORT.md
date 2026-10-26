@@ -1,9 +1,9 @@
 # Việc còn lại sau production version9
 
-## Bản10 — WIP, chưa phát hành
-- Đã hoàn tất source: shared scenery94 cây/507 vật cản +279 khối nhà; tránh người bằng swept-disc/nhường lối/điểm đứng riêng; dời shelter bus và13 đèn khỏi đường, renderer dùng cùng tọa độ. Camera bám An/góc gần/easing; needs/reward/novelty/cohort luân phiên/giữ kế hoạch chưa xong; lịch NPC ngắn lệch ID. Slot living-v2 5phút, visible pulse30giây. Không trả phí, không nâng model.
-- Full23suite/check/lint/build đạt; traffic786vậtcản/22740trạngthái0collision; autonomy8/personal7/camera180góc×5aspect đạt. Browserdesktop/mobile đủ6lượt+selectBình/followAn/zoom, motion29frames/9s/0stale/0collision. Ảnh local đã gửi, không là production. Phát hiện bubble mobile sát mép: đang rebuild sau clamp bubble/khởi tạo camera đúng two-shot/cập nhật chunkLOD theo camera. Cần chạy lại QA cuối, commit source sạch, release build/package/native deploy, readback + ledger push. Prod vẫn9; chưa phát hành10.
-- Backup trước10:pre-v10-20261026-space.json gitignored; hashc39c1ac9c401e207a9b9b82f8d6996a0d4022df74d365354f18cfee876346918;revision65/12events/memories28,10,10. Sourceprod9 vẫn287f2d8.
+## Bản10 — đã chốt source/QA, chưa phát hành
+- Source mới camera/collision/autonomy đã QA23suite/check/lint/build và browserdesktop/mobile6lượt + controls/bubble clamp/motion20frames9s0collision. Xem SPACE_CAMERA_AUTONOMY và MEMORY_LONG. Ảnh local đã gửi. Agent đã bàn giao; root xử lý.
+- Cần release build/package từ HEAD sạch, push Sites source bằng credential native mới nếu hết hạn, save_version_and_deploy_private. Sau đó readback/pulse thật/kiểm tra event và memory, cập nhậtlatest.json/ledger/README/MEMORY_SHORT + Gitpush. Prod vẫn9source287f2d8, không nhầm Gitpush với deploy.
+- Backup trước10:pre-v10-20261026-space.json gitignored; hashc39c1ac9c401e207a9b9b82f8d6996a0d4022df74d365354f18cfee876346918;revision65/12events/memories28,10,10. KhôngpaidAPI/migration/DBreset.
 
 Source đang chạy287f2d837a830f56d7dc71c2013cf7748fa22464; đọc docs/releases/latest.json và GROUND_AND_MOTION_REVIEW. Nhật ký Git sau deploy khác SHA source là bình thường. Luôn push checkpoints nhánhwork, không commit DB/backup/credential.
 

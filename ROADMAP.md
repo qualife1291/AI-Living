@@ -60,3 +60,7 @@ Nguồn đã hoàn thiện12cảnh/56lượt doagentbiênkịch, crowd24h, spaci
 
 ## Sửa phản hồi thực tế — production9,26/10/2026
 Đã giữ đủcuộc thoại qua polling, groundnavigation quanhnhà, trafficnhườngngười/giữlàn, chi tiếtmặtđứng vàchunkLOD. XemGROUND_AND_MOTION_REVIEW vàledger26/10. CònphysicalGPUbenchmark, smallprop/animal/indoorcollision, bus/metroboardinghìnhhọcthật, đồngbộplayback giữa viewers vàbackendcompletion theooccupancy.
+
+
+## Vật cản và chủ động — bản10,26/10/2026
+Đã hoàn tất source/QA small-prop/tree/person avoidance, cinematicAn/aspectportrait, nhu cầu/kinh nghiệm/chống lặp/cohort công bằng và agenda độc lập. Bằng chứng SPACE_CAMERA_AUTONOMY; trạng thái production riêng ở releaseledger. Còn physicalGPU/soak, indoor/elevator/animal collision, đồng bộ playback và backend completion theo occupancy.

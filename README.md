@@ -1,5 +1,7 @@
 # Xóm AI — Khu phố của những trí tuệ nhỏ
 
+> Vật cản nhỏ, khoảng riêng, camera điện ảnh theo An và sinh hoạt chủ động: [review bản10](docs/SPACE_CAMERA_AUTONOMY.md).
+
 > Sửa phản hồi thực tế về thoại/lag/xuyên nhà: [bằng chứng và giới hạn bản9](docs/GROUND_AND_MOTION_REVIEW.md).
 
 > Cập nhật nhân vật/đối thoại: [review và bằng chứng](docs/SOCIAL_REVIEW.md), [biên kịch bằng agent](docs/SOCIAL_SCRIPT_BIBLE.md), [prompt và chỉ đạo hình ảnh](docs/VISUAL_DIRECTION.md). Nguồn production đang chạy được ghi riêng trong docs/releases/latest.json.
