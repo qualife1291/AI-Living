@@ -24,7 +24,7 @@ Phản hồi sau version8 là đúng: test trước chỉ quan sát đổi lư�
 
 MẫuSwiftShader trướcLOD chỉ có12drawnframes trong9giây dù không còn giữ vị trí theo10Hz. Không gọi đó là đã hếtlag. Vì vậy đã thêm chunkLOD/vật liệu nhẹ và đo lại cùngfixture; xem metrics mới và pre-lod-metrics. SwiftShader không thay cho GPU/điện thoại vật lý. Chưa có chứng nhậnFPS hoặc soak24giờ.
 
-Mẫu sauLOD ghi24frames/9giây,119.138triangles so với369.600trước đó, staleFrameRatio0,0va chạm với footprint, maxstep~2,408units. Đây là gấp đôi số frame trên cùng máy dựng phần mềm và giảm khoảng68% hình học, **vẫn không phải tốc độ khung hình đạt yêu cầu trên thiết bị thật**. Không quảng cáo60FPS. Fullbrowserregression desktop/mobile cũng đạt pause/resume, offline/reconnect,3D↔2D/lifecycle/contextloss và noWebGL/reducedmotion. Sau xem ảnh còn sửa mặt cửa/mái bị đồng phẳng và cửa sổ chèn lên cửa chính.
+Mẫu cuối sauLOD ghi26frames/9giây,118.418triangles so với369.600trước đó, staleFrameRatio0,0va chạm với footprint, maxstep~2,408units. Đây là hơn gấp đôi số frame trên cùng máy dựng phần mềm và giảm khoảng68% hình học, **vẫn không phải tốc độ khung hình đạt yêu cầu trên thiết bị thật**. Không quảng cáo60FPS. Fullbrowserregression desktop/mobile cũng đạt pause/resume, offline/reconnect,3D↔2D/lifecycle/contextloss và noWebGL/reducedmotion. Sau xem ảnh còn sửa mặt cửa/mái bị đồng phẳng và cửa sổ chèn lên cửa chính.
 
 ## Chạy lại
 
