@@ -950,7 +950,13 @@ export function createCity(
       current = actors.find((a) => a.id === selected) ?? actors[0];
       if (lastSelected !== selected) {
         following = true;
-        if (current) focus(current.position[0], current.position[1]);
+        if (current) {
+          const shot = characterShot(current, actors.find(a => a.id === socialPoses.get(current!.id)?.peerId), heading.get(current.id) ?? .35, cameraBuildings, camera.aspect);
+          scene.fog = fog;
+          controls.target.set(...shot.target);
+          camera.position.set(...shot.position);
+          controls.update();
+        }
       }
       lastSelected = selected;
     }
@@ -1018,6 +1024,7 @@ export function createCity(
     }
     controls.update();
     // Keep signs subordinate to residents; distant districts need no text clutter.
+    for (const chunk of detailChunks) chunk.mesh.visible = Math.hypot(camera.position.x - chunk.x, camera.position.z - chunk.z) < 520;
     const pixelScale =
       (2 * Math.tan(THREE.MathUtils.degToRad(camera.fov) / 2)) /
       Math.max(1, host.clientHeight);

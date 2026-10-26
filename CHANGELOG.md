@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-10-26 — Khoảng riêng, góc quay theo An và sinh hoạt chủ động
+- Cây và đồ đạc dùng chung tọa độ giữa renderer/navigation:94 cây,507 footprint, cộng279 khối nhà. Dời shelter/ghế/cây trạm xe và cột đèn khỏi tuyến xe; bỏ6 cột trùng.
+- Kiểm tra vùng quét của từng người, nhường lối/đi vòng khi đối đầu, đặt điểm đứng riêng để tránh tụm và xuyên nhau. Khi chờ, chân dừng bước.
+- Tracking shot gần An, có người nghe, chọn góc tránh nhà và tự lùi trên màn hình dọc. Nút Theo quay về An; zoom tay thoát chế độ theo.
+- Chọn việc theo năng lượng/đói/kinh nghiệm, hạn chế lặp và giữ kế hoạch chưa hoàn tất; luân phiên cư dân công bằng. Lịch NPC có công việc nhỏ và giờ nghỉ riêng.
+- Khung lập kế hoạch5phút/pulse30giây khi trang đang mở. Không nhân điểm kỹ năng, không đổi model hay thêm dịch vụ trả phí. Giới hạn và bằng chứng: [SPACE_CAMERA_AUTONOMY](docs/SPACE_CAMERA_AUTONOMY.md).
+
 ## 2026-10-26 — Sửa thoại bị ngắt, chuyển động và đường đi
 - Giữ trọn4–6lượt qua polling; nhịp2,4–4giây/câu, nghỉ0,3giây, cooldown20–45giây; đọc đầy đủ eventAI và dừng khi pause.
 - Di chuyển theo từngframe với đường vòng quanh footprint, camera theo dt và clockoffset bùRTT. Render/layout/nav dùng chung dấu chân công trình; không đặt nhà trên đường xe.
