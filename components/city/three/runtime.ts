@@ -1010,7 +1010,7 @@ export function createCity(
       }
       if (following) {
         const partnerId = socialPoses.get(current.id)?.peerId;
-        const shot = characterShot(current, actors.find(a => a.id === partnerId), heading.get(current.id) ?? .35, cameraBuildings);
+        const shot = characterShot(current, actors.find(a => a.id === partnerId), heading.get(current.id) ?? .35, cameraBuildings, camera.aspect);
         const alpha = 1 - Math.exp(-2.8 * dt);
         controls.target.lerp(new THREE.Vector3(...shot.target), alpha);
         camera.position.lerp(new THREE.Vector3(...shot.position), alpha);
@@ -1092,9 +1092,11 @@ export function createCity(
   frame = requestAnimationFrame(tick);
   return {
     zoom(factor) {
+      following = false;
+      host.dataset.view = "orbit";
       const offset = camera.position.clone().sub(controls.target);
       offset.multiplyScalar(factor);
-      offset.clampLength(100, 11000);
+      offset.clampLength(42, 11000);
       camera.position.copy(controls.target).add(offset);
     },
     follow() {
