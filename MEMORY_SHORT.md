@@ -1,8 +1,9 @@
 # Việc còn lại sau production version9
 
-## Đang làm bản10 theo phản hồi mới
-- Người dùng yêu cầu cây/đồ vật/người không xuyên nhau, camera điện ảnh bámAn, hoạt động/học chủ động hơn. Root thêmcharacterShot; agentvisual đanglàm sharedscenery và avoidance, agentstory đanglàm policy/needs/pendingguard/cohort và5minslotprefixv2. Chưa phát hành/testđủ. KhôngpaidAPI/DBreset.
-- Backup trước10:pre-v10-20261026-space.json gitignored; hashc39c1ac9c401e207a9b9b82f8d6996a0d4022df74d365354f18cfee876346918;revision65/12events/memories28,10,10. Sourceprod9vẫngiữ287f2d8.
+## Bản10 — WIP, chưa phát hành
+- Đã hoàn tất source: shared scenery94 cây/507 vật cản +279 khối nhà; tránh người bằng swept-disc/nhường lối/điểm đứng riêng; dời shelter bus và13 đèn khỏi đường, renderer dùng cùng tọa độ. Camera bám An/góc gần/easing; needs/reward/novelty/cohort luân phiên/giữ kế hoạch chưa xong; lịch NPC ngắn lệch ID. Slot living-v2 5phút, visible pulse30giây. Không trả phí, không nâng model.
+- Test mới autonomy8/personal-space7/cinema đạt; traffic kiểm tra786 vật cản/22740 trạng thái không giao nhau. Cần full23suite/check/lint/build cuối, browserdesktop/mobile/motion; build sạch, native phát hành, API readback và ledger/push. Agent đã bàn giao, root nhận toàn bộ phần còn lại.
+- Backup trước10:pre-v10-20261026-space.json gitignored; hashc39c1ac9c401e207a9b9b82f8d6996a0d4022df74d365354f18cfee876346918;revision65/12events/memories28,10,10. Sourceprod9 vẫn287f2d8.
 
 Source đang chạy287f2d837a830f56d7dc71c2013cf7748fa22464; đọc docs/releases/latest.json và GROUND_AND_MOTION_REVIEW. Nhật ký Git sau deploy khác SHA source là bình thường. Luôn push checkpoints nhánhwork, không commit DB/backup/credential.
 

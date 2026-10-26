@@ -7,6 +7,7 @@ import {
 import { boulevards } from "../lib/city/world.ts";
 import { cityBuildings } from "../lib/city/three-layout.ts";
 import { venueObstacles } from "../lib/city/footprints.ts";
+import { sceneryObstacles } from "../lib/city/scenery.ts";
 
 const distance = (a, b) => Math.hypot(a[0] - b[0], a[1] - b[1]);
 const angleDistance = (a, b) => Math.abs(Math.atan2(Math.sin(a - b), Math.cos(a - b)));
@@ -35,7 +36,7 @@ function intersects(a, b, padding = 0) {
   }
   return true;
 }
-const buildings = [...cityBuildings(), ...venueObstacles].map(b => ({
+const buildings = [...cityBuildings(), ...venueObstacles, ...sceneryObstacles].map(b => ({
   id: b.id ?? `${b.x},${b.z}`,
   position: [b.x, b.z], yaw: 0, width: b.width, length: b.depth,
 }));

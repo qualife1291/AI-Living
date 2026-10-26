@@ -95,6 +95,7 @@ export function City3D(props: Props) {
         </button>
         <button
           aria-label="Theo nhân vật"
+          title="Góc điện ảnh · theo An"
           aria-pressed={status?.following ?? true}
           onClick={() => runtime.current?.follow()}
         >

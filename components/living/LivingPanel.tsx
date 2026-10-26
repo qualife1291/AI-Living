@@ -350,7 +350,7 @@ export function LivingPanel({ onUpdated }: { onUpdated: () => Promise<void> }) {
             </form>
           </details>
           <p className="living-footnote">
-            Mỗi khung 15 phút có tối đa một lượt được lưu. Khi trang đóng, cần
+            Mỗi khung 5 phút có tối đa một lượt được lưu. Khi trang đóng, cần
             tiến trình sinh hoạt riêng tiếp tục chạy; giao diện mở không đồng
             nghĩa AI hoạt động 24/7.
           </p>

@@ -3,6 +3,7 @@ import { SocialDirector, type SocialPose, type Exchange } from "@/lib/living/soc
 import { WalkDirector } from "@/lib/city/walkability";
 import { TrafficDirector, TRAFFIC_COUNT, trafficJunctions, type TrafficVehicle } from "@/lib/city/traffic";
 import { venueGeometry, openVenue } from "@/lib/city/footprints";
+import { sceneryTrees, sceneryLamps, venueSceneryPose } from "@/lib/city/scenery";
 import { characterShot } from "@/lib/city/cinematography";
 import { createHumanGeometry, humanPose } from "./humans";
 import * as THREE from "three";
@@ -25,7 +26,6 @@ import { boulevards, metroLine, venues, type Venue } from "@/lib/city/world";
 import {
   cityBuildings,
   pedestrianSegments,
-  buildingAllowed,
 } from "@/lib/city/three-layout";
 import type { World, EpisodeEvent } from "@/lib/world";
 
@@ -103,7 +103,7 @@ export function createCity(
   const controls = new OrbitControls(camera, renderer.domElement);
   controls.enableDamping = true;
   controls.dampingFactor = 0.09;
-  controls.minDistance = 100;
+  controls.minDistance = 42;
   controls.maxDistance = 11000;
   controls.minPolarAngle = 0.22;
   controls.maxPolarAngle = Math.PI / 2 - 0.08;
@@ -305,17 +305,16 @@ export function createCity(
     });
     leaves.push({
       x,
-      y: 30 + (seed % 7),
+      y: 36 + (seed % 7),
       z,
       w: 25,
-      h: 32,
+      h: 26,
       d: 25,
       color: seed % 2 ? "#89b966" : "#48a481",
     });
   }
   for (const venue of venues) {
-    const open = openVenue(venue), footprint = venueGeometry(venue);
-    const v = open ? venue : { ...venue, x: footprint.x, y: footprint.z + 47 };
+    const open = openVenue(venue), v = venueSceneryPose(venue);
     const height =
       v.type === "office"
         ? 140
@@ -353,8 +352,7 @@ export function createCity(
       }
     }
     if (open) {
-      tree(v.x - 45, v.y - 47, 1);
-      tree(v.x + 45, v.y - 47, 2);
+
       if (v.type === "square" || v.type === "park") {
         cylinder(v.x, 5, v.y - 44, 25, 8, "#d8d7c2");
         cylinder(v.x, 10, v.y - 44, 20, 3, "#8dbbb4");
@@ -418,7 +416,7 @@ export function createCity(
         cylinder(v.x + 35, 67, v.y - 40, 8, 70, "#c6d3cc");
         box(v.x + 35, 103, v.y - 40, 30, 16, 25, "#73969b");
       }
-      tree(v.x - 66, v.y - 14, 3);
+
     }
     const sign = label(v.name, v.x, open ? 43 : height + 22, v.y - 20, 112);
     if (sign) {
@@ -426,24 +424,11 @@ export function createCity(
       venueLabels.push({ sprite: sign, width: 112 });
     }
   }
-  for (let i = 0; i < 140; i++) {
-    const x = (i * 379 + 41) % 2430,
-      z = (i * 193 + 110) % 1480;
-    if (
-      buildingAllowed(x, z, 6) &&
-      !buildings.some(
-        (b) =>
-          Math.abs(x - b.x) < b.width / 2 + 17 &&
-          Math.abs(z - b.z) < b.depth / 2 + 17,
-      )
-    )
-      tree(x, z, i);
+  for (const t of sceneryTrees) tree(t.x, t.z, t.seed);
+  for (const lamp of sceneryLamps) {
+    cylinder(lamp.x, 26, lamp.z, 1.4, 52, "#728882");
+    box(lamp.x - 4, 52, lamp.z, 11, 2, 5, "#f7dba1");
   }
-  for (const p of boulevards)
-    for (const point of p) {
-      cylinder(point[0] + 30, 26, point[1], 1.4, 52, "#728882");
-      box(point[0] + 26, 52, point[1], 11, 2, 5, "#f7dba1");
-    }
   const dummy = new THREE.Object3D(),
     color = new THREE.Color();
   const detailChunks: { mesh: THREE.InstancedMesh; x: number; z: number }[] = [];
@@ -731,14 +716,14 @@ export function createCity(
       const yaw = oldYaw + Math.atan2(Math.sin(wantedYaw - oldYaw), Math.cos(wantedYaw - oldYaw)) * (world.paused ? 1 : 1 - Math.exp(-12 * dt)),
         s = HUMAN_SCALE;
       heading.set(a.id, yaw);
-      const pose = humanPose(a, seconds, i, social?.gesture === "idle" ? undefined : social);
+      const pose = humanPose({ ...a, walking: a.walking && !!moving }, seconds, i, social?.gesture === "idle" ? undefined : social);
       position.set(a.position[0], (riding ? 8 : 2) + pose.breath * s, a.position[1]);
       rotation.setFromAxisAngle(up, yaw);
       scale.setScalar(s);
       root.compose(position, rotation, scale);
       faceRotation.makeRotationFromEuler(new THREE.Euler(pose.headTilt, pose.headTurn, 0));
       faceRoot.copy(root).multiply(faceFront).multiply(faceRotation).multiply(faceBack);
-      const swing = a.walking && !riding ? pose.rightArm : 0;
+      const swing = a.walking && moving && !riding ? pose.rightArm : 0;
       const usingProp = !a.walking && ["read", "garden", "eat", "work"].includes(a.kind);
       part("prop", i, a.id, 0, 15.5, 8, usingProp ? 7 : 0, a.kind === "read" ? 1 : 3, 5, a.kind === "read" ? "#e9b549" : a.kind === "garden" ? "#50adba" : "#fff5cf");
       part("torso", i, a.id, 0, 20, 0, 11.5, 13, 7.5, appearance.shirt);
