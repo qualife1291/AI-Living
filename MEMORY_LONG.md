@@ -136,3 +136,9 @@
 - living-v2 slot5phút tránh ID lịch sử15phút; visiblepulse30giây. Không cron/paidAPI; lúc đóng trang phụ thuộc automationhourly. Backend completion vẫn tính simulationtime, không occupancy vật lý renderer.
 -23suite/check/lint/build đạt; personal-space7, autonomy8, camera180 projection/aspect; traffic22.740states với786obstacles0collision. Browserdesktop/mobile6lượt qua polling/selectBình→followAn/zoom/bubbleclamp đạt; motion20frame/9s,0stale,0collision,stepmax2,408units. SwiftShader chậm/biến thiên20–29frames giữa lượt, chưahardwareGPU/24hsoak. Ảnh thực local synthetic đã gửi; không browserproduction.
 - Backup pre10 gitignored hashc39c1ac9c401e207a9b9b82f8d6996a0d4022df74d365354f18cfee876346918,revision65/12events/memories28,10,10. Khôngmigration/reset/repair. Trạng thái phát hành ởlatest.json/ledger.
+
+
+## Production version10 — hoàn tất
+- Native succeeded17:06:40UTC26/10, source7a7871f8c04967521b9fff3e2cbf06ae75b8ed7e; đúngversion10/env1/1owner0external. Version/deployment/archivehash/latestreadback đầy đủ tronglatest.json/ledger26/10. Giữprivate, khôngmigration.
+- PostGETrevision67/12events/28,10,10memories cònđủ; pulse200duplicate/living-v2-2026-10-27-1 đãpersist/revision68/learningupdated0,healthready/stalefalse. Khôngfixture/testevent/DBrepair. Sourcepush kháccommitledger saudeploy.
+- Localpreview/relay đãdừng; prodkhôngphụthuộcenvlocal. Browserảnh đãgửivàghi rõpreview; chưaownerbrowserprod hoặchardwareFPS. MemorySHORT chỉgiữbacklog/blocker.
