@@ -1,5 +1,11 @@
 # Việc còn lại sau production version 8
 
+## Đang sửa phản hồi kiểm thử ngày26/10
+
+- Người dùng thấy thoại1–2câu/rấtchậm, di chuyểnlag, người/xe xuyênnhà vàbối cảnhkém. Đã xác định: actorprojection10Hz, pollingclockoffsetchưa bùRTT, ambientpairgreedy đứtchuỗi; roadlayout cắt trực tiếp một sốvenuebody.
+- Nguồn WIP thêm SocialDirector giữ nguyên4–6lượt trênwallpresentationclock, WalkDirectorAstar/sweptfootprint + TrafficDirector rightlane/closedloop/yield/follow; sharedfootprints dịch côngtrìnhhưcấu khỏiđường, renderer dùngcùngrect; frameprojectionmỗiframe, ánhsáng/chi tiếtmặtđứng/contactshadow. Chưa phát hành. Kiểm thử social28cases/traffic đã đạt; fullwalkmatrix/browser/performance đang kiểm.
+- Giữsourceproduction8 c9c4167, owner-private. Đừng coi checkpointWIP là deploy. Đọc docs/releases/latest.json. Hai agent được tiếp tục theo ủy quyền dùngagent trước đó; không paidAPI/DBreset.
+
 Đọc docs/releases/latest.json, SOCIAL_REVIEW, SOCIAL_SCRIPT_BIBLE, VISUAL_DIRECTION và PRODUCTION_RUNBOOK. Source đang chạy c9c41676b7f947cb631831ee804aa27f50c2b7bb; commit nhật ký sau phát hành khác SHA source là bình thường. Luôn push checkpoint trên nhánh work; không commit DB/backup/credential.
 
 - Theo dõi lượt cloud tiếp theo sau prompt ba vai mới (đã lưu, chưa có recorded run dùng prompt mới). Automation 6adcbdcc81cc819188a4a2ae65392369 enabled mỗi giờ, có hai recorded runs cũ thành công; không tạo trùng. Không cam kết uptime/SLA24h. Đêm mô phỏng22–06 giữ yên tĩnh.

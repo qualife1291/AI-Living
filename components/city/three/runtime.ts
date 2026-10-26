@@ -1,17 +1,19 @@
 import { HUMAN_SCALE, VEHICLES, pixelRatio, type Quality } from "@/lib/city/scale";
-import { socialFrame, type SocialPose, type Exchange } from "@/lib/living/social";
+import { SocialDirector, type SocialPose, type Exchange } from "@/lib/living/social";
+import { WalkDirector } from "@/lib/city/walkability";
+import { TrafficDirector, TRAFFIC_COUNT, trafficJunctions, type TrafficVehicle } from "@/lib/city/traffic";
+import { venueGeometry, openVenue } from "@/lib/city/footprints";
 import { createHumanGeometry, humanPose } from "./humans";
 import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import {
   actorsAt,
   animalsAt,
-  along,
   simulationTime,
   type Actor,
   type Point,
 } from "@/lib/life";
-import { crowdAt, livingSpeechAt } from "@/lib/living/engine";
+import { crowdAt } from "@/lib/living/engine";
 import { worldTime } from "@/lib/clock";
 import {
   defaultAppearance,
@@ -80,7 +82,7 @@ export function createCity(
   const renderer = new THREE.WebGLRenderer({
     antialias: true,
     alpha: false,
-    powerPreference: "low-power",
+    powerPreference: "high-performance",
   });
   renderer.setPixelRatio(
     pixelRatio(input().quality, devicePixelRatio),
@@ -109,9 +111,9 @@ export function createCity(
     MIDDLE: THREE.MOUSE.DOLLY,
     RIGHT: THREE.MOUSE.PAN,
   };
-  const ambient = new THREE.HemisphereLight("#e7f6ff", "#b5a18c", 2.6);
+  const ambient = new THREE.HemisphereLight("#d9edff", "#8e7458", 1.25);
   scene.add(ambient);
-  const sun = new THREE.DirectionalLight("#fff0ce", 3.2);
+  const sun = new THREE.DirectionalLight("#fff0ce", 2.6);
   sun.position.set(-400, 1200, 600);
   scene.add(sun);
   const solids: Solid[] = [],
@@ -196,6 +198,7 @@ export function createCity(
         );
     }
   }
+  for (const junction of trafficJunctions) cylinder(junction.position[0], 1.15, junction.position[1], junction.radius * 2, .4, "#65767b");
   for (const [a, b] of pedestrianSegments) road([a, b], 8, 1.5, "#eee2c6");
   road(metroLine, 10, 3, "#617878");
   road(metroLine, 5, 3.5, "#bac7bd");
@@ -224,20 +227,22 @@ export function createCity(
       box(x, 10, z, w + 8, 18, d + 8, "#e1d7bc");
       if (i % 3 === 0) cylinder(x + w / 4, h + 19, z, 1.4, 25, "#d8dcd2");
     }
-    const levels = Math.floor((h - 18) / 17),
+    const levels = Math.floor((h - 18) / 30),
       cols = Math.max(2, Math.floor(w / 14));
     for (let f = 0; f < levels; f++)
       for (let c = 0; c < cols; c++) {
         const wx = x - w / 2 + ((c + 0.5) * w) / cols,
-          y = 25 + f * 17;
+          y = 25 + f * 30;
+        box(wx, y, z + d / 2 + .3, 9.5, 14, .8, "#e4e1cf");
+        box(wx, y, z - d / 2 - .3, 9.5, 14, .8, "#e4e1cf");
         windowBox(wx, y, z + d / 2 + 0.6, 7, 9, 1, i + c + f);
         windowBox(wx, y, z - d / 2 - 0.6, 7, 9, 1, i + c + f + 1);
       }
     for (let f = 0; f < levels; f++)
       for (let c = 0; c < 3; c++) {
         const wz = z - d / 2 + ((c + 0.5) * d) / 3;
-        windowBox(x + w / 2 + 0.6, 25 + f * 17, wz, 1, 9, 7, i + f);
-        windowBox(x - w / 2 - 0.6, 25 + f * 17, wz, 1, 9, 7, i + f + 1);
+        windowBox(x + w / 2 + 0.6, 25 + f * 30, wz, 1, 12, 8, i + f);
+        windowBox(x - w / 2 - 0.6, 25 + f * 30, wz, 1, 12, 8, i + f + 1);
       }
     box(
       x,
@@ -305,10 +310,9 @@ export function createCity(
       color: seed % 2 ? "#89b966" : "#48a481",
     });
   }
-  for (const v of venues) {
-    const open = ["square", "park", "garden", "sport", "bus", "metro"].includes(
-      v.type,
-    );
+  for (const venue of venues) {
+    const open = openVenue(venue), footprint = venueGeometry(venue);
+    const v = open ? venue : { ...venue, x: footprint.x, y: footprint.z + 47 };
     const height =
       v.type === "office"
         ? 140
@@ -375,11 +379,17 @@ export function createCity(
         )[v.type] ?? "#8fc7b3";
       box(v.x, height / 2 + 2, v.y - 47, 104, height, 72, color);
       box(v.x, height + 4, v.y - 47, 110, 5, 78, "#e9e3cf");
+      for (const dx of [-53, 53]) box(v.x + dx, height + 7, v.y - 47, 2, 5, 76, "#c1b899");
+      for (const dz of [-85, -9]) box(v.x, height + 7, v.y + dz, 108, 5, 2, "#c1b899");
+      box(v.x, 3.5, v.y - 10, 104, 4, 2, "#b8a68d");
       box(v.x, 6, v.y - 7, 34, 12, 12, "#b0bba5");
       windowBox(v.x, 15, v.y - 10, 17, 26, 2, 1);
       for (let f = 0; f < Math.floor(height / 22); f++)
-        for (const dx of [-35, -12, 12, 35])
+        for (const dx of [-35, -12, 12, 35]) {
+          box(v.x + dx, 20 + f * 22, v.y - 10.5, 15, 15, 2, "#f3e6cc");
           windowBox(v.x + dx, 20 + f * 22, v.y - 10, 12, 12, 1, f);
+          box(v.x + dx, 12.5 + f * 22, v.y - 8, 16, 1.5, 4, "#d0b997");
+        }
       box(
         v.x,
         31,
@@ -393,6 +403,10 @@ export function createCity(
         box(v.x, height - 12, v.y - 9, 23, 7, 2, "#ba7868");
         box(v.x, height - 12, v.y - 8, 7, 23, 2, "#ba7868");
       }
+      if (["cafe", "restaurant", "market"].includes(v.type)) {
+        for (let k = -5; k <= 5; k++) box(v.x + k * 10, 31.2, v.y + 1, 9.5, 1.5, 25, k % 2 ? "#f7e5bd" : v.type === "cafe" ? "#438f86" : "#df8d6e");
+        for (const dx of [-49, 49]) cylinder(v.x + dx, 15, v.y + 10, 1.4, 28, "#9c7954");
+      }
       if (v.type === "factory")
         for (const dx of [-32, 30])
           cylinder(v.x + dx, height + 22, v.y - 60, 8, 42, "#7b908d");
@@ -404,7 +418,7 @@ export function createCity(
     }
     const sign = label(v.name, v.x, open ? 43 : height + 22, v.y - 20, 112);
     if (sign) {
-      sign.userData.venue = v;
+      sign.userData.venue = venue;
       venueLabels.push({ sprite: sign, width: 112 });
     }
   }
@@ -521,15 +535,15 @@ export function createCity(
   const trafficBody = new THREE.InstancedMesh(
       boxGeo,
       new THREE.MeshStandardMaterial({ roughness: 0.55 }),
-      26,
+      TRAFFIC_COUNT,
     ),
     trafficGlass = new THREE.InstancedMesh(
       boxGeo,
       new THREE.MeshStandardMaterial({ color: "#496d77", roughness: 0.3 }),
-      26,
+      TRAFFIC_COUNT,
     );
-  const trafficWheels = new THREE.InstancedMesh(new THREE.CylinderGeometry(1,1,1,10),new THREE.MeshStandardMaterial({color:"#273c49",roughness:.9}),104);
-  const trafficLights = new THREE.InstancedMesh(boxGeo,new THREE.MeshStandardMaterial({emissive:"#ffe5a0",emissiveIntensity:.25}),104);
+  const trafficWheels = new THREE.InstancedMesh(new THREE.CylinderGeometry(1,1,1,10),new THREE.MeshStandardMaterial({color:"#273c49",roughness:.9}),TRAFFIC_COUNT * 4);
+  const trafficLights = new THREE.InstancedMesh(boxGeo,new THREE.MeshStandardMaterial({emissive:"#ffe5a0",emissiveIntensity:.25}),TRAFFIC_COUNT * 4);
   trafficWheels.frustumCulled=trafficLights.frustumCulled=false;
   scene.add(trafficBody, trafficGlass, trafficWheels, trafficLights);
   trafficBody.frustumCulled = trafficGlass.frustumCulled = false;
@@ -558,6 +572,12 @@ export function createCity(
     return g;
   });
   const selectedLabel = label("An", 0, 25, 0, 14)!;
+  const shadowCanvas = document.createElement("canvas"); shadowCanvas.width = shadowCanvas.height = 64;
+  const shadowContext = shadowCanvas.getContext("2d")!, gradient = shadowContext.createRadialGradient(32, 32, 3, 32, 32, 31);
+  gradient.addColorStop(0, "rgba(28,44,41,.34)"); gradient.addColorStop(1, "rgba(28,44,41,0)");
+  shadowContext.fillStyle = gradient; shadowContext.fillRect(0, 0, 64, 64);
+  const contactShadows = new THREE.InstancedMesh(new THREE.PlaneGeometry(1, 1).rotateX(-Math.PI / 2), new THREE.MeshBasicMaterial({ map: new THREE.CanvasTexture(shadowCanvas), transparent: true, depthWrite: false }), capacity + TRAFFIC_COUNT);
+  contactShadows.frustumCulled = false; scene.add(contactShadows);
   let lastLabel = "",
     following = true,
     dead = false,
@@ -569,6 +589,8 @@ export function createCity(
     actors: Actor[] = [],
     lastSelected = "";
   let socialPoses = new Map<string, SocialPose>(), exchanges: Exchange[] = [];
+  const walkDirector = new WalkDirector(), trafficDirector = new TrafficDirector(), socialDirector = new SocialDirector();
+  let cars: TrafficVehicle[] = [];
   const previousPositions = new Map<string, Point>();
   let lastTime = Date.parse(input().world.born);
   let lastStatus = 0;
@@ -669,8 +691,7 @@ export function createCity(
     mesh.userData.ids[index] = id;
   }
   const heading = new Map<string, number>();
-  const renderedPositions = new Map<string, THREE.Vector2>();
-  function drawActors(seconds: number, world: World) {
+  function drawActors(seconds: number, world: World, dt: number) {
     for (const mesh of Object.values(bodyParts)) mesh.count = actors.length;
     riderVehicles.count = actors.length;
     actors.forEach((a, i) => {
@@ -687,25 +708,17 @@ export function createCity(
         moving =
           old &&
           Math.hypot(a.position[0] - old[0], a.position[1] - old[1]) > 0.05;
-      if (moving)
-        heading.set(
-          a.id,
-          Math.atan2(a.position[0] - old[0], a.position[1] - old[1]),
-        );
+      const movementYaw = moving ? Math.atan2(a.position[0] - old![0], a.position[1] - old![1]) : undefined;
       previousPositions.set(a.id, a.position);
       const riding = a.walking && a.transport && a.transport !== "walk";
       const social = socialPoses.get(a.id), peer = social && social.gesture !== "idle" ? actors.find(p => p.id === social.peerId) : undefined;
-      const wantedYaw = peer ? Math.atan2(peer.position[0] - a.position[0], peer.position[1] - a.position[1]) : heading.get(a.id) ?? .35;
+      const wantedYaw = peer ? Math.atan2(peer.position[0] - a.position[0], peer.position[1] - a.position[1]) : movementYaw ?? heading.get(a.id) ?? .35;
       const oldYaw = heading.get(a.id) ?? wantedYaw;
-      const yaw = oldYaw + Math.atan2(Math.sin(wantedYaw - oldYaw), Math.cos(wantedYaw - oldYaw)) * (world.paused ? 1 : .18),
+      const yaw = oldYaw + Math.atan2(Math.sin(wantedYaw - oldYaw), Math.cos(wantedYaw - oldYaw)) * (world.paused ? 1 : 1 - Math.exp(-12 * dt)),
         s = HUMAN_SCALE;
       heading.set(a.id, yaw);
       const pose = humanPose(a, seconds, i, social?.gesture === "idle" ? undefined : social);
-      const smooth = renderedPositions.get(a.id) ?? new THREE.Vector2(...a.position);
-      if (!world.paused) smooth.lerp(new THREE.Vector2(...a.position), 0.5);
-      else smooth.set(...a.position);
-      renderedPositions.set(a.id, smooth);
-      position.set(smooth.x, (riding ? 8 : 2) + pose.breath * s, smooth.y);
+      position.set(a.position[0], (riding ? 8 : 2) + pose.breath * s, a.position[1]);
       rotation.setFromAxisAngle(up, yaw);
       scale.setScalar(s);
       root.compose(position, rotation, scale);
@@ -876,72 +889,41 @@ export function createCity(
       if (mesh.instanceColor) mesh.instanceColor.needsUpdate = true;
     }
   }
-  function traffic(seconds: number) {
-    for (let i = 0; i < 26; i++) {
-      const metro = i > 22,
-        path = (
-          metro ? metroLine : boulevards[i % boulevards.length]
-        ) as Point[];
-      const length = path
-          .slice(1)
-          .reduce(
-            (n, p, j) => n + Math.hypot(p[0] - path[j][0], p[1] - path[j][1]),
-            0,
-          ),
-        phase = (seconds * (metro ? 38 : 22 + (i % 5) * 3) + i * 139) % (length * 2),
-        at = phase < length ? phase : length * 2 - phase;
-      const a = along(path, at),
-        b = along(path, Math.max(0, Math.min(length, at + (phase < length ? 3 : -3))));
-      const angle = Math.atan2(b[0] - a[0], b[1] - a[1]),
-        bus = i % 7 === 0;
-      const dimensions = metro ? VEHICLES.metro : bus ? VEHICLES.bus : VEHICLES.car;
+  function traffic() {
+    trafficBody.count = trafficGlass.count = cars.length;
+    trafficWheels.count = trafficLights.count = cars.length * 4;
+    cars.forEach((car, i) => {
+      const a = car.position, angle = car.yaw, dimensions = car;
       dummy.rotation.set(0, angle, 0);
-      dummy.position.set(
-        a[0] + (metro ? 0 : Math.cos(angle) * 10),
-        metro ? 17 : (metro || bus ? 16 : 9),
-        a[1] - (metro ? 0 : Math.sin(angle) * 10),
-      );
-      dummy.scale.set(
-        dimensions.width,
-        dimensions.height,
-        dimensions.length,
-      );
-      dummy.updateMatrix();
-      trafficBody.setMatrixAt(i, dummy.matrix);
-      trafficBody.setColorAt(
-        i,
-        color.set(
-          metro
-            ? "#70a9a0"
-            : ["#c58c72", "#d5bb77", "#97b7a2", "#a8bcc4"][i % 4],
-        ),
-      );
-      dummy.position.y += dimensions.height * 0.4;
-      dummy.scale.multiply(new THREE.Vector3(0.86, 0.45, 0.66));
-      dummy.updateMatrix();
-      trafficGlass.setMatrixAt(i, dummy.matrix);
-      for(let wheel=0;wheel<4;wheel++) {
-        const side=wheel%2===0?-1:1, end=wheel<2?-1:1;
-        const dx=side*dimensions.width*.48, dz=end*dimensions.length*.3;
-        dummy.position.set(a[0]+(metro?0:Math.cos(angle)*10)+dx*Math.cos(angle)+dz*Math.sin(angle),4,a[1]-(metro?0:Math.sin(angle)*10)-dx*Math.sin(angle)+dz*Math.cos(angle));
-        dummy.rotation.set(0,angle,Math.PI/2);dummy.scale.set(3.5,2.5,3.5);dummy.updateMatrix();trafficWheels.setMatrixAt(i*4+wheel,dummy.matrix);
-        const ldx=side*dimensions.width*.32,ldz=end*dimensions.length*.505;
-        dummy.position.set(a[0]+(metro?0:Math.cos(angle)*10)+ldx*Math.cos(angle)+ldz*Math.sin(angle),9,a[1]-(metro?0:Math.sin(angle)*10)-ldx*Math.sin(angle)+ldz*Math.cos(angle));
-        dummy.rotation.set(0,angle,0);dummy.scale.set(3,2,1);dummy.updateMatrix();trafficLights.setMatrixAt(i*4+wheel,dummy.matrix);trafficLights.setColorAt(i*4+wheel,color.set(end>0?"#fff1b5":"#ed7864"));
+      dummy.position.set(a[0], 9, a[1]);
+      dummy.scale.set(dimensions.width, dimensions.height, dimensions.length);
+      dummy.updateMatrix(); trafficBody.setMatrixAt(i, dummy.matrix);
+      trafficBody.setColorAt(i, color.set(["#dc876f", "#e2bb55", "#5c9e9d", "#96adb8"][i % 4]));
+      dummy.position.y += dimensions.height * .4;
+      dummy.scale.set(dimensions.width * .82, dimensions.height * .38, dimensions.length * .58);
+      dummy.updateMatrix(); trafficGlass.setMatrixAt(i, dummy.matrix);
+      for (let wheel = 0; wheel < 4; wheel++) {
+        const side = wheel % 2 === 0 ? -1 : 1, end = wheel < 2 ? -1 : 1;
+        const dx = side * dimensions.width * .48, dz = end * dimensions.length * .3;
+        dummy.position.set(a[0] + dx * Math.cos(angle) + dz * Math.sin(angle), 4, a[1] - dx * Math.sin(angle) + dz * Math.cos(angle));
+        dummy.rotation.set(0, angle, Math.PI / 2); dummy.scale.set(3.5, 2.5, 3.5); dummy.updateMatrix(); trafficWheels.setMatrixAt(i * 4 + wheel, dummy.matrix);
+        const lx = side * dimensions.width * .32, lz = end * dimensions.length * .505;
+        dummy.position.set(a[0] + lx * Math.cos(angle) + lz * Math.sin(angle), 9, a[1] - lx * Math.sin(angle) + lz * Math.cos(angle));
+        dummy.rotation.set(0, angle, 0); dummy.scale.set(3, 2, 1); dummy.updateMatrix(); trafficLights.setMatrixAt(i * 4 + wheel, dummy.matrix); trafficLights.setColorAt(i * 4 + wheel, color.set(end > 0 ? "#fff1b5" : "#ed7864"));
       }
+    });
+    for (const mesh of [trafficBody, trafficGlass, trafficWheels, trafficLights]) {
+      mesh.instanceMatrix.needsUpdate = true;
+      if (mesh.instanceColor) mesh.instanceColor.needsUpdate = true;
     }
-    trafficWheels.instanceMatrix.needsUpdate=trafficLights.instanceMatrix.needsUpdate=true;
-    if(trafficLights.instanceColor)trafficLights.instanceColor.needsUpdate=true;
-    trafficBody.instanceMatrix.needsUpdate =
-      trafficGlass.instanceMatrix.needsUpdate = true;
-    if (trafficBody.instanceColor) trafficBody.instanceColor.needsUpdate = true;
   }
   let activeQuality = input().quality;
   let drawnFrames = 0;
   function tick(stamp: number) {
     if (dead) return;
     frame = requestAnimationFrame(tick);
-    if (document.hidden || stamp - lastDraw < 32) return;
+    if (document.hidden || stamp - lastDraw < 15) return;
+    const dt = Math.min(.05, Math.max(.001, (stamp - lastDraw) / 1000));
     lastDraw = stamp;
     const state = input(),
       { world, selected } = state,
@@ -952,14 +934,17 @@ export function createCity(
       renderer.setSize(host.clientWidth, host.clientHeight);
     }
     lastTime = now; // simulationTime/worldTime apply the persisted pause anchor.
-    if (stamp - lastState > 100 || selected !== lastSelected) {
+    const seconds = simulationTime(world, lastTime) / 1000;
+    {
       const rawActors = [
         ...actorsAt(world, lastTime),
         ...(world.living
           ? crowdAt(world.living, world, lastTime, selected)
           : []),
       ].slice(0, capacity);
-      const social = socialFrame(world, rawActors, state.events ?? [], lastTime, livingSpeechAt(world, lastTime));
+      cars = trafficDirector.frame(seconds, actors.map(a => a.position));
+      const safeActors = walkDirector.frame(world, rawActors, seconds, cars);
+      const social = socialDirector.frame(world, safeActors, state.events ?? [], lastTime, null, true);
       actors = social.actors;
       socialPoses = social.poses;
       exchanges = social.exchanges;
@@ -969,17 +954,19 @@ export function createCity(
         if (current) focus(current.position[0], current.position[1]);
       }
       lastSelected = selected;
+    }
+    if (stamp - lastState > 500) {
       lastState = stamp;
       const time = worldTime(world, lastTime);
       const daylight = time.daylight;
-      ambient.intensity = 1.0 + daylight * 1.6;
-      sun.intensity = 0.25 + daylight * 2.95;
+      ambient.intensity = .5 + daylight * .8;
+      sun.intensity = .2 + daylight * 2.4;
       windowMaterial.emissiveIntensity = 0.15 + (1 - daylight) * 0.7;
       const golden = time.phase === "dawn" || time.phase === "dusk";
       (scene.background as THREE.Color).set("#142638").lerp(new THREE.Color(golden ? "#ffd4ac" : "#94d4f1"), daylight);
       sun.color.set(golden ? "#ffb77e" : "#fff0d8");
       sun.position.set(Math.cos(time.hour / 24 * Math.PI * 2) * 1000, 200 + daylight * 1100, 600);
-      renderer.toneMappingExposure = .85 + daylight * .35;
+      renderer.toneMappingExposure = .85 + daylight * .15;
       fog.color.copy(scene.background as THREE.Color);
     }
     if (state.target && state.target.key !== targetKey) {
@@ -987,9 +974,14 @@ export function createCity(
       targetKey = state.target.key;
       focus(state.target.x, state.target.y);
     }
-    const seconds = simulationTime(world, lastTime) / 1000;
-    drawActors(seconds, world);
-    traffic(seconds);
+    drawActors(seconds, world, dt);
+    traffic();
+    contactShadows.count = actors.length + cars.length;
+    for (let i = 0; i < contactShadows.count; i++) {
+      const car = i >= actors.length ? cars[i - actors.length] : null, point = car?.position ?? actors[i].position;
+      dummy.position.set(point[0], 2.05, point[1]); dummy.rotation.set(0, car?.yaw ?? 0, 0); dummy.scale.set(car ? car.width * 1.35 : 11, 1, car ? car.length * 1.2 : 8); dummy.updateMatrix(); contactShadows.setMatrixAt(i, dummy.matrix);
+    }
+    contactShadows.instanceMatrix.needsUpdate = true;
     animalsAt(world, lastTime)
       .slice(0, animalMeshes.length)
       .forEach((a, i) => {
@@ -1023,7 +1015,7 @@ export function createCity(
             15,
             current.position[1],
           ),
-          delta = next.sub(controls.target).multiplyScalar(0.2);
+          delta = next.sub(controls.target).multiplyScalar(1 - Math.exp(-14 * dt));
         controls.target.add(delta);
         camera.position.add(delta);
       }

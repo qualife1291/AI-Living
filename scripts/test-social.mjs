@@ -4,7 +4,7 @@ import { seed } from '../lib/world.ts';
 import { actorsAt, distance, places, project, simulationTime } from '../lib/life.ts';
 import { hashSeed, updateClock } from '../lib/clock.ts';
 import { crowdAt, initializeLiving, residentRoutine } from '../lib/living/engine.ts';
-import { socialFrame, spaceActors } from '../lib/living/social.ts';
+import { socialFrame, spaceActors, SocialDirector, SOCIAL_TIMING, spokenSeconds } from '../lib/living/social.ts';
 import { reviewNarrative } from '../lib/living/director.ts';
 import { PLACES, STEP_KINDS } from '../lib/event-schema.ts';
 
@@ -130,7 +130,7 @@ test('one pair has alternating complete replies, listener pose and minimum quiet
   const complete = [...groups.values()].filter(g => g.indices.length === 4 && g.indices[0] === 0);
   assert.ok(complete.length >= 2);
   for (const g of complete) assert.deepEqual(g.indices, [0, 1, 2, 3]);
-  for (let i = 1; i < complete.length; i++) assert.ok(complete[i].start - complete[i - 1].end >= scripts.cooldownSeconds);
+  for (let i = 1; i < complete.length; i++) assert.ok(complete[i].start - complete[i - 1].end >= SOCIAL_TIMING.minimumCooldownSeconds);
 });
 
 test('a newly arrived pair waits for an opening instead of joining a scene on a reply', () => {
@@ -209,7 +209,7 @@ test('paused simulation freezes resident positions, dialogue and turn timing', (
 });
 
 test('ambient speech respects overnight quiet, private rooms, walking and distance', () => {
-  for (const hour of [0, 3, 5.99, 22, 23.9]) for (let s = 0; s < 60; s++)
+  for (const hour of [0, 3, 5.9, 22, 23.9]) for (let s = 0; s < 60; s++)
     assert.equal(socialFrame(world, pair, [], born + hour * 3600_000 + s * 1000).exchanges.length, 0);
   for (const location of ['Phòng An', 'Phòng Bình', 'Phòng Chi', 'Bệnh viện', 'Phòng khám'])
     for (let s = 0; s < 228; s++) assert.equal(socialFrame(world, [stationary(world, 'an', location), stationary(world, 'binh', location)], [], noon + s * 1000).exchanges.length, 0);
@@ -293,6 +293,116 @@ test('24 hour resident agendas vary by role/id, total one day and rest overnight
     assert.ok(new Set(crowd.map(a => a.location)).size >= 8);
     assert.ok(crowd.filter(a => a.location === 'Quảng trường').length < crowd.length / 3);
   }
+});
+
+function collectDirector(director, w, actorList, seconds, eventList = [], start = noon, step = .1) {
+  const lines = new Map(), snapshots = [];
+  for (let t = 0; t < seconds; t += step) {
+    const at = start + Math.round(t * 1000), input = typeof actorList === 'function' ? actorList(t) : actorList;
+    const frame = director.frame(structuredClone(w), input, structuredClone(eventList), at, null, true);
+    snapshots.push({ t, frame });
+    for (const exchange of frame.exchanges) {
+      const existing = lines.get(exchange.speech.key);
+      if (existing) existing.end = t;
+      else lines.set(exchange.speech.key, { start: t, end: t, exchange });
+    }
+  }
+  return { lines: [...lines.values()], snapshots };
+}
+
+test('director finishes all six replies despite polling, input reordering and a closer new bystander', () => {
+  const director = new SocialDirector();
+  const garden = spaceActors(world, ['an', 'binh'].map(id => ({ ...stationary(world, id, 'Vườn nhỏ'), kind: 'garden', stationaryFor: .01 })));
+  const chi = { ...spaceActors(world, [stationary(world, 'chi', 'Vườn nhỏ')])[0], position: [garden[0].position[0] + 2, garden[0].position[1]], kind: 'garden' };
+  const report = collectDirector(director, world, t => t < 2 ? garden : t % 1 < .5 ? [chi, ...garden].reverse() : [...garden, chi], 24);
+  const firstPair = report.lines.filter(line => [line.exchange.a, line.exchange.b].includes('an'));
+  assert.equal(firstPair.length, 6);
+  assert.deepEqual(firstPair.map(line => Number(line.exchange.speech.key.match(/-(\d+)$/)[1])), [0, 1, 2, 3, 4, 5]);
+  assert.deepEqual(firstPair.map(line => line.exchange.speech.speaker), ['an', 'binh', 'an', 'binh', 'an', 'binh']);
+  assert.ok(firstPair.at(-1).end < 22);
+  for (const line of firstPair) {
+    assert.ok(line.end - line.start >= 2.2 && line.end - line.start <= 4.1);
+    assert.equal(line.exchange.b, 'binh');
+  }
+  assert.ok(report.snapshots.some(({ t, frame }) => t > 15 && frame.exchanges.some(e => e.a === 'an')), 'Sequence survives the normal 15-second refresh boundary');
+});
+
+test('director starts from the opening when a new pair arrives, with a complete four-line exchange', () => {
+  const director = new SocialDirector(), spaced = spaceActors(world, pair);
+  assert.equal(director.frame(world, [{ ...spaced[0], walking: true }, spaced[1]], [], noon, null, true).exchanges.length, 0);
+  const report = collectDirector(director, world, spaced.map(a => ({ ...a, stationaryFor: 0 })), 18, [], noon + 1000);
+  assert.equal(report.lines.length, 4);
+  assert.deepEqual(report.lines.map(line => Number(line.exchange.speech.key.match(/-(\d+)$/)[1])), [0, 1, 2, 3]);
+  assert.ok(report.lines[0].start < .2);
+});
+
+test('director reads at a human pace even when the simulation clock runs at one tenth speed', () => {
+  const w = structuredClone(world), director = new SocialDirector();
+  w.clock = { pausedAt: null, pausedMs: 0, scale: .1, anchors: [{ realMs: noon, simMs: simulationTime(world, noon), scale: .1 }] };
+  const report = collectDirector(director, w, spaceActors(w, pair), 18);
+  assert.equal(report.lines.length, 4);
+  assert.ok(report.lines.at(-1).end < 16);
+  assert.ok((simulationTime(w, noon + 18000) - simulationTime(w, noon)) / 1000 < 2);
+});
+
+test('director cooldown is between 20 and 45 seconds after a complete exchange', () => {
+  const director = new SocialDirector(), report = collectDirector(director, world, spaceActors(world, pair), 100);
+  const openings = report.lines.filter(line => line.exchange.speech.key.endsWith('-0'));
+  assert.ok(openings.length >= 2);
+  const firstPrefix = openings[0].exchange.speech.key.slice(0, -2), first = report.lines.filter(line => line.exchange.speech.key.startsWith(firstPrefix + '-'));
+  const end = first.reduce((total, line) => total + spokenSeconds(line.exchange.speech.text) + SOCIAL_TIMING.gapSeconds, 0);
+  const cooldown = openings[1].start - openings[0].start - end;
+  assert.ok(cooldown >= 20 && cooldown <= 45.3, `${cooldown} seconds`);
+});
+
+test('director freezes a whole conversation on pause and continues remaining replies after resume', () => {
+  const director = new SocialDirector(), w = structuredClone(world), spaced = spaceActors(w, pair), seen = new Set();
+  for (let s = 0; s <= 3; s += .1) for (const e of director.frame(w, spaced, [], noon + Math.round(s * 1000), null, true).exchanges) seen.add(e.speech.key);
+  const pause = noon + 3000;
+  w.clock = updateClock(w, pause, { paused: true }); w.paused = true;
+  const frozen = director.frame(w, spaced, [], pause, null, true);
+  assert.deepEqual(director.frame(structuredClone(w), [...spaced].reverse(), [], pause + 3600000, null, true).exchanges, frozen.exchanges);
+  w.clock = updateClock(w, pause + 3600000, { paused: false }); w.paused = false;
+  for (let s = 0; s < 16; s += .1) for (const e of director.frame(w, spaced, [], pause + 3600000 + Math.round(s * 1000), null, true).exchanges) seen.add(e.speech.key);
+  assert.equal(seen.size, 4);
+});
+
+test('director gives stored AI priority and plays its entire dialogue once across refreshes', () => {
+  const director = new SocialDirector(), spaced = spaceActors(world, pair);
+  director.frame(world, spaced, [], noon, null, true);
+  const event = { ...aiEvent, dialogue: [
+    ...aiEvent.dialogue,
+    { speaker: 'an', text: 'Mình sẽ nghe từng việc một, bạn cứ nói thong thả nhé.', atSecond: 24, location: 'Sân chung' },
+    { speaker: 'binh', text: 'Cảm ơn An. Nói xong mình quay lại việc của mình nhé.', atSecond: 36, location: 'Sân chung' },
+  ] };
+  const report = collectDirector(director, world, t => t % 1 < .5 ? spaced : [...spaced].reverse(), 22, [event], noon + 1000);
+  const aiLines = report.lines.filter(line => line.exchange.source === 'ai');
+  assert.equal(aiLines.length, 4);
+  assert.deepEqual(aiLines.map(line => line.exchange.speech.key), [0, 1, 2, 3].map(i => `social-ai-test-${i}`));
+  assert.ok(aiLines.every(line => line.exchange.title === aiEvent.title));
+  assert.equal(director.frame(structuredClone(world), spaced, [structuredClone(event)], noon + 30000, null, true).exchanges.some(e => e.source === 'ai'), false);
+});
+
+test('director reads full stored living dialogue after arrival rather than the legacy one-line window', () => {
+  const w = structuredClone(world), director = new SocialDirector(), spaced = spaceActors(w, pair);
+  w.livingTurn = { id: 'living-complete-test', title: 'Bàn việc trong sân', location: 'Sân chung', residentId: 'binh', generator: 'local-llm', simStartedAt: simulationTime(w, noon), dialogue: validNarrative.dialogue.map(line => ({ ...line, speaker: line.speaker === 'chi' ? 'binh' : 'an' })) };
+  const report = collectDirector(director, w, spaced, 20);
+  assert.equal(report.lines.filter(line => line.exchange.source === 'ai').length, 4);
+  assert.equal(report.lines[0].exchange.speech.key, 'living-complete-test-0');
+});
+
+test('director respects quiet/private/walking boundaries and does not restage pre-spaced actor positions', () => {
+  for (const location of ['Phòng An', 'Bệnh viện', 'Phòng khám']) {
+    const director = new SocialDirector(), spaced = spaceActors(world, pair.map(a => stationary(world, a.id, location)));
+    assert.equal(director.frame(world, spaced, [], noon, null, true).exchanges.length, 0);
+  }
+  const director = new SocialDirector(), spaced = spaceActors(world, pair), before = JSON.stringify({ world, spaced });
+  assert.equal(director.frame(world, spaced, [], born + 23 * 3600000, null, true).exchanges.length, 0);
+  const active = director.frame(world, spaced, [], noon, null, true);
+  assert.deepEqual(active.actors, spaced);
+  const left = director.frame(world, [{ ...spaced[0], walking: true }, spaced[1]], [], noon + 1000, null, true);
+  assert.equal(left.exchanges.length, 0);
+  assert.equal(JSON.stringify({ world, spaced }), before);
 });
 
 for (const result of results) console.log(`${result.ok ? 'PASS' : 'FAIL'} ${result.name}${result.ok ? '' : `: ${result.error}`}`);

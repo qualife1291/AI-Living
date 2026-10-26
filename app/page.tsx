@@ -65,13 +65,15 @@ export default function Page() {
     if (loading.current > 0 && !force) return;
     loading.current++;
     try {
+      const sentAt = Date.now();
       const response = await fetch("/api/world?compact=1", { signal: AbortSignal.timeout(10000) });
       if (!response.ok) throw Error("Chưa kết nối được với thành phố.");
       const snapshot = (await response.json()) as Snapshot;
       const serverMs=Date.parse(snapshot.serverNow);
       if(snapshot.revision < newest.current.revision || (snapshot.revision === newest.current.revision && serverMs < newest.current.serverMs))return;
       newest.current={revision:snapshot.revision,serverMs};
-      setClockOffset(serverMs - Date.now());
+      const measuredOffset = serverMs - (sentAt + Date.now()) / 2;
+      setClockOffset(previous => Math.abs(measuredOffset - previous) > 5000 ? measuredOffset : previous * .85 + measuredOffset * .15);
       setData(snapshot);
       setError("");
     } catch (e) {

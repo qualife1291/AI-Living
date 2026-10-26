@@ -6,6 +6,8 @@ import type { World, EpisodeEvent } from "../world";
 
 export type SocialPose = { peerId: string; gesture: string; speaking: boolean; source: "script" | "ai" };
 export type Exchange = { a: string; b: string; title: string; speech: Speech; source: "script" | "ai" };
+export const SOCIAL_TIMING = { minimumLineSeconds: 2.4, maximumLineSeconds: 4, gapSeconds: .3, minimumCooldownSeconds: 20, maximumCooldownSeconds: 45 } as const;
+export const spokenSeconds = (text: string) => Math.max(SOCIAL_TIMING.minimumLineSeconds, Math.min(SOCIAL_TIMING.maximumLineSeconds, .8 + text.length / 30));
 
 /** A stable frontage slot, in metres × 10. No two visible residents share a slot.
  * This is visual staging, not a change to the durable navigation/history model. */
@@ -68,25 +70,144 @@ export function socialFrame(world: World, actors: Actor[], events: EpisodeEvent[
       const candidates = scripts.scenes.filter(s => s.places.includes(a.location) && (s.kinds.includes(a.kind) || s.kinds.includes(b.kind)));
       if (!candidates.length) continue;
       const key = `${a.location}:${a.id}:${b.id}`, hash = hashSeed(key);
-      const cycle = scripts.cooldownSeconds + 48, slot = Math.floor((seconds + hash % cycle) / cycle), phase = (seconds + hash % cycle) % cycle;
-      const scene = candidates[(hash + slot) % candidates.length];
+      const scene = candidates[hash % candidates.length];
+      const duration = scene.turns.reduce((total, turn) => total + spokenSeconds(turn.text) + SOCIAL_TIMING.gapSeconds, 0);
+      const cycle = duration + SOCIAL_TIMING.minimumCooldownSeconds + hash % 26, slot = Math.floor((seconds + hash % cycle) / cycle), phase = (seconds + hash % cycle) % cycle;
       // Reserve this pair even through its quiet interval: no swapping partners mid-scene.
       poses.set(a.id, { peerId: b.id, gesture: "idle", speaking: false, source: "script" });
       poses.set(b.id, { peerId: a.id, gesture: "idle", speaking: false, source: "script" });
       let cursor = 0;
       for (let i = 0; i < scene.turns.length; i++) {
         const turn = scene.turns[i];
-        if (phase >= cursor && phase < cursor + turn.seconds) {
+        const duration = spokenSeconds(turn.text);
+        if (phase >= cursor && phase < cursor + duration + SOCIAL_TIMING.gapSeconds) {
           // A new arrival waits for the next opening instead of starting on a reply.
-          if (phase - cursor < turn.seconds - 1 && phase <= Math.min(a.stationaryFor ?? Infinity, b.stationaryFor ?? Infinity)) {
+          if (phase - cursor < duration && phase <= Math.min(a.stationaryFor ?? Infinity, b.stationaryFor ?? Infinity)) {
             const speaker = turn.speaker === "a" ? a : b;
             claim(a, b, { speaker: speaker.id, text: format(turn.text, a, b), source: "routine", key: `${key}:${slot}:${i}` }, scene.title, "script", turn.gesture);
           }
           break;
         }
-        cursor += turn.seconds;
+        cursor += duration + SOCIAL_TIMING.gapSeconds;
       }
     }
   }
   return { actors: spaced, poses, exchanges };
+}
+
+type EncounterLine = { speaker: string; text: string; gesture?: string };
+type Encounter = { key: string; speechPrefix: string; a: string; b: string; location: string; title: string; source: "script" | "ai"; lines: EncounterLine[]; startedAt: number; duration: number; cooldown: number };
+type Frame = ReturnType<typeof socialFrame>;
+
+/** Viewer-local presentation state. Keep this instance across world polling.
+ * Navigation and history remain authoritative; only readable dialogue uses wall
+ * seconds so a slow simulation does not hold one sentence for minutes. */
+export class SocialDirector {
+  private encounters = new Map<string, Encounter>();
+  private cooldowns = new Map<string, number>();
+  private seen = new Set<string>();
+  private sceneNumber = 0;
+  private elapsed = 0;
+  private previousNow: number | undefined;
+  private previousSim: number | undefined;
+  private previouslyPaused = false;
+  private born: string | undefined;
+
+  reset() {
+    this.encounters.clear(); this.cooldowns.clear(); this.seen.clear();
+    this.sceneNumber = 0; this.elapsed = 0; this.previousNow = undefined;
+    this.previousSim = undefined; this.previouslyPaused = false; this.born = undefined;
+  }
+
+  frame(world: World, actors: Actor[], events: EpisodeEvent[], now: number, _legacyLivingSpeech: Speech | null = null, alreadySpaced = false): Frame {
+    void _legacyLivingSpeech; // Compatibility argument: the whole stored dialogue is authoritative.
+    const sim = simulationTime(world, now);
+    if (this.born !== undefined && (this.born !== world.born || (this.previousSim !== undefined && sim < this.previousSim - 1000))) this.reset();
+    this.born = world.born;
+    if (this.previousNow !== undefined && !this.previouslyPaused) {
+      const until = world.paused ? Math.min(now, world.clock?.pausedAt ?? this.previousNow) : now;
+      this.elapsed += Math.max(0, until - this.previousNow) / 1000;
+    }
+    this.previousNow = now; this.previousSim = sim; this.previouslyPaused = world.paused;
+    const spaced = alreadySpaced ? actors : spaceActors(world, actors), byId = new Map(spaced.map(a => [a.id, a]));
+    const poses = new Map<string, SocialPose>(), exchanges: Exchange[] = [];
+    const hour = worldTime(world, now).hour, awake = hour >= 6 && hour < 22;
+    const eligible = (a: Actor | undefined): a is Actor => !!a && !a.walking && (a.transport === undefined || a.transport === "walk") && !/^Phòng |Bệnh viện|Phòng khám/.test(a.location);
+    const pairAvailable = (a: Actor | undefined, b: Actor | undefined, maximum = 60) => eligible(a) && eligible(b) && a.id !== b.id && a.location === b.location && distance(a.position, b.position) <= maximum;
+    const finish = (encounter: Encounter) => {
+      this.encounters.delete(encounter.key);
+      for (const id of [encounter.a, encounter.b]) this.cooldowns.set(id, this.elapsed + encounter.cooldown);
+    };
+    for (const encounter of this.encounters.values()) {
+      const a = byId.get(encounter.a), b = byId.get(encounter.b);
+      if (!awake || !pairAvailable(a, b) || a?.location !== encounter.location || this.elapsed - encounter.startedAt >= encounter.duration) finish(encounter);
+    }
+    const locked = (id: string) => [...this.encounters.values()].some(e => e.a === id || e.b === id);
+    const start = (key: string, speechPrefix: string, a: Actor, b: Actor, title: string, source: Encounter["source"], lines: EncounterLine[]) => {
+      const hash = hashSeed(key);
+      this.encounters.set(key, { key, speechPrefix, a: a.id, b: b.id, location: a.location, title, source, lines, startedAt: this.elapsed,
+        duration: lines.reduce((total, line) => total + spokenSeconds(line.text) + SOCIAL_TIMING.gapSeconds, 0), cooldown: SOCIAL_TIMING.minimumCooldownSeconds + hash % 26 });
+    };
+    const startStored = (key: string, prefix: string, title: string, source: Encounter["source"], lines: EncounterLine[], location?: string) => {
+      if (this.seen.has(key) || lines.length < 2) return;
+      const ids = [...new Set(lines.map(line => line.speaker))];
+      if (ids.length !== 2) return;
+      const a = byId.get(ids[0]), b = byId.get(ids[1]);
+      if (!pairAvailable(a, b) || !a || !b || (location && a.location !== location)) return;
+      const occupied = [...this.encounters.values()].filter(e => [e.a, e.b].some(id => ids.includes(id)));
+      // A stored AI scene can replace ambient staging. Another stored scene waits
+      // for the existing reply sequence rather than cutting it after one line.
+      if (occupied.some(e => e.source === "ai") || (source !== "ai" && occupied.length)) return;
+      for (const encounter of occupied) finish(encounter);
+      this.seen.add(key);
+      start(key, prefix, a, b, title, source, lines);
+      if (this.seen.size > 512) this.seen.delete(this.seen.values().next().value!);
+    };
+    if (awake && !world.paused) {
+      // Read the whole persisted dialogue once; one-line legacy display windows
+      // must not select a new partner or reset playback after every poll.
+      for (const event of events) {
+        if (event.source !== "ai" || !event.dialogue?.length) continue;
+        const eventElapsed = event.simStartedAt !== undefined ? (sim - event.simStartedAt) / 1000 : (now - Date.parse(event.createdAt)) / 1000;
+        const scheduled = event.dialogue.map(line => line.atSecond).filter((value): value is number => typeof value === "number" && Number.isFinite(value));
+        const opening = scheduled.length ? Math.min(...scheduled) : 0;
+        const last = scheduled.length ? Math.max(...scheduled) : opening;
+        if (eventElapsed < opening || eventElapsed > Math.max(opening + 120, last + 6)) continue;
+        const locations = [...new Set(event.dialogue.map(line => line.location).filter(Boolean))];
+        if (locations.length > 1) continue;
+        startStored(`event:${event.id}`, event.id, event.title, "ai", event.dialogue, locations[0]);
+      }
+      const turn = world.livingTurn;
+      if (turn?.dialogue?.length && turn.simStartedAt !== undefined) {
+        const age = (sim - turn.simStartedAt) / 1000;
+        if (age >= 0 && age <= 180) startStored(`living:${turn.id}`, turn.id, turn.title, turn.generator === "local-llm" ? "ai" : "script", turn.dialogue, turn.location);
+      }
+      const idle = spaced.filter(a => eligible(a) && !locked(a.id) && (this.cooldowns.get(a.id) ?? 0) <= this.elapsed).sort((a, b) => a.id.localeCompare(b.id));
+      for (const a of idle) {
+        if (locked(a.id)) continue;
+        const b = idle.filter(b => !locked(b.id) && pairAvailable(a, b, scripts.maxPairDistance) && distance(a.position, b.position) >= scripts.minPairDistance - .1)
+          .sort((x, y) => distance(a.position, x.position) - distance(a.position, y.position) || x.id.localeCompare(y.id))[0];
+        if (!b) continue;
+        const candidates = scripts.scenes.filter(s => s.places.includes(a.location) && (s.kinds.includes(a.kind) || s.kinds.includes(b.kind)));
+        if (!candidates.length) continue;
+        const pairKey = `${a.location}:${a.id}:${b.id}`, serial = this.sceneNumber++, script = candidates[(hashSeed(pairKey) + serial) % candidates.length];
+        start(`ambient:${pairKey}:${serial}`, `${pairKey}:${serial}`, a, b, script.title, "script", script.turns.map(line => ({ speaker: line.speaker === "a" ? a.id : b.id, text: format(line.text, a, b), gesture: line.gesture })));
+      }
+    }
+    for (const encounter of this.encounters.values()) {
+      const at = this.elapsed - encounter.startedAt;
+      let cursor = 0, speaking: { line: EncounterLine; index: number } | undefined;
+      for (let index = 0; index < encounter.lines.length; index++) {
+        const line = encounter.lines[index], seconds = spokenSeconds(line.text);
+        if (at >= cursor && at < cursor + seconds) { speaking = { line, index }; break; }
+        cursor += seconds + SOCIAL_TIMING.gapSeconds;
+      }
+      for (const [id, peerId] of [[encounter.a, encounter.b], [encounter.b, encounter.a]]) poses.set(id, { peerId, source: encounter.source,
+        speaking: speaking?.line.speaker === id, gesture: speaking ? speaking.line.speaker === id ? speaking.line.gesture ?? "explain" : "listen" : "listen" });
+      if (speaking) exchanges.push({ a: encounter.a, b: encounter.b, title: encounter.title, source: encounter.source,
+        speech: { speaker: speaking.line.speaker, text: speaking.line.text, source: encounter.source === "ai" ? "ai" : "routine", key: `${encounter.speechPrefix}-${speaking.index}` } });
+    }
+    for (const [id, until] of this.cooldowns) if (until < this.elapsed - 60) this.cooldowns.delete(id);
+    return { actors: spaced, poses, exchanges };
+  }
 }
