@@ -6,3 +6,5 @@
 - Tiếp theo: skill vector/hierarchy/P2P có provenance; completion/playback đa viewer; density/LOD, traffic graph/boarding/indoor; habitat/flora/audio; benchmark runtime thật. Xem docs/GEMINI_REVIEW_2026-10-28.md. Không nhận metrics demo Gemini thành bằng chứng.
 - Giữ only3D/tag/pet/bike/overlays, mọi ID/history/memory/home/petOwners. Không reset DB, sửa migration đã áp dụng, paid API/public/video/cron trùng. Mọi production migration cần backup/readback native. Không gọi ETA/client receipt là physical completion authoritative.
 - Hardware GPU, soak dài, model A/B thực/LoRA và lịch production cần capability thật. Preview dùng SwiftShader/fixtures, API persistence kiểm riêng bằng D1 local. Sau build phải khởi động fresh Worker và không rebuild khi browser QA đang chạy.
+
+- WIP Phase E audio: nút Âm thanh thiên nhiên opt-in, synth Web Audio gió/mưa/chim; không context trước click, pause/hidden/OSM suspend, off/unmount dispose. Check/lint đã đạt; còn build, browser lifecycle thật/320px/API và full source QA trước merge. Harness scripts/qa-soundscape.py. Không nhận nghe/độ trễ phần cứng đã kiểm chứng.

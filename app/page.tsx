@@ -17,6 +17,8 @@ import {
   Sparkles,
   Users,
   X,
+  Volume2,
+  VolumeX,
 } from "lucide-react";
 import { Conversation } from "@/components/city/Conversation";
 import type { Quality } from "@/lib/city/scale";
@@ -29,12 +31,14 @@ import { lifeStory } from "@/lib/city/lifestory";
 import { PetCare } from "@/components/characters/PetCare";
 import { Wardrobe } from "@/components/characters/Wardrobe";
 import { City3D } from "@/components/city/City3D";
+import {useSoundscape} from "@/components/city/useSoundscape";
 import { LivingPanel } from "@/components/living/LivingPanel";
 import { venues, type Venue } from "@/lib/city/world";
 import sources from "@/data/city/sources.json";
 import { scenarios } from "@/lib/living/learning";
 import type { World, EpisodeEvent } from "@/lib/world";
 import type { WeatherState } from "@/lib/clock";
+import {worldTime} from "@/lib/clock";
 
 type Snapshot = {
   revision: number;
@@ -152,6 +156,7 @@ export default function Page() {
     }
   }
   const world = data?.world;
+  const sound=useSoundscape({active:!!world&&!world.paused&&mode==="city",rain:data?.weatherState.kind==="rain"?data.weatherState.intensity:0,daylight:world?worldTime(world,Date.parse(data!.serverNow)).daylight:0});
   const people = world
     ? [
         ...world.people.map((p) => ({
@@ -243,10 +248,13 @@ export default function Page() {
         >
           {world?.paused ? <Play size={17} /> : <Pause size={17} />}
         </button>
+        <button className="live-icon" aria-label="Âm thanh thiên nhiên" aria-pressed={sound.enabled} title={sound.error || (sound.enabled ? "Tắt tiếng mưa, gió và chim mô phỏng" : "Bật tiếng mưa, gió và chim mô phỏng")} onClick={sound.toggle}>
+          {sound.enabled?<Volume2 size={17}/>:<VolumeX size={17}/>}
+        </button>
       </header>
-      {(error || pulseError) && (
+      {(error || pulseError || sound.error) && (
         <div className="live-alert" role="alert">
-          {error || pulseError}
+          {error || pulseError || sound.error}
           <button onClick={() => void load()} aria-label="Thử kết nối lại">
             <RefreshCw size={15} />
           </button>
