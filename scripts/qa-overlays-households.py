@@ -33,13 +33,25 @@ with sync_playwright() as p:
    page.screenshot(path=str(out/f'dialogue-{name}-preview.png'))
    # Direct labels remain functional controls, not painted text textures.
    target=page.locator('.actor-name[aria-pressed="false"]').first if page.locator('.actor-name[aria-pressed="false"]').count() else labels.first
-   target_id=target.get_attribute('data-actor-id');target.click();page.wait_for_function('(id)=>document.querySelector(".three-canvas")?.dataset.selected===id',arg=target_id)
+   target_id=target.get_attribute('data-actor-id');target=page.locator(f'.actor-name[data-actor-id="{target_id}"]');target.click();page.wait_for_function('(id)=>document.querySelector(".three-canvas")?.dataset.selected===id',arg=target_id)
    page.get_by_role('button',name='Cư dân',exact=True).click();page.locator('.people-grid button').filter(has=page.get_by_text(r['name'],exact=True)).click();page.get_by_role('button',name='Cư dân',exact=True).click()
    card=page.locator('.resident-home');card.wait_for();assert r['home']['label'] in card.inner_text()
    members=[x['name'] for x in fixture['world']['living']['residents'] if x['home']['householdId']==r['home']['householdId']]
    assert all(member in card.inner_text() for member in members)
    card.scroll_into_view_if_needed();page.screenshot(path=str(out/f'household-{name}-preview.png'))
    page.keyboard.press('Escape')
+   # Stress a full-length persisted-style line and an explicit AI provenance badge.
+   long_text='Mình muốn cùng bạn sắp xếp lại góc đọc sách cho gọn gàng, dành một chỗ yên tĩnh để mọi người có thể nghỉ chân, trò chuyện và ghi lại những điều đã học được hôm nay. Sau đó mình cùng đi dạo quanh khu phố nhé.'
+   assert len(long_text)<=240
+   fixture['events']=[{'id':'overlay-long-test','source':'ai','createdAt':fixture['serverNow'],'simStartedAt':fixture['world']['clock']['anchors'][0]['simMs'],'title':'Kiểm tra bố cục','dialogue':[{'speaker':'an','text':long_text,'atSecond':0,'location':'Xưởng sáng tạo'},{'speaker':'binh','text':'Được, mình cùng làm nhé.','atSecond':6,'location':'Xưởng sáng tạo'}]}]
+   if name=='mobile':page.set_viewport_size({'width':320,'height':640})
+   page.reload(wait_until='domcontentloaded');host.wait_for(timeout=90000)
+   page.wait_for_function('(text)=>document.querySelector(".three-speech p")?.textContent===text',arg=long_text,timeout=30000)
+   assert page.locator('.three-speech em').inner_text()=='AI'
+   assert page.locator('.three-speech p').evaluate('(e)=>e.scrollHeight<=e.clientHeight&&e.scrollWidth<=e.clientWidth'),'Full text must be visible'
+   long_bounds=page.locator('.three-speech').bounding_box();assert long_bounds['x']>=10 and long_bounds['x']+long_bounds['width']<=page.viewport_size['width']-10
+   page.screenshot(path=str(out/f'long-dialogue-{name}-preview.png'))
+   page.set_viewport_size({'width':width,'height':height})
    # A long name uses a compact ellipsis with the full text available in title.
    fixture=json.loads(subprocess.check_output(['node','scripts/social-preview-fixture.mjs','--cycle'],cwd=root,text=True));fixture['world']['living']['residents']=[]
    long_name='Nguyễn Thị Ánh Phương Thành Viên';fixture['world']['people'][0]['name']=long_name
@@ -47,7 +59,7 @@ with sync_playwright() as p:
    named=page.locator('.actor-name[aria-pressed="true"]');named.wait_for(timeout=30000)
    assert named.get_attribute('title')==long_name;assert named.bounding_box()['width']<=116.1
    assert page.evaluate('document.documentElement.scrollWidth<=innerWidth');assert not errors,errors
-   report.append({'viewport':name,'labels':len(label_rects),'maxLabelWidth':max(r['width'] for r in label_rects),'bubbleBounds':bounds,'sourceLabel':True,'householdMembers':len(members),'labelSelection':True,'longNameBounded':True,'errors':errors})
+   report.append({'viewport':name,'labels':len(label_rects),'maxLabelWidth':max(r['width'] for r in label_rects),'bubbleBounds':bounds,'sourceLabel':True,'householdMembers':len(members),'labelSelection':True,'longNameBounded':True,'fullLengthDialogue':True,'errors':errors})
    print(name,'PASS',report[-1],flush=True);page.close()
   (out/'metrics.json').write_text(json.dumps({'production':False,'renderer':'Chromium SwiftShader','cases':report},ensure_ascii=False,indent=2))
  finally:b.close()

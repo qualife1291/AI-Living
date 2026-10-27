@@ -127,3 +127,8 @@ Thêm9action kinds/scenarios, mapping clip/procedural/props và bike tập; chu�
 - Cycle và chuyến transport=bicycle dùng xe đang di chuyển, có tăng/giảm tốc, vùng tránh vật cản bao toàn xe/người và ô tô nhường theo kích thước thực.
 - Bánh/pedal theo quãng đường; dừng/pause đóng băng, tới đích ground mới xuống xe. Người tìm chỗ thoáng để lên xe mà không teleport.
 - Sửa cộng dồn góc chân ở clip thiếu keyframe; camera mobile mở đủ rộng cho cả xe/người. Chưa lực học toàn xe hoặc đồng bộ occupancy nhiều viewer; chưa deploy.
+
+## WIP 27/10/2026 — tên/thoại và nhóm ở chung
+- Nhãn tên compact theo pixel, card hội thoại responsive, giữ badge nguồn; đang review trước phát hành.
+- Household metadata cho NPC, hiển thị nhóm/thành viên, giữ lịch sử; chưa thay routing/density.
+- Tạm dừng theo yêu cầu. Việc tiếp nối và kiểm thử còn thiếu ở docs/WIP_OVERLAYS_HOUSEHOLDS.md.
