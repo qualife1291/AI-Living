@@ -1,0 +1,450 @@
+{
+  "version": 2,
+  "name": "Xóm AI Complete 3D Graphics & Animation Pack",
+  "license": "CC0-1.0 / Project Internal",
+  "scale": {
+    "unitsPerMeter": 10,
+    "humanHeightUnits": 17.5,
+    "carLengthUnits": 44,
+    "personalSpaceUnits": 10
+  },
+  "palette": {
+    "creamBackground": "#F3E9D5",
+    "foliageGreen": "#68A879",
+    "skyWaterTeal": "#74BCD1",
+    "coralAccent": "#E58A70",
+    "warmGold": "#E8BB57",
+    "deepSlateText": "#244B49",
+    "interiorBackground": "#182B39"
+  },
+  "charactersAndJobs": {
+    "riggedGLBModels": [
+      {
+        "id": "characters/character-a",
+        "url": "/models/kenney/characters/character-a.glb",
+        "texture": "/models/kenney/characters/Textures/texture-a.png",
+        "preview": "/models/kenney/characters/Previews/character-a.png"
+      },
+      {
+        "id": "characters/character-b",
+        "url": "/models/kenney/characters/character-b.glb",
+        "texture": "/models/kenney/characters/Textures/texture-b.png",
+        "preview": "/models/kenney/characters/Previews/character-b.png"
+      },
+      {
+        "id": "characters/character-c",
+        "url": "/models/kenney/characters/character-c.glb",
+        "texture": "/models/kenney/characters/Textures/texture-c.png",
+        "preview": "/models/kenney/characters/Previews/character-c.png"
+      },
+      {
+        "id": "characters/character-d",
+        "url": "/models/kenney/characters/character-d.glb",
+        "texture": "/models/kenney/characters/Textures/texture-d.png",
+        "preview": "/models/kenney/characters/Previews/character-d.png"
+      },
+      {
+        "id": "characters/character-e",
+        "url": "/models/kenney/characters/character-e.glb",
+        "texture": "/models/kenney/characters/Textures/texture-e.png",
+        "preview": "/models/kenney/characters/Previews/character-e.png"
+      }
+    ],
+    "animationsAndClips": [
+      "idle",
+      "walk",
+      "sprint",
+      "jump",
+      "fall",
+      "crouch",
+      "sit",
+      "drive",
+      "die",
+      "pick-up",
+      "holding-right",
+      "holding-left",
+      "holding-both",
+      "holding-right-shoot",
+      "holding-left-shoot",
+      "holding-both-shoot",
+      "attack-melee-right",
+      "attack-melee-left",
+      "attack-kick-right",
+      "attack-kick-left",
+      "interact-right",
+      "interact-left",
+      "emote-yes",
+      "emote-no",
+      "wheelchair-sit",
+      "wheelchair-look-left",
+      "wheelchair-look-right"
+    ],
+    "proceduralSocialGestures": [
+      "idle",
+      "listen",
+      "explain",
+      "wave",
+      "greet",
+      "point",
+      "show",
+      "open-hand",
+      "offer",
+      "bow",
+      "thank",
+      "cheer"
+    ],
+    "facialExpressions": [
+      {
+        "id": "smile",
+        "blink": "periodic 4.4s smooth eyelid closure",
+        "mouth": "syllable-synced speech opening"
+      },
+      {
+        "id": "glasses",
+        "frames": "#536b6c",
+        "blink": "periodic 4.4s"
+      },
+      {
+        "id": "moustache",
+        "style": "elder handlebar moustache",
+        "blink": "periodic 4.4s"
+      }
+    ],
+    "wardrobeThemes": [
+      "an",
+      "police",
+      "delivery",
+      "elder",
+      "teacher",
+      "worker",
+      "doctor",
+      "office",
+      "pilot",
+      "metro",
+      "chef",
+      "firefighter",
+      "casual",
+      "sport"
+    ],
+    "roles": [
+      "teacher",
+      "doctor",
+      "colleague",
+      "vendor",
+      "librarian",
+      "gardener",
+      "neighbor",
+      "barista",
+      "factory-worker",
+      "vocational-teacher",
+      "nurse",
+      "cinema-staff",
+      "police-officer",
+      "bus-driver",
+      "metro-staff",
+      "pilot",
+      "job-counsellor",
+      "motorbike-mechanic",
+      "chef",
+      "office-worker",
+      "coach",
+      "postal-worker",
+      "firefighter",
+      "culture-guide"
+    ]
+  },
+  "animals": [
+    {
+      "species": "dog",
+      "behaviors": [
+        "idle",
+        "walk",
+        "tail-wag",
+        "follow-owner"
+      ],
+      "fur": "#bb9773"
+    },
+    {
+      "species": "cat",
+      "behaviors": [
+        "idle",
+        "walk",
+        "stretch",
+        "rest",
+        "kitten-care"
+      ],
+      "fur": "#d1a37b"
+    },
+    {
+      "species": "bird",
+      "behaviors": [
+        "perch",
+        "hop",
+        "fly-flock-altitude-24"
+      ],
+      "plumage": "#ad9576"
+    }
+  ],
+  "vehiclesAndTransit": {
+    "glbModels": [
+      "cars/sedan",
+      "cars/hatchback-sports",
+      "cars/taxi",
+      "trains/train-electric-city-a",
+      "trains/train-tram-modern",
+      "trains/railroad-straight",
+      "watercraft/boat-fishing-small",
+      "watercraft/boat-row-small",
+      "watercraft/boat-house-a",
+      "watercraft/buoy"
+    ],
+    "proceduralTraffic": [
+      "car",
+      "bus",
+      "van",
+      "bicycle"
+    ]
+  },
+  "buildingsAndVenues": {
+    "glbModels": [
+      "commercial/building-a",
+      "commercial/building-b",
+      "commercial/building-c",
+      "commercial/building-skyscraper-a",
+      "commercial/detail-awning",
+      "commercial/detail-parasol-a",
+      "suburban/building-type-a",
+      "suburban/building-type-b",
+      "suburban/building-type-c"
+    ],
+    "venueTypes": [
+      "home",
+      "school",
+      "hospital",
+      "clinic",
+      "cinema",
+      "factory",
+      "office",
+      "police",
+      "airport",
+      "metro",
+      "bus",
+      "market",
+      "restaurant",
+      "cafe",
+      "library",
+      "workshop",
+      "culture",
+      "post",
+      "fire",
+      "square",
+      "park",
+      "garden",
+      "sport"
+    ],
+    "interiors": [
+      "dining (Bếp chung / Nhà hàng / Quán cà phê)",
+      "study (Thư viện / Lớp học / Văn phòng)",
+      "general (Phòng khám / Xưởng sáng tạo)"
+    ]
+  },
+  "propsAndFoliage": {
+    "glbModels": [
+      "suburban/tree-large",
+      "suburban/tree-small",
+      "market/display-bread",
+      "market/display-fruit",
+      "market/cash-register",
+      "market/shelf-boxes",
+      "market/shelf-bags",
+      "market/shopping-basket",
+      "market/shopping-cart",
+      "market/freezer",
+      "roads/construction-barrier",
+      "roads/construction-cone",
+      "roads/dumpster",
+      "roads/light-curved",
+      "roads/road-sign-stop",
+      "roads/traffic-light",
+      "roads/road-straight"
+    ],
+    "proceduralHeldProps": [
+      "book",
+      "read",
+      "wallet",
+      "phone",
+      "note",
+      "crutch",
+      "leaf",
+      "cup",
+      "drink",
+      "eat",
+      "garden",
+      "can",
+      "broom",
+      "bread",
+      "blanket",
+      "cloth",
+      "tool",
+      "work"
+    ],
+    "streetProps": [
+      "produce",
+      "books",
+      "workbench",
+      "bicycle",
+      "flowers",
+      "notice",
+      "bin"
+    ]
+  },
+  "showcaseRenders3D": [
+    "/renders-3d/bep_chung_follow-3d.jpg",
+    "/renders-3d/city_overview-3d.jpg",
+    "/renders-3d/city_skyline-3d.jpg",
+    "/renders-3d/interior_cutaway-3d.jpg",
+    "/renders-3d/garden_reading-3d.jpg",
+    "/renders-3d/market_bakery-3d.jpg",
+    "/renders-3d/robots_trio-3d.jpg",
+    "/renders-3d/osm_district1-3d.jpg",
+    "/renders-3d/characters-jobs-actions-3d.jpg",
+    "/renders-3d/animals-trees-props-3d.jpg",
+    "/renders-3d/vehicles-trains-boats-3d.jpg",
+    "/renders-3d/buildings-events-interiors-3d.jpg",
+    "/renders-3d/weather-sky-lightning-3d.jpg",
+    "/renders-3d/sports-swimming-soccer-cooking-3d.jpg",
+    "/renders-3d/festivals-tet-trungthu-stage-3d.jpg"
+  ],
+  "weatherAndSky": {
+    "dayPhases": [
+      "dawn (Bình minh)",
+      "morning (Buổi sáng)",
+      "noon (Buổi trưa)",
+      "afternoon (Buổi chiều)",
+      "dusk (Hoàng hôn)",
+      "evening (Buổi tối)",
+      "night (Ban đêm)"
+    ],
+    "weatherKinds": [
+      {
+        "kind": "clear",
+        "label": "Nắng nhẹ",
+        "effects": "Warm directional sunlight, soft cumulus clouds, clear shadows"
+      },
+      {
+        "kind": "cloudy",
+        "label": "Trời dịu nhiều mây",
+        "effects": "Diffused hemisphere skylight, silver-cream cloud lobes"
+      },
+      {
+        "kind": "rain",
+        "label": "Mưa rào bất chợt / Giông sấm chớp",
+        "effects": "256 pooled 3D rain streaks, dark storm clouds, wet road specular, and deterministic 3D forked lightning bolts + sky flash when intensity >= 0.6"
+      },
+      {
+        "kind": "fog",
+        "label": "Sương mỏng đầu ngày",
+        "effects": "Soft atmospheric depth fog"
+      },
+      {
+        "kind": "windy",
+        "label": "Gió mát thổi qua xóm",
+        "effects": "Accelerated cloud drift and swaying tree canopies"
+      }
+    ]
+  },
+  "actionsAndSports": {
+    "movement": [
+      "idle",
+      "walk",
+      "run / sprint",
+      "jump",
+      "crouch",
+      "sit"
+    ],
+    "drivingAndTransit": [
+      "drive (car, taxi, bus, van, motorbike/scooter, metro, boat)"
+    ],
+    "sportsAndFitness": [
+      {
+        "action": "swim (tập bơi)",
+        "pose": "Alternating freestyle arm strokes + flutter kick in 3D turquoise pool",
+        "prop": "procedural/swim (lifebuoy / swim ring)"
+      },
+      {
+        "action": "soccer / football (đá bóng)",
+        "pose": "Dynamic leg kick + counter-balanced arms on 3D pitch",
+        "prop": "procedural/soccer (3D icosahedron soccer ball)"
+      },
+      {
+        "action": "jump / cheer (chạy nhảy / cổ vũ)",
+        "pose": "Both arms raised + knee spring bounce"
+      }
+    ],
+    "dailyLifeAndCooking": [
+      {
+        "action": "cook (nấu ăn)",
+        "pose": "Stirring motion with right hand over stove/counter",
+        "prop": "procedural/cook (3D sizzling wok/pan with food & handle)"
+      },
+      {
+        "action": "eat / drink (ăn uống / cà phê)",
+        "pose": "Lifting ceramic cup / baguette",
+        "prop": "procedural/cup, procedural/bread"
+      },
+      {
+        "action": "garden (tưới cây)",
+        "pose": "Pouring watering can with falling water droplets",
+        "prop": "procedural/garden"
+      },
+      {
+        "action": "read (đọc sách)",
+        "pose": "Two-handed open book with page lines",
+        "prop": "procedural/book"
+      },
+      {
+        "action": "work (làm việc / sửa chữa / quét phố)",
+        "pose": "Tool/broom action",
+        "prop": "procedural/tool, procedural/broom"
+      }
+    ]
+  },
+  "festivalsAndEvents": [
+    {
+      "id": "tet-nguyen-dan",
+      "title": "Lễ hội Tết Nguyên Đán",
+      "props": [
+        "procedural/lantern",
+        "procedural/drum",
+        "Mai vàng & Đào hồng",
+        "Đầu lân & trống hội"
+      ]
+    },
+    {
+      "id": "tet-trung-thu",
+      "title": "Đêm hội Trăng rằm Trung Thu",
+      "props": [
+        "procedural/lantern (Đèn ông sao / đèn cá chép)",
+        "Quầy bánh Trung Thu"
+      ]
+    },
+    {
+      "id": "cultural-stage",
+      "title": "Sân khấu văn nghệ & Sự kiện cuối tuần",
+      "props": [
+        "procedural/drum",
+        "Sân khấu ngoài trời, loa, đèn spotlight"
+      ]
+    },
+    {
+      "id": "night-market",
+      "title": "Chợ đêm & Ẩm thực đường phố",
+      "props": [
+        "market/display-fruit",
+        "market/display-bread",
+        "commercial/detail-parasol-a",
+        "procedural/cook"
+      ]
+    }
+  ]
+}

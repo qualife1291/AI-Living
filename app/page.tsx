@@ -84,20 +84,21 @@ export default function Page() {
     } finally { loading.current--; }
   }, []);
   useEffect(() => {
-    let cancelled=false;
+    let cancelled=false, pulsing=false;
     async function pulse(){
-      if(document.hidden)return;
+      if(document.hidden||pulsing)return;
+      pulsing=true;
       try{
         const r=await fetch('/api/living/pulse',{method:'POST',headers:{'content-type':'application/json'},body:'{}',signal:AbortSignal.timeout(12000)});
         if(!cancelled){if(!r.ok&&r.status!==409)setPulseError('Nhịp sống chưa cập nhật. Thử kết nối lại.');else setPulseError('');await load();}
-      }catch{if(!cancelled)setPulseError('Mất kết nối nhịp sống. Thành phố vẫn giữ trạng thái đã lưu.');}
+      }catch{if(!cancelled)setPulseError('Mất kết nối nhịp sống. Thành phố vẫn giữ trạng thái đã lưu.');}finally{pulsing=false;}
     }
     async function visit(){
       let session=crypto.randomUUID();
       try{const old=JSON.parse(sessionStorage.getItem('xom-view')??'null');if(old&&Date.now()-old.at<1800000)session=old.id;else sessionStorage.setItem('xom-view',JSON.stringify({id:session,at:Date.now()}));}catch{/* storage is optional */}
       try{const r=await fetch('/api/visits',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({session})});if(r.ok&&!cancelled)setViews(((await r.json()) as {views:number}).views);}catch{/* counter does not block viewing */}
     }
-    const initial=setTimeout(()=>{void pulse();void visit();},0),timer=setInterval(()=>void pulse(),30000);
+    const initial=setTimeout(()=>{void pulse();void visit();},0),timer=setInterval(()=>void pulse(),10000);
     return()=>{cancelled=true;clearTimeout(initial);clearInterval(timer);};
   },[load]);
   useEffect(() => {

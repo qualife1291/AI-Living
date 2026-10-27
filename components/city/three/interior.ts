@@ -18,7 +18,7 @@ export function createInterior(host: HTMLDivElement, venue: string, floor: numbe
   const camera = new THREE.PerspectiveCamera(38, 1, .1, 200); camera.position.set(17, 18, 23);
   const controls = new OrbitControls(camera, renderer.domElement); controls.target.set(0, 2, 0); controls.minDistance = 12; controls.maxDistance = 45; controls.maxPolarAngle = 1.4; controls.enableDamping = true;
   const hemi = new THREE.HemisphereLight("#d4eaff", "#a58061", 2); scene.add(hemi);
-  const key = new THREE.DirectionalLight("#ffdfb4", 4); key.position.set(-8, 18, 8); key.castShadow = true; key.shadow.mapSize.set(1024, 1024); Object.assign(key.shadow.camera, { left: -15, right: 15, top: 15, bottom: -15 }); scene.add(key);
+  const key = new THREE.DirectionalLight("#ffdfb4", 4); key.position.set(-8, 18, 8); key.castShadow = true; key.shadow.mapSize.set(2048, 2048); key.shadow.bias = -0.0005; Object.assign(key.shadow.camera, { left: -15, right: 15, top: 15, bottom: -15 }); scene.add(key);
   const geometry = new THREE.BoxGeometry(1, 1, 1), materials: THREE.Material[] = [];
   function box(x: number, y: number, z: number, w: number, h: number, d: number, color: string, parent: THREE.Object3D = scene) {
     const material = new THREE.MeshStandardMaterial({ color, roughness: .68 }); materials.push(material);

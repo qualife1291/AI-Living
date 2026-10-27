@@ -1,4 +1,5 @@
 "use client";
+import { robotMotion } from "./Robot";
 
 import { crowdAt, livingSpeechAt } from "@/lib/living/engine";
 import { observedWeather } from "@/lib/living/realtime";
@@ -712,7 +713,7 @@ export function CityMap({
                   >
                     <Robot
                       person={p}
-                      motion={a.walking ? "walk" : a.kind}
+                      motion={a.walking ? "walk" : robotMotion(a.kind)}
                       speaking={!!activeSpeech}
                       paused={world.paused}
                     />

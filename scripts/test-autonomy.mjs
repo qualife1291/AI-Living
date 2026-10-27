@@ -108,7 +108,8 @@ test('unfinished plans and pending outcomes survive new slots on a slow simulati
       assert.deepEqual(result.state.residents.find(n => n.id === r.id).plan, r.plan);
     w = result.world;
   }
-  const finished = planLivingTurn(w, { ...context, fetchedAt: new Date(now + 1800000).toISOString() }, now + 1800000);
+  const fullPlanRealMs = oldPlan.steps.reduce((sum,step)=>sum+step.duration,0)*1000/.1;
+  const finished = planLivingTurn(w, { ...context, fetchedAt: new Date(now + fullPlanRealMs).toISOString() }, now + fullPlanRealMs);
   assert.equal(finished.state.learning.an.samples, 1);
   assert.ok(finished.state.experiences.some(e => e.id === pending.id));
   assert.notEqual(finished.state.learning.an.pending.id, pending.id);

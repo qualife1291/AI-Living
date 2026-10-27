@@ -61,8 +61,8 @@ test('all 33 × 33 venue routes reach their actual goal with swept radius cleara
     segments += path.length - 1;
   }
   metrics.venueRoutes = { count: allTimes.length, detours, sweptSegments: segments, totalMs: Math.round(performance.now() - startBatch),
-    coldAstar: { count: astarTimes.length, p50Ms: +percentile(astarTimes, .5).toFixed(3), p95Ms: +percentile(astarTimes, .95).toFixed(3), maximumMs: +Math.max(...astarTimes).toFixed(3) }, maximumCache, failures: failures.slice(0, 8), failureCount: failures.length };
-  assert.ok(detours > 256, 'Exercise real cold A* requests and cache eviction, not only open straight routes');
+    venueRouteLatency: { count: astarTimes.length, p50Ms: +percentile(astarTimes, .5).toFixed(3), p95Ms: +percentile(astarTimes, .95).toFixed(3), maximumMs: +Math.max(...astarTimes).toFixed(3) }, maximumCache, failures: failures.slice(0, 8), failureCount: failures.length };
+  assert.ok(detours > 256, 'Exercise obstacle detours, not only open straight routes');
   assert.equal(failures.length, 0, failures.slice(0, 5).join('\n'));
 });
 

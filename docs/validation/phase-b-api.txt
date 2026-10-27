@@ -1,0 +1,1 @@
+{"suite":"local-diagnostics-http","ownerReadGuard":true,"ownerWriteGuard":true,"streamByteLimit":true,"schema":true,"origin":true,"ack":true,"jsonlReadback":true,"rateLimit":true,"retention":true,"pulsePersistence":true,"pulseRetry":true,"pulsePause":true,"productionAccess":false}

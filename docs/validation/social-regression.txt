@@ -1,0 +1,29 @@
+PASS authored scene data: venues, kinds, timing and alternating short replies
+PASS 63 stationary residents: unique stable slots and minimum 14 world-unit spacing
+PASS 240 population keeps late focused/encounter residents visible, unique and within 150-unit staging radius
+PASS walking-to-standing arrival stays continuous for every visible actor
+PASS one pair has alternating complete replies, listener pose and minimum quiet cooldown
+PASS a newly arrived pair waits for an opening instead of joining a scene on a reply
+PASS editorial guard accepts a coherent authored four-line exchange without changing it
+PASS editorial guard rejects an unselected speaker
+PASS editorial guard rejects consecutive lines from the same speaker
+PASS editorial guard rejects near-verbatim replies observed in the actual local Qwen sample
+PASS paused simulation freezes resident positions, dialogue and turn timing
+PASS ambient speech respects overnight quiet, private rooms, walking and distance
+PASS persisted AI event takes priority over authored ambient script
+PASS rules living dialogue cannot hide a persisted AI event in the same moment
+PASS AI event metadata uses that event title rather than an unrelated living turn
+PASS persisted two-person dialogue faces its actual co-speaker rather than a closer bystander
+PASS named AI partner walking away cannot be replaced with a stationary bystander
+PASS persisted event lookup is unambiguous when another event ID is its prefix
+PASS projection and social staging never mutate durable world or actor input
+PASS 24 hour resident agendas vary by role/id, total one day and rest overnight
+PASS director finishes all six replies despite polling, input reordering and a closer new bystander
+PASS director starts from the opening when a new pair arrives, with a complete four-line exchange
+PASS director reads at a human pace even when the simulation clock runs at one tenth speed
+PASS director cooldown is between 20 and 45 seconds after a complete exchange
+PASS director freezes a whole conversation on pause and continues remaining replies after resume
+PASS director gives stored AI priority and plays its entire dialogue once across refreshes
+PASS director reads full stored living dialogue after arrival rather than the legacy one-line window
+PASS director respects quiet/private/walking boundaries and does not restage pre-spaced actor positions
+{"suite":"social","cases":28,"passed":28,"failed":0}

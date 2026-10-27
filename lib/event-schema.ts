@@ -47,6 +47,7 @@ export const STEP_KINDS = [
   "garden",
   "read",
   "play",
+  "drink", "run", "jump", "tag", "cycle", "exercise", "walk-pet", "shop", "study",
 ] as const;
 
 const who = z.enum(RESIDENT_IDS);

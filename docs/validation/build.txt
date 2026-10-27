@@ -1,0 +1,120 @@
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> site-creator-vinext-starter@0.1.0 prebuild
+> node scripts/precompute-walk-routes.mjs
+
+Precomputed 1089 venue routes; arbitrary actor endpoints still use A*.
+
+> site-creator-vinext-starter@0.1.0 build
+> node scripts/run-framework.mjs build
+
+
+  vinext build  (Vite 8.0.13)
+
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mProxy environment variables detected. We'll use your proxy for fetch requests.[0m
+
+
+[1/5] analyze client references...
+[2K
+transforming...[vinext:optimize-imports] skipping "lucide-react": could not resolve specifier "BookOpen" in barrel export map
+[vinext:optimize-imports] skipping "lucide-react": could not resolve specifier "House" in barrel export map
+[vinext:optimize-imports] skipping "lucide-react": could not resolve specifier "ArrowLeft" in barrel export map
+✓ 283 modules transformed.
+rendering chunks...
+[33m[PLUGIN_TIMINGS] [0mYour build spent significant time in plugins. Here is a breakdown:
+  - alias (28%)
+  - rsc:virtual-client-package (22%)
+  - vinext:og-inline-fetch-assets (11%)
+  - vinext:css-data-url (10%)
+  - vinext:middleware-server-only (8%)
+See https://rolldown.rs/options/checks#plugintimings for more details.
+
+✓ built in 3.87s
+[2/5] analyze server references...
+[2K
+transforming...[vinext:optimize-imports] skipping "lucide-react": could not resolve specifier "BookOpen" in barrel export map
+[vinext:optimize-imports] skipping "lucide-react": could not resolve specifier "House" in barrel export map
+[vinext:optimize-imports] skipping "lucide-react": could not resolve specifier "ArrowLeft" in barrel export map
+[vinext:optimize-imports] skipping "lucide-react": could not resolve specifier "Maximize2" in barrel export map
+[vinext:optimize-imports] skipping "lucide-react": could not resolve specifier "MessageCircle" in barrel export map
+[vinext:optimize-imports] skipping "lucide-react": could not resolve specifier "LocateFixed" in barrel export map
+[vinext:optimize-imports] skipping "lucide-react": could not resolve specifier "Building2" in barrel export map
+✓ 2148 modules transformed.
+rendering chunks...
+[33m[PLUGIN_TIMINGS] [0mYour build spent significant time in plugins. Here is a breakdown:
+  - vinext:middleware-server-only (45%)
+  - alias (13%)
+  - rsc:virtual-client-package (9%)
+  - vinext:jsx-in-js (9%)
+  - vinext:css-data-url (7%)
+See https://rolldown.rs/options/checks#plugintimings for more details.
+
+✓ built in 12.98s
+[3/5] build rsc environment...
+[2K
+transforming...[vinext:optimize-imports] skipping "lucide-react": could not resolve specifier "House" in barrel export map
+[vinext:optimize-imports] skipping "lucide-react": could not resolve specifier "BookOpen" in barrel export map
+[vinext:optimize-imports] skipping "lucide-react": could not resolve specifier "ArrowLeft" in barrel export map
+✓ 280 modules transformed.
+rendering chunks...
+computing gzip size...
+✓ built in 2.38s
+[4/5] build client environment...
+[2K
+transforming...✓ 2156 modules transformed.
+rendering chunks...
+computing gzip size...
+[plugin builtin:vite-reporter] 
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rolldownOptions.output.codeSplitting to improve chunking: https://rolldown.rs/reference/OutputOptions.codeSplitting
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 10.64s
+[5/5] build ssr environment...
+[2K
+transforming...[vinext:optimize-imports] skipping "lucide-react": could not resolve specifier "ArrowLeft" in barrel export map
+[vinext:optimize-imports] skipping "lucide-react": could not resolve specifier "House" in barrel export map
+[vinext:optimize-imports] skipping "lucide-react": could not resolve specifier "BookOpen" in barrel export map
+[vinext:optimize-imports] skipping "lucide-react": could not resolve specifier "MessageCircle" in barrel export map
+[vinext:optimize-imports] skipping "lucide-react": could not resolve specifier "Building2" in barrel export map
+[vinext:optimize-imports] skipping "lucide-react": could not resolve specifier "Maximize2" in barrel export map
+[vinext:optimize-imports] skipping "lucide-react": could not resolve specifier "LocateFixed" in barrel export map
+✓ 2150 modules transformed.
+rendering chunks...
+computing gzip size...
+[33m[PLUGIN_TIMINGS] [0mYour build spent significant time in plugins. Here is a breakdown:
+  - vinext:middleware-server-only (34%)
+  - vinext:jsx-in-js (14%)
+  - vinext:css-data-url (10%)
+  - rsc:virtual-client-package (8%)
+  - alias (7%)
+See https://rolldown.rs/options/checks#plugintimings for more details.
+
+✓ built in 14.04s
+[0m
+  Route (app)
+  ┌ ? /                     
+  ├ λ /api/diagnostics      
+  ├ λ /api/events           
+  ├ λ /api/health           
+  ├ λ /api/instructions     
+  ├ λ /api/living           
+  ├ λ /api/living/appearance
+  ├ λ /api/living/catalog   
+  ├ λ /api/living/interact  
+  ├ λ /api/living/learning  
+  ├ λ /api/living/pulse     
+  ├ λ /api/living/tick      
+  ├ λ /api/visits           
+  ├ λ /api/world            
+  ├ ? /dashboard            
+  └ ? /studio               
+
+  λ API  ? Unknown
+
+  ? Some routes could not be classified. vinext currently uses static analysis
+    and cannot detect dynamic API usage (headers(), cookies(), etc.) at build time.
+    Automatic classification will be improved in a future release.
+
+  Build complete. Run `vinext start` to start the production server.
+

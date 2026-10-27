@@ -1,0 +1,1 @@
+{"suite":"phase-b","newActions":9,"realGLBClipCompatibility":true,"meetingStages":5,"independentSocial":{"cadenceSimSeconds":20,"pairs":2,"idempotent":true,"pause":true,"cancellation":true,"noDoubleCredit":true},"legacyEvents":true,"planPurity":true}

@@ -87,3 +87,9 @@ export const visitorExchanges = sqliteTable("visitor_exchanges", {
   createdAt: text("created_at").notNull(),
   data: text("data").notNull(),
 });
+
+export const clientLogs = sqliteTable("client_logs", {
+  id: text("id").primaryKey(),
+  createdAt: integer("created_at").notNull(),
+  data: text("data").notNull(),
+});

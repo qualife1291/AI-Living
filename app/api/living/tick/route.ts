@@ -1,4 +1,4 @@
-import { tickLiving } from "@/lib/living/service";
+import { tickLiving, auditTick } from "@/lib/living/service";
 import { json, validOrigin } from "@/lib/store";
 import { proposalSchema } from "@/lib/living/schema";
 import { z } from "zod";
@@ -15,8 +15,10 @@ export async function POST(req: Request) {
     return json({ error: "JSON không hợp lệ" }, 400);
   }
   const parsed = schema.safeParse(data);
-  if (!parsed.success)
+  if (!parsed.success) {
+    await auditTick("rejected", { status: 400, reason: "invalid_tick_payload" });
     return json({ error: "Lượt sinh hoạt không hợp lệ" }, 400);
+  }
   const result = await tickLiving(parsed.data.proposal, parsed.data.basis);
   return json(result.data, result.status);
 }

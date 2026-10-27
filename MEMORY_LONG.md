@@ -156,3 +156,9 @@
 
 ## Production version11 — hoàn tất
 Native succeeded08:39giờ Việt Nam27/10, sourcec1ddea15e5b59631600796ea49d76bae9c49ddcb/env1/ownerprivate. Latest.json vàledger27/10 cóIDs/hash/test/readback. PostGETrevision83/14events/33,11,11memories; offlinecomparehai backup xácnhận13eventcũ/từngmemory/world.born/3animalpolicy giữnguyên. Khôngmigration/reset/fixtures. Preview/relay đãdừng. Tiếp nhận8ZIPKenney+KịchBản.md cho đợtnângcấpasset tiếp theo; cần đọc scenario/license/metadata trước tíchhợp.
+
+## 27/10/2026 — local ZIP diagnostics/route foundation
+Bản sửa một phần giai đoạnA, chưadeploy. Chi tiết scope, regression và giới hạn ở docs/FIXES_PHASE_A.md; không coi đã hoàn tất gói0–8.
+
+## 27/10/2026 — source candidate phase B
+Thêm enum/scenarios hành động và5bước hậu thoại, schedulerNPC simulation20s/pulse10s/CAS, shared kindtyping và mapping GLB/2D. Không phải model AI mới; còn tagpair/cyclephysics/petowner, C/D và nghiệm thuđiệnthoại. Chi tiết trong docs/PHASE_B_ACTIONS.md.

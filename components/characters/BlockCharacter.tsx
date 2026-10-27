@@ -5,11 +5,13 @@ export function BlockCharacter({
   walking = false,
   speaking = false,
   paused = false,
+  action = "rest",
 }: {
   appearance: Appearance;
   walking?: boolean;
   speaking?: boolean;
   paused?: boolean;
+  action?: import("@/lib/life").Step["kind"];
 }) {
   const theme = themes.find((t) => t.id === appearance.theme) ?? themes[0],
     uid = useId().replaceAll(":", "");
@@ -21,7 +23,7 @@ export function BlockCharacter({
   }[appearance.hair];
   return (
     <g
-      className={`block-character ${walking ? "block-walking" : ""} ${paused ? "block-paused" : ""}`}
+      className={`block-character ${walking ? "block-walking" : ""} ${paused ? "block-paused" : ""} block-action-${action}`}
     >
       <defs>
         <linearGradient id={uid + "shirt"} x1="0" y1="0" x2="1" y2="1">

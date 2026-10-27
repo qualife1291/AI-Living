@@ -1470,14 +1470,14 @@
         {
           "uri": "Textures/texture-a.png",
           "url": "/models/kenney/characters/Textures/texture-a.png",
-          "sha256": "257e944c582ce7cda206fbd8ceb717be648f9721756baf377a36478c11c0059a",
-          "bytes": 20171
+          "sha256": "48af572eb6744d62d6c21bb2f620315fb196afceb9fb1ea9aa29b77895e6394f",
+          "bytes": 14875
         }
       ],
       "preview": {
         "url": "/models/kenney/characters/Previews/character-a.png",
-        "sha256": "ae1cecc8ebfeacc6ec128c6bc128c8deea074e0ad3375188001e4c3e3f0ffb33",
-        "bytes": 1657
+        "sha256": "c53d74dd1897500d3c4d0151ab44e98811791cfca23b314e7cd5aac87ce436d5",
+        "bytes": 3301
       },
       "rig": {
         "kind": "node-transform animation",
@@ -2850,14 +2850,14 @@
         {
           "uri": "Textures/texture-b.png",
           "url": "/models/kenney/characters/Textures/texture-b.png",
-          "sha256": "c614148428fbf63ab701ab95e2ebe0b6103ea0e2e6212c986d8931899bad7692",
-          "bytes": 15606
+          "sha256": "20bd12b70116fe3ab8b0c8cab64ea27d81b4c11ab404acaefff90827602bb0c7",
+          "bytes": 11109
         }
       ],
       "preview": {
         "url": "/models/kenney/characters/Previews/character-b.png",
-        "sha256": "bc3081c7ebccd8e7fc9b39d557817791ee31871c6b8f9c0042073aa953c553d6",
-        "bytes": 1666
+        "sha256": "f94772c0d193199f83ecb7a01177c1bab721511491a0729f3e37e8be532b8c75",
+        "bytes": 2871
       },
       "rig": {
         "kind": "node-transform animation",
@@ -4230,14 +4230,14 @@
         {
           "uri": "Textures/texture-c.png",
           "url": "/models/kenney/characters/Textures/texture-c.png",
-          "sha256": "582a62eae6ca086f65e6bfdde16d0d1d15a95fdaf484c0def4769d5a47ba1c8e",
-          "bytes": 12829
+          "sha256": "99fbc6de2db5a4e29b1b0778014ed8a6b479c732aa829482466f3eb0ecd9d80e",
+          "bytes": 10634
         }
       ],
       "preview": {
         "url": "/models/kenney/characters/Previews/character-c.png",
-        "sha256": "3a0b414c8f962f92d476f087d3c91c443b2c1ab30ba7fd8e64ed649ebc6ea3a1",
-        "bytes": 1650
+        "sha256": "a0d3f79253d2b27e713ebb68dbbfb17a299628f834c44253ce593485873d549c",
+        "bytes": 3142
       },
       "rig": {
         "kind": "node-transform animation",
@@ -5610,14 +5610,14 @@
         {
           "uri": "Textures/texture-d.png",
           "url": "/models/kenney/characters/Textures/texture-d.png",
-          "sha256": "c61bc29ec4d96229b979fc9196500afac13c2b448bbab1085832354fb4ef849a",
-          "bytes": 13151
+          "sha256": "cebcbf4f645f56583f05a489146ebb753b2faa81b8cb292b3afef122ac8d089d",
+          "bytes": 11205
         }
       ],
       "preview": {
         "url": "/models/kenney/characters/Previews/character-d.png",
-        "sha256": "5686a11b0821e8ccaa9078bb842e29b49bc6da05a99e97ded4c654b26e39233c",
-        "bytes": 1673
+        "sha256": "c75ab83906b5045bcae085522326a70cc5accb0aac2b8b1d4c708bd1be998e0f",
+        "bytes": 3350
       },
       "rig": {
         "kind": "node-transform animation",
@@ -6990,14 +6990,14 @@
         {
           "uri": "Textures/texture-e.png",
           "url": "/models/kenney/characters/Textures/texture-e.png",
-          "sha256": "6bbdb4f76b8d2ba7feb1ad8e4a341ca87afd655a4f061c77a86c400ad3125049",
-          "bytes": 14509
+          "sha256": "786c39f574b31ecb80892e55519983e4a67e5566ab67fdf50e978683c5bc8177",
+          "bytes": 11432
         }
       ],
       "preview": {
         "url": "/models/kenney/characters/Previews/character-e.png",
-        "sha256": "57a7f37c4a439f2a8b57cdc8b4c791487d305acba61b6c9c9664d1beb1ed0657",
-        "bytes": 1656
+        "sha256": "0983665f26d986d67b69ffd18e3f9b35a13d8c2a03f38755923f4ae3543ef4ac",
+        "bytes": 3201
       },
       "rig": {
         "kind": "node-transform animation",
@@ -7250,14 +7250,14 @@
         {
           "uri": "Textures/colormap.png",
           "url": "/models/kenney/cars/Textures/colormap.png",
-          "sha256": "f3622a03a20c6696065cae9cbe391351be873508af190c2ebd1d420c055787a5",
-          "bytes": 12371
+          "sha256": "44964ff2ac873fcdb6f30ba3e4c04fe0834cb0e69caa2bafaf9bfe81745a83c8",
+          "bytes": 3977
         }
       ],
       "preview": {
         "url": "/models/kenney/cars/Previews/sedan.png",
-        "sha256": "d957628a5689322b152588c1d077c51d0d576b229c788195f4a73d8042177ce4",
-        "bytes": 2278
+        "sha256": "6e97e0dec00ff53f40d915e479d6383504aa36c9cdf6dbbe380d71a3544022cd",
+        "bytes": 3684
       }
     },
     {
@@ -7500,14 +7500,14 @@
         {
           "uri": "Textures/colormap.png",
           "url": "/models/kenney/cars/Textures/colormap.png",
-          "sha256": "f3622a03a20c6696065cae9cbe391351be873508af190c2ebd1d420c055787a5",
-          "bytes": 12371
+          "sha256": "44964ff2ac873fcdb6f30ba3e4c04fe0834cb0e69caa2bafaf9bfe81745a83c8",
+          "bytes": 3977
         }
       ],
       "preview": {
         "url": "/models/kenney/cars/Previews/hatchback-sports.png",
-        "sha256": "cd1f71fc81877bad0fc0bc2590434820a36b399dde4eac5a2134acf41c3fe669",
-        "bytes": 2468
+        "sha256": "86d6678f09e931c4fd796f77f04721a848f90e32f057c25a1344b863dfca839d",
+        "bytes": 3634
       }
     },
     {
@@ -7750,14 +7750,14 @@
         {
           "uri": "Textures/colormap.png",
           "url": "/models/kenney/cars/Textures/colormap.png",
-          "sha256": "f3622a03a20c6696065cae9cbe391351be873508af190c2ebd1d420c055787a5",
-          "bytes": 12371
+          "sha256": "44964ff2ac873fcdb6f30ba3e4c04fe0834cb0e69caa2bafaf9bfe81745a83c8",
+          "bytes": 3977
         }
       ],
       "preview": {
         "url": "/models/kenney/cars/Previews/taxi.png",
-        "sha256": "81b31832b68ccdc11b17a7cdecd18b9c75d868ac14e26986af73283b1436b430",
-        "bytes": 2477
+        "sha256": "8aa3ae17d23c2f43ce7c569c354a711e7bacc8e1de2bef255b01baee12056af6",
+        "bytes": 3827
       }
     },
     {
@@ -7843,14 +7843,14 @@
         {
           "uri": "Textures/colormap.png",
           "url": "/models/kenney/commercial/Textures/colormap.png",
-          "sha256": "191bec3889aaaca5018380038fecc129ebb5c2182879a099b7b538b3fa050b5d",
-          "bytes": 11002
+          "sha256": "1f2c3944bd37ce471151ec6dd61cab50d688342c5266572c7f62adfb3f67821e",
+          "bytes": 3504
         }
       ],
       "preview": {
         "url": "/models/kenney/commercial/Previews/building-a.png",
-        "sha256": "5b70226f17fd44da3e92dbb3cc16f719f9e081b18688aadc9eced22d983fa597",
-        "bytes": 1870
+        "sha256": "db552b10a7783cfffd16b8a435ba3bb92f82250238fab1670591a2a14616cfeb",
+        "bytes": 3268
       }
     },
     {
@@ -7936,14 +7936,14 @@
         {
           "uri": "Textures/colormap.png",
           "url": "/models/kenney/commercial/Textures/colormap.png",
-          "sha256": "191bec3889aaaca5018380038fecc129ebb5c2182879a099b7b538b3fa050b5d",
-          "bytes": 11002
+          "sha256": "1f2c3944bd37ce471151ec6dd61cab50d688342c5266572c7f62adfb3f67821e",
+          "bytes": 3504
         }
       ],
       "preview": {
         "url": "/models/kenney/commercial/Previews/building-b.png",
-        "sha256": "736a288b402389b5d0373bb89288017dc77a0c318c1061f89f8e9225fe588f74",
-        "bytes": 1948
+        "sha256": "f896c6eb3f923ad3fbcd5328a4e2d0c3791c8bc13c9a91e470d564f4d174a75c",
+        "bytes": 3430
       }
     },
     {
@@ -8029,14 +8029,14 @@
         {
           "uri": "Textures/colormap.png",
           "url": "/models/kenney/commercial/Textures/colormap.png",
-          "sha256": "191bec3889aaaca5018380038fecc129ebb5c2182879a099b7b538b3fa050b5d",
-          "bytes": 11002
+          "sha256": "1f2c3944bd37ce471151ec6dd61cab50d688342c5266572c7f62adfb3f67821e",
+          "bytes": 3504
         }
       ],
       "preview": {
         "url": "/models/kenney/commercial/Previews/building-c.png",
-        "sha256": "00ad8f76c4ac70177339161653056025efebd83bb41fcd3b9da021d7fc4bf7e4",
-        "bytes": 2026
+        "sha256": "4099905f01619152f39ffbdd5fb6f30284a245b15e96e007a96cb0940390f745",
+        "bytes": 3473
       }
     },
     {
@@ -8122,14 +8122,14 @@
         {
           "uri": "Textures/colormap.png",
           "url": "/models/kenney/commercial/Textures/colormap.png",
-          "sha256": "191bec3889aaaca5018380038fecc129ebb5c2182879a099b7b538b3fa050b5d",
-          "bytes": 11002
+          "sha256": "1f2c3944bd37ce471151ec6dd61cab50d688342c5266572c7f62adfb3f67821e",
+          "bytes": 3504
         }
       ],
       "preview": {
         "url": "/models/kenney/commercial/Previews/building-skyscraper-a.png",
-        "sha256": "8c36940e5946f691e3cbb97bb08796554f1984da80c89ce8f32d63c552323eb5",
-        "bytes": 1652
+        "sha256": "b6f8ea4ebed287017e61344e15b62cc787a0685974f08e69c05630518258b858",
+        "bytes": 3479
       }
     },
     {
@@ -8215,14 +8215,14 @@
         {
           "uri": "Textures/colormap.png",
           "url": "/models/kenney/commercial/Textures/colormap.png",
-          "sha256": "191bec3889aaaca5018380038fecc129ebb5c2182879a099b7b538b3fa050b5d",
-          "bytes": 11002
+          "sha256": "1f2c3944bd37ce471151ec6dd61cab50d688342c5266572c7f62adfb3f67821e",
+          "bytes": 3504
         }
       ],
       "preview": {
         "url": "/models/kenney/commercial/Previews/detail-awning.png",
-        "sha256": "c537e781d0a92c02d3e1286bbcb9f1190db47da02c3bff115e228d962356fe00",
-        "bytes": 1542
+        "sha256": "52f6db573c175e521c7dfa077f53456d72ae13f3c90f80cb1886ac80f9b3e6be",
+        "bytes": 2310
       }
     },
     {
@@ -8308,14 +8308,14 @@
         {
           "uri": "Textures/colormap.png",
           "url": "/models/kenney/commercial/Textures/colormap.png",
-          "sha256": "191bec3889aaaca5018380038fecc129ebb5c2182879a099b7b538b3fa050b5d",
-          "bytes": 11002
+          "sha256": "1f2c3944bd37ce471151ec6dd61cab50d688342c5266572c7f62adfb3f67821e",
+          "bytes": 3504
         }
       ],
       "preview": {
         "url": "/models/kenney/commercial/Previews/detail-parasol-a.png",
-        "sha256": "13fe067dfe9566868e4dc573aa8f0b70fc9b13d57c330635068218cb86577df0",
-        "bytes": 1748
+        "sha256": "c7a40b797fc0d994cdf03fd9f3847eea75224ca6395fde714898f45334adf11a",
+        "bytes": 3092
       }
     },
     {
@@ -8401,14 +8401,14 @@
         {
           "uri": "Textures/colormap.png",
           "url": "/models/kenney/suburban/Textures/colormap.png",
-          "sha256": "9b5de86078c25ef02351a80d35ff3c978693a1044565b73eedd9ae9b5b80665d",
-          "bytes": 11784
+          "sha256": "371b74ef4a4f0682877b9098bb22746d7f537a54db036ffd9381bfe5eeae4a4c",
+          "bytes": 7047
         }
       ],
       "preview": {
         "url": "/models/kenney/suburban/Previews/building-type-a.png",
-        "sha256": "a2bbd19d2cae48b6adce85525f74bd440b2b914d726b231594c2ee58f1374af9",
-        "bytes": 1804
+        "sha256": "813d3dc021147e03754a0d5caafbb6a2b02107554474f5b59a37f5454472b856",
+        "bytes": 3515
       }
     },
     {
@@ -8494,14 +8494,14 @@
         {
           "uri": "Textures/colormap.png",
           "url": "/models/kenney/suburban/Textures/colormap.png",
-          "sha256": "9b5de86078c25ef02351a80d35ff3c978693a1044565b73eedd9ae9b5b80665d",
-          "bytes": 11784
+          "sha256": "371b74ef4a4f0682877b9098bb22746d7f537a54db036ffd9381bfe5eeae4a4c",
+          "bytes": 7047
         }
       ],
       "preview": {
         "url": "/models/kenney/suburban/Previews/building-type-b.png",
-        "sha256": "a84671b0bc1e0e9adb6e6841f781061638374e9a4b373c415b5b9e763b34796a",
-        "bytes": 1930
+        "sha256": "1508d87fcddef8ff251aeb4ee6312746f3a94822ebc4bc3cf84d29e9d60ff137",
+        "bytes": 3954
       }
     },
     {
@@ -8587,14 +8587,14 @@
         {
           "uri": "Textures/colormap.png",
           "url": "/models/kenney/suburban/Textures/colormap.png",
-          "sha256": "9b5de86078c25ef02351a80d35ff3c978693a1044565b73eedd9ae9b5b80665d",
-          "bytes": 11784
+          "sha256": "371b74ef4a4f0682877b9098bb22746d7f537a54db036ffd9381bfe5eeae4a4c",
+          "bytes": 7047
         }
       ],
       "preview": {
         "url": "/models/kenney/suburban/Previews/building-type-c.png",
-        "sha256": "dbd4559f8ba3722807ac7f8b217872f04ab2c80cbbd9d9a4cc3766cc2dcfdba2",
-        "bytes": 1847
+        "sha256": "b6f3579ded470b11fb6591797eb9021461092138a47c8ade3b76aa56f1795441",
+        "bytes": 3833
       }
     },
     {
@@ -8680,14 +8680,14 @@
         {
           "uri": "Textures/colormap.png",
           "url": "/models/kenney/suburban/Textures/colormap.png",
-          "sha256": "9b5de86078c25ef02351a80d35ff3c978693a1044565b73eedd9ae9b5b80665d",
-          "bytes": 11784
+          "sha256": "371b74ef4a4f0682877b9098bb22746d7f537a54db036ffd9381bfe5eeae4a4c",
+          "bytes": 7047
         }
       ],
       "preview": {
         "url": "/models/kenney/suburban/Previews/tree-large.png",
-        "sha256": "5b0f2d4197cafd2b3f49967f1ee0cb95f8c6995f144aca6ee62ccea4784f8ae2",
-        "bytes": 1317
+        "sha256": "005f8a71cdb2d02bd8e48c58a556596a9bb97de94bf685eda9eaf21bcba97b45",
+        "bytes": 2520
       }
     },
     {
@@ -8773,14 +8773,14 @@
         {
           "uri": "Textures/colormap.png",
           "url": "/models/kenney/suburban/Textures/colormap.png",
-          "sha256": "9b5de86078c25ef02351a80d35ff3c978693a1044565b73eedd9ae9b5b80665d",
-          "bytes": 11784
+          "sha256": "371b74ef4a4f0682877b9098bb22746d7f537a54db036ffd9381bfe5eeae4a4c",
+          "bytes": 7047
         }
       ],
       "preview": {
         "url": "/models/kenney/suburban/Previews/tree-small.png",
-        "sha256": "06c37c768755ab0b1c2909eb07cc2c46c24e0f6c4ae704048967a4bc974c8549",
-        "bytes": 1511
+        "sha256": "6c3843adf625e93bbd2f48773ddc2fa3216b579847676627749e4d5c2910b925",
+        "bytes": 2683
       }
     },
     {
@@ -8968,14 +8968,14 @@
         {
           "uri": "Textures/colormap.png",
           "url": "/models/kenney/market/Textures/colormap.png",
-          "sha256": "0d4947d34ff32acf4a359c7f22ca784e057e7e72f622170a9a77b6fc88fdb70e",
-          "bytes": 8706
+          "sha256": "73ee2ffa97452ba34c98071d7afa661db56dba55604025b5f6c670dcfd8cd043",
+          "bytes": 5503
         }
       ],
       "preview": {
         "url": "/models/kenney/market/Previews/display-bread.png",
-        "sha256": "2597498bf6a898df2c2acf98c3f3215a806a40b0adb0b35efa255c1153e54320",
-        "bytes": 1951
+        "sha256": "5f75f1416682efa41c7b6e5af1ad8891eb350db10edf43f648f8ff6f4337a14f",
+        "bytes": 3723
       }
     },
     {
@@ -9061,14 +9061,14 @@
         {
           "uri": "Textures/colormap.png",
           "url": "/models/kenney/market/Textures/colormap.png",
-          "sha256": "0d4947d34ff32acf4a359c7f22ca784e057e7e72f622170a9a77b6fc88fdb70e",
-          "bytes": 8706
+          "sha256": "73ee2ffa97452ba34c98071d7afa661db56dba55604025b5f6c670dcfd8cd043",
+          "bytes": 5503
         }
       ],
       "preview": {
         "url": "/models/kenney/market/Previews/display-fruit.png",
-        "sha256": "18e9e821fab2ca5028629fc882c9d4e3b1fea5537ac4378b984128215a0010c3",
-        "bytes": 1910
+        "sha256": "c8bc2b216b255bbb7de61f9e073b3ebd5ab999590b52810f35d69b2c79e1ec16",
+        "bytes": 3817
       }
     },
     {
@@ -9154,14 +9154,14 @@
         {
           "uri": "Textures/colormap.png",
           "url": "/models/kenney/market/Textures/colormap.png",
-          "sha256": "0d4947d34ff32acf4a359c7f22ca784e057e7e72f622170a9a77b6fc88fdb70e",
-          "bytes": 8706
+          "sha256": "73ee2ffa97452ba34c98071d7afa661db56dba55604025b5f6c670dcfd8cd043",
+          "bytes": 5503
         }
       ],
       "preview": {
         "url": "/models/kenney/market/Previews/cash-register.png",
-        "sha256": "db169c7da59d220e24e55081ff75bc44b768bf9fb8caa9b1ff8e9a20aee20258",
-        "bytes": 1569
+        "sha256": "41153baf2fb1baecd9b1bfd2fa6b4818ea275901e6a8d9e20f1b0c555d80dc44",
+        "bytes": 3200
       }
     },
     {
@@ -9672,14 +9672,14 @@
         {
           "uri": "Textures/colormap.png",
           "url": "/models/kenney/market/Textures/colormap.png",
-          "sha256": "0d4947d34ff32acf4a359c7f22ca784e057e7e72f622170a9a77b6fc88fdb70e",
-          "bytes": 8706
+          "sha256": "73ee2ffa97452ba34c98071d7afa661db56dba55604025b5f6c670dcfd8cd043",
+          "bytes": 5503
         }
       ],
       "preview": {
         "url": "/models/kenney/market/Previews/shelf-boxes.png",
-        "sha256": "14fd460f0ee5e89a1578dcd0a2df2eaf4993ddf33c319263f2e4b7886d10f149",
-        "bytes": 1670
+        "sha256": "fdce9ba2b3a4a1c3e34cfb11649fdf2b7147678909c008c51024bcc3769201be",
+        "bytes": 4578
       }
     },
     {
@@ -10147,14 +10147,14 @@
         {
           "uri": "Textures/colormap.png",
           "url": "/models/kenney/market/Textures/colormap.png",
-          "sha256": "0d4947d34ff32acf4a359c7f22ca784e057e7e72f622170a9a77b6fc88fdb70e",
-          "bytes": 8706
+          "sha256": "73ee2ffa97452ba34c98071d7afa661db56dba55604025b5f6c670dcfd8cd043",
+          "bytes": 5503
         }
       ],
       "preview": {
         "url": "/models/kenney/market/Previews/shelf-bags.png",
-        "sha256": "46e40596013d48f77ca5b2b94f45d5e1eac7311f39bc3d6ec5d17a340cf5364e",
-        "bytes": 1642
+        "sha256": "ac070d060144cd1224ff48362f599f792803f07afb14ed16a0a9664adc00b0f5",
+        "bytes": 4786
       }
     },
     {
@@ -10240,14 +10240,14 @@
         {
           "uri": "Textures/colormap.png",
           "url": "/models/kenney/market/Textures/colormap.png",
-          "sha256": "0d4947d34ff32acf4a359c7f22ca784e057e7e72f622170a9a77b6fc88fdb70e",
-          "bytes": 8706
+          "sha256": "73ee2ffa97452ba34c98071d7afa661db56dba55604025b5f6c670dcfd8cd043",
+          "bytes": 5503
         }
       ],
       "preview": {
         "url": "/models/kenney/market/Previews/shopping-basket.png",
-        "sha256": "570b86dca4869f287a1293726492ee864aae68e0bb59ce61beb6bffdfde52777",
-        "bytes": 1681
+        "sha256": "e3121acc9f03fe8def95b952b81944b683cc1c798278d7ed33d5fd6a85619479",
+        "bytes": 3684
       }
     },
     {
@@ -10333,14 +10333,14 @@
         {
           "uri": "Textures/colormap.png",
           "url": "/models/kenney/market/Textures/colormap.png",
-          "sha256": "0d4947d34ff32acf4a359c7f22ca784e057e7e72f622170a9a77b6fc88fdb70e",
-          "bytes": 8706
+          "sha256": "73ee2ffa97452ba34c98071d7afa661db56dba55604025b5f6c670dcfd8cd043",
+          "bytes": 5503
         }
       ],
       "preview": {
         "url": "/models/kenney/market/Previews/shopping-cart.png",
-        "sha256": "6b8b96042feb2471f5af791010f101bd6ef3666b1f1573e90fc2b1a00683bc0c",
-        "bytes": 1846
+        "sha256": "908e889a5adad54890110e6f9ab13264be71f243de888af7e2ba17d746542e34",
+        "bytes": 3637
       }
     },
     {
@@ -10426,14 +10426,14 @@
         {
           "uri": "Textures/colormap.png",
           "url": "/models/kenney/market/Textures/colormap.png",
-          "sha256": "0d4947d34ff32acf4a359c7f22ca784e057e7e72f622170a9a77b6fc88fdb70e",
-          "bytes": 8706
+          "sha256": "73ee2ffa97452ba34c98071d7afa661db56dba55604025b5f6c670dcfd8cd043",
+          "bytes": 5503
         }
       ],
       "preview": {
         "url": "/models/kenney/market/Previews/freezer.png",
-        "sha256": "bf016c41afa28b7b42caff861fe6653827395d17c63f713dc128d816f709875c",
-        "bytes": 2075
+        "sha256": "b45a455e19fabbd5ea7f2f9f82a41018e308211977b592aefab2d0d2b3e78691",
+        "bytes": 3276
       }
     },
     {
@@ -10519,14 +10519,14 @@
         {
           "uri": "Textures/colormap.png",
           "url": "/models/kenney/roads/Textures/colormap.png",
-          "sha256": "a48e2962661ae44368ffddf3054f80ed8491d082b757dcc3011184cd9a98b185",
-          "bytes": 11428
+          "sha256": "9ce4ef6dfc154d6b5761c3884a3856dff22f5f1cdd716205b1006e7801245432",
+          "bytes": 3700
         }
       ],
       "preview": {
         "url": "/models/kenney/roads/Previews/construction-barrier.png",
-        "sha256": "5e430b55a7f3a8affd6955b73cf1e048aebf21f1200a910b4b06df21c7250d60",
-        "bytes": 2625
+        "sha256": "0a87c9a894329c428c7c76ee386914d08ae5a4ff465d2f7e066d398039ea97bf",
+        "bytes": 2762
       }
     },
     {
@@ -10612,14 +10612,14 @@
         {
           "uri": "Textures/colormap.png",
           "url": "/models/kenney/roads/Textures/colormap.png",
-          "sha256": "a48e2962661ae44368ffddf3054f80ed8491d082b757dcc3011184cd9a98b185",
-          "bytes": 11428
+          "sha256": "9ce4ef6dfc154d6b5761c3884a3856dff22f5f1cdd716205b1006e7801245432",
+          "bytes": 3700
         }
       ],
       "preview": {
         "url": "/models/kenney/roads/Previews/construction-cone.png",
-        "sha256": "f3fb26883fc41c055ea76edd9289c13226ac096a187e441362965ad610e3e79d",
-        "bytes": 1665
+        "sha256": "7d19c9a668eacaeef6ebcd3fd533cb260e803e754ea90e30d2cea56095aa4bdf",
+        "bytes": 2861
       }
     },
     {
@@ -10785,14 +10785,14 @@
         {
           "uri": "Textures/colormap.png",
           "url": "/models/kenney/roads/Textures/colormap.png",
-          "sha256": "a48e2962661ae44368ffddf3054f80ed8491d082b757dcc3011184cd9a98b185",
-          "bytes": 11428
+          "sha256": "9ce4ef6dfc154d6b5761c3884a3856dff22f5f1cdd716205b1006e7801245432",
+          "bytes": 3700
         }
       ],
       "preview": {
         "url": "/models/kenney/roads/Previews/dumpster.png",
-        "sha256": "740fbea238fd9bfcd00e5aa76d37abfb4658d622ef613490439642e4becf8ec7",
-        "bytes": 2364
+        "sha256": "35ccf9ea812e7b20559bc69ac54fa7985bebd8eb15837417a6f7ac3b208b3d9a",
+        "bytes": 2699
       }
     },
     {
@@ -10878,14 +10878,14 @@
         {
           "uri": "Textures/colormap.png",
           "url": "/models/kenney/roads/Textures/colormap.png",
-          "sha256": "a48e2962661ae44368ffddf3054f80ed8491d082b757dcc3011184cd9a98b185",
-          "bytes": 11428
+          "sha256": "9ce4ef6dfc154d6b5761c3884a3856dff22f5f1cdd716205b1006e7801245432",
+          "bytes": 3700
         }
       ],
       "preview": {
         "url": "/models/kenney/roads/Previews/light-curved.png",
-        "sha256": "a33306a6aa2c314148254a4aa7e32cd935254c97e3ec1a721bfb72c07b2ce7f5",
-        "bytes": 875
+        "sha256": "f0d12972540f968b70b0cfa4fb36d7d269754e858b5e205eaa2642d246285a0c",
+        "bytes": 2017
       }
     },
     {
@@ -10971,14 +10971,14 @@
         {
           "uri": "Textures/colormap.png",
           "url": "/models/kenney/roads/Textures/colormap.png",
-          "sha256": "a48e2962661ae44368ffddf3054f80ed8491d082b757dcc3011184cd9a98b185",
-          "bytes": 11428
+          "sha256": "9ce4ef6dfc154d6b5761c3884a3856dff22f5f1cdd716205b1006e7801245432",
+          "bytes": 3700
         }
       ],
       "preview": {
         "url": "/models/kenney/roads/Previews/road-sign-stop.png",
-        "sha256": "46a2124ba8b904e1f676c77828543a8db1ff36e8b09c5c0f598af4f7fd351af3",
-        "bytes": 1191
+        "sha256": "6fa7350cbeaff87848c57fa5c27a0415e2d99163338e9db6488a53e27abeeb80",
+        "bytes": 2233
       }
     },
     {
@@ -11064,14 +11064,14 @@
         {
           "uri": "Textures/colormap.png",
           "url": "/models/kenney/roads/Textures/colormap.png",
-          "sha256": "a48e2962661ae44368ffddf3054f80ed8491d082b757dcc3011184cd9a98b185",
-          "bytes": 11428
+          "sha256": "9ce4ef6dfc154d6b5761c3884a3856dff22f5f1cdd716205b1006e7801245432",
+          "bytes": 3700
         }
       ],
       "preview": {
         "url": "/models/kenney/roads/Previews/traffic-light.png",
-        "sha256": "9be9e14798af8fbad69d7a6ee4fd426b72ce3b97709e72449206e51799955291",
-        "bytes": 1231
+        "sha256": "5ede3651d1e7f8c88842016b18f4e0b6ce2d94f833a5709afcdddd2d343fe6ed",
+        "bytes": 2374
       }
     },
     {
@@ -11157,14 +11157,14 @@
         {
           "uri": "Textures/colormap.png",
           "url": "/models/kenney/roads/Textures/colormap.png",
-          "sha256": "a48e2962661ae44368ffddf3054f80ed8491d082b757dcc3011184cd9a98b185",
-          "bytes": 11428
+          "sha256": "9ce4ef6dfc154d6b5761c3884a3856dff22f5f1cdd716205b1006e7801245432",
+          "bytes": 3700
         }
       ],
       "preview": {
         "url": "/models/kenney/roads/Previews/road-straight.png",
-        "sha256": "4c5cf94ab39dc726675af9b3abb926d4dcea46114c418e2653b9997d638c66b0",
-        "bytes": 1700
+        "sha256": "023170c134d3648652f484dc098ccfe819241a9f808c81472e41a57dec512c44",
+        "bytes": 2230
       }
     },
     {
@@ -11330,14 +11330,14 @@
         {
           "uri": "Textures/colormap.png",
           "url": "/models/kenney/trains/Textures/colormap.png",
-          "sha256": "e264660f3fc9ecbd642bdb7fb7b7dc10755a061560a66651baf48274c729af09",
-          "bytes": 12684
+          "sha256": "967ea57921d972512b668c20ff0296563981d29f7f6e29078e00ab06f476f7bc",
+          "bytes": 8052
         }
       ],
       "preview": {
         "url": "/models/kenney/trains/Previews/train-electric-city-a.png",
-        "sha256": "927fe1b133cb4cc0e8b9200e6986e2ccf3e7726004183da3f116f053ec89c685",
-        "bytes": 1899
+        "sha256": "456e700174bfafcbd1492a90edde2801c748f9e0dc8b55ecf27f564788a1cae8",
+        "bytes": 4389
       }
     },
     {
@@ -11542,14 +11542,14 @@
         {
           "uri": "Textures/colormap.png",
           "url": "/models/kenney/trains/Textures/colormap.png",
-          "sha256": "e264660f3fc9ecbd642bdb7fb7b7dc10755a061560a66651baf48274c729af09",
-          "bytes": 12684
+          "sha256": "967ea57921d972512b668c20ff0296563981d29f7f6e29078e00ab06f476f7bc",
+          "bytes": 8052
         }
       ],
       "preview": {
         "url": "/models/kenney/trains/Previews/train-tram-modern.png",
-        "sha256": "de86a40429863bf56fd593eb04c917dcf6327b4b22ba644a5fb00d9897a3ed52",
-        "bytes": 1761
+        "sha256": "6687d43e1f8c1a26c9d2bf47da5b9c644955a6ec8c7a0db5511bf9c4ddcf7b9b",
+        "bytes": 4272
       }
     },
     {
@@ -11640,14 +11640,14 @@
         {
           "uri": "Textures/colormap.png",
           "url": "/models/kenney/trains/Textures/colormap.png",
-          "sha256": "e264660f3fc9ecbd642bdb7fb7b7dc10755a061560a66651baf48274c729af09",
-          "bytes": 12684
+          "sha256": "967ea57921d972512b668c20ff0296563981d29f7f6e29078e00ab06f476f7bc",
+          "bytes": 8052
         }
       ],
       "preview": {
         "url": "/models/kenney/trains/Previews/railroad-straight.png",
-        "sha256": "534f108c6285eb1ba475ba53b03512eeafe5bdb87eebbc68229d797efd99b8ce",
-        "bytes": 1499
+        "sha256": "4b7ed8b5ce1568b131dadb25db5192a7d24fc59e9b42e6c1c6acdf688ea1550a",
+        "bytes": 3270
       }
     },
     {
@@ -11733,14 +11733,14 @@
         {
           "uri": "Textures/colormap.png",
           "url": "/models/kenney/watercraft/Textures/colormap.png",
-          "sha256": "311138350e74e35c5497a1bd8076a01740b7c302bed11027639fa553459a68de",
-          "bytes": 8814
+          "sha256": "3843cd60abde9711723f0e904f9f54532655a41a0c6bc7cc66c0b284f995252f",
+          "bytes": 5781
         }
       ],
       "preview": {
         "url": "/models/kenney/watercraft/Previews/boat-fishing-small.png",
-        "sha256": "ae09a448b2a7984c5e4c9ff0fd70b2eba10079579ede97965ec31131888a4ea6",
-        "bytes": 1818
+        "sha256": "eb420c9d4e90c3264f7da90b6af729b1e7cf108f662017ae6977b9d79364ed31",
+        "bytes": 3416
       }
     },
     {
@@ -11867,14 +11867,14 @@
         {
           "uri": "Textures/colormap.png",
           "url": "/models/kenney/watercraft/Textures/colormap.png",
-          "sha256": "311138350e74e35c5497a1bd8076a01740b7c302bed11027639fa553459a68de",
-          "bytes": 8814
+          "sha256": "3843cd60abde9711723f0e904f9f54532655a41a0c6bc7cc66c0b284f995252f",
+          "bytes": 5781
         }
       ],
       "preview": {
         "url": "/models/kenney/watercraft/Previews/boat-row-small.png",
-        "sha256": "304bfbd255c8556f5709b9f1b9417cff59c3261639fd82c2b797c75c4777c845",
-        "bytes": 2179
+        "sha256": "f3342d12734ac7eba12112d047c5ec42be6b12214dd4831296c608e268ebdbf0",
+        "bytes": 2865
       }
     },
     {
@@ -11960,14 +11960,14 @@
         {
           "uri": "Textures/colormap.png",
           "url": "/models/kenney/watercraft/Textures/colormap.png",
-          "sha256": "311138350e74e35c5497a1bd8076a01740b7c302bed11027639fa553459a68de",
-          "bytes": 8814
+          "sha256": "3843cd60abde9711723f0e904f9f54532655a41a0c6bc7cc66c0b284f995252f",
+          "bytes": 5781
         }
       ],
       "preview": {
         "url": "/models/kenney/watercraft/Previews/boat-house-a.png",
-        "sha256": "324b71ccf865187a43dc27f398f500dd196da63d8882e5854b124ce4627d7fe0",
-        "bytes": 1938
+        "sha256": "4eb83d3b9520b37882c88c1207d22bbeea1992351942e27a1041df00f54be2a8",
+        "bytes": 3164
       }
     },
     {
@@ -12053,14 +12053,14 @@
         {
           "uri": "Textures/colormap.png",
           "url": "/models/kenney/watercraft/Textures/colormap.png",
-          "sha256": "311138350e74e35c5497a1bd8076a01740b7c302bed11027639fa553459a68de",
-          "bytes": 8814
+          "sha256": "3843cd60abde9711723f0e904f9f54532655a41a0c6bc7cc66c0b284f995252f",
+          "bytes": 5781
         }
       ],
       "preview": {
         "url": "/models/kenney/watercraft/Previews/buoy.png",
-        "sha256": "61d10500d78d6ea6832a57270123c407695c23cb429ac5905e8183c4a0170e8c",
-        "bytes": 1540
+        "sha256": "a83b6147e56b8aacf1c4d6382f319e166e3d7054a4a19a88258e2890521079a6",
+        "bytes": 2688
       }
     }
   ],
@@ -12070,6 +12070,6 @@
     "bytes": 19835
   },
   "assetCount": 41,
-  "totalBytes": 2949732,
+  "totalBytes": 2954655,
   "uniqueFiles": 103
 }

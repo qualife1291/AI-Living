@@ -14,6 +14,7 @@ import { AssetLibrary, setAssetTransform, type AssetPlacement } from "./assets";
 import { createModelActors } from "./model-actors";
 import { streetModel } from "./streetscape";
 import * as THREE from "three";
+import { logClient, recordFrame } from "../../../lib/diagnostics";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import {
   actorsAt,
@@ -22,7 +23,7 @@ import {
   type Actor,
 } from "@/lib/life";
 import { crowdAt } from "@/lib/living/engine";
-import { worldTime } from "@/lib/clock";
+import { worldTime, weatherAt } from "@/lib/clock";
 import { boulevards, metroLine, venues, type Venue } from "@/lib/city/world";
 import {
   cityBuildings,
@@ -92,7 +93,9 @@ export function createCity(
   );
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
-  renderer.toneMappingExposure = 1.25;
+  renderer.toneMappingExposure = 1.22;
+  renderer.shadowMap.enabled = true;
+  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
   renderer.domElement.setAttribute("aria-label", "Thành phố 3D của An");
   renderer.domElement.setAttribute("role", "img");
   renderer.domElement.tabIndex = 0;
@@ -114,10 +117,14 @@ export function createCity(
     MIDDLE: THREE.MOUSE.DOLLY,
     RIGHT: THREE.MOUSE.PAN,
   };
-  const ambient = new THREE.HemisphereLight("#d9edff", "#8e7458", 1.25);
+  const ambient = new THREE.HemisphereLight("#e3f2ff", "#9c8265", 1.35);
   scene.add(ambient);
-  const sun = new THREE.DirectionalLight("#fff0ce", 2.6);
-  sun.position.set(-400, 1200, 600);
+  const sun = new THREE.DirectionalLight("#fff1d0", 2.75);
+  sun.position.set(-420, 1250, 620);
+  sun.castShadow = true;
+  sun.shadow.mapSize.set(2048, 2048);
+  sun.shadow.bias = -0.0004;
+  Object.assign(sun.shadow.camera, { left: -950, right: 950, top: 950, bottom: -950, near: 100, far: 3200 });
   scene.add(sun);
   const solids: Solid[] = [],
     facadeDetails: Solid[] = [],
@@ -364,9 +371,15 @@ export function createCity(
         cylinder(v.x, 5, v.y - 44, 25, 8, "#d8d7c2");
         cylinder(v.x, 10, v.y - 44, 20, 3, "#8dbbb4");
       } else if (v.type === "sport") {
-        box(v.x, 2.5, v.y - 35, 78, 1, 48, "#88ae89");
-        for (const dx of [-40, 40])
-          box(v.x + dx, 11, v.y - 35, 1.5, 18, 20, "#edf0df");
+        // Soccer pitch + center line + 3D soccer ball + adjacent community swimming pool basin
+        box(v.x - 16, 2.5, v.y - 35, 56, 1, 44, "#79ab78");
+        box(v.x - 16, 3.05, v.y - 35, .8, .2, 42, "#eff2e1");
+        cylinder(v.x - 16, 4.2, v.y - 35, 2.6, 2.6, "#f7f6ec");
+        for (const dx of [-43, 11])
+          box(v.x + dx, 11, v.y - 35, 1.5, 18, 18, "#edf0df");
+        // Turquoise swimming pool lane next to pitch
+        box(v.x + 28, 2.2, v.y - 35, 24, 1.6, 42, "#e8e2ce");
+        box(v.x + 28, 2.8, v.y - 35, 20, 1.2, 38, "#5bc4d8");
       } else if (v.type === "bus" || v.type === "metro") {
         box(v.x, 26, v.y - 22, 100, 4, 30, "#7ba69f");
         for (const dx of [-43, 43])
@@ -458,7 +471,9 @@ export function createCity(
       list.push(part);
     }
   }
-  for (const [index, id] of ["watercraft/boat-fishing-small", "watercraft/boat-row-small"].entries()) if (assets.get(id)) placements.push({ id, x: 1100 + index * 280, y: .4, z: 1610 + index * 8, width: 22, depth: 55, height: 30, yaw: Math.PI / 2 });
+  for (const [index, id] of ["watercraft/boat-fishing-small", "watercraft/boat-row-small", "watercraft/boat-house-a"].entries()) if (assets.get(id)) placements.push({ id, x: 920 + index * 280, y: .4, z: 1608 + index * 6, width: 24, depth: 56, height: 32, yaw: Math.PI / 2 });
+  if (assets.get("watercraft/buoy")) for (const x of [760, 1680]) placements.push({ id: "watercraft/buoy", x, y: .3, z: 1585, width: 8, depth: 8, height: 14 });
+  if (assets.get("trains/train-tram-modern")) placements.push({ id: "trains/train-tram-modern", x: metroLine[1][0], y: 3.6, z: metroLine[1][1], width: 12, height: 18, depth: 46, yaw: Math.atan2(metroLine[1][0] - metroLine[0][0], metroLine[1][1] - metroLine[0][1]) });
   if (assets.get("trains/railroad-straight")) for (let i = 1; i < metroLine.length; i++) {
     const a = metroLine[i - 1], b = metroLine[i], length = Math.hypot(b[0] - a[0], b[1] - a[1]);
     for (let n = 20; n < length; n += 40) placements.push({ id: "trains/railroad-straight", x: a[0] + (b[0] - a[0]) * n / length, y: 3.1, z: a[1] + (b[1] - a[1]) * n / length, width: 10, height: 1, depth: 40, yaw: Math.atan2(b[0] - a[0], b[1] - a[1]), stretch: true });
@@ -501,13 +516,13 @@ export function createCity(
     scene.add(mesh);
     return mesh;
   }
-  batch(new THREE.CylinderGeometry(0.5, 0.5, 1, 16), shadows);
-  batch(new THREE.BoxGeometry(1, 1, 1), solids);
-  batch(new THREE.BoxGeometry(1, 1, 1), facadeDetails, new THREE.MeshLambertMaterial(), true);
-  batch(new THREE.CylinderGeometry(0.5, 0.5, 1, 8), cylinders);
-  batch(new THREE.SphereGeometry(.5, 8, 4), leaves);
-  batch(new THREE.TorusGeometry(.42, .08, 4, 12), propWheels);
-  batch(new THREE.IcosahedronGeometry(.5, 0), propBuds, new THREE.MeshLambertMaterial(), true);
+  batch(new THREE.CylinderGeometry(0.5, 0.5, 1, 20), shadows);
+  batch(new THREE.BoxGeometry(1, 1, 1), solids, new THREE.MeshPhongMaterial({ shininess: 10, specular: "#4a4f4a" }));
+  batch(new THREE.BoxGeometry(1, 1, 1), facadeDetails, new THREE.MeshPhongMaterial({ shininess: 14, specular: "#595e58" }), true);
+  batch(new THREE.CylinderGeometry(0.5, 0.5, 1, 16), cylinders, new THREE.MeshPhongMaterial({ shininess: 14, specular: "#525752" }));
+  batch(new THREE.SphereGeometry(.5, 16, 12), leaves, new THREE.MeshPhongMaterial({ shininess: 16, specular: "#4e6b52" }));
+  batch(new THREE.TorusGeometry(.42, .08, 8, 18), propWheels);
+  batch(new THREE.IcosahedronGeometry(.5, 1), propBuds, new THREE.MeshPhongMaterial({ shininess: 18 }), true);
   const windowMaterial = new THREE.MeshPhongMaterial({
     shininess: 40,
     emissive: "#638082",
@@ -640,6 +655,7 @@ export function createCity(
   renderer.domElement.addEventListener("pointerup", pointerUp);
   const lost = (e: Event) => {
     e.preventDefault();
+    logClient("webgl_lost");
     if (!dead) callbacks.fatal();
   };
   renderer.domElement.addEventListener("webglcontextlost", lost);
@@ -697,13 +713,17 @@ export function createCity(
       if (mesh.instanceColor) mesh.instanceColor.needsUpdate = true;
     }
   }
+  const visibilityChanged = () => { lastDraw = 0; };
+  document.addEventListener("visibilitychange", visibilityChanged);
   let activeQuality = input().quality;
   let drawnFrames = 0;
   function tick(stamp: number) {
     if (dead) return;
     frame = requestAnimationFrame(tick);
     if (document.hidden || stamp - lastDraw < 15) return;
-    const dt = Math.min(.15, Math.max(.001, (stamp - lastDraw) / 1000));
+    const frameMs = stamp - lastDraw;
+    if (lastDraw) recordFrame(frameMs);
+    const dt = Math.min(.15, Math.max(.001, frameMs / 1000));
     lastDraw = stamp;
     const state = input(),
       { world, selected } = state,
@@ -764,7 +784,12 @@ export function createCity(
       targetKey = state.target.key;
       focus(state.target.x, state.target.y);
     }
-    ambience.update(seconds);
+    const currentWeather = weatherAt(world.born, worldTime(world, lastTime), world.clock?.weatherOverride);
+    ambience.update(seconds, currentWeather.kind, currentWeather.intensity);
+    if (ambience.flash > 0) {
+      sun.intensity = 4.2;
+      ambient.intensity = 2.1;
+    }
     drawActors(seconds, world, dt);
     traffic();
     contactShadows.count = actors.length + cars.length;
@@ -921,6 +946,7 @@ export function createCity(
       renderer.domElement.removeEventListener("pointerdown", pointerDown);
       renderer.domElement.removeEventListener("pointerup", pointerUp);
       renderer.domElement.removeEventListener("webglcontextlost", lost);
+      document.removeEventListener("visibilitychange", visibilityChanged);
       const geometries = new Set<THREE.BufferGeometry>(),
         materials = new Set<THREE.Material>(),
         textures = new Set<THREE.Texture>();

@@ -54,6 +54,11 @@ export type LivingState = {
   learning?: import("./learning").LearningPopulation;
   experiences?: import("./learning").Experience[];
   learningCommit?: string;
+  socialSchedule?: {
+    checkedSimMs: number;
+    cooldowns: Record<string, number>;
+    pending: { id: string; a: string; b: string; location: string; startedSimMs: number; durationMs: number }[];
+  };
   appearances?: Record<string, import("../city/appearance").Appearance>;
   animalLearning?: Record<string, import("./animal-learning").AnimalPolicy>;
 };

@@ -1,3 +1,4 @@
+import { scheduleResidentSocial } from "./social-scheduler";
 import { scenarios, prepareLearning, initializeAgent } from "./learning";
 import { settleAnimalLearning } from "./animal-learning";
 import { env } from "cloudflare:workers";
@@ -71,7 +72,21 @@ function archiveStatements(
         .bind(e.id, e.actorId, e.at, JSON.stringify(e), revision, nonce),
     );
 }
+export async function auditTick(status: string, detail: Record<string, string | number | boolean>) {
+  const at = new Date().toISOString();
+  try { await database().prepare("INSERT INTO tick_runs (id,started_at,finished_at,status,model,error) VALUES (?,?,?,?,?,?)")
+    .bind(`diagnostic:${crypto.randomUUID()}`, at, at, status, "request", JSON.stringify(detail)).run(); }
+  catch { console.warn("tick diagnostic persistence unavailable"); }
+}
 export async function tickLiving(proposal?: unknown, basis?: { revision: number; turnId: string }) {
+  const started = performance.now();
+  try {
+    const result = await tickLivingInternal(proposal, basis);
+    await auditTick(result.status >= 400 ? "rejected" : "request_completed", { status: result.status, duplicate: "duplicate" in result.data && result.data.duplicate === true, durationMs: Math.round(performance.now()-started), reason: "error" in result.data ? String(result.data.error).slice(0,160) : "ok" });
+    return result;
+  } catch (error) { await auditTick("request_failed", { durationMs: Math.round(performance.now()-started), reason: error instanceof Error && error.name === "TimeoutError" ? "timeout" : "internal_error" }); throw error; }
+}
+async function tickLivingInternal(proposal?: unknown, basis?: { revision: number; turnId: string }) {
   const now = Date.now(),
     id = turnId(now),
     db = database();
@@ -90,7 +105,9 @@ export async function tickLiving(proposal?: unknown, basis?: { revision: number;
   const parsed = proposalSchema.safeParse(proposal);
   // Models only write bounded narrative. They cannot invent live facts, change money,
   // move entities, invoke tools, or change the activity chosen by the world engine.
+  if (proposal !== undefined && !parsed.success) return { status: 422, data: { error: "Proposal schema rejected" } };
   if (parsed.success) {
+    if (!parsed.data.dialogue.every(d => ["an", result.turn.residentId].includes(d.speaker))) return { status: 422, data: { error: "Proposal speaker rejected" } };
     const allowed = new Set(["an", result.turn.residentId]);
     if (parsed.data.dialogue.every((d) => allowed.has(d.speaker))) {
       const { newRole, ...narrative } = parsed.data;
@@ -261,7 +278,7 @@ export async function saveCatalog(
   return Boolean(res.meta.changes);
 }
 
-/** Finalize completed experiences independently from the 15-minute narrative slot. */
+/** Finalize completed experiences independently from the five-minute narrative slot. */
 export async function learnCompleted() {
   const current = await readWorld();
   if (current.world.paused)
@@ -313,4 +330,12 @@ export async function learnCompleted() {
         },
       }
     : { status: 409, data: { error: "Revision conflict" } };
+}
+
+/** Advances ordinary residents independently of An's five-minute narrative slot. */
+export async function advanceResidentSocial() {
+ const current=await readWorld(),result=scheduleResidentSocial(current.world,Date.now());
+ if(!result.changed)return {status:200,data:{ok:true,pairs:0}};
+ const write=await database().prepare("UPDATE worlds SET data=?,revision=revision+1 WHERE id=? AND revision=?").bind(JSON.stringify(result.world),"home",current.revision).run();
+ return write.meta.changes?{status:200,data:{ok:true,pairs:result.pairs}}:{status:409,data:{error:"Revision conflict"}};
 }

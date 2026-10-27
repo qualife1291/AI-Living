@@ -382,5 +382,113 @@
     "hunger": 2,
     "skill": 0,
     "adultOnly": false
+  },
+  {
+    "id": "practice-drink",
+    "title": "Uống nước và nghỉ tay",
+    "place": "Quán cà phê",
+    "kind": "drink",
+    "tag": "drink",
+    "transport": "walk",
+    "energy": 2,
+    "hunger": -2,
+    "skill": 1,
+    "adultOnly": false
+  },
+  {
+    "id": "practice-run",
+    "title": "Chạy bộ nhẹ",
+    "place": "Công viên",
+    "kind": "run",
+    "tag": "run",
+    "transport": "walk",
+    "energy": -2,
+    "hunger": 1,
+    "skill": 1,
+    "adultOnly": false
+  },
+  {
+    "id": "practice-jump",
+    "title": "Tập nhảy tại chỗ",
+    "place": "Sân thể thao",
+    "kind": "jump",
+    "tag": "jump",
+    "transport": "walk",
+    "energy": -2,
+    "hunger": 1,
+    "skill": 1,
+    "adultOnly": false
+  },
+  {
+    "id": "practice-tag",
+    "title": "Đùa giỡn đuổi bắt",
+    "place": "Công viên",
+    "kind": "tag",
+    "tag": "tag",
+    "transport": "walk",
+    "energy": -2,
+    "hunger": 1,
+    "skill": 1,
+    "adultOnly": false
+  },
+  {
+    "id": "practice-cycle",
+    "title": "Luyện đạp xe",
+    "place": "Công viên",
+    "kind": "cycle",
+    "tag": "cycle",
+    "transport": "bicycle",
+    "energy": -2,
+    "hunger": 1,
+    "skill": 1,
+    "adultOnly": false
+  },
+  {
+    "id": "practice-exercise",
+    "title": "Tập thể dục",
+    "place": "Sân thể thao",
+    "kind": "exercise",
+    "tag": "exercise",
+    "transport": "walk",
+    "energy": -2,
+    "hunger": 1,
+    "skill": 1,
+    "adultOnly": false
+  },
+  {
+    "id": "practice-walk-pet",
+    "title": "Dắt thú cưng đi dạo",
+    "place": "Công viên",
+    "kind": "walk-pet",
+    "tag": "walk-pet",
+    "transport": "walk",
+    "energy": -2,
+    "hunger": 1,
+    "skill": 1,
+    "adultOnly": false
+  },
+  {
+    "id": "practice-shop",
+    "title": "Mua đồ cho bữa ăn",
+    "place": "Chợ nhỏ",
+    "kind": "shop",
+    "tag": "shop",
+    "transport": "walk",
+    "energy": -2,
+    "hunger": 1,
+    "skill": 1,
+    "adultOnly": false
+  },
+  {
+    "id": "practice-study",
+    "title": "Học và ghi chú",
+    "place": "Thư viện",
+    "kind": "study",
+    "tag": "study",
+    "transport": "walk",
+    "energy": -2,
+    "hunger": 1,
+    "skill": 1,
+    "adultOnly": false
   }
 ]

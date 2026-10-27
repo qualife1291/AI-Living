@@ -1,0 +1,1 @@
+PASS dialogue 800 lines, pair-order history, telemetry ring, deduplication, retry and ACK

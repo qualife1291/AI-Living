@@ -1,39 +1,13 @@
-import { cityBuildings } from "./three-layout.ts";
-import { containsPoint, segmentHits, venueObstacles, type GroundRect } from "./footprints.ts";
+import prebuilt from "../../data/assets/walk-routes.json" with { type: "json" };
 import { distance, type Actor, type Point } from "../life.ts";
 import { spaceActors } from "../living/social.ts";
 import type { World } from "../world";
 import type { TrafficVehicle } from "./traffic.ts";
 import { vehicleContains } from "./traffic.ts";
-import { sceneryObstacles } from "./scenery.ts";
 
-export const WALK_RADIUS = 4.8;
-export const groundObstacles: GroundRect[] = [...venueObstacles, ...cityBuildings().map(b => ({ x: b.x, z: b.z, width: b.width + 8, depth: b.depth + 8 })), ...sceneryObstacles];
-const buckets = new Map<string, GroundRect[]>(), BUCKET = 64;
-for (const r of groundObstacles) for (let z = Math.floor((r.z - r.depth / 2 - WALK_RADIUS) / BUCKET); z <= Math.floor((r.z + r.depth / 2 + WALK_RADIUS) / BUCKET); z++)
-  for (let x = Math.floor((r.x - r.width / 2 - WALK_RADIUS) / BUCKET); x <= Math.floor((r.x + r.width / 2 + WALK_RADIUS) / BUCKET); x++) {
-    const key = `${x}:${z}`, list = buckets.get(key) ?? []; list.push(r); buckets.set(key, list);
-  }
-function nearbyRects(a: readonly number[], b = a) {
-  if (Math.abs(a[0] - b[0]) + Math.abs(a[1] - b[1]) > 128) return groundObstacles;
-  const result = new Set<GroundRect>();
-  for (let z = Math.floor(Math.min(a[1], b[1]) / BUCKET); z <= Math.floor(Math.max(a[1], b[1]) / BUCKET); z++)
-    for (let x = Math.floor(Math.min(a[0], b[0]) / BUCKET); x <= Math.floor(Math.max(a[0], b[0]) / BUCKET); x++) for (const r of buckets.get(`${x}:${z}`) ?? []) result.add(r);
-  return [...result];
-}
-export const walkable = (p: readonly number[]) => !nearbyRects(p).some(r => containsPoint(r, p, WALK_RADIUS));
-export const segmentWalkable = (a: readonly number[], b: readonly number[]) => !nearbyRects(a, b).some(r => segmentHits(r, a, b, WALK_RADIUS));
-export function nearestWalkable(point: Point): Point {
-  let p: Point = [...point];
-  for (let pass = 0; pass < 12; pass++) {
-    const hit = groundObstacles.find(r => containsPoint(r, p, WALK_RADIUS + .1));
-    if (!hit) return p;
-    const candidates: Point[] = [[hit.x - hit.width / 2 - WALK_RADIUS - .2, p[1]], [hit.x + hit.width / 2 + WALK_RADIUS + .2, p[1]], [p[0], hit.z - hit.depth / 2 - WALK_RADIUS - .2], [p[0], hit.z + hit.depth / 2 + WALK_RADIUS + .2]];
-    candidates.sort((a, b) => distance(point, a) - distance(point, b));
-    p = candidates.find(walkable) ?? candidates[0];
-  }
-  return p;
-}
+export { WALK_RADIUS, groundObstacles, walkable, segmentWalkable, nearestWalkable } from "./walk-ground.ts";
+import { WALK_RADIUS, groundObstacles, walkable, segmentWalkable, nearestWalkable } from "./walk-ground.ts";
+import { logClient } from "../diagnostics.ts";
 const CELL = 12, X0 = -480, Z0 = -850, WIDTH = 300, HEIGHT = 240, SIZE = WIDTH * HEIGHT;
 let grid: Uint8Array | null = null;
 function cells() {
@@ -56,13 +30,22 @@ function cellAt(p: Point) {
   return -1;
 }
 const routes = new Map<string, Point[]>();
-export const walkRouteStats = () => ({ size: routes.size, limit: 256 });
+export const walkRouteStats = () => ({ size: routes.size, limit: 1024 });
 /** Bounded A* with corner clearance, followed by exact swept-circle shortcuts. */
 export function safeWalkPath(startPoint: Point, endPoint: Point): Point[] {
+  const began = performance.now();
+  try { return computeWalkPath(startPoint, endPoint); }
+  finally { const ms = performance.now() - began; if (ms > 8) logClient("route_slow", { ms }); }
+}
+function computeWalkPath(startPoint: Point, endPoint: Point): Point[] {
   if (![...startPoint, ...endPoint].every(Number.isFinite)) throw new RangeError("Path coordinates must be finite");
   const start = nearestWalkable(startPoint), end = nearestWalkable(endPoint);
   if (segmentWalkable(start, end)) return [start, end];
-  const key = `${start.join(",")}>${end.join(",")}`, cached = routes.get(key); if (cached) return cached;
+  const key = `${start.join(",")}>${end.join(",")}`;
+  const ready = (prebuilt as unknown as Record<string, Point[]>)[key];
+  if (ready && ready.every((p, i) => !i || segmentWalkable(ready[i-1], p))) return ready.map(p => [...p] as Point);
+  const cached = routes.get(key); if (cached) { routes.delete(key); routes.set(key, cached); return cached.map(p => [...p] as Point); }
+  logClient("route_miss");
   const first = cellAt(start), last = cellAt(end); if (first < 0 || last < 0) return [start];
   const cost = new Float64Array(SIZE); cost.fill(Infinity); cost[first] = 0;
   const previous = new Int32Array(SIZE); previous.fill(-1);
@@ -94,7 +77,7 @@ export function safeWalkPath(startPoint: Point, endPoint: Point): Point[] {
   while (i !== first && i >= 0) { path.unshift(cellPoint(i)); i = previous[i]; } path.unshift(start, cellPoint(first));
   const smooth: Point[] = [start]; let at = 0;
   while (at < path.length - 1) { let next = path.length - 1; while (next > at + 1 && !segmentWalkable(path[at], path[next])) next--; smooth.push(path[next]); at = next; }
-  if (routes.size >= 256) routes.delete(routes.keys().next().value!); routes.set(key, smooth); return smooth;
+  if (routes.size >= 1024) routes.delete(routes.keys().next().value!); routes.set(key, smooth.map(p => [...p] as Point)); return smooth;
 }
 
 export const PERSONAL_SPACE = WALK_RADIUS * 2 + .35;
@@ -183,11 +166,11 @@ export class WalkDirector {
         s.path = safeWalkPath(s.position, s.goal); s.next = 1; s.replanIn = .8;
       }
       const start = starts.get(a.id)!;
-      const neighbors = records.filter(({ actor }) => actor.id !== a.id && distance(start, starts.get(actor.id)!) < PERSONAL_SPACE + 16 * 2 + 4);
+      const neighbors = records.filter(({ actor }) => actor.id !== a.id && distance(start, starts.get(actor.id)!) < PERSONAL_SPACE + 28 * 2 + 4);
       const target = s.path[s.next];
       const pending = !!target && distance(s.position, s.goal) > .1;
       if (dt > 0 && pending) {
-        const length = distance(start, target), step = Math.min(length, dt * 16);
+        const length = distance(start, target), step = Math.min(length, dt * (["run", "tag"].includes(a.kind) ? 28 : 16));
         const direction: Point = [(target[0] - start[0]) / length, (target[1] - start[1]) / length];
         const straight: Point = [start[0] + direction[0] * step, start[1] + direction[1] * step];
         const carBlocked = cars.some(car => vehicleContains(car, straight, WALK_RADIUS + 3) || vehicleContains(car, [(start[0] + straight[0]) / 2, (start[1] + straight[1]) / 2], WALK_RADIUS + 3));
@@ -232,6 +215,9 @@ export class WalkDirector {
           }
         }
       } else if (dt > 0) s.velocity = [0, 0];
+      if (s.blocked >= 5) logClient("actor_stuck", { actor: a.id, seconds: s.blocked });
+      if (!s.position.every(Number.isFinite)) logClient("position_nan", { actor: a.id });
+      else if (!walkable(s.position)) logClient("footprint_overlap", { actor: a.id });
       ends.set(a.id, s.position);
       const moved = distance(start, s.position) > .001;
       const waiting = s.next < s.path.length && distance(s.position, s.goal) > .1;

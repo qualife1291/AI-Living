@@ -319,6 +319,7 @@ export function UrbanMap({
                               `${npc?.roleId ?? ""} ${world.living?.catalog.roles.find((r) => r.id === npc?.roleId)?.label ?? ""}`,
                           )
                         }
+                        action={a.kind}
                         walking={a.walking}
                         speaking={speech?.speaker === a.id}
                         paused={world.paused}

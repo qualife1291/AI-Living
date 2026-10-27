@@ -1,3 +1,5 @@
+import { socialCategory } from "./action-presentation.ts";
+import { DialogueGrammar } from "./dialogue-grammar.ts";
 import scripts from "../../data/social-scenes.json" with { type: "json" };
 import { distance, places, simulationTime, type Actor, type Point } from "../life.ts";
 import { hashSeed, worldTime } from "../clock.ts";
@@ -67,7 +69,7 @@ export function socialFrame(world: World, actors: Actor[], events: EpisodeEvent[
       if (poses.has(a.id)) continue;
       const b = idle.filter(b => b.id !== a.id && !poses.has(b.id) && b.location === a.location && distance(a.position, b.position) >= scripts.minPairDistance - .1 && distance(a.position, b.position) <= scripts.maxPairDistance).sort((x, y) => distance(a.position, x.position) - distance(a.position, y.position) || x.id.localeCompare(y.id))[0];
       if (!b) continue;
-      const candidates = scripts.scenes.filter(s => s.places.includes(a.location) && (s.kinds.includes(a.kind) || s.kinds.includes(b.kind)));
+      const candidates = scripts.scenes.filter(s => s.places.includes(a.location) && (s.kinds.includes(socialCategory(a.kind)) || s.kinds.includes(socialCategory(b.kind))));
       if (!candidates.length) continue;
       const key = `${a.location}:${a.id}:${b.id}`, hash = hashSeed(key);
       const scene = candidates[hash % candidates.length];
@@ -107,6 +109,7 @@ export class SocialDirector {
   private cooldowns = new Map<string, number>();
   private seen = new Set<string>();
   private sceneNumber = 0;
+  private grammar = new DialogueGrammar();
   private elapsed = 0;
   private previousNow: number | undefined;
   private previousSim: number | undefined;
@@ -114,7 +117,7 @@ export class SocialDirector {
   private born: string | undefined;
 
   reset() {
-    this.encounters.clear(); this.cooldowns.clear(); this.seen.clear();
+    this.encounters.clear(); this.cooldowns.clear(); this.seen.clear(); this.grammar.reset();
     this.sceneNumber = 0; this.elapsed = 0; this.previousNow = undefined;
     this.previousSim = undefined; this.previouslyPaused = false; this.born = undefined;
   }
@@ -188,10 +191,10 @@ export class SocialDirector {
         const b = idle.filter(b => !locked(b.id) && pairAvailable(a, b, scripts.maxPairDistance) && distance(a.position, b.position) >= scripts.minPairDistance - .1)
           .sort((x, y) => distance(a.position, x.position) - distance(a.position, y.position) || x.id.localeCompare(y.id))[0];
         if (!b) continue;
-        const candidates = scripts.scenes.filter(s => s.places.includes(a.location) && (s.kinds.includes(a.kind) || s.kinds.includes(b.kind)));
+        const candidates = scripts.scenes.filter(s => s.places.includes(a.location) && (s.kinds.includes(socialCategory(a.kind)) || s.kinds.includes(socialCategory(b.kind))));
         if (!candidates.length) continue;
         const pairKey = `${a.location}:${a.id}:${b.id}`, serial = this.sceneNumber++, script = candidates[(hashSeed(pairKey) + serial) % candidates.length];
-        start(`ambient:${pairKey}:${serial}`, `${pairKey}:${serial}`, a, b, script.title, "script", script.turns.map(line => ({ speaker: line.speaker === "a" ? a.id : b.id, text: format(line.text, a, b), gesture: line.gesture })));
+        start(`ambient:${pairKey}:${serial}`, `${pairKey}:${serial}`, a, b, script.title, "script", this.grammar.lines(a, b, a.location, serial, script.turns.length));
       }
     }
     for (const encounter of this.encounters.values()) {

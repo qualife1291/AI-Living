@@ -102,3 +102,9 @@
 - Kiểm thử concurrency/API, viewportDPR, pause/offline/contextloss/lifecycle và các giới hạn tại EXPERIENCE_REVIEW.md.
 
 - Productionversion7 đã nativepublish/readback; reuse lịchcloud mỗi giờ để cập nhật khi đóng trang. Lịchchưa có recordedrun đầu tại thời điểm bàn giao, không có cam kếtSLA24/7.
+
+## Local candidate 27/10/2026 — diagnostics và routing
+Thêm log client bounded/batch + owner JSONL, migration0006, audit tick; precompute1089venue routes vàLRU; grammar ambient/history50. Các gói hành vi/dân số/giao thông chưa làm; xem docs/FIXES_PHASE_A.md.
+
+## Local candidate — giai đoạn B
+Thêm9action kinds/scenarios, mapping clip/procedural/props và bike tập; chuỗi5bước hậu thoại, giữ plan còn hoạt động; lịch gặp NPC độc lập qua pulse với nhu cầu/cooldown/CAS. Source-only, chưadeploy. Giới hạn/tag/cycle/pet và nghiệm thu: docs/PHASE_B_ACTIONS.md.
