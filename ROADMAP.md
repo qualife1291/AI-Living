@@ -64,3 +64,7 @@ Nguồn đã hoàn thiện12cảnh/56lượt doagentbiênkịch, crowd24h, spaci
 
 ## Vật cản và chủ động — bản10,26/10/2026
 Đã hoàn tất source/QA small-prop/tree/person avoidance, cinematicAn/aspectportrait, nhu cầu/kinh nghiệm/chống lặp/cohort công bằng và agenda độc lập. Bằng chứng SPACE_CAMERA_AUTONOMY; trạng thái production riêng ở releaseledger. Còn physicalGPU/soak, indoor/elevator/animal collision, đồng bộ playback và backend completion theo occupancy.
+
+
+## Chi tiết đồ họa — bản 11, 27/10/2026
+Đã chốt source và localQA cho rig có khớp, props gắn tay,66cụm đồ vật,6cảnh mới, cây/mây/nước và model mèo/chó/chim phối hợp groundnav. XemVISUAL_DETAIL_REVIEW vàreleaseledger. Còn hardwareGPU/soak, IK nội thất/thang máy/serve-clean/inventory và mô hìnhAI chất lượng hơn.

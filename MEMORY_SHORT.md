@@ -1,8 +1,8 @@
-# Bản11 — WIP nâng đồ họa, chưa phát hành
+# Bản11 — source và QA đã chốt, chưa phát hành
 
-- User yêu cầu chi tiết/nhân vật/sự kiện/chuyển động/nhiều đồ vật. Source đang làm: People6batch thay19partmeshes, khớp khuỷu/gối, mắt/mũi/tai/cổ áo/giày, props cầm đúng tay, gait theo quãng đường và transitiondamping. Thêm66streetProps/7loại cùng footprint;6socialscripts, cloud/fountain động theo simclock; cây đa tán, sửa bậc cửa quá cao.
-- LượtQAđầu:24suite/check/lint/build đạt;72nhânvật stress trong6batch,600frame joints/stop/pause/reorder và833detailparts của66props đạt. Traffic852obstacles/22740states0collision;1089venue routes đạt. Browserdesktop/mobile6lượt+controls/motion26frames9s0collision và4activitydesktop đạt; ảnhlocal đãgửi. Thấy khe gối/táncây rời nên sửa joint nối/mũcheftròn/thâncây dài; thêmgroundElevation đểchân/bóng khớppaving, giữuốn sách cân2tay. Đangbuildlại, cần finalbrowserQA saufix. QA v2 đã đạt nhưng thấy thú nuôi cũ2box chồngchân An. Đã thêm fauna5batch/catdogbird/scales .55/.65, companions direct trongWalkDirector;3policykhôngđổi. Full24suite/check/lint/build saufauna đạt, mixed1800frame+pause+goal test đạt; cần finalbrowser saufauna rồi chốt docs/sourcepush/build/package/native deploy/readback. Chưa được gọi prod11. Nativeconfirmedprod10/1owner0external; Sites source fetched fastforward.
-- Backup pre11gitignored pre-v11-20261027-visual.json SHA256fc7b3cfe1c571a28c32680c0cda62c38433a4bf8636aa6e0e5ec835a4a394206;revision81/13events/memories32,10,11. Khôngmigration/paidAPI/reset.
+- Người dùng yêu cầu nâng đồ họa/nhân vật/sự kiện/chuyển động/nhiều đồ vật. XemVISUAL_DETAIL_REVIEW/MEMORY_LONG.24suite/check/lint/build + finalbrowserdesktop/mobile6lượt/controls/motion29frames9s0collision +4activitydetail đạt. Ảnhlocal đãgửi, khôngproduction. Sourceđãcheckpoint70a1044; sẽcommitảnh/doc cuối trước releasebuild.
+- Cần source sạch→releasebuild/package/pushSites/save_version_and_deploy_private, nativeversion/readback. Sau đó cập nhậtlatest.json/newledger27/10/README/MEMORY_SHORT +Gitpush. Prod vẫn10source7a7871f,1owner0external; khôngnhầm sourcepush vớideploy.
+- Pre11backup pre-v11-20261027-visual.json gitignored SHA256fc7b3cfe1c571a28c32680c0cda62c38433a4bf8636aa6e0e5ec835a4a394206,revision81/13events/memories32,10,11. KhôngpaidAPI/migration/reset. Cần GETpostbackup vàsofile đểxácnhậnhistory/memorycũ giữđủ. Credentialc11 cóthểhếthạn, xinnative mới; khôngđọctokenfiles.
 
 # Việc còn lại sau production version10
 

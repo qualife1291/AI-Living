@@ -142,3 +142,13 @@
 - Native succeeded17:06:40UTC26/10, source7a7871f8c04967521b9fff3e2cbf06ae75b8ed7e; đúngversion10/env1/1owner0external. Version/deployment/archivehash/latestreadback đầy đủ tronglatest.json/ledger26/10. Giữprivate, khôngmigration.
 - PostGETrevision67/12events/28,10,10memories cònđủ; pulse200duplicate/living-v2-2026-10-27-1 đãpersist/revision68/learningupdated0,healthready/stalefalse. Khôngfixture/testevent/DBrepair. Sourcepush kháccommitledger saudeploy.
 - Localpreview/relay đãdừng; prodkhôngphụthuộcenvlocal. Browserảnh đãgửivàghi rõpreview; chưaownerbrowserprod hoặchardwareFPS. MemorySHORT chỉgiữbacklog/blocker.
+
+
+## Chi tiết đồ họa và rig — source bản 11 (27/10)
+- Hướng giữ thành phố hoạt hình vui, màu xanh ngọc/vàng/san hô, model thủ tục nguyên gốc. Không đổi dependency/model AI/migration/schedule hay appearance đã lưu.
+- People6batch thay19partmeshes; vai/khuỷu/cổtay vàhông/gối/cổchân nối liên tục, geometrylimb36triangle, blendpose/gait theo actualdistance, headyaw cungngắn. Thêm mặt/cổáo/cúc/giày/mũchef, book/cup/wateringcan/tool nốitay; LODchi tiết240units vàselected. GroundElevation khớpmặt cỏ/pad/road/path đểchân/bóng khônghover.
+-66streetProps/7loại/833parts ở33venues, modeltrongsharedfootprint; tổng573scenery+279body=852.94cây nhiều tán/thân nối tán,3bậc cửa thấp. Ambience16tia/128hạt nước+18cloudlobes pooled/simclock, pausekhônguploadbuffer.
+- Thêm6script, tổng18scene/88line gắnsourceKịchbản; không tự tạo inventory/transaction. Mèo/chó/chim dựngriêng5batch, 3policies cũ; sẻ3con làflockvisual. Rawanimalprojections dùngcompanions direct trongWalkDirector, vịtrí nhường người/xe/cùng staticnav; modelnằm trongdisc4,8. Chim lên/xuống vàcánh cóeasing, đuôi/chân/cánh đóngbăng khi pause.
+- Full24suite/check/lint/build đạt; visualtest72nearactors/4230instances/600poseframes/1800mixedhumananimalframes/actualfootheight/matrixfinite/footprintmodelbounds/pause/3policies. Traffic22740states với852obstacles0collision;1089routes, coldA*p957,6ms/max26,246ms trongenv (khôngSLA).
+- Browsercuối desktop/mobile6lượt/polling/controls; motion29frames9s/28moving/0stale/0static&animalcollision/maxstep2,409units,136920triangles/35drawcalls/21geometries.4activitydetailread/garden/eat/market đạt, ảnhlocalsynthetic đãgửi. KhônghardwareGPU/FPSclaim/productionbrowser; vẫncầnsoak/indoorIK/serve-clean/inventory/physicstoànthân.
+- Backup pre11gitignored fc7b3cfe1c571a28c32680c0cda62c38433a4bf8636aa6e0e5ec835a4a394206;revision81/13events/memories32,10,11. Phát hành/readbackxemlatest.json/ledger; sourcepush khôngđồngnghĩa deploy.
