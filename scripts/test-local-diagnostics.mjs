@@ -1,5 +1,5 @@
 import { seed } from "../lib/world.ts";
-import { initializeLiving, turnId } from "../lib/living/engine.ts";
+import { initializeLiving, turnId, localDate, planLivingTurn } from "../lib/living/engine.ts";
 import { scheduleResidentSocial } from "../lib/living/social-scheduler.ts";
 /** In-process local worker integration; no hosting, account or production DB access. */
 import assert from 'node:assert/strict';
@@ -129,5 +129,19 @@ try{
  const retry=await settle();assert.equal(retry.status,200);assert.equal((await retry.json()).updated,0);
  assert.equal((await db.prepare('SELECT count(*) AS count FROM agent_experiences WHERE id=?').bind('linucb-api-receipt').first()).count,1);
  console.log('PASS compiled LinUCB context/posterior/archive persisted atomically and replay gives no duplicate credit');
+ // Proposal validation must run on the actual server before dated-ID expansion.
+ await db.prepare('CREATE TABLE IF NOT EXISTS context_cache(id TEXT PRIMARY KEY,data TEXT,expires_at INTEGER)').run();
+ const proposalNow=Date.now(),date=localDate(proposalNow),vn=new Date(proposalNow+7*3600000);
+ for(const key of ['hcm-weather',`vn-holidays-${date.slice(0,4)}`,`hcm-events-${date.slice(0,7)}`])await db.prepare('INSERT OR REPLACE INTO context_cache(id,data,expires_at) VALUES (?,?,?)').bind(key,'null',proposalNow+3600000).run();
+ // Only the synthetic suppression marker from this isolated database is removed.
+ await db.prepare('DELETE FROM living_turns WHERE id=? AND data=?').bind(turnId(proposalNow),'{}').run();
+ const proposalRow=await db.prepare("SELECT revision,data FROM worlds WHERE id='home'").first(),proposalWorld=JSON.parse(proposalRow.data);
+ const context={date,hour:vn.getUTCHours()+vn.getUTCMinutes()/60,weekday:vn.getUTCDay(),timezone:'Asia/Ho_Chi_Minh',fetchedAt:new Date(proposalNow).toISOString(),weather:{status:'unavailable',source:'fixture',observedAt:null,temperature:null,humidity:null,precipitation:null,code:null,windKph:null},calendar:{weekend:[0,6].includes(vn.getUTCDay()),holidays:[],source:'fixture',status:'unavailable',coverage:'fixture'},traffic:{status:'unavailable',label:'fixture'},festivals:{status:'unavailable',label:'fixture',items:[]}};
+ const preview=planLivingTurn(proposalWorld,context,proposalNow),residentId=preview.turn.residentId;
+ const duplicateProposal={title:'Cùng xem góc vườn',summary:'Hai người trao đổi về góc vườn mô phỏng.',newRole:{...proposalWorld.living.catalog.roles[0],label:'Một tên nghề mới có dấu'},dialogue:[{speaker:'an',text:'Mình cùng xem góc vườn nhé.'},{speaker:residentId,text:'Được, mình đứng quan sát ở đây.'}]};
+ const rejected=await mf.dispatchFetch('http://localhost/api/living/tick',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({proposal:duplicateProposal,basis:{revision:proposalRow.revision,turnId:turnId(proposalNow)}})});
+ assert.equal(rejected.status,422);assert.match((await rejected.json()).error,/ID vai trò/);
+ const unchanged=await db.prepare("SELECT revision,data FROM worlds WHERE id='home'").first();assert.equal(unchanged.revision,proposalRow.revision);assert.equal(unchanged.data,proposalRow.data);
+ console.log('PASS compiled role expansion rejects duplicate IDs before suffixing and preserves snapshot/revision');
  console.log(JSON.stringify({suite:'local-diagnostics-http',ownerReadGuard:true,ownerWriteGuard:true,streamByteLimit:true,schema:true,origin:true,ack:true,jsonlReadback:true,rateLimit:true,retention:true,pulsePersistence:true,pulseRetry:true,pulsePause:true,productionAccess:false}));
 }finally{await mf.dispose();}

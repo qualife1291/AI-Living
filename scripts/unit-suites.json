@@ -116,5 +116,8 @@
   ],
   [
     "scripts/test-linucb.mjs"
+  ],
+  [
+    "scripts/test-role-expansion.mjs"
   ]
 ]

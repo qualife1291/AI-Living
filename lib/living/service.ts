@@ -8,6 +8,7 @@ import { database, readWorld } from "../store";
 import { realContext, fetchProviders, type ContextCache } from "./realtime";
 import { initializeLiving, planLivingTurn, turnId, population } from "./engine";
 import { proposalSchema, type LivingTurn, type LivingState } from "./schema";
+import { reviewRoleExpansion } from "./expansion";
 
 export function fetchContext(input: RequestInfo | URL, init?: RequestInit) {
   const relay = env.XOM_CONTEXT_RELAY;
@@ -110,6 +111,10 @@ async function tickLivingInternal(proposal?: unknown, basis?: { revision: number
   if (proposal !== undefined && !parsed.success) return { status: 422, data: { error: "Proposal schema rejected" } };
   if (parsed.success) {
     if (!parsed.data.dialogue.every(d => ["an", result.turn.residentId].includes(d.speaker))) return { status: 422, data: { error: "Proposal speaker rejected" } };
+    if (parsed.data.newRole) {
+      const reviewed = reviewRoleExpansion(parsed.data.newRole, result.state.catalog.roles);
+      if (!reviewed.ok) return { status: 422, data: { error: reviewed.reason } };
+    }
     const allowed = new Set(["an", result.turn.residentId]);
     if (parsed.data.dialogue.every((d) => allowed.has(d.speaker))) {
       const { newRole, ...narrative } = parsed.data;

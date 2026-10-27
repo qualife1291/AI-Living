@@ -13,3 +13,9 @@ Test mới dùng oracle giải hệ ridge6×6 độc lập qua1.200update, sai s
 Còn phải xử lý storage policy tách khỏi snapshot trước mật độ240, hierarchy/P2P có provenance, durable dialoguepool/memory và benchmark cùng implementation/baseline/holdout. Giữ giới hạn physical completion và nativeSites trong MEMORY_SHORT.
 
 Integration cuối hiện39/39suite/check/lint/build đạt; API Worker/D1 cô lập cũng đã ghi thật context/posterior/experiencearchive, retry không cộng lại và home/petOwners/memory cũ còn nguyên. Posterior cho context lỗi không được gắn provenanceLinUCB. Chưa browserfinal cho phaseD; sourcecandidate168861b cũ vẫn là góiđóngbăng riêng, không coi gói đó chứa các thay đổi này.
+
+## Guard mở rộng vai trò
+
+Tiếp tục từ reviewGemini: server cũ thêm hậu tố ngày trước khi ghi role, nhưng chưa chặn ID gốc đã có. reviewRoleExpansion dùng roleSchema thật, kiểm tra ID cả bản gốc/bảnđãsuffixngày, tên trùng, tiếng Việt và lời chào lặp theo Jaccard trigram đúng intersection/union. Guard chạy trước mọi world write, trả422 cho đề xuất không hợp lệ; không tự thêm ba nghề mẫu chỉ vì harness in accepted3/3. Đây là kiểm tra cấu trúc/trùng từ, không gọi là hiểu ngữ nghĩa. Helper/test và server wiring mới đang qua kiểm thử40suite/API.
+
+Guard mở rộng đã qua40/40suite/check/lint/build; compiledWorker/D1 xác nhận đề xuất dùng ID cũ trả422 trước thêm hậu tố ngày và snapshot/revision giữ nguyên. Kiểm thử cached-context chỉ dùng D1côlập, không gọi model/provider hoặc production.

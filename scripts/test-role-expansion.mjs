@@ -1,0 +1,14 @@
+import assert from 'node:assert/strict';
+import {reviewRoleExpansion} from '../lib/living/expansion.ts';
+import {defaultCatalog} from '../lib/living/engine.ts';
+const existing=structuredClone(defaultCatalog.roles),before=JSON.stringify(existing);
+const role={id:'urban-beekeeper',label:'Người chăm đàn ong đô thị',place:'Vườn nhỏ',kind:'garden',activity:'Quan sát đàn ong cạnh luống hoa',greeting:'Mình đứng xa tổ và cùng nhìn ong ghé từng khóm hoa nhé.'};
+assert(reviewRoleExpansion(role,existing).ok);assert.equal(JSON.stringify(existing),before);
+assert(!reviewRoleExpansion({...role,id:'teacher'},existing).ok,'Date suffix must not bypass an existing role ID');
+assert(!reviewRoleExpansion(role,[...existing,{...role,id:'urban-beekeeper-20261028'}]).ok);
+for(const invalid of [{...role,place:'Sao Hỏa'},{...role,kind:'fly'},{...role,activity:''},{...role,id:'../invalid'},{...role,unexpected:true},null])assert(!reviewRoleExpansion(invalid,existing).ok);
+assert(!reviewRoleExpansion({...role,label:existing[0].label.toUpperCase()},existing).ok);
+assert(!reviewRoleExpansion({...role,greeting:existing[0].greeting},existing).ok);
+assert(!reviewRoleExpansion({...role,greeting:'  '+existing[0].greeting.toUpperCase()+'  '},existing).ok);
+assert(!reviewRoleExpansion({id:'new-role',label:'New role',activity:'Some activity',place:'Vườn nhỏ',kind:'garden',greeting:'Hello there.'},existing).ok);
+console.log(JSON.stringify({suite:'role-expansion',actualRuntimeGuard:true,validSchema:true,existingAndDatedIdsBlocked:true,duplicateNameAndGreetingBlocked:true,invalidPlaceKindFieldsBlocked:true,lexicalOnly:true,worldWrites:false}));
