@@ -27,3 +27,11 @@ Guard mở rộng đã qua40/40suite/check/lint/build; compiledWorker/D1 xác nh
 Archive trải nghiệm đổi từ mỗi outcome một câu SQL sang một INSERT SELECT json_each trong cùng nonce/revisionguard; bulk memory cũng một câu SQL. Mục tiêu tránh hàng trăm câu lệnh khi cohort240cùng hoàn tất. Snapshot/history/tabular cũ vẫn giữ. Helper ranking/recipient/provenance/purity/bounds đã test; compiledAPIvàfull41suite còn đang chạy, chưa chốtfeature.
 
 Structuredmemory đã qua41/41suite/check/lint/build và compiledWorker/D1 thật: event/outcome record đúngactor/provenance; GETmemories ownerguard; topK không rò actor khác; retry không duplicate; staleCAS không ghi record; archive JSONbulk giữmodel/context. Không migrationmới hoặc xóa snapshot/history. Legacy structured rows được đọc với kindlegacy-record và recipient riêng, không suy ra bằng chứng vật lý. Còn backfill lịch sử cũ theo quy trình riêng và lưu policy riêng khỏi snapshot; không tự gán fullmigration hoàn tất.
+
+## Pool chống lặp và xưng hô — WIP
+
+Server lưu tối đa64scene fingerprints trong living.dialoguePool qua snapshot CAS, chỉhash/toàncảnh vàhashdòng, khôngthaythếhistoryarchive. Cảnh rules củaAn nếu trùngtoànbộcảnhgầnđây sẽ dùng grammar lấy câu chưa dùng; proposalLLMtrùngcảnhcũ bị422, chỉ finalLLM được ghi pool thaydraft rules. Mỗi LivingTurn mới có addressing hai chiều từ tuổi/giới mô phỏng; grammar vàruletemplates dùng cháu/bác, cháu/cô/chú hoặc mình/bạn phù hợp thông tin. Prompt nhận addressing; fewshotdaemon sửa từ2lượt lên4lượt để khớp guard4–6.
+
+Ambientclient giữ thêm poolhash tronglocalStorage theo world.born đểF5 khônglặp nguyênnhữngcâuvừagenerated, khônglưu rawtext/name/credential. Storage bịchặn/hếtquota cófallbacksession; loại tham chiếuSQLitehistory khôngxóa. Pool chỉghi “đãsinh”, không là bằngchứngngườiđãnghe và khôngtựgrantreward/kỹnăng. Cảnh ambient chưa đồng bộ readingtime/occupancy giữaviewers; khôngclaim clientstorage là backendauthoritativepool cho mọi ambientscene.
+
+Test mới kiểm reciprocalpronouns, JSONpersist/reloadantiRepeat, scopeworldriêng, hash-only vàstoragefailure; sinh500scene giữbudget64record. Suite42/check/lint/build/API vàbrowserreload cuối đang chạy; không nhận WIP là phát hành.

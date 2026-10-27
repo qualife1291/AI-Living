@@ -59,3 +59,21 @@ export function addressFor(speakerAge: number, listenerAge: number, gender: Iden
   if (speakerAge - listenerAge >= 15) return "em";
   return "bạn";
 }
+
+export type ConversationProfile = {id:string;name:string;age?:number;gender?:Identity['gender']};
+export function pronounsFor(speaker:ConversationProfile,listener:ConversationProfile) {
+  if(!Number.isFinite(speaker.age)||!Number.isFinite(listener.age))return {self:'mình',other:'bạn'};
+  const age=speaker.age!,peerAge=listener.age!,calledByPeer=addressFor(peerAge,age,speaker.gender??'unspecified');
+  if(age-peerAge>=15&&['bác','cô','chú'].includes(calledByPeer))return {self:calledByPeer,other:'cháu'};
+  const other=addressFor(age,peerAge,listener.gender??'unspecified');
+  if(['bác','cô','chú'].includes(other))return {self:'cháu',other};
+  return {self:'mình',other:'bạn'};
+}
+/** Adapt only our rule templates. Never rewrite stored history or LLM output. */
+export function addressTemplate(text:string,speaker:ConversationProfile,listener:ConversationProfile) {
+  const form=pronounsFor(speaker,listener);
+  return text.replace(/\b(mình|bạn)\b/giu,word=>{
+    const replacement=word.toLocaleLowerCase('vi-VN')==='mình'?form.self:form.other;
+    return word[0]===word[0].toUpperCase()?replacement[0].toUpperCase()+replacement.slice(1):replacement;
+  });
+}

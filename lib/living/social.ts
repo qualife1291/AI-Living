@@ -1,5 +1,7 @@
 import { socialCategory } from "./action-presentation.ts";
 import { DialogueGrammar } from "./dialogue-grammar.ts";
+import {lifeStory} from "../city/lifestory.ts";
+import {emptyDialoguePool,mergeDialoguePools,readDialoguePool,rememberDialogue,writeDialoguePool,type DialoguePool} from "./dialogue-pool.ts";
 import scripts from "../../data/social-scenes.json" with { type: "json" };
 import { distance, places, simulationTime, type Actor, type Point } from "../life.ts";
 import { hashSeed, worldTime } from "../clock.ts";
@@ -110,6 +112,9 @@ export class SocialDirector {
   private seen = new Set<string>();
   private sceneNumber = 0;
   private grammar = new DialogueGrammar();
+  private localPool=emptyDialoguePool();
+  private poolScope:string|undefined;
+  private serverPool:DialoguePool|undefined;
   private elapsed = 0;
   private previousNow: number | undefined;
   private previousSim: number | undefined;
@@ -128,6 +133,7 @@ export class SocialDirector {
     this.encounters.clear(); this.cooldowns.clear(); this.seen.clear(); this.grammar.reset();
     this.sceneNumber = 0; this.elapsed = 0; this.previousNow = undefined;
     this.previousSim = undefined; this.previouslyPaused = false; this.born = undefined;
+    this.poolScope=undefined;this.serverPool=undefined;this.localPool=emptyDialoguePool();
   }
 
   frame(world: World, actors: Actor[], events: EpisodeEvent[], now: number, _legacyLivingSpeech: Speech | null = null, alreadySpaced = false): Frame {
@@ -135,6 +141,8 @@ export class SocialDirector {
     const sim = simulationTime(world, now);
     if (this.born !== undefined && (this.born !== world.born || (this.previousSim !== undefined && sim < this.previousSim - 1000))) this.reset();
     this.born = world.born;
+    if(this.poolScope!==world.born){this.localPool=readDialoguePool(world.born);this.poolScope=world.born;this.grammar.seed(this.localPool.entries.flatMap(e=>e.lineHashes));}
+    if(this.serverPool!==world.living?.dialoguePool){this.serverPool=world.living?.dialoguePool;this.localPool=mergeDialoguePools(this.localPool,this.serverPool);this.grammar.seed(this.localPool.entries.flatMap(e=>e.lineHashes));writeDialoguePool(world.born,this.localPool);}
     if (this.previousNow !== undefined && !this.previouslyPaused) {
       const until = world.paused ? Math.min(now, world.clock?.pausedAt ?? this.previousNow) : now;
       this.elapsed += Math.max(0, until - this.previousNow) / 1000;
@@ -210,7 +218,10 @@ export class SocialDirector {
         const candidates = scripts.scenes.filter(s => s.places.includes(a.location) && (s.kinds.includes(socialCategory(a.kind)) || s.kinds.includes(socialCategory(b.kind))));
         if (!candidates.length) continue;
         const pairKey = `${a.location}:${a.id}:${b.id}`, serial = this.sceneNumber++, script = candidates[(hashSeed(pairKey) + serial) % candidates.length];
-        start(`ambient:${pairKey}:${serial}`, `${pairKey}:${serial}`, a, b, script.title, "script", this.grammar.lines(a, b, a.location, serial, script.turns.length));
+        const profile=(actor:Actor)=>{const story=lifeStory(world,actor.id,now);return {id:actor.id,name:actor.name,age:story.age,gender:story.gender};};
+        const lines=this.grammar.lines(profile(a),profile(b),a.location,serial,script.turns.length);
+        this.localPool=rememberDialogue(this.localPool,a.id,b.id,lines,'client-script');writeDialoguePool(world.born,this.localPool);
+        start(`ambient:${pairKey}:${serial}`, `${pairKey}:${serial}`, a, b, script.title, "script", lines);
       }
     }
     for (const encounter of this.encounters.values()) {

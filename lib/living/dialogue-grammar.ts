@@ -1,8 +1,12 @@
+import {addressTemplate,type ConversationProfile} from "./identity.ts";
+import {lineHash} from "./dialogue-pool.ts";
 /** Scripted slot grammar; never fabricate observations or remembered events. */
 export class DialogueGrammar {
   private history = new Map<string, string[]>();
-  reset() { this.history.clear(); }
-  lines(a: { id: string; name: string }, b: { id: string; name: string }, location: string, serial: number, count = 4) {
+  private prior=new Set<string>();
+  seed(hashes:Iterable<string>) { this.prior=new Set([...hashes].slice(-768)); }
+  reset() { this.history.clear(); this.prior.clear(); }
+  lines(a: ConversationProfile, b: ConversationProfile, location: string, serial: number, count = 4) {
     const pair = [a.id, b.id].sort().join(":");
     const previous = this.history.get(pair) ?? [];
     const topics = /Chợ|Siêu thị|Nhà hàng|Bếp|cà phê/.test(location)
@@ -13,17 +17,20 @@ export class DialogueGrammar {
     const leads = ["Bạn có muốn", "Mình đang tính", "Hay là mình cùng", "Lát nữa ta thử", "Nếu bạn rảnh, mình cùng", "Hôm nay mình muốn", "Bạn thấy sao nếu mình cùng", "Mình có thể cùng bạn"];
     const tails = ["một lúc nhé", "ở đây nhé", "rồi nghỉ một chút nhé", "chậm rãi thôi nhé", "khi sẵn sàng nhé", "trước khi về nhé", "nếu bạn thấy tiện nhé", "cùng nhau nhé"];
     const used = [...previous];
-    const topic = topics[((serial % topics.length) + topics.length) % topics.length];
+    const topicIndex=((serial % topics.length)+topics.length)%topics.length;
     const result: { speaker: string; text: string; gesture: string }[] = [];
     for (let line = 0; line < count; line++) {
       let text = "";
       for (let attempt = 0; attempt < 512; attempt++) {
         const n = (serial * 29 + line * 113 + attempt) % 512;
+        const topic=topics[(topicIndex+Math.floor(attempt/64))%topics.length];
         text = line % 2
           ? `${["Được, mình cùng", "Ừ, ta thử", "Mình đồng ý", "Nghe được đấy, mình cùng", "Mình sẵn sàng", "Vậy mình cùng", "Mình cũng muốn", "Cảm ơn bạn rủ, mình cùng"][n % 8]} ${topic} ${tails[Math.floor(n / 8) % 8]}.`
           : `${leads[n % 8]} ${topic} ${tails[Math.floor(n / 8) % 8]}?`;
-        if (!used.includes(text)) break;
+        text=addressTemplate(text,line%2?b:a,line%2?a:b);
+        if (!used.includes(text)&&!this.prior.has(lineHash(text))) break;
       }
+      this.prior.add(lineHash(text));if(this.prior.size>768)this.prior.delete(this.prior.values().next().value!);
       used.push(text); result.push({ speaker: line % 2 ? b.id : a.id, text, gesture: line % 2 ? "open" : "explain" });
     }
     this.history.delete(pair); this.history.set(pair, used.slice(-50));

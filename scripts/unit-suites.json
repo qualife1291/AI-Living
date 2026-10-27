@@ -122,5 +122,8 @@
   ],
   [
     "scripts/test-memory-records.mjs"
+  ],
+  [
+    "scripts/test-dialogue-pool.mjs"
   ]
 ]

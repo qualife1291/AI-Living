@@ -10,6 +10,7 @@ import { initializeLiving, planLivingTurn, turnId, population } from "./engine";
 import { proposalSchema, type LivingTurn, type LivingState } from "./schema";
 import { reviewRoleExpansion } from "./expansion";
 import { memoryInsert, outcomeMemory } from "../memory-records";
+import {hasDialogue,rememberDialogue} from "./dialogue-pool";
 
 export function fetchContext(input: RequestInfo | URL, init?: RequestInit) {
   const relay = env.XOM_CONTEXT_RELAY;
@@ -112,9 +113,11 @@ async function tickLivingInternal(proposal?: unknown, basis?: { revision: number
       const reviewed = reviewRoleExpansion(parsed.data.newRole, result.state.catalog.roles);
       if (!reviewed.ok) return { status: 422, data: { error: reviewed.reason } };
     }
+    if(hasDialogue(current.world.living?.dialoguePool,'an',result.turn.residentId,parsed.data.dialogue))return {status:422,data:{error:'Hội thoại trùng toàn bộ cảnh gần đây'}};
     const allowed = new Set(["an", result.turn.residentId]);
     if (parsed.data.dialogue.every((d) => allowed.has(d.speaker))) {
       const { newRole, ...narrative } = parsed.data;
+      result.state.dialoguePool=rememberDialogue(current.world.living?.dialoguePool,'an',result.turn.residentId,narrative.dialogue,'local-llm');
       result.turn = { ...result.turn, ...narrative, generator: "local-llm", scriptId: undefined };
       result.world.lastAI = result.turn.createdAt;
       if (

@@ -56,6 +56,7 @@ export type LivingState = {
   learning?: import("./learning").LearningPopulation;
   experiences?: import("./learning").Experience[];
   learningCommit?: string;
+  dialoguePool?: import("./dialogue-pool").DialoguePool;
   socialSchedule?: {
     checkedSimMs: number;
     cooldowns: Record<string, number>;
@@ -132,6 +133,7 @@ export type LivingTurn = {
   activity: string;
   kind: (typeof STEP_KINDS)[number];
   residentId: string;
+  addressing?: Record<string,{peerId:string;self:string;other:string}>;
   dialogue: { speaker: string; text: string }[];
   generator: "rules" | "local-llm";
   scriptId?: string;

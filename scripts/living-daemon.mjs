@@ -78,6 +78,8 @@ export async function cycle() {
                       speaker: "neighbor-1",
                       text: "Được chứ, mình đang xem tới đoạn này.",
                     },
+                    { speaker: "an", text: "Mình chọn một truyện ngắn trước nhé?" },
+                    { speaker: "neighbor-1", text: "Ừ, đọc xong mình cùng kể lại đoạn thích nhất nhé." },
                   ],
                 }),
               },
@@ -85,7 +87,7 @@ export async function cycle() {
                 role: "user",
                 content: JSON.stringify({
                   language:
-                    "BẮT BUỘC tiếng Việt có dấu, tối thiểu hai câu hỏi đáp",
+                    "BẮT BUỘC tiếng Việt có dấu, 4–6 lượt luân phiên, dùng scene.addressing khi có",
                   scene: {
                     ...result.turn,
                     context: {

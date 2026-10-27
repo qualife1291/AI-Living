@@ -1,6 +1,10 @@
 import { meetingSteps, microActivity, actionSteps } from "./activities.ts";
 import { assignIdentities, nextResidentName, defaultIdentity } from "./identity.ts";
 import { decisionContext } from "./linucb.ts";
+import {DialogueGrammar} from "./dialogue-grammar.ts";
+import {addressTemplate,pronounsFor} from "./identity.ts";
+import {hasDialogue,rememberDialogue} from "./dialogue-pool.ts";
+import {lifeStory} from "../city/lifestory.ts";
 import { assignHomes } from "./households.ts";
 import { DEFAULT_PET_OWNERS } from "./pets.ts";
 import { updateAnimalLearning } from "./animal-learning.ts";
@@ -207,7 +211,7 @@ export function planLivingTurn(
   }
   const matchingScripts = socialScripts.scenes.filter(s => s.places.includes(location) && s.kinds.includes(kind));
   const script = matchingScripts[hashSeed(turnId(now)) % matchingScripts.length];
-  const dialogue = !encounter
+  let dialogue = !encounter
     ? []
     : script ? script.turns.map(line => ({ speaker: line.speaker === "a" ? "an" : resident.id, text: line.text.replaceAll("{a}", "An").replaceAll("{b}", resident.name) })) : [
         {
@@ -221,6 +225,14 @@ export function planLivingTurn(
         },
         { speaker: resident.id, text: "Ừ, không cần vội. Xong rồi mình nghỉ một chút." },
       ];
+  const profileWorld={...world,living:state},anProfile={id:'an',name:'An',...lifeStory(profileWorld,'an',now)},peerProfile={id:resident.id,name:resident.name,...lifeStory(profileWorld,resident.id,now)};
+  dialogue=dialogue.map(line=>({...line,text:addressTemplate(line.text,line.speaker==='an'?anProfile:peerProfile,line.speaker==='an'?peerProfile:anProfile)}));
+  let scriptId:string|undefined=script?.id;
+  if(dialogue.length&&hasDialogue(state.dialoguePool,'an',resident.id,dialogue)) {
+    const grammar=new DialogueGrammar();grammar.seed(state.dialoguePool!.entries.flatMap(e=>e.lineHashes));
+    dialogue=grammar.lines(anProfile,peerProfile,location,hashSeed(turnId(now)),dialogue.length).map(({speaker,text})=>({speaker,text}));scriptId=undefined;
+  }
+  state.dialoguePool=rememberDialogue(state.dialoguePool,'an',resident.id,dialogue,'rules');
   const turn: LivingTurn = {
     id: turnId(now),
     createdAt: new Date(now).toISOString(),
@@ -235,9 +247,10 @@ export function planLivingTurn(
     activity,
     kind,
     residentId: resident.id,
+    addressing: encounter ? {an:{peerId:resident.id,...pronounsFor(anProfile,peerProfile)},[resident.id]:{peerId:"an",...pronounsFor(peerProfile,anProfile)}} : undefined,
     dialogue,
     generator: "rules",
-    scriptId: encounter ? script?.id : undefined,
+    scriptId: encounter ? scriptId : undefined,
     scenarioId: anBusy ? learning.an.pending?.scenarioId : encounter ? "friendship" : !festival
       ? sleeping
         ? "rest-home"
