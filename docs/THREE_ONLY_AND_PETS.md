@@ -29,6 +29,6 @@ Pause đóng băng bước di chuyển. Đổi người chăm sóc, người ng�
 
 ## Phần tiếp theo
 
-Phase B còn xe đạp di chuyển với collision toàn thân; hỗ trợ dây/IK và occupancy chung cần phạm vi riêng. Phase C còn density/household/traffic graph; phase D còn LinUCB/skill gates; các phần dialogue history/model A-B cũng chưa hoàn tất. Phải kiểm thử từng phần rồi push checkpoint lên work, không đổi nhãn backlog thành hoàn thành. Main và production chưa thay đổi trong đợt này.
+Xe đạp di chuyển/vùng va chạm toàn xe đã tiếp nối ở [CYCLING.md](CYCLING.md); hỗ trợ dây/IK và occupancy chung cần phạm vi riêng. Phase C còn density/household/traffic graph; phase D còn LinUCB/skill gates; các phần dialogue history/model A-B cũng chưa hoàn tất. Phải kiểm thử từng phần rồi push checkpoint lên work, không đổi nhãn backlog thành hoàn thành. Main và production chưa thay đổi trong đợt này.
 
 QA bản camera cuối ghi nhận desktop87frame/mobile160frame trong12giây, cả hai đều đạt điều kiện thú nằm trong khung >80%frame. Camera bám cặp người/thú và HUD ghi tên thú đang cùng đi. Có thêm1200frame kiểm thử hai thú cùng một người, đổi thứ tự input, khoảng cách và đi hết đường. Kiểm tra hồi quy hội thoại vẫn đủ6lượt trên desktop/mobile sau đợt dọn CSS; xem metrics/ảnh social. Các số frame là mẫu SwiftShader trong môi trường này, không phải FPS thiết bị thật.

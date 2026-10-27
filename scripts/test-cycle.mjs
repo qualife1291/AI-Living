@@ -111,3 +111,20 @@ for(let i=0;i<800;i++){
 }
 assert(arrivedOnBike);assert(!trip.bicycle,'After actual arrival a non-cycle task dismounts');
 console.log('PASS bicycle transport commutes retain the bike until ground arrival, then dismount for the task');
+const {createPeople}=await import('../components/city/three/people.ts');
+const crowdScene=new THREE.Scene(),people=createPeople(crowdScene,1),camera=new THREE.PerspectiveCamera(38,1,.1,1000);camera.position.set(-400,30,-650);
+let npcMaximumRadius=0;
+for(let i=0;i<16;i++){
+ const npc={...bike,id:'neighbor-1',name:'NPC',position:[-400,-700],transport:'bicycle',bicycle:{radius:BICYCLE_RADIUS,distance:i,yaw:i*.3}};
+ people.draw(world,[npc],new Map(),i*.1,.1,camera,npc.id);crowdScene.updateMatrixWorld(true);
+ crowdScene.traverse(o=>{if(!o.isMesh)return;let visible=true;for(let p=o;p;p=p.parent)if(!p.visible)visible=false;if(!visible)return;
+  for(let instance=0;instance<(o.isInstancedMesh?o.count:1);instance++){
+   const transform=new THREE.Matrix4();if(o.isInstancedMesh)o.getMatrixAt(instance,transform);
+   for(let v=0;v<o.geometry.attributes.position.count;v++){
+    const p=new THREE.Vector3().fromBufferAttribute(o.geometry.attributes.position,v).applyMatrix4(transform);o.localToWorld(p);
+    const radius=Math.hypot(p.x+400,p.z+700);npcMaximumRadius=Math.max(npcMaximumRadius,radius);assert(radius<=BICYCLE_RADIUS+.001,'Instanced rider and bicycle must fit the same clearance');
+   }
+  }
+ });
+}
+console.log(JSON.stringify({suite:'cycle-instanced-rider',poses:16,npcMaximumRadius,bodyRadius:BICYCLE_RADIUS}));

@@ -2,13 +2,13 @@
 
 Bản source local tiếp nối phaseA; chưa deploy, chưa thay GLB và không thêm migration sau0006. Đây là phần cốt lõi gói3–4, chưa hoàn tất toàn bộ nghiệm thu của gói3–4 hoặc các giai đoạnC/D.
 
-> Tiếp nối: [đuổi bắt theo cặp trong 3D](PAIRED_TAG.md). Các giới hạn 2D/nhiều người xem vẫn còn.
+> Tiếp nối: [đuổi bắt theo cặp](PAIRED_TAG.md), [thú đi theo người chăm sóc](THREE_ONLY_AND_PETS.md) và [xe đạp di chuyển](CYCLING.md). Chỉ dùng3D; occupancy nhiều viewer vẫn chưa đồng bộ.
 
 ## Hành vi mới
 
 - Schema nhận9loại bước mới: `drink`, `run`, `jump`, `tag`, `cycle`, `exercise`, `walk-pet`, `shop`, `study`. Giá trị cũ giữ nguyên, không viết lại events/migration cũ. `Step.kind` dùng enum chung; renderer robot2D ánh xạ về motion đang có.
-- Có9scenario tương ứng để bộ chọn hành động thực sự có thể chọn, không chỉ mở enum. Run/cycle/walk-pet có2đích hoạt động ngắn thay vì một bước đứng nguyên tại một nơi. Với cycle, nhân vật vẫn đi bộ giữa đích và tập đạp trên xe tại chỗ khi dừng.
-- GLB chỉ yêu cầu những clip đã kiểm tra có thật: walk/sprint/drive/holding/emote/idle. Run/tag ánh xạ sprint; nhảy dùng idle cộng offsetY; thể dục/đạpxe/uốngnước bổ sung node rotations. Study giữ sách, drink cầm cốc, shop cầm túi. Bike tập được dựng bằng primitive, không mua/tải asset.
+- Có9scenario tương ứng để bộ chọn hành động thực sự có thể chọn, không chỉ mở enum. Run/cycle/walk-pet có2đích hoạt động ngắn thay vì một bước đứng nguyên tại một nơi. Với cycle hoặc transport=bicycle, nhân vật di chuyển bằng xe với vùng va chạm bao toàn xe/người; xem CYCLING.md.
+- GLB chỉ yêu cầu những clip đã kiểm tra có thật: walk/sprint/drive/holding/emote/idle. Run/tag ánh xạ sprint; nhảy dùng idle cộng offsetY; thể dục/đạpxe/uốngnước bổ sung node rotations. Study giữ sách, drink cầm cốc, shop cầm túi. Xe đạp được dựng bằng primitive, không mua/tải asset.
 - Nhân vật instanced có chuyển động chạy/thể dục tại chỗ, root nhảy, đạo cụ sách/cốc/túi và bike tập. 2Dfallback có action classes, pause/reduced-motion. Đây là chuyển động thủ tục, không phải9clip motion-capture mới.
 - WalkDirector cho run/tag tốc độ tối đa28worldunit/giây, vẫn dùng sweep footprint và personal space; tăng bán kính tìm hàng xóm phù hợp. Các loại đi bộ giữ16worldunit/giây.
 
@@ -39,8 +39,8 @@ APIlocal chạy worker đãbuild với D1 riêng: ownerGET/POST, schema, origin,
 Chưa có Chromium trong runtime để browserQA; chưa đo điện thoại,150người/80xe hay phiên30phút thực. Các điểm chưa xong:
 
 - Tag đã có ghép cặp/đổi vai theo ground trong phiên 3D; xem PAIRED_TAG.md. Chưa đồng bộ qua nhiều viewer hoặc triển khai navigation tag tương đương trong 2D.
-- Cycle có xe và chân đạp tại chỗ; chưa có điều khiển xe đạp trên đường/va chạm theo toàn thân xe.
-- Walk-pet có bước đi bộ, chưa gắn quyền sở hữu và đồng bộ thú đi theo chủ.
+- Cycle và transport=bicycle đã có di chuyển, vùng bao toàn xe và nhường đường; chưa lực học lốp/nghiêng/té ngã hoặc IK.
+- Walk-pet đã có phân công người chăm sóc lưu snapshot và follow ground trong phiên3D; chưa dây/IK hoặc occupancy đa viewer.
 - Chưa đảm bảo mọi cư dân đều tránh kẹt vật lý trong20s; không đổi label thành bằng chứng đã hết kẹt.
 - Socialhistory50 của phaseA vẫn là client-session-local. Chưa durable dialoguepool/critic/circuitbreaker/A-BQwen3/Gemma3.
 - Giai đoạnC(density/household/trafficgraph/snapshot) vàD(LinUCB/skillgates) chưa phát hành. Code thử trước đó được tách ra, không kích hoạt trong runtime này.

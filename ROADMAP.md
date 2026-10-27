@@ -74,3 +74,6 @@ Nguồn đã hoàn thiện12cảnh/56lượt doagentbiênkịch, crowd24h, spaci
 
 ## Chỉ 3D và pet-walk — source work, 27/10/2026
 Đã gỡ renderer/assets SVG2D và dashboard cũ, giữ tọa độ/graph cần cho3D. Wardrobe dùng WebGL, lỗi context có retry. PhaseB thêm petOwners lưu bằng CAS, UI phân công và companionfollow qua collision shared; ngắt pending tự động của thú không nhận reward giả. Xem docs/THREE_ONLY_AND_PETS.md. Chưa cyclefullbody, density/household/trafficgraph, LinUCB/skillgates hoặc modelA-B; chưa deploy.
+
+## Phase B tiếp nối — xe đạp di chuyển (source work)
+Cycle/transport=bicycle đã có ground route theo clearance9,2, toàn xe/người trong vùng bao, tăng/giảm tốc, nhường người/xe, bánh/pedal theo quãng đường, pause/dismount và camera full-bike. Xem docs/CYCLING.md. Chưa lực học toàn xe/IK, completion authoritative; tiếp theo phaseC density/household/trafficgraph và phaseD LinUCB/skillgates, history/modelA-B.

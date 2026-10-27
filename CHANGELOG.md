@@ -122,3 +122,8 @@ Thêm9action kinds/scenarios, mapping clip/procedural/props và bike tập; chu�
 - Gỡ renderer SVG/2D, dashboard cũ, mẫu nhân vật/công trình/xe và tài nguyên chỉ phục vụ2D; dashboard chuyển về trang chủ. Preview tủ đồ dùng3D; lỗi WebGL có nút thử lại.
 - Phân công người chăm sóc Cún/Mướp trong bảng Cư dân, lưu bằng revisionCAS. Khi đi dạo, thú đi từ vị trí thật qua đường an toàn, người chờ nếu thú còn xa. Pause/đổi phân công/ngừng hoạt động giữ chuyển động liên tục.
 - Pending tự tìm ăn/chơi bị đi dạo ngắt sẽ không nhận reward giả. Không reset DB, sửa migration, thêm dịch vụ trả phí hoặc deploy.
+
+## 27/10/2026 — xe đạp di chuyển
+- Cycle và chuyến transport=bicycle dùng xe đang di chuyển, có tăng/giảm tốc, vùng tránh vật cản bao toàn xe/người và ô tô nhường theo kích thước thực.
+- Bánh/pedal theo quãng đường; dừng/pause đóng băng, tới đích ground mới xuống xe. Người tìm chỗ thoáng để lên xe mà không teleport.
+- Sửa cộng dồn góc chân ở clip thiếu keyframe; camera mobile mở đủ rộng cho cả xe/người. Chưa lực học toàn xe hoặc đồng bộ occupancy nhiều viewer; chưa deploy.
