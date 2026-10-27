@@ -8,28 +8,6 @@ export type Speech = {
   key: string;
 };
 
-export function wrapSpeech(text: string, max = 36): string[] {
-  const lines: string[] = [];
-  let current = "";
-  const words = text
-    .trim()
-    .split(/\s+/)
-    .flatMap((w) =>
-      w.length > max ? (w.match(new RegExp(`.{1,${max}}`, "gu")) ?? [w]) : [w],
-    );
-
-  for (const word of words) {
-    if (current.length + word.length + 1 > max && current) {
-      lines.push(current);
-      current = word;
-    } else {
-      current += (current ? " " : "") + word;
-    }
-  }
-  if (current) lines.push(current);
-  return lines;
-}
-
 export function speechAt(
   world: World,
   actors: Actor[],
@@ -87,18 +65,3 @@ export function speechAt(
   };
 }
 
-export function bubbleOffset(
-  position: [number, number],
-  view: string,
-  text: string,
-): [number, number] | null {
-  const [x, y, w, h] = view.split(" ").map(Number);
-  const [px, py] = position;
-  if (px < x || px > x + w || py < y || py > y + h) return null;
-
-  const height = wrapSpeech(text).length * 15 + 31;
-  const left = Math.max(x + 8, Math.min(x + w - 256, px - 124));
-  const proposed = py - 109 - height;
-  const top = Math.max(y + 8, Math.min(y + h - height - 8, proposed));
-  return [left - (px - 124), top - proposed];
-}

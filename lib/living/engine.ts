@@ -1,4 +1,6 @@
 import { meetingSteps, microActivity, actionSteps } from "./activities.ts";
+import { assignHomes } from "./households.ts";
+import { DEFAULT_PET_OWNERS } from "./pets.ts";
 import { updateAnimalLearning } from "./animal-learning.ts";
 import {
   prepareLearning,
@@ -67,7 +69,7 @@ export function population(state: LivingState, date: string): Resident[] {
       add(role);
   while (residents.length < count)
     add(state.catalog.roles[residents.length % state.catalog.roles.length]);
-  return residents;
+  return assignHomes(residents);
 }
 export function initializeLiving(
   now: number,
@@ -84,6 +86,7 @@ export function initializeLiving(
     hunger: 25,
     social: 60,
     skills: {},
+    petOwners: { ...DEFAULT_PET_OWNERS },
     daysExperienced: 1,
   };
   return { ...state, residents: population(state, state.startedOn) };
@@ -356,7 +359,7 @@ export function planLivingTurn(
       completed: false,
     };
   }
-  updateAnimalLearning(world, state, context, now);
+  updateAnimalLearning({ ...next, living: state }, state, context, now);
   next.livingTurn = turn;
   next.living = state;
   return { state, turn, world: next, newExperiences };

@@ -2,7 +2,7 @@
 import { useEffect, useRef, useState } from "react";
 import type { World } from "@/lib/world";
 import { actorsAt } from "@/lib/life";
-import { useLifeClock } from "@/components/world/useLife";
+import { useLifeClock } from "@/components/hooks/useLifeClock";
 import { crowdAt } from "@/lib/living/engine";
 
 export function InteriorView({ world, venue, clockOffset = 0 }: { world: World; venue: string; clockOffset?: number }) {

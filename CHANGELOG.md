@@ -116,3 +116,27 @@ Thêm log client bounded/batch + owner JSONL, migration0006, audit tick; precomp
 
 ## Local candidate — giai đoạn B
 Thêm9action kinds/scenarios, mapping clip/procedural/props và bike tập; chuỗi5bước hậu thoại, giữ plan còn hoạt động; lịch gặp NPC độc lập qua pulse với nhu cầu/cooldown/CAS. Source-only, chưadeploy. Giới hạn/tag/cycle/pet và nghiệm thu: docs/PHASE_B_ACTIONS.md.
+
+## 27/10/2026 — sửa hàng đợi telemetry trên work
+- Chia batch diagnostics theo kích thước JSON UTF-8 tối đa16KiB, thay vì chỉ đếm32log. Tránh HTTP413 lặp vô hạn với log tiếng Việt/ký tự đa byte.
+- Chuẩn hóa field theo giới hạn endpoint, giữ log chưaACK và chỉ xóa phần batch đã đượcACK. Không đổi migration/production.
+
+## 27/10/2026 — đuổi bắt theo cặp trong 3D
+- Hai nhân vật cùng chọn tag ở Công viên/Sân thể thao có thể đuổi nhau và đổi vai khi đến gần, giữ tránh vật cản/khoảng cách cá nhân; hỗ trợ pause, polling và hủy khi đổi kế hoạch.
+- Người chưa có cặp chờ thay vì chạy tại chỗ. Giữ hoạt động NPC đã chọn, chỉ đổi micro-activity khi idle social/play.
+- Vai thuộc phiên 3D, chưa đồng bộ nhiều viewer/2D hoặc ghi vào ký ức/phần thưởng. Chưa deploy.
+
+## 27/10/2026 — thành phố chỉ dùng 3D, thú đi theo người chăm sóc
+- Gỡ renderer SVG/2D, dashboard cũ, mẫu nhân vật/công trình/xe và tài nguyên chỉ phục vụ2D; dashboard chuyển về trang chủ. Preview tủ đồ dùng3D; lỗi WebGL có nút thử lại.
+- Phân công người chăm sóc Cún/Mướp trong bảng Cư dân, lưu bằng revisionCAS. Khi đi dạo, thú đi từ vị trí thật qua đường an toàn, người chờ nếu thú còn xa. Pause/đổi phân công/ngừng hoạt động giữ chuyển động liên tục.
+- Pending tự tìm ăn/chơi bị đi dạo ngắt sẽ không nhận reward giả. Không reset DB, sửa migration, thêm dịch vụ trả phí hoặc deploy.
+
+## 27/10/2026 — xe đạp di chuyển
+- Cycle và chuyến transport=bicycle dùng xe đang di chuyển, có tăng/giảm tốc, vùng tránh vật cản bao toàn xe/người và ô tô nhường theo kích thước thực.
+- Bánh/pedal theo quãng đường; dừng/pause đóng băng, tới đích ground mới xuống xe. Người tìm chỗ thoáng để lên xe mà không teleport.
+- Sửa cộng dồn góc chân ở clip thiếu keyframe; camera mobile mở đủ rộng cho cả xe/người. Chưa lực học toàn xe hoặc đồng bộ occupancy nhiều viewer; chưa deploy.
+
+## WIP 27/10/2026 — tên/thoại và nhóm ở chung
+- Nhãn tên compact theo pixel, card hội thoại responsive, giữ badge nguồn; đang review trước phát hành.
+- Household metadata cho NPC, hiển thị nhóm/thành viên, giữ lịch sử; chưa thay routing/density.
+- Tạm dừng theo yêu cầu. Việc tiếp nối và kiểm thử còn thiếu ở docs/WIP_OVERLAYS_HOUSEHOLDS.md.

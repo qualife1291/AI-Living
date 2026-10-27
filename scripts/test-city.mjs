@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
-import { venues, cameraView } from "../lib/city/world.ts";
+import { venues } from "../lib/city/world.ts";
 import { places, route } from "../lib/life.ts";
 import { scenarios } from "../lib/living/learning.ts";
 const osm = JSON.parse(
@@ -35,14 +35,8 @@ assert.ok(
   osm.features.some((f) => f.kind === "road") &&
     osm.features.some((f) => f.kind === "building"),
 );
-for (const aspect of [0.46, 1.6, 2.2])
-  for (const zoom of [0.5, 1, 4]) {
-    const values = cameraView([1200, 750], zoom, aspect).split(" ").map(Number);
-    assert.ok(values.every(Number.isFinite));
-    assert.ok(values[2] > 0 && values[3] > 0);
-  }
 console.log(
-  "PASS: 33 connected venues, 32 supported scenarios, expanded routes to metro/airport, finite responsive camera and real OSM geometry/ODbL attribution.",
+  "PASS: 33 connected venues, 32 supported scenarios, expanded routes to metro/airport, real OSM geometry/ODbL attribution.",
 );
 
 // A metro plan includes walking to the station, a ride, and walking after arrival.

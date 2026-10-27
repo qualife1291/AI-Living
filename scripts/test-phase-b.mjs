@@ -33,7 +33,8 @@ for(const kind of added){const actor={id:'fixture',name:'Test',from:'Công viên
  assert(clips.has(resolveActorClip(actor)),`unsupported clip for ${kind}`);
  if (["run","tag"].includes(kind)) assert.equal(resolveActorClip({...actor,walking:true,transport:"walk"}),"sprint");
  const a=humanPose(actor,1,0),b=humanPose(actor,1.3,0);for(const v of Object.values(a))assert(Number.isFinite(v));
- if(['run','tag','exercise'].includes(kind))assert.notDeepEqual([a.leftLeg,a.rightLeg,a.leftArm],[b.leftLeg,b.rightLeg,b.leftArm]);
+ if(['run','exercise'].includes(kind))assert.notDeepEqual([a.leftLeg,a.rightLeg,a.leftArm],[b.leftLeg,b.rightLeg,b.leftArm]);
+ if(kind==='tag')assert.equal(resolveActorClip(actor),'idle','An unpaired or yielding tag actor waits instead of sprinting in place');
 }
 const library=new AssetLibrary();library.loaded.set('characters/character-a',gltf);
 const scene=new THREE.Scene(),models=createModelActors(scene,library),headings=new Map([['an',0]]);
@@ -41,10 +42,11 @@ const actor={id:'an',name:'An',from:'Công viên',location:'Công viên',activit
 models.draw(world,[actor],new Map(),headings,1);const lower=models.snapshots().an.position[1];
 models.draw(world,[actor],new Map(),headings,1.4);assert.notEqual(models.snapshots().an.position[1],lower,'actual avatar jump moves above its floor');
 const freeze=models.snapshots();models.draw({...world,paused:true},[actor],new Map(),headings,2);assert.deepEqual(models.snapshots(),freeze,'pause freezes procedural activity too');
-models.draw(world,[{...actor,kind:'cycle'}],new Map(),headings,3);const cycleBefore=models.snapshots().an.leg;
-models.draw(world,[{...actor,kind:'cycle'}],new Map(),headings,3.3);assert.notDeepEqual(models.snapshots().an.leg,cycleBefore,'actual cycle legs pedal');
+const mounted={...actor,kind:'cycle',bicycle:{yaw:0,distance:0,radius:9.2}};
+models.draw(world,[mounted],new Map(),headings,3);const cycleBefore=models.snapshots().an.leg;
+models.draw(world,[{...mounted,bicycle:{...mounted.bicycle,distance:3}}],new Map(),headings,3.3);assert.notDeepEqual(models.snapshots().an.leg,cycleBefore,'actual cycle legs pedal');
 const stable=models.snapshots();
-for(let i=0;i<30;i++)models.draw(world,[{...actor,kind:'cycle'}],new Map(),headings,3.3);
+for(let i=0;i<30;i++)models.draw(world,[{...mounted,bicycle:{...mounted.bicycle,distance:3}}],new Map(),headings,3.3);
 assert.deepEqual(models.snapshots(),stable,'Repeated presentation time cannot accumulate procedural rotations');
 for(const kind of ['shop','study','drink','garden','eat','work'])models.draw(world,[{...actor,kind}],new Map(),headings,4+['shop','study','drink','garden','eat','work'].indexOf(kind));
 models.draw(world,[],new Map(),headings,11);

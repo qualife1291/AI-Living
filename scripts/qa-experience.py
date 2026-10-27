@@ -37,17 +37,11 @@ with sync_playwright() as p:
    assert page.evaluate('document.documentElement.scrollWidth<=window.innerWidth')
    assert not errors,errors
    report.append({'viewport':name,'stats':stats,'jsHeapBytes':metrics.get('JSHeapUsedSize'),'taskDurationSeconds':metrics.get('TaskDuration')})
-   if name=='desktop':
-    initial_geometry=int(host.get_attribute('data-geometries'))
-    for cycle in range(3):
-     page.get_by_role('button',name='Địa điểm',exact=True).click();page.get_by_role('button',name='Bản đồ 2D · nhẹ',exact=True).click();page.locator('.urban-map').wait_for(timeout=20000)
-     page.get_by_role('button',name='Địa điểm',exact=True).click();page.get_by_role('button',name='Không gian 3D',exact=True).click();host=page.locator('.three-canvas[data-ready="true"]');host.wait_for(timeout=60000)
-     assert int(host.get_attribute('data-geometries'))<=initial_geometry+2
-    canvas=host.locator('canvas')
-   # Context loss must leave the world usable in 2D.
-   canvas.evaluate('(c)=>c.getContext("webgl2").getExtension("WEBGL_lose_context").loseContext()');page.locator('.urban-map').wait_for(timeout=20000)
+   canvas=host.locator('canvas')
+   # Context loss must show an explicit retry action.
+   canvas.evaluate('(c)=>c.getContext("webgl2").getExtension("WEBGL_lose_context").loseContext()');page.get_by_role('button',name='Thử lại 3D',exact=True).wait_for(timeout=20000)
    assert page.locator('.three-canvas canvas').count()==0
    print(name,'PASS movement, proportions, DPR presets, conversation, pause/resume, layout, context-loss fallback',flush=True);page.close()
-  page=b.new_page(viewport={'width':1024,'height':768},reduced_motion='reduce');page.add_init_script('''const orig=HTMLCanvasElement.prototype.getContext;HTMLCanvasElement.prototype.getContext=function(t,...args){if(t.startsWith('webgl'))return null;return orig.call(this,t,...args)}''');page.goto(base);page.locator('.urban-map').wait_for(timeout=60000);page.close();print('PASS unavailable WebGL/reduced motion fallback',flush=True)
+  page=b.new_page(viewport={'width':1024,'height':768},reduced_motion='reduce');page.add_init_script('''const orig=HTMLCanvasElement.prototype.getContext;HTMLCanvasElement.prototype.getContext=function(t,...args){if(t.startsWith('webgl'))return null;return orig.call(this,t,...args)}''');page.goto(base);page.get_by_role('button',name='Thử lại 3D',exact=True).wait_for(timeout=60000);page.close();print('PASS unavailable WebGL/reduced motion fallback',flush=True)
   (out/'metrics.json').write_text(json.dumps(report,indent=2))
  finally:b.close()

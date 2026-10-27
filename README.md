@@ -1,5 +1,7 @@
 # Xóm AI — Khu phố của những trí tuệ nhỏ
 
+> Hiện hành: [Chỉ dùng 3D và đi dạo cùng thú](docs/THREE_ONLY_AND_PETS.md). Tủ đồ có preview3D; bảng Cư dân cho phép chọn người chăm sóc Cún/Mướp.
+
 > Review main/Gemini, stack và các bug thực tế: [báo cáo 27/10](docs/MAIN_REVIEW_2026-10-27.md).
 
 > Chi tiết nhân vật, rig chuyển động, đạo cụ và hoạt cảnh: [review bản 11](docs/VISUAL_DETAIL_REVIEW.md).
@@ -16,7 +18,7 @@
 
 > Cập nhật Codex Cloud: xem [docs/CLOUD_REVIEW.md](docs/CLOUD_REVIEW.md) cho ba phase mới, bằng chứng local và các phần còn thiếu. Các trạng thái live trong tài liệu bàn giao dưới đây chưa được xác minh lại.
 
-Dự án mô phỏng một thành phố 3D lấy bối cảnh TP.HCM (có chế độ 2D nhẹ) có ba robot AI **An, Bình, Chi**, cùng mèo **Mướp**, chó **Cún** và **Đàn sẻ**. Nhân vật có mục tiêu, ký ức gắn người chứng kiến, lời hứa và quan hệ; đi lại qua mạng lưới đường phố, làm việc theo nhịp đồng hồ thế giới và gặp nhau trò chuyện.
+Dự án mô phỏng một thành phố 3D lấy bối cảnh TP.HCM có ba robot AI **An, Bình, Chi**, cùng mèo **Mướp**, chó **Cún** và **Đàn sẻ**. Nhân vật có mục tiêu, ký ức gắn người chứng kiến, lời hứa và quan hệ; đi lại qua mạng lưới đường phố, làm việc theo nhịp đồng hồ thế giới và gặp nhau trò chuyện.
 
 - **Bản đồ toàn bộ hệ thống tài liệu (đã cơ cấu thành 6 mục chuyên đề):** xem [docs/INDEX.md](docs/INDEX.md).
 - **Đọc đầu tiên khi tiếp nhận dự án:** [CODEX_HANDOFF.md](CODEX_HANDOFF.md) và [AGENTS.md](AGENTS.md).

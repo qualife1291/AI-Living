@@ -156,7 +156,6 @@ with zipfile.ZipFile(out) as z:
         'ROADMAP.md',
         'lib/clock.ts',
         'lib/life.ts',
-        'lib/traffic.ts',
         'lib/speech.ts',
         'lib/apply-event.ts',
         'lib/training.ts',

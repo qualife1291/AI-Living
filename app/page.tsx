@@ -21,9 +21,10 @@ import { Conversation } from "@/components/city/Conversation";
 import type { Quality } from "@/lib/city/scale";
 import { Osm3D } from "@/components/city/Osm3D";
 import { InteriorView } from "@/components/city/InteriorView";
+import { householdFor } from "@/lib/living/households";
 import { lifeStory } from "@/lib/city/lifestory";
+import { PetCare } from "@/components/characters/PetCare";
 import { Wardrobe } from "@/components/characters/Wardrobe";
-import { UrbanMap } from "@/components/city/UrbanMap";
 import { City3D } from "@/components/city/City3D";
 import { LivingPanel } from "@/components/living/LivingPanel";
 import { venues, type Venue } from "@/lib/city/world";
@@ -47,7 +48,6 @@ export default function Page() {
     [selected, setSelected] = useState("an"),
     [panel, setPanel] = useState<Panel>(null),
     [mode, setMode] = useState<"city" | "osm">("city"),
-    [renderer, setRenderer] = useState<"3d" | "2d">("3d"),
     [hidden, setHidden] = useState(false),
     [venue, setVenue] = useState<Venue | null>(null),
     [busy, setBusy] = useState(false),
@@ -169,6 +169,7 @@ export default function Page() {
   const story = world ? lifeStory(world, selected, Date.parse(data!.serverNow)) : null;
   const person = people.find((p) => p.id === selected) ?? people[0],
     agent = world?.living?.learning?.[selected];
+  const homeGroup = householdFor(world?.living,person?.id ?? selected);
   const titles: Record<Exclude<Panel, null>, string> = {
     people: "Cư dân trong thành phố",
     context: "Nhịp sống & bối cảnh",
@@ -176,7 +177,7 @@ export default function Page() {
     learning: "Trải nghiệm & thói quen",
     sources: "Nguồn mở cho thế giới",
   };
-  const CityView = mode === "osm" && renderer === "3d" ? Osm3D : mode === "city" && renderer === "3d" ? City3D : UrbanMap;
+  const CityView = mode === "osm" ? Osm3D : City3D;
   return (
     <main className={`live-world ${hidden ? "hud-hidden" : ""}`}>
       {world ? (
@@ -194,7 +195,6 @@ export default function Page() {
             setPanel("places");
           }}
           onInspect={() => setPanel("people")}
-          mode={mode}
           target={navigation}
           clockOffsetMs={clockOffset}
         />
@@ -324,7 +324,9 @@ export default function Page() {
           {panel === "people" && (
             <>
               <p>Hỏi chuyện, xem ký ức hoặc chọn một cư dân để theo dõi.</p>
+              {world && <PetCare world={world} refresh={load} />}
               {story && <details className="life-story"><summary><b>{person?.name} · {story.age} tuổi mô phỏng</b><small>{story.chapter} · {story.samples} trải nghiệm</small></summary><p>Đến xóm ngày {story.arrivedOn} · {story.days} ngày mô phỏng · {story.samples} trải nghiệm đã học.</p><p className="muted">Tuổi khởi đầu hư cấu {story.baseline}; mỗi năm mô phỏng tăng một tuổi. Không suy ra tuổi từ số lượt học.</p><h4>Những điều còn nhớ</h4><ol>{story.memories.slice(-5).map((m, i) => <li key={i}>{m}</li>)}</ol>{!story.memories.length && <p>Chưa có ký ức được lưu.</p>}</details>}
+              {homeGroup && <div className="resident-home"><b>{homeGroup.home.label}</b><span>{homeGroup.home.place} · {homeGroup.members.length} người ở chung</span><small>{homeGroup.members.map(r => r.name).join(" · ")}</small></div>}
               {person && world && <Conversation key={person.id} actorId={person.id} name={person.name} paused={world.paused}/>}
               <details className="wardrobe-details">
                 <summary>Tạo hình của {person?.name ?? "An"}</summary>
@@ -379,31 +381,6 @@ export default function Page() {
                   }}
                 >
                   Tái dựng từ OpenStreetMap
-                </button>
-              </div>
-              <div
-                className="scene-choice"
-                aria-label="Cách hiển thị thành phố"
-              >
-                <button
-                  className={renderer === "3d" ? "active" : ""}
-                  onClick={() => {
-                    setRenderer("3d");
-                    setMode("city");
-                    setPanel(null);
-                  }}
-                >
-                  Không gian 3D
-                </button>
-                <button
-                  className={renderer === "2d" ? "active" : ""}
-                  onClick={() => {
-                    setRenderer("2d");
-                    setMode("city");
-                    setPanel(null);
-                  }}
-                >
-                  Bản đồ 2D · nhẹ
                 </button>
               </div>
               {venue && (

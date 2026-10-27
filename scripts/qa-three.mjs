@@ -140,22 +140,13 @@ try {
       .click();
     await p.getByRole("button", { name: "Địa điểm", exact: true }).click();
     await p
-      .getByRole("button", { name: "Bản đồ 2D · nhẹ", exact: true })
-      .click();
-    await p.locator(".urban-map").waitFor();
-    assert.equal(await p.locator(".three-canvas canvas").count(), 0);
-    await p.getByRole("button", { name: "Địa điểm", exact: true }).click();
-    await p.getByRole("button", { name: "Không gian 3D", exact: true }).click();
-    await host.waitFor();
-    await p.getByRole("button", { name: "Địa điểm", exact: true }).click();
-    await p
       .getByRole("button", { name: "Tái dựng từ OpenStreetMap", exact: true })
       .click();
     await p
       .getByRole("link", { name: "© OpenStreetMap contributors" })
       .waitFor();
     await p.waitForFunction(
-      () => document.querySelectorAll(".urban-map polygon").length > 1000,
+      () => Number(document.querySelector(".osm-three")?.dataset.buildings) > 500,
     );
     await p.getByRole("button", { name: "Địa điểm", exact: true }).click();
     await p
@@ -168,9 +159,9 @@ try {
         c.getContext("webgl2").getExtension("WEBGL_lose_context").loseContext(),
       );
     await p
-      .getByText("Thiết bị chưa mở được 3D · Đang dùng 2D", { exact: true })
+      .getByText("Chưa mở được không gian 3D", { exact: true })
       .waitFor();
-    await p.locator(".urban-map").waitFor();
+    assert.equal(await p.locator(".urban-map").count(), 0);
     assert.equal(await p.locator(".three-canvas canvas").count(), 0);
     assert.ok(
       await p.evaluate(
@@ -181,11 +172,11 @@ try {
     console.log(
       name,
       stats,
-      "PASS: real WebGL2, full viewport, mouse/touch orbit, zoom/follow/skyline/overview, roster selection, venue focus, learning, hide/show, renderer disposal, OSM, context-loss fallback; no page errors or overflow.",
+      "PASS: real WebGL2, full viewport, mouse/touch orbit, zoom/follow/skyline/overview, roster selection, venue focus, learning, hide/show, renderer disposal, OSM, context-loss message; no page errors or overflow.",
     );
     await p.close();
   }
-  // A browser without WebGL must still open the same world through the 2D renderer.
+  // A browser without WebGL reports a recoverable error without loading another renderer.
   const p = await b.newPage();
   await p.addInitScript(() => {
     const original = HTMLCanvasElement.prototype.getContext;
@@ -201,10 +192,10 @@ try {
   });
   await p.goto(base, { waitUntil: "domcontentloaded" });
   await p
-    .getByText("Thiết bị chưa mở được 3D · Đang dùng 2D", { exact: true })
+    .getByText("Chưa mở được không gian 3D", { exact: true })
     .waitFor({ timeout: 30000 });
-  await p.locator(".urban-map").waitFor();
-  console.log("PASS: unavailable WebGL falls back automatically.");
+  assert.equal(await p.locator(".urban-map").count(), 0);
+  console.log("PASS: unavailable WebGL shows a retry action.");
   await p.close();
 } finally {
   await b.close();

@@ -69,8 +69,15 @@ Nguồn đã hoàn thiện12cảnh/56lượt doagentbiênkịch, crowd24h, spaci
 ## Chi tiết đồ họa — bản 11, 27/10/2026
 Đã chốt source và localQA cho rig có khớp, props gắn tay,66cụm đồ vật,6cảnh mới, cây/mây/nước và model mèo/chó/chim phối hợp groundnav. XemVISUAL_DETAIL_REVIEW vàreleaseledger. Còn hardwareGPU/soak, IK nội thất/thang máy/serve-clean/inventory và mô hìnhAI chất lượng hơn.
 
-## Review main/Gemini — 27/10/2026
+## Phase B tiếp nối — đuổi bắt theo cặp (source work)
+Đã thêm cơ chế ghép hai người cùng chọn tag, đổi vai khi đến gần trên ground an toàn, pause/hủy/polling trong renderer 3D. Đây là presentation theo luật, chưa đồng bộ nhiều người xem/2D hoặc ghi reward. Xem docs/PAIRED_TAG.md. Cycle physics, thú theo chủ và C/D vẫn chưa hoàn tất; chưa deploy bản này.
 
-Đã tích hợp phase A/B và sửa lỗi runtime, telemetry, migration metadata, playback/hội thoại cùng ngân sách đồ họa. Bằng chứng, phạm vi và stack: [review main](docs/MAIN_REVIEW_2026-10-27.md). Trạng thái production lấy từ `docs/releases/latest.json`, không suy luận từ việc push Git.
+## Chỉ 3D và pet-walk — source work, 27/10/2026
+Đã gỡ renderer/assets SVG2D và dashboard cũ, giữ tọa độ/graph cần cho3D. Wardrobe dùng WebGL, lỗi context có retry. PhaseB thêm petOwners lưu bằng CAS, UI phân công và companionfollow qua collision shared; ngắt pending tự động của thú không nhận reward giả. Xem docs/THREE_ONLY_AND_PETS.md. Chưa cyclefullbody, density/household/trafficgraph, LinUCB/skillgates hoặc modelA-B; chưa deploy.
 
-Các phần tiếp theo vẫn mở: tag theo cặp; xe đạp/thú theo chủ có collision đầy đủ; household/density/traffic graph; durable dialogue pool; LinUCB/skill gates; benchmark thiết bị thật và soak. Các mục này chưa được đánh dấu hoàn tất bằng unit test của phase B.
+## Phase B tiếp nối — xe đạp di chuyển (source work)
+Cycle/transport=bicycle đã có ground route theo clearance9,2, toàn xe/người trong vùng bao, tăng/giảm tốc, nhường người/xe, bánh/pedal theo quãng đường, pause/dismount và camera full-bike. Xem docs/CYCLING.md. Chưa lực học toàn xe/IK, completion authoritative; tiếp theo phaseC density/household/trafficgraph và phaseD LinUCB/skillgates, history/modelA-B.
+
+## Tài nguyên Gobkit/KayKit và định danh — đang triển khai
+
+Tích hợp giữ nguyên tag/pet-walk/xe đạp/3D-only/overlays/households đã có trên work. Tiếp theo là importer 15 pack CC0, skeleton animation adapter, nhân vật có tên/tuổi/cách xưng hô rõ ràng, môi trường và tập tính theo loài, catalog tải theo nhu cầu. Theo docs/ASSET_EXPANSION.md; test nguồn hợp nhất rồi phát hành một bản production theo yêu cầu mới. Không đánh dấu density/traffic graph/LinUCB/durable history hoàn tất.
