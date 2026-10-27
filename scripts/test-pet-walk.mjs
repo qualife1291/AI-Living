@@ -40,3 +40,14 @@ assert.equal(learningWorld.living.animalLearning.cun.pending.cancelled,true);
 learningWorld.people[0].plan=undefined;
 assert.equal(settleAnimalLearning(learningWorld,learningWorld.living,now+400000),0,'No delayed credit after the walk either');
 console.log('PASS accompanied pet cancels pending autonomous learning without fabricated rewards');
+const both=structuredClone(world);both.living.petOwners={cun:'an',muop:'an'};
+const cat={...animalsAt(both,now).find(a=>a.id==='muop'),position:[-460,-720],path:[[-460,-720]],walking:false};
+const bothDirector=new WalkDirector();let duo;
+for(let i=0;i<1200;i++){
+ duo=bothDirector.frame(both,[owner],100+i*.05,[],i%2?[cat,pet]:[pet,cat]);
+ for(const a of duo)assert(walkable(a.position));
+ for(let a=0;a<duo.length;a++)for(let b=a+1;b<duo.length;b++)assert(distance(duo[a].position,duo[b].position)>=PERSONAL_SPACE-1e-6);
+ assert.equal(duo.filter(a=>a.petOwnerId==='an').length,2);
+}
+assert(distance(duo.find(a=>a.id==='an').position,[-150,-700])<1,'A caretaker with two pets can complete the route');
+console.log('PASS two pets keep separate ground lanes and stable ownership through reordered input');

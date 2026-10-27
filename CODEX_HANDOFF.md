@@ -1,6 +1,6 @@
 # Bàn giao sang Codex (`CODEX_HANDOFF.md`)
 
-> Mới nhất: [Thành phố 3D](docs/THREE_WORLD.md) — Three.js mặc định, skyline 282 khối nhà, WebGL2/2D fallback, không đổi dữ liệu mô phỏng.
+> Hiện hành: [Chỉ dùng 3D và pet-walk](docs/THREE_ONLY_AND_PETS.md). Renderer SVG/2D đã được gỡ theo yêu cầu; các ghi chú 2D bên dưới là lịch sử, không phải hướng dẫn khôi phục.
 
 > Thành phố 2D trước đó: [Thành phố, tạo hình và học hành vi](docs/URBAN_WORLD.md), [ba hướng sản phẩm](docs/DECISIONS/ADR-0009-shared-world-three-product-directions.md). Ưu tiên các tài liệu này trước ghi chú lịch sử.
 

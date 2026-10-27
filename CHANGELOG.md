@@ -117,3 +117,8 @@ Thêm9action kinds/scenarios, mapping clip/procedural/props và bike tập; chu�
 - Hai nhân vật cùng chọn tag ở Công viên/Sân thể thao có thể đuổi nhau và đổi vai khi đến gần, giữ tránh vật cản/khoảng cách cá nhân; hỗ trợ pause, polling và hủy khi đổi kế hoạch.
 - Người chưa có cặp chờ thay vì chạy tại chỗ. Giữ hoạt động NPC đã chọn, chỉ đổi micro-activity khi idle social/play.
 - Vai thuộc phiên 3D, chưa đồng bộ nhiều viewer/2D hoặc ghi vào ký ức/phần thưởng. Chưa deploy.
+
+## 27/10/2026 — thành phố chỉ dùng 3D, thú đi theo người chăm sóc
+- Gỡ renderer SVG/2D, dashboard cũ, mẫu nhân vật/công trình/xe và tài nguyên chỉ phục vụ2D; dashboard chuyển về trang chủ. Preview tủ đồ dùng3D; lỗi WebGL có nút thử lại.
+- Phân công người chăm sóc Cún/Mướp trong bảng Cư dân, lưu bằng revisionCAS. Khi đi dạo, thú đi từ vị trí thật qua đường an toàn, người chờ nếu thú còn xa. Pause/đổi phân công/ngừng hoạt động giữ chuyển động liên tục.
+- Pending tự tìm ăn/chơi bị đi dạo ngắt sẽ không nhận reward giả. Không reset DB, sửa migration, thêm dịch vụ trả phí hoặc deploy.

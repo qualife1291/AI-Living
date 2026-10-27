@@ -16,3 +16,5 @@
 13. Yêu cầu mới: push các mốc source lên nhánh hiện hành và cập nhật MEMORY_SHORT.md trong quá trình làm, nhất là trước bước kiểm thử lâu/rủi ro mất env. Ghi rõ WIP và kiểm tra chưa hoàn tất; không để trạng thái chỉ nằm trong chat. Không commit secrets, DB hoặc cache.
 
 14. Khi phát hành: cập nhật docs/releases/latest.json và ledger theo ngày với SHA source, version/deployment ID, status, env revision và kiểm tra readback; push cả mốc trước build và nhật ký sau deploy. Không coi push GitHub là deploy Sites. Không lưu secret/backup DB vào Git. Đọc PRODUCTION_RUNBOOK.md; gỡ XOM_OWNER_PRIVATE_ORIGIN trước thay audience.
+
+15. Yêu cầu mới: chỉ giữ renderer 3D; không khôi phục bản đồ/nhân vật SVG hoặc fallback 2D từ tài liệu lịch sử. Giữ tọa độ XZ, navigation, texture canvas và icon giao diện khi 3D còn dùng. Đọc docs/THREE_ONLY_AND_PETS.md trước khi tiếp tục phase B/C/D.

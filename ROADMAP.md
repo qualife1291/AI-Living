@@ -71,3 +71,6 @@ Nguồn đã hoàn thiện12cảnh/56lượt doagentbiênkịch, crowd24h, spaci
 
 ## Phase B tiếp nối — đuổi bắt theo cặp (source work)
 Đã thêm cơ chế ghép hai người cùng chọn tag, đổi vai khi đến gần trên ground an toàn, pause/hủy/polling trong renderer 3D. Đây là presentation theo luật, chưa đồng bộ nhiều người xem/2D hoặc ghi reward. Xem docs/PAIRED_TAG.md. Cycle physics, thú theo chủ và C/D vẫn chưa hoàn tất; chưa deploy bản này.
+
+## Chỉ 3D và pet-walk — source work, 27/10/2026
+Đã gỡ renderer/assets SVG2D và dashboard cũ, giữ tọa độ/graph cần cho3D. Wardrobe dùng WebGL, lỗi context có retry. PhaseB thêm petOwners lưu bằng CAS, UI phân công và companionfollow qua collision shared; ngắt pending tự động của thú không nhận reward giả. Xem docs/THREE_ONLY_AND_PETS.md. Chưa cyclefullbody, density/household/trafficgraph, LinUCB/skillgates hoặc modelA-B; chưa deploy.

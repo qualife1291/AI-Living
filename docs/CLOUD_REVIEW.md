@@ -36,7 +36,7 @@ Qua đối chiếu mã, bản bàn giao chưa thực sự khắc phục hoàn to
 - `npm run check`, `npm run lint`, `npm run build`: đạt. Vinext vẫn cảnh báo không phân loại tĩnh được trang `/`; build hoàn tất, không xem cảnh báo này là bằng chứng route hỏng.
 - Kiểm thử API local: ghi/readback, số tiền, idempotency, revision cũ, pause/resume, origin, dữ liệu điều khiển sai và đổi tốc độ liên tục đều đạt.
 - Chromium thật: desktop 1440×1000 và mobile 390×844, không có pageerror hay tràn ngang; bản đồ render, pause/resume, follow camera, đổi khu vực tắt follow, tab Nhịp sống và Nhật ký hoạt động. Chạy với reduced motion để chụp ổn định. Chưa đo hiệu năng trên điện thoại vật lý.
-- Ảnh thật local preview: [desktop](screenshots/cloud-desktop-preview.png), [mobile](screenshots/cloud-mobile-preview.png). Nhật ký trong ảnh là dữ liệu kiểm thử local.
+- Ảnh thật local preview: (ảnh 2D cũ đã gỡ; xem THREE_ONLY_AND_PETS.md), (ảnh 2D cũ đã gỡ; xem THREE_ONLY_AND_PETS.md). Nhật ký trong ảnh là dữ liệu kiểm thử local.
 
 ## Việc còn thiếu — thứ tự tiếp theo
 

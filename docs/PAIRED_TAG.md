@@ -14,7 +14,7 @@ Kế hoạch tag mới giữ một địa điểm trong 180 giây thay vì chuy�
 
 ## Ranh giới
 
-Đây là luật mô phỏng thuộc **phiên hiển thị 3D**, không phải model AI mới. Vai/lượt bắt không ghi vào snapshot, ký ức, quan hệ hoặc phần thưởng học. Reload, đổi renderer hoặc đổi tập actor có thể khởi tạo cặp mới. Chưa đồng bộ trò chơi giữa nhiều người xem, chưa triển khai trò đuổi bắt có cùng cơ chế navigation trong 2D. Không tự thêm kế hoạch tag cho người chưa chọn chơi, không bắt buộc luôn có một cặp trong thế giới.
+Đây là luật mô phỏng thuộc **phiên hiển thị 3D**, không phải model AI mới. Vai/lượt bắt không ghi vào snapshot, ký ức, quan hệ hoặc phần thưởng học. Reload, đổi renderer hoặc đổi tập actor có thể khởi tạo cặp mới. Chưa đồng bộ trò chơi giữa nhiều người xem. Renderer 2D đã được gỡ; không còn backlog triển khai tag trong2D. Không tự thêm kế hoạch tag cho người chưa chọn chơi, không bắt buộc luôn có một cặp trong thế giới.
 
 Nhân vật có thể dừng hoặc nhường khi không có đường an toàn. Không dùng timeout để bỏ collision hoặc tăng lượt bắt. Vùng có quá nhiều vật cản có thể không có điểm chạy tiếp; đây không phải cam kết mọi cặp sẽ bắt được nhau hay hết kẹt trong 20 giây. Không có migration, dependency, API trả phí, thay đổi scheduler production hoặc deploy trong đợt này.
 

@@ -1,5 +1,7 @@
 # Xóm AI — Khu phố của những trí tuệ nhỏ
 
+> Hiện hành: [Chỉ dùng 3D và đi dạo cùng thú](docs/THREE_ONLY_AND_PETS.md). Tủ đồ có preview3D; bảng Cư dân cho phép chọn người chăm sóc Cún/Mướp.
+
 > Review main/Gemini, stack và các bug thực tế: [báo cáo 27/10](docs/MAIN_REVIEW_2026-10-27.md).
 
 > Chi tiết nhân vật, rig chuyển động, đạo cụ và hoạt cảnh: [review bản 11](docs/VISUAL_DETAIL_REVIEW.md).

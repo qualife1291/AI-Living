@@ -1,5 +1,7 @@
 # Thành phố live, tạo hình và việc học từng nhân vật — 25/10/2026
 
+> Tài liệu lịch sử ngày25/10. Hiện dùng duy nhất renderer3D; xem [THREE_ONLY_AND_PETS](THREE_ONLY_AND_PETS.md). Thư viện SVG, mode2D và ảnh của chúng đã được gỡ.
+
 Bản này tiếp nối [LIVING_REALTIME](LIVING_REALTIME.md). Các kết quả bên dưới là cloud local và source Git; không suy luận đã deploy Site.
 
 ## Phase 1 — Nguồn và bối cảnh
@@ -76,5 +78,5 @@ Quy trình `npm run living:up` giữ nguyên. Sau cập nhật source, build r�
 
 - API trên D1 fixture tách riêng: tám yêu cầu học đồng thời chỉ ghi một bộ kết quả; retry trả updated=0; policy và archive khớp, phân trang JSONL đủ mẫu/không trùng. Các API living/world cũ và origin/revision guards vẫn đạt.
 - Wardrobe API xác minh lưu/đọc lại, revision cũ/actor lạ/màu sai bị từ chối; sửa trang phục không làm thay đổi model hoặc lịch sử trải nghiệm.
-- Browser thật đổi An sang cảnh sát/quần tây màu tùy chọn, lưu và reload vẫn giữ; sau test khôi phục tạo hình ban đầu. [Ảnh xưởng tạo hình](screenshots/wardrobe-police-preview.png) là local preview.
+- Browser thật đổi An sang cảnh sát/quần tây màu tùy chọn, lưu và reload vẫn giữ; sau test khôi phục tạo hình ban đầu. (ảnh 2D cũ đã gỡ; xem THREE_ONLY_AND_PETS.md) là local preview.
 - `/api/health.weather` là dữ liệu đồng hồ mô phỏng chẩn đoán, có `weatherSource` nói rõ; bối cảnh TP.HCM quan sát thật lấy từ `/api/world.realContext`.

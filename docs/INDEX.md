@@ -4,7 +4,9 @@ Toàn bộ tài liệu của dự án **Xóm AI** được cơ cấu thành **6 
 
 ---
 
-> Review mới nhất: [main/Gemini và bugfix 27/10](MAIN_REVIEW_2026-10-27.md).
+> Hiện hành: [Chỉ dùng 3D và thú đi theo chủ](THREE_ONLY_AND_PETS.md).
+
+> Review trước đó: [main/Gemini và bugfix 27/10](MAIN_REVIEW_2026-10-27.md).
 
 ## 0. Điểm vào & Điều phối tại Thư mục gốc
 
