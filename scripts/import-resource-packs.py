@@ -23,6 +23,7 @@ def document(data,name):
  return g
 
 def import_packs(source):
+ previous=json.loads(MANIFEST.read_text()) if MANIFEST.exists() else {'files':[]}
  files={};assets=[];packs=[]
  for pack,filename in PACKS.items():
   matches=sorted(source.rglob(filename))
@@ -57,18 +58,20 @@ def import_packs(source):
     if pack=='kaykit-city':kind='city'
     genre='theatre' if pack in ['gobkit-human003','kaykit-adventurers'] else 'exhibition' if pack=='gobkit-human004' else 'daily-life'
     assets.append({'id':pack+'/'+slug(stem),'name':stem,'pack':pack,'kind':kind,'genre':genre,'license':'CC0-1.0',**record,**info,'resources':dependencies,'sourceMember':name})
-   # Keep distinct image references/atlases; omit copies in alternate FBX/OBJ directories.
-   seen=set()
-   for name in sorted(n for n in names if n.lower().endswith('.png')):
-    if any('fbx' in part.lower() or part.lower()=='obj' for part in PurePosixPath(name).parts):continue
-    data=base.read_member(z,name);digest=base.sha(data)
-    if digest in seen:continue
-    seen.add(digest);meta=write(pack+'/references/'+digest[:10]+'-'+PurePosixPath(name).name,data);files[meta['url']]=meta;pack_info['referenceImages'].append(meta)
+   # The gallery renders real 3D previews. Keep only textures referenced by glTF;
+   # promotional PNGs and duplicate exported atlases are not runtime resources.
    packs.append(pack_info)
  ids=[a['id'] for a in assets]
  if len(ids)!=len(set(ids)):raise ValueError('Canonical asset ID collision')
  total=sum(f['bytes'] for f in files.values())
  if total>MAX_TOTAL:raise ValueError('Resource budget exceeded')
+ # Remove only previously generated reference images, never arbitrary files or
+ # texture dependencies. Canonical models and licences remain unchanged.
+ for old in previous['files']:
+  if old['url'] in files or '/references/' not in old['url']:continue
+  relative=base.safe_relative(old['url'].removeprefix('/models/resources/'));p=OUTPUT.joinpath(*relative.parts)
+  if p.is_symlink() or not p.resolve().is_relative_to(OUTPUT.resolve()):raise ValueError('Invalid stale reference path')
+  if p.is_file():p.unlink()
  manifest={'version':1,'license':'CC0-1.0','packs':packs,'assets':assets,'files':list(files.values()),'bytes':total,'maxBytes':MAX_TOTAL}
  MANIFEST.write_text(json.dumps(manifest,ensure_ascii=False,indent=2)+'\n')
  keys=['id','name','pack','kind','genre','url','bytes','sha256','license','bounds','clips','skins','triangles']
@@ -95,7 +98,28 @@ def check():
     if not p.is_file():raise ValueError('Missing glTF dependency')
  print(json.dumps({'packs':len(m['packs']),'assets':len(m['assets']),'skinned':sum(a['skins']>0 for a in m['assets']),'files':len(m['files']),'bytes':total,'integrity':'verified','dependencies':'local and complete'}))
 
+def prune_references():
+ # This also works in a fresh checkout without the original attachment ZIPs.
+ check()
+ m=json.loads(MANIFEST.read_text());catalog=json.loads((OUTPUT/'catalog.json').read_text())
+ required={a['url'] for a in m['assets']}|{r['url'] for a in m['assets'] for r in a['resources']}|{p['licenseUrl'] for p in m['packs']}
+ obsolete=[f for f in m['files'] if '/references/' in f['url'] and f['url'] not in required]
+ deleted={f['url'] for f in obsolete};paths=[]
+ for f in obsolete:
+  p=OUTPUT.joinpath(*base.safe_relative(f['url'].removeprefix('/models/resources/')).parts)
+  if p.is_symlink() or not p.resolve().is_relative_to(OUTPUT.resolve()):raise ValueError('Invalid reference path')
+  paths.append(p)
+ for pack in m['packs']:pack['referenceImages']=[f for f in pack['referenceImages'] if f['url'] not in deleted]
+ m['files']=[f for f in m['files'] if f['url'] not in deleted];m['bytes']=sum(f['bytes'] for f in m['files'])
+ catalog['packs']=m['packs']
+ MANIFEST.write_text(json.dumps(m,ensure_ascii=False,indent=2)+'\n')
+ (OUTPUT/'catalog.json').write_text(json.dumps(catalog,ensure_ascii=False,separators=(',',':'))+'\n')
+ for p in paths:p.unlink()
+ check()
+ print(json.dumps({'unusedReferenceImagesRemoved':len(obsolete),'bytesRemoved':sum(f['bytes'] for f in obsolete)}))
+
 if __name__=='__main__':
- p=argparse.ArgumentParser(description=__doc__);p.add_argument('--source-dir',type=Path,default=Path('/workspace/attachments'));p.add_argument('--check',action='store_true');args=p.parse_args()
+ p=argparse.ArgumentParser(description=__doc__);p.add_argument('--source-dir',type=Path,default=Path('/workspace/attachments'));p.add_argument('--check',action='store_true');p.add_argument('--prune-references',action='store_true');args=p.parse_args()
  if args.check:check()
+ elif args.prune_references:prune_references()
  else:import_packs(args.source_dir)

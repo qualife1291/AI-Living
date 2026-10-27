@@ -8,13 +8,7 @@
       "sourceSha256": "464195cacd537c34c99dc15d6e250077975e475f22243a616caa0208b494e457",
       "license": "CC0-1.0",
       "licenseUrl": "/models/resources/gobkit-animal/LICENSE.txt",
-      "referenceImages": [
-        {
-          "url": "/models/resources/gobkit-animal/references/5c9930aba1-Texture001.png",
-          "bytes": 12488,
-          "sha256": "5c9930aba1b78f18551c2df4d9c250d0a7d72eafa6ca72d0d856aec62124ed04"
-        }
-      ]
+      "referenceImages": []
     },
     {
       "id": "gobkit-animal007",
@@ -22,13 +16,7 @@
       "sourceSha256": "c7e57148db1c9b771c2978e3fa0cbbc521bbfcb5b22861bd3740e345ee043293",
       "license": "CC0-1.0",
       "licenseUrl": "/models/resources/gobkit-animal007/LICENSE.txt",
-      "referenceImages": [
-        {
-          "url": "/models/resources/gobkit-animal007/references/3de371142d-Texture001.png",
-          "bytes": 16408,
-          "sha256": "3de371142dfbb9036bcac4da3d65e9680c4a65815196ee95cbac3101889a17b4"
-        }
-      ]
+      "referenceImages": []
     },
     {
       "id": "gobkit-animalB",
@@ -36,13 +24,7 @@
       "sourceSha256": "a5d73ab6621b7526caf16ea33f65d76a53071278be63d5bae3f68f5204a68bc5",
       "license": "CC0-1.0",
       "licenseUrl": "/models/resources/gobkit-animalB/LICENSE.txt",
-      "referenceImages": [
-        {
-          "url": "/models/resources/gobkit-animalB/references/5c9930aba1-Texture001.png",
-          "bytes": 12488,
-          "sha256": "5c9930aba1b78f18551c2df4d9c250d0a7d72eafa6ca72d0d856aec62124ed04"
-        }
-      ]
+      "referenceImages": []
     },
     {
       "id": "gobkit-birds",
@@ -50,13 +32,7 @@
       "sourceSha256": "7cf64f45a8c155918859c207773e4b53ef99103b9c4ebd32242c8400c3903cef",
       "license": "CC0-1.0",
       "licenseUrl": "/models/resources/gobkit-birds/LICENSE.txt",
-      "referenceImages": [
-        {
-          "url": "/models/resources/gobkit-birds/references/5c9930aba1-Texture001.png",
-          "bytes": 12488,
-          "sha256": "5c9930aba1b78f18551c2df4d9c250d0a7d72eafa6ca72d0d856aec62124ed04"
-        }
-      ]
+      "referenceImages": []
     },
     {
       "id": "gobkit-farm",
@@ -64,13 +40,7 @@
       "sourceSha256": "b0175a2ae6bd371e0e5238fe10513c501d3766bd8b351f865f1f2786f80f3896",
       "license": "CC0-1.0",
       "licenseUrl": "/models/resources/gobkit-farm/LICENSE.txt",
-      "referenceImages": [
-        {
-          "url": "/models/resources/gobkit-farm/references/1b1c4d1573-Texture001.png",
-          "bytes": 16449,
-          "sha256": "1b1c4d15730dd40fe74ef0a244061539e2a35f7ae0c6f1bb6d9530484b059828"
-        }
-      ]
+      "referenceImages": []
     },
     {
       "id": "gobkit-human001",
@@ -78,13 +48,7 @@
       "sourceSha256": "1801bc634c3f809f394d8fc0c001f2aaa4f29f1d0a541f6f74f7b7b2b75aec0e",
       "license": "CC0-1.0",
       "licenseUrl": "/models/resources/gobkit-human001/LICENSE.txt",
-      "referenceImages": [
-        {
-          "url": "/models/resources/gobkit-human001/references/7137d66cdd-Texture001.png",
-          "bytes": 30603,
-          "sha256": "7137d66cdd91c7d1e071837cde2d6007169521b9175c32a7b23503daa47192d9"
-        }
-      ]
+      "referenceImages": []
     },
     {
       "id": "gobkit-human002",
@@ -92,13 +56,7 @@
       "sourceSha256": "3cd3bb12433045a98ffbd3e3516d8d69dded426423fe4bd6344dc138c9a9cc4e",
       "license": "CC0-1.0",
       "licenseUrl": "/models/resources/gobkit-human002/LICENSE.txt",
-      "referenceImages": [
-        {
-          "url": "/models/resources/gobkit-human002/references/1dd36b8e35-Texture001.png",
-          "bytes": 31466,
-          "sha256": "1dd36b8e35340101288064830b4beecfa7e914e5381bde11fe07fa27029c7ab5"
-        }
-      ]
+      "referenceImages": []
     },
     {
       "id": "gobkit-human003",
@@ -106,13 +64,7 @@
       "sourceSha256": "fa754b83eb34b9f9d8ba844e8b8cd9e235530d98909bb3906a6958c9eb346ea2",
       "license": "CC0-1.0",
       "licenseUrl": "/models/resources/gobkit-human003/LICENSE.txt",
-      "referenceImages": [
-        {
-          "url": "/models/resources/gobkit-human003/references/1dd36b8e35-Texture001.png",
-          "bytes": 31466,
-          "sha256": "1dd36b8e35340101288064830b4beecfa7e914e5381bde11fe07fa27029c7ab5"
-        }
-      ]
+      "referenceImages": []
     },
     {
       "id": "gobkit-human004",
@@ -120,13 +72,7 @@
       "sourceSha256": "fe2e4d1efcff84ef7287d090c4b290cd6242b249b4161d0095934998fefa8e0b",
       "license": "CC0-1.0",
       "licenseUrl": "/models/resources/gobkit-human004/LICENSE.txt",
-      "referenceImages": [
-        {
-          "url": "/models/resources/gobkit-human004/references/2866fb5a0c-Texture001.png",
-          "bytes": 31471,
-          "sha256": "2866fb5a0ce703b62320209187690384e29829e836ca39cae598a21d8a66a22f"
-        }
-      ]
+      "referenceImages": []
     },
     {
       "id": "gobkit-human005",
@@ -134,13 +80,7 @@
       "sourceSha256": "e331ce4fb99520e07b066508245aaf80baf8cdb73824132bbf24415162523840",
       "license": "CC0-1.0",
       "licenseUrl": "/models/resources/gobkit-human005/LICENSE.txt",
-      "referenceImages": [
-        {
-          "url": "/models/resources/gobkit-human005/references/8a488d523f-Texture001.png",
-          "bytes": 32766,
-          "sha256": "8a488d523f41dcfb190b6fb20e9ea5c667b8f342fd16d7f87e8e5183d880730f"
-        }
-      ]
+      "referenceImages": []
     },
     {
       "id": "gobkit-human007",
@@ -148,13 +88,7 @@
       "sourceSha256": "df46ba6d171c21a5155e5814de6a760f8604dbfaf45347f512c9114106557af6",
       "license": "CC0-1.0",
       "licenseUrl": "/models/resources/gobkit-human007/LICENSE.txt",
-      "referenceImages": [
-        {
-          "url": "/models/resources/gobkit-human007/references/32b00d4e8b-Texture001.png",
-          "bytes": 34485,
-          "sha256": "32b00d4e8b777dbcde27eefcbb930a8f482a63a7a48d0084f45c1e2180a2bcd3"
-        }
-      ]
+      "referenceImages": []
     },
     {
       "id": "gobkit-human008",
@@ -162,13 +96,7 @@
       "sourceSha256": "71e935dc498964d5d8ff566f12737044e25dd8b46b09e0b4175d1eaa47ec4012",
       "license": "CC0-1.0",
       "licenseUrl": "/models/resources/gobkit-human008/LICENSE.txt",
-      "referenceImages": [
-        {
-          "url": "/models/resources/gobkit-human008/references/710bcbc658-Texture001.png",
-          "bytes": 36907,
-          "sha256": "710bcbc65889c101b4aca0e680b53094232703633a79e7ec88f63a09c505baae"
-        }
-      ]
+      "referenceImages": []
     },
     {
       "id": "kaykit-adventurers",
@@ -176,78 +104,7 @@
       "sourceSha256": "abe48f4763fba0896bab486ee9e6d08ca6b5b3884b9601f235c8847ae94dc479",
       "license": "CC0-1.0",
       "licenseUrl": "/models/resources/kaykit-adventurers/LICENSE.txt",
-      "referenceImages": [
-        {
-          "url": "/models/resources/kaykit-adventurers/references/f11434d3e5-barbarian_texture.png",
-          "bytes": 14424,
-          "sha256": "f11434d3e5e4df929dacd2c69d15734effb82babf8176a80bb040d2007f5f882"
-        },
-        {
-          "url": "/models/resources/kaykit-adventurers/references/028db4d1cd-knight_texture.png",
-          "bytes": 12914,
-          "sha256": "028db4d1cd8b3471e6ba21686515abd4e36ae582f8b314b71ad2ab1fb5453b12"
-        },
-        {
-          "url": "/models/resources/kaykit-adventurers/references/9ef9672e93-mage_texture.png",
-          "bytes": 14740,
-          "sha256": "9ef9672e93b231fc4e0e19238edfae3be22513aaf634df1898f45842ce6e4b5f"
-        },
-        {
-          "url": "/models/resources/kaykit-adventurers/references/639cd0ba51-ranger_texture.png",
-          "bytes": 13248,
-          "sha256": "639cd0ba5106fbdf65370b52b9290091d3bd92fe267693abc8dc474471bb800f"
-        },
-        {
-          "url": "/models/resources/kaykit-adventurers/references/2e2fc741e2-rogue_texture.png",
-          "bytes": 15026,
-          "sha256": "2e2fc741e20e7e2c85b176c8143b49b769bca0d2ed1a1cfc1807a758a0e4d3e1"
-        },
-        {
-          "url": "/models/resources/kaykit-adventurers/references/8f8a94e33f-barbarian.png",
-          "bytes": 634755,
-          "sha256": "8f8a94e33f1e366313a91260db42d23b58861d3ba6bad1d627b0b2db4691d228"
-        },
-        {
-          "url": "/models/resources/kaykit-adventurers/references/0e52e18a79-barbarian_Large.png",
-          "bytes": 948636,
-          "sha256": "0e52e18a7915c9bfd08ed9d45482a20c9a6a6f8658018f9de6f015440914029e"
-        },
-        {
-          "url": "/models/resources/kaykit-adventurers/references/96f1965722-druid.png",
-          "bytes": 742457,
-          "sha256": "96f196572282816d798fa34fc2485e963d79b58d666b02ac24170adf7c476954"
-        },
-        {
-          "url": "/models/resources/kaykit-adventurers/references/5af877d293-engineer.png",
-          "bytes": 798817,
-          "sha256": "5af877d2931c279f7fc2bf574c006e0d8873c6e646029b885286c91d3c1d15c4"
-        },
-        {
-          "url": "/models/resources/kaykit-adventurers/references/4f4b130928-knight.png",
-          "bytes": 806330,
-          "sha256": "4f4b130928020e0303ad5fe5fd261deac9d38f7e86b52b08cc92ad19fae74710"
-        },
-        {
-          "url": "/models/resources/kaykit-adventurers/references/c498542aab-mage.png",
-          "bytes": 626427,
-          "sha256": "c498542aabe04830cf371d5c41b7c4ae8219ab8a9966a8ad6730e26db241a9d8"
-        },
-        {
-          "url": "/models/resources/kaykit-adventurers/references/8ef51a6d39-ranger.png",
-          "bytes": 1377076,
-          "sha256": "8ef51a6d398b2f07b99c310d8533b2ca8fbc9f7086df150d3e098728e828ac00"
-        },
-        {
-          "url": "/models/resources/kaykit-adventurers/references/c3984ea2c5-rogue.png",
-          "bytes": 627469,
-          "sha256": "c3984ea2c5ef17c9dfdb922bf4fa75f80224bb6a30742bf2ec8c4ec364826351"
-        },
-        {
-          "url": "/models/resources/kaykit-adventurers/references/57270428cb-contents.png",
-          "bytes": 1540165,
-          "sha256": "57270428cb4a7ebf60bac83d5c18093baa8ec28d573f2780b54c3678b52d471d"
-        }
-      ]
+      "referenceImages": []
     },
     {
       "id": "kaykit-furniture",
@@ -255,23 +112,7 @@
       "sourceSha256": "e6d75f34c5545486b5a8f45f86209dbd49092f3e77ae23011bdb87edab89e7e4",
       "license": "CC0-1.0",
       "licenseUrl": "/models/resources/kaykit-furniture/LICENSE.txt",
-      "referenceImages": [
-        {
-          "url": "/models/resources/kaykit-furniture/references/de62db37a8-furniturebits_texture.png",
-          "bytes": 15605,
-          "sha256": "de62db37a80d1801c3d9eb674890ae04b04469e0c149481a51fa250562c628dc"
-        },
-        {
-          "url": "/models/resources/kaykit-furniture/references/5524c65ccb-contents.png",
-          "bytes": 948078,
-          "sha256": "5524c65ccb1434e7ed342e8c42e0f12eaebca5ae412a2ff45a6ea1684fd14311"
-        },
-        {
-          "url": "/models/resources/kaykit-furniture/references/aea14ec7b1-sample.png",
-          "bytes": 759348,
-          "sha256": "aea14ec7b1ea04a9bf7d3407801a56c0f9c4c985fc41565536a749e122bf8acf"
-        }
-      ]
+      "referenceImages": []
     },
     {
       "id": "kaykit-city",
@@ -279,23 +120,7 @@
       "sourceSha256": "aff444e1d083ddac331be94ea4a7590e5604ef49715ae23df71cd2e9659bd33f",
       "license": "CC0-1.0",
       "licenseUrl": "/models/resources/kaykit-city/LICENSE.txt",
-      "referenceImages": [
-        {
-          "url": "/models/resources/kaykit-city/references/6d2d9a5a13-citybits_texture.png",
-          "bytes": 19885,
-          "sha256": "6d2d9a5a13bce32209cd8c04572ab170504d68f34b1519165c9b0c41871e235b"
-        },
-        {
-          "url": "/models/resources/kaykit-city/references/b71259e1ad-contents.png",
-          "bytes": 1107356,
-          "sha256": "b71259e1adcfc9dea57fd8fbb3ecbf930b5bc12551f149c6b203978c9b4834d9"
-        },
-        {
-          "url": "/models/resources/kaykit-city/references/5c21e19a36-sample.png",
-          "bytes": 1120281,
-          "sha256": "5c21e19a367b43624ef2ccd2188175db027ecd083d1ff3ce86a41bad98c645fb"
-        }
-      ]
+      "referenceImages": []
     }
   ],
   "assets": [
@@ -237896,11 +237721,6 @@
       "sha256": "ac57ef3ab9c718a5a0d0369754f66900c24e367694aaa4a8224f595ba82d2291"
     },
     {
-      "url": "/models/resources/gobkit-animal/references/5c9930aba1-Texture001.png",
-      "bytes": 12488,
-      "sha256": "5c9930aba1b78f18551c2df4d9c250d0a7d72eafa6ca72d0d856aec62124ed04"
-    },
-    {
       "url": "/models/resources/gobkit-animal007/LICENSE.txt",
       "bytes": 567,
       "sha256": "52deb142b4d1ea19bd12359d71fdc8276ea2fe01f221c8fc282e940948f5aee6"
@@ -237954,11 +237774,6 @@
       "url": "/models/resources/gobkit-animal007/TasmanianDevil.glb",
       "bytes": 100388,
       "sha256": "e02ec4e264812692c86528cb36e1d6c2fbb3447aefea184b279f834f40f1b67a"
-    },
-    {
-      "url": "/models/resources/gobkit-animal007/references/3de371142d-Texture001.png",
-      "bytes": 16408,
-      "sha256": "3de371142dfbb9036bcac4da3d65e9680c4a65815196ee95cbac3101889a17b4"
     },
     {
       "url": "/models/resources/gobkit-animalB/LICENSE.txt",
@@ -238016,11 +237831,6 @@
       "sha256": "af3cbb567e64dfd41731a3325c9a13321513bd92e0b36078766d4e3934ffd6f7"
     },
     {
-      "url": "/models/resources/gobkit-animalB/references/5c9930aba1-Texture001.png",
-      "bytes": 12488,
-      "sha256": "5c9930aba1b78f18551c2df4d9c250d0a7d72eafa6ca72d0d856aec62124ed04"
-    },
-    {
       "url": "/models/resources/gobkit-birds/LICENSE.txt",
       "bytes": 567,
       "sha256": "52deb142b4d1ea19bd12359d71fdc8276ea2fe01f221c8fc282e940948f5aee6"
@@ -238074,11 +237884,6 @@
       "url": "/models/resources/gobkit-birds/Toucan.glb",
       "bytes": 89796,
       "sha256": "4e1b93cc5a4d8de964a47b37629f198da9356b7c78faa285c4a9ee9d816ba621"
-    },
-    {
-      "url": "/models/resources/gobkit-birds/references/5c9930aba1-Texture001.png",
-      "bytes": 12488,
-      "sha256": "5c9930aba1b78f18551c2df4d9c250d0a7d72eafa6ca72d0d856aec62124ed04"
     },
     {
       "url": "/models/resources/gobkit-farm/LICENSE.txt",
@@ -238136,11 +237941,6 @@
       "sha256": "ed7973e2a17ee92db0402fad08f3f980e8c4b21c590b03b9c4dedc2a8e985c8f"
     },
     {
-      "url": "/models/resources/gobkit-farm/references/1b1c4d1573-Texture001.png",
-      "bytes": 16449,
-      "sha256": "1b1c4d15730dd40fe74ef0a244061539e2a35f7ae0c6f1bb6d9530484b059828"
-    },
-    {
       "url": "/models/resources/gobkit-human001/LICENSE.txt",
       "bytes": 567,
       "sha256": "52deb142b4d1ea19bd12359d71fdc8276ea2fe01f221c8fc282e940948f5aee6"
@@ -238184,11 +237984,6 @@
       "url": "/models/resources/gobkit-human001/StoreManager.glb",
       "bytes": 461788,
       "sha256": "5b3d0d7a0c574699f29b71ac7a15ce119732f45417f092d3e86d1efba50dc72a"
-    },
-    {
-      "url": "/models/resources/gobkit-human001/references/7137d66cdd-Texture001.png",
-      "bytes": 30603,
-      "sha256": "7137d66cdd91c7d1e071837cde2d6007169521b9175c32a7b23503daa47192d9"
     },
     {
       "url": "/models/resources/gobkit-human002/LICENSE.txt",
@@ -238236,11 +238031,6 @@
       "sha256": "a28165749ccf7199a1f1042169bed92773ff4823059b622c58aa4e4b4097f619"
     },
     {
-      "url": "/models/resources/gobkit-human002/references/1dd36b8e35-Texture001.png",
-      "bytes": 31466,
-      "sha256": "1dd36b8e35340101288064830b4beecfa7e914e5381bde11fe07fa27029c7ab5"
-    },
-    {
       "url": "/models/resources/gobkit-human003/LICENSE.txt",
       "bytes": 567,
       "sha256": "52deb142b4d1ea19bd12359d71fdc8276ea2fe01f221c8fc282e940948f5aee6"
@@ -238284,11 +238074,6 @@
       "url": "/models/resources/gobkit-human003/Scout.glb",
       "bytes": 434132,
       "sha256": "1179ed9374a7724b72b5f925d47915c3b75aae9d7d4fffebaa348096264d4ac0"
-    },
-    {
-      "url": "/models/resources/gobkit-human003/references/1dd36b8e35-Texture001.png",
-      "bytes": 31466,
-      "sha256": "1dd36b8e35340101288064830b4beecfa7e914e5381bde11fe07fa27029c7ab5"
     },
     {
       "url": "/models/resources/gobkit-human004/LICENSE.txt",
@@ -238336,11 +238121,6 @@
       "sha256": "9054246d03a8663dd2808a03dc99743d7874de060405e3a64f64342db3938fb9"
     },
     {
-      "url": "/models/resources/gobkit-human004/references/2866fb5a0c-Texture001.png",
-      "bytes": 31471,
-      "sha256": "2866fb5a0ce703b62320209187690384e29829e836ca39cae598a21d8a66a22f"
-    },
-    {
       "url": "/models/resources/gobkit-human005/LICENSE.txt",
       "bytes": 567,
       "sha256": "52deb142b4d1ea19bd12359d71fdc8276ea2fe01f221c8fc282e940948f5aee6"
@@ -238384,11 +238164,6 @@
       "url": "/models/resources/gobkit-human005/WhiteCoatDoctor.glb",
       "bytes": 494280,
       "sha256": "80bbe66b778fff093f8405795b77ed4df8ecca6c0f101dc2ef8102f7f67d4ed7"
-    },
-    {
-      "url": "/models/resources/gobkit-human005/references/8a488d523f-Texture001.png",
-      "bytes": 32766,
-      "sha256": "8a488d523f41dcfb190b6fb20e9ea5c667b8f342fd16d7f87e8e5183d880730f"
     },
     {
       "url": "/models/resources/gobkit-human007/LICENSE.txt",
@@ -238436,11 +238211,6 @@
       "sha256": "1a1d5e8d178cb553be7be0b0dc0865f88d6d8e02c22798275b4ff867030e502a"
     },
     {
-      "url": "/models/resources/gobkit-human007/references/32b00d4e8b-Texture001.png",
-      "bytes": 34485,
-      "sha256": "32b00d4e8b777dbcde27eefcbb930a8f482a63a7a48d0084f45c1e2180a2bcd3"
-    },
-    {
       "url": "/models/resources/gobkit-human008/LICENSE.txt",
       "bytes": 567,
       "sha256": "52deb142b4d1ea19bd12359d71fdc8276ea2fe01f221c8fc282e940948f5aee6"
@@ -238484,11 +238254,6 @@
       "url": "/models/resources/gobkit-human008/SecurityScreener.glb",
       "bytes": 647520,
       "sha256": "adbfad59bd37c2fb1a8a5ee50b5c4ed4f126be463c98d1cc3f43d382b1e4ff2f"
-    },
-    {
-      "url": "/models/resources/gobkit-human008/references/710bcbc658-Texture001.png",
-      "bytes": 36907,
-      "sha256": "710bcbc65889c101b4aca0e680b53094232703633a79e7ec88f63a09c505baae"
     },
     {
       "url": "/models/resources/kaykit-adventurers/LICENSE.txt",
@@ -238869,76 +238634,6 @@
       "url": "/models/resources/kaykit-adventurers/KayKit_Adventurers_2.0_FREE/Characters/gltf/Rogue_Hooded.glb",
       "bytes": 381432,
       "sha256": "e8f3233c6db190506fbef3ad855683e6cb8bd7350de637d923e14a08aef088dc"
-    },
-    {
-      "url": "/models/resources/kaykit-adventurers/references/f11434d3e5-barbarian_texture.png",
-      "bytes": 14424,
-      "sha256": "f11434d3e5e4df929dacd2c69d15734effb82babf8176a80bb040d2007f5f882"
-    },
-    {
-      "url": "/models/resources/kaykit-adventurers/references/028db4d1cd-knight_texture.png",
-      "bytes": 12914,
-      "sha256": "028db4d1cd8b3471e6ba21686515abd4e36ae582f8b314b71ad2ab1fb5453b12"
-    },
-    {
-      "url": "/models/resources/kaykit-adventurers/references/9ef9672e93-mage_texture.png",
-      "bytes": 14740,
-      "sha256": "9ef9672e93b231fc4e0e19238edfae3be22513aaf634df1898f45842ce6e4b5f"
-    },
-    {
-      "url": "/models/resources/kaykit-adventurers/references/639cd0ba51-ranger_texture.png",
-      "bytes": 13248,
-      "sha256": "639cd0ba5106fbdf65370b52b9290091d3bd92fe267693abc8dc474471bb800f"
-    },
-    {
-      "url": "/models/resources/kaykit-adventurers/references/2e2fc741e2-rogue_texture.png",
-      "bytes": 15026,
-      "sha256": "2e2fc741e20e7e2c85b176c8143b49b769bca0d2ed1a1cfc1807a758a0e4d3e1"
-    },
-    {
-      "url": "/models/resources/kaykit-adventurers/references/8f8a94e33f-barbarian.png",
-      "bytes": 634755,
-      "sha256": "8f8a94e33f1e366313a91260db42d23b58861d3ba6bad1d627b0b2db4691d228"
-    },
-    {
-      "url": "/models/resources/kaykit-adventurers/references/0e52e18a79-barbarian_Large.png",
-      "bytes": 948636,
-      "sha256": "0e52e18a7915c9bfd08ed9d45482a20c9a6a6f8658018f9de6f015440914029e"
-    },
-    {
-      "url": "/models/resources/kaykit-adventurers/references/96f1965722-druid.png",
-      "bytes": 742457,
-      "sha256": "96f196572282816d798fa34fc2485e963d79b58d666b02ac24170adf7c476954"
-    },
-    {
-      "url": "/models/resources/kaykit-adventurers/references/5af877d293-engineer.png",
-      "bytes": 798817,
-      "sha256": "5af877d2931c279f7fc2bf574c006e0d8873c6e646029b885286c91d3c1d15c4"
-    },
-    {
-      "url": "/models/resources/kaykit-adventurers/references/4f4b130928-knight.png",
-      "bytes": 806330,
-      "sha256": "4f4b130928020e0303ad5fe5fd261deac9d38f7e86b52b08cc92ad19fae74710"
-    },
-    {
-      "url": "/models/resources/kaykit-adventurers/references/c498542aab-mage.png",
-      "bytes": 626427,
-      "sha256": "c498542aabe04830cf371d5c41b7c4ae8219ab8a9966a8ad6730e26db241a9d8"
-    },
-    {
-      "url": "/models/resources/kaykit-adventurers/references/8ef51a6d39-ranger.png",
-      "bytes": 1377076,
-      "sha256": "8ef51a6d398b2f07b99c310d8533b2ca8fbc9f7086df150d3e098728e828ac00"
-    },
-    {
-      "url": "/models/resources/kaykit-adventurers/references/c3984ea2c5-rogue.png",
-      "bytes": 627469,
-      "sha256": "c3984ea2c5ef17c9dfdb922bf4fa75f80224bb6a30742bf2ec8c4ec364826351"
-    },
-    {
-      "url": "/models/resources/kaykit-adventurers/references/57270428cb-contents.png",
-      "bytes": 1540165,
-      "sha256": "57270428cb4a7ebf60bac83d5c18093baa8ec28d573f2780b54c3678b52d471d"
     },
     {
       "url": "/models/resources/kaykit-furniture/LICENSE.txt",
@@ -239481,21 +239176,6 @@
       "sha256": "e18bad66ad227a4a374fd58fbe6870a73c0f3f3687cb363506e0d77e07964066"
     },
     {
-      "url": "/models/resources/kaykit-furniture/references/de62db37a8-furniturebits_texture.png",
-      "bytes": 15605,
-      "sha256": "de62db37a80d1801c3d9eb674890ae04b04469e0c149481a51fa250562c628dc"
-    },
-    {
-      "url": "/models/resources/kaykit-furniture/references/5524c65ccb-contents.png",
-      "bytes": 948078,
-      "sha256": "5524c65ccb1434e7ed342e8c42e0f12eaebca5ae412a2ff45a6ea1684fd14311"
-    },
-    {
-      "url": "/models/resources/kaykit-furniture/references/aea14ec7b1-sample.png",
-      "bytes": 759348,
-      "sha256": "aea14ec7b1ea04a9bf7d3407801a56c0f9c4c985fc41565536a749e122bf8acf"
-    },
-    {
       "url": "/models/resources/kaykit-city/LICENSE.txt",
       "bytes": 853,
       "sha256": "9d9a85d52902b2df8025805162cf83f165226d4277d627d1b96472cefe33adb9"
@@ -239914,23 +239594,8 @@
       "url": "/models/resources/kaykit-city/KayKit_City_Builder_Bits_1.0_FREE/Assets/gltf/watertower.bin",
       "bytes": 8268,
       "sha256": "384bc04add6c6fb56202e16688e375e4ad22739d46f37cd427e81087ffc192f6"
-    },
-    {
-      "url": "/models/resources/kaykit-city/references/6d2d9a5a13-citybits_texture.png",
-      "bytes": 19885,
-      "sha256": "6d2d9a5a13bce32209cd8c04572ab170504d68f34b1519165c9b0c41871e235b"
-    },
-    {
-      "url": "/models/resources/kaykit-city/references/b71259e1ad-contents.png",
-      "bytes": 1107356,
-      "sha256": "b71259e1adcfc9dea57fd8fbb3ecbf930b5bc12551f149c6b203978c9b4834d9"
-    },
-    {
-      "url": "/models/resources/kaykit-city/references/5c21e19a36-sample.png",
-      "bytes": 1120281,
-      "sha256": "5c21e19a367b43624ef2ccd2188175db027ecd083d1ff3ce86a41bad98c645fb"
     }
   ],
-  "bytes": 55207250,
+  "bytes": 42764728,
   "maxBytes": 67108864
 }
