@@ -6,6 +6,7 @@ import { venueGeometry, openVenue } from "@/lib/city/footprints";
 import { sceneryTrees, sceneryLamps, streetProps, venueSceneryPose } from "@/lib/city/scenery";
 import { characterShot } from "@/lib/city/cinematography";
 import { groundElevation } from "@/lib/city/ground";
+import {HOME_ANCHORS} from "../../../lib/city/homes";
 import { resolveModel } from "@/lib/city/asset-bindings";
 import { createPeople } from "./people";
 import { createAmbience } from "./ambience";
@@ -569,6 +570,10 @@ export function createCity(
   people.setQuality(input().quality);
   sceneDetail.apply(scene, input().quality);
   const modelActors = createModelActors(scene, assets);
+  // Ground paint marks real generated doors; it adds no solid obstacle.
+  const homeMarkers=new THREE.InstancedMesh(new THREE.RingGeometry(4,5,12),new THREE.MeshBasicMaterial({color:'#5e9e90',transparent:true,opacity:.23,depthWrite:false}),HOME_ANCHORS.length),homeDummy=new THREE.Object3D();
+  HOME_ANCHORS.forEach((anchor,index)=>{homeDummy.position.set(anchor.point[0],groundElevation(...anchor.point)+.035,anchor.point[1]);homeDummy.rotation.x=-Math.PI/2;homeDummy.updateMatrix();homeMarkers.setMatrixAt(index,homeDummy.matrix);});
+  homeMarkers.instanceMatrix.needsUpdate=true;scene.add(homeMarkers);host.dataset.homeDoors=String(HOME_ANCHORS.length);
   host.dataset.assetActors = String(modelActors.ids.size);
   const trafficBody = new THREE.InstancedMesh(
       boxGeo,
@@ -845,6 +850,7 @@ export function createCity(
     contactShadows.instanceMatrix.needsUpdate = true;
     fauna.draw(groundAnimals, seconds, dt, world.paused);
     host.dataset.animalPositions = JSON.stringify(groundAnimals.map(a => ({ id: a.id, species: a.species, position: a.position })));
+    host.dataset.homeTargets=JSON.stringify(actors.filter(a=>a.homeAnchor).map(a=>({id:a.id,target:a.homeAnchor,position:a.position})));
     if (current) {
       ring.position.set(current.position[0], 2, current.position[1]);
       if (following) {

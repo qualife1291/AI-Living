@@ -24,6 +24,7 @@ import { Osm3D } from "@/components/city/Osm3D";
 import { InteriorView } from "@/components/city/InteriorView";
 import { addressFor } from "@/lib/living/identity";
 import { householdFor } from "@/lib/living/households";
+import {homeAnchor} from "@/lib/city/homes";
 import { lifeStory } from "@/lib/city/lifestory";
 import { PetCare } from "@/components/characters/PetCare";
 import { Wardrobe } from "@/components/characters/Wardrobe";
@@ -173,6 +174,7 @@ export default function Page() {
     agent = world?.living?.learning?.[selected];
   const anStory = world ? lifeStory(world, "an", Date.parse(data!.serverNow)) : null;
   const homeGroup = householdFor(world?.living,person?.id ?? selected);
+  const selectedHome=homeAnchor(homeGroup?.home.anchorId);
   const titles: Record<Exclude<Panel, null>, string> = {
     people: "Cư dân trong thành phố",
     context: "Nhịp sống & bối cảnh",
@@ -329,7 +331,7 @@ export default function Page() {
               <p>Hỏi chuyện, xem ký ức hoặc chọn một cư dân để theo dõi.</p>
               {world && <PetCare world={world} refresh={load} />}
               {story && <details className="life-story"><summary><b>{person?.name} · {story.age} tuổi mô phỏng</b><small>{story.chapter} · {story.samples} trải nghiệm</small></summary><p>{story.ageGroup} · {story.gender === "female" ? "Nữ" : story.gender === "male" ? "Nam" : "Chưa chọn giới tính"}{selected !== "an" && anStory ? ` · An có thể gọi: ${addressFor(anStory.age, story.age, story.gender)}` : ""}</p><p>Đến xóm ngày {story.arrivedOn} · {story.days} ngày mô phỏng · {story.samples} trải nghiệm đã học.</p><p className="muted">Tuổi khởi đầu hư cấu {story.baseline}; mỗi năm mô phỏng tăng một tuổi. Không suy ra tuổi từ số lượt học.</p><h4>Những điều còn nhớ</h4><ol>{story.memories.slice(-5).map((m, i) => <li key={i}>{m}</li>)}</ol>{!story.memories.length && <p>Chưa có ký ức được lưu.</p>}</details>}
-              {homeGroup && <div className="resident-home"><b>{homeGroup.home.label}</b><span>{homeGroup.home.place} · {homeGroup.members.length} người ở chung</span><small>{homeGroup.members.map(r => r.name).join(" · ")}</small></div>}
+              {homeGroup && <div className="resident-home"><b>{homeGroup.home.label}</b><span>{homeGroup.home.address ? `${homeGroup.home.address} · ` : ""}{homeGroup.home.place} · {homeGroup.members.length} người ở chung</span><small>{homeGroup.members.map(r => r.name).join(" · ")}</small>{selectedHome && <button onClick={()=>{setMode("city");setNavigation({x:selectedHome.point[0],y:selectedHome.point[1],key:Date.now()});setPanel(null);}}>Xem nhà</button>}</div>}
               {person && world && <Conversation key={person.id} actorId={person.id} name={person.name} paused={world.paused}/>}
               <details className="wardrobe-details">
                 <summary>Tạo hình của {person?.name ?? "An"}</summary>

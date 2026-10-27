@@ -144,7 +144,7 @@ export class WalkDirector {
       return actor.kind === "cycle" || actor.transport === "bicycle" && (actor.walking || !!walker && walker.radius === BICYCLE_RADIUS && distance(walker.position, walker.goal) > .1);
     };
     const desiredRadius = (actor: Actor) => wantsBicycle(actor) ? BICYCLE_RADIUS : WALK_RADIUS;
-    const records = spaced.map((actor, i) => ({ actor, requested: nearestBodyPoint(games.get(actor.id)?.goal ?? petWalk.goals.get(actor.id) ?? destinations[i].position, desiredRadius(actor)) })).sort((a, b) => a.actor.id.localeCompare(b.actor.id));
+    const records = spaced.map((actor, i) => ({ actor, requested: nearestBodyPoint(games.get(actor.id)?.goal ?? petWalk.goals.get(actor.id) ?? actor.homeAnchor ?? destinations[i].position, desiredRadius(actor)) })).sort((a, b) => a.actor.id.localeCompare(b.actor.id));
     const activeIds = new Set(records.map(record => record.actor.id));
     const reserved: { position: Point; radius: number }[] = [];
     const goals = new Map<string, Point>();

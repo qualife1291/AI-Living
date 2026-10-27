@@ -259,6 +259,7 @@ export type Actor = {
   path: Point[];
   transport?: "walk" | "bicycle" | "motorbike" | "bus" | "metro";
   stationaryFor?: number;
+  homeAnchor?: Point;
   tagGame?: import("./city/tag-game").TagRole;
   petOwnerId?: string;
   bicycle?: import("./city/bicycle").BicycleMotion;

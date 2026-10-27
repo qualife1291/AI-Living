@@ -1,0 +1,726 @@
+{
+  "version": 1,
+  "layoutFingerprint": "fcf872fb28aa17d9b5d1d001eec3d30da415e5541e35e89fc9bd7514409fcad7",
+  "anchors": [
+    {
+      "id": "home-1610-1300-back",
+      "building": {
+        "x": 1610,
+        "z": 1300
+      },
+      "point": [
+        1610,
+        1261
+      ],
+      "address": "Nhà 01"
+    },
+    {
+      "id": "home-1610-1410-back",
+      "building": {
+        "x": 1610,
+        "z": 1410
+      },
+      "point": [
+        1610,
+        1365.5
+      ],
+      "address": "Nhà 02"
+    },
+    {
+      "id": "home-1495-1520-back",
+      "building": {
+        "x": 1495,
+        "z": 1520
+      },
+      "point": [
+        1495,
+        1482.5
+      ],
+      "address": "Nhà 03"
+    },
+    {
+      "id": "home-1380-1520-back",
+      "building": {
+        "x": 1380,
+        "z": 1520
+      },
+      "point": [
+        1380,
+        1471
+      ],
+      "address": "Nhà 04"
+    },
+    {
+      "id": "home-1265-1410-back",
+      "building": {
+        "x": 1265,
+        "z": 1410
+      },
+      "point": [
+        1265,
+        1372.5
+      ],
+      "address": "Nhà 05"
+    },
+    {
+      "id": "home-1610-1520-back",
+      "building": {
+        "x": 1610,
+        "z": 1520
+      },
+      "point": [
+        1610,
+        1476.5
+      ],
+      "address": "Nhà 06"
+    },
+    {
+      "id": "home-1265-1520-back",
+      "building": {
+        "x": 1265,
+        "z": 1520
+      },
+      "point": [
+        1265,
+        1471.5
+      ],
+      "address": "Nhà 07"
+    },
+    {
+      "id": "home-1725-1300-back",
+      "building": {
+        "x": 1725,
+        "z": 1300
+      },
+      "point": [
+        1725,
+        1260.5
+      ],
+      "address": "Nhà 08"
+    },
+    {
+      "id": "home-1725-1410-back",
+      "building": {
+        "x": 1725,
+        "z": 1410
+      },
+      "point": [
+        1725,
+        1371.5
+      ],
+      "address": "Nhà 09"
+    },
+    {
+      "id": "home-1725-1520-back",
+      "building": {
+        "x": 1725,
+        "z": 1520
+      },
+      "point": [
+        1725,
+        1476
+      ],
+      "address": "Nhà 10"
+    },
+    {
+      "id": "home-1150-1520-back",
+      "building": {
+        "x": 1150,
+        "z": 1520
+      },
+      "point": [
+        1150,
+        1477.5
+      ],
+      "address": "Nhà 11"
+    },
+    {
+      "id": "home-1840-1300-back",
+      "building": {
+        "x": 1840,
+        "z": 1300
+      },
+      "point": [
+        1840,
+        1254.5
+      ],
+      "address": "Nhà 12"
+    },
+    {
+      "id": "home-1840-1410-back",
+      "building": {
+        "x": 1840,
+        "z": 1410
+      },
+      "point": [
+        1840,
+        1371
+      ],
+      "address": "Nhà 13"
+    },
+    {
+      "id": "home-1840-1520-back",
+      "building": {
+        "x": 1840,
+        "z": 1520
+      },
+      "point": [
+        1840,
+        1475.5
+      ],
+      "address": "Nhà 14"
+    },
+    {
+      "id": "home-1035-1520-back",
+      "building": {
+        "x": 1035,
+        "z": 1520
+      },
+      "point": [
+        1035,
+        1478
+      ],
+      "address": "Nhà 15"
+    },
+    {
+      "id": "home-1955-1300-back",
+      "building": {
+        "x": 1955,
+        "z": 1300
+      },
+      "point": [
+        1955,
+        1254
+      ],
+      "address": "Nhà 16"
+    },
+    {
+      "id": "home-1955-1410-back",
+      "building": {
+        "x": 1955,
+        "z": 1410
+      },
+      "point": [
+        1955,
+        1370.5
+      ],
+      "address": "Nhà 17"
+    },
+    {
+      "id": "home-920-1300-back",
+      "building": {
+        "x": 920,
+        "z": 1300
+      },
+      "point": [
+        920,
+        1251
+      ],
+      "address": "Nhà 18"
+    },
+    {
+      "id": "home-920-1410-back",
+      "building": {
+        "x": 920,
+        "z": 1410
+      },
+      "point": [
+        920,
+        1367.5
+      ],
+      "address": "Nhà 19"
+    },
+    {
+      "id": "home-1955-1520-back",
+      "building": {
+        "x": 1955,
+        "z": 1520
+      },
+      "point": [
+        1955,
+        1475
+      ],
+      "address": "Nhà 20"
+    },
+    {
+      "id": "home-920-1520-back",
+      "building": {
+        "x": 920,
+        "z": 1520
+      },
+      "point": [
+        920,
+        1478.5
+      ],
+      "address": "Nhà 21"
+    },
+    {
+      "id": "home-2070-1410-back",
+      "building": {
+        "x": 2070,
+        "z": 1410
+      },
+      "point": [
+        2070,
+        1364.5
+      ],
+      "address": "Nhà 22"
+    },
+    {
+      "id": "home-2070-1520-back",
+      "building": {
+        "x": 2070,
+        "z": 1520
+      },
+      "point": [
+        2070,
+        1481
+      ],
+      "address": "Nhà 23"
+    },
+    {
+      "id": "home-805-1410-back",
+      "building": {
+        "x": 805,
+        "z": 1410
+      },
+      "point": [
+        805,
+        1368
+      ],
+      "address": "Nhà 24"
+    },
+    {
+      "id": "home-1150-750-back",
+      "building": {
+        "x": 1150,
+        "z": 750
+      },
+      "point": [
+        1150,
+        703.5
+      ],
+      "address": "Nhà 25"
+    },
+    {
+      "id": "home-805-1520-back",
+      "building": {
+        "x": 805,
+        "z": 1520
+      },
+      "point": [
+        805,
+        1472.5
+      ],
+      "address": "Nhà 26"
+    },
+    {
+      "id": "home-920-860-back",
+      "building": {
+        "x": 920,
+        "z": 860
+      },
+      "point": [
+        920,
+        821
+      ],
+      "address": "Nhà 27"
+    },
+    {
+      "id": "home-1035-750-back",
+      "building": {
+        "x": 1035,
+        "z": 750
+      },
+      "point": [
+        1035,
+        704
+      ],
+      "address": "Nhà 28"
+    },
+    {
+      "id": "home-2185-1520-back",
+      "building": {
+        "x": 2185,
+        "z": 1520
+      },
+      "point": [
+        2185,
+        1480.5
+      ],
+      "address": "Nhà 29"
+    },
+    {
+      "id": "home-690-1520-back",
+      "building": {
+        "x": 690,
+        "z": 1520
+      },
+      "point": [
+        690,
+        1473
+      ],
+      "address": "Nhà 30"
+    },
+    {
+      "id": "home-920-750-back",
+      "building": {
+        "x": 920,
+        "z": 750
+      },
+      "point": [
+        920,
+        710
+      ],
+      "address": "Nhà 31"
+    },
+    {
+      "id": "home-2300-1300-back",
+      "building": {
+        "x": 2300,
+        "z": 1300
+      },
+      "point": [
+        2300,
+        1259
+      ],
+      "address": "Nhà 32"
+    },
+    {
+      "id": "home-2300-1520-back",
+      "building": {
+        "x": 2300,
+        "z": 1520
+      },
+      "point": [
+        2300,
+        1480
+      ],
+      "address": "Nhà 33"
+    },
+    {
+      "id": "home-575-1300-back",
+      "building": {
+        "x": 575,
+        "z": 1300
+      },
+      "point": [
+        575,
+        1258
+      ],
+      "address": "Nhà 34"
+    },
+    {
+      "id": "home-575-1410-back",
+      "building": {
+        "x": 575,
+        "z": 1410
+      },
+      "point": [
+        575,
+        1369
+      ],
+      "address": "Nhà 35"
+    },
+    {
+      "id": "home-2300-1080-back",
+      "building": {
+        "x": 2300,
+        "z": 1080
+      },
+      "point": [
+        2300,
+        1038
+      ],
+      "address": "Nhà 36"
+    },
+    {
+      "id": "home-575-1520-back",
+      "building": {
+        "x": 575,
+        "z": 1520
+      },
+      "point": [
+        575,
+        1473.5
+      ],
+      "address": "Nhà 37"
+    },
+    {
+      "id": "home-690-860-back",
+      "building": {
+        "x": 690,
+        "z": 860
+      },
+      "point": [
+        690,
+        815.5
+      ],
+      "address": "Nhà 38"
+    },
+    {
+      "id": "home-575-970-back",
+      "building": {
+        "x": 575,
+        "z": 970
+      },
+      "point": [
+        575,
+        932.5
+      ],
+      "address": "Nhà 39"
+    },
+    {
+      "id": "home-2415-1300-back",
+      "building": {
+        "x": 2415,
+        "z": 1300
+      },
+      "point": [
+        2415,
+        1258.5
+      ],
+      "address": "Nhà 40"
+    },
+    {
+      "id": "home-2415-1190-back",
+      "building": {
+        "x": 2415,
+        "z": 1190
+      },
+      "point": [
+        2415,
+        1142
+      ],
+      "address": "Nhà 41"
+    },
+    {
+      "id": "home-2415-1520-back",
+      "building": {
+        "x": 2415,
+        "z": 1520
+      },
+      "point": [
+        2415,
+        1474
+      ],
+      "address": "Nhà 42"
+    },
+    {
+      "id": "home-460-1300-back",
+      "building": {
+        "x": 460,
+        "z": 1300
+      },
+      "point": [
+        460,
+        1258.5
+      ],
+      "address": "Nhà 43"
+    },
+    {
+      "id": "home-460-1410-back",
+      "building": {
+        "x": 460,
+        "z": 1410
+      },
+      "point": [
+        460,
+        1363
+      ],
+      "address": "Nhà 44"
+    },
+    {
+      "id": "home-575-860-back",
+      "building": {
+        "x": 575,
+        "z": 860
+      },
+      "point": [
+        575,
+        816
+      ],
+      "address": "Nhà 45"
+    },
+    {
+      "id": "home-2415-1080-back",
+      "building": {
+        "x": 2415,
+        "z": 1080
+      },
+      "point": [
+        2415,
+        1037.5
+      ],
+      "address": "Nhà 46"
+    },
+    {
+      "id": "home-460-1520-back",
+      "building": {
+        "x": 460,
+        "z": 1520
+      },
+      "point": [
+        460,
+        1479.5
+      ],
+      "address": "Nhà 47"
+    },
+    {
+      "id": "home-575-750-back",
+      "building": {
+        "x": 575,
+        "z": 750
+      },
+      "point": [
+        575,
+        705
+      ],
+      "address": "Nhà 48"
+    },
+    {
+      "id": "home-1150-310-back",
+      "building": {
+        "x": 1150,
+        "z": 310
+      },
+      "point": [
+        1150,
+        267
+      ],
+      "address": "Nhà 49"
+    },
+    {
+      "id": "home-2530-1300-back",
+      "building": {
+        "x": 2530,
+        "z": 1300
+      },
+      "point": [
+        2530,
+        1252.5
+      ],
+      "address": "Nhà 50"
+    },
+    {
+      "id": "home-2530-1410-back",
+      "building": {
+        "x": 2530,
+        "z": 1410
+      },
+      "point": [
+        2530,
+        1369
+      ],
+      "address": "Nhà 51"
+    },
+    {
+      "id": "home-2530-1190-back",
+      "building": {
+        "x": 2530,
+        "z": 1190
+      },
+      "point": [
+        2530,
+        1141.5
+      ],
+      "address": "Nhà 52"
+    },
+    {
+      "id": "home-2530-1520-back",
+      "building": {
+        "x": 2530,
+        "z": 1520
+      },
+      "point": [
+        2530,
+        1473.5
+      ],
+      "address": "Nhà 53"
+    },
+    {
+      "id": "home-460-860-back",
+      "building": {
+        "x": 460,
+        "z": 860
+      },
+      "point": [
+        460,
+        822
+      ],
+      "address": "Nhà 54"
+    },
+    {
+      "id": "home-2530-1080-back",
+      "building": {
+        "x": 2530,
+        "z": 1080
+      },
+      "point": [
+        2530,
+        1037
+      ],
+      "address": "Nhà 55"
+    },
+    {
+      "id": "home-345-1520-back",
+      "building": {
+        "x": 345,
+        "z": 1520
+      },
+      "point": [
+        345,
+        1480
+      ],
+      "address": "Nhà 56"
+    },
+    {
+      "id": "home-460-750-back",
+      "building": {
+        "x": 460,
+        "z": 750
+      },
+      "point": [
+        460,
+        705.5
+      ],
+      "address": "Nhà 57"
+    },
+    {
+      "id": "home-1150-200-back",
+      "building": {
+        "x": 1150,
+        "z": 200
+      },
+      "point": [
+        1150,
+        162.5
+      ],
+      "address": "Nhà 58"
+    },
+    {
+      "id": "home-345-860-back",
+      "building": {
+        "x": 345,
+        "z": 860
+      },
+      "point": [
+        345,
+        822.5
+      ],
+      "address": "Nhà 59"
+    },
+    {
+      "id": "home-460-640-back",
+      "building": {
+        "x": 460,
+        "z": 640
+      },
+      "point": [
+        460,
+        601
+      ],
+      "address": "Nhà 60"
+    }
+  ]
+}

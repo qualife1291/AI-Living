@@ -5,6 +5,7 @@ import {DialogueGrammar} from "./dialogue-grammar.ts";
 import {addressTemplate,pronounsFor} from "./identity.ts";
 import {hasDialogue,rememberDialogue} from "./dialogue-pool.ts";
 import {lifeStory} from "../city/lifestory.ts";
+import {homeAnchor} from "../city/homes.ts";
 import { assignHomes } from "./households.ts";
 import { DEFAULT_PET_OWNERS } from "./pets.ts";
 import { updateAnimalLearning } from "./animal-learning.ts";
@@ -458,6 +459,7 @@ export function crowdAt(
   limit = 60,
 ): Actor[] {
   const seconds = computeSimMs(world.born, world.clock, now) / 1000;
+  const assignedHomes=state.residents.some(r=>!r.home?.anchorId)?new Map(assignHomes(state.residents).map(r=>[r.id,r.home])):undefined;
   const visible = state.residents.slice(0, Math.max(1, Math.min(240, limit)));
   const partner = state.residents.find(
     (r) => r.id === world.livingTurn?.residentId,
@@ -501,6 +503,10 @@ export function crowdAt(
       actor.position[0] + ((jitter % 9) - 4) * 7,
       actor.position[1] + ((Math.floor(jitter / 9) % 7) - 3) * 5,
     ];
+    if(actor.location==='Khu dân cư'&&actor.kind==='rest') {
+      const anchor=homeAnchor((assignedHomes?.get(r.id)??r.home)?.anchorId);
+      if(anchor)actor.homeAnchor=[...anchor.point];
+    }
     return actor;
   });
 }

@@ -125,5 +125,8 @@
   ],
   [
     "scripts/test-dialogue-pool.mjs"
+  ],
+  [
+    "scripts/test-home-anchors.mjs"
   ]
 ]
