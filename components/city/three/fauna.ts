@@ -10,19 +10,21 @@ export function createFauna(scene: THREE.Scene, geometry: ReturnType<typeof crea
   const shapes = { round: geometry.round, head: geometry.head, limb: geometry.limb, box: geometry.box, cone: new THREE.ConeGeometry(.5, 1, 4) };
   type Shape = keyof typeof shapes;
   const meshes = {} as Record<Shape, THREE.InstancedMesh<THREE.BufferGeometry, THREE.MeshPhongMaterial>>;
-  for (const key of Object.keys(shapes) as Shape[]) { const mesh = new THREE.InstancedMesh(shapes[key], material, 128); mesh.count = 0; mesh.frustumCulled = false; mesh.instanceMatrix.setUsage(THREE.DynamicDrawUsage); scene.add(mesh); meshes[key] = mesh; }
+  for (const key of Object.keys(shapes) as Shape[]) { const mesh = new THREE.InstancedMesh(shapes[key], material, 128); mesh.count = 0; mesh.frustumCulled = false; mesh.userData.animalIds = []; mesh.instanceMatrix.setUsage(THREE.DynamicDrawUsage); scene.add(mesh); meshes[key] = mesh; }
   const dummy = new THREE.Object3D(), root = new THREE.Matrix4(), result = new THREE.Matrix4(), color = new THREE.Color();
-  const states = new Map<string, { x: number; z: number; yaw: number; phase: number; weight: number }>();
+  const states = new Map<string, { x: number; z: number; yaw: number; phase: number; weight: number; altitude: number }>();
+  let currentId = "";
   const put = (shape: Shape, x: number, y: number, z: number, w: number, h: number, d: number, tint: string, rx = 0, rz = 0) => {
     const mesh = meshes[shape], at = mesh.count++; if (at >= 128) throw new RangeError("Animal part budget exceeded");
-    dummy.position.set(x, y, z); dummy.scale.set(w, h, d); dummy.rotation.set(rx, 0, rz); dummy.updateMatrix(); result.multiplyMatrices(root, dummy.matrix); mesh.setMatrixAt(at, result); mesh.setColorAt(at, color.set(tint));
+    dummy.position.set(x, y, z); dummy.scale.set(w, h, d); dummy.rotation.set(rx, 0, rz); dummy.updateMatrix(); result.multiplyMatrices(root, dummy.matrix); mesh.setMatrixAt(at, result); mesh.setColorAt(at, color.set(tint)); mesh.userData.animalIds[at] = currentId;
   };
   return {
     draw(animals: Animal[], seconds: number, dt: number, paused: boolean) {
-      for (const mesh of Object.values(meshes)) mesh.count = 0;
+      for (const mesh of Object.values(meshes)) { mesh.count = 0; mesh.userData.animalIds.length = 0; }
       for (const animal of animals) {
+        currentId = animal.id;
         let state = states.get(animal.id);
-        if (!state) { state = { x: animal.position[0], z: animal.position[1], yaw: .4, phase: 0, weight: 0 }; states.set(animal.id, state); }
+        if (!state) { state = { x: animal.position[0], z: animal.position[1], yaw: .4, phase: 0, weight: 0, altitude: 0 }; states.set(animal.id, state); }
         const dx = animal.position[0] - state.x, dz = animal.position[1] - state.z, distance = Math.hypot(dx, dz);
         if (!paused) {
           const moving = animal.walking && distance > .001;
@@ -30,17 +32,18 @@ export function createFauna(scene: THREE.Scene, geometry: ReturnType<typeof crea
           const alpha = 1 - Math.exp(-8 * Math.max(0, Math.min(.15, dt)));
           state.yaw += Math.atan2(Math.sin(wanted - state.yaw), Math.cos(wanted - state.yaw)) * alpha;
           state.weight += ((moving ? 1 : 0) - state.weight) * alpha;
+          state.altitude += ((animal.species === "bird" && moving ? 24 : 0) - state.altitude) * alpha;
           state.phase = (state.phase + Math.min(3, distance) * Math.PI * 2 / 9) % (Math.PI * 2);
           state.x = animal.position[0]; state.z = animal.position[1];
         }
         const floor = groundElevation(...animal.position), bird = animal.species === "bird", dog = animal.species === "dog";
-        dummy.position.set(animal.position[0], floor + (bird && animal.walking ? 24 : .05), animal.position[1]); dummy.rotation.set(0, state.yaw, 0); dummy.scale.setScalar(bird ? .55 : dog ? .65 : .55); dummy.updateMatrix(); root.copy(dummy.matrix);
+        dummy.position.set(animal.position[0], floor + state.altitude + .05, animal.position[1]); dummy.rotation.set(0, state.yaw, 0); dummy.scale.setScalar(bird ? .55 : dog ? .65 : .55); dummy.updateMatrix(); root.copy(dummy.matrix);
         if (bird) {
           for (let n = 0; n < 3; n++) {
             const x = (n - 1) * 3, z = n % 2 * 3;
             put("head", x, 1.5, z, 1.8, 2.2, 3, "#ad9576"); put("head", x, 2.7, z + 1, 1.7, 1.7, 1.8, "#9a8269");
             put("cone", x, 2.6, z + 2.1, .7, 1.2, .7, "#ddb36b", Math.PI / 2);
-            for (const sign of [-1, 1]) { put("round", x + sign, 1.9, z, 1, .4, 2.5, "#6d7d7c", 0, sign * (animal.walking ? Math.sin(seconds * 15 + n) * .65 : .1)); put("box", x + sign * .5, 2.9, z + 1.6, .3, .35, .3, "#243e43"); }
+            for (const sign of [-1, 1]) { put("round", x + sign, 1.9, z, 1, .4, 2.5, "#6d7d7c", 0, sign * (Math.sin(seconds * 15 + n) * .65 * state.weight + .1 * (1 - state.weight))); put("box", x + sign * .5, 2.9, z + 1.6, .3, .35, .3, "#243e43"); }
             put("round", x, 1.4, z - 1.7, .8, .4, 2, "#607573", -.25);
           }
           continue;

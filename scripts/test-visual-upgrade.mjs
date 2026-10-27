@@ -89,9 +89,19 @@ for(let frame=0;frame<=1800;frame++) {
 }
 assert.ok(safe.every(a=>a.stationaryFor>2&&Math.hypot(a.position[0]-2700,a.position[1]-1700)<45),'Mixed people/animals reach separate resting goals');
 const pets=animals.map(a=>({...a,...safe.find(s=>s.id===a.id)}));
-fauna.draw(pets,60,1/30,false);
+const flyingPets=pets.map(p=>p.species==='bird'?{...p,walking:true,position:[p.position[0]+1,p.position[1]]}:p);
+fauna.draw(pets,60,1/30,false);fauna.draw(flyingPets,60.1,.1,false);
+for(const mesh of animalScene.children) {
+ mesh.geometry.computeBoundingBox();const bounds=mesh.geometry.boundingBox;
+ for(let i=0;i<mesh.count;i++) {
+  mesh.getMatrixAt(i,matrix);const pet=flyingPets.find(a=>a.id===mesh.userData.animalIds[i]);
+  for(const x of [bounds.min.x,bounds.max.x])for(const y of [bounds.min.y,bounds.max.y])for(const z of [bounds.min.z,bounds.max.z]) {
+   const point=new Vector3(x,y,z).applyMatrix4(matrix);assert.ok(Math.hypot(point.x-pet.position[0],point.z-pet.position[1])<=4.8,`${pet.species} model exits the reserved pedestrian disc`);
+  }
+ }
+}
 const stillAnimals=animalScene.children.map(mesh=>[...mesh.instanceMatrix.array]);
-fauna.draw(pets,60,1/30,true);assert.deepEqual(animalScene.children.map(mesh=>[...mesh.instanceMatrix.array]),stillAnimals,'Animal body/tail/wings freeze with simulation pause');
+fauna.draw(flyingPets,60.1,.1,true);assert.deepEqual(animalScene.children.map(mesh=>[...mesh.instanceMatrix.array]),stillAnimals,'Animal body/tail/wings freeze with simulation pause');
 assert.ok(animalScene.children.every(mesh=>mesh.instanceMatrix.array.every(Number.isFinite)));
 assert.equal(fauna.stats.policies,3,'A visible flock must not invent additional learned agents');
 const animalMaterials=new Set(animalScene.children.map(mesh=>mesh.material));for(const mat of animalMaterials)mat.dispose();
