@@ -129,6 +129,7 @@ try{
  assert.equal(JSON.parse(separate.data)['learn-trade'].samples,1);assert.equal(separate.updated_revision,fitted.policyRevision);
  const policyResponse=await mf.dispatchFetch('http://localhost/api/living/learning');assert.equal(policyResponse.status,200);
  assert.equal((await policyResponse.json()).models[learner.id].linear['learn-trade'].samples,1,'Learning API hydrates the exact posterior');
+ await db.prepare('CREATE TABLE IF NOT EXISTS context_cache(id TEXT PRIMARY KEY,data TEXT,expires_at INTEGER)').run();
  const lightResponse=await mf.dispatchFetch('http://localhost/api/world?compact=1');assert.equal(lightResponse.status,200);
  assert.equal((await lightResponse.json()).world.living.learning[learner.id].linear,undefined,'Polling world excludes normalized matrices');
  assert.deepEqual(learned.living.residents[0].memories.slice(0,oldMemories.length),oldMemories);

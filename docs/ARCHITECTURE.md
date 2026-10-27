@@ -17,7 +17,7 @@ Planner/rules hoặc local LLM sinh kế hoạch và hội thoại có nguồn r
 | UI/framework | TypeScript5.9.3 strict, React19.2.6, Vinext1.0.0-beta.5/Vite8.0.13; Next/eslint-config-next16.4.1 theo lockfile |
 | 3D | Three.js0.186.1/WebGL2, GLTFLoader, SkeletonUtils, InstancedMesh/LOD; 41modelKenney +239Gobkit/KayKit canonical CC0 |
 | API/schema | Worker nodejs_compat, Zod4.6.6; endpoint mutations có origin/schema/body limits và owner guard |
-| Persistence | D1 SQLite, Drizzle0.45.2; 13bảng trong db/schema.ts, migration0000–0006 (0004reconciliation) |
+| Persistence | D1 SQLite, Drizzle0.45.2; 14bảng trong db/schema.ts, migration0000–0007 (0004reconciliation) |
 | AI local | llama.cpp/CPU opt-in; rule fallback, narrative guard, không cần paid API để chạy ứng dụng |
 | Production | Sites project cũ, owner-private; native credential/deploy/readback theo PRODUCTION_RUNBOOK |
 
@@ -32,7 +32,7 @@ Planner/rules hoặc local LLM sinh kế hoạch và hội thoại có nguồn r
 | lib/city/traffic.ts, tag-game.ts, pet-walk.ts | Giao thông/ghép cặp/mục tiêu companion; giữ collision chung |
 | lib/living/engine.ts, social-scheduler.ts, activities.ts | Population/routine/plan5bước, schedulerNPC20s simulation/pulse, không sinh reward từ activity bị hủy |
 | identity.ts, households.ts, pets.ts | Metadata snapshot additive, ID/history ổn định, household mới tối đa4/người chăm thú có CAS |
-| lib/living/social.ts, dialogue-grammar.ts | Lời thoại đến đúng nơi, nguồn AI/script, chống lặp và thời gian đọc; chưa durable pool đa viewer |
+| lib/living/social.ts, dialogue-grammar.ts | Lời thoại đến đúng nơi, nguồn AI/script, chống lặp và thời gian đọc; server pool cho lượt An + browser hash pool bền qua F5; reading/occupancy còn viewer-local |
 | lib/living/learning.ts, animal-learning.ts | Outcome learning theo luật; không phải fine-tune LLM hoặc AI động vật chuyên biệt |
 | lib/store.ts, apply-event.ts, living/service.ts | Snapshot+episode/living history, revision/idempotency, không reset DB |
 | lib/training.ts, living/director.ts | Context/data mẫu/reflection và guard; không coi điểm heuristic là chứng minh chất lượng model |

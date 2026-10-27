@@ -27,6 +27,7 @@
     "assets:maintain": "node scripts/maintain-assets.mjs --write",
     "assets:check": "python3 scripts/import-kenney.py --check && python3 scripts/import-kenney.py --self-test && node scripts/maintain-assets.mjs --self-test && python3 scripts/import-resource-packs.py --check",
     "simulate:living": "node scripts/test-scenario-benchmarks.mjs",
+    "benchmark:policies": "node scripts/benchmark-policies.mjs",
     "prebuild": "node scripts/precompute-home-anchors.mjs && node scripts/precompute-walk-routes.mjs",
     "test:diagnostics": "node scripts/test-diagnostics-fixes.mjs",
     "test:phase-b": "node scripts/test-phase-b.mjs",

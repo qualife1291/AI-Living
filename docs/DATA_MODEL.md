@@ -1,6 +1,6 @@
 # Mô hình dữ liệu hiện hành
 
-Nguồn: db/schema.ts, lib/world.ts, lib/event-schema.ts, lib/living/schema.ts. Source có13bảng; số bảng/migration production phải xác minh live, không suy ra từ schema local.
+Nguồn: db/schema.ts, lib/world.ts, lib/event-schema.ts, lib/living/schema.ts. Source có14bảng; số bảng/migration production phải xác minh live, không suy ra từ schema local.
 
 ## D1 và migration append-only
 
@@ -19,6 +19,7 @@ Nguồn: db/schema.ts, lib/world.ts, lib/event-schema.ts, lib/living/schema.ts. 
 | site_metrics | Bộ đếm aggregate | 0005 |
 | visitor_exchanges | Trao đổi visitor có ID/actor/time/data | 0005 |
 | client_logs | Telemetry giới hạn/rate/retention, indexcreated_at | 0006 |
+| learning_policies | Ma trận LinUCB theo actor, exact revision tham chiếu trong snapshot | 0007 |
 
 0004 là reconciliation schema cho lịch sử0000–0003; không đăng ký lại các SQL đã áp dụng hoặc sửa migration cũ. Dùng setup-local.mjs/Drizzle journal. Backup trước migration/repair production. memories/commitments có schema nhưng luồng sống vẫn giữ nhiều dữ liệu trong snapshot; không coi các bảng đó đã được khai thác đầy đủ.
 
@@ -28,9 +29,9 @@ Core event API giữ ba ID an/binh/chi. LivingState có NPC neighbor-ID riêng, 
 
 STEP_KINDS có16giá trị: work,eat,rest,social,garden,read,play,drink,run,jump,tag,cycle,exercise,walk-pet,shop,study. Plan lưu createdAt/pausedMs/from/originPath/simStartedAt/steps/transport/generator; originPath giữ chuyển tiếp liên tục từ vị trí projection cũ. Render ground có thể chậm hơn projection khi bị cản.
 
-Resident giữ id/name/roleId/color/arrivedOn/familiarity/memories/plan. home gồm householdId/label/place; identity gồm ageAtArrival/gender/previousNames. Backfill chỉ thêm metadata, đổi đúng tên tự sinh có alias; không thay customname/ID/history/plan. Household là nhóm ở, chưa phải quan hệ cha mẹ/con hoặc nhà vật lý. petOwners là map animal-ID→resident-ID; explicit unassignment được giữ.
+Resident giữ id/name/roleId/color/arrivedOn/familiarity/memories/plan. home gồm householdId/label/place và anchorId/address optional; identity gồm ageAtArrival/gender/previousNames. Backfill chỉ thêm metadata, đổi đúng tên tự sinh có alias; không thay customname/ID/history/plan. Household là nhóm ở, chưa phải quan hệ cha mẹ/con; 60 cửa riêng đã có ground routing, chưa có nội thất. petOwners là map animal-ID→resident-ID; explicit unassignment được giữ.
 
-LivingState còn có catalog/needs/skills/learning/experiences/appearances/animalLearning/socialSchedule. experience snapshot giới hạn200mục, archiveDB giữ dữ liệu đầy đủ. Agent policy hiện có meanReward/trials/outcome; chuẩn bị LinUCB phải giữ tabular cũ, context-at-choice và no-double-credit. Animal policy giữ ba loài cũ, không tự gán kỹ năng LLM.
+LivingState còn có catalog/needs/skills/learning/experiences/appearances/animalLearning/socialSchedule. experience snapshot giới hạn200mục, archiveDB giữ dữ liệu đầy đủ. Agent có meanReward/trials/outcome và posterior LinUCB thật. Ma trận chuyển vào learning_policies trong cùng CAS/nonce transaction, snapshot giữ policyRevision cùng needs/tabular/memories. Đọc planner/learning hydrate đúng revision; world polling không đọc bảng policy. Legacy inline vẫn dùng trước migration; dữ liệu lỗi/xung đột phải dừng và giữ nguyên để đối chiếu. Animal policy giữ ba loài cũ, không tự gán kỹ năng LLM.
 
 ## Bất biến
 

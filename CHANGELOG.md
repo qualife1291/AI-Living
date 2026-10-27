@@ -1,5 +1,10 @@
 # Changelog
 
+## 2026-10-28 — Policy learning riêng (source)
+- Tách ma trận LinUCB vào bảng D1 riêng bằng migration mới, giữ needs/tabular và history; ghi cùng transaction có CAS để tránh mất kết quả học.
+- World polling tải dữ liệu nhẹ hơn; learning API vẫn trả đầy đủ policy. Benchmark dùng runtime và cùng điều kiện, báo cả kết quả LinUCB chưa tốt hơn về thưởng tức thời.
+- 44 suite/check/lint/build/API local đạt; chưa migration production.
+
 ## 2026-10-28 — Nhà riêng cho nhóm cư dân (source)
 - Gán cửa và địa chỉ riêng cho nhóm ở; giữ dữ liệu nhà và lịch sử cũ. Cư dân nghỉ tại khu nhà đi về cửa qua navigation đang có.
 - Hồ sơ hiển thị địa chỉ và nút Xem nhà, camera chọn hướng tránh công trình. 60 cửa dùng một batch vẽ; chưa mở nội thất hoặc tăng dân số live.

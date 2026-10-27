@@ -33,3 +33,6 @@ Vì vậy không nhập nguyên script/metrics vào sản phẩm hoặc CHANGELO
 ## Phát hành
 
 Main đã merge work vào c83a5e3. Phiên này chỉ có cloud-onboarding tools, chưa có native Sites get_site/credential/deploy/status/DB overview. Đã yêu cầu người dùng bật lại kết nối; không tìm token cũ, không tạo Site/Cloudflare project thay thế. Chuẩn bị source sạch, gói exact-SHA và migration0006 append-only; chỉ đổi latest.json khi có deploy succeeded và readback thật.
+
+## Kết quả tiếp nối
+Home anchors đã kiểm thử: 60 cửa/địa chỉ/Xem nhà, walking/full-bike paths, desktop/mobile; xem PHASE_C_HOMES. Policy matrices tách bằng migration 0007/CAS, 44 suite + API đạt; xem PHASE_D_LEARNING. Benchmark mới import runtime thật và shared/frozen holdout đã ghi cả kết quả bất lợi cho LinUCB, không kế thừa claim 3,71×. Không tự bật density/public/cron/LoRA chỉ vì có tên trong bảng đề xuất.

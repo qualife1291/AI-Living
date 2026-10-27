@@ -34,3 +34,6 @@ WorldGET chỉ đọccache để tránh upstreamstall; pulse/automation refreshc
 ## Nhân vật và kịch bản bản8
 
 `scripts/production-readback.py` nhận token bằng hiddenstdin, chỉ GET world/health/instructions và tùy chọn snapshotbackup gitignored; không dùng verify-live.py để thử production. `/api/living/pulse` có thể xác minh quyền writer bằng lượt trùng hiện hành, đọc lại history/memory. Ảnh social là response synthetic/local, không phải ảnh production. Cloudtask dùng chỉ đạo3vai đã commit qua `/api/instructions`, giữ quiet theo giờ mô phỏng và source riêng; Qwenlocal không chạy trong Worker. Xem SOCIAL_REVIEW và ledger8.
+
+## Migration policy 0007
+0007_learning_policies là bảng mới, được Drizzle generate từ snapshot 0006, không rewrite SQL lịch sử. Trước production phải backup/readback như bước 4. Code đọc legacy inline khi bảng chưa có; chỉ tách vào learning write sau khi bảng tồn tại. policyRevision tham chiếu exact row; rollback về source cũ không tự hợp nhất model đã tách. Không xóa bảng hoặc tham chiếu để chữa lỗi; đối chiếu snapshot/posterior và backup trước repair.
