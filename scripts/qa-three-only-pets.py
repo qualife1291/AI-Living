@@ -35,6 +35,7 @@ with sync_playwright() as p:
    page.wait_for_function('JSON.parse(document.querySelector(".three-canvas")?.dataset.petWalks??"[]").some(a=>a.id==="cun"&&a.ownerId==="an")',timeout=30000)
    samples=page.evaluate('''async()=>{const s=[],end=performance.now()+12000;let prev='';while(performance.now()<end){await new Promise(requestAnimationFrame);const e=document.querySelector('.three-canvas');if(e?.dataset.frame!==prev){prev=e.dataset.frame;s.push({owner:e.dataset.position.split(',').map(Number),pets:JSON.parse(e.dataset.petWalks??'[]')})}}return s}''')
    assert len(samples)>=10;assert any(a['walking'] for s in samples for a in s['pets'])
+   assert sum(all(a['onScreen'] for a in s['pets']) for s in samples)/len(samples)>.8,'Camera must keep the companion in view'
    for row in samples:
     dog=next(a for a in row['pets'] if a['id']=='cun');gap=sum((dog['position'][i]-row['owner'][i])**2 for i in [0,1])**.5
     assert gap>=9.9,'Pet overlaps its caretaker';assert gap<55,('Companion stays with caretaker',gap)

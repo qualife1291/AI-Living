@@ -232,7 +232,7 @@ export class WalkDirector {
       output.set(a.id, { ...a, tagGame: game ? { peerId: game.peerId, role: game.role, swaps: game.swaps } : undefined,
         petOwnerId: petWalk.links.get(a.id),
         position: [...s.position], path: s.path, walking: moved, transport: "walk", stationaryFor: s.idle,
-        activity: petWalk.holds.has(a.id) ? "Chờ thú cưng tới gần" : petWalk.links.has(a.id) ? `Đi dạo cùng ${input.find(p => p.id === petWalk.links.get(a.id))?.name ?? "người chăm sóc"}` : game ? `${game.role === "chaser" ? "Đuổi theo" : "Chạy tránh"} ${peer?.name ?? "bạn"}` :
+        activity: petWalk.holds.has(a.id) ? "Chờ thú cưng tới gần" : petWalk.links.has(a.id) ? `Đi dạo cùng ${input.find(p => p.id === petWalk.links.get(a.id))?.name ?? "người chăm sóc"}` : [...petWalk.links.values()].includes(a.id) ? `Đi dạo cùng ${companions.filter(p => petWalk.links.get(p.id) === a.id).map(p => p.name).join(", ")}` : game ? `${game.role === "chaser" ? "Đuổi theo" : "Chạy tránh"} ${peer?.name ?? "bạn"}` :
           waiting ? moved ? `Đi đến ${a.location.toLowerCase()}` : "Đang nhường lối" : a.kind === "tag" ? "Chờ bạn cùng chơi đuổi bắt" : a.activity });
     }
     return spaced.map(a => output.get(a.id)!);

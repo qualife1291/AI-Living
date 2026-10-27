@@ -786,7 +786,8 @@ export function createCity(
       if (lastSelected !== selected) {
         following = true;
         if (current) {
-          const shot = characterShot(current, actors.find(a => a.id === socialPoses.get(current!.id)?.peerId), heading.get(current.id) ?? .35, cameraBuildings, camera.aspect);
+          const peer = actors.find(a => a.id === socialPoses.get(current!.id)?.peerId) ?? groundAnimals.find(a => a.petOwnerId === current!.id);
+          const shot = characterShot(current, peer, heading.get(current.id) ?? .35, cameraBuildings, camera.aspect);
           scene.fog = fog;
           controls.target.set(...shot.target);
           camera.position.set(...shot.position);
@@ -855,7 +856,8 @@ export function createCity(
       }
       if (following) {
         const partnerId = socialPoses.get(current.id)?.peerId;
-        const shot = characterShot(current, actors.find(a => a.id === partnerId), heading.get(current.id) ?? .35, cameraBuildings, camera.aspect);
+        const peer = actors.find(a => a.id === partnerId) ?? groundAnimals.find(a => a.petOwnerId === current!.id);
+        const shot = characterShot(current, peer, heading.get(current.id) ?? .35, cameraBuildings, camera.aspect);
         const alpha = 1 - Math.exp(-2.8 * dt);
         controls.target.lerp(new THREE.Vector3(...shot.target), alpha);
         camera.position.lerp(new THREE.Vector3(...shot.position), alpha);
@@ -929,7 +931,10 @@ export function createCity(
     host.dataset.exchanges = String(exchanges.length);
     host.dataset.socialCast = JSON.stringify(actors.filter(a => socialPoses.get(a.id)?.gesture !== "idle" && socialPoses.has(a.id)).map(a => ({ id: a.id, position: a.position, ...socialPoses.get(a.id) })));
     host.dataset.tagCast = JSON.stringify(actors.filter(a => a.tagGame).map(a => ({ id: a.id, position: a.position, walking: a.walking, ...a.tagGame })));
-    host.dataset.petWalks = JSON.stringify(groundAnimals.filter(a => a.petOwnerId).map(a => ({ id: a.id, ownerId: a.petOwnerId, position: a.position, walking: a.walking })));
+    host.dataset.petWalks = JSON.stringify(groundAnimals.filter(a => a.petOwnerId).map(a => {
+      const screen = new THREE.Vector3(a.position[0], 2, a.position[1]).project(camera);
+      return { id: a.id, ownerId: a.petOwnerId, position: a.position, walking: a.walking, onScreen: screen.z > -1 && screen.z < 1 && Math.abs(screen.x) < .95 && Math.abs(screen.y) < .95 };
+    }));
     host.dataset.selected = current?.id ?? "";
     host.dataset.humanBatches = String(people.stats().batches);
     host.dataset.humanInstances = String(people.stats().instances);
