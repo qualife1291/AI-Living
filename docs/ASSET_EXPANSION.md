@@ -9,3 +9,5 @@ Mục tiêu: import có hash/nguồn/giấy phép/dependency/giới hạn bộ n
 Không suy ra có clip bay/nói chuyện từ tên pack: nhiều model chỉ cung cấp idle/attack/dead/walk. Phải chuẩn hóa track ghép nếu có, không để sinh vật tuần hoàn qua chết/tấn công. Các loài không bay như kiwi/penguin không được cho bay. Cần habitat cho loài dưới nước/nông trại/hoang dã; tên/đặc điểm hiển thị phải khớp model.
 
 Các thay đổi work hiện hành từ agent khác (tag, pet owner/walk, xe đạp di chuyển, 3D-only, overlays, households) được giữ. Nhân vật được phân nhóm tuổi/giới/cách xưng hô, giữ ID và lịch sử; không tạo tên kiểu “Linh 2”. Test mới và trạng thái release sẽ bổ sung sau triển khai.
+
+Importer đầu đã kiểm tra 418 file, 55.207.250 byte dưới ngân sách 64 MiB, 114 model có skin. Toàn bộ dependency phục vụ từ Site. Human002 có clip Talk/Listen/Nod/Sit thật; các pack động vật thực tế có bốn clip đặt tên riêng, khác mô tả track ghép trong một số README. Chưa thể gọi tích hợp runtime hoàn tất ở mốc chỉ mới import này.
