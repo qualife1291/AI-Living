@@ -3,7 +3,7 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 import osm from '@/data/city/hcm-district1.json';
 import { closedFootprint, buildingHeight } from '@/lib/city/osm';
-export function createOsm(host:HTMLDivElement) {
+export function createOsm(host:HTMLDivElement, fatal:()=>void = ()=>{}) {
   const renderer=new THREE.WebGLRenderer({antialias:true,powerPreference:'low-power'});
   renderer.setPixelRatio(Math.min(devicePixelRatio,1.5));renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;
   host.appendChild(renderer.domElement);
@@ -27,7 +27,7 @@ export function createOsm(host:HTMLDivElement) {
   for(const feature of osm.features.filter(f=>f.kind==='road'))for(let i=1;i<feature.points.length;i++){const a=feature.points[i-1],b=feature.points[i];lines.push(a[0],.3,a[1],b[0],.3,b[1]);}
   const lineGeometry=new THREE.BufferGeometry();lineGeometry.setAttribute('position',new THREE.Float32BufferAttribute(lines,3));geometries.push(lineGeometry);const lineMaterial=new THREE.LineBasicMaterial({color:'#57767b'});materials.push(lineMaterial);scene.add(new THREE.LineSegments(lineGeometry,lineMaterial));
   let frame=0,last=0;const resize=()=>{renderer.setSize(host.clientWidth,host.clientHeight);camera.aspect=host.clientWidth/Math.max(1,host.clientHeight);camera.updateProjectionMatrix();};const observer=new ResizeObserver(resize);observer.observe(host);resize();
-  const onLoss=(event:Event)=>{event.preventDefault();host.dataset.ready='false';};renderer.domElement.addEventListener('webglcontextlost',onLoss);
+  const onLoss=(event:Event)=>{event.preventDefault();cancelAnimationFrame(frame);host.dataset.ready='false';fatal();};renderer.domElement.addEventListener('webglcontextlost',onLoss);
   function tick(t:number){frame=requestAnimationFrame(tick);if(document.hidden||t-last<33)return;last=t;controls.update();renderer.render(scene,camera);host.dataset.ready='true';host.dataset.buildings=String(count);host.dataset.estimated=String(estimated);host.dataset.drawCalls=String(renderer.info.render.calls);}
   frame=requestAnimationFrame(tick);
   return()=>{cancelAnimationFrame(frame);observer.disconnect();controls.dispose();renderer.domElement.removeEventListener('webglcontextlost',onLoss);geometries.forEach(g=>g.dispose());materials.forEach(m=>m.dispose());renderer.dispose();renderer.forceContextLoss();renderer.domElement.remove();};

@@ -11,18 +11,21 @@ export function ScenarioStudio() {
   useEffect(() => { input.current = { id, time }; }, [id, time]);
   useEffect(() => {
     let cancelled = false;
+    const abort = new AbortController();
     import("./runtime").then(async ({ createStudio }) => {
       if (!host.current || cancelled) return;
-      const view = await createStudio(host.current, () => input.current);
+      const view = await createStudio(host.current, () => input.current, abort.signal);
       if (cancelled) view.dispose(); else { runtime.current = view; setReady(true); }
-    }).catch(() => setError("Chưa mở được trường quay 3D. Hãy tải lại hoặc dùng thiết bị hỗ trợ WebGL2."));
-    return () => { cancelled = true; runtime.current?.dispose(); runtime.current = null; };
+    }).catch(() => { if (!cancelled) setError("Chưa mở được trường quay 3D. Hãy tải lại hoặc dùng thiết bị hỗ trợ WebGL2."); });
+    return () => { cancelled = true; abort.abort(); runtime.current?.dispose(); runtime.current = null; };
   }, []);
   useEffect(() => {
     if (!playing || !ready) return;
     let last = performance.now(), handle = 0;
-    const tick = (now: number) => { const dt = Math.min(.1, Math.max(0, (now - last) / 1000)); last = now; if (!document.hidden) setTime(t => Math.min(120, t + dt)); handle = requestAnimationFrame(tick); };
-    handle = requestAnimationFrame(tick); return () => cancelAnimationFrame(handle);
+    const resetAnchor = () => { last = performance.now(); };
+    const tick = (now: number) => { const dt = Math.max(0, (now - last) / 1000); last = now; if (!document.hidden) setTime(t => Math.min(120, t + dt)); handle = requestAnimationFrame(tick); };
+    document.addEventListener("visibilitychange", resetAnchor);
+    handle = requestAnimationFrame(tick); return () => { cancelAnimationFrame(handle); document.removeEventListener("visibilitychange", resetAnchor); };
   }, [playing, ready]);
   const definition = scenarioDefinitions.find(s => s.id === id)!, frame = scenarioFrame(id, time), line = frame.dialogue[0];
   const stamp = (t: number) => `${Math.floor(t / 60)}:${String(Math.floor(t % 60)).padStart(2, "0")}`;

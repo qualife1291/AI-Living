@@ -1,6 +1,7 @@
 "use client";
 import { useCallback, useEffect, useState } from "react";
 import type { LivingState, LivingTurn, RealContext } from "@/lib/living/schema";
+import { households } from "@/lib/living/households";
 import { PLACES, STEP_KINDS } from "@/lib/event-schema";
 
 type View = {
@@ -103,6 +104,8 @@ export function LivingPanel({ onUpdated }: { onUpdated: () => Promise<void> }) {
       setBusy(false);
     }
   }
+  const groups = view ? households(view.living) : [];
+  const homeLabels = new Map(groups.flatMap(group => group.members.map(r => [r.id, group.home.label] as const)));
   const turn = view?.turns[0],
     weather = view?.context.weather;
   return (
@@ -272,6 +275,7 @@ export function LivingPanel({ onUpdated }: { onUpdated: () => Promise<void> }) {
             <summary>
               Những người đang sống quanh An ({view.living.residents.length})
             </summary>
+            <p className="household-count">{groups.length} nhóm ở chung · Phân nhóm sinh hoạt trong mô phỏng</p>
             <div className="living-roster">
               {view.living.residents.map((r) => (
                 <article key={r.id}>
@@ -282,6 +286,7 @@ export function LivingPanel({ onUpdated }: { onUpdated: () => Promise<void> }) {
                         ?.label
                     }
                   </p>
+                  <p className="resident-home-label">{homeLabels.get(r.id)} · Khu dân cư</p>
                   <small>
                     Quen thuộc {r.familiarity}/100 · {r.memories.length} trải
                     nghiệm

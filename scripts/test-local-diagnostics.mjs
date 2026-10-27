@@ -3,7 +3,8 @@ import { initializeLiving, turnId } from "../lib/living/engine.ts";
 import { scheduleResidentSocial } from "../lib/living/social-scheduler.ts";
 /** In-process local worker integration; no hosting, account or production DB access. */
 import assert from 'node:assert/strict';
-import { readFileSync, realpathSync, readdirSync } from 'node:fs';
+import {readMigrationFiles} from 'drizzle-orm/migrator';
+import { realpathSync, readdirSync } from 'node:fs';
 import { createRequire } from 'node:module';
 import { resolve } from 'node:path';
 const require=createRequire(realpathSync(resolve('node_modules/wrangler/package.json')));
@@ -14,11 +15,14 @@ const options={modules,modulesRoot:resolve("dist/server"),compatibilityDate:'202
 const mf=new Miniflare(options);
 try{
  const url='http://localhost/api/diagnostics';
+ assert.equal((await mf.dispatchFetch('http://localhost/api/living/pets',{method:'POST',body:'{}'})).status,403,'Pet ownership mutations require the owner');
  assert.equal((await mf.dispatchFetch(url)).status,403,'non-owner GET denied');
  assert.equal((await mf.dispatchFetch(url,{method:'POST',body:'{}'})).status,403,'non-owner POST denied');
  await mf.setOptions({...options,bindings:{XOM_LOCAL_ADMIN:'true'}});
  const db=await mf.getD1Database('DB');
- for(const sql of readFileSync('drizzle/0006_client_logs.sql','utf8').split(';').map(x=>x.trim()).filter(Boolean))await db.prepare(sql).run();
+ const migration=readMigrationFiles({migrationsFolder:'drizzle'}).at(-1);
+ for(const sql of migration.sql)await db.prepare(sql).run();
+ assert(await db.prepare("SELECT name FROM sqlite_master WHERE type='index' AND name='client_logs_created_at'").first(),'Drizzle statement splitting must create the telemetry index');
  await db.prepare('CREATE TABLE tick_runs(id TEXT PRIMARY KEY,started_at TEXT,finished_at TEXT,status TEXT,model TEXT,event_id TEXT,neurons_est INTEGER,error TEXT)').run();
  const post=(body,headers={})=>mf.dispatchFetch(url,{method:'POST',headers:{'content-type':'application/json',...headers},body});
  assert.equal((await post('{')).status,400);
@@ -55,5 +59,54 @@ try{
  const paused=JSON.parse(snapshot.data);paused.paused=true;
  await db.prepare("UPDATE worlds SET data=? WHERE id='home'").bind(JSON.stringify(paused)).run();
  assert.equal((await pulse()).status,409,'paused world refuses mutation pulse');
+ // Pet assignment is additive snapshot data, protected by the same revision CAS.
+ const petPost=(body,headers={})=>mf.dispatchFetch('http://localhost/api/living/pets',{method:'POST',headers:{'content-type':'application/json',...headers},body:typeof body==='string'?body:JSON.stringify(body)});
+ const beforePets=await db.prepare("SELECT revision,data FROM worlds WHERE id='home'").first();
+ const beforeWorld=JSON.parse(beforePets.data);
+ assert.equal((await petPost('{')).status,400);
+ assert.equal((await petPost('x'.repeat(2049))).status,413);
+ assert.equal((await petPost({pet:'se',owner:'an',revision:beforePets.revision})).status,400);
+ assert.equal((await petPost({pet:'cun',owner:'an',revision:beforePets.revision},{origin:'https://example.invalid'})).status,403);
+ assert.equal((await petPost({pet:'cun',owner:'missing',revision:beforePets.revision})).status,404);
+ assert.equal((await petPost({pet:'cun',owner:'binh',revision:beforePets.revision})).status,200);
+ const afterPets=await db.prepare("SELECT revision,data FROM worlds WHERE id='home'").first();
+ const afterWorld=JSON.parse(afterPets.data);assert.equal(afterWorld.living.petOwners.cun,'binh');
+ assert.deepEqual(afterWorld.people,beforeWorld.people,'Assignment preserves every person, plan and memory');
+ assert.deepEqual(afterWorld.living.animalLearning,beforeWorld.living.animalLearning,'Assignment preserves animal learning');
+ assert.equal(afterPets.revision,beforePets.revision+1);
+ assert.equal((await petPost({pet:'cun',owner:'an',revision:beforePets.revision})).status,409);
+ const race=await Promise.all([petPost({pet:'cun',owner:null,revision:afterPets.revision}),petPost({pet:'muop',owner:'an',revision:afterPets.revision})]);
+ assert.deepEqual(race.map(r=>r.status).sort(),[200,409],'Concurrent assignments cannot overwrite each other');
+ const fresh=await db.prepare("SELECT revision FROM worlds WHERE id='home'").first();
+ assert.equal((await petPost({pet:'cun',owner:null,revision:fresh.revision})).status,200);
+ assert(!('cun' in JSON.parse((await db.prepare("SELECT data FROM worlds WHERE id='home'").first()).data).living.petOwners),'Unassign is persisted explicitly');
+ console.log('PASS pet ownership guard, schema, stream limit, origin, persisted assignment, unassignment, CAS race and history preservation');
+ // Legacy snapshots receive additive home assignments on a real catalog save.
+ const legacyRow=await db.prepare("SELECT revision,data FROM worlds WHERE id='home'").first();
+ const legacyWorld=JSON.parse(legacyRow.data);
+ for(const [i,r] of legacyWorld.living.residents.entries()) {
+  delete r.home; delete r.identity;
+  r.name=`${legacyWorld.living.catalog.names[i%legacyWorld.living.catalog.names.length]} ${Math.floor(i/legacyWorld.living.catalog.names.length)+1}`;
+ }
+ legacyWorld.living.residents[0].name='Tên riêng đã lưu';
+ await db.prepare("UPDATE worlds SET data=? WHERE id='home'").bind(JSON.stringify(legacyWorld)).run();
+ const saveHomes=(revision)=>mf.dispatchFetch('http://localhost/api/living/catalog',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({revision,catalog:legacyWorld.living.catalog})});
+ assert.equal((await saveHomes(legacyRow.revision)).status,200);
+ const homeRow=await db.prepare("SELECT revision,data FROM worlds WHERE id='home'").first(),homeWorld=JSON.parse(homeRow.data);
+ assert.equal(homeWorld.living.residents.length,legacyWorld.living.residents.length);
+ assert(homeWorld.living.residents.every(r=>r.home?.householdId));
+ for(const r of homeWorld.living.residents){
+  const {home,identity,name,...original}=r,old=legacyWorld.living.residents.find(x=>x.id===r.id),{name:oldName,...oldHistory}=old;
+  assert(home&&identity);assert.deepEqual(original,oldHistory,'Backfill preserves IDs, plans, memories and familiarity');
+  if(name!==oldName)assert(identity.previousNames.includes(oldName));
+ }
+ assert.equal(homeWorld.living.residents[0].name,'Tên riêng đã lưu');
+ assert(homeWorld.living.residents.slice(1).every(r=>!/[0-9]/.test(r.name)));
+ assert.deepEqual(homeWorld.people,legacyWorld.people);assert.deepEqual(homeWorld.living.petOwners,legacyWorld.living.petOwners);
+ assert.equal((await saveHomes(legacyRow.revision)).status,409);
+ assert.equal((await saveHomes(homeRow.revision)).status,200);
+ const repeated=JSON.parse((await db.prepare("SELECT data FROM worlds WHERE id='home'").first()).data);
+ assert.deepEqual(repeated.living.residents,homeWorld.living.residents,'Repeated save does not move assigned homes');
+ console.log('PASS legacy household and identity backfill persisted through catalog CAS, repeatability and complete history preservation');
  console.log(JSON.stringify({suite:'local-diagnostics-http',ownerReadGuard:true,ownerWriteGuard:true,streamByteLimit:true,schema:true,origin:true,ack:true,jsonlReadback:true,rateLimit:true,retention:true,pulsePersistence:true,pulseRetry:true,pulsePause:true,productionAccess:false}));
 }finally{await mf.dispose();}

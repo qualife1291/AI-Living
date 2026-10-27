@@ -113,7 +113,7 @@ export class TrafficDirector {
   // Extra arc-length reserve covers the long body cutting across a tight bend.
   private readonly headway = VEHICLES.car.length + VEHICLES.car.width + 10;
 
-  frame(simSeconds: number, pedestrianPoints: TrafficPoint[] = []): TrafficVehicle[] {
+  frame(simSeconds: number, pedestrianPoints: TrafficPoint[] = [], bodyRadii: number[] = []): TrafficVehicle[] {
     const now = Number.isFinite(simSeconds) ? simSeconds : this.previousTime ?? 0;
     if (this.previousTime === undefined) {
       const initial = mod(now, TRAFFIC_PERIOD_SECONDS) * TRAFFIC_SPEED;
@@ -124,13 +124,14 @@ export class TrafficDirector {
     const elapsed = Math.max(0, Math.min(0.1, now - this.previousTime));
     this.previousTime = now;
     if (elapsed > 0) {
-      const finitePedestrians = pedestrianPoints.filter(point => point.every(Number.isFinite));
+      const finitePedestrians = pedestrianPoints.map((point, i) => ({ point, radius: Number.isFinite(bodyRadii[i]) ? Math.max(this.pedestrianRadius, bodyRadii[i]) : this.pedestrianRadius })).filter(body => body.point.every(Number.isFinite));
+      const largestRadius = Math.max(this.pedestrianRadius, ...finitePedestrians.map(body => body.radius));
       const advances = this.positions.map((position, index) => {
         const requested = Math.min(TRAFFIC_SPEED, this.speeds[index] + 12 * elapsed) * elapsed;
         let allowed = requested;
         const current = laneAt(position).position;
-        const reach = 40 + requested + Math.hypot(VEHICLES.car.length / 2, VEHICLES.car.width / 2) + this.frontClearance + this.pedestrianRadius + 2;
-        const nearby = finitePedestrians.filter(point => Math.abs(point[0] - current[0]) <= reach && Math.abs(point[1] - current[1]) <= reach);
+        const reach = 40 + requested + Math.hypot(VEHICLES.car.length / 2, VEHICLES.car.width / 2) + this.frontClearance + largestRadius + 2;
+        const nearby = finitePedestrians.filter(({ point }) => Math.abs(point[0] - current[0]) <= reach && Math.abs(point[1] - current[1]) <= reach);
         if (!nearby.length) return requested;
         // Sample ahead at two-unit intervals. Inflate by one sample interval so
         // a small pedestrian cannot disappear between the forecast footprints.
@@ -138,10 +139,10 @@ export class TrafficDirector {
           const vehicle = { ...laneAt(position + ahead), ...VEHICLES.car };
           const rightX = Math.cos(vehicle.yaw), rightZ = -Math.sin(vehicle.yaw);
           const forwardX = Math.sin(vehicle.yaw), forwardZ = Math.cos(vehicle.yaw);
-          const blocked = nearby.some(point => {
+          const blocked = nearby.some(({ point, radius }) => {
             const dx = point[0] - vehicle.position[0], dz = point[1] - vehicle.position[1];
             const lateral = dx * rightX + dz * rightZ, forward = dx * forwardX + dz * forwardZ;
-            return Math.abs(lateral) <= vehicle.width / 2 + this.pedestrianRadius + 2 && forward >= -vehicle.length / 2 - this.pedestrianRadius && forward <= vehicle.length / 2 + this.pedestrianRadius + this.frontClearance + 2;
+            return Math.abs(lateral) <= vehicle.width / 2 + radius + 2 && forward >= -vehicle.length / 2 - radius && forward <= vehicle.length / 2 + radius + this.frontClearance + 2;
           });
           if (blocked) {
             const headroom = Math.max(0, ahead - 2);

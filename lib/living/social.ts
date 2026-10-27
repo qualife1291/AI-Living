@@ -41,7 +41,7 @@ export function spaceActors(world: World, actors: Actor[]): Actor[] {
 
 const format = (text: string, a: Actor, b: Actor) => text.replaceAll("{a}", a.name).replaceAll("{b}", b.name);
 
-/** One shared simulation timeline drives speech, turns, facing and gestures in 2D/3D.
+/** One shared simulation timeline drives speech, turns, facing and gestures for the city.
  * Ambient scenes were authored by development agents; they are explicitly scripts.
  * Persisted model events keep their distinct AI provenance and take priority. */
 export function socialFrame(world: World, actors: Actor[], events: EpisodeEvent[], now: number, livingSpeech: Speech | null = null) {
@@ -64,7 +64,7 @@ export function socialFrame(world: World, actors: Actor[], events: EpisodeEvent[
   }
   const hour = worldTime(world, now).hour;
   if (hour >= scripts.quietHours[1] && hour < scripts.quietHours[0]) {
-    const idle = spaced.filter(a => !a.walking && !/^Phòng |Bệnh viện|Phòng khám/.test(a.location)).sort((a, b) => a.id.localeCompare(b.id));
+    const idle = spaced.filter(a => !["tag", "cycle"].includes(a.kind) && !a.walking && !/^Phòng |Bệnh viện|Phòng khám/.test(a.location)).sort((a, b) => a.id.localeCompare(b.id));
     for (const a of idle) {
       if (poses.has(a.id)) continue;
       const b = idle.filter(b => b.id !== a.id && !poses.has(b.id) && b.location === a.location && distance(a.position, b.position) >= scripts.minPairDistance - .1 && distance(a.position, b.position) <= scripts.maxPairDistance).sort((x, y) => distance(a.position, x.position) - distance(a.position, y.position) || x.id.localeCompare(y.id))[0];
@@ -98,7 +98,7 @@ export function socialFrame(world: World, actors: Actor[], events: EpisodeEvent[
 }
 
 type EncounterLine = { speaker: string; text: string; gesture?: string };
-type Encounter = { key: string; speechPrefix: string; a: string; b: string; location: string; title: string; source: "script" | "ai"; lines: EncounterLine[]; startedAt: number; duration: number; cooldown: number };
+type Encounter = { key: string; speechPrefix: string; a: string; b: string; location: string; title: string; source: "script" | "ai"; lines: EncounterLine[]; lineIndex: number; lineStartedAt: number; presentedIndex: number; cooldown: number };
 type Frame = ReturnType<typeof socialFrame>;
 
 /** Viewer-local presentation state. Keep this instance across world polling.
@@ -115,6 +115,14 @@ export class SocialDirector {
   private previousSim: number | undefined;
   private previouslyPaused = false;
   private born: string | undefined;
+
+  /** Start reading time after the renderer has delivered this line to the HUD. */
+  presented(key: string, now: number) {
+    for (const e of this.encounters.values()) if (`${e.speechPrefix}-${e.lineIndex}` === key && e.presentedIndex !== e.lineIndex) {
+      e.presentedIndex = e.lineIndex;
+      e.lineStartedAt = Math.max(e.lineStartedAt, this.elapsed + Math.max(0, now - (this.previousNow ?? now)) / 1000);
+    }
+  }
 
   reset() {
     this.encounters.clear(); this.cooldowns.clear(); this.seen.clear(); this.grammar.reset();
@@ -135,7 +143,7 @@ export class SocialDirector {
     const spaced = alreadySpaced ? actors : spaceActors(world, actors), byId = new Map(spaced.map(a => [a.id, a]));
     const poses = new Map<string, SocialPose>(), exchanges: Exchange[] = [];
     const hour = worldTime(world, now).hour, awake = hour >= 6 && hour < 22;
-    const eligible = (a: Actor | undefined): a is Actor => !!a && !a.walking && (a.transport === undefined || a.transport === "walk") && !/^Phòng |Bệnh viện|Phòng khám/.test(a.location);
+    const eligible = (a: Actor | undefined): a is Actor => !!a && !["tag", "cycle"].includes(a.kind) && !a.walking && (a.transport === undefined || a.transport === "walk") && !/^Phòng |Bệnh viện|Phòng khám/.test(a.location);
     const pairAvailable = (a: Actor | undefined, b: Actor | undefined, maximum = 60) => eligible(a) && eligible(b) && a.id !== b.id && a.location === b.location && distance(a.position, b.position) <= maximum;
     const finish = (encounter: Encounter) => {
       this.encounters.delete(encounter.key);
@@ -143,13 +151,21 @@ export class SocialDirector {
     };
     for (const encounter of this.encounters.values()) {
       const a = byId.get(encounter.a), b = byId.get(encounter.b);
-      if (!awake || !pairAvailable(a, b) || a?.location !== encounter.location || this.elapsed - encounter.startedAt >= encounter.duration) finish(encounter);
+      if (!awake || !pairAvailable(a, b) || a?.location !== encounter.location) { finish(encounter); continue; }
+      const duration = spokenSeconds(encounter.lines[encounter.lineIndex].text) + SOCIAL_TIMING.gapSeconds;
+      if (this.elapsed - encounter.lineStartedAt >= duration) {
+        if (encounter.lineIndex === encounter.lines.length - 1) { finish(encounter); continue; }
+        encounter.lineIndex++;
+        const nextStart = encounter.lineStartedAt + duration;
+        // A late frame must show the next reply before consuming its reading time.
+        encounter.lineStartedAt = this.elapsed - nextStart > .2 ? this.elapsed : nextStart;
+      }
     }
     const locked = (id: string) => [...this.encounters.values()].some(e => e.a === id || e.b === id);
     const start = (key: string, speechPrefix: string, a: Actor, b: Actor, title: string, source: Encounter["source"], lines: EncounterLine[]) => {
       const hash = hashSeed(key);
-      this.encounters.set(key, { key, speechPrefix, a: a.id, b: b.id, location: a.location, title, source, lines, startedAt: this.elapsed,
-        duration: lines.reduce((total, line) => total + spokenSeconds(line.text) + SOCIAL_TIMING.gapSeconds, 0), cooldown: SOCIAL_TIMING.minimumCooldownSeconds + hash % 26 });
+      this.encounters.set(key, { key, speechPrefix, a: a.id, b: b.id, location: a.location, title, source, lines, lineIndex: 0, lineStartedAt: this.elapsed, presentedIndex: -1,
+        cooldown: SOCIAL_TIMING.minimumCooldownSeconds + hash % 26 });
     };
     const startStored = (key: string, prefix: string, title: string, source: Encounter["source"], lines: EncounterLine[], location?: string) => {
       if (this.seen.has(key) || lines.length < 2) return;
@@ -198,13 +214,8 @@ export class SocialDirector {
       }
     }
     for (const encounter of this.encounters.values()) {
-      const at = this.elapsed - encounter.startedAt;
-      let cursor = 0, speaking: { line: EncounterLine; index: number } | undefined;
-      for (let index = 0; index < encounter.lines.length; index++) {
-        const line = encounter.lines[index], seconds = spokenSeconds(line.text);
-        if (at >= cursor && at < cursor + seconds) { speaking = { line, index }; break; }
-        cursor += seconds + SOCIAL_TIMING.gapSeconds;
-      }
+      const line = encounter.lines[encounter.lineIndex];
+      const speaking = this.elapsed - encounter.lineStartedAt < spokenSeconds(line.text) ? { line, index: encounter.lineIndex } : undefined;
       for (const [id, peerId] of [[encounter.a, encounter.b], [encounter.b, encounter.a]]) poses.set(id, { peerId, source: encounter.source,
         speaking: speaking?.line.speaker === id, gesture: speaking ? speaking.line.speaker === id ? speaking.line.gesture ?? "explain" : "listen" : "listen" });
       if (speaking) exchanges.push({ a: encounter.a, b: encounter.b, title: encounter.title, source: encounter.source,

@@ -2,10 +2,12 @@ import * as THREE from "three";
 import { GLTFLoader, type GLTF } from "three/addons/loaders/GLTFLoader.js";
 import { mergeGeometries } from "three/addons/utils/BufferGeometryUtils.js";
 import catalog from "../../../public/models/kenney/catalog.json" with { type: "json" };
+import resources from "../../../public/models/resources/catalog.json" with { type: "json" };
 import { resolveModel } from "../../../lib/city/asset-bindings.ts";
+import { CORE_MODELS } from "../../../lib/city/character-models.ts";
 
-export const approvedAssets = catalog.assets;
-export const cityAssetIds = [...["character-a", "character-b", "character-c", "character-d", "character-e", "car-sedan", "car-hatchback", "car-taxi", "display-bread", "display-fruit", "bin"].map(key => resolveModel(key)!).filter(Boolean), "commercial/building-a", "commercial/building-b", "commercial/building-c", "commercial/building-skyscraper-a", "commercial/detail-parasol-a", "suburban/building-type-a", "suburban/building-type-b", "suburban/building-type-c", "suburban/tree-large", "suburban/tree-small", "watercraft/boat-fishing-small", "watercraft/boat-row-small", "watercraft/boat-house-a", "watercraft/buoy", "trains/railroad-straight", "trains/train-tram-modern", "roads/traffic-light"];
+export const approvedAssets = [...catalog.assets, ...resources.assets];
+export const cityAssetIds = [...Object.values(CORE_MODELS), ...["character-a", "character-b", "character-c", "character-d", "character-e", "car-sedan", "car-hatchback", "car-taxi", "display-bread", "display-fruit", "bin"].map(key => resolveModel(key)!).filter(Boolean), "commercial/building-a", "commercial/building-b", "commercial/building-c", "commercial/building-skyscraper-a", "commercial/detail-parasol-a", "suburban/building-type-a", "suburban/building-type-b", "suburban/building-type-c", "suburban/tree-large", "suburban/tree-small", "watercraft/boat-fishing-small", "watercraft/boat-row-small", "watercraft/boat-house-a", "watercraft/buoy", "trains/railroad-straight", "trains/train-tram-modern", "roads/traffic-light"];
 export type AssetPlacement = { id: string; x: number; y: number; z: number; width: number; depth: number; height: number; yaw?: number; stretch?: boolean };
 type Compiled = { geometry: THREE.BufferGeometry; material: THREE.MeshPhongMaterial; size: THREE.Vector3 };
 export type ResourceSets = { geometries: Set<THREE.BufferGeometry>; materials: Set<THREE.Material>; textures: Set<THREE.Texture> };
@@ -15,7 +17,8 @@ export function collectAssetResources(root: THREE.Object3D, sets: ResourceSets) 
 
 /** Only checked-in CC0 entries can load; no provider requests from a live viewer. */
 export class AssetLibrary {
-  private loader = new GLTFLoader();
+  private manager = new THREE.LoadingManager();
+  private loader = new GLTFLoader(this.manager);
   private loaded = new Map<string, GLTF>();
   private pending = new Map<string, Promise<GLTF>>();
   private compiled = new Map<string, Compiled>();
@@ -23,14 +26,15 @@ export class AssetLibrary {
   readonly failures = new Set<string>();
   get(id: string) { return this.loaded.get(id); }
   async load(id: string) {
+    if (this.dead) throw new Error("Asset view disposed");
     const cached = this.loaded.get(id); if (cached) return cached;
     const request = this.pending.get(id); if (request) return request;
     const metadata = approvedAssets.find(a => a.id === id);
-    if (!metadata || metadata.license !== "CC0-1.0" || !metadata.url.startsWith("/models/kenney/") || metadata.url.includes("..")) throw new Error(`Unapproved asset: ${id}`);
+    if (!metadata || metadata.license !== "CC0-1.0" || !["/models/kenney/", "/models/resources/"].some(prefix => metadata.url.startsWith(prefix)) || metadata.url.includes("..")) throw new Error(`Unapproved asset: ${id}`);
     const promise = this.loader.loadAsync(`${metadata.url}?v=${metadata.sha256.slice(0, 12)}`).then(model => {
       if (this.dead) { const sets: ResourceSets = { geometries: new Set(), materials: new Set(), textures: new Set() }; collectAssetResources(model.scene, sets); sets.geometries.forEach(g => g.dispose()); sets.materials.forEach(m => m.dispose()); sets.textures.forEach(t => t.dispose()); throw new Error("Asset view disposed"); }
-      this.loaded.set(id, model); return model;
-    }).catch(error => { this.failures.add(id); throw error; });
+      this.failures.delete(id); this.loaded.set(id, model); return model;
+    }).catch(error => { this.failures.add(id); throw error; }).finally(() => { this.pending.delete(id); });
     this.pending.set(id, promise); return promise;
   }
   async preload(ids = cityAssetIds, timeoutMs = 4000) {
@@ -79,8 +83,12 @@ export class AssetLibrary {
   }
   addWorldLOD(scene: THREE.Scene, placements: AssetPlacement[]) {
     const meshes = this.addBatches(scene, placements), dummy = new THREE.Object3D(), tint = new THREE.Color();
+    let lastX = Infinity, lastZ = Infinity;
     const coarse = new THREE.InstancedMesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshLambertMaterial(), Math.max(1, placements.length)); coarse.frustumCulled = false; coarse.instanceMatrix.setUsage(THREE.DynamicDrawUsage); scene.add(coarse);
-    return (camera: THREE.Camera) => {
+    return (camera: THREE.Camera, detailedShadows = false) => {
+      for (const mesh of meshes.values()) mesh.castShadow = detailedShadows;
+      if (Math.hypot(camera.position.x - lastX, camera.position.z - lastZ) < 8) return;
+      lastX = camera.position.x; lastZ = camera.position.z;
       coarse.count = 0;
       for (const mesh of meshes.values()) {
         mesh.count = 0;
@@ -94,7 +102,7 @@ export class AssetLibrary {
       coarse.instanceMatrix.needsUpdate = true; if (coarse.instanceColor) coarse.instanceColor.needsUpdate = true;
     };
   }
-  collectAndClose(sets: ResourceSets) { this.dead = true; for (const model of this.loaded.values()) collectAssetResources(model.scene, sets); for (const model of this.compiled.values()) { sets.geometries.add(model.geometry); sets.materials.add(model.material); } this.loaded.clear(); this.compiled.clear(); }
+  collectAndClose(sets: ResourceSets) { this.dead = true; this.manager.abort(); for (const model of this.loaded.values()) collectAssetResources(model.scene, sets); for (const model of this.compiled.values()) { sets.geometries.add(model.geometry); sets.materials.add(model.material); } this.loaded.clear(); this.compiled.clear(); }
   dispose() { const sets: ResourceSets = { geometries: new Set(), materials: new Set(), textures: new Set() }; this.collectAndClose(sets); sets.geometries.forEach(g => g.dispose()); sets.materials.forEach(m => m.dispose()); sets.textures.forEach(t => t.dispose()); }
   stats() { return { loaded: this.loaded.size, failed: this.failures.size }; }
 }
@@ -126,7 +134,7 @@ export class AssetAvatar {
     this.group.scale.set(horizontal, yScale, horizontal); this.model.position.x -= center.x; this.model.position.z -= center.z;
   }
   pose(clip: string, animationTime: number, presentationTime: number, position: readonly number[], yaw: number, floor: number) {
-    if (this.current && presentationTime === this.lastTime) return;
+    if (this.current && presentationTime === this.lastTime) return false;
     const name = this.actions.has(clip) ? clip : "idle", delta = Math.max(0, Math.min(.15, presentationTime - this.lastTime)), seek = Math.abs(presentationTime - this.lastTime) > 1;
     if (name !== this.current || seek) { this.previous = seek ? "" : this.current; this.current = name; this.changedAt = seek ? presentationTime - .45 : presentationTime; this.actions.get(name)?.reset().play(); }
     const blend = Math.min(1, Math.max(0, (presentationTime - this.changedAt) / .45));
@@ -139,6 +147,7 @@ export class AssetAvatar {
     this.mixer.update(0); this.lastTime = presentationTime;
     this.group.position.set(position[0], 0, position.length > 2 ? position[2] : position[1]); this.group.rotation.set(0, yaw, 0); this.group.updateMatrixWorld(true);
     this.bounds.setFromObject(this.model); this.group.position.y = floor - this.bounds.min.y; this.group.updateMatrixWorld(true);
+    return true;
   }
   assignId(id: string) { this.model.traverse(o => { const mesh = o as THREE.Mesh; if (mesh.isMesh) mesh.userData.actorId = id; }); }
   tint(colors: { shirt: string; trousers: string; skin: string }) {
@@ -171,5 +180,8 @@ export class AssetAvatar {
     if (!mesh?.geometry) return this.group.position.clone().add(new THREE.Vector3(0, 9, 1));
     mesh.geometry.computeBoundingBox(); const box = mesh.geometry.boundingBox!, point = box.getCenter(new THREE.Vector3()); point.y = box.min.y + .12; return mesh.localToWorld(point);
   }
+  joint(name: string) { return this.model.getObjectByName(name); }
+  head() { const head = this.joint("head"); return head ? new THREE.Box3().setFromObject(head).getCenter(new THREE.Vector3()).setY(new THREE.Box3().setFromObject(head).max.y) : this.group.position.clone().add(new THREE.Vector3(0, 17.5, 0)); }
+  dispose() { this.mixer.stopAllAction(); this.mixer.uncacheRoot(this.model); this.model.traverse(o => { const mesh = o as THREE.Mesh; if (!mesh.isMesh) return; if (mesh.userData.wardrobeGeometry) mesh.geometry.dispose(); for (const m of Array.isArray(mesh.material) ? mesh.material : [mesh.material]) m.dispose(); }); this.group.removeFromParent(); }
   snapshot() { const leg = this.model.getObjectByName("leg-left"); return { clip: this.current, leg: leg?.quaternion.toArray(), position: this.group.position.toArray() }; }
 }

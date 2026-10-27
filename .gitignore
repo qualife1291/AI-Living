@@ -54,3 +54,7 @@ yarn-error.log*
 
 # OS metadata
 .DS_Store
+
+# Python importer/QA caches
+__pycache__/
+*.pyc

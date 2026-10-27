@@ -1,0 +1,23 @@
+import assert from 'node:assert/strict';
+import {assignHomes,households,householdFor,HOUSEHOLD_SIZE} from '../lib/living/households.ts';
+import {initializeLiving,population} from '../lib/living/engine.ts';
+const now=Date.parse('2026-10-27T05:00:00Z'),state=initializeLiving(now),saved=JSON.stringify(state);
+assert(state.residents.length>0);assert(state.residents.every(r=>r.home));
+assert(households(state).every(g=>g.members.length<=HOUSEHOLD_SIZE));
+const legacy=structuredClone(state.residents);for(const r of legacy){delete r.home;r.memories=['Ký ức thật cần giữ'];r.familiarity=72;}
+const legacyBefore=JSON.stringify(legacy),backfilled=assignHomes(legacy);
+assert.equal(JSON.stringify(legacy),legacyBefore,'Read/backfill helpers must not mutate original state');
+assert.equal(backfilled.length,legacy.length);assert(backfilled.every(r=>r.memories[0]==='Ký ức thật cần giữ'&&r.familiarity===72));
+assert.deepEqual(assignHomes(backfilled),backfilled,'Repeat initialization is idempotent');
+const grown={...state,residents:backfilled,catalog:{...state.catalog,newResidentsPerDay:10,maxPopulation:240}};
+grown.residents=population(grown,'2027-01-01');assert.equal(grown.residents.length,240);
+for(const r of backfilled)assert.deepEqual(grown.residents.find(p=>p.id===r.id),r,'Population growth preserves homes, plans and history');
+assert(households(grown).every(g=>g.members.length<=4));assert.equal(households(grown).reduce((n,g)=>n+g.members.length,0),240);
+assert.deepEqual(assignHomes([...grown.residents].reverse()).map(r=>r.home.householdId).sort(),grown.residents.map(r=>r.home.householdId).sort(),'Reordering assigned residents does not move their homes');
+assert.deepEqual(households({residents:[]}),[]);assert.equal(householdFor(state,'missing'),undefined);
+const established=backfilled.slice(0,5).map(r=>({...r,home:{householdId:'custom-home',label:'Nhóm đã lưu',place:'Khu dân cư'}}));
+const preserve=assignHomes([...established,{...legacy[5],id:'new-resident'}]);
+assert(preserve.slice(0,5).every(r=>r.home.householdId==='custom-home'),'Do not evict an established overfull group or rewrite its history');
+assert.notEqual(preserve[5].home.householdId,'custom-home','Do not add a new resident to an already full group');
+assert.equal(JSON.stringify(state),saved);assert.deepEqual(JSON.parse(JSON.stringify(grown)),grown);
+console.log(JSON.stringify({suite:'households',legacyBackfill:true,population:240,groups:households(grown).length,maxNewGroupSize:4,existingHomesStable:true,historyPreserved:true,idempotent:true,worldWrites:false}));

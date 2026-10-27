@@ -13,14 +13,15 @@ export class DialogueGrammar {
     const leads = ["Bạn có muốn", "Mình đang tính", "Hay là mình cùng", "Lát nữa ta thử", "Nếu bạn rảnh, mình cùng", "Hôm nay mình muốn", "Bạn thấy sao nếu mình cùng", "Mình có thể cùng bạn"];
     const tails = ["một lúc nhé", "ở đây nhé", "rồi nghỉ một chút nhé", "chậm rãi thôi nhé", "khi sẵn sàng nhé", "trước khi về nhé", "nếu bạn thấy tiện nhé", "cùng nhau nhé"];
     const used = [...previous];
+    const topic = topics[((serial % topics.length) + topics.length) % topics.length];
     const result: { speaker: string; text: string; gesture: string }[] = [];
     for (let line = 0; line < count; line++) {
       let text = "";
       for (let attempt = 0; attempt < 512; attempt++) {
         const n = (serial * 29 + line * 113 + attempt) % 512;
         text = line % 2
-          ? `${["Được, mình cùng", "Ừ, ta thử", "Mình đồng ý", "Nghe được đấy, mình cùng", "Mình sẵn sàng", "Vậy mình cùng", "Mình cũng muốn", "Cảm ơn bạn rủ, mình cùng"][n % 8]} ${topics[Math.floor(n / 8) % 8]} ${tails[Math.floor(n / 64) % 8]}.`
-          : `${leads[n % 8]} ${topics[Math.floor(n / 8) % 8]} ${tails[Math.floor(n / 64) % 8]}?`;
+          ? `${["Được, mình cùng", "Ừ, ta thử", "Mình đồng ý", "Nghe được đấy, mình cùng", "Mình sẵn sàng", "Vậy mình cùng", "Mình cũng muốn", "Cảm ơn bạn rủ, mình cùng"][n % 8]} ${topic} ${tails[Math.floor(n / 8) % 8]}.`
+          : `${leads[n % 8]} ${topic} ${tails[Math.floor(n / 8) % 8]}?`;
         if (!used.includes(text)) break;
       }
       used.push(text); result.push({ speaker: line % 2 ? b.id : a.id, text, gesture: line % 2 ? "open" : "explain" });

@@ -1,0 +1,29 @@
+{
+  "production": false,
+  "renderer": "Chromium SwiftShader",
+  "fixture": "synthetic tag plans; no DB writes",
+  "cases": [
+    {
+      "viewport": "desktop",
+      "frames": 129,
+      "swaps": 2,
+      "pollRequests": 8,
+      "pause": true,
+      "planCancellation": true,
+      "noTeleport": true,
+      "collisionCount": 0,
+      "errors": []
+    },
+    {
+      "viewport": "mobile",
+      "frames": 202,
+      "swaps": 1,
+      "pollRequests": 8,
+      "pause": true,
+      "planCancellation": true,
+      "noTeleport": true,
+      "collisionCount": 0,
+      "errors": []
+    }
+  ]
+}

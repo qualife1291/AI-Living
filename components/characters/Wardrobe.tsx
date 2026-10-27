@@ -5,7 +5,7 @@ import {
   defaultAppearance,
   type Appearance,
 } from "@/lib/city/appearance";
-import { BlockCharacter } from "./BlockCharacter";
+import { AppearancePreview } from "./AppearancePreview";
 export function Wardrobe({
   id,
   role,
@@ -46,13 +46,7 @@ export function Wardrobe({
   return (
     <div className="wardrobe">
       <div className="wardrobe-preview">
-        <svg
-          viewBox="-45 -78 90 120"
-          role="img"
-          aria-label="Xem trước nhân vật khối"
-        >
-          <BlockCharacter appearance={appearance} />
-        </svg>
+        <AppearancePreview appearance={appearance} />
       </div>
       <div className="wardrobe-controls">
         <label>

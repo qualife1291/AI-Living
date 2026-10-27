@@ -24,3 +24,12 @@ for (const aspect of [.4,390/844,1,1.6,2]) for (let angle=0;angle<360;angle+=10)
  }
 }
 console.log('PASS cinematic framing keeps main character central, listener space, finite deterministic shot and clear sightline');
+for(const aspect of [.4,390/844,1,1.6,2])for(let heading=0;heading<Math.PI*2;heading+=.2){
+ const rider={...actor,bicycle:{radius:9.2,distance:1,yaw:heading}};
+ const frame=characterShot(rider,undefined,heading,[],aspect),camera=new PerspectiveCamera(38,aspect,.1,10000);
+ camera.position.set(...frame.position);camera.lookAt(...frame.target);camera.updateMatrixWorld();
+ for(const x of [-9.2,9.2])for(const z of [-9.2,9.2])for(const y of [0,25]){
+  const p=new Vector3(x,y,z).project(camera);assert(Math.abs(p.x)<.85&&Math.abs(p.y)<.85,'Full bicycle and rider must fit the tracking shot');
+ }
+}
+console.log('PASS full-bicycle portrait/landscape camera envelope');

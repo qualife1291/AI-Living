@@ -1,4 +1,4 @@
-import { HUMAN_SCALE, VEHICLES, pixelRatio, type Quality } from "@/lib/city/scale";
+import { HUMAN_SCALE, VEHICLES, pixelRatio, shadowMapSize, type Quality } from "@/lib/city/scale";
 import { SocialDirector, type SocialPose, type Exchange } from "@/lib/living/social";
 import { WalkDirector } from "@/lib/city/walkability";
 import { TrafficDirector, TRAFFIC_COUNT, trafficJunctions, type TrafficVehicle } from "@/lib/city/traffic";
@@ -12,8 +12,11 @@ import { createAmbience } from "./ambience";
 import { createFauna } from "./fauna";
 import { AssetLibrary, setAssetTransform, type AssetPlacement } from "./assets";
 import { createModelActors } from "./model-actors";
+import { SceneDetail } from "./scene-detail";
+import { QualityBudget } from "../../../lib/city/quality-budget";
 import { streetModel } from "./streetscape";
 import * as THREE from "three";
+import type { LabelAnchor } from "../../../lib/city/overlay-layout";
 import { logClient, recordFrame } from "../../../lib/diagnostics";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import {
@@ -44,6 +47,10 @@ export type SceneStatus = {
   activity: string;
   following: boolean;
   speech: string;
+  speechKey: string;
+  labels: LabelAnchor[];
+  viewportWidth: number;
+  viewportHeight: number;
   speaker: string;
   listener: string;
   conversationSource: string;
@@ -54,6 +61,7 @@ export type SceneStatus = {
   location: string;
 };
 export type CityRuntime = {
+  presentSpeech: (key: string) => void;
   zoom: (factor: number) => void;
   follow: () => void;
   overview: () => void;
@@ -94,7 +102,8 @@ export function createCity(
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1.22;
-  renderer.shadowMap.enabled = true;
+  let renderQuality = input().quality;
+  renderer.shadowMap.enabled = shadowMapSize(renderQuality, host.clientWidth) > 0;
   renderer.shadowMap.type = THREE.PCFSoftShadowMap;
   renderer.domElement.setAttribute("aria-label", "Thành phố 3D của An");
   renderer.domElement.setAttribute("role", "img");
@@ -122,10 +131,20 @@ export function createCity(
   const sun = new THREE.DirectionalLight("#fff1d0", 2.75);
   sun.position.set(-420, 1250, 620);
   sun.castShadow = true;
-  sun.shadow.mapSize.set(2048, 2048);
+  sun.shadow.mapSize.setScalar(shadowMapSize(input().quality, host.clientWidth) || 512);
   sun.shadow.bias = -0.0004;
-  Object.assign(sun.shadow.camera, { left: -950, right: 950, top: 950, bottom: -950, near: 100, far: 3200 });
-  scene.add(sun);
+  Object.assign(sun.shadow.camera, { left: -180, right: 180, top: 180, bottom: -180, near: 100, far: 3200 });
+  scene.add(sun, sun.target);
+  function configureShadows() {
+    const size = shadowMapSize(renderQuality, host.clientWidth), enabled = size > 0;
+    const changed = renderer.shadowMap.enabled !== enabled || enabled && sun.shadow.mapSize.x !== size;
+    host.dataset.shadowMap = String(size);
+    if (!changed) return;
+    renderer.shadowMap.enabled = sun.castShadow = enabled;
+    sun.shadow.map?.dispose(); sun.shadow.map = null;
+    if (enabled) sun.shadow.mapSize.setScalar(size);
+    scene.traverse(o => { const material = (o as THREE.Mesh).material; if (material) for (const m of Array.isArray(material) ? material : [material]) m.needsUpdate = true; });
+  }
   const solids: Solid[] = [],
     facadeDetails: Solid[] = [],
     cylinders: Solid[] = [],
@@ -277,6 +296,7 @@ export function createCity(
     for (let c = -1; c <= 1; c++)
       windowBox(x + (c * w) / 3.4, 7, z + d / 2 + 0.8, w / 4, 11, 1, 1);
   }
+  const nameOccluders = buildings.map(b => new THREE.Box3(new THREE.Vector3(b.x-b.width/2, 0, b.z-b.depth/2), new THREE.Vector3(b.x+b.width/2, b.height+6, b.z+b.depth/2)));
   const venueLabels: { sprite: THREE.Sprite; width: number }[] = [];
   function label(
     text: string,
@@ -337,6 +357,7 @@ export function createCity(
           : v.type === "airport"
             ? 48
             : 43;
+    if (!open) nameOccluders.push(new THREE.Box3(new THREE.Vector3(v.x-52,0,v.y-83), new THREE.Vector3(v.x+52,height+6,v.y-11)));
     box(v.x, 1, v.y - 25, 125, 2, 112, open ? "#c8d3b4" : "#e6dec9");
     // Functional details at the edges; the central door/frontage slots stay open.
     if (["cafe", "restaurant"].includes(v.type)) {
@@ -473,7 +494,7 @@ export function createCity(
   }
   for (const [index, id] of ["watercraft/boat-fishing-small", "watercraft/boat-row-small", "watercraft/boat-house-a"].entries()) if (assets.get(id)) placements.push({ id, x: 920 + index * 280, y: .4, z: 1608 + index * 6, width: 24, depth: 56, height: 32, yaw: Math.PI / 2 });
   if (assets.get("watercraft/buoy")) for (const x of [760, 1680]) placements.push({ id: "watercraft/buoy", x, y: .3, z: 1585, width: 8, depth: 8, height: 14 });
-  if (assets.get("trains/train-tram-modern")) placements.push({ id: "trains/train-tram-modern", x: metroLine[1][0], y: 3.6, z: metroLine[1][1], width: 12, height: 18, depth: 46, yaw: Math.atan2(metroLine[1][0] - metroLine[0][0], metroLine[1][1] - metroLine[0][1]) });
+  // Tram models remain available in the catalog until their route and collider agree.
   if (assets.get("trains/railroad-straight")) for (let i = 1; i < metroLine.length; i++) {
     const a = metroLine[i - 1], b = metroLine[i], length = Math.hypot(b[0] - a[0], b[1] - a[1]);
     for (let n = 20; n < length; n += 40) placements.push({ id: "trains/railroad-straight", x: a[0] + (b[0] - a[0]) * n / length, y: 3.1, z: a[1] + (b[1] - a[1]) * n / length, width: 10, height: 1, depth: 40, yaw: Math.atan2(b[0] - a[0], b[1] - a[1]), stretch: true });
@@ -486,6 +507,7 @@ export function createCity(
   const dummy = new THREE.Object3D(),
     color = new THREE.Color();
   const detailChunks: { mesh: THREE.InstancedMesh; x: number; z: number }[] = [];
+  const sceneDetail = new SceneDetail();
   function batch(
     geometry: THREE.BufferGeometry,
     list: Solid[],
@@ -519,10 +541,10 @@ export function createCity(
   batch(new THREE.CylinderGeometry(0.5, 0.5, 1, 20), shadows);
   batch(new THREE.BoxGeometry(1, 1, 1), solids, new THREE.MeshPhongMaterial({ shininess: 10, specular: "#4a4f4a" }));
   batch(new THREE.BoxGeometry(1, 1, 1), facadeDetails, new THREE.MeshPhongMaterial({ shininess: 14, specular: "#595e58" }), true);
-  batch(new THREE.CylinderGeometry(0.5, 0.5, 1, 16), cylinders, new THREE.MeshPhongMaterial({ shininess: 14, specular: "#525752" }));
-  batch(new THREE.SphereGeometry(.5, 16, 12), leaves, new THREE.MeshPhongMaterial({ shininess: 16, specular: "#4e6b52" }));
-  batch(new THREE.TorusGeometry(.42, .08, 8, 18), propWheels);
-  batch(new THREE.IcosahedronGeometry(.5, 1), propBuds, new THREE.MeshPhongMaterial({ shininess: 18 }), true);
+  batch(sceneDetail.register(new THREE.CylinderGeometry(0.5, 0.5, 1, 16), new THREE.CylinderGeometry(0.5, 0.5, 1, 8)), cylinders, new THREE.MeshPhongMaterial({ shininess: 14, specular: "#525752" }));
+  batch(sceneDetail.register(new THREE.SphereGeometry(.5, 16, 12), new THREE.SphereGeometry(.5, 8, 4)), leaves, new THREE.MeshPhongMaterial({ shininess: 16, specular: "#4e6b52" }));
+  batch(sceneDetail.register(new THREE.TorusGeometry(.42, .08, 8, 18), new THREE.TorusGeometry(.42, .08, 4, 12)), propWheels);
+  batch(sceneDetail.register(new THREE.IcosahedronGeometry(.5, 1), new THREE.IcosahedronGeometry(.5, 0)), propBuds, new THREE.MeshPhongMaterial({ shininess: 18 }), true);
   const windowMaterial = new THREE.MeshPhongMaterial({
     shininess: 40,
     emissive: "#638082",
@@ -544,6 +566,8 @@ export function createCity(
   host.dataset.fountainStreams = String(ambience.stats.fountainStreams);
   host.dataset.cloudLobes = String(ambience.stats.cloudLobes);
   const capacity = 72, people = createPeople(scene, capacity), boxGeo = people.geometry.box;
+  people.setQuality(input().quality);
+  sceneDetail.apply(scene, input().quality);
   const modelActors = createModelActors(scene, assets);
   host.dataset.assetActors = String(modelActors.ids.size);
   const trafficBody = new THREE.InstancedMesh(
@@ -576,15 +600,13 @@ export function createCity(
   scene.add(ring);
   const fauna = createFauna(scene, people.geometry);
   host.dataset.animalBatches = String(fauna.stats.batches);
-  const selectedLabel = label("An", 0, 25, 0, 14)!;
   const shadowCanvas = document.createElement("canvas"); shadowCanvas.width = shadowCanvas.height = 64;
   const shadowContext = shadowCanvas.getContext("2d")!, gradient = shadowContext.createRadialGradient(32, 32, 3, 32, 32, 31);
   gradient.addColorStop(0, "rgba(28,44,41,.34)"); gradient.addColorStop(1, "rgba(28,44,41,0)");
   shadowContext.fillStyle = gradient; shadowContext.fillRect(0, 0, 64, 64);
   const contactShadows = new THREE.InstancedMesh(new THREE.PlaneGeometry(1, 1).rotateX(-Math.PI / 2), new THREE.MeshBasicMaterial({ map: new THREE.CanvasTexture(shadowCanvas), transparent: true, depthWrite: false }), capacity + TRAFFIC_COUNT);
   contactShadows.frustumCulled = false; scene.add(contactShadows);
-  let lastLabel = "",
-    following = true,
+  let following = true,
     dead = false,
     frame = 0,
     lastDraw = 0,
@@ -639,7 +661,7 @@ export function createCity(
     // Include buildings so picking never selects a resident through a tower.
     const hit = raycaster
       .intersectObjects(scene.children, true)
-      .find((h) => h.object !== ring && h.object !== selectedLabel);
+      .find((h) => h.object !== ring);
     if (!hit) return;
     if (hit.object.userData.actorId) callbacks.select(hit.object.userData.actorId);
     else if (hit.object.userData.venue) callbacks.venue(hit.object.userData.venue);
@@ -665,10 +687,13 @@ export function createCity(
     renderer.setSize(width, height);
     camera.aspect = width / height;
     camera.updateProjectionMatrix();
+    configureShadows();
   });
   resize.observe(host);
   const heading = new Map<string, number>();
   function drawActors(seconds: number, world: World, dt: number) {
+    modelActors.prepare(world, input().selected);
+    host.dataset.assetActors = String(modelActors.ids.size);
     const updated = people.draw(world, actors, socialPoses, seconds, dt, camera, input().selected, modelActors.ids);
     heading.clear(); for (const [id, yaw] of updated) heading.set(id, yaw);
     modelActors.draw(world, actors, socialPoses, heading, seconds);
@@ -716,8 +741,17 @@ export function createCity(
   const visibilityChanged = () => { lastDraw = 0; };
   document.addEventListener("visibilitychange", visibilityChanged);
   let activeQuality = input().quality;
+  const qualityBudget = new QualityBudget();
   let drawnFrames = 0;
   function tick(stamp: number) {
+    try { drawFrame(stamp); }
+    catch (error) {
+      cancelAnimationFrame(frame);
+      logClient("render_error", { actor: input().selected, error: error instanceof Error ? error.name : "RendererError" });
+      if (!dead) callbacks.fatal();
+    }
+  }
+  function drawFrame(stamp: number) {
     if (dead) return;
     frame = requestAnimationFrame(tick);
     if (document.hidden || stamp - lastDraw < 15) return;
@@ -728,10 +762,14 @@ export function createCity(
     const state = input(),
       { world, selected } = state,
       now = Date.now() + (state.clockOffsetMs ?? 0);
-    if (activeQuality !== state.quality) {
-      activeQuality = state.quality;
+    const budgetQuality = qualityBudget.frame(state.quality, frameMs);
+    if (activeQuality !== budgetQuality) {
+      activeQuality = renderQuality = budgetQuality;
       renderer.setPixelRatio(pixelRatio(activeQuality, devicePixelRatio));
       renderer.setSize(host.clientWidth, host.clientHeight);
+      configureShadows();
+      people.setQuality(activeQuality);
+      sceneDetail.apply(scene, activeQuality);
     }
     lastTime = now; // simulationTime/worldTime apply the persisted pause anchor.
     const seconds = simulationTime(world, lastTime) / 1000;
@@ -743,7 +781,7 @@ export function createCity(
           : []),
       ].slice(0, capacity);
       const animalProjections = animalsAt(world, lastTime);
-      cars = trafficDirector.frame(seconds, [...actors, ...groundAnimals].map(a => a.position));
+      cars = trafficDirector.frame(seconds, [...actors, ...groundAnimals].map(a => a.position), [...actors, ...groundAnimals].map(a => a.bicycle?.radius ?? 4.8));
       const safeAll = walkDirector.frame(world, rawActors, seconds, cars, animalProjections);
       const byId = new Map(safeAll.map(a => [a.id, a]));
       groundAnimals = animalProjections.map(a => ({ ...a, ...byId.get(a.id) }));
@@ -756,7 +794,9 @@ export function createCity(
       if (lastSelected !== selected) {
         following = true;
         if (current) {
-          const shot = characterShot(current, actors.find(a => a.id === socialPoses.get(current!.id)?.peerId), heading.get(current.id) ?? .35, cameraBuildings, camera.aspect);
+          const peer = actors.find(a => a.id === socialPoses.get(current!.id)?.peerId) ?? groundAnimals.find(a => a.petOwnerId === current!.id);
+          const height = Math.max(modelActors.height(current.id), peer && modelActors.ids.has(peer.id) ? modelActors.height(peer.id) : peer && actors.some(a => a.id === peer.id) ? 20 : 0);
+          const shot = characterShot(current, peer, heading.get(current.id) ?? .35, cameraBuildings, camera.aspect, height);
           scene.fog = fog;
           controls.target.set(...shot.target);
           camera.position.set(...shot.position);
@@ -764,6 +804,11 @@ export function createCity(
         }
       }
       lastSelected = selected;
+    }
+    if (current) {
+      sun.position.x += current.position[0] - sun.target.position.x;
+      sun.position.z += current.position[1] - sun.target.position.z;
+      sun.target.position.set(current.position[0], 0, current.position[1]);
     }
     if (stamp - lastState > 500) {
       lastState = stamp;
@@ -775,7 +820,7 @@ export function createCity(
       const golden = time.phase === "dawn" || time.phase === "dusk";
       (scene.background as THREE.Color).set("#142638").lerp(new THREE.Color(golden ? "#ffd4ac" : "#94d4f1"), daylight);
       sun.color.set(golden ? "#ffb77e" : "#fff0d8");
-      sun.position.set(Math.cos(time.hour / 24 * Math.PI * 2) * 1000, 200 + daylight * 1100, 600);
+      sun.position.set(sun.target.position.x + Math.cos(time.hour / 24 * Math.PI * 2) * 1000, 200 + daylight * 1100, sun.target.position.z + 600);
       renderer.toneMappingExposure = .85 + daylight * .15;
       fog.color.copy(scene.background as THREE.Color);
     }
@@ -802,25 +847,11 @@ export function createCity(
     host.dataset.animalPositions = JSON.stringify(groundAnimals.map(a => ({ id: a.id, species: a.species, position: a.position })));
     if (current) {
       ring.position.set(current.position[0], 2, current.position[1]);
-      selectedLabel.position.set(current.position[0], 25, current.position[1]);
-      if (lastLabel !== current.name) {
-        // Reuse the single selected label texture.
-        lastLabel = current.name;
-        const c = selectedLabel.material.map!.image as HTMLCanvasElement,
-          ctx = c.getContext("2d")!;
-        ctx.clearRect(0, 0, 512, 96);
-        ctx.fillStyle = "#f2eddd";
-        ctx.fillRect(0, 0, 512, 96);
-        ctx.fillStyle = "#375a50";
-        ctx.font = "600 42px sans-serif";
-        ctx.textAlign = "center";
-        ctx.textBaseline = "middle";
-        ctx.fillText(current.name, 256, 48, 480);
-        selectedLabel.material.map!.needsUpdate = true;
-      }
       if (following) {
         const partnerId = socialPoses.get(current.id)?.peerId;
-        const shot = characterShot(current, actors.find(a => a.id === partnerId), heading.get(current.id) ?? .35, cameraBuildings, camera.aspect);
+        const peer = actors.find(a => a.id === partnerId) ?? groundAnimals.find(a => a.petOwnerId === current!.id);
+        const height = Math.max(modelActors.height(current.id), peer && modelActors.ids.has(peer.id) ? modelActors.height(peer.id) : peer && actors.some(a => a.id === peer.id) ? 20 : 0);
+        const shot = characterShot(current, peer, heading.get(current.id) ?? .35, cameraBuildings, camera.aspect, height);
         const alpha = 1 - Math.exp(-2.8 * dt);
         controls.target.lerp(new THREE.Vector3(...shot.target), alpha);
         camera.position.lerp(new THREE.Vector3(...shot.position), alpha);
@@ -828,7 +859,7 @@ export function createCity(
     }
     controls.update();
     // Keep signs subordinate to residents; distant districts need no text clutter.
-    updateAssetLOD(camera);
+    updateAssetLOD(camera, activeQuality === "sharp");
     for (const chunk of detailChunks) chunk.mesh.visible = Math.hypot(camera.position.x - chunk.x, camera.position.z - chunk.z) < 520;
     const pixelScale =
       (2 * Math.tan(THREE.MathUtils.degToRad(camera.fov) / 2)) /
@@ -852,11 +883,18 @@ export function createCity(
       const speech = exchange?.speech,
         speaker = actors.find((a) => a.id === speech?.speaker);
       const listener = actors.find(a => a.id === (exchange?.a === speaker?.id ? exchange?.b : exchange?.a));
-      const p = new THREE.Vector3(
-        speaker?.position[0] ?? 0,
-        25,
-        speaker?.position[1] ?? 0,
-      ).project(camera);
+      const actorHead = (actor: Actor) => modelActors.head(actor.id)?.add(new THREE.Vector3(0, 1, 0)) ?? new THREE.Vector3(actor.position[0], groundElevation(...actor.position) + 21.5 + (actor.bicycle ? 4 : 0), actor.position[1]);
+      const p = speaker ? actorHead(speaker).project(camera) : new THREE.Vector3();
+      const labels: LabelAnchor[] = [];
+      for (const actor of actors) {
+        const head = actorHead(actor), point = head.clone().project(camera);
+        const selected = actor.id === current?.id, speaking = socialPoses.get(actor.id)?.speaking ?? false;
+        if (point.z < -1 || point.z > 1 || Math.abs(point.x) > .98 || Math.abs(point.y) > .95) continue;
+        if (!selected && !speaking && camera.position.distanceTo(new THREE.Vector3(actor.position[0],0,actor.position[1])) > 240) continue;
+        const ray = new THREE.Ray(camera.position, head.clone().sub(camera.position).normalize()), hit = new THREE.Vector3();
+        if (nameOccluders.some(box => ray.intersectBox(box,hit) && hit.distanceTo(camera.position) < head.distanceTo(camera.position)-.3)) continue;
+        labels.push({ id: actor.id, name: actor.name, x: (point.x+1)*host.clientWidth/2, y: (1-point.y)*host.clientHeight/2, selected, speaking });
+      }
       callbacks.status({
         name: current?.name ?? "An",
         activity: current?.activity ?? "Đang sinh hoạt",
@@ -864,6 +902,8 @@ export function createCity(
         walking: current?.walking ?? false,
         location: current?.location ?? "",
         speech: speech?.text ?? "",
+        speechKey: speech?.key ?? "",
+        labels, viewportWidth: host.clientWidth, viewportHeight: host.clientHeight,
         speaker: speaker?.name ?? "",
         listener: listener?.name ?? "",
         conversationSource: exchange?.source ?? "",
@@ -881,6 +921,7 @@ export function createCity(
     host.dataset.paused = String(world.paused);
     host.dataset.frame = String(++drawnFrames);
     host.dataset.pixelRatio = String(renderer.getPixelRatio());
+    host.dataset.effectiveQuality = activeQuality ?? "balanced";
     host.dataset.triangles = String(renderer.info.render.triangles);
     host.dataset.geometries = String(renderer.info.memory.geometries);
     host.dataset.textures = String(renderer.info.memory.textures);
@@ -891,6 +932,19 @@ export function createCity(
     host.dataset.actors = String(actors.length);
     host.dataset.exchanges = String(exchanges.length);
     host.dataset.socialCast = JSON.stringify(actors.filter(a => socialPoses.get(a.id)?.gesture !== "idle" && socialPoses.has(a.id)).map(a => ({ id: a.id, position: a.position, ...socialPoses.get(a.id) })));
+    host.dataset.cyclists = JSON.stringify(actors.filter(a => a.bicycle).map(a => {
+      const radius = a.bicycle!.radius;
+      const inFrame = [-radius, radius].every(x => [-radius, radius].every(z => [0, 25].every(y => {
+        const p = new THREE.Vector3(a.position[0] + x, y + groundElevation(...a.position), a.position[1] + z).project(camera);
+        return p.z > -1 && p.z < 1 && Math.abs(p.x) < .95 && Math.abs(p.y) < .95;
+      })));
+      return { id: a.id, position: a.position, walking: a.walking, ...a.bicycle, inFrame };
+    }));
+    host.dataset.tagCast = JSON.stringify(actors.filter(a => a.tagGame).map(a => ({ id: a.id, position: a.position, walking: a.walking, ...a.tagGame })));
+    host.dataset.petWalks = JSON.stringify(groundAnimals.filter(a => a.petOwnerId).map(a => {
+      const screen = new THREE.Vector3(a.position[0], 2, a.position[1]).project(camera);
+      return { id: a.id, ownerId: a.petOwnerId, position: a.position, walking: a.walking, onScreen: screen.z > -1 && screen.z < 1 && Math.abs(screen.x) < .95 && Math.abs(screen.y) < .95 };
+    }));
     host.dataset.selected = current?.id ?? "";
     host.dataset.humanBatches = String(people.stats().batches);
     host.dataset.humanInstances = String(people.stats().instances);
@@ -906,6 +960,7 @@ export function createCity(
   }
   frame = requestAnimationFrame(tick);
   return {
+    presentSpeech(key) { socialDirector.presented(key, Date.now() + (input().clockOffsetMs ?? 0)); },
     zoom(factor) {
       following = false;
       host.dataset.view = "orbit";
@@ -947,6 +1002,7 @@ export function createCity(
       renderer.domElement.removeEventListener("pointerup", pointerUp);
       renderer.domElement.removeEventListener("webglcontextlost", lost);
       document.removeEventListener("visibilitychange", visibilityChanged);
+      modelActors.dispose();
       const geometries = new Set<THREE.BufferGeometry>(),
         materials = new Set<THREE.Material>(),
         textures = new Set<THREE.Texture>();
@@ -963,6 +1019,8 @@ export function createCity(
           }
       });
       assets.collectAndClose({ geometries, materials, textures });
+      people.collectGeometry(geometries);
+      sceneDetail.collect(geometries);
       geometries.forEach((g) => g.dispose());
       materials.forEach((m) => m.dispose());
       textures.forEach((t) => t.dispose());

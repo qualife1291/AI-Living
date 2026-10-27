@@ -8,7 +8,7 @@ export async function POST(req: Request) {
   const raw = new Uint8Array(bytes); let at = 0; for (const c of chunks) { raw.set(c, at); at += c.length; }
   let logs: unknown; try { logs = JSON.parse(new TextDecoder().decode(raw)).logs; } catch { return json({ error: "JSON không hợp lệ" }, 400); }
   if (!Array.isArray(logs) || !logs.length || logs.length > 32) return json({ error: "Tối đa 32 log" }, 400);
-  const allowed = new Set(["frame_sample", "frame_slow", "longtask", "route_slow", "route_miss", "actor_stuck", "position_nan", "footprint_overlap", "webgl_lost"]);
+  const allowed = new Set(["frame_sample", "frame_slow", "longtask", "route_slow", "route_miss", "actor_stuck", "position_nan", "footprint_overlap", "webgl_lost", "render_error"]);
   for (const row of logs) if (!row || typeof row !== "object" || !allowed.has(row.kind) || !Number.isFinite(row.at) || !row.data || typeof row.data !== "object" || Array.isArray(row.data) || Object.keys(row.data).length > 8 || Object.entries(row.data).some(([k,v]) => k.length > 32 || !["string", "number", "boolean"].includes(typeof v) || (typeof v === "string" && v.length > 100) || (typeof v === "number" && !Number.isFinite(v)))) return json({ error: "Log không hợp lệ" }, 400);
   const now = Date.now(), db = database();
   // One atomic admission statement, bounded globally even across worker isolates.

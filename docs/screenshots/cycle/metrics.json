@@ -1,0 +1,32 @@
+{
+  "production": false,
+  "renderer": "Chromium SwiftShader",
+  "cases": [
+    {
+      "viewport": "desktop",
+      "frames": 99,
+      "travel": 227.8797948956921,
+      "polls": 8,
+      "bodyRadius": 9.2,
+      "driveClip": true,
+      "wholeBodyFramed": true,
+      "pauseFreezesRig": true,
+      "dismount": true,
+      "noTeleport": true,
+      "errors": []
+    },
+    {
+      "viewport": "mobile",
+      "frames": 168,
+      "travel": 244.5579239473828,
+      "polls": 8,
+      "bodyRadius": 9.2,
+      "driveClip": true,
+      "wholeBodyFramed": true,
+      "pauseFreezesRig": true,
+      "dismount": true,
+      "noTeleport": true,
+      "errors": []
+    }
+  ]
+}

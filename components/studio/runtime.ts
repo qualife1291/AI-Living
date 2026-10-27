@@ -33,10 +33,14 @@ function kitten() {
   return group;
 }
 
-export async function createStudio(host: HTMLDivElement, input: () => { id: ScenarioId; time: number }): Promise<StudioRuntime> {
+export async function createStudio(host: HTMLDivElement, input: () => { id: ScenarioId; time: number }, signal?: AbortSignal): Promise<StudioRuntime> {
   const wanted = ["characters/character-a", "characters/character-b", "characters/character-e", "market/display-bread", "market/display-fruit", "roads/dumpster", "suburban/tree-large", "suburban/building-type-a", ...scenarioDefinitions.flatMap(d => [...d.cast.map(a => modelFor(a.modelHint)), ...d.environment.map(p => modelFor(p.modelHint ?? p.kind))])].filter(Boolean);
   const library = await new AssetLibrary().preload([...new Set(wanted)], 5000);
-  const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: "high-performance" }); renderer.setPixelRatio(Math.min(devicePixelRatio, innerWidth < 700 ? 1.25 : 1.5)); renderer.outputColorSpace = THREE.SRGBColorSpace; renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+  if (signal?.aborted || !host.isConnected) { library.dispose(); throw new DOMException("Studio navigation cancelled", "AbortError"); }
+  let renderer: THREE.WebGLRenderer;
+  try { renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: "high-performance" }); }
+  catch (error) { library.dispose(); throw error; }
+  renderer.setPixelRatio(Math.min(devicePixelRatio, innerWidth < 700 ? 1.25 : 1.5)); renderer.outputColorSpace = THREE.SRGBColorSpace; renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
   renderer.domElement.setAttribute("aria-label", "Các nhân vật trong kịch bản mô phỏng"); host.appendChild(renderer.domElement);
   const scene = new THREE.Scene(), camera = new THREE.PerspectiveCamera(38, 1, .1, 2000), hemi = new THREE.HemisphereLight("#edf6fc", "#93836d", 1.9), sun = new THREE.DirectionalLight("#ffe7bb", 2.3);
   scene.add(hemi, sun); const controls = new OrbitControls(camera, renderer.domElement); controls.enableDamping = true; controls.minDistance = 12; controls.maxDistance = 350; controls.maxPolarAngle = Math.PI / 2 - .03;
@@ -63,12 +67,19 @@ export async function createStudio(host: HTMLDivElement, input: () => { id: Scen
     }
     scene.add(group); const stage = { group, actors, props, kitten: cat }; stages.set(frame.id, stage); return stage;
   }
-  const resize = new ResizeObserver(() => { renderer.setSize(host.clientWidth, host.clientHeight); camera.aspect = host.clientWidth / Math.max(1, host.clientHeight); camera.updateProjectionMatrix(); }); resize.observe(host);
+  let dirty = true;
+  const resize = new ResizeObserver(() => { renderer.setSize(host.clientWidth, host.clientHeight); camera.aspect = host.clientWidth / Math.max(1, host.clientHeight); camera.updateProjectionMatrix(); dirty = true; }); resize.observe(host);
   let handle = 0, dead = false, lastDraw = 0, lastId = "", lastTime = -10, lastStatus = 0;
   const target = new THREE.Vector3(), eye = new THREE.Vector3();
+  function render() {
+    renderer.render(scene, camera);
+    host.dataset.triangles = String(renderer.info.render.triangles); host.dataset.drawCalls = String(renderer.info.render.calls); host.dataset.frames = String(Number(host.dataset.frames ?? 0) + 1);
+  }
   function tick(stamp: number) {
     if (dead) return; handle = requestAnimationFrame(tick); if (document.hidden || stamp - lastDraw < 20) return;
-    lastDraw = stamp; const state = input(), frame = scenarioFrame(state.id, state.time), seeking = state.id !== lastId || Math.abs(state.time - lastTime) > .6;
+    lastDraw = stamp; const state = input();
+    if (!dirty && state.id === lastId && state.time === lastTime) { if (controls.update()) render(); return; }
+    const frame = scenarioFrame(state.id, state.time), seeking = state.id !== lastId || Math.abs(state.time - lastTime) > .6;
     const stage = stages.get(state.id) ?? build(frame);
     for (const [id, item] of stages) item.group.visible = id === state.id;
     if (state.id !== lastId) {
@@ -102,8 +113,8 @@ export async function createStudio(host: HTMLDivElement, input: () => { id: Scen
       if (seeking) { camera.position.copy(eye); controls.target.copy(target); } else { camera.position.lerp(eye, .2); controls.target.lerp(target, .2); }
       camera.fov = frame.camera.fov; camera.updateProjectionMatrix();
     }
-    controls.update(); renderer.render(scene, camera);
-    host.dataset.ready = "true"; host.dataset.scenario = frame.id; host.dataset.time = frame.time.toFixed(3); host.dataset.beat = String(frame.beat.index); host.dataset.assets = String(library.stats().loaded); host.dataset.assetFailures = String(library.stats().failed); host.dataset.triangles = String(renderer.info.render.triangles); host.dataset.drawCalls = String(renderer.info.render.calls); host.dataset.frames = String(Number(host.dataset.frames ?? 0) + 1);
+    controls.update(); render(); dirty = false;
+    host.dataset.ready = "true"; host.dataset.scenario = frame.id; host.dataset.time = frame.time.toFixed(3); host.dataset.beat = String(frame.beat.index); host.dataset.assets = String(library.stats().loaded); host.dataset.assetFailures = String(library.stats().failed);
     if (stamp - lastStatus > 200 || seeking) { lastStatus = stamp; host.dataset.state = JSON.stringify(frame.state); host.dataset.cast = JSON.stringify(frame.actors.map(a => ({ id: a.id, age: a.age, clip: a.clip, position: a.position }))); host.dataset.props = JSON.stringify(frame.props.map(p => ({ id: p.id, holder: p.holderId, stage: p.stage, position: p.position }))); }
     lastId = state.id; lastTime = state.time;
   }

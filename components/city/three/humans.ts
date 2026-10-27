@@ -21,7 +21,7 @@ function unitBounds<T extends BufferGeometry>(geometry: T): T {
 }
 
 /** Allocate once per city; share between all people and dispose with the scene. */
-export function createHumanGeometry(): {
+export function createHumanGeometry(sharp = true): {
   box: BufferGeometry;
   round: BufferGeometry;
   head: BufferGeometry;
@@ -31,11 +31,11 @@ export function createHumanGeometry(): {
 } {
   return {
     box: new BoxGeometry(1, 1, 1),
-    round: unitBounds(new RoundedBoxGeometry(1, 1, 1, 2, 0.16)),
-    head: unitBounds(new SphereGeometry(0.5, 14, 10)),
-    hair: unitBounds(new SphereGeometry(0.5, 14, 8, 0, Math.PI * 2, 0, Math.PI / 2)),
-    limb: unitBounds(new CapsuleGeometry(0.25, 0.5, 3, 10)),
-    shoe: unitBounds(new RoundedBoxGeometry(1, 1, 1, 2, 0.2)),
+    round: unitBounds(new RoundedBoxGeometry(1, 1, 1, sharp ? 2 : 1, 0.16)),
+    head: unitBounds(new SphereGeometry(0.5, sharp ? 14 : 12, sharp ? 10 : 8)),
+    hair: unitBounds(new SphereGeometry(0.5, sharp ? 14 : 12, sharp ? 8 : 6, 0, Math.PI * 2, 0, Math.PI / 2)),
+    limb: unitBounds(new CapsuleGeometry(0.25, 0.5, sharp ? 3 : 1, sharp ? 10 : 6)),
+    shoe: unitBounds(new RoundedBoxGeometry(1, 1, 1, sharp ? 2 : 1, 0.2)),
   };
 }
 
@@ -81,7 +81,7 @@ export function humanPose(
   const angle = phase * Math.PI * 2;
   const riding = actor.walking && actor.transport && actor.transport !== "walk";
   const walk = actor.walking && !riding;
-  const exercising = ["run", "tag", "exercise"].includes(actor.kind) && !actor.walking;
+  const exercising = ["run", "exercise"].includes(actor.kind) && !actor.walking;
   const stridePhase = exercising ? time*9+angle : (gait?.phase ?? time * 7 + angle) * (["run", "tag"].includes(actor.kind) ? 1.4 : 1);
   const weight = exercising ? .7 : gait?.weight ?? (walk ? 1 : 0);
   const swing = Math.sin(stridePhase) * .48 * weight + Math.sin(time * 1.3 + angle) * .025 * (1 - weight);
@@ -90,8 +90,8 @@ export function humanPose(
   const soccer = !walk && /soccer|football|đá bóng|thể thao/.test(act);
   const cooking = !walk && /cook|nấu ăn|bếp/.test(act);
   const jumping = actor.kind === "jump" || !walk && /jump|nhảy|cheer|lễ hội/.test(act);
-  const driving = actor.kind === "cycle" || riding || /drive|lái xe|taxi|scooter/.test(act);
-  const usingProp = !actor.walking && (["read", "study", "drink", "shop", "garden", "eat", "work"].includes(actor.kind) || cooking);
+  const driving = !!actor.bicycle || riding || /drive|lái xe|taxi|scooter/.test(act);
+  const usingProp = !actor.bicycle && !actor.walking && (["read", "study", "drink", "shop", "garden", "eat", "work"].includes(actor.kind) || cooking);
 
   const swimCycle = Math.sin(time * 4.2 + angle);
   const kickCycle = Math.sin(time * 3.6 + angle);
@@ -126,6 +126,7 @@ export function humanPose(
     }
   }
 
+  const pedal = actor.bicycle ? Math.sin(actor.bicycle.distance / 3) : 0;
   const blinkTime = ((time + phase * 5) % (4.4 + phase) + 4.4 + phase) % (4.4 + phase);
   const blink = blinkTime < 0.16 ? 1 - Math.sin((blinkTime / 0.16) * Math.PI) * 0.92 : 1;
   return {
@@ -139,10 +140,10 @@ export function humanPose(
     rightHandY: (1 - Math.cos(rightArm)) * 6,
     leftHandZ: -Math.sin(leftArm) * 6,
     rightHandZ: -Math.sin(rightArm) * 6,
-    leftLeg: swimming ? swimCycle * 0.32 : soccer ? -kickCycle * 0.38 : jumping ? -0.25 * Math.abs(Math.sin(time * 3 + angle)) : Math.sin(stridePhase) * .48 * weight,
-    rightLeg: swimming ? -swimCycle * 0.32 : soccer ? Math.max(-0.45, kickCycle * 0.62) : jumping ? -0.25 * Math.abs(Math.sin(time * 3 + angle)) : -Math.sin(stridePhase) * .48 * weight,
-    leftKnee: swimming ? Math.max(0, -swimCycle) * 0.35 : soccer ? Math.max(0, kickCycle) * 0.45 : jumping ? 0.45 * Math.abs(Math.sin(time * 3 + angle)) : Math.max(0, -Math.sin(stridePhase)) * .72 * weight,
-    rightKnee: swimming ? Math.max(0, swimCycle) * 0.35 : soccer ? Math.max(0, -kickCycle) * 0.55 : jumping ? 0.45 * Math.abs(Math.sin(time * 3 + angle)) : Math.max(0, Math.sin(stridePhase)) * .72 * weight,
+    leftLeg: actor.bicycle ? -.4 + pedal * .5 : swimming ? swimCycle * 0.32 : soccer ? -kickCycle * 0.38 : jumping ? -0.25 * Math.abs(Math.sin(time * 3 + angle)) : Math.sin(stridePhase) * .48 * weight,
+    rightLeg: actor.bicycle ? -.4 - pedal * .5 : swimming ? -swimCycle * 0.32 : soccer ? Math.max(-0.45, kickCycle * 0.62) : jumping ? -0.25 * Math.abs(Math.sin(time * 3 + angle)) : -Math.sin(stridePhase) * .48 * weight,
+    leftKnee: actor.bicycle ? .8 - pedal * .25 : swimming ? Math.max(0, -swimCycle) * 0.35 : soccer ? Math.max(0, kickCycle) * 0.45 : jumping ? 0.45 * Math.abs(Math.sin(time * 3 + angle)) : Math.max(0, -Math.sin(stridePhase)) * .72 * weight,
+    rightKnee: actor.bicycle ? .8 + pedal * .25 : swimming ? Math.max(0, swimCycle) * 0.35 : soccer ? Math.max(0, -kickCycle) * 0.55 : jumping ? 0.45 * Math.abs(Math.sin(time * 3 + angle)) : Math.max(0, Math.sin(stridePhase)) * .72 * weight,
     sway: Math.sin(stridePhase) * .025 * weight,
     mouth: social?.speaking ? .3 + Math.sin(time * 12 + angle) ** 2 * .8 : .16,
   };
@@ -171,7 +172,7 @@ export class HumanMotion {
         const walking = actor.walking && distance > .001 && actor.transport === "walk";
         state.weight += ((walking ? 1 : 0) - state.weight) * (1 - Math.exp(-10 * step));
         state.phase = (state.phase + Math.min(3, distance) * Math.PI * 2 / 14) % (Math.PI * 2);
-        const wantedYaw = peer ? Math.atan2(peer.position[0] - actor.position[0], peer.position[1] - actor.position[1]) : walking ? Math.atan2(dx, dz) : state.yaw;
+        const wantedYaw = actor.bicycle ? actor.bicycle.yaw : peer ? Math.atan2(peer.position[0] - actor.position[0], peer.position[1] - actor.position[1]) : walking ? Math.atan2(dx, dz) : state.yaw;
         state.yaw += Math.atan2(Math.sin(wantedYaw - state.yaw), Math.cos(wantedYaw - state.yaw)) * (1 - Math.exp(-7 * step));
         const wanted = humanPose({ ...actor, walking: state.weight > .05 }, seconds, 0, social?.gesture === "idle" ? undefined : social, { phase: state.phase, weight: state.weight });
         for (const key of Object.keys(wanted) as (keyof HumanPose)[]) state.pose[key] = key === "blink" ? wanted[key] : state.pose[key] + (wanted[key] - state.pose[key]) * (1 - Math.exp(-14 * step));

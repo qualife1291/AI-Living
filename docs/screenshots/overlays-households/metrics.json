@@ -1,0 +1,40 @@
+{
+  "production": false,
+  "renderer": "Chromium SwiftShader",
+  "cases": [
+    {
+      "viewport": "desktop",
+      "labels": 3,
+      "maxLabelWidth": 71.59375,
+      "bubbleBounds": {
+        "x": 584.796875,
+        "y": 180.71875,
+        "width": 292,
+        "height": 72.1875
+      },
+      "sourceLabel": true,
+      "householdMembers": 4,
+      "labelSelection": true,
+      "longNameBounded": true,
+      "fullLengthDialogue": true,
+      "errors": []
+    },
+    {
+      "viewport": "mobile",
+      "labels": 1,
+      "maxLabelWidth": 58.390625,
+      "bubbleBounds": {
+        "x": 78.8125,
+        "y": 267.03125,
+        "width": 292,
+        "height": 68.59375
+      },
+      "sourceLabel": true,
+      "householdMembers": 4,
+      "labelSelection": true,
+      "longNameBounded": true,
+      "fullLengthDialogue": true,
+      "errors": []
+    }
+  ]
+}

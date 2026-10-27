@@ -10,3 +10,7 @@ export type Quality = 'eco' | 'balanced' | 'sharp';
 export function pixelRatio(quality: Quality = 'balanced', dpr = 1) {
   return Math.max(1, Math.min(dpr, quality === 'eco' ? 1 : quality === 'sharp' ? 2.5 : 1.75));
 }
+/** Keep the mobile shadow target at 1 MiB; eco uses existing contact shadows. */
+export function shadowMapSize(quality: Quality = 'balanced', width = 1440) {
+  return quality === 'eco' ? 0 : quality === 'sharp' ? 2048 : width < 700 ? 512 : 1024;
+}

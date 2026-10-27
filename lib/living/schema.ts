@@ -34,6 +34,8 @@ export type Resident = {
   roleId: string;
   color: string;
   arrivedOn: string;
+  home?: import("./households").HomeAssignment;
+  identity?: import("./identity").Identity;
   familiarity: number;
   memories: string[];
   plan?: import("../world").PersonPlan;
@@ -61,6 +63,7 @@ export type LivingState = {
   };
   appearances?: Record<string, import("../city/appearance").Appearance>;
   animalLearning?: Record<string, import("./animal-learning").AnimalPolicy>;
+  petOwners?: Record<string, string>;
 };
 export type RealContext = {
   date: string;

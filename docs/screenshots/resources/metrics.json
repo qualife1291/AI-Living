@@ -1,0 +1,279 @@
+{
+  "production": false,
+  "renderer": "Chromium SwiftShader",
+  "cases": [
+    {
+      "id": "gobkit-animal/anglerfish",
+      "stats": {
+        "loading": "false",
+        "ready": "true",
+        "renderedModel": "gobkit-animal/anglerfish",
+        "frames": "13",
+        "triangles": "314",
+        "clip": "walk",
+        "pose": "{\"clip\":\"walk\",\"resolvedClip\":\"walk\",\"leg\":[-7.756418617882257e-8,0.021399709654631095,0.9997590293480872,0.004892408779142619],\"position\":[0,2.2065971716500599e-7,0],\"skinned\":true}",
+        "model": "gobkit-animal/anglerfish",
+        "skinned": "true"
+      }
+    },
+    {
+      "id": "gobkit-animal007/chick",
+      "stats": {
+        "loading": "false",
+        "ready": "true",
+        "renderedModel": "gobkit-animal007/chick",
+        "frames": "20",
+        "triangles": "364",
+        "clip": "walk",
+        "pose": "{\"clip\":\"walk\",\"resolvedClip\":\"walk\",\"leg\":[-1.0936874451722479e-7,0.025278227981864704,0.9996694948484592,0.004681053248092919],\"position\":[0,0.1652538051425502,0],\"skinned\":true}",
+        "model": "gobkit-animal007/chick",
+        "skinned": "true"
+      }
+    },
+    {
+      "id": "gobkit-animalB/bee",
+      "stats": {
+        "loading": "false",
+        "ready": "true",
+        "renderedModel": "gobkit-animalB/bee",
+        "frames": "27",
+        "triangles": "376",
+        "clip": "walk",
+        "pose": "{\"clip\":\"walk\",\"resolvedClip\":\"walk\",\"leg\":[-1.1531267451877356e-7,0.021436486217252023,0.9997582591954809,0.00488878605238222],\"position\":[0,9.769962616701378e-15,0],\"skinned\":true}",
+        "model": "gobkit-animalB/bee",
+        "skinned": "true"
+      }
+    },
+    {
+      "id": "gobkit-birds/eagle",
+      "stats": {
+        "loading": "false",
+        "ready": "true",
+        "renderedModel": "gobkit-birds/eagle",
+        "frames": "42",
+        "triangles": "488",
+        "clip": "walk",
+        "pose": "{\"clip\":\"walk\",\"resolvedClip\":\"walk\",\"leg\":[-1.0331192229354424e-7,0.013674922724569398,0.9998924025243805,0.005308470823946709],\"position\":[0,0.16818550719421377,0],\"skinned\":true}",
+        "model": "gobkit-birds/eagle",
+        "skinned": "true"
+      }
+    },
+    {
+      "id": "gobkit-farm/black-sheep",
+      "stats": {
+        "loading": "false",
+        "ready": "true",
+        "renderedModel": "gobkit-farm/black-sheep",
+        "frames": "48",
+        "triangles": "888",
+        "clip": "walk",
+        "pose": "{\"clip\":\"walk\",\"resolvedClip\":\"walk\",\"leg\":[-8.584126854181496e-8,0.03693402627832336,0.9993094984382934,0.004050189362385803],\"position\":[0,0.05619274771169816,0],\"skinned\":true}",
+        "model": "gobkit-farm/black-sheep",
+        "skinned": "true"
+      }
+    },
+    {
+      "id": "gobkit-human001/cashier",
+      "stats": {
+        "loading": "false",
+        "ready": "true",
+        "renderedModel": "gobkit-human001/cashier",
+        "frames": "55",
+        "triangles": "2376",
+        "clip": "Walk",
+        "pose": "{\"clip\":\"Walk\",\"resolvedClip\":\"Walk\",\"leg\":[0.1316330693827723,0,0,0.9912985095544482],\"position\":[0,-0.05121033306989554,0],\"skinned\":true}",
+        "model": "gobkit-human001/cashier",
+        "skinned": "true"
+      }
+    },
+    {
+      "id": "gobkit-human002/accountant",
+      "stats": {
+        "loading": "false",
+        "ready": "true",
+        "renderedModel": "gobkit-human002/accountant",
+        "frames": "61",
+        "triangles": "2256",
+        "clip": "Walk",
+        "pose": "{\"clip\":\"Walk\",\"resolvedClip\":\"Walk\",\"leg\":[0.1614455347569576,0,0,0.9868816237558788],\"position\":[0,-0.051705908616809466,0],\"skinned\":true}",
+        "model": "gobkit-human002/accountant",
+        "skinned": "true"
+      }
+    },
+    {
+      "id": "gobkit-human003/archer",
+      "stats": {
+        "loading": "false",
+        "ready": "true",
+        "renderedModel": "gobkit-human003/archer",
+        "frames": "68",
+        "triangles": "2360",
+        "clip": "Walk",
+        "pose": "{\"clip\":\"Walk\",\"resolvedClip\":\"Walk\",\"leg\":[0.11003633771580264,0,0,0.9939275521617794],\"position\":[0,-0.048989205847611794,0],\"skinned\":true}",
+        "model": "gobkit-human003/archer",
+        "skinned": "true"
+      }
+    },
+    {
+      "id": "gobkit-human004/army-general",
+      "stats": {
+        "loading": "false",
+        "ready": "true",
+        "renderedModel": "gobkit-human004/army-general",
+        "frames": "75",
+        "triangles": "2612",
+        "clip": "Walk",
+        "pose": "{\"clip\":\"Walk\",\"resolvedClip\":\"Walk\",\"leg\":[0.1278445794485811,0,0,0.9917942136846489],\"position\":[0,-0.02993309796112479,0],\"skinned\":true}",
+        "model": "gobkit-human004/army-general",
+        "skinned": "true"
+      }
+    },
+    {
+      "id": "gobkit-human005/chief-surgeon",
+      "stats": {
+        "loading": "false",
+        "ready": "true",
+        "renderedModel": "gobkit-human005/chief-surgeon",
+        "frames": "82",
+        "triangles": "2272",
+        "clip": "Walk",
+        "pose": "{\"clip\":\"Walk\",\"resolvedClip\":\"Walk\",\"leg\":[0.11016520832840346,0,0,0.9939132766187543],\"position\":[0,-0.05943224977440221,0],\"skinned\":true}",
+        "model": "gobkit-human005/chief-surgeon",
+        "skinned": "true"
+      }
+    },
+    {
+      "id": "gobkit-human007/extinguisher-operator",
+      "stats": {
+        "loading": "false",
+        "ready": "true",
+        "renderedModel": "gobkit-human007/extinguisher-operator",
+        "frames": "89",
+        "triangles": "5506",
+        "clip": "Walk",
+        "pose": "{\"clip\":\"Walk\",\"resolvedClip\":\"Walk\",\"leg\":[0.14651314492887643,0,0,0.9892087233557183],\"position\":[0,-0.044036809234145664,0],\"skinned\":true}",
+        "model": "gobkit-human007/extinguisher-operator",
+        "skinned": "true"
+      }
+    },
+    {
+      "id": "gobkit-human008/air-traveller",
+      "stats": {
+        "loading": "false",
+        "ready": "true",
+        "renderedModel": "gobkit-human008/air-traveller",
+        "frames": "96",
+        "triangles": "4800",
+        "clip": "Walk",
+        "pose": "{\"clip\":\"Walk\",\"resolvedClip\":\"Walk\",\"leg\":[0.14651314492887643,0,0,0.9892087233557183],\"position\":[0,-0.04864433796033862,0],\"skinned\":true}",
+        "model": "gobkit-human008/air-traveller",
+        "skinned": "true"
+      }
+    },
+    {
+      "id": "kaykit-adventurers/arrow_bow",
+      "stats": {
+        "loading": "false",
+        "ready": "true",
+        "renderedModel": "kaykit-adventurers/arrow_bow",
+        "frames": "100",
+        "triangles": "100",
+        "clip": "static",
+        "pose": "null",
+        "model": "kaykit-adventurers/arrow_bow",
+        "skinned": "false"
+      }
+    },
+    {
+      "id": "kaykit-furniture/armchair",
+      "stats": {
+        "loading": "false",
+        "ready": "true",
+        "renderedModel": "kaykit-furniture/armchair",
+        "frames": "102",
+        "triangles": "576",
+        "clip": "static",
+        "pose": "null",
+        "model": "kaykit-furniture/armchair",
+        "skinned": "false"
+      }
+    },
+    {
+      "id": "kaykit-city/base",
+      "stats": {
+        "loading": "false",
+        "ready": "true",
+        "renderedModel": "kaykit-city/base",
+        "frames": "104",
+        "triangles": "108",
+        "clip": "static",
+        "pose": "null",
+        "model": "kaykit-city/base",
+        "skinned": "false"
+      }
+    },
+    {
+      "id": "gobkit-human002/it-engineer",
+      "stats": {
+        "loading": "false",
+        "ready": "true",
+        "renderedModel": "gobkit-human002/it-engineer",
+        "frames": "116",
+        "triangles": "2906",
+        "clip": "Walk",
+        "pose": "{\"clip\":\"Walk\",\"resolvedClip\":\"Walk\",\"leg\":[0.05972571917440454,0,0,0.9982148329406539],\"position\":[0,-0.08055466797196324,0],\"skinned\":true}",
+        "model": "gobkit-human002/it-engineer",
+        "skinned": "true"
+      }
+    },
+    {
+      "id": "gobkit-human002/receptionist",
+      "stats": {
+        "loading": "false",
+        "ready": "true",
+        "renderedModel": "gobkit-human002/receptionist",
+        "frames": "130",
+        "triangles": "2403",
+        "clip": "Walk",
+        "pose": "{\"clip\":\"Walk\",\"resolvedClip\":\"Walk\",\"leg\":[0.11016523277985946,0,0,0.9939132907695802],\"position\":[0,-0.06657529661592014,0],\"skinned\":true}",
+        "model": "gobkit-human002/receptionist",
+        "skinned": "true"
+      }
+    },
+    {
+      "id": "gobkit-animal/corgi",
+      "stats": {
+        "loading": "false",
+        "ready": "true",
+        "renderedModel": "gobkit-animal/corgi",
+        "frames": "145",
+        "triangles": "556",
+        "clip": "walk",
+        "pose": "{\"clip\":\"walk\",\"resolvedClip\":\"walk\",\"leg\":[-7.714533108207208e-8,0.013611859324590109,0.9998932339761583,0.0053139377510076176],\"position\":[0,0.18664238920720774,0],\"skinned\":true}",
+        "model": "gobkit-animal/corgi",
+        "skinned": "true"
+      }
+    },
+    {
+      "id": "kaykit-adventurers/knight",
+      "stats": {
+        "loading": "false",
+        "ready": "true",
+        "renderedModel": "kaykit-adventurers/knight",
+        "frames": "160",
+        "triangles": "5848",
+        "clip": "Walking_A",
+        "pose": "{\"clip\":\"Walking_A\",\"resolvedClip\":\"Walking_A\",\"leg\":[0.9774342551708692,-2.4372081926269485e-7,-2.6850206587474194e-8,0.2112400133603494],\"position\":[0,0.3417493719004306,0],\"skinned\":true}",
+        "model": "kaykit-adventurers/knight",
+        "skinned": "true"
+      }
+    }
+  ],
+  "pageErrors": [],
+  "bindingWarnings": [],
+  "pauseStopsDraws": true,
+  "pausedClipChange": true,
+  "selectionRace": true,
+  "contextLossRetry": true,
+  "loadFailureRetry": true
+}

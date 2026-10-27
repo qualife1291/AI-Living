@@ -1,4 +1,4 @@
-import { integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
+import { index, integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
 
 export const worlds = sqliteTable("worlds", {
   id: text("id").primaryKey(),
@@ -92,4 +92,4 @@ export const clientLogs = sqliteTable("client_logs", {
   id: text("id").primaryKey(),
   createdAt: integer("created_at").notNull(),
   data: text("data").notNull(),
-});
+}, table => [index("client_logs_created_at").on(table.createdAt)]);

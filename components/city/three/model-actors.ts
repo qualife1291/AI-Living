@@ -1,7 +1,9 @@
 import { activityLift, hasHandProp, handProp } from "../../../lib/living/action-presentation.ts";
-import { createPracticeBicycle } from "./activity-props.ts";
+import { createBicycle, spinBicycle } from "./activity-props.ts";
 import * as THREE from "three";
 import { AssetAvatar, AssetLibrary } from "./assets.ts";
+import { RiggedAvatar } from "./rigged-avatar.ts";
+import { CORE_MODELS, residentModel } from "../../../lib/city/character-models.ts";
 import { defaultAppearance } from "../../../lib/city/appearance.ts";
 import { groundElevation } from "../../../lib/city/ground.ts";
 import { resolveModel } from "../../../lib/city/asset-bindings.ts";
@@ -11,7 +13,7 @@ import type { SocialPose } from "../../../lib/living/social.ts";
 
 export const proceduralPropKinds = [
   "book", "read", "wallet", "phone", "note", "crutch", "leaf", "cup", "drink", "eat",
-  "garden", "can", "broom", "bread", "blanket", "cloth", "tool", "work",
+  "garden", "can", "broom", "bread", "blanket", "cloth", "tool", "work", "bag",
   "cook", "wok", "pan", "pot", "soccer", "ball", "football", "swim", "float",
   "lantern", "festival", "umbrella", "drum"
 ];
@@ -72,10 +74,12 @@ export function simpleProp(kind: string) {
 
 export function resolveActorClip(actor: Actor, speaking = false): string {
   const act = `${actor.kind} ${actor.activity ?? ""} ${actor.location ?? ""}`.toLowerCase();
+  if (actor.bicycle) return "drive";
+  if (actor.kind === "cycle") return actor.walking ? "walk" : "idle";
   if (actor.walking && actor.transport && actor.transport !== "walk") return "drive";
   if (actor.walking) return ["run", "tag"].includes(actor.kind) || /run|sprint|chạy|vội/.test(act) ? "sprint" : "walk";
-  if (actor.kind === "cycle") return "drive";
-  if (actor.kind === "run" || actor.kind === "tag") return "sprint";
+  if (actor.kind === "run") return "sprint";
+  if (actor.kind === "tag") return "idle"; // Waiting/yielding is not running in place.
   if (/jump|nhảy|cheer|cổ vũ/.test(act)) return "idle";
   if (/soccer|đá bóng|kick/.test(act)) return "attack-kick-right";
   if (/swim|bơi/.test(act)) return "sprint";
@@ -87,18 +91,40 @@ export function resolveActorClip(actor: Actor, speaking = false): string {
 }
 
 export function createModelActors(scene: THREE.Scene, library: AssetLibrary) {
-  const avatars = new Map<string, AssetAvatar>(), props = new Map<string, { kind: string; group: THREE.Group }>(), travel = new Map<string, { x: number; z: number; distance: number }>();
+  const avatars = new Map<string, AssetAvatar | RiggedAvatar>(), props = new Map<string, { kind: string; group: THREE.Group }>(), travel = new Map<string, { x: number; z: number; distance: number }>();
+  const ids = new Set<string>(), modelIds = new Map<string, string>();
   const posed = new Set<string>();
+  const poseTimes = new Map<string, number>();
+  const proceduralBases = new Map<string, Map<THREE.Object3D, THREE.Quaternion>>();
   const bicycles = new Map<string, THREE.Group>();
   for (const [id, modelId] of [["an", resolveModel("character-a")!], ["binh", resolveModel("character-b")!], ["chi", resolveModel("character-c")!]]) {
-    const source = library.get(modelId); if (!source) continue;
-    const avatar = new AssetAvatar(source); avatar.assignId(id); scene.add(avatar.group); avatars.set(id, avatar);
+    const rigId = CORE_MODELS[id], source = library.get(rigId) ?? library.get(modelId); if (!source) continue;
+    const avatar = library.get(rigId) ? new RiggedAvatar(source, 17.5, 4.4, true) : new AssetAvatar(source);
+    avatar.assignId(id); scene.add(avatar.group); avatars.set(id, avatar); ids.add(id); modelIds.set(id, library.get(rigId) ? rigId : modelId);
   }
+  const remove = (id: string) => {
+    avatars.get(id)?.dispose(); avatars.delete(id); ids.delete(id); modelIds.delete(id);
+    for (const group of [props.get(id)?.group, bicycles.get(id)]) if (group) {
+      group.removeFromParent(); group.traverse(o => { const mesh = o as THREE.Mesh; mesh.geometry?.dispose(); if (mesh.material) for (const m of Array.isArray(mesh.material) ? mesh.material : [mesh.material]) m.dispose(); });
+    }
+    props.delete(id); bicycles.delete(id); travel.delete(id); posed.delete(id); poseTimes.delete(id); proceduralBases.delete(id);
+  };
   return {
-    ids: new Set(avatars.keys()),
+    ids,
+    /** Three core avatars plus at most one focused NPC. Other residents keep batched LOD. */
+    prepare(world: World, selected: string) {
+      for (const id of ids) if (!CORE_MODELS[id] && id !== selected) remove(id);
+      const resident = world.living?.residents.find(r => r.id === selected);
+      if (!resident || ids.has(selected)) return;
+      const modelId = residentModel(resident.roleId), source = library.get(modelId);
+      if (!source) { if (!library.failures.has(modelId)) void library.load(modelId).catch(() => {}); return; }
+      const avatar = new RiggedAvatar(source, 17.5, 4.4, modelId.startsWith("gobkit-human002/")); avatar.assignId(selected); scene.add(avatar.group);
+      avatars.set(selected, avatar); ids.add(selected); modelIds.set(selected, modelId);
+    },
     draw(world: World, actors: Actor[], social: Map<string, SocialPose>, headings: Map<string, number>, seconds: number) {
       for (const [id, avatar] of avatars) {
-        const actor = actors.find(a => a.id === id); avatar.group.visible = !!actor; if (!actor) continue;
+        const actor = actors.find(a => a.id === id); avatar.group.visible = !!actor;
+        if (!actor) { const prop = props.get(id)?.group, bike = bicycles.get(id); if (prop) prop.visible = false; if (bike) bike.visible = false; continue; }
         if (world.paused && posed.has(id)) continue;
         const old = travel.get(id), distance = old?.distance ?? 0;
         const walked = world.paused || !old ? 0 : Math.min(3, Math.hypot(actor.position[0] - old.x, actor.position[1] - old.z));
@@ -107,34 +133,46 @@ export function createModelActors(scene: THREE.Scene, library: AssetLibrary) {
         avatar.tint(appearance);
         const act = `${actor.kind} ${actor.activity ?? ""} ${actor.location ?? ""}`.toLowerCase();
         const propKind = ["drink", "study", "shop"].includes(actor.kind) ? handProp(actor.kind) : /cook|nấu ăn/.test(act) ? "cook" : /soccer|đá bóng/.test(act) ? "soccer" : /swim|bơi/.test(act) ? "swim" : /lễ hội|festival|đèn lồng/.test(act) ? "lantern" : actor.kind;
-        const holding = !actor.walking && (hasHandProp(actor.kind) || ["cook", "soccer", "swim", "lantern"].includes(propKind));
+        const holding = !actor.bicycle && !actor.walking && (hasHandProp(actor.kind) || ["cook", "soccer", "swim", "lantern"].includes(propKind));
         const speaking = social.get(id)?.speaking;
-        const clip = resolveActorClip(actor, speaking);
-        const animationTime = actor.walking ? (distance + walked) / 14 * (2 / 3) : seconds;
-        avatar.pose(clip, animationTime, seconds, actor.position, headings.get(id) ?? .35, groundElevation(...actor.position) + activityLift(actor.kind, seconds) + (actor.kind === "cycle" && !actor.walking ? 4 : 0));
+        const clip = avatar instanceof RiggedAvatar && !actor.walking && social.has(id)
+          ? speaking ? "talk" : "listen" : resolveActorClip(actor, speaking);
+        const animationTime = actor.bicycle ? actor.bicycle.distance / 14 : actor.walking ? (distance + walked) / 14 * (2 / 3) : seconds;
+        // Some authored clips do not key every limb. Restore the previous base
+        // before the mixer runs, so additive pedal/exercise poses never accumulate.
+        const bases = proceduralBases.get(id) ?? new Map<THREE.Object3D, THREE.Quaternion>();
+        proceduralBases.set(id, bases);
+        if (poseTimes.get(id) !== seconds) { for (const [bone, rotation] of bases) bone.quaternion.copy(rotation); bases.clear(); }
+        const changed = avatar.pose(clip, animationTime, seconds, actor.position, headings.get(id) ?? .35, groundElevation(...actor.position) + activityLift(actor.kind, seconds) + (actor.bicycle ? 4 : 0));
+        if (changed) poseTimes.set(id, seconds);
         // Procedural offsets add missing exercise/jump/drink motions to authored clips.
-        if (!actor.walking && ["exercise", "jump", "drink", "cycle"].includes(actor.kind)) {
+        if (changed && (actor.bicycle || !actor.walking && ["exercise", "jump", "drink"].includes(actor.kind))) {
           for (const side of ["left", "right"]) {
-            const arm=avatar.model.getObjectByName(`arm-${side}`),leg=avatar.model.getObjectByName(`leg-${side}`),sign=side==="left"?1:-1;
+            const arm=avatar.joint(`arm-${side}`),leg=avatar.joint(`leg-${side}`),sign=side==="left"?1:-1;
+            if (arm) bases.set(arm, arm.quaternion.clone());
+            if (leg) bases.set(leg, leg.quaternion.clone());
             if(arm && actor.kind === "exercise") arm.rotation.z += sign*(.4+.6*Math.sin(seconds*2));
             if(arm && side === "right" && actor.kind === "drink") arm.rotation.x -= .3+.35*(1+Math.sin(seconds*1.6));
-            if(leg && actor.kind === "cycle") leg.rotation.x += sign*Math.sin(seconds*4)*.6;
+            if(leg && actor.bicycle) leg.rotation.x += sign*Math.sin(actor.bicycle.distance/3)*.6;
           }
           avatar.group.updateMatrixWorld(true);
         }
-        const cycling=actor.kind === "cycle" && !actor.walking;
-        if(cycling && !bicycles.has(id)){const bike=createPracticeBicycle();scene.add(bike);bicycles.set(id,bike);}
-        const bike=bicycles.get(id);if(bike){bike.visible=cycling;bike.position.set(actor.position[0],groundElevation(...actor.position),actor.position[1]);bike.rotation.y=headings.get(id)??.35;}
+        const cycling=!!actor.bicycle;
+        if(cycling && !bicycles.has(id)){const bike=createBicycle();scene.add(bike);bicycles.set(id,bike);}
+        const bike=bicycles.get(id);if(bike){bike.visible=cycling;bike.position.set(actor.position[0],groundElevation(...actor.position),actor.position[1]);bike.rotation.y=headings.get(id)??.35;if(actor.bicycle)spinBicycle(bike,actor.bicycle.distance);}
         posed.add(id);
         const oldProp = props.get(id);
         if (holding && oldProp?.kind !== propKind) {
           if (oldProp) { scene.remove(oldProp.group); oldProp.group.traverse(o => { const m = o as THREE.Mesh; m.geometry?.dispose(); if (m.material) (m.material as THREE.Material).dispose(); }); }
-          const group = simpleProp(propKind); scene.add(group); props.set(id, { kind: propKind, group });
+          const group = simpleProp(propKind); if (avatar instanceof RiggedAvatar) group.scale.setScalar(avatar.height / 17.5); scene.add(group); props.set(id, { kind: propKind, group });
         }
         const prop = props.get(id)?.group;
         if (prop) { prop.visible = holding; const right = avatar.hand(); prop.position.copy(actor.kind === "read" ? right.add(avatar.hand("left")).multiplyScalar(.5) : right); prop.rotation.set(0, headings.get(id) ?? .35, 0); }
       }
     },
-    snapshots: () => Object.fromEntries([...avatars].map(([id, avatar]) => [id, avatar.snapshot()])),
+    head: (id: string) => avatars.get(id)?.head(),
+    height: (id: string) => { const avatar = avatars.get(id); return avatar instanceof RiggedAvatar ? avatar.height : 17.5; },
+    snapshots: () => Object.fromEntries([...avatars].map(([id, avatar]) => [id, { ...avatar.snapshot(), modelId: modelIds.get(id) }])),
+    dispose() { for (const id of [...ids]) remove(id); },
   };
 }

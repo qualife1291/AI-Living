@@ -446,5 +446,12 @@
         "procedural/cook"
       ]
     }
-  ]
+  ],
+  "referenceImageProvenance": {
+    "sourceCommit": "a5b7c5a",
+    "source": "User-supplied Gemini generation",
+    "usage": "visual-reference-only",
+    "runtimeGeometry": false,
+    "browserQAEvidence": false
+  }
 }
