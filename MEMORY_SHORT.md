@@ -9,3 +9,5 @@
 - Đã bắt/sửa bag không có whitelist (shop crash), procedural rotations cộng lặp cùng timestamp, props/bike mồ côi khiactorẩn; test-phase-b mới đạt. Telemetry chỉxóa pending sau JSONok:true, giữkhiHTMLlogin200/okfalse; testsđạt. Studioabort/dispose/playbackelapsed và on-demanddraw đangcode, cần QA lại.
 - Migration0006 chưa prod thiếu statement-breakpoint, schemaindex và snapshot: đã táchDDL, addschemaindex, snapshot6 từDrizzlegenerate xácnhận12tablecũ khôngđổi. Cầnreal D1migration/APItests. Khôngsửa migration0–5.
 - Shadowbudget eco0/balanced512mobile1024desktop/sharp2048, shadowfrustumtheonhânvật36m thay190m, LOD8unit; render-errorfallback2D cótelemetry. Cầnbrowser/perf. pnpm audit prod đã cóadvisory, cầnphânloạivàpinpatchtrướcrelease. Check/lint đangrunwork/main-*-final.log. Prod11 chưađổi.
+
+- Dependency patch đã cài bằngpnpm policy nguyênvẹn: Next/eslint-config-next16.4.1, Zod4.6.6; compatibleoverrides Babel7.29.6/browserlist4.28.7/baseline2.11/source-map-js1.2.2/fast-uri3.1.9/sharp.35.5. Chưa xác minh app sauZodmajor; tiếpcheck/lint/full29suite/build/API/browser/audit. Reviewdocdocs/MAIN_REVIEW_2026-10-27.md cófindingsvàbacklog trungthực; finalmetriccònchờ.

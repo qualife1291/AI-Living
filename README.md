@@ -1,5 +1,7 @@
 # Xóm AI — Khu phố của những trí tuệ nhỏ
 
+> Review main/Gemini, stack và các bug thực tế: [báo cáo 27/10](docs/MAIN_REVIEW_2026-10-27.md).
+
 > Chi tiết nhân vật, rig chuyển động, đạo cụ và hoạt cảnh: [review bản 11](docs/VISUAL_DETAIL_REVIEW.md).
 
 > Vật cản nhỏ, khoảng riêng, camera điện ảnh theo An và sinh hoạt chủ động: [review bản10](docs/SPACE_CAMERA_AUTONOMY.md).

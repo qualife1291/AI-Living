@@ -1,3 +1,5 @@
+> Các ảnh `public/renders-3d` là ảnh AI tham chiếu do chủ dự án cung cấp, không phải screenshot WebGL hay bằng chứng test. Xem [review main](MAIN_REVIEW_2026-10-27.md).
+
 # Bộ Đồ Họa 3D Toàn Diện — Xóm AI (`graphics-pack-3d`)
 
 Tài liệu này hướng dẫn AI Coding Agent hoặc lập trình viên gắn toàn bộ hệ thống đồ họa 3D (nhân vật, biểu cảm, chuyển động, công việc, động vật, cây cối, đạo cụ, phương tiện, tòa nhà, nội thất, sự kiện) vào môi trường thực tế của `AI-Living`.
@@ -52,5 +54,5 @@ Tài liệu này hướng dẫn AI Coding Agent hoặc lập trình viên gắn 
   - Hỗ trợ xoay/zoom 360°, đổ bóng mềm `PCFSoftShadowMap` `2048x2048`, sàn gỗ lát ván, bàn ghế theo công năng (`dining`, `study`, `general`), kệ sách, quầy bếp, chậu cây và thang máy kính chuyển động giữa các tầng.
 - **Bản đồ 3D Quận 1 TP.HCM (`createOsm` trong `osm.ts`)**:
   - Dựng khối 3D có vát cạnh (`bevelEnabled: true`) từ dữ liệu footprint thực tế `data/city/hcm-district1.json`.
-- **Bộ 12 Ảnh Render 3D Chuẩn (`public/renders-3d/*.jpg`)**:
+- **Bộ 15 ảnh AI tham chiếu (`public/renders-3d/*.jpg`)**:
   - Dùng làm tài liệu tham chiếu trực quan, splash screen, hoặc preview card cho từng khu vực, nhân vật, phương tiện và sự kiện lễ hội.
