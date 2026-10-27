@@ -79,8 +79,11 @@ export class AssetLibrary {
   }
   addWorldLOD(scene: THREE.Scene, placements: AssetPlacement[]) {
     const meshes = this.addBatches(scene, placements), dummy = new THREE.Object3D(), tint = new THREE.Color();
+    let lastX = Infinity, lastZ = Infinity;
     const coarse = new THREE.InstancedMesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshLambertMaterial(), Math.max(1, placements.length)); coarse.frustumCulled = false; coarse.instanceMatrix.setUsage(THREE.DynamicDrawUsage); scene.add(coarse);
     return (camera: THREE.Camera) => {
+      if (Math.hypot(camera.position.x - lastX, camera.position.z - lastZ) < 8) return;
+      lastX = camera.position.x; lastZ = camera.position.z;
       coarse.count = 0;
       for (const mesh of meshes.values()) {
         mesh.count = 0;

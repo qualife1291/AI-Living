@@ -1,3 +1,7 @@
+# Yêu cầu mới: review ZIP/main/Gemini
+- User đã merge work→main, gửi AI-Living.zip và yêu cầu review stack/cấu trúc/log bug, đối chiếu main/push. download_file trả vượt giới hạn32MiB, chưa đọc được ZIP. Đã hỏi async đường dẫn nhánh/commit Gemini/logs. origin/main=e8596e2 merge PR#1 từ9025905, tree chưa có thay đổi Gemini riêng. Không tuyên bố đã đọc ZIP mới.
+- Tạm chưa deploy12 cho tới khi đối chiếu nguồn mới; prod vẫn11. Tiếp phần không phụ thuộc ZIP: audit main, regression, vòng ảnh sau fix heading, checkpoint tất cả và tích hợp main không ghi đè thay đổi người dùng.
+
 # Checkpoint bản 12 — chưa phát hành
 - WIP 6feb12d đã push GitHub. Automatic approval ban đầu bác CI contents:write/autopush; đã gỡ toàn bộ ghi Git trong CI, amend commit local chưa push, và push lại bản contents:read thành công. Không có workflow tự sửa/push remote.
 - Đã sửa nhân vật bị ép mỏng do fit toàn bộ animation sweep: fit rest body, giữ chiều cao 17,5. Bỏ sampling 117 pose không cần thiết lúc tạo avatar. LOD GLB theo camera, nhà xa giữ silhouette, xe xa dùng geometry nhẹ; physics giữ nguyên.
