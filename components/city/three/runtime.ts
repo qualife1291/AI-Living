@@ -855,7 +855,7 @@ export function createCity(
     }
     controls.update();
     // Keep signs subordinate to residents; distant districts need no text clutter.
-    updateAssetLOD(camera);
+    updateAssetLOD(camera, state.quality === "sharp");
     for (const chunk of detailChunks) chunk.mesh.visible = Math.hypot(camera.position.x - chunk.x, camera.position.z - chunk.z) < 520;
     const pixelScale =
       (2 * Math.tan(THREE.MathUtils.degToRad(camera.fov) / 2)) /
