@@ -13,6 +13,7 @@ import { createFauna } from "./fauna";
 import { AssetLibrary, setAssetTransform, type AssetPlacement } from "./assets";
 import { createModelActors } from "./model-actors";
 import { SceneDetail } from "./scene-detail";
+import { QualityBudget } from "../../../lib/city/quality-budget";
 import { streetModel } from "./streetscape";
 import * as THREE from "three";
 import { logClient, recordFrame } from "../../../lib/diagnostics";
@@ -95,7 +96,8 @@ export function createCity(
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1.22;
-  renderer.shadowMap.enabled = shadowMapSize(input().quality, host.clientWidth) > 0;
+  let renderQuality = input().quality;
+  renderer.shadowMap.enabled = shadowMapSize(renderQuality, host.clientWidth) > 0;
   renderer.shadowMap.type = THREE.PCFSoftShadowMap;
   renderer.domElement.setAttribute("aria-label", "Thành phố 3D của An");
   renderer.domElement.setAttribute("role", "img");
@@ -128,7 +130,7 @@ export function createCity(
   Object.assign(sun.shadow.camera, { left: -180, right: 180, top: 180, bottom: -180, near: 100, far: 3200 });
   scene.add(sun, sun.target);
   function configureShadows() {
-    const size = shadowMapSize(input().quality, host.clientWidth), enabled = size > 0;
+    const size = shadowMapSize(renderQuality, host.clientWidth), enabled = size > 0;
     const changed = renderer.shadowMap.enabled !== enabled || enabled && sun.shadow.mapSize.x !== size;
     host.dataset.shadowMap = String(size);
     if (!changed) return;
@@ -731,6 +733,7 @@ export function createCity(
   const visibilityChanged = () => { lastDraw = 0; };
   document.addEventListener("visibilitychange", visibilityChanged);
   let activeQuality = input().quality;
+  const qualityBudget = new QualityBudget();
   let drawnFrames = 0;
   function tick(stamp: number) {
     try { drawFrame(stamp); }
@@ -751,8 +754,9 @@ export function createCity(
     const state = input(),
       { world, selected } = state,
       now = Date.now() + (state.clockOffsetMs ?? 0);
-    if (activeQuality !== state.quality) {
-      activeQuality = state.quality;
+    const budgetQuality = qualityBudget.frame(state.quality, frameMs);
+    if (activeQuality !== budgetQuality) {
+      activeQuality = renderQuality = budgetQuality;
       renderer.setPixelRatio(pixelRatio(activeQuality, devicePixelRatio));
       renderer.setSize(host.clientWidth, host.clientHeight);
       configureShadows();
@@ -859,7 +863,7 @@ export function createCity(
     }
     controls.update();
     // Keep signs subordinate to residents; distant districts need no text clutter.
-    updateAssetLOD(camera, state.quality === "sharp");
+    updateAssetLOD(camera, activeQuality === "sharp");
     for (const chunk of detailChunks) chunk.mesh.visible = Math.hypot(camera.position.x - chunk.x, camera.position.z - chunk.z) < 520;
     const pixelScale =
       (2 * Math.tan(THREE.MathUtils.degToRad(camera.fov) / 2)) /
@@ -913,6 +917,7 @@ export function createCity(
     host.dataset.paused = String(world.paused);
     host.dataset.frame = String(++drawnFrames);
     host.dataset.pixelRatio = String(renderer.getPixelRatio());
+    host.dataset.effectiveQuality = activeQuality ?? "balanced";
     host.dataset.triangles = String(renderer.info.render.triangles);
     host.dataset.geometries = String(renderer.info.memory.geometries);
     host.dataset.textures = String(renderer.info.memory.textures);
