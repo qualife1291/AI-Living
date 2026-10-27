@@ -693,6 +693,7 @@ export function createCity(
   const heading = new Map<string, number>();
   function drawActors(seconds: number, world: World, dt: number) {
     modelActors.prepare(world, input().selected);
+    host.dataset.assetActors = String(modelActors.ids.size);
     const updated = people.draw(world, actors, socialPoses, seconds, dt, camera, input().selected, modelActors.ids);
     heading.clear(); for (const [id, yaw] of updated) heading.set(id, yaw);
     modelActors.draw(world, actors, socialPoses, heading, seconds);
@@ -794,7 +795,8 @@ export function createCity(
         following = true;
         if (current) {
           const peer = actors.find(a => a.id === socialPoses.get(current!.id)?.peerId) ?? groundAnimals.find(a => a.petOwnerId === current!.id);
-          const shot = characterShot(current, peer, heading.get(current.id) ?? .35, cameraBuildings, camera.aspect);
+          const height = Math.max(modelActors.height(current.id), peer && modelActors.ids.has(peer.id) ? modelActors.height(peer.id) : peer && actors.some(a => a.id === peer.id) ? 20 : 0);
+          const shot = characterShot(current, peer, heading.get(current.id) ?? .35, cameraBuildings, camera.aspect, height);
           scene.fog = fog;
           controls.target.set(...shot.target);
           camera.position.set(...shot.position);
@@ -848,7 +850,8 @@ export function createCity(
       if (following) {
         const partnerId = socialPoses.get(current.id)?.peerId;
         const peer = actors.find(a => a.id === partnerId) ?? groundAnimals.find(a => a.petOwnerId === current!.id);
-        const shot = characterShot(current, peer, heading.get(current.id) ?? .35, cameraBuildings, camera.aspect);
+        const height = Math.max(modelActors.height(current.id), peer && modelActors.ids.has(peer.id) ? modelActors.height(peer.id) : peer && actors.some(a => a.id === peer.id) ? 20 : 0);
+        const shot = characterShot(current, peer, heading.get(current.id) ?? .35, cameraBuildings, camera.aspect, height);
         const alpha = 1 - Math.exp(-2.8 * dt);
         controls.target.lerp(new THREE.Vector3(...shot.target), alpha);
         camera.position.lerp(new THREE.Vector3(...shot.position), alpha);

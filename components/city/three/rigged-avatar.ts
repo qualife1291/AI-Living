@@ -15,6 +15,7 @@ const scratch=new THREE.Vector3();
 /** Skin-aware actor. Clips keep their original bone names; controllers use aliases. */
 export class RiggedAvatar {
  readonly group=new THREE.Group();
+ readonly height:number;
  readonly model:THREE.Object3D;
  private offset=new THREE.Group();
  private mixer:THREE.AnimationMixer;
@@ -44,7 +45,9 @@ export class RiggedAvatar {
   const box=new THREE.Box3().setFromObject(this.model,true),size=box.getSize(new THREE.Vector3()),center=box.getCenter(new THREE.Vector3());
   if(![...size].every(n=>Number.isFinite(n)&&n>0))throw new Error('Invalid rigged model bounds');
   const yScale=height/size.y,horizontal=Math.min(yScale,radius/Math.max(.001,Math.hypot(size.x/2,size.z/2)));
-  this.group.scale.set(horizontal,yScale,horizontal);this.offset.position.set(-center.x,-box.min.y,-center.z);
+  // Keep the authored chibi proportions. Height is a maximum, never a stretch
+  // target that turns a wide head into a thin strip to fit the navigation disc.
+  this.group.scale.setScalar(horizontal);this.height=size.y*horizontal;this.offset.position.set(-center.x,-box.min.y,-center.z);
   this.findJoints(bones);
   this.feet=['foot-left','foot-right'].map(key=>this.joints.get(key)).filter((b):b is THREE.Object3D=>!!b);
   this.group.updateMatrixWorld(true);

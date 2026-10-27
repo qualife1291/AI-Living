@@ -164,13 +164,14 @@ export function createModelActors(scene: THREE.Scene, library: AssetLibrary) {
         const oldProp = props.get(id);
         if (holding && oldProp?.kind !== propKind) {
           if (oldProp) { scene.remove(oldProp.group); oldProp.group.traverse(o => { const m = o as THREE.Mesh; m.geometry?.dispose(); if (m.material) (m.material as THREE.Material).dispose(); }); }
-          const group = simpleProp(propKind); scene.add(group); props.set(id, { kind: propKind, group });
+          const group = simpleProp(propKind); if (avatar instanceof RiggedAvatar) group.scale.setScalar(avatar.height / 17.5); scene.add(group); props.set(id, { kind: propKind, group });
         }
         const prop = props.get(id)?.group;
         if (prop) { prop.visible = holding; const right = avatar.hand(); prop.position.copy(actor.kind === "read" ? right.add(avatar.hand("left")).multiplyScalar(.5) : right); prop.rotation.set(0, headings.get(id) ?? .35, 0); }
       }
     },
     head: (id: string) => avatars.get(id)?.head(),
+    height: (id: string) => { const avatar = avatars.get(id); return avatar instanceof RiggedAvatar ? avatar.height : 17.5; },
     snapshots: () => Object.fromEntries([...avatars].map(([id, avatar]) => [id, { ...avatar.snapshot(), modelId: modelIds.get(id) }])),
     dispose() { for (const id of [...ids]) remove(id); },
   };

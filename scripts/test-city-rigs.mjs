@@ -35,6 +35,8 @@ for(let n=0;n<180;n++) {
     const actualPos=actors.find(a=>a.id===id).position;
     const root=scene.children.find(o=>{let match=false;o.traverse(c=>{if(c.userData.actorId===id)match=true;});return match;});
     const bounds=new THREE.Box3().setFromObject(root,true),head=models.head(id);
+    assert.equal(root.scale.x,root.scale.y,'Preserve authored proportions instead of stretching narrow heads');
+    assert.equal(root.scale.z,root.scale.y);
     assert([...bounds.min,...bounds.max,...head].every(Number.isFinite));
     assert(head.y<=bounds.max.y+.01&&head.y>=bounds.max.y-.6,'Label anchor follows the visible head');
     if(kind==='walk')maxGroundError=Math.max(maxGroundError,Math.abs(bounds.min.y-floor));

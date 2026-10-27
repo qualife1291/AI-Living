@@ -12,7 +12,7 @@ Các thay đổi work hiện hành từ agent khác (tag, pet owner/walk, xe đ�
 
 Importer đầu đã kiểm tra 418 file, 55.207.250 byte dưới ngân sách 64 MiB, 114 model có skin. Toàn bộ dependency phục vụ từ Site. Human002 có clip Talk/Listen/Nod/Sit thật; các pack động vật thực tế có bốn clip đặt tên riêng, khác mô tả track ghép trong một số README. Chưa thể gọi tích hợp runtime hoàn tất ở mốc chỉ mới import này.
 
-## Tiếp nhận a14e939 và nối runtime (28/10, giờ Việt Nam)
+## Tiếp nhận a14e939 và nối runtime (27/10, giờ Việt Nam)
 
 Đã kiểm tra bốn commit mới so với 97fd21d, fast-forward work; main vẫn a5b7c5a. Baseline 36 lệnh unit/check/lint/build đạt trên nguồn nhận. Remote chỉ cấu hình fetch main nên tiếp nối phải fetch rõ refs/heads/work, tránh đọc nhầm origin/work cũ.
 
@@ -25,3 +25,5 @@ Checkpoint mới nối ba core vào Gobkit Human002 (engineer/accountant/recepti
 Review ảnh thực bắt thêm vấn đề của asset gốc: laptop/calculator/cốc được tác giả đặt như các đảo geometry bên hông, không theo tay trong Talk/Sit. Scene dùng phiên bản Human002 bỏ riêng các đảo phụ kiện đã review ở vùng source minX>0,055/maxY<0,06, giữ body/fingers/headset; gallery giữ nguyên source đầy đủ. Helper chỉ áp dụng Human002, không suy ra quy tắc đó cho động vật/pack khác. Bản sao compact toàn bộ attributes, nguồn GLB/hash không bị sửa. Đạo cụ hoạt động của city tiếp tục gắn tay qua surface anchors.
 
 Danh tính foundation: tên mới dùng tên Việt và họ/tên đệm khi trùng, không thêm số; backfill chỉ đổi đúng mẫu tên tự sinh cũ ứng với neighbor-ID/catalog, giữ tên tự đặt và alias previousNames, không viết lại memory/dialogue. Metadata identity.ageAtArrival/gender tương thích snapshot, giữ tuổi legacy20–44 theo thuật toán cũ. UI hiển thị nhóm tuổi/giới tính đã chọn và gợi ý An gọi bạn/cô/chú/bác/em. NPC legacy chưa chọn giới tính được ghi rõ; chưa tự nhận đủ hệ thống trẻ em/giới theo model, chưa đổi toàn bộ script xưng hô hoặc tạo quan hệ gia đình từ household. Dân số không tăng ngoài cấu hình đang có.
+
+Review ảnh city sau đó cho thấy ép chiều cao17,5 cùng XZradius4,4 làm kéo dài đầu model chibi. RiggedAvatar chuyển sang fit đồng nhất ba trục (17,5 là chiều cao tối đa), giữ dáng gốc và disc4,8; chiều cao thực core khoảng7,7–8,0units. Đạo cụ cầm tay thu theo cùng tỷ lệ; camera follow không đi xe lấy chiều cao thực của cả cặp để bố cục gần hơn, giữ nguyên khung full-bike đã nghiệm thu. Đây là nhân vật chibi cách điệu, không tuyên bố tỷ lệ cơ thể người thật. Test chống kéo méo được thêm vào actual-city-rigs. Cần ảnh và hồi quy browser mới cho thay đổi cuối này.
