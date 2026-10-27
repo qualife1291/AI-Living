@@ -129,7 +129,7 @@ export class AssetAvatar {
     this.group.scale.set(horizontal, yScale, horizontal); this.model.position.x -= center.x; this.model.position.z -= center.z;
   }
   pose(clip: string, animationTime: number, presentationTime: number, position: readonly number[], yaw: number, floor: number) {
-    if (this.current && presentationTime === this.lastTime) return;
+    if (this.current && presentationTime === this.lastTime) return false;
     const name = this.actions.has(clip) ? clip : "idle", delta = Math.max(0, Math.min(.15, presentationTime - this.lastTime)), seek = Math.abs(presentationTime - this.lastTime) > 1;
     if (name !== this.current || seek) { this.previous = seek ? "" : this.current; this.current = name; this.changedAt = seek ? presentationTime - .45 : presentationTime; this.actions.get(name)?.reset().play(); }
     const blend = Math.min(1, Math.max(0, (presentationTime - this.changedAt) / .45));
@@ -142,6 +142,7 @@ export class AssetAvatar {
     this.mixer.update(0); this.lastTime = presentationTime;
     this.group.position.set(position[0], 0, position.length > 2 ? position[2] : position[1]); this.group.rotation.set(0, yaw, 0); this.group.updateMatrixWorld(true);
     this.bounds.setFromObject(this.model); this.group.position.y = floor - this.bounds.min.y; this.group.updateMatrixWorld(true);
+    return true;
   }
   assignId(id: string) { this.model.traverse(o => { const mesh = o as THREE.Mesh; if (mesh.isMesh) mesh.userData.actorId = id; }); }
   tint(colors: { shirt: string; trousers: string; skin: string }) {

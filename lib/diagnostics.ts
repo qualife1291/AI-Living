@@ -20,7 +20,8 @@ export async function flushClientLogs() {
   const batch = buffer.slice(0, 32), ids = new Set(batch.map(r => r.id));
   try {
     const response = await fetch("/api/diagnostics", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ logs: batch }), signal: AbortSignal.timeout(5000) });
-    if (response.ok) for (let i = buffer.length - 1; i >= 0; i--) if (ids.has(buffer[i].id)) buffer.splice(i, 1);
+    const ack = response.ok ? await response.json() as { ok?: boolean } : null;
+    if (ack?.ok === true) for (let i = buffer.length - 1; i >= 0; i--) if (ids.has(buffer[i].id)) buffer.splice(i, 1);
   } catch { /* Keep bounded pending logs for retry. */ }
   finally { sending = false; }
 }

@@ -3,7 +3,8 @@ import { initializeLiving, turnId } from "../lib/living/engine.ts";
 import { scheduleResidentSocial } from "../lib/living/social-scheduler.ts";
 /** In-process local worker integration; no hosting, account or production DB access. */
 import assert from 'node:assert/strict';
-import { readFileSync, realpathSync, readdirSync } from 'node:fs';
+import {readMigrationFiles} from 'drizzle-orm/migrator';
+import { realpathSync, readdirSync } from 'node:fs';
 import { createRequire } from 'node:module';
 import { resolve } from 'node:path';
 const require=createRequire(realpathSync(resolve('node_modules/wrangler/package.json')));
@@ -18,7 +19,9 @@ try{
  assert.equal((await mf.dispatchFetch(url,{method:'POST',body:'{}'})).status,403,'non-owner POST denied');
  await mf.setOptions({...options,bindings:{XOM_LOCAL_ADMIN:'true'}});
  const db=await mf.getD1Database('DB');
- for(const sql of readFileSync('drizzle/0006_client_logs.sql','utf8').split(';').map(x=>x.trim()).filter(Boolean))await db.prepare(sql).run();
+ const migration=readMigrationFiles({migrationsFolder:'drizzle'}).at(-1);
+ for(const sql of migration.sql)await db.prepare(sql).run();
+ assert(await db.prepare("SELECT name FROM sqlite_master WHERE type='index' AND name='client_logs_created_at'").first(),'Drizzle statement splitting must create the telemetry index');
  await db.prepare('CREATE TABLE tick_runs(id TEXT PRIMARY KEY,started_at TEXT,finished_at TEXT,status TEXT,model TEXT,event_id TEXT,neurons_est INTEGER,error TEXT)').run();
  const post=(body,headers={})=>mf.dispatchFetch(url,{method:'POST',headers:{'content-type':'application/json',...headers},body});
  assert.equal((await post('{')).status,400);

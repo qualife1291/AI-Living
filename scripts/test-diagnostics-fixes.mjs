@@ -12,5 +12,7 @@ logClient('route_miss'); logClient('route_miss'); assert.equal(clientLogs().leng
 for(let i=0;i<700;i++)logClient('actor_stuck',{actor:String(i)});
 assert.equal(clientLogs().length,512);
 globalThis.fetch=async()=>({ok:false});await flushClientLogs();assert.equal(clientLogs().length,512);
-globalThis.fetch=async()=>({ok:true});await flushClientLogs();assert.equal(clientLogs().length,480);
+globalThis.fetch=async()=>new Response('<html>Sign in</html>');await flushClientLogs();assert.equal(clientLogs().length,512,'A 200 login page is not a server ACK');
+globalThis.fetch=async()=>Response.json({ok:false});await flushClientLogs();assert.equal(clientLogs().length,512,'Explicit rejection must retain queued logs');
+globalThis.fetch=async()=>Response.json({ok:true});await flushClientLogs();assert.equal(clientLogs().length,480);
 console.log('PASS dialogue 800 lines, pair-order history, telemetry ring, deduplication, retry and ACK');

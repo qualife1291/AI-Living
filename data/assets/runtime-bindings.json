@@ -2,6 +2,7 @@
   "version": 1,
   "bindings": {
     "awning": "commercial/detail-awning",
+    "bag": "procedural/bag",
     "ball": "procedural/ball",
     "barrier": "roads/construction-barrier",
     "bench": "procedural/bench",

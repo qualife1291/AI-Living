@@ -43,6 +43,12 @@ models.draw(world,[actor],new Map(),headings,1.4);assert.notEqual(models.snapsho
 const freeze=models.snapshots();models.draw({...world,paused:true},[actor],new Map(),headings,2);assert.deepEqual(models.snapshots(),freeze,'pause freezes procedural activity too');
 models.draw(world,[{...actor,kind:'cycle'}],new Map(),headings,3);const cycleBefore=models.snapshots().an.leg;
 models.draw(world,[{...actor,kind:'cycle'}],new Map(),headings,3.3);assert.notDeepEqual(models.snapshots().an.leg,cycleBefore,'actual cycle legs pedal');
+const stable=models.snapshots();
+for(let i=0;i<30;i++)models.draw(world,[{...actor,kind:'cycle'}],new Map(),headings,3.3);
+assert.deepEqual(models.snapshots(),stable,'Repeated presentation time cannot accumulate procedural rotations');
+for(const kind of ['shop','study','drink','garden','eat','work'])models.draw(world,[{...actor,kind}],new Map(),headings,4+['shop','study','drink','garden','eat','work'].indexOf(kind));
+models.draw(world,[],new Map(),headings,11);
+assert(scene.children.every(o=>!o.visible),'Removing an actor hides its held prop and practice bicycle');
 assert.equal(activityLift('jump',0),0);assert(activityLift('jump',.5)>0);assert.equal(activityLift('work',.5),0);
 assert.equal(microActivity('x',40,'rest','Ngủ').activity,'Ngủ');assert.notDeepEqual(microActivity('x',40,'social','Chờ'),microActivity('x',60,'social','Chờ'));
 // Locate a real routine-time pair, not a mocked projection or an invented venue.

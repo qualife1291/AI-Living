@@ -1,4 +1,4 @@
-import { HUMAN_SCALE, VEHICLES, pixelRatio, type Quality } from "@/lib/city/scale";
+import { HUMAN_SCALE, VEHICLES, pixelRatio, shadowMapSize, type Quality } from "@/lib/city/scale";
 import { SocialDirector, type SocialPose, type Exchange } from "@/lib/living/social";
 import { WalkDirector } from "@/lib/city/walkability";
 import { TrafficDirector, TRAFFIC_COUNT, trafficJunctions, type TrafficVehicle } from "@/lib/city/traffic";
@@ -94,7 +94,7 @@ export function createCity(
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1.22;
-  renderer.shadowMap.enabled = true;
+  renderer.shadowMap.enabled = shadowMapSize(input().quality, host.clientWidth) > 0;
   renderer.shadowMap.type = THREE.PCFSoftShadowMap;
   renderer.domElement.setAttribute("aria-label", "Thành phố 3D của An");
   renderer.domElement.setAttribute("role", "img");
@@ -122,10 +122,20 @@ export function createCity(
   const sun = new THREE.DirectionalLight("#fff1d0", 2.75);
   sun.position.set(-420, 1250, 620);
   sun.castShadow = true;
-  sun.shadow.mapSize.set(2048, 2048);
+  sun.shadow.mapSize.setScalar(shadowMapSize(input().quality, host.clientWidth) || 512);
   sun.shadow.bias = -0.0004;
-  Object.assign(sun.shadow.camera, { left: -950, right: 950, top: 950, bottom: -950, near: 100, far: 3200 });
-  scene.add(sun);
+  Object.assign(sun.shadow.camera, { left: -180, right: 180, top: 180, bottom: -180, near: 100, far: 3200 });
+  scene.add(sun, sun.target);
+  function configureShadows() {
+    const size = shadowMapSize(input().quality, host.clientWidth), enabled = size > 0;
+    const changed = renderer.shadowMap.enabled !== enabled || enabled && sun.shadow.mapSize.x !== size;
+    host.dataset.shadowMap = String(size);
+    if (!changed) return;
+    renderer.shadowMap.enabled = sun.castShadow = enabled;
+    sun.shadow.map?.dispose(); sun.shadow.map = null;
+    if (enabled) sun.shadow.mapSize.setScalar(size);
+    scene.traverse(o => { const material = (o as THREE.Mesh).material; if (material) for (const m of Array.isArray(material) ? material : [material]) m.needsUpdate = true; });
+  }
   const solids: Solid[] = [],
     facadeDetails: Solid[] = [],
     cylinders: Solid[] = [],
@@ -665,6 +675,7 @@ export function createCity(
     renderer.setSize(width, height);
     camera.aspect = width / height;
     camera.updateProjectionMatrix();
+    configureShadows();
   });
   resize.observe(host);
   const heading = new Map<string, number>();
@@ -718,6 +729,14 @@ export function createCity(
   let activeQuality = input().quality;
   let drawnFrames = 0;
   function tick(stamp: number) {
+    try { drawFrame(stamp); }
+    catch (error) {
+      cancelAnimationFrame(frame);
+      logClient("render_error", { actor: input().selected, error: error instanceof Error ? error.name : "RendererError" });
+      if (!dead) callbacks.fatal();
+    }
+  }
+  function drawFrame(stamp: number) {
     if (dead) return;
     frame = requestAnimationFrame(tick);
     if (document.hidden || stamp - lastDraw < 15) return;
@@ -732,6 +751,7 @@ export function createCity(
       activeQuality = state.quality;
       renderer.setPixelRatio(pixelRatio(activeQuality, devicePixelRatio));
       renderer.setSize(host.clientWidth, host.clientHeight);
+      configureShadows();
     }
     lastTime = now; // simulationTime/worldTime apply the persisted pause anchor.
     const seconds = simulationTime(world, lastTime) / 1000;
@@ -765,6 +785,11 @@ export function createCity(
       }
       lastSelected = selected;
     }
+    if (current) {
+      sun.position.x += current.position[0] - sun.target.position.x;
+      sun.position.z += current.position[1] - sun.target.position.z;
+      sun.target.position.set(current.position[0], 0, current.position[1]);
+    }
     if (stamp - lastState > 500) {
       lastState = stamp;
       const time = worldTime(world, lastTime);
@@ -775,7 +800,7 @@ export function createCity(
       const golden = time.phase === "dawn" || time.phase === "dusk";
       (scene.background as THREE.Color).set("#142638").lerp(new THREE.Color(golden ? "#ffd4ac" : "#94d4f1"), daylight);
       sun.color.set(golden ? "#ffb77e" : "#fff0d8");
-      sun.position.set(Math.cos(time.hour / 24 * Math.PI * 2) * 1000, 200 + daylight * 1100, 600);
+      sun.position.set(sun.target.position.x + Math.cos(time.hour / 24 * Math.PI * 2) * 1000, 200 + daylight * 1100, sun.target.position.z + 600);
       renderer.toneMappingExposure = .85 + daylight * .15;
       fog.color.copy(scene.background as THREE.Color);
     }

@@ -11,7 +11,7 @@ import type { SocialPose } from "../../../lib/living/social.ts";
 
 export const proceduralPropKinds = [
   "book", "read", "wallet", "phone", "note", "crutch", "leaf", "cup", "drink", "eat",
-  "garden", "can", "broom", "bread", "blanket", "cloth", "tool", "work",
+  "garden", "can", "broom", "bread", "blanket", "cloth", "tool", "work", "bag",
   "cook", "wok", "pan", "pot", "soccer", "ball", "football", "swim", "float",
   "lantern", "festival", "umbrella", "drum"
 ];
@@ -98,7 +98,8 @@ export function createModelActors(scene: THREE.Scene, library: AssetLibrary) {
     ids: new Set(avatars.keys()),
     draw(world: World, actors: Actor[], social: Map<string, SocialPose>, headings: Map<string, number>, seconds: number) {
       for (const [id, avatar] of avatars) {
-        const actor = actors.find(a => a.id === id); avatar.group.visible = !!actor; if (!actor) continue;
+        const actor = actors.find(a => a.id === id); avatar.group.visible = !!actor;
+        if (!actor) { const prop = props.get(id)?.group, bike = bicycles.get(id); if (prop) prop.visible = false; if (bike) bike.visible = false; continue; }
         if (world.paused && posed.has(id)) continue;
         const old = travel.get(id), distance = old?.distance ?? 0;
         const walked = world.paused || !old ? 0 : Math.min(3, Math.hypot(actor.position[0] - old.x, actor.position[1] - old.z));
@@ -111,9 +112,9 @@ export function createModelActors(scene: THREE.Scene, library: AssetLibrary) {
         const speaking = social.get(id)?.speaking;
         const clip = resolveActorClip(actor, speaking);
         const animationTime = actor.walking ? (distance + walked) / 14 * (2 / 3) : seconds;
-        avatar.pose(clip, animationTime, seconds, actor.position, headings.get(id) ?? .35, groundElevation(...actor.position) + activityLift(actor.kind, seconds) + (actor.kind === "cycle" && !actor.walking ? 4 : 0));
+        const changed = avatar.pose(clip, animationTime, seconds, actor.position, headings.get(id) ?? .35, groundElevation(...actor.position) + activityLift(actor.kind, seconds) + (actor.kind === "cycle" && !actor.walking ? 4 : 0));
         // Procedural offsets add missing exercise/jump/drink motions to authored clips.
-        if (!actor.walking && ["exercise", "jump", "drink", "cycle"].includes(actor.kind)) {
+        if (changed && !actor.walking && ["exercise", "jump", "drink", "cycle"].includes(actor.kind)) {
           for (const side of ["left", "right"]) {
             const arm=avatar.model.getObjectByName(`arm-${side}`),leg=avatar.model.getObjectByName(`leg-${side}`),sign=side==="left"?1:-1;
             if(arm && actor.kind === "exercise") arm.rotation.z += sign*(.4+.6*Math.sin(seconds*2));
