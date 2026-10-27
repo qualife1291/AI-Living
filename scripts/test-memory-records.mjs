@@ -1,0 +1,13 @@
+import assert from 'node:assert/strict';
+import {eventMemories,outcomeMemory,rankMemories} from '../lib/memory-records.ts';
+import {eventSchema} from '../lib/event-schema.ts';
+const event=eventSchema.parse({id:'memory-event',revision:0,source:'ai',title:'Góc sách',summary:'Sắp xếp góc sách trong mô phỏng.',dialogue:[{speaker:'an',text:'Mình cùng xem cách phân loại sách nhé.'},{speaker:'binh',text:'Mình sẽ ghi chú theo từng chủ đề.'}],changes:[{id:'an',moneyDelta:0,energyDelta:0,hungerDelta:0,skillDelta:0,activity:'Ghi chú',location:'Sân chung',memory:'Mình biết cách sắp xếp góc sách theo chủ đề.'}]});
+const original=JSON.stringify(event),records=eventMemories(event,'2026-10-28T00:00:00Z');
+assert.equal(JSON.stringify(event),original);assert.equal(records.length,1);assert.deepEqual(records[0].witnessedWith,['an']);assert.equal(records[0].kind,'event-report');
+const outcome=outcomeMemory({id:'outcome1',actorId:'neighbor-1',scenarioId:'learn-trade',at:'2026-10-28T01:00:00Z',reward:.5,source:'simulation',model:'disjoint-linucb-v1'},'Đã kết thúc kế hoạch học theo giờ mô phỏng.');
+assert.equal(outcome.kind,'simulation-plan-outcome');assert.deepEqual(outcome.witnessedWith,['neighbor-1']);
+const unrelated={...records[0],id:'other',text:'Mình nghỉ tại vườn.',importance:5},wrong={...records[0],id:'wrong',personId:'binh'},unwitnessed={...records[0],id:'missing-witness',witnessedWith:[]};
+const ranked=rankMemories([unrelated,outcome,wrong,unwitnessed,...records],'an','góc sách',2);
+assert.deepEqual(ranked.map(r=>r.id),[records[0].id,unrelated.id]);assert(rankMemories([outcome],'an','',6).length===0);
+assert(rankMemories(Array.from({length:20},(_,i)=>({...records[0],id:String(i)})),'an','',999).length===12);
+console.log(JSON.stringify({suite:'memory-records',eventRecipientOnly:true,simulationProvenance:true,topKContextRanking:true,noCrossActorOrUnwitnessedLeak:true,pure:true,bounded:true}));

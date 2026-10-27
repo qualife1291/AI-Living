@@ -21,8 +21,9 @@ const worker = {
     const url = new URL(request.url);
     const mutation = url.pathname.startsWith("/api/") && !["GET", "HEAD", "OPTIONS"].includes(request.method);
     const diagnostic = url.pathname === "/api/diagnostics";
+    const privateMemories = url.pathname === "/api/living/memories";
     const archive = url.pathname === "/api/living/learning" && url.searchParams.get("format") === "jsonl";
-    if ((mutation || archive || diagnostic) && !adminAllowed(request, { ownerId: settings.XOM_ADMIN_USER_ID, localAdmin: settings.XOM_LOCAL_ADMIN, privateOrigin: settings.XOM_OWNER_PRIVATE_ORIGIN }))
+    if ((mutation || archive || diagnostic || privateMemories) && !adminAllowed(request, { ownerId: settings.XOM_ADMIN_USER_ID, localAdmin: settings.XOM_LOCAL_ADMIN, privateOrigin: settings.XOM_OWNER_PRIVATE_ORIGIN }))
       return Response.json({ error: "Thao tác này cần quyền chủ sở hữu." }, { status: 403 });
     let binding = ctx.props?.CONNECTORS;
     // Local preview emulates the same request-scoped capability. This branch and

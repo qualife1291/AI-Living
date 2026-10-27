@@ -1,6 +1,7 @@
 import { eventSchema as schema } from '@/lib/event-schema';
 import { applyEventToWorld } from '@/lib/apply-event';
 import { readWorld, database, json, validOrigin } from '@/lib/store';
+import { eventMemories, memoryInsert } from '@/lib/memory-records';
 
 const MAX_BODY_BYTES = 20_000;
 
@@ -76,6 +77,7 @@ export async function POST(req: Request) {
           'home',
           revision,
         ),
+      ...memoryInsert(db, eventMemories(input, outcome.nowIso), revision),
       db
         .prepare(
           'UPDATE worlds SET data = ?, revision = revision + 1 WHERE id = ? AND revision = ?',
@@ -83,7 +85,7 @@ export async function POST(req: Request) {
         .bind(JSON.stringify(outcome.world), 'home', revision),
     ]);
 
-    if (results[1].meta.changes) return json({ ok: true, id: input.id, revision: revision + 1 });
+    if (results.at(-1)!.meta.changes) return json({ ok: true, id: input.id, revision: revision + 1 });
     const duplicate = await db.prepare('SELECT id FROM episodes WHERE id = ?').bind(input.id).first();
     return duplicate ? json({ ok: true, duplicate: true, id: input.id }) : json({ error: 'Revision conflict' }, 409);
   } catch (err: unknown) {

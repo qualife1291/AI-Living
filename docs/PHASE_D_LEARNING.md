@@ -19,3 +19,11 @@ Integration cuối hiện39/39suite/check/lint/build đạt; API Worker/D1 cô l
 Tiếp tục từ reviewGemini: server cũ thêm hậu tố ngày trước khi ghi role, nhưng chưa chặn ID gốc đã có. reviewRoleExpansion dùng roleSchema thật, kiểm tra ID cả bản gốc/bảnđãsuffixngày, tên trùng, tiếng Việt và lời chào lặp theo Jaccard trigram đúng intersection/union. Guard chạy trước mọi world write, trả422 cho đề xuất không hợp lệ; không tự thêm ba nghề mẫu chỉ vì harness in accepted3/3. Đây là kiểm tra cấu trúc/trùng từ, không gọi là hiểu ngữ nghĩa. Helper/test và server wiring mới đang qua kiểm thử40suite/API.
 
 Guard mở rộng đã qua40/40suite/check/lint/build; compiledWorker/D1 xác nhận đề xuất dùng ID cũ trả422 trước thêm hậu tố ngày và snapshot/revision giữ nguyên. Kiểm thử cached-context chỉ dùng D1côlập, không gọi model/provider hoặc production.
+
+## Ký ức có nguồn và lưu batch
+
+Đang nối bảng memories đã tồn tại (không migration/reset): event-report chỉ cho người được gán change.memory; không tự cho tất cả người nói trong kế hoạch biết báo cáo của người khác. simulation-plan-outcome lưu kết quả theo đồng hồ kế hoạch, không nhận physicaloccupancy. INSERT theo cùng revision/CAS transaction, ID ổn định cho retry. Endpoint owner-only /api/living/memories lấy topK từ tối đa100record của đúng actor; promptinstructions context đính kèm nhóm theo actor, coi chuỗi là dữ liệu.
+
+Archive trải nghiệm đổi từ mỗi outcome một câu SQL sang một INSERT SELECT json_each trong cùng nonce/revisionguard; bulk memory cũng một câu SQL. Mục tiêu tránh hàng trăm câu lệnh khi cohort240cùng hoàn tất. Snapshot/history/tabular cũ vẫn giữ. Helper ranking/recipient/provenance/purity/bounds đã test; compiledAPIvàfull41suite còn đang chạy, chưa chốtfeature.
+
+Structuredmemory đã qua41/41suite/check/lint/build và compiledWorker/D1 thật: event/outcome record đúngactor/provenance; GETmemories ownerguard; topK không rò actor khác; retry không duplicate; staleCAS không ghi record; archive JSONbulk giữmodel/context. Không migrationmới hoặc xóa snapshot/history. Legacy structured rows được đọc với kindlegacy-record và recipient riêng, không suy ra bằng chứng vật lý. Còn backfill lịch sử cũ theo quy trình riêng và lưu policy riêng khỏi snapshot; không tự gán fullmigration hoàn tất.

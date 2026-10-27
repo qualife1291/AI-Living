@@ -9,6 +9,7 @@ import { realContext, fetchProviders, type ContextCache } from "./realtime";
 import { initializeLiving, planLivingTurn, turnId, population } from "./engine";
 import { proposalSchema, type LivingTurn, type LivingState } from "./schema";
 import { reviewRoleExpansion } from "./expansion";
+import { memoryInsert, outcomeMemory } from "../memory-records";
 
 export function fetchContext(input: RequestInfo | URL, init?: RequestInit) {
   const relay = env.XOM_CONTEXT_RELAY;
@@ -65,15 +66,11 @@ function archiveStatements(
   revision: number,
   extra: import("./learning").Experience[] = [],
 ) {
-  return [...new Map([...(state.experiences ?? []), ...extra].map((e) => [e.id, e])).values()]
-    
-    .map((e) =>
-      database()
-        .prepare(
-          "INSERT OR IGNORE INTO agent_experiences (id,actor_id,created_at,data) SELECT ?,?,?,? WHERE EXISTS (SELECT 1 FROM worlds WHERE id='home' AND revision=? AND json_extract(data,'$.living.learningCommit')=?)",
-        )
-        .bind(e.id, e.actorId, e.at, JSON.stringify(e), revision, nonce),
-    );
+  const entries = [...new Map([...(state.experiences ?? []), ...extra].map((e) => [e.id, e])).values()];
+  if (!entries.length) return [];
+  return [database().prepare("INSERT OR IGNORE INTO agent_experiences(id,actor_id,created_at,data) SELECT json_extract(value,'$.id'),json_extract(value,'$.actorId'),json_extract(value,'$.at'),json_extract(value,'$.data') FROM json_each(?) WHERE EXISTS(SELECT 1 FROM worlds WHERE id='home' AND revision=? AND json_extract(data,'$.living.learningCommit')=?)")
+    .bind(JSON.stringify(entries.map(e => ({id:e.id,actorId:e.actorId,at:e.at,data:JSON.stringify(e)}))),revision,nonce),
+    ...memoryInsert(database(), extra.map(e => outcomeMemory(e, state.learning?.[e.actorId]?.memories.at(-1) ?? `Kết quả kế hoạch ${e.scenarioId}; phản hồi ${e.reward.toFixed(2)}.`)),revision,nonce)];
 }
 export async function auditTick(status: string, detail: Record<string, string | number | boolean>) {
   const at = new Date().toISOString();

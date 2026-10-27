@@ -17,9 +17,11 @@ try{
  const url='http://localhost/api/diagnostics';
  assert.equal((await mf.dispatchFetch('http://localhost/api/living/pets',{method:'POST',body:'{}'})).status,403,'Pet ownership mutations require the owner');
  assert.equal((await mf.dispatchFetch(url)).status,403,'non-owner GET denied');
+ assert.equal((await mf.dispatchFetch('http://localhost/api/living/memories?actor=an')).status,403,'Structured memories require owner access');
  assert.equal((await mf.dispatchFetch(url,{method:'POST',body:'{}'})).status,403,'non-owner POST denied');
  await mf.setOptions({...options,bindings:{XOM_LOCAL_ADMIN:'true'}});
  const db=await mf.getD1Database('DB');
+ await db.prepare('CREATE TABLE memories(id TEXT PRIMARY KEY,person_id TEXT,event_id TEXT,text TEXT,kind TEXT,importance INTEGER,witnessed_with TEXT,created_at TEXT)').run();
  const migration=readMigrationFiles({migrationsFolder:'drizzle'}).at(-1);
  for(const sql of migration.sql)await db.prepare(sql).run();
  assert(await db.prepare("SELECT name FROM sqlite_master WHERE type='index' AND name='client_logs_created_at'").first(),'Drizzle statement splitting must create the telemetry index');
@@ -143,5 +145,20 @@ try{
  assert.equal(rejected.status,422);assert.match((await rejected.json()).error,/ID vai trò/);
  const unchanged=await db.prepare("SELECT revision,data FROM worlds WHERE id='home'").first();assert.equal(unchanged.revision,proposalRow.revision);assert.equal(unchanged.data,proposalRow.data);
  console.log('PASS compiled role expansion rejects duplicate IDs before suffixing and preserves snapshot/revision');
+ // Structured event memory shares the same CAS transaction and is actor-bound.
+ const memoryRow=await db.prepare("SELECT revision,data FROM worlds WHERE id='home'").first();
+ const memoryEvent={id:'event-memory-integration',revision:memoryRow.revision,source:'ai',title:'Sắp xếp góc sách',summary:'An ghi lại một việc nhỏ trong thế giới mô phỏng.',dialogue:[{speaker:'an',text:'Mình muốn sắp xếp góc sách gọn hơn.'},{speaker:'binh',text:'Bạn thử phân loại sách theo chủ đề nhé.'}],changes:[{id:'an',moneyDelta:0,energyDelta:0,hungerDelta:0,skillDelta:0,activity:'Sắp xếp sách',location:'Sân chung',memory:'Mình ghi nhớ cách phân loại góc sách theo chủ đề.'}]};
+ const memoryPost=body=>mf.dispatchFetch('http://localhost/api/events',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(body)});
+ const savedMemory=await memoryPost(memoryEvent);assert.equal(savedMemory.status,200,await savedMemory.text());
+ const ownRecords=await mf.dispatchFetch('http://localhost/api/living/memories?actor=an&topic='+encodeURIComponent('góc sách'));assert.equal(ownRecords.status,200);
+ const own=(await ownRecords.json()).records;assert(own.some(r=>r.id==='event:event-memory-integration:an'&&r.kind==='event-report'));assert(own.every(r=>r.personId==='an'));
+ const other=(await (await mf.dispatchFetch('http://localhost/api/living/memories?actor=binh')).json()).records;assert(!other.some(r=>r.eventId===memoryEvent.id),'A future dialogue speaker cannot receive another actor report');
+ assert.equal((await mf.dispatchFetch('http://localhost/api/living/memories?actor=missing')).status,404);
+ assert.equal((await memoryPost(memoryEvent)).status,200);
+ assert.equal((await db.prepare('SELECT count(*) AS count FROM memories WHERE event_id=?').bind(memoryEvent.id).first()).count,1);
+ assert.equal((await memoryPost({...memoryEvent,id:'stale-memory-event'})).status,409);
+ assert.equal((await db.prepare('SELECT count(*) AS count FROM memories WHERE event_id=?').bind('stale-memory-event').first()).count,0);
+ assert.equal((await db.prepare('SELECT count(*) AS count FROM memories WHERE event_id=?').bind('linucb-api-receipt').first()).count,1,'Outcome memory is archived with its original recipient and provenance');
+ console.log('PASS structured event/outcome memories persist with CAS, private top-K, idempotency and no cross-actor knowledge');
  console.log(JSON.stringify({suite:'local-diagnostics-http',ownerReadGuard:true,ownerWriteGuard:true,streamByteLimit:true,schema:true,origin:true,ack:true,jsonlReadback:true,rateLimit:true,retention:true,pulsePersistence:true,pulseRetry:true,pulsePause:true,productionAccess:false}));
 }finally{await mf.dispose();}
