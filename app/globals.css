@@ -2049,3 +2049,14 @@ footer span:first-child {
 @media(max-width:700px){.live-dock{gap:0;padding:4px;max-width:calc(100vw - 20px);bottom:24px}.live-dock button{padding:8px 7px;min-width:40px}.live-dock span{font-size:9px}.live-dock button:last-child{display:none}.live-person{max-width:calc(100vw - 90px)}.live-status{gap:4px;padding:10px}.live-top{gap:6px}.view-count{font-size:11px;padding:8px}.live-brand{padding:10px}.live-brand b{font-size:16px}.live-person small{max-width:185px}.live-drawer{padding:16px}.three-speech{max-width:240px}}
 
 .conversation .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}.life-story summary{cursor:pointer;list-style:revert;font-size:15px}.life-story summary small{display:block;margin-top:6px;letter-spacing:0;font-size:12px}.conversation p{margin:8px 0}
+
+/* Phase B action cues. Simulation roots still come from the navigation model. */
+.block-action-run .block-leg-left,.block-action-tag .block-leg-left { animation:block-step .3s ease-in-out infinite alternate; }
+.block-action-run .block-leg-right,.block-action-tag .block-leg-right { animation:block-step .3s ease-in-out infinite alternate-reverse; }
+.block-action-drink .block-arm-right { animation:block-step 1s ease-in-out infinite alternate; }
+.block-action-exercise .block-arm-left,.block-action-exercise .block-arm-right { animation:block-step .8s ease-in-out infinite alternate; }
+.block-action-cycle .block-leg { animation:block-step .4s ease-in-out infinite alternate; }
+.block-action-jump { animation:block-hop 1s ease-in-out infinite; }
+.block-paused { animation-play-state:paused !important; }
+@keyframes block-hop { 0%,100% { transform:translateY(0); } 50% { transform:translateY(-7px); } }
+@media(prefers-reduced-motion:reduce) { .block-character,.block-character * { animation:none !important; } }

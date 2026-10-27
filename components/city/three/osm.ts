@@ -19,7 +19,7 @@ export function createOsm(host:HTMLDivElement) {
     if(!closedFootprint(feature))continue;
     const height=buildingHeight(feature);if(height.source!=='height-tag')estimated++;
     const shape=new THREE.Shape(feature.points.slice(0,-1).map(p=>new THREE.Vector2(p[0],-p[1])));
-    const geometry=new THREE.ExtrudeGeometry(shape,{depth:height.meters*unitsPerMeter,bevelEnabled:false,steps:1});geometry.rotateX(-Math.PI/2);
+    const geometry=new THREE.ExtrudeGeometry(shape,{depth:height.meters*unitsPerMeter,bevelEnabled:true,bevelThickness:0.35,bevelSize:0.25,bevelSegments:2,steps:1});geometry.rotateX(-Math.PI/2);
     buckets[count%4].push(geometry);count++;
   }
   buckets.forEach((list,i)=>{if(!list.length)return;const merged=mergeGeometries(list);list.forEach(g=>g.dispose());if(!merged)return;geometries.push(merged);const material=new THREE.MeshStandardMaterial({color:['#c6b79b','#a9c2b8','#aabac3','#d0baaa'][i],roughness:.8});materials.push(material);scene.add(new THREE.Mesh(merged,material));});

@@ -1,8 +1,9 @@
+import { meetingSteps, microActivity, actionSteps } from "./activities.ts";
 import { updateAnimalLearning } from "./animal-learning.ts";
 import {
   prepareLearning,
-  chooseScenario,
   cohortIds,
+  chooseScenario,
   scenarios,
   hasUnfinishedLearning,
 } from "./learning.ts";
@@ -231,7 +232,7 @@ export function planLivingTurn(
     dialogue,
     generator: "rules",
     scriptId: encounter ? script?.id : undefined,
-    scenarioId: anBusy ? learning.an.pending?.scenarioId : !festival
+    scenarioId: anBusy ? learning.an.pending?.scenarioId : encounter ? "friendship" : !festival
       ? sleeping
         ? "rest-home"
         : state.energy < 28
@@ -257,7 +258,7 @@ export function planLivingTurn(
       simStartedAt: turn.simStartedAt,
       generator: "rules",
       transport: chosen.transport === "plane" ? "bus" : chosen.transport,
-      steps: [{ location, activity, kind, duration: 180 }],
+      steps: encounter ? meetingSteps(location, activity) : actionSteps(location, activity, kind),
     };
     an.activity = activity;
   }
@@ -276,14 +277,7 @@ export function planLivingTurn(
         pausedMs: next.clock?.pausedMs ?? 0,
         simStartedAt: turn.simStartedAt,
         ...actorTransition(actor, position),
-        steps: [
-          {
-            location,
-            activity: "Gặp và trò chuyện cùng An",
-            kind: "social",
-            duration: 180,
-          },
-        ],
+        steps: meetingSteps(location, "Trò chuyện cùng An"),
       };
     }
   }
@@ -292,7 +286,7 @@ export function planLivingTurn(
       id: turn.id,
       scenarioId: turn.scenarioId,
       startedSimMs: turn.simStartedAt!,
-      durationMs: 180000,
+      durationMs: (an?.plan?.steps.reduce((sum,step)=>sum+step.duration,0) ?? 180) * 1000,
       completed: false,
     };
   const slot = Math.floor(now / 300000);
@@ -336,14 +330,7 @@ export function planLivingTurn(
       ...origin,
       generator: "rules" as const,
       transport: scenario.transport === "plane" ? "bus" : scenario.transport,
-      steps: [
-        {
-          location: target,
-          activity: scenario.title,
-          kind: scenario.kind as Step["kind"],
-          duration: 180,
-        },
-      ],
+      steps: actionSteps(target, scenario.title, scenario.kind as Step["kind"]),
     };
     if (person) {
       person.plan = plan;
@@ -365,7 +352,7 @@ export function planLivingTurn(
       id: `${turn.id}-${resident.id}`,
       scenarioId: socialScenario.id,
       startedSimMs: turn.simStartedAt!,
-      durationMs: 180000,
+      durationMs: resident.plan.steps.reduce((sum,step)=>sum+step.duration,0)*1000,
       completed: false,
     };
   }
@@ -446,9 +433,10 @@ export function crowdAt(
   world: World,
   now: number,
   focusId?: string,
+  limit = 60,
 ): Actor[] {
   const seconds = computeSimMs(world.born, world.clock, now) / 1000;
-  const visible = state.residents.slice(0, 60);
+  const visible = state.residents.slice(0, Math.max(1, Math.min(240, limit)));
   const partner = state.residents.find(
     (r) => r.id === world.livingTurn?.residentId,
   );
@@ -485,6 +473,7 @@ export function crowdAt(
             "routine",
             r.plan?.steps.at(-1)?.location,
           );
+    if (!actor.walking && (!r.plan || elapsed >= total)) Object.assign(actor, microActivity(r.id, seconds, actor.kind, actor.activity));
     const jitter = hashSeed(r.id);
     actor.position = [
       actor.position[0] + ((jitter % 9) - 4) * 7,

@@ -1,0 +1,98 @@
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> site-creator-vinext-starter@0.1.0 test:unit
+> node scripts/test-life.mjs && node scripts/test-events.mjs && node scripts/test-animation.mjs && node scripts/test-training.mjs && node scripts/test-continuity.mjs && node scripts/test-daily-routines.mjs && node scripts/test-living.mjs && node scripts/test-festivals.mjs && node scripts/test-learning.mjs && node scripts/test-city.mjs && node scripts/test-appearance.mjs && node scripts/test-three-city.mjs && node scripts/test-hardening.mjs && node scripts/test-map-release.mjs && node scripts/test-liveness.mjs && node scripts/test-context-deadline.mjs && node scripts/test-social.mjs && node scripts/test-human-visuals.mjs && node scripts/test-traffic.mjs && node scripts/test-walkability.mjs && node scripts/test-cinematography.mjs && node scripts/test-personal-space.mjs && node scripts/test-autonomy.mjs && node scripts/test-visual-upgrade.mjs && node scripts/test-scenario-benchmarks.mjs && node scripts/maintain-assets.mjs --self-test && node scripts/test-model-assets.mjs
+
+PASS: connected pedestrian routes, interpolation, no routine teleports, pause/resume clock, AI plan precedence/expiry, L1 transition origin, deterministic world clock/weather, animal projection, camera bounds.
+PASS: valid plans, invalid destinations/durations/length rejected, animal speech rejected, old events supported.
+PASS: traffic phases mutually exclusive, vehicles move/wait, paused traffic stable, full-text wrapping, timed AI speech and walking guard.
+PASS: verified 16 scenes, 24 synthesized contexts, 6 SFT golden episodes, 6 DPO pairs, and 8 curriculum stages.
+PASS: speed continuity, pause/resume at speed, epoch zero, exact plan interruption (100 positions × 3 actors), repeated interruption, plan and speech clock alignment.
+PASS: complete daily schedules, night and noon rest, daytime work, 86,400 daily boundaries × 3 residents, continuous AI-plan expiry.
+PASS: real-time provenance/cache/staleness/outages, Vietnam day boundary, stable growing population/caps, data-driven role expansion, pure planning, no unearned rewards, bounded needs, paused crowd and night rest.
+PASS: NPC encounter continuity, co-location and timed two-way speech.
+PASS: new-role encounters, rest/health and meal priorities.
+PASS: official calendar markup, exact date intervals, shared months, unknown/invalid dates excluded, URL restriction, changed-template detection and public read-only AJAX adapter.
+PASS: per-character fitted action values change choices; model isolation; no premature/double/cancelled learning; bounded injury/recovery and job transitions; full cohort coverage; all humans and animals train over eight completed slots; exact animal continuity, rain shelter and provenance-labelled experience export.
+PASS: 33 connected venues, 32 supported scenarios, expanded routes to metro/airport, finite responsive camera and real OSM geometry/ODbL attribution.
+PASS: continuous access/ride/egress metro projection and correct origin/destination.
+PASS: 14 valid wardrobe themes, role-based police/delivery/teacher/worker defaults, stable identities and rejection of unsupported theme/CSS-like input.
+PASS: deterministic 254-building skyline, 150 towers, all pedestrian/road/venue clearances, finite geometry and separated podiums.
+PASS: fail-closed owner authorization, local-only admin, 240 completed outcomes retained for archive despite 200-item snapshot, idempotent settlement, simulated age and pause, bounded elevator.
+PASS: 912 closed OSM footprints, height provenance, malformed input, exact-origin private boundary, schema-only reconciliation with one statement per breakpoint.
+{"suite":"liveness","walking":75,"rest":86325,"projectionSweepMs":506}
+PASS: cold world context reads never fetch/write; non-cooperative upstreams have a bounded deadline.
+PASS authored scene data: venues, kinds, timing and alternating short replies
+PASS 63 stationary residents: unique stable slots and minimum 14 world-unit spacing
+PASS 240 population keeps late focused/encounter residents visible, unique and within 150-unit staging radius
+PASS walking-to-standing arrival stays continuous for every visible actor
+PASS one pair has alternating complete replies, listener pose and minimum quiet cooldown
+PASS a newly arrived pair waits for an opening instead of joining a scene on a reply
+PASS editorial guard accepts a coherent authored four-line exchange without changing it
+PASS editorial guard rejects an unselected speaker
+PASS editorial guard rejects consecutive lines from the same speaker
+PASS editorial guard rejects near-verbatim replies observed in the actual local Qwen sample
+PASS paused simulation freezes resident positions, dialogue and turn timing
+PASS ambient speech respects overnight quiet, private rooms, walking and distance
+PASS persisted AI event takes priority over authored ambient script
+PASS rules living dialogue cannot hide a persisted AI event in the same moment
+PASS AI event metadata uses that event title rather than an unrelated living turn
+PASS persisted two-person dialogue faces its actual co-speaker rather than a closer bystander
+PASS named AI partner walking away cannot be replaced with a stationary bystander
+PASS persisted event lookup is unambiguous when another event ID is its prefix
+PASS projection and social staging never mutate durable world or actor input
+PASS 24 hour resident agendas vary by role/id, total one day and rest overnight
+PASS director finishes all six replies despite polling, input reordering and a closer new bystander
+PASS director starts from the opening when a new pair arrives, with a complete four-line exchange
+PASS director reads at a human pace even when the simulation clock runs at one tenth speed
+PASS director cooldown is between 20 and 45 seconds after a complete exchange
+PASS director freezes a whole conversation on pause and continues remaining replies after resume
+PASS director gives stored AI priority and plays its entire dialogue once across refreshes
+PASS director reads full stored living dialogue after arrival rather than the legacy one-line window
+PASS director respects quiet/private/walking boundaries and does not restage pre-spaced actor positions
+{"suite":"social","cases":28,"passed":28,"failed":0}
+{"suite":"human-visuals","triangles":{"box":12,"round":300,"head":252,"hair":210,"limb":140,"shoe":300},"poseSamples":60792,"dimensions":"unit","pause":"frozen","provenance":"preserved"}
+{"suite":"traffic","cars":12,"routeLength":2274,"sweptVehicles":22740,"queueFrames":200,"buildings":852,"collisionCount":0,"continuous":true,"crossing":"complete","pause":"frozen"}
+PASS nearest walkable points clear every actual building center, edge and venue anchor
+PASS all 33 × 33 venue routes reach their actual goal with swept radius clearance and bounded cache
+PASS outside endpoints detour around occupied rectangles rather than crossing the body
+PASS Phòng An to Phòng Bình checks the shortcut from the exact start rather than its grid cell
+PASS sub-unit endpoint changes cannot reuse a route with stale rounded endpoints
+PASS spatial segment/point acceleration agrees with all actual obstacles for short and long sweeps
+PASS walker keeps continuous safe ground paths through plan changes, polls, reordering and pause
+PASS a car blocks a walker before its footprint and removal allows travel to resume
+{"suite":"walkability","cases":8,"passed":8,"failed":0,"metrics":{"projectedPoints":2589,"venueRoutes":{"count":1089,"detours":1006,"sweptSegments":4453,"totalMs":1940,"venueRouteLatency":{"count":1006,"p50Ms":0.212,"p95Ms":2.089,"maximumMs":14.117},"maximumCache":0,"failures":[],"failureCount":0},"outsideEndpointDetours":24,"spatialOracleChecks":6816,"walkerFrames":{"count":5401,"actors":3,"totalMs":5741,"distance":2504}}}
+PASS cinematic framing keeps main character central, listener space, finite deterministic shot and clear sightline
+PASS shared trees match venue scenery poses and seeded placements (45ms)
+PASS every prop/trunk blocks its exact footprint and all venues retain a free activity endpoint (2079ms)
+PASS 63 overlapping stationary spawns/goals get deterministic personal space without world mutation (806ms)
+PASS opposite walkers pass on different sides and reach both original goals (180ms)
+PASS four crossing streams avoid swept intersections and finish (309ms)
+PASS 16 head-on walkers in adjacent rows do not deadlock or overlap (4663ms)
+PASS a crowded shared destination gets separate goals and newcomers do not move existing walkers (964ms)
+{"suite":"personal-space","cases":7,"passed":7,"failed":0,"metrics":{"scenery":{"trees":94,"obstacles":573,"detours":216},"headOn":{"frameP95Ms":0.49077699999998003,"frames":1351},"fourWay":{"frames":1951,"frameP95Ms":0.6600250000001324},"denseHeadOn":{"frames":2401,"frameP95Ms":3.0745610000012675},"sharedDestination":{"frames":2701,"frameP95Ms":0.5731360000008863}}}
+PASS five-minute turn IDs are versioned, stable on retry and distinct from historical fifteen-minute IDs
+PASS needs change decisions before emergency thresholds and repeated choices lose novelty
+PASS reward reflects useful outcomes and does not award more skill or free positive rest
+PASS every actor has independent bounded need drift without time-only skill or memory awards
+PASS bounded rotating cohorts cover everyone with both five-minute and hourly callers
+PASS unfinished plans and pending outcomes survive new slots on a slow simulation clock
+PASS NPCs have independent purposeful micro-agendas, finite movement and quiet nights without world mutation
+PASS planner preserves money and memories, and keeps normal night turns quiet
+{"suite":"autonomy","cases":8,"passed":8,"failed":0,"elapsedMs":2341}
+{"suite":"visual-upgrade","humanBatches":6,"stressActors":72,"instances":4230,"motionFrames":600,"mixedAnimalHumanFrames":1800,"animalPolicies":3,"props":66,"propTypes":7,"detailParts":833,"pause":"frozen","joints":"connected","provenance":"preserved"}
+PASS four explicit 120-second casts, ages, palettes and five camera specifications
+PASS wallet-return: 7201 frames have bounded travel, swept personal space, obstacle clearance and camera motion
+PASS sanitation-gratitude: 7201 frames have bounded travel, swept personal space, obstacle clearance and camera motion
+PASS kitten-care: 7201 frames have bounded travel, swept personal space, obstacle clearance and camera motion
+PASS bakery-courtesy: 7201 frames have bounded travel, swept personal space, obstacle clearance and camera motion
+PASS wallet is one conserved item: inspect, identify, offer, return; no reward is taken
+PASS wallet drop obeys gravity and restitution .15 rather than copying a supplied score or bounce
+PASS water and brooms move once in the right order, hands are free before receiving, fatigue settles gradually
+PASS kitten scene keeps the child back, requests help before care, warms before carrying and avoids a medical tutorial
+PASS bakery preserves FIFO except the explicit consented courtesy and conserves five loaves
+PASS seeking and pause are deterministic, input bounds are finite and snapshots cannot corrupt the next frame
+{"suite":"scenario-benchmarks","mode":"headless-logic","scenarioCount":4,"caseCount":11,"passed":11,"failed":0,"elapsedMs":4508,"metrics":{"wallet-return":{"frames":7201,"minimumHumanGapUnits":8,"maximumSpeedMps":2.2659,"maximumActorStepUnits":0.3776,"maximumPropStepUnits":0.6131,"maximumCameraStepUnits":0.8362,"minimumFocusDistanceUnits":35.6651,"staticOverlaps":0,"sweptHumanOverlaps":0},"sanitation-gratitude":{"frames":7201,"minimumHumanGapUnits":11.6619,"maximumSpeedMps":0.4056,"maximumActorStepUnits":0.0676,"maximumPropStepUnits":0.1355,"maximumCameraStepUnits":0.7445,"minimumFocusDistanceUnits":44.0908,"staticOverlaps":0,"sweptHumanOverlaps":0},"kitten-care":{"frames":7201,"minimumHumanGapUnits":14.7648,"maximumSpeedMps":0.4021,"maximumActorStepUnits":0.0846,"maximumPropStepUnits":0.1175,"maximumCameraStepUnits":1.0139,"minimumFocusDistanceUnits":34.1608,"staticOverlaps":0,"sweptHumanOverlaps":0},"bakery-courtesy":{"frames":7201,"minimumHumanGapUnits":10,"maximumSpeedMps":1.1444,"maximumActorStepUnits":0.1907,"maximumPropStepUnits":0.1477,"maximumCameraStepUnits":3.0327,"minimumFocusDistanceUnits":69.152,"staticOverlaps":0,"sweptHumanOverlaps":0}},"unverified":["pixel-level visibility/occlusion","actual model finger IK and contact","millimetre skin/hair/fabric detail","DOF/volumetrics/WebGPU ultra","physical GPU/mobile FPS","audio and rendered video","LLM weights or model fine-tuning"]}
+PASS new approved assets bind automatically; unknown licences and missing recipes remain explicit
+{"approvedAssets":41,"bindings":73,"missing":0,"mode":"checked"}
+{"suite":"model-assets","actualGLBClips":true,"bodyHeight":17.5,"pause":"frozen","seek":"reset","clones":"independent","ground":"aligned","footprints":"bounded","LOD":"returns"}

@@ -40,7 +40,7 @@ export async function createStudio(host: HTMLDivElement, input: () => { id: Scen
   let renderer: THREE.WebGLRenderer;
   try { renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: "high-performance" }); }
   catch (error) { library.dispose(); throw error; }
-  renderer.setPixelRatio(Math.min(devicePixelRatio, innerWidth < 700 ? 1.25 : 1.5)); renderer.outputColorSpace = THREE.SRGBColorSpace; renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  renderer.setPixelRatio(Math.min(devicePixelRatio, innerWidth < 700 ? 1.25 : 1.5)); renderer.outputColorSpace = THREE.SRGBColorSpace; renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
   renderer.domElement.setAttribute("aria-label", "Các nhân vật trong kịch bản mô phỏng"); host.appendChild(renderer.domElement);
   const scene = new THREE.Scene(), camera = new THREE.PerspectiveCamera(38, 1, .1, 2000), hemi = new THREE.HemisphereLight("#edf6fc", "#93836d", 1.9), sun = new THREE.DirectionalLight("#ffe7bb", 2.3);
   scene.add(hemi, sun); const controls = new OrbitControls(camera, renderer.domElement); controls.enableDamping = true; controls.minDistance = 12; controls.maxDistance = 350; controls.maxPolarAngle = Math.PI / 2 - .03;

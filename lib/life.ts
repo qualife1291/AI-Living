@@ -193,7 +193,7 @@ export type Step = {
   location: string;
   activity: string;
   duration: number;
-  kind: "work" | "eat" | "rest" | "social" | "garden" | "read" | "play";
+  kind: (typeof import("./event-schema").STEP_KINDS)[number];
 };
 
 const step = (

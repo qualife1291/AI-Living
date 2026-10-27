@@ -36,6 +36,7 @@ for (const scenario of scenarios) scenariosByTag.set(scenario.tag, [...(scenario
 export type LearnedAction = { trials: number; meanReward: number };
 export type AgentLearning = {
   adult: true;
+  socialNeed?: number;
   energy: number;
   hunger: number;
   health: number;
@@ -70,6 +71,7 @@ export type LearningPopulation = Record<string, AgentLearning>;
 export function initializeAgent(id: string): AgentLearning {
   return {
     adult: true,
+    socialNeed: 35 + hashSeed(id)%40,
     energy: 65 + (hashSeed(id) % 25),
     hunger: 20,
     health: 100,
@@ -206,7 +208,8 @@ export function settleLearning(
 }
 export function hasUnfinishedLearning(agent: AgentLearning | undefined, plan: PersonPlan | undefined, simMs: number) {
   const pending = agent?.pending;
-  return !!pending && !pending.completed && plan?.simStartedAt === pending.startedSimMs && simMs < pending.startedSimMs + pending.durationMs;
+  const planActive = plan?.simStartedAt !== undefined && simMs < plan.simStartedAt + plan.steps.reduce((s,step)=>s+step.duration,0)*1000;
+  return !!planActive || !!pending && !pending.completed && plan?.simStartedAt === pending.startedSimMs && simMs < pending.startedSimMs + pending.durationMs;
 }
 
 /** Needs drift in simulation time; legacy agents start at the current anchor.

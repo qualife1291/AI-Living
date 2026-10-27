@@ -5,7 +5,7 @@ import catalog from "../../../public/models/kenney/catalog.json" with { type: "j
 import { resolveModel } from "../../../lib/city/asset-bindings.ts";
 
 export const approvedAssets = catalog.assets;
-export const cityAssetIds = [...["character-a", "character-b", "character-c", "car-sedan", "car-hatchback", "car-taxi", "display-bread", "display-fruit", "bin"].map(key => resolveModel(key)!).filter(Boolean), "commercial/building-a", "commercial/building-b", "commercial/building-c", "suburban/building-type-a", "suburban/building-type-b", "suburban/building-type-c", "watercraft/boat-fishing-small", "watercraft/boat-row-small", "trains/railroad-straight"];
+export const cityAssetIds = [...["character-a", "character-b", "character-c", "character-d", "character-e", "car-sedan", "car-hatchback", "car-taxi", "display-bread", "display-fruit", "bin"].map(key => resolveModel(key)!).filter(Boolean), "commercial/building-a", "commercial/building-b", "commercial/building-c", "commercial/building-skyscraper-a", "commercial/detail-parasol-a", "suburban/building-type-a", "suburban/building-type-b", "suburban/building-type-c", "suburban/tree-large", "suburban/tree-small", "watercraft/boat-fishing-small", "watercraft/boat-row-small", "watercraft/boat-house-a", "watercraft/buoy", "trains/railroad-straight", "trains/train-tram-modern", "roads/traffic-light"];
 export type AssetPlacement = { id: string; x: number; y: number; z: number; width: number; depth: number; height: number; yaw?: number; stretch?: boolean };
 type Compiled = { geometry: THREE.BufferGeometry; material: THREE.MeshPhongMaterial; size: THREE.Vector3 };
 export type ResourceSets = { geometries: Set<THREE.BufferGeometry>; materials: Set<THREE.Material>; textures: Set<THREE.Texture> };
@@ -61,7 +61,7 @@ export class AssetLibrary {
     const geometry = mergeGeometries(geometries); geometries.forEach(g => g.dispose()); if (!geometry) return;
     geometry.computeBoundingBox(); const box = geometry.boundingBox!, center = box.getCenter(new THREE.Vector3()), size = box.getSize(new THREE.Vector3());
     geometry.translate(-center.x, -box.min.y, -center.z); geometry.computeBoundingBox();
-    const compiled = { geometry, size, material: new THREE.MeshPhongMaterial({ map: texture, vertexColors: true, shininess: 12, alphaTest: .1 }) };
+    const compiled = { geometry, size, material: new THREE.MeshPhongMaterial({ map: texture, vertexColors: true, shininess: 20, specular: new THREE.Color("#5c584f"), alphaTest: .1 }) };
     this.compiled.set(id, compiled); return compiled;
   }
   addBatches(scene: THREE.Object3D, placements: AssetPlacement[]) {
@@ -73,7 +73,7 @@ export class AssetLibrary {
       const mesh = new THREE.InstancedMesh(model.geometry, model.material, entries.length);
       entries.forEach((p, i) => { setAssetTransform(dummy, model.size, p); mesh.setMatrixAt(i, dummy.matrix); });
       mesh.instanceMatrix.setUsage(THREE.DynamicDrawUsage); mesh.userData.placements = entries; mesh.userData.assetSize = model.size;
-      mesh.instanceMatrix.needsUpdate = true; scene.add(mesh); meshes.set(id, mesh);
+      mesh.castShadow = true; mesh.receiveShadow = true; mesh.instanceMatrix.needsUpdate = true; scene.add(mesh); meshes.set(id, mesh);
     }
     return meshes;
   }
@@ -118,7 +118,7 @@ export class AssetAvatar {
   private tintKey = "";
   constructor(source: GLTF, height = 17.5, radius = 4.4, tint?: { shirt: string; trousers: string; skin: string }) {
     this.model = source.scene.clone(true);
-    this.model.traverse(o => { const mesh = o as THREE.Mesh; if (!mesh.isMesh) return; const old = (Array.isArray(mesh.material) ? mesh.material[0] : mesh.material) as THREE.MeshStandardMaterial; const color = /torso/i.test(mesh.name) ? tint?.shirt : /leg/i.test(mesh.name) ? tint?.trousers : /head/i.test(mesh.name) ? tint?.skin : undefined; mesh.material = new THREE.MeshPhongMaterial({ map: old.map, color: color ?? old.color, shininess: 10 }); });
+    this.model.traverse(o => { const mesh = o as THREE.Mesh; if (!mesh.isMesh) return; const old = (Array.isArray(mesh.material) ? mesh.material[0] : mesh.material) as THREE.MeshStandardMaterial; const color = /torso/i.test(mesh.name) ? tint?.shirt : /leg/i.test(mesh.name) ? tint?.trousers : /head/i.test(mesh.name) ? tint?.skin : undefined; mesh.castShadow = true; mesh.receiveShadow = true; mesh.material = new THREE.MeshPhongMaterial({ map: old.map, color: color ?? old.color, shininess: 18, specular: new THREE.Color("#635d52") }); });
     this.group.add(this.model); this.mixer = new THREE.AnimationMixer(this.model);
     for (const clip of source.animations) this.actions.set(clip.name, this.mixer.clipAction(clip));
     const rest = new THREE.Box3().setFromObject(this.model), center = rest.getCenter(new THREE.Vector3()), size = rest.getSize(new THREE.Vector3());

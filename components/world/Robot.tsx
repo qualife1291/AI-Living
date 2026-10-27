@@ -12,6 +12,14 @@ export type RobotMotion =
   | 'rest'
   | 'play';
 
+export function robotMotion(kind: import('@/lib/life').Step['kind']): RobotMotion {
+  if (kind === 'study') return 'read';
+  if (kind === 'drink' || kind === 'shop') return 'eat';
+  if (kind === 'run' || kind === 'walk-pet') return 'walk';
+  if (['jump','tag','cycle','exercise'].includes(kind)) return 'play';
+  return kind as RobotMotion;
+}
+
 export function Robot({
   person,
   portrait = false,

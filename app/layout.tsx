@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import './globals.css';
+import { Diagnostics } from '../components/Diagnostics';
 
 export const metadata: Metadata = {
   title: 'Xóm AI · Chuyện nhỏ mỗi ngày',
@@ -12,7 +13,7 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="vi">
-      <body>{children}</body>
+      <body>{children}<Diagnostics /></body>
     </html>
   );
 }

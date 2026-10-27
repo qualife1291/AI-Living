@@ -1,0 +1,65 @@
+import assert from 'node:assert/strict';
+import {STEP_KINDS,eventSchema} from '../lib/event-schema.ts';
+import {seed} from '../lib/world.ts';
+import {initializeLiving,planLivingTurn} from '../lib/living/engine.ts';
+import {scheduleResidentSocial} from '../lib/living/social-scheduler.ts';
+import {meetingSteps,followup,microActivity} from '../lib/living/activities.ts';
+import {hasUnfinishedLearning} from '../lib/living/learning.ts';
+import {activityLift} from '../lib/living/action-presentation.ts';
+import {humanPose} from '../components/city/three/humans.ts';
+import {resolveActorClip,createModelActors} from '../components/city/three/model-actors.ts';
+import {AssetLibrary} from '../components/city/three/assets.ts';
+import {computeSimMs} from '../lib/clock.ts';
+import * as THREE from 'three';
+import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
+import {readFileSync} from 'node:fs';
+const added=['drink','run','jump','tag','cycle','exercise','walk-pet','shop','study'];
+const now=Date.parse('2026-10-26T02:00:00Z'),world={...structuredClone(seed),born:'2026-10-25T17:00:00Z',living:initializeLiving(now)};
+const context={date:'2026-10-26',hour:9,weekday:1,timezone:'Asia/Ho_Chi_Minh',fetchedAt:new Date(now).toISOString(),weather:{status:'unavailable',source:'test',observedAt:null,temperature:null,humidity:null,precipitation:null,code:null,windKph:null},calendar:{weekend:false,holidays:[],source:'test',status:'unavailable',coverage:'test'},traffic:{status:'unavailable',label:'test'},festivals:{status:'unavailable',label:'test'}};
+for(const kind of added){assert(STEP_KINDS.includes(kind));assert(eventSchema.safeParse({id:'test-new-'+kind,revision:0,source:'ai',title:'Test',summary:'Test',dialogue:[{speaker:"an",text:"Mình thử hoạt động mới nhé."}],changes:[{id:'an',activity:'Test',location:'Công viên',memory:'Thử hoạt động mới',plan:[{location:'Công viên',activity:'Test',kind,duration:120}]}]}).success);}
+const saved=JSON.stringify(world),planned=planLivingTurn(world,context,now).world;assert.equal(JSON.stringify(world),saved,'planner must stay pure');
+const anPlan=planned.people.find(p=>p.id==='an').plan,peer=planned.living.residents.find(r=>r.id===planned.livingTurn.residentId);
+assert.equal(anPlan.steps.length,5);assert.deepEqual(peer.plan.steps.map(s=>s.location),anPlan.steps.map(s=>s.location));
+assert.equal(anPlan.steps.at(-1).kind,followup(anPlan.steps[0].location).kind);
+const sim=computeSimMs(planned.born,planned.clock,now);assert(hasUnfinishedLearning({...planned.living.learning.an,pending:undefined},anPlan,sim+300000),'follow-up remains busy even after first learning task');
+assert.equal(followup('Chợ nhỏ').kind,'shop');assert.equal(followup('Thư viện').kind,'study');assert.equal(followup('Công viên').kind,'run');
+const duration=meetingSteps('Công viên','Nói chuyện').reduce((s,v)=>s+v.duration,0);assert.equal(duration,360);
+const raw=readFileSync('public/models/kenney/characters/character-a.glb');
+const loader=new GLTFLoader();
+loader.register(()=>({name:"qa-material",loadMaterial:()=>Promise.resolve(new THREE.MeshBasicMaterial())}));
+const gltf=await loader.parseAsync(raw.buffer.slice(raw.byteOffset,raw.byteOffset+raw.byteLength),'');
+const clips=new Set(gltf.animations.map(c=>c.name));
+for(const kind of added){const actor={id:'fixture',name:'Test',from:'Công viên',location:'Công viên',activity:kind,kind,position:[0,0],walking:false,progress:1,path:[[0,0]],source:'plan'};
+ assert(clips.has(resolveActorClip(actor)),`unsupported clip for ${kind}`);
+ if (["run","tag"].includes(kind)) assert.equal(resolveActorClip({...actor,walking:true,transport:"walk"}),"sprint");
+ const a=humanPose(actor,1,0),b=humanPose(actor,1.3,0);for(const v of Object.values(a))assert(Number.isFinite(v));
+ if(['run','tag','exercise'].includes(kind))assert.notDeepEqual([a.leftLeg,a.rightLeg,a.leftArm],[b.leftLeg,b.rightLeg,b.leftArm]);
+}
+const library=new AssetLibrary();library.loaded.set('characters/character-a',gltf);
+const scene=new THREE.Scene(),models=createModelActors(scene,library),headings=new Map([['an',0]]);
+const actor={id:'an',name:'An',from:'Công viên',location:'Công viên',activity:'Nhảy tại chỗ',kind:'jump',position:[-300,-700],walking:false,progress:1,path:[[-300,-700]],source:'plan'};
+models.draw(world,[actor],new Map(),headings,1);const lower=models.snapshots().an.position[1];
+models.draw(world,[actor],new Map(),headings,1.4);assert.notEqual(models.snapshots().an.position[1],lower,'actual avatar jump moves above its floor');
+const freeze=models.snapshots();models.draw({...world,paused:true},[actor],new Map(),headings,2);assert.deepEqual(models.snapshots(),freeze,'pause freezes procedural activity too');
+models.draw(world,[{...actor,kind:'cycle'}],new Map(),headings,3);const cycleBefore=models.snapshots().an.leg;
+models.draw(world,[{...actor,kind:'cycle'}],new Map(),headings,3.3);assert.notDeepEqual(models.snapshots().an.leg,cycleBefore,'actual cycle legs pedal');
+assert.equal(activityLift('jump',0),0);assert(activityLift('jump',.5)>0);assert.equal(activityLift('work',.5),0);
+assert.equal(microActivity('x',40,'rest','Ngủ').activity,'Ngủ');assert.notDeepEqual(microActivity('x',40,'social','Chờ'),microActivity('x',60,'social','Chờ'));
+// Locate a real routine-time pair, not a mocked projection or an invented venue.
+const social=structuredClone(world);social.living.residents=social.living.residents.slice(0,8);
+for(const role of social.living.catalog.roles){role.place='Công viên';role.kind='social';role.activity='Giao lưu tại công viên';}
+let outcome;
+for(let s=0;s<3600;s+=20){const result=scheduleResidentSocial(social,now+s*1000);if(result.pairs){outcome={result,at:now+s*1000};break;}}
+assert(outcome,'routine residents should form an independent pair');
+const {result,at}=outcome;const pending=result.world.living.socialSchedule.pending[0];
+assert.equal(result.world.livingTurn,social.livingTurn,'independent meetings must not replace An narrative');
+assert.equal(scheduleResidentSocial(result.world,at+19000).changed,false,'retry inside epoch is idempotent');
+const paused={...result.world,paused:true};assert.equal(scheduleResidentSocial(paused,at+900000).changed,false);
+const r=result.world.living.residents.find(r=>r.id===pending.a),familiarity=r.familiarity;
+const before=scheduleResidentSocial(result.world,at+pending.durationMs-1);assert.equal(before.world.living.residents.find(x=>x.id===r.id).familiarity,familiarity);
+const complete=scheduleResidentSocial(result.world,at+pending.durationMs);assert.equal(complete.world.living.residents.find(x=>x.id===r.id).familiarity,familiarity+1);
+const cancelled=structuredClone(result.world);cancelled.living.residents.find(x=>x.id===r.id).plan=undefined;
+assert.equal(scheduleResidentSocial(cancelled,at+pending.durationMs).world.living.residents.find(x=>x.id===r.id).familiarity,familiarity);
+assert.equal(scheduleResidentSocial(complete.world,at+pending.durationMs+21000).world.living.residents.find(x=>x.id===r.id).familiarity,familiarity+1,'no double social credit');
+assert.equal(JSON.stringify(world),saved);
+console.log(JSON.stringify({suite:'phase-b',newActions:9,realGLBClipCompatibility:true,meetingStages:5,independentSocial:{cadenceSimSeconds:20,pairs:result.pairs,idempotent:true,pause:true,cancellation:true,noDoubleCredit:true},legacyEvents:true,planPurity:true}));
