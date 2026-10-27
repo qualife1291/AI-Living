@@ -35,6 +35,7 @@ export type Resident = {
   color: string;
   arrivedOn: string;
   home?: import("./households").HomeAssignment;
+  identity?: import("./identity").Identity;
   familiarity: number;
   memories: string[];
   plan?: import("../world").PersonPlan;

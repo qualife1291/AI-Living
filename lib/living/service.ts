@@ -1,3 +1,4 @@
+import { assignIdentities } from "./identity";
 import { assignHomes } from "./households";
 import { scheduleResidentSocial } from "./social-scheduler";
 import { scenarios, prepareLearning, initializeAgent } from "./learning";
@@ -269,7 +270,7 @@ export async function saveCatalog(
   if ([...used].some((id) => !catalog.roles.some((r) => r.id === id)))
     throw new Error("Không thể xóa vai trò đang có cư dân");
   living.catalog = catalog;
-  living.residents = assignHomes(living.residents);
+  living.residents = assignHomes(assignIdentities(living.residents, catalog.names));
   current.world.living = living;
   const res = await database()
     .prepare(

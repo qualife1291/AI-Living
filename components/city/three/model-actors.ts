@@ -99,7 +99,7 @@ export function createModelActors(scene: THREE.Scene, library: AssetLibrary) {
   const bicycles = new Map<string, THREE.Group>();
   for (const [id, modelId] of [["an", resolveModel("character-a")!], ["binh", resolveModel("character-b")!], ["chi", resolveModel("character-c")!]]) {
     const rigId = CORE_MODELS[id], source = library.get(rigId) ?? library.get(modelId); if (!source) continue;
-    const avatar = library.get(rigId) ? new RiggedAvatar(source) : new AssetAvatar(source);
+    const avatar = library.get(rigId) ? new RiggedAvatar(source, 17.5, 4.4, true) : new AssetAvatar(source);
     avatar.assignId(id); scene.add(avatar.group); avatars.set(id, avatar); ids.add(id); modelIds.set(id, library.get(rigId) ? rigId : modelId);
   }
   const remove = (id: string) => {
@@ -118,7 +118,7 @@ export function createModelActors(scene: THREE.Scene, library: AssetLibrary) {
       if (!resident || ids.has(selected)) return;
       const modelId = residentModel(resident.roleId), source = library.get(modelId);
       if (!source) { if (!library.failures.has(modelId)) void library.load(modelId).catch(() => {}); return; }
-      const avatar = new RiggedAvatar(source); avatar.assignId(selected); scene.add(avatar.group);
+      const avatar = new RiggedAvatar(source, 17.5, 4.4, modelId.startsWith("gobkit-human002/")); avatar.assignId(selected); scene.add(avatar.group);
       avatars.set(selected, avatar); ids.add(selected); modelIds.set(selected, modelId);
     },
     draw(world: World, actors: Actor[], social: Map<string, SocialPose>, headings: Map<string, number>, seconds: number) {

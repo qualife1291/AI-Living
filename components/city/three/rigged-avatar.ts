@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import {clone} from 'three/addons/utils/SkeletonUtils.js';
 import type {GLTF} from 'three/addons/loaders/GLTFLoader.js';
+import {dailyHumanGeometry} from './daily-rig-geometry.ts';
 
 type Colors = {shirt:string;trousers:string;skin:string};
 const clipAliases:Record<string,string[]> = {
@@ -24,8 +25,9 @@ export class RiggedAvatar {
  private attachments=new Map<string,{mesh:THREE.SkinnedMesh;indices:number[]}[]>();
  private colors={shirt:new THREE.Color('white'),trousers:new THREE.Color('white')};
  private wardrobeEnabled={value:0};
- constructor(source:GLTF,height=17.5,radius=4.4) {
+ constructor(source:GLTF,height=17.5,radius=4.4,dailyHuman=false) {
   this.model=clone(source.scene);this.offset.add(this.model);this.group.add(this.offset);
+  this.model.traverse(o=>{const mesh=o as THREE.Mesh;if(mesh.isMesh)mesh.geometry=dailyHuman?dailyHumanGeometry(mesh.geometry):mesh.geometry.clone();});
   const bones:THREE.Bone[]=[];
   this.model.traverse(object=>{if((object as THREE.Bone).isBone)bones.push(object as THREE.Bone);});
   const roots=new Set(bones.filter(b=>!(b.parent as THREE.Bone)?.isBone).map(b=>b.name));
@@ -50,7 +52,6 @@ export class RiggedAvatar {
   this.model.traverse(object=>{
    const mesh=object as THREE.SkinnedMesh;if(!mesh.isMesh)return;
    // Per-instance attributes/materials; source textures and animation tracks stay immutable.
-   mesh.geometry=mesh.geometry.clone();
    const original=(Array.isArray(mesh.material)?mesh.material[0]:mesh.material) as THREE.MeshStandardMaterial;
    const material=new THREE.MeshPhongMaterial({map:original.map,color:original.color,side:original.side,shininess:12,alphaTest:original.alphaTest});
    mesh.material=material;mesh.castShadow=true;mesh.receiveShadow=true;mesh.frustumCulled=false;
