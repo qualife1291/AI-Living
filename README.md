@@ -40,7 +40,7 @@ Dự án mô phỏng một thành phố 3D lấy bối cảnh TP.HCM (có chế 
 
 ## 2. Chạy ở môi trường phát triển
 
-Yêu cầu: **Node.js `>=22.13.0`** (khuyến nghị Node 22.18+ hoặc Node 24+ để chạy trực tiếp các kiểm thử `.mjs` nhập module `.ts`, đã xác minh cài sạch trên Node 22.22.2). Trình quản lý gói được pin trong `package.json`: **pnpm `11.25.0`**.
+Yêu cầu: **Node.js `>=22.18.0`** (khuyến nghị Node 22.18+ hoặc Node 24+ để chạy trực tiếp các kiểm thử `.mjs` nhập module `.ts`, đã xác minh cài sạch trên Node 22.22.2). Trình quản lý gói được pin trong `package.json`: **pnpm `11.25.0`**.
 
 ```bash
 # Nếu công cụ giải nén của bạn ẩn dotfile, khôi phục từ bản dự phòng:

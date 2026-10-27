@@ -1,8 +1,8 @@
 # Xóm AI — Báo cáo review tổng quát, đánh giá công nghệ và trạng thái khắc phục
 
 > Ngày review gốc: 24/10/2026 · Cập nhật trạng thái khắc phục mã nguồn & tài liệu: 24/10/2026
-> Phần 2 (thiết kế mở rộng hoàn chỉnh §0–§8): xem [docs/DESIGN_PROPOSALS.md](DESIGN_PROPOSALS.md)
-> Bộ tổng hợp bối cảnh & AI tự training: xem [docs/AI_TRAINING_AND_CONTEXTS.md](AI_TRAINING_AND_CONTEXTS.md)
+> Phần 2 (thiết kế mở rộng hoàn chỉnh §0–§8): xem [docs/DESIGN_PROPOSALS.md](docs/DESIGN_PROPOSALS.md)
+> Bộ tổng hợp bối cảnh & AI tự training: xem [docs/AI_TRAINING_AND_CONTEXTS.md](docs/AI_TRAINING_AND_CONTEXTS.md)
 
 ---
 

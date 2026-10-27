@@ -1,3 +1,7 @@
+# Đã có code Gemini trên main
+- User vừa push origin/main a5b7c5a ([Feat] Gen new3D), fetch thành công. Không còn phụ thuộc ZIP>32MiB. Cần merge bảo toàn WIP/localQA, đọc docs/FIXES_PHASE_A.md và PHASE_B_ACTIONS.md, GRAPHICS_3D_PACK.md; migration0006/logging/actionPlanB/colormaps/renderreferences mới. Chưa deploy12; backup94 vẫngitignored; production11.
+- WIP local thêm abort/dispose Studio, playback theo elapsed thật, Node min22.18/CIlintbuild, sửa2linkroot. Chưa test trênmain mới. Cần main-merge, audit/testbuglogs, actualbrowser/render/perf; không dùng generatedscreenshots làmQA. Originmain mớiđã thayảnhdocs/screenshots bằngGemini: phải phânbiệtgiữdesignreferences vàảnhthật.
+
 # Yêu cầu mới: review ZIP/main/Gemini
 - User đã merge work→main, gửi AI-Living.zip và yêu cầu review stack/cấu trúc/log bug, đối chiếu main/push. download_file trả vượt giới hạn32MiB, chưa đọc được ZIP. Đã hỏi async đường dẫn nhánh/commit Gemini/logs. origin/main=e8596e2 merge PR#1 từ9025905, tree chưa có thay đổi Gemini riêng. Không tuyên bố đã đọc ZIP mới.
 - Tạm chưa deploy12 cho tới khi đối chiếu nguồn mới; prod vẫn11. Tiếp phần không phụ thuộc ZIP: audit main, regression, vòng ảnh sau fix heading, checkpoint tất cả và tích hợp main không ghi đè thay đổi người dùng.
