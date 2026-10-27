@@ -81,5 +81,22 @@ try{
  assert.equal((await petPost({pet:'cun',owner:null,revision:fresh.revision})).status,200);
  assert(!('cun' in JSON.parse((await db.prepare("SELECT data FROM worlds WHERE id='home'").first()).data).living.petOwners),'Unassign is persisted explicitly');
  console.log('PASS pet ownership guard, schema, stream limit, origin, persisted assignment, unassignment, CAS race and history preservation');
+ // Legacy snapshots receive additive home assignments on a real catalog save.
+ const legacyRow=await db.prepare("SELECT revision,data FROM worlds WHERE id='home'").first();
+ const legacyWorld=JSON.parse(legacyRow.data);
+ for(const r of legacyWorld.living.residents)delete r.home;
+ await db.prepare("UPDATE worlds SET data=? WHERE id='home'").bind(JSON.stringify(legacyWorld)).run();
+ const saveHomes=(revision)=>mf.dispatchFetch('http://localhost/api/living/catalog',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({revision,catalog:legacyWorld.living.catalog})});
+ assert.equal((await saveHomes(legacyRow.revision)).status,200);
+ const homeRow=await db.prepare("SELECT revision,data FROM worlds WHERE id='home'").first(),homeWorld=JSON.parse(homeRow.data);
+ assert.equal(homeWorld.living.residents.length,legacyWorld.living.residents.length);
+ assert(homeWorld.living.residents.every(r=>r.home?.householdId));
+ for(const r of homeWorld.living.residents){const {home,...original}=r;assert(home);assert.deepEqual(original,legacyWorld.living.residents.find(x=>x.id===r.id),'Home backfill preserves every legacy resident and memory');}
+ assert.deepEqual(homeWorld.people,legacyWorld.people);assert.deepEqual(homeWorld.living.petOwners,legacyWorld.living.petOwners);
+ assert.equal((await saveHomes(legacyRow.revision)).status,409);
+ assert.equal((await saveHomes(homeRow.revision)).status,200);
+ const repeated=JSON.parse((await db.prepare("SELECT data FROM worlds WHERE id='home'").first()).data);
+ assert.deepEqual(repeated.living.residents,homeWorld.living.residents,'Repeated save does not move assigned homes');
+ console.log('PASS legacy household backfill persisted through catalog CAS, repeatability and complete history preservation');
  console.log(JSON.stringify({suite:'local-diagnostics-http',ownerReadGuard:true,ownerWriteGuard:true,streamByteLimit:true,schema:true,origin:true,ack:true,jsonlReadback:true,rateLimit:true,retention:true,pulsePersistence:true,pulseRetry:true,pulsePause:true,productionAccess:false}));
 }finally{await mf.dispose();}
