@@ -327,6 +327,14 @@ test('director finishes all six replies despite polling, input reordering and a 
   assert.ok(report.snapshots.some(({ t, frame }) => t > 15 && frame.exchanges.some(e => e.a === 'an')), 'Sequence survives the normal 15-second refresh boundary');
 });
 
+test('director never skips a reply when render frames arrive several seconds late', () => {
+  const director = new SocialDirector();
+  const garden = spaceActors(world, ['an', 'binh'].map(id => ({ ...stationary(world, id, 'Vườn nhỏ'), kind: 'garden' })));
+  const report = collectDirector(director, world, garden, 31, [], noon, 4.7);
+  const first = report.lines.filter(line => line.exchange.a === 'an').slice(0, 6);
+  assert.deepEqual(first.map(line => Number(line.exchange.speech.key.match(/-(\d+)$/)[1])), [0,1,2,3,4,5]);
+});
+
 test('director starts from the opening when a new pair arrives, with a complete four-line exchange', () => {
   const director = new SocialDirector(), spaced = spaceActors(world, pair);
   assert.equal(director.frame(world, [{ ...spaced[0], walking: true }, spaced[1]], [], noon, null, true).exchanges.length, 0);

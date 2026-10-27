@@ -100,6 +100,12 @@ for(const mesh of animalScene.children) {
   }
  }
 }
+const fineTriangles=scene.children.reduce((n,m)=>n+(m.geometry.index?.count??m.geometry.attributes.position.count)/3*m.count,0);
+const identities=scene.children.map(m=>[...m.userData.ids]);people.setQuality('balanced');
+const lightTriangles=scene.children.reduce((n,m)=>n+(m.geometry.index?.count??m.geometry.attributes.position.count)/3*m.count,0);
+assert.ok(lightTriangles<fineTriangles*.6,'Balanced crowd lowers vertex/shadow work without dropping actors');
+assert.deepEqual(scene.children.map(m=>m.userData.ids),identities,'Quality swaps preserve actor picking');
+people.setQuality('sharp');assert.equal(scene.children.reduce((n,m)=>n+(m.geometry.index?.count??m.geometry.attributes.position.count)/3*m.count,0),fineTriangles);
 const stillAnimals=animalScene.children.map(mesh=>[...mesh.instanceMatrix.array]);
 fauna.draw(flyingPets,60.1,.1,true);assert.deepEqual(animalScene.children.map(mesh=>[...mesh.instanceMatrix.array]),stillAnimals,'Animal body/tail/wings freeze with simulation pause');
 assert.ok(animalScene.children.every(mesh=>mesh.instanceMatrix.array.every(Number.isFinite)));

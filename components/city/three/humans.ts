@@ -21,7 +21,7 @@ function unitBounds<T extends BufferGeometry>(geometry: T): T {
 }
 
 /** Allocate once per city; share between all people and dispose with the scene. */
-export function createHumanGeometry(): {
+export function createHumanGeometry(sharp = true): {
   box: BufferGeometry;
   round: BufferGeometry;
   head: BufferGeometry;
@@ -31,11 +31,11 @@ export function createHumanGeometry(): {
 } {
   return {
     box: new BoxGeometry(1, 1, 1),
-    round: unitBounds(new RoundedBoxGeometry(1, 1, 1, 2, 0.16)),
-    head: unitBounds(new SphereGeometry(0.5, 14, 10)),
-    hair: unitBounds(new SphereGeometry(0.5, 14, 8, 0, Math.PI * 2, 0, Math.PI / 2)),
-    limb: unitBounds(new CapsuleGeometry(0.25, 0.5, 3, 10)),
-    shoe: unitBounds(new RoundedBoxGeometry(1, 1, 1, 2, 0.2)),
+    round: unitBounds(new RoundedBoxGeometry(1, 1, 1, sharp ? 2 : 1, 0.16)),
+    head: unitBounds(new SphereGeometry(0.5, sharp ? 14 : 12, sharp ? 10 : 8)),
+    hair: unitBounds(new SphereGeometry(0.5, sharp ? 14 : 12, sharp ? 8 : 6, 0, Math.PI * 2, 0, Math.PI / 2)),
+    limb: unitBounds(new CapsuleGeometry(0.25, 0.5, sharp ? 3 : 1, sharp ? 10 : 6)),
+    shoe: unitBounds(new RoundedBoxGeometry(1, 1, 1, sharp ? 2 : 1, 0.2)),
   };
 }
 

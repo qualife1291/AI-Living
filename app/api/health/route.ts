@@ -35,6 +35,7 @@ async function health() {
     await database().prepare("SELECT id FROM agent_experiences LIMIT 1").all();
     await database().prepare("SELECT id FROM site_metrics LIMIT 1").all();
     await database().prepare("SELECT id FROM visitor_exchanges LIMIT 1").all();
+    await database().prepare("SELECT id FROM client_logs LIMIT 1").all();
     lastTick = await database()
       .prepare(
         "SELECT id, started_at, finished_at, status, model, event_id, neurons_est FROM tick_runs ORDER BY started_at DESC LIMIT 1",

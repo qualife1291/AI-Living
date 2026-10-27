@@ -3,7 +3,7 @@ import { createPracticeBicycle } from "./activity-props.ts";
 import * as THREE from "three";
 import { createHumanGeometry, HumanMotion } from "./humans.ts";
 import { defaultAppearance, themes } from "../../../lib/city/appearance.ts";
-import { HUMAN_SCALE } from "../../../lib/city/scale.ts";
+import { HUMAN_SCALE, type Quality } from "../../../lib/city/scale.ts";
 import { groundElevation } from "../../../lib/city/ground.ts";
 import type { Actor } from "../../../lib/life.ts";
 import type { World } from "../../../lib/world";
@@ -11,7 +11,7 @@ import type { SocialPose } from "../../../lib/living/social.ts";
 
 /** Six geometry batches for the whole cast, including joints, faces and props. */
 export function createPeople(scene: THREE.Scene, capacity: number) {
-  const geometry = createHumanGeometry(), motion = new HumanMotion();
+  const geometry = createHumanGeometry(), coarse = createHumanGeometry(false), motion = new HumanMotion();
   type Shape = keyof typeof geometry;
   const budget: Record<Shape, number> = { box: 42, round: 18, head: 5, hair: 1, limb: 14, shoe: 2 };
   const material = new THREE.MeshPhongMaterial({ shininess: 22, specular: "#7c7668" });
@@ -44,6 +44,10 @@ export function createPeople(scene: THREE.Scene, capacity: number) {
   }
   return {
     geometry,
+    setQuality(quality: Quality = "balanced") {
+      for (const key of Object.keys(meshes) as Shape[]) meshes[key].geometry = quality === "sharp" ? geometry[key] : coarse[key];
+    },
+    collectGeometry(target: Set<THREE.BufferGeometry>) { for (const g of [...Object.values(geometry), ...Object.values(coarse)]) target.add(g); },
     draw(world: World, actors: Actor[], poses: Map<string, SocialPose>, seconds: number, dt: number, camera: THREE.Camera, selected: string, skip = new Set<string>()) {
       for (const mesh of Object.values(meshes)) { mesh.count = 0; mesh.userData.ids.length = 0; }
       for(const [id,bike] of bicycles) bike.visible = actors.some(a => a.id===id && a.kind==="cycle" && !a.walking);

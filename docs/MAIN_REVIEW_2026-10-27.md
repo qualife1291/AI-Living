@@ -32,4 +32,4 @@ Tag theo cặp/đổi vai, xe đạp di chuyển có collision toàn thân, thú
 
 ## Bản vá dependency
 
-Audit production ban đầu báo 23 advisory (3 critical, 7 high, 9 moderate, 4 low). Đây là kết quả dependency graph, không phải khẳng định mọi advisory đều có đường khai thác trên Worker đang chạy. Đang cập nhật bản vá tương thích cho Next/eslint config, Zod và dependency chuyển tiếp; giữ lockfile, minimum release age và kiểm tra build/API sau cập nhật. Kết quả audit cuối được bổ sung sau khi cài xong.
+Audit production ban đầu báo 23 advisory (3 critical, 7 high, 9 moderate, 4 low). Đây là kết quả dependency graph, không phải khẳng định mọi advisory đều có đường khai thác trên Worker đang chạy. Đã cài Next/eslint-config-next 16.4.1 và Zod 4.6.6, pin các bản vá Babel/browserslist/baseline/source-map-js/fast-uri/sharp. Giữ minimum release age, trustLockfile và strict build policy. Audit production sau cập nhật: **0 advisory** trên 247 dependency/optional dependency; kết quả này có thời điểm, không phải cam kết mọi lỗi bảo mật đã biến mất. TypeScript/lint và 29 suite đã đạt sau cập nhật. Drizzle generate trên bản sao migration trả “No schema changes”.

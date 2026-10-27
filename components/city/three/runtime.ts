@@ -554,6 +554,7 @@ export function createCity(
   host.dataset.fountainStreams = String(ambience.stats.fountainStreams);
   host.dataset.cloudLobes = String(ambience.stats.cloudLobes);
   const capacity = 72, people = createPeople(scene, capacity), boxGeo = people.geometry.box;
+  people.setQuality(input().quality);
   const modelActors = createModelActors(scene, assets);
   host.dataset.assetActors = String(modelActors.ids.size);
   const trafficBody = new THREE.InstancedMesh(
@@ -752,6 +753,7 @@ export function createCity(
       renderer.setPixelRatio(pixelRatio(activeQuality, devicePixelRatio));
       renderer.setSize(host.clientWidth, host.clientHeight);
       configureShadows();
+      people.setQuality(activeQuality);
     }
     lastTime = now; // simulationTime/worldTime apply the persisted pause anchor.
     const seconds = simulationTime(world, lastTime) / 1000;
@@ -988,6 +990,7 @@ export function createCity(
           }
       });
       assets.collectAndClose({ geometries, materials, textures });
+      people.collectGeometry(geometries);
       geometries.forEach((g) => g.dispose());
       materials.forEach((m) => m.dispose());
       textures.forEach((t) => t.dispose());

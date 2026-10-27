@@ -7,6 +7,7 @@ for(let i=0;i<200;i++) for(const line of g.lines(i%2?a:b,i%2?b:a,i%3?'Chợ nh�
   assert(!history.includes(line.text),'No exact repeats within 50 lines of either pair order');
   history.push(line.text);history=history.slice(-50);
 }
+const exchange=g.lines(a,b,'Thư viện',201,6);assert(exchange.every(line=>line.text.includes('đọc truyện')),'Every reply must stay on the selected topic');
 globalThis.window={};
 logClient('route_miss'); logClient('route_miss'); assert.equal(clientLogs().length,1);
 for(let i=0;i<700;i++)logClient('actor_stuck',{actor:String(i)});

@@ -11,3 +11,7 @@
 - Shadowbudget eco0/balanced512mobile1024desktop/sharp2048, shadowfrustumtheonhânvật36m thay190m, LOD8unit; render-errorfallback2D cótelemetry. Cầnbrowser/perf. pnpm audit prod đã cóadvisory, cầnphânloạivàpinpatchtrướcrelease. Check/lint đangrunwork/main-*-final.log. Prod11 chưađổi.
 
 - Dependency patch đã cài bằngpnpm policy nguyênvẹn: Next/eslint-config-next16.4.1, Zod4.6.6; compatibleoverrides Babel7.29.6/browserlist4.28.7/baseline2.11/source-map-js1.2.2/fast-uri3.1.9/sharp.35.5. Chưa xác minh app sauZodmajor; tiếpcheck/lint/full29suite/build/API/browser/audit. Reviewdocdocs/MAIN_REVIEW_2026-10-27.md cófindingsvàbacklog trungthực; finalmetriccònchờ.
+
+# Browser regression bắt thêm thoại/FPS
+- StudioGemini8cases×5shot đạt; pauseidle khôngvẽGPU. API mớiD1/migrationindex/pulse ownerguard/limits/retry đều đạt. Nhưngsocialbrowser chỉ5/6 câu; motion12frames9s/442445triangles/67calls/0collision. ĐãsửaSocialDirector giữlineindex/lineStartedAt, mỗi lateframechỉtiếpmộtlượt; thêmtest4.7sframe thấyđủ6(29socialcaseđạt). Grammar giữtopicchung, test800câu/50history+topicđạt.
+- GiữGeminiqualitycao cho sharp, crowd balanced/eco geometrynhẹ lại,6batch/ID khôngđổi; test switchquality/finereturn/vertexbudget. Cầnbuildvàretestbrowser. Healthmới checkclientlogs để0006thiếu khôngbáoready. NativeDBoverviewprod12tables chưaclientlogs xácnhận0006chưaápdụng; prod11.
