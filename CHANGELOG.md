@@ -112,3 +112,8 @@ Thêm9action kinds/scenarios, mapping clip/procedural/props và bike tập; chu�
 ## 27/10/2026 — sửa hàng đợi telemetry trên work
 - Chia batch diagnostics theo kích thước JSON UTF-8 tối đa16KiB, thay vì chỉ đếm32log. Tránh HTTP413 lặp vô hạn với log tiếng Việt/ký tự đa byte.
 - Chuẩn hóa field theo giới hạn endpoint, giữ log chưaACK và chỉ xóa phần batch đã đượcACK. Không đổi migration/production.
+
+## 27/10/2026 — đuổi bắt theo cặp trong 3D
+- Hai nhân vật cùng chọn tag ở Công viên/Sân thể thao có thể đuổi nhau và đổi vai khi đến gần, giữ tránh vật cản/khoảng cách cá nhân; hỗ trợ pause, polling và hủy khi đổi kế hoạch.
+- Người chưa có cặp chờ thay vì chạy tại chỗ. Giữ hoạt động NPC đã chọn, chỉ đổi micro-activity khi idle social/play.
+- Vai thuộc phiên 3D, chưa đồng bộ nhiều viewer/2D hoặc ghi vào ký ức/phần thưởng. Chưa deploy.

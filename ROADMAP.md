@@ -68,3 +68,6 @@ Nguồn đã hoàn thiện12cảnh/56lượt doagentbiênkịch, crowd24h, spaci
 
 ## Chi tiết đồ họa — bản 11, 27/10/2026
 Đã chốt source và localQA cho rig có khớp, props gắn tay,66cụm đồ vật,6cảnh mới, cây/mây/nước và model mèo/chó/chim phối hợp groundnav. XemVISUAL_DETAIL_REVIEW vàreleaseledger. Còn hardwareGPU/soak, IK nội thất/thang máy/serve-clean/inventory và mô hìnhAI chất lượng hơn.
+
+## Phase B tiếp nối — đuổi bắt theo cặp (source work)
+Đã thêm cơ chế ghép hai người cùng chọn tag, đổi vai khi đến gần trên ground an toàn, pause/hủy/polling trong renderer 3D. Đây là presentation theo luật, chưa đồng bộ nhiều người xem/2D hoặc ghi reward. Xem docs/PAIRED_TAG.md. Cycle physics, thú theo chủ và C/D vẫn chưa hoàn tất; chưa deploy bản này.
