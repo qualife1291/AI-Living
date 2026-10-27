@@ -23,6 +23,7 @@ if (process.argv.includes("--motion")) {
 }
 const detail = process.argv.find(arg => arg.startsWith("--detail="))?.split("=")[1];
 const detailPlaces = { read: ["Thư viện", "read", "Đọc và ghi lại một trang sách"], garden: ["Vườn nhỏ", "garden", "Chăm từng chậu rau trong vườn"], eat: ["Quán cà phê", "eat", "Nghỉ tay với tách nước"], market: ["Chợ nhỏ", "social", "Cùng xem các món cho bữa cơm"] };
+for (const kind of ["drink", "run", "jump", "tag", "cycle", "exercise", "walk-pet", "shop", "study"]) detailPlaces[kind] = [kind === "shop" ? "Chợ nhỏ" : kind === "study" ? "Thư viện" : "Công viên", kind, `Kiểm thử hoạt động ${kind}`];
 if (detailPlaces[detail]) {
   setup(43200000);
   const [location, kind, activity] = detailPlaces[detail];

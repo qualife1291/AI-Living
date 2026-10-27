@@ -15,3 +15,5 @@
 # Browser regression bắt thêm thoại/FPS
 - StudioGemini8cases×5shot đạt; pauseidle khôngvẽGPU. API mớiD1/migrationindex/pulse ownerguard/limits/retry đều đạt. Nhưngsocialbrowser chỉ5/6 câu; motion12frames9s/442445triangles/67calls/0collision. ĐãsửaSocialDirector giữlineindex/lineStartedAt, mỗi lateframechỉtiếpmộtlượt; thêmtest4.7sframe thấyđủ6(29socialcaseđạt). Grammar giữtopicchung, test800câu/50history+topicđạt.
 - GiữGeminiqualitycao cho sharp, crowd balanced/eco geometrynhẹ lại,6batch/ID khôngđổi; test switchquality/finereturn/vertexbudget. Cầnbuildvàretestbrowser. Healthmới checkclientlogs để0006thiếu khôngbáoready. NativeDBoverviewprod12tables chưaclientlogs xácnhận0006chưaápdụng; prod11.
+
+- Saufixcursor, browserđãthấyđủ6 nhưngQAharnessso sánhcurrentbubbleđãlàB vớiline[1]B bịfalsefail; sửa so sánhfirstObservedline[0]. ThêmackHUDsaurender đểGPUstartup3s khôngăn thờigianđọc. Socialtests30caseđạt. Cầnrebuild/rerunfinalsocial/motion/actions, khôngcoi trướcbuildQA làfinal. Nguồncurrentecfdd4c+WIP.

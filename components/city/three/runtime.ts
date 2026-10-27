@@ -903,6 +903,7 @@ export function createCity(
           Math.abs(p.x) < 0.85 &&
           Math.abs(p.y) < 0.8,
       });
+      if (speech && speaker && p.z > -1 && p.z < 1 && Math.abs(p.x) < .85 && Math.abs(p.y) < .8) socialDirector.presented(speech.key, Date.now() + (state.clockOffsetMs ?? 0));
     }
     host.dataset.ready = "true";
     host.dataset.paused = String(world.paused);

@@ -40,13 +40,13 @@ with sync_playwright() as p:
    assert len(lines)==6,lines
    speakers=[line.split('→')[0].strip() for line in lines]
    assert all(speakers[i]!=speakers[i-1] for i in range(1,len(speakers))),speakers
-   after=lines[1];assert before.split('→')[0]!=after.split('→')[0],(before,after)
+   after=lines[1];assert lines[0].split('→')[0]!=after.split('→')[0],(lines[0],after)
    assert int(host.get_attribute('data-draw-calls'))<90
    assert host.get_attribute('data-human-batches')=='6'
    assert host.get_attribute('data-street-props')=='66'
    assert page.evaluate('document.documentElement.scrollWidth<=window.innerWidth')
    assert not errors,errors
-   report.append({'viewport':name,'renderer':'Chromium SwiftShader','fixture':'synthetic-workshop-no-world-writes','first':before,'reply':after,'fullDialogue':lines,'pollingCoveredSeconds':24,'stats':host.evaluate('(e)=>({...e.dataset})')})
+   report.append({'viewport':name,'renderer':'Chromium SwiftShader','fixture':'synthetic-workshop-no-world-writes','first':lines[0],'reply':after,'fullDialogue':lines,'pollingCoveredSeconds':24,'stats':host.evaluate('(e)=>({...e.dataset})')})
    page.get_by_role('button',name='Cư dân',exact=True).click()
    page.locator('.people-grid button').filter(has_text='Bình').click()
    page.wait_for_function('document.querySelector(".three-canvas")?.dataset.selected==="binh"')

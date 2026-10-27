@@ -98,7 +98,7 @@ export function socialFrame(world: World, actors: Actor[], events: EpisodeEvent[
 }
 
 type EncounterLine = { speaker: string; text: string; gesture?: string };
-type Encounter = { key: string; speechPrefix: string; a: string; b: string; location: string; title: string; source: "script" | "ai"; lines: EncounterLine[]; lineIndex: number; lineStartedAt: number; cooldown: number };
+type Encounter = { key: string; speechPrefix: string; a: string; b: string; location: string; title: string; source: "script" | "ai"; lines: EncounterLine[]; lineIndex: number; lineStartedAt: number; presentedIndex: number; cooldown: number };
 type Frame = ReturnType<typeof socialFrame>;
 
 /** Viewer-local presentation state. Keep this instance across world polling.
@@ -115,6 +115,14 @@ export class SocialDirector {
   private previousSim: number | undefined;
   private previouslyPaused = false;
   private born: string | undefined;
+
+  /** Start reading time after the renderer has delivered this line to the HUD. */
+  presented(key: string, now: number) {
+    for (const e of this.encounters.values()) if (`${e.speechPrefix}-${e.lineIndex}` === key && e.presentedIndex !== e.lineIndex) {
+      e.presentedIndex = e.lineIndex;
+      e.lineStartedAt = Math.max(e.lineStartedAt, this.elapsed + Math.max(0, now - (this.previousNow ?? now)) / 1000);
+    }
+  }
 
   reset() {
     this.encounters.clear(); this.cooldowns.clear(); this.seen.clear(); this.grammar.reset();
@@ -156,7 +164,7 @@ export class SocialDirector {
     const locked = (id: string) => [...this.encounters.values()].some(e => e.a === id || e.b === id);
     const start = (key: string, speechPrefix: string, a: Actor, b: Actor, title: string, source: Encounter["source"], lines: EncounterLine[]) => {
       const hash = hashSeed(key);
-      this.encounters.set(key, { key, speechPrefix, a: a.id, b: b.id, location: a.location, title, source, lines, lineIndex: 0, lineStartedAt: this.elapsed,
+      this.encounters.set(key, { key, speechPrefix, a: a.id, b: b.id, location: a.location, title, source, lines, lineIndex: 0, lineStartedAt: this.elapsed, presentedIndex: -1,
         cooldown: SOCIAL_TIMING.minimumCooldownSeconds + hash % 26 });
     };
     const startStored = (key: string, prefix: string, title: string, source: Encounter["source"], lines: EncounterLine[], location?: string) => {

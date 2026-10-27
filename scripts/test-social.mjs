@@ -335,6 +335,14 @@ test('director never skips a reply when render frames arrive several seconds lat
   assert.deepEqual(first.map(line => Number(line.exchange.speech.key.match(/-(\d+)$/)[1])), [0,1,2,3,4,5]);
 });
 
+test('GPU startup time does not consume the first visible sentence', () => {
+  const director = new SocialDirector(), spaced = spaceActors(world, pair);
+  const first = director.frame(world, spaced, [], noon, null, true).exchanges[0].speech;
+  director.presented(first.key, noon+3000);
+  assert.equal(director.frame(world, spaced, [], noon+4000, null, true).exchanges[0].speech.key, first.key);
+  assert.notEqual(director.frame(world, spaced, [], noon+8000, null, true).exchanges[0].speech.key, first.key);
+});
+
 test('director starts from the opening when a new pair arrives, with a complete four-line exchange', () => {
   const director = new SocialDirector(), spaced = spaceActors(world, pair);
   assert.equal(director.frame(world, [{ ...spaced[0], walking: true }, spaced[1]], [], noon, null, true).exchanges.length, 0);

@@ -15,7 +15,7 @@ Người tạo/phân phối: [Kenney](https://kenney.nl). Giấy phép: [CC0 1.0
 | `trains` | `kenney_train-kit.zip` — Train Kit 1.1 | Tàu điện thành phố, tram, đoạn ray thẳng |
 | `watercraft` | `kenney_watercraft-pack.zip` — Watercraft Kit 2.1 | Thuyền đánh cá nhỏ, thuyền chèo, nhà thuyền, phao |
 
-Tổng: **41 GLB, 103 file, 2.949.732 byte**, gồm texture, preview gốc, giấy phép và catalog nhỏ cho trình duyệt. Toàn bộ ZIP không được đưa vào Git hoặc gói production. Số byte trên là bộ file được nhập, không phải số byte bắt buộc tải khi mở trang; renderer chọn model theo nhu cầu.
+Tổng: **41 GLB, 103 file, 2.954.655 byte**, gồm texture, preview tham chiếu, giấy phép và catalog nhỏ cho trình duyệt. Toàn bộ ZIP không được đưa vào Git hoặc gói production. Số byte trên là bộ file được nhập, không phải số byte bắt buộc tải khi mở trang; renderer chọn model theo nhu cầu.
 
 ## Catalog và cách nhập lại
 
@@ -49,7 +49,7 @@ Material gốc có texture ngoài; character còn khai báo `KHR_materials_unlit
 
 - Gói Train chứa ray và tàu; không có model nhà ga trong ZIP đã kiểm tra. Model tàu nhập sẵn không có nghĩa là tuyến tàu chạy đã hợp lệ. Chỉ đặt tàu/ray tĩnh hoặc triển khai tuyến và kiểm tra hình học trước khi cho chạy.
 - Mỗi nhà/xe/đồ vật phải được fit trong footprint đã dành chỗ, đặt đáy đúng nền và kiểm tra lại khoảng trống đường đi. Số polygon nhỏ không thay thế kiểm thử collision hoặc frame time.
-- Các model có preview gốc đi kèm để chọn kiểu. Preview Kenney không phải ảnh chụp ứng dụng và không được dùng làm bằng chứng QA production.
+- Các model có preview tham chiếu đi kèm để chọn kiểu. Preview Kenney không phải ảnh chụp ứng dụng và không được dùng làm bằng chứng QA production.
 - API miễn phí bên ngoài do người dùng gợi ý cần kiểm tra license, availability và budget riêng trước khi nhập. Catalog này chỉ chứng thực các file Kenney đã được nhập và kiểm tra; nó không tự chạy mã từ API/manifest hoặc tuyên bố đã fine-tune một model AI.
 
 ## Khảo sát API miễn phí ngày 27/10/2026
@@ -69,3 +69,5 @@ Bản này dùng model Kenney tự phục vụ để tránh phụ thuộc availa
 `npm run assets:maintain` quét nhu cầu semantic của cast/cảnh/props, ghép asset CC0 đã duyệt hoặc công thức procedural đã thực hiện, rồi ghi `data/assets/runtime-bindings.json` trong workspace. Model đã duyệt có tên khớp nhu cầu có thể tự được bind. Nhu cầu chưa có model/công thức và license chưa biết phải hiện `missing` và làm kiểm tra thất bại; không tạo hình hộp giả rồi báo đã hỗ trợ.
 
 CI có quyền `contents:read`, xác minh bindings, hash/texture/license/budget và test logic. Nó không tự sửa/push Git hoặc deploy. Automatic approval đã từ chối bản workflow cấp quyền ghi/autopush trước khi push; thiết kế cuối đã loại bỏ khả năng đó. Công cụ local giúp agent phát hiện phần thiếu, chuẩn bị code/model và kiểm thử; đây không phải tự huấn luyện weights hay một agent production hoạt động liên tục. Chưa có cơ chế tự tải và thực thi code từ bên ngoài.
+
+Sau commit Gemini `a5b7c5a`, PNG texture/preview đã được chủ dự án tùy biến; GLB geometry giữ nguyên. Số byte trên phản ánh catalog hiện hành sau tùy biến. Preview asset và ảnh AI ở `public/renders-3d` không phải ảnh QA; ảnh chụp trình duyệt thật được giữ trong `docs/screenshots`.

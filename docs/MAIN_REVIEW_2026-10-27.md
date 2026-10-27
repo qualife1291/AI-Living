@@ -14,6 +14,8 @@ Mốc đầu vào: `a5b7c5a` từ GitHub `main`, ngày 27/10/2026. Đã đọc c
 
 | Mức | Lỗi có bằng chứng trong code | Bản sửa |
 | --- | --- | --- |
+| P1 | Thoại có thể nhảy qua lượt khi render chậm; GPU compile cũng ăn mất thời gian đọc câu đầu | Cursor từng lượt, không nhảy qua câu; HUD xác nhận thời điểm bắt đầu hiển thị; test frame trễ 4,7s và startup GPU 3s |
+| P1 | Grammar câu trả lời đổi sang chủ đề khác trong cùng cảnh | Chọn một chủ đề cho cả trao đổi, giữ history 50 câu chống lặp |
 | P1 | `shop` yêu cầu `bag`, `simpleProp` có nhánh dựng túi nhưng whitelist không chứa `bag`, gây throw trong render | Thêm công thức/binding và chạy thực các hoạt động có đạo cụ |
 | P1 | Procedural rotation cộng thêm mỗi lần draw dù presentation time không đổi | Pose báo có cập nhật; chỉ cộng offset một lần trên pose mới; kiểm tra 30 lần timestamp giống nhau |
 | P1 | Actor biến mất nhưng đạo cụ/xe tập vẫn visible | Ẩn cả ba theo cùng vòng đời nhân vật |
@@ -22,7 +24,7 @@ Mốc đầu vào: `a5b7c5a` từ GitHub `main`, ngày 27/10/2026. Đã đọc c
 | P2 | Studio vẫn vẽ GPU liên tục khi đã pause và camera đứng yên | Chỉ vẽ khi timeline/camera/viewport đổi |
 | P2 | Delta playback bị cắt 100ms khiến cảnh chạy chậm hơn thời gian thực khi FPS thấp | Dùng elapsed thật, reset anchor khi đổi visibility |
 | P2 | Tải model xong sau unmount hoặc WebGL constructor lỗi có thể giữ tài nguyên | Abort kiểm tra sau preload, dispose thư viện, chặn cập nhật state sau unmount |
-| P2 | Mọi preset dùng shadow 2048 và vùng 190m, tăng tải trên điện thoại | Eco dùng bóng tiếp xúc; balanced 512 mobile/1024 desktop; sharp 2048; vùng shadow theo nhân vật 36m |
+| P2 | Mọi preset dùng shadow 2048 và vùng 190m, tăng tải trên điện thoại | Eco dùng bóng tiếp xúc; balanced 512 mobile/1024 desktop; sharp 2048; vùng shadow theo nhân vật 36m; crowd balanced/eco dùng ít vertex hơn và sharp giữ geometry chi tiết Gemini |
 | P2 | Lỗi render một frame làm vòng lặp hỏng, không kích hoạt fallback | Dừng vòng lỗi, ghi loại lỗi ngắn và chuyển 2D |
 | P2 | Ảnh AI thay vào đường dẫn được tài liệu cũ dùng làm bằng chứng browser QA | Giữ ảnh AI ở `public/renders-3d`; khôi phục ảnh chụp thật từ Git, chụp lại bản tích hợp |
 
