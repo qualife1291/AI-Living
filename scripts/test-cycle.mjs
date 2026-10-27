@@ -103,3 +103,11 @@ for(let i=1;i<=1400;i++){
 }
 assert(crossing[1]>475,'The protected crossing must eventually make progress');
 console.log('PASS full-bicycle cooperative crossing over 1400 frames with actual traffic');
+const commute=new WalkDirector();let arrivedOnBike=false,trip;
+for(let i=0;i<800;i++){
+ trip=commute.frame(world,[{...bike,kind:'read',transport:'bicycle',walking:i<10}],i*.05)[0];
+ if(i===20)assert(trip.bicycle,'Projection arrival must not remove a bicycle while ground movement is still underway');
+ if(trip.bicycle&&distance(trip.position,[-150,-700])<.1)arrivedOnBike=true;
+}
+assert(arrivedOnBike);assert(!trip.bicycle,'After actual arrival a non-cycle task dismounts');
+console.log('PASS bicycle transport commutes retain the bike until ground arrival, then dismount for the task');

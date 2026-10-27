@@ -139,9 +139,13 @@ export class WalkDirector {
       const offset: Point = core >= 0 ? [(core - 1) * 25, core * 7] : npcOffset(a.id);
       return { ...a, position: [end[0] + offset[0], end[1] + offset[1]] as Point, walking: false };
     })), ...companions.map(a => ({ ...a, position: a.path.at(-1) ?? a.position, walking: false }))];
-    const records = spaced.map((actor, i) => ({ actor, requested: nearestBodyPoint(games.get(actor.id)?.goal ?? petWalk.goals.get(actor.id) ?? destinations[i].position, actor.kind === "cycle" ? BICYCLE_RADIUS : WALK_RADIUS) })).sort((a, b) => a.actor.id.localeCompare(b.actor.id));
+    const wantsBicycle = (actor: Actor) => {
+      const walker = this.walkers.get(actor.id);
+      return actor.kind === "cycle" || actor.transport === "bicycle" && (actor.walking || !!walker && walker.radius === BICYCLE_RADIUS && distance(walker.position, walker.goal) > .1);
+    };
+    const desiredRadius = (actor: Actor) => wantsBicycle(actor) ? BICYCLE_RADIUS : WALK_RADIUS;
+    const records = spaced.map((actor, i) => ({ actor, requested: nearestBodyPoint(games.get(actor.id)?.goal ?? petWalk.goals.get(actor.id) ?? destinations[i].position, desiredRadius(actor)) })).sort((a, b) => a.actor.id.localeCompare(b.actor.id));
     const activeIds = new Set(records.map(record => record.actor.id));
-    const desiredRadius = (actor: Actor) => actor.kind === "cycle" ? BICYCLE_RADIUS : WALK_RADIUS;
     const reserved: { position: Point; radius: number }[] = [];
     const goals = new Map<string, Point>();
     // Preserve existing reservations before allocating any newcomer/changed goal.
@@ -172,7 +176,7 @@ export class WalkDirector {
           s.radius = radius; s.speed = 0; s.distance = 0; s.goal = goal; s.requested = requested; s.path = safeWalkPath(s.position, goal, radius); s.next = 1;
         }
         if (distance(requested, s.requested) > 1) {
-        s.requested = requested; s.goal = goal; s.path = safeWalkPath(s.position, goal, s.radius); s.next = 1; s.idle = 0; s.blocked = 0;
+          s.requested = requested; s.goal = goal; s.path = safeWalkPath(s.position, goal, s.radius); s.next = 1; s.idle = 0; s.blocked = 0;
         }
       }
     }
@@ -186,7 +190,7 @@ export class WalkDirector {
       if (s.next < s.path.length && !bodySegmentWalkable(s.position, s.path[s.next], s.radius) && s.replanIn <= 0) {
         s.path = safeWalkPath(s.position, s.goal, s.radius); s.next = 1; s.replanIn = .8;
       }
-      const mounted = a.kind === "cycle" && s.radius === BICYCLE_RADIUS;
+      const mounted = wantsBicycle(a) && s.radius === BICYCLE_RADIUS;
       const start = starts.get(a.id)!;
       const neighbors = records.filter(({ actor }) => actor.id !== a.id && distance(start, starts.get(actor.id)!) < s.radius + BICYCLE_RADIUS + 28 * 2 + 4);
       const target = s.path[s.next];

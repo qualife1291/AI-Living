@@ -10,7 +10,7 @@ export function createBicycle() {
   };
   for(const z of [-5.5,5.5]) {
     const wheel = new THREE.Group(); wheel.name = "bicycle-wheel";
-    wheel.rotation.y = Math.PI / 2; wheel.position.set(0,3,z);
+    wheel.rotation.y = Math.PI / 2; wheel.position.set(0,3.35,z);
     wheel.add(new THREE.Mesh(new THREE.TorusGeometry(BICYCLE_WHEEL_RADIUS,.35,6,16),tire));
     for (const angle of [0, Math.PI/3, Math.PI*2/3]) {
       const spoke = new THREE.Mesh(new THREE.CylinderGeometry(.08,.08,5.8,4),frame); spoke.rotation.z = angle; wheel.add(spoke);

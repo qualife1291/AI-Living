@@ -930,6 +930,7 @@ export function createCity(
     host.dataset.actors = String(actors.length);
     host.dataset.exchanges = String(exchanges.length);
     host.dataset.socialCast = JSON.stringify(actors.filter(a => socialPoses.get(a.id)?.gesture !== "idle" && socialPoses.has(a.id)).map(a => ({ id: a.id, position: a.position, ...socialPoses.get(a.id) })));
+    host.dataset.cyclists = JSON.stringify(actors.filter(a => a.bicycle).map(a => ({ id: a.id, position: a.position, walking: a.walking, ...a.bicycle })));
     host.dataset.tagCast = JSON.stringify(actors.filter(a => a.tagGame).map(a => ({ id: a.id, position: a.position, walking: a.walking, ...a.tagGame })));
     host.dataset.petWalks = JSON.stringify(groundAnimals.filter(a => a.petOwnerId).map(a => {
       const screen = new THREE.Vector3(a.position[0], 2, a.position[1]).project(camera);
