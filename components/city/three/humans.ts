@@ -81,7 +81,7 @@ export function humanPose(
   const angle = phase * Math.PI * 2;
   const riding = actor.walking && actor.transport && actor.transport !== "walk";
   const walk = actor.walking && !riding;
-  const exercising = ["run", "tag", "exercise"].includes(actor.kind) && !actor.walking;
+  const exercising = ["run", "exercise"].includes(actor.kind) && !actor.walking;
   const stridePhase = exercising ? time*9+angle : (gait?.phase ?? time * 7 + angle) * (["run", "tag"].includes(actor.kind) ? 1.4 : 1);
   const weight = exercising ? .7 : gait?.weight ?? (walk ? 1 : 0);
   const swing = Math.sin(stridePhase) * .48 * weight + Math.sin(time * 1.3 + angle) * .025 * (1 - weight);

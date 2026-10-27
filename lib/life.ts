@@ -259,6 +259,7 @@ export type Actor = {
   path: Point[];
   transport?: "walk" | "bicycle" | "motorbike" | "bus" | "metro";
   stationaryFor?: number;
+  tagGame?: import("./city/tag-game").TagRole;
 };
 
 type Transport = NonNullable<Actor["transport"]>;

@@ -75,7 +75,8 @@ export function resolveActorClip(actor: Actor, speaking = false): string {
   if (actor.walking && actor.transport && actor.transport !== "walk") return "drive";
   if (actor.walking) return ["run", "tag"].includes(actor.kind) || /run|sprint|chạy|vội/.test(act) ? "sprint" : "walk";
   if (actor.kind === "cycle") return "drive";
-  if (actor.kind === "run" || actor.kind === "tag") return "sprint";
+  if (actor.kind === "run") return "sprint";
+  if (actor.kind === "tag") return "idle"; // Waiting/yielding is not running in place.
   if (/jump|nhảy|cheer|cổ vũ/.test(act)) return "idle";
   if (/soccer|đá bóng|kick/.test(act)) return "attack-kick-right";
   if (/swim|bơi/.test(act)) return "sprint";

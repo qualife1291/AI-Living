@@ -4,3 +4,7 @@
 - Còn feature backlog: tag theo cặp/đổi vai, cycle physics, thú theo chủ, density/household/traffic graph, LinUCB/skill gates, durable dialogue history/model A-B. Chưa hoàn tất C/D; cần chọn từng phần và tiêu chí nghiệm thu rõ ràng.
 - QA SwiftShader desktop/mobile đã có bằng chứng local; chưa có nghiệm thu điện thoại/GPU thật, soak30phút/24giờ hoặc cam kết150người/80xe/p95<33ms. Không suy diễn zero collision trong fixture là mọi tình huống hết kẹt.
 - Luôn push checkpoint lên work và cập nhật bàn giao trước kiểm thử lâu; không commit .dev.vars/DB/cache, không tự tạo automation trùng/API tính phí. Cài bằng: bash scripts/sites-env.sh -- corepack pnpm install --frozen-lockfile --prefer-offline --store-dir .sites-runtime/pnpm-store.
+
+# WIP lượt tiếp theo — đuổi bắt theo cặp
+- Đang thêm TagDirector viewer-local vào WalkDirector: hai actor tag cùng Công viên/Sân thể thao, đổi vai theo khoảng cách ground, chaser28/runner20unit/s, grace+hysteresis chống đổi vai khi kẹt. Không ghi world/DB. Tag đơn chờ, không chạy tại chỗ; tag giữ một địa điểm180s; NPC social scheduler không cắt ngang tag.
+- Regression mới scripts/test-tag-game.mjs:1800frame/28lần đổi vai/0collision/maxstep1.4, pause/cancel/reorder/pure đạt. WIP: typecheck ban đầu bắt điều kiện tag thừa sau narrowing, đã sửa; fullsuite/build/API/browser chưa chạy. Cần thêm QA browser vai/catch/pause/poll và ảnh thật trước chốt. Không deploy/main merge.

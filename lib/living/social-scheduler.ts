@@ -26,7 +26,7 @@ export function scheduleResidentSocial(input: World, now: number) {
   const hour=worldTime(world,now).hour;
   if(hour<6||hour>=22)return {world,changed:true,pairs:0};
   const busy=(id:string)=>{const p=residents.get(id)?.plan;return p?.simStartedAt!==undefined&&sim<p.simStartedAt+p.steps.reduce((s,v)=>s+v.duration,0)*1000;};
-  const actors=crowdAt(state,world,now,undefined,state.residents.length).filter(a=>!a.walking&&!busy(a.id)&&!/^Phòng |Khu dân cư|Bệnh viện|Phòng khám/.test(a.location)&&["social","play","exercise","run","tag"].includes(a.kind));
+  const actors=crowdAt(state,world,now,undefined,state.residents.length).filter(a=>!a.walking&&!busy(a.id)&&!/^Phòng |Khu dân cư|Bệnh viện|Phòng khám/.test(a.location)&&["social","play","exercise","run"].includes(a.kind));
   actors.sort((a,b)=>(state.learning![b.id].socialNeed??50)-(state.learning![a.id].socialNeed??50)||a.id.localeCompare(b.id));
   const used=new Set<string>();let pairs=0;
   for(const a of actors){

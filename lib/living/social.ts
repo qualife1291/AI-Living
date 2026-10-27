@@ -64,7 +64,7 @@ export function socialFrame(world: World, actors: Actor[], events: EpisodeEvent[
   }
   const hour = worldTime(world, now).hour;
   if (hour >= scripts.quietHours[1] && hour < scripts.quietHours[0]) {
-    const idle = spaced.filter(a => !a.walking && !/^Phòng |Bệnh viện|Phòng khám/.test(a.location)).sort((a, b) => a.id.localeCompare(b.id));
+    const idle = spaced.filter(a => a.kind !== "tag" && !a.walking && !/^Phòng |Bệnh viện|Phòng khám/.test(a.location)).sort((a, b) => a.id.localeCompare(b.id));
     for (const a of idle) {
       if (poses.has(a.id)) continue;
       const b = idle.filter(b => b.id !== a.id && !poses.has(b.id) && b.location === a.location && distance(a.position, b.position) >= scripts.minPairDistance - .1 && distance(a.position, b.position) <= scripts.maxPairDistance).sort((x, y) => distance(a.position, x.position) - distance(a.position, y.position) || x.id.localeCompare(y.id))[0];
@@ -143,7 +143,7 @@ export class SocialDirector {
     const spaced = alreadySpaced ? actors : spaceActors(world, actors), byId = new Map(spaced.map(a => [a.id, a]));
     const poses = new Map<string, SocialPose>(), exchanges: Exchange[] = [];
     const hour = worldTime(world, now).hour, awake = hour >= 6 && hour < 22;
-    const eligible = (a: Actor | undefined): a is Actor => !!a && !a.walking && (a.transport === undefined || a.transport === "walk") && !/^Phòng |Bệnh viện|Phòng khám/.test(a.location);
+    const eligible = (a: Actor | undefined): a is Actor => !!a && a.kind !== "tag" && !a.walking && (a.transport === undefined || a.transport === "walk") && !/^Phòng |Bệnh viện|Phòng khám/.test(a.location);
     const pairAvailable = (a: Actor | undefined, b: Actor | undefined, maximum = 60) => eligible(a) && eligible(b) && a.id !== b.id && a.location === b.location && distance(a.position, b.position) <= maximum;
     const finish = (encounter: Encounter) => {
       this.encounters.delete(encounter.key);

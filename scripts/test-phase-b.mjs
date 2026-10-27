@@ -33,7 +33,8 @@ for(const kind of added){const actor={id:'fixture',name:'Test',from:'Công viên
  assert(clips.has(resolveActorClip(actor)),`unsupported clip for ${kind}`);
  if (["run","tag"].includes(kind)) assert.equal(resolveActorClip({...actor,walking:true,transport:"walk"}),"sprint");
  const a=humanPose(actor,1,0),b=humanPose(actor,1.3,0);for(const v of Object.values(a))assert(Number.isFinite(v));
- if(['run','tag','exercise'].includes(kind))assert.notDeepEqual([a.leftLeg,a.rightLeg,a.leftArm],[b.leftLeg,b.rightLeg,b.leftArm]);
+ if(['run','exercise'].includes(kind))assert.notDeepEqual([a.leftLeg,a.rightLeg,a.leftArm],[b.leftLeg,b.rightLeg,b.leftArm]);
+ if(kind==='tag')assert.equal(resolveActorClip(actor),'idle','An unpaired or yielding tag actor waits instead of sprinting in place');
 }
 const library=new AssetLibrary();library.loaded.set('characters/character-a',gltf);
 const scene=new THREE.Scene(),models=createModelActors(scene,library),headings=new Map([['an',0]]);

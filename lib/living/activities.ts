@@ -18,7 +18,8 @@ export function microActivity(id: string, seconds: number, kind: Step["kind"], a
 
 /** Short, connected activity routes instead of looping a sprint at one root. */
 export function actionSteps(location: string, activity: string, kind: Step["kind"]): Step[] {
-  if (kind !== "run" && kind !== "tag" && kind !== "cycle" && kind !== "walk-pet") return [{location,activity,kind,duration:180}];
+  if (kind === "tag") return [{ location, activity, kind, duration: 180 }];
+  if (kind !== "run" && kind !== "cycle" && kind !== "walk-pet") return [{location,activity,kind,duration:180}];
   const next = location === "Công viên" ? "Sân thể thao" : location === "Sân thể thao" ? "Công viên" : location;
   return [{location,activity,kind,duration:90},{location:next,activity,kind,duration:90}];
 }

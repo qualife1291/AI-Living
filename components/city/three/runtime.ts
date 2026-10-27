@@ -928,6 +928,7 @@ export function createCity(
     host.dataset.actors = String(actors.length);
     host.dataset.exchanges = String(exchanges.length);
     host.dataset.socialCast = JSON.stringify(actors.filter(a => socialPoses.get(a.id)?.gesture !== "idle" && socialPoses.has(a.id)).map(a => ({ id: a.id, position: a.position, ...socialPoses.get(a.id) })));
+    host.dataset.tagCast = JSON.stringify(actors.filter(a => a.tagGame).map(a => ({ id: a.id, position: a.position, walking: a.walking, ...a.tagGame })));
     host.dataset.selected = current?.id ?? "";
     host.dataset.humanBatches = String(people.stats().batches);
     host.dataset.humanInstances = String(people.stats().instances);

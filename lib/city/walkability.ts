@@ -8,6 +8,7 @@ import { vehicleContains } from "./traffic.ts";
 export { WALK_RADIUS, groundObstacles, walkable, segmentWalkable, nearestWalkable } from "./walk-ground.ts";
 import { WALK_RADIUS, groundObstacles, walkable, segmentWalkable, nearestWalkable } from "./walk-ground.ts";
 import { logClient } from "../diagnostics.ts";
+import { TagDirector } from "./tag-game.ts";
 const CELL = 12, X0 = -480, Z0 = -850, WIDTH = 300, HEIGHT = 240, SIZE = WIDTH * HEIGHT;
 let grid: Uint8Array | null = null;
 function cells() {
@@ -115,21 +116,23 @@ function reserveFree(point: Point, occupied: Point[], id: string, spacing = PERS
  * Every step sweeps static footprints and every other moving actor's disc.
  * Right-side steering and bounded side-pass replans resolve head-on encounters. */
 export class WalkDirector {
+  private tag = new TagDirector();
   private walkers = new Map<string, Walker>();
   private lastTime: number | null = null;
   private born = "";
   frame(world: World, input: Actor[], seconds: number, cars: TrafficVehicle[] = [], companions: Actor[] = []): Actor[] {
     if (!Number.isFinite(seconds)) seconds = this.lastTime ?? 0;
-    if (this.born !== world.born || (this.lastTime !== null && seconds < this.lastTime - 1)) { this.walkers.clear(); this.lastTime = null; this.born = world.born; }
+    if (this.born !== world.born || (this.lastTime !== null && seconds < this.lastTime - 1)) { this.walkers.clear(); this.tag.reset(); this.lastTime = null; this.born = world.born; }
     const dt = world.paused || this.lastTime === null ? 0 : Math.max(0, Math.min(.15, seconds - this.lastTime)); this.lastTime = seconds;
     // Animals have direct projected coordinates, without legacy human offsets.
     const spaced = [...spaceActors(world, input), ...companions];
+    const games = this.tag.frame(spaced.map(a => ({ ...a, position: this.walkers.get(a.id)?.position ?? a.position })), dt);
     const destinations = [...spaceActors(world, input.map(a => {
       const end = a.path.at(-1) ?? a.position, core = world.people.findIndex(p => p.id === a.id);
       const offset: Point = core >= 0 ? [(core - 1) * 25, core * 7] : npcOffset(a.id);
       return { ...a, position: [end[0] + offset[0], end[1] + offset[1]] as Point, walking: false };
     })), ...companions.map(a => ({ ...a, position: a.path.at(-1) ?? a.position, walking: false }))];
-    const records = spaced.map((actor, i) => ({ actor, requested: nearestWalkable(destinations[i].position) })).sort((a, b) => a.actor.id.localeCompare(b.actor.id));
+    const records = spaced.map((actor, i) => ({ actor, requested: nearestWalkable(games.get(actor.id)?.goal ?? destinations[i].position) })).sort((a, b) => a.actor.id.localeCompare(b.actor.id));
     const activeIds = new Set(records.map(record => record.actor.id));
     const reserved: Point[] = [];
     const goals = new Map<string, Point>();
@@ -170,7 +173,7 @@ export class WalkDirector {
       const target = s.path[s.next];
       const pending = !!target && distance(s.position, s.goal) > .1;
       if (dt > 0 && pending) {
-        const length = distance(start, target), step = Math.min(length, dt * (["run", "tag"].includes(a.kind) ? 28 : 16));
+        const length = distance(start, target), step = Math.min(length, dt * (games.get(a.id)?.speed ?? (["run", "tag"].includes(a.kind) ? 28 : 16)));
         const direction: Point = [(target[0] - start[0]) / length, (target[1] - start[1]) / length];
         const straight: Point = [start[0] + direction[0] * step, start[1] + direction[1] * step];
         const carBlocked = cars.some(car => vehicleContains(car, straight, WALK_RADIUS + 3) || vehicleContains(car, [(start[0] + straight[0]) / 2, (start[1] + straight[1]) / 2], WALK_RADIUS + 3));
@@ -222,8 +225,11 @@ export class WalkDirector {
       const moved = distance(start, s.position) > .001;
       const waiting = s.next < s.path.length && distance(s.position, s.goal) > .1;
       s.idle = waiting ? 0 : s.idle + dt;
-      output.set(a.id, { ...a, position: [...s.position], path: s.path, walking: moved, transport: "walk", stationaryFor: s.idle,
-        activity: waiting ? moved ? `Đi đến ${a.location.toLowerCase()}` : "Đang nhường lối" : a.activity });
+      const game = games.get(a.id), peer = game && spaced.find(other => other.id === game.peerId);
+      output.set(a.id, { ...a, tagGame: game ? { peerId: game.peerId, role: game.role, swaps: game.swaps } : undefined,
+        position: [...s.position], path: s.path, walking: moved, transport: "walk", stationaryFor: s.idle,
+        activity: game ? `${game.role === "chaser" ? "Đuổi theo" : "Chạy tránh"} ${peer?.name ?? "bạn"}` :
+          waiting ? moved ? `Đi đến ${a.location.toLowerCase()}` : "Đang nhường lối" : a.kind === "tag" ? "Chờ bạn cùng chơi đuổi bắt" : a.activity });
     }
     return spaced.map(a => output.get(a.id)!);
   }

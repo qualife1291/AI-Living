@@ -17,6 +17,7 @@ with sync_playwright() as p:
    fixture=json.loads(subprocess.check_output(['node','scripts/social-preview-fixture.mjs',f'--detail={kind}'],text=True))
    page.goto('http://127.0.0.1:5177',wait_until='domcontentloaded',timeout=60000);host=page.locator('.three-canvas[data-ready="true"]');host.wait_for(timeout=90000)
    frame=int(host.get_attribute('data-frame'));page.wait_for_function('(f)=>Number(document.querySelector(".three-canvas")?.dataset.frame)>f+5',arg=frame,timeout=30000)
+   if kind=='tag':clip='sprint' if host.get_attribute('data-walking')=='true' else 'idle'
    assert json.loads(host.get_attribute('data-model-actors'))['an']['clip']==clip,(kind,host.get_attribute('data-model-actors'))
    assert host.get_attribute('data-failed-assets')=='0';assert host.get_attribute('data-shadow-map') in ['0','1024'];assert host.get_attribute('data-effective-quality') in ['eco','balanced'];assert host.is_visible();assert not errors,errors
    if kind in ['shop','jump','cycle']:page.screenshot(path=str(out/f'{kind}-desktop-preview.png'))
