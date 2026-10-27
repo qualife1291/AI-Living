@@ -1,5 +1,10 @@
 # Changelog
 
+## 2026-10-28 — Nhà riêng cho nhóm cư dân (source)
+- Gán cửa và địa chỉ riêng cho nhóm ở; giữ dữ liệu nhà và lịch sử cũ. Cư dân nghỉ tại khu nhà đi về cửa qua navigation đang có.
+- Hồ sơ hiển thị địa chỉ và nút Xem nhà, camera chọn hướng tránh công trình. 60 cửa dùng một batch vẽ; chưa mở nội thất hoặc tăng dân số live.
+- 43 suite, API và browser desktop/mobile đạt; chi tiết [PHASE_C_HOMES](docs/PHASE_C_HOMES.md). Chưa deploy.
+
 ## 2026-10-27 — Review main/Gemini và sửa hồi quy
 - Tích hợp code Gemini/phase A+B từ main; giữ colormap, cử chỉ, thời tiết và catalog model. Phân biệt ảnh AI tham chiếu với ảnh chụp QA thật.
 - Sửa crash khi mua sắm, chuyển động cộng dồn cùng timestamp và đạo cụ/xe tập còn hiện sau khi nhân vật rời cảnh.

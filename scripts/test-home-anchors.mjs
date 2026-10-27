@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import {HOME_ANCHORS,homeAnchor} from '../lib/city/homes.ts';
+import {HOME_ANCHORS,homeAnchor,homeCameraOffset} from '../lib/city/homes.ts';
 import {assignHomes,households} from '../lib/living/households.ts';
 import {initializeLiving,population,crowdAt} from '../lib/living/engine.ts';
 import {WalkDirector,safeWalkPath} from '../lib/city/walkability.ts';
@@ -15,6 +15,8 @@ const before=JSON.stringify(legacy),backfill=assignHomes(legacy);assert.equal(JS
 let routes=0;
 for(const anchor of HOME_ANCHORS){
  assert(bodyWalkable(anchor.point,9.2));
+ const view=homeCameraOffset(anchor,(a,b)=>bodySegmentWalkable(a,b,2));assert(view.every(Number.isFinite));
+ if(view[1]<220)assert(bodySegmentWalkable(anchor.point,[anchor.point[0]+view[0],anchor.point[1]+view[2]],2),'Home camera must not look through buildings');
  for(const from of Object.values(places)) {
   const path=safeWalkPath(from,anchor.point);assert(distance(path.at(-1),anchor.point)<.1,`Unreachable door ${anchor.id}`);
   for(let i=1;i<path.length;i++)assert(bodySegmentWalkable(path[i-1],path[i],4.8));routes++;

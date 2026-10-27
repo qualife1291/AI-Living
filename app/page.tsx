@@ -62,6 +62,7 @@ export default function Page() {
       x: number;
       y: number;
       key: number;
+      homeId?:string;
     } | null>(null);
   const dialog = useRef<HTMLDialogElement>(null),
     restoreFocus = useRef<HTMLElement | null>(null);
@@ -331,7 +332,7 @@ export default function Page() {
               <p>Hỏi chuyện, xem ký ức hoặc chọn một cư dân để theo dõi.</p>
               {world && <PetCare world={world} refresh={load} />}
               {story && <details className="life-story"><summary><b>{person?.name} · {story.age} tuổi mô phỏng</b><small>{story.chapter} · {story.samples} trải nghiệm</small></summary><p>{story.ageGroup} · {story.gender === "female" ? "Nữ" : story.gender === "male" ? "Nam" : "Chưa chọn giới tính"}{selected !== "an" && anStory ? ` · An có thể gọi: ${addressFor(anStory.age, story.age, story.gender)}` : ""}</p><p>Đến xóm ngày {story.arrivedOn} · {story.days} ngày mô phỏng · {story.samples} trải nghiệm đã học.</p><p className="muted">Tuổi khởi đầu hư cấu {story.baseline}; mỗi năm mô phỏng tăng một tuổi. Không suy ra tuổi từ số lượt học.</p><h4>Những điều còn nhớ</h4><ol>{story.memories.slice(-5).map((m, i) => <li key={i}>{m}</li>)}</ol>{!story.memories.length && <p>Chưa có ký ức được lưu.</p>}</details>}
-              {homeGroup && <div className="resident-home"><b>{homeGroup.home.label}</b><span>{homeGroup.home.address ? `${homeGroup.home.address} · ` : ""}{homeGroup.home.place} · {homeGroup.members.length} người ở chung</span><small>{homeGroup.members.map(r => r.name).join(" · ")}</small>{selectedHome && <button onClick={()=>{setMode("city");setNavigation({x:selectedHome.point[0],y:selectedHome.point[1],key:Date.now()});setPanel(null);}}>Xem nhà</button>}</div>}
+              {homeGroup && <div className="resident-home"><b>{homeGroup.home.label}</b><span>{homeGroup.home.address ? `${homeGroup.home.address} · ` : ""}{homeGroup.home.place} · {homeGroup.members.length} người ở chung</span><small>{homeGroup.members.map(r => r.name).join(" · ")}</small>{selectedHome && <button onClick={()=>{setMode("city");setNavigation({x:selectedHome.point[0],y:selectedHome.point[1],key:Date.now(),homeId:selectedHome.id});setPanel(null);}}>Xem nhà</button>}</div>}
               {person && world && <Conversation key={person.id} actorId={person.id} name={person.name} paused={world.paused}/>}
               <details className="wardrobe-details">
                 <summary>Tạo hình của {person?.name ?? "An"}</summary>

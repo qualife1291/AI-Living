@@ -1,0 +1,26 @@
+{
+  "production": false,
+  "renderer": "Chromium SwiftShader",
+  "cases": [
+    {
+      "viewport": "desktop",
+      "doors": 60,
+      "visibleHouseholdTargets": 6,
+      "householdMembers": 4,
+      "assignedGoal": true,
+      "addressProfile": true,
+      "cameraLink": true,
+      "errors": []
+    },
+    {
+      "viewport": "mobile",
+      "doors": 60,
+      "visibleHouseholdTargets": 6,
+      "householdMembers": 4,
+      "assignedGoal": true,
+      "addressProfile": true,
+      "cameraLink": true,
+      "errors": []
+    }
+  ]
+}

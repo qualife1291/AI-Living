@@ -97,7 +97,7 @@ try{
  assert.equal((await saveHomes(legacyRow.revision)).status,200);
  const homeRow=await db.prepare("SELECT revision,data FROM worlds WHERE id='home'").first(),homeWorld=JSON.parse(homeRow.data);
  assert.equal(homeWorld.living.residents.length,legacyWorld.living.residents.length);
- assert(homeWorld.living.residents.every(r=>r.home?.householdId));
+ assert(homeWorld.living.residents.every(r=>r.home?.householdId&&r.home.anchorId&&r.home.address));
  for(const r of homeWorld.living.residents){
   const {home,identity,name,...original}=r,old=legacyWorld.living.residents.find(x=>x.id===r.id),{name:oldName,...oldHistory}=old;
   assert(home&&identity);assert.deepEqual(original,oldHistory,'Backfill preserves IDs, plans, memories and familiarity');

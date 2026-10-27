@@ -2,11 +2,11 @@ import { HUMAN_SCALE, VEHICLES, pixelRatio, shadowMapSize, type Quality } from "
 import { SocialDirector, type SocialPose, type Exchange } from "@/lib/living/social";
 import { WalkDirector } from "@/lib/city/walkability";
 import { TrafficDirector, TRAFFIC_COUNT, trafficJunctions, type TrafficVehicle } from "@/lib/city/traffic";
-import { venueGeometry, openVenue } from "@/lib/city/footprints";
+import { venueGeometry, openVenue, segmentHits } from "@/lib/city/footprints";
 import { sceneryTrees, sceneryLamps, streetProps, venueSceneryPose } from "@/lib/city/scenery";
 import { characterShot } from "@/lib/city/cinematography";
 import { groundElevation } from "@/lib/city/ground";
-import {HOME_ANCHORS} from "../../../lib/city/homes";
+import {HOME_ANCHORS,homeAnchor,homeCameraOffset} from "../../../lib/city/homes";
 import { resolveModel } from "@/lib/city/asset-bindings";
 import { createPeople } from "./people";
 import { createAmbience } from "./ambience";
@@ -41,7 +41,7 @@ export type SceneInput = {
   events?: EpisodeEvent[];
   selected: string;
   clockOffsetMs?: number;
-  target?: { x: number; y: number; key: number } | null;
+  target?: { x: number; y: number; key: number; homeId?:string } | null;
 };
 export type SceneStatus = {
   name: string;
@@ -832,7 +832,10 @@ export function createCity(
     if (state.target && state.target.key !== targetKey) {
       following = false;
       targetKey = state.target.key;
-      focus(state.target.x, state.target.y);
+      const home=homeAnchor(state.target.homeId);
+      const offset=home?homeCameraOffset(home,(from,to)=>!cameraBuildings.some(rect=>segmentHits(rect,from,to,2))):undefined;
+      focus(state.target.x, state.target.y,offset?new THREE.Vector3(...offset):undefined);
+      if(home)host.dataset.homeFocus=home.id;
     }
     const currentWeather = weatherAt(world.born, worldTime(world, lastTime), world.clock?.weatherOverride);
     ambience.update(seconds, currentWeather.kind, currentWeather.intensity);

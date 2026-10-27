@@ -90,3 +90,6 @@ Các phase tiếp theo được đánh giá ở docs/GEMINI_REVIEW_2026-10-28.md
 
 ## Phase D nền tảng đã kiểm thử trong source
 DisjointLinUCB/4skillgates/context-at-choice, roleexpansionguard, structuredmemory actor/provenance/CAS/topK/bulkarchive và poolhash/xưnghô đã triển khai;42unit/API/check/lint/build +social6/poll/F5desktopmobile đạt. Chi tiết PHASE_D_LEARNING.md. Chưa hierarchyglobal/role/P2P/skillsvector/policystorage táchsnapshot, occupancyauthority, fullmodelA-B hoặc sinhthái/home/transitphaseC/E.
+
+## Phase C — cửa nhà đã kiểm thử trong source
+60 cửa riêng, địa chỉ và Xem nhà, additive backfill, walking/full-bike ground routing đã qua 43 suite/API/browser desktop/mobile. Xem PHASE_C_HOMES. Chưa density live, indoor hoặc boarding/transit.
