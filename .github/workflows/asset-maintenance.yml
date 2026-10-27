@@ -1,0 +1,21 @@
+name: Asset coverage and simulation
+on:
+  push:
+    branches: [work, main]
+    paths: ['data/**', 'public/models/**', 'lib/city/**', 'components/city/**', 'scripts/**', 'package.json', '.github/workflows/asset-maintenance.yml']
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - run: npm run install:ci
+      - run: node scripts/maintain-assets.mjs
+      - run: npm run assets:check && npm run check && npm run test:unit

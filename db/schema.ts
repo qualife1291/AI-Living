@@ -71,3 +71,19 @@ export const agentExperiences = sqliteTable("agent_experiences", {
   createdAt: text("created_at").notNull(),
   data: text("data").notNull(),
 });
+
+export const viewSessions = sqliteTable("view_sessions", {
+  id: text("id").primaryKey(),
+  nonce: text("nonce").notNull(),
+  createdAt: text("created_at").notNull(),
+});
+export const siteMetrics = sqliteTable("site_metrics", {
+  id: text("id").primaryKey(),
+  total: integer("total").notNull().default(0),
+});
+export const visitorExchanges = sqliteTable("visitor_exchanges", {
+  id: text("id").primaryKey(),
+  actorId: text("actor_id").notNull(),
+  createdAt: text("created_at").notNull(),
+  data: text("data").notNull(),
+});

@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
-import { Building2, LocateFixed, Minus, Plus, Scan } from "lucide-react";
+import { Building2, LocateFixed, Minus, Plus, Scan, MessageCircle, Footprints, Coffee } from "lucide-react";
 import { UrbanMap } from "./UrbanMap";
 import type { CityRuntime, SceneInput, SceneStatus } from "./three/runtime";
 import type { Venue } from "@/lib/city/world";
@@ -23,16 +23,20 @@ export function City3D(props: Props) {
     if (failed) return;
     let cancelled = false;
     import("./three/runtime")
-      .then(({ createCity }) => {
+      .then(async ({ createCity }) => {
         if (cancelled || !host.current) return;
+        const { AssetLibrary } = await import("./three/assets");
+        const assets = await new AssetLibrary().preload();
+        if (cancelled || !host.current) { assets.dispose(); return; }
         try {
           runtime.current = createCity(host.current, () => latest.current, {
             select: (id) => latest.current.onSelect(id),
             venue: (v) => latest.current.onVenue(v),
             status: setStatus,
             fatal: () => setFailed(true),
-          });
+          }, assets);
         } catch {
+          assets.dispose();
           setFailed(true);
         }
       })
@@ -61,17 +65,19 @@ export function City3D(props: Props) {
       {status?.visible && status.speech && (
         <div
           className="three-speech live-speech"
-          style={{ left: status.x, top: status.y }}
+          style={{ left: `clamp(118px, ${status.x}px, calc(100% - 118px))`, top: status.y }}
         >
-          {status.speech}
+          <strong>{status.speaker} <span aria-hidden="true">→</span> {status.listener} <em title={status.conversationSource === "ai" ? "Hội thoại do model sinh và đã lưu" : "Cảnh biên soạn bởi agent, phát theo mô phỏng"}>{status.conversationSource === "ai" ? "AI" : "Kịch bản"}</em></strong>
+          <span>{status.speech}</span>
         </div>
       )}
       <div className="live-hud live-person">
-        <span className="person-indicator" />
+        <span className="person-indicator">{status?.walking ? <Footprints size={16}/> : <Coffee size={16}/>}</span>
         <button onClick={props.onInspect}>
           <b>{status?.name ?? "An"}</b>
-          <small>{status?.activity ?? "Đang mở không gian 3D"}</small>
+          <small>{props.world.paused ? "Đang tạm nghỉ · Nhấn ▶ để tiếp tục" : status?.activity ?? "Đang mở không gian 3D"}</small>
         </button>
+        <button className="person-talk" aria-label={`Trò chuyện với ${status?.name ?? "An"}`} title="Trò chuyện" onClick={props.onInspect}><MessageCircle size={20}/></button>
         <span className="live-person-count">
           {props.world.people.length +
             (props.world.living?.residents.length ?? 0)}{" "}
@@ -93,6 +99,7 @@ export function City3D(props: Props) {
         </button>
         <button
           aria-label="Theo nhân vật"
+          title="Góc điện ảnh · theo An"
           aria-pressed={status?.following ?? true}
           onClick={() => runtime.current?.follow()}
         >

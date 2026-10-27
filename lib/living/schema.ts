@@ -126,6 +126,7 @@ export type LivingTurn = {
   residentId: string;
   dialogue: { speaker: string; text: string }[];
   generator: "rules" | "local-llm";
+  scriptId?: string;
   scenarioId?: string;
   transport?: import("./learning").Scenario["transport"];
   context: RealContext;

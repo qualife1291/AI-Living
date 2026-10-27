@@ -1,0 +1,54 @@
+[
+  {
+    "viewport": "desktop",
+    "stats": {
+      "buildings": "279",
+      "towers": "150",
+      "ready": "true",
+      "paused": "false",
+      "frame": "98",
+      "pixelRatio": "1.5",
+      "triangles": "131596",
+      "geometries": "16",
+      "textures": "4",
+      "walking": "true",
+      "position": "242.04,232.60",
+      "personHeight": "17.5",
+      "carLength": "44",
+      "actors": "30",
+      "exchanges": "0",
+      "socialCast": "[]",
+      "selected": "an",
+      "drawCalls": "44",
+      "camera": "323,85,345"
+    },
+    "jsHeapBytes": 17684752,
+    "taskDurationSeconds": 0.11503
+  },
+  {
+    "viewport": "mobile",
+    "stats": {
+      "buildings": "279",
+      "towers": "150",
+      "ready": "true",
+      "paused": "false",
+      "frame": "94",
+      "pixelRatio": "1.75",
+      "triangles": "115828",
+      "geometries": "16",
+      "textures": "5",
+      "walking": "true",
+      "position": "378.48,285.26",
+      "personHeight": "17.5",
+      "carLength": "44",
+      "actors": "30",
+      "exchanges": "2",
+      "socialCast": "[{\"id\":\"neighbor-1\",\"position\":[1072,960],\"peerId\":\"neighbor-3\",\"source\":\"script\",\"speaking\":false,\"gesture\":\"listen\"},{\"id\":\"neighbor-3\",\"position\":[1058,960],\"peerId\":\"neighbor-1\",\"source\":\"script\",\"speaking\":true,\"gesture\":\"laugh\"},{\"id\":\"neighbor-12\",\"position\":[1100,988],\"peerId\":\"neighbor-19\",\"source\":\"script\",\"speaking\":false,\"gesture\":\"listen\"},{\"id\":\"neighbor-19\",\"position\":[1100,1002],\"peerId\":\"neighbor-12\",\"source\":\"script\",\"speaking\":true,\"gesture\":\"laugh\"}]",
+      "selected": "an",
+      "drawCalls": "36",
+      "camera": "460,85,397"
+    },
+    "jsHeapBytes": 14421256,
+    "taskDurationSeconds": 0.254827
+  }
+]

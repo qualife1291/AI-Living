@@ -4,6 +4,7 @@ import { LocateFixed, Minus, Plus, Scan } from "lucide-react";
 import type { World } from "@/lib/world";
 import { actorsAt, animalsAt, simulationTime, type Point } from "@/lib/life";
 import { crowdAt, livingSpeechAt } from "@/lib/living/engine";
+import { SocialDirector } from "@/lib/living/social";
 import { worldTime } from "@/lib/clock";
 import { useLifeClock } from "@/components/world/useLife";
 import { BlockCharacter } from "@/components/characters/BlockCharacter";
@@ -127,6 +128,7 @@ export function UrbanMap({
   mode = "city",
   clockOffsetMs = 0,
   target,
+  events = [],
 }: {
   world: World;
   selected: string;
@@ -135,16 +137,20 @@ export function UrbanMap({
   onInspect: () => void;
   mode?: "city" | "osm";
   clockOffsetMs?: number;
+  quality?: import("@/lib/city/scale").Quality;
+  events?: import("@/lib/world").EpisodeEvent[];
   target?: { x: number; y: number; key: number } | null;
 }) {
+  const [director] = useState(() => new SocialDirector());
   const now = useLifeClock(world.paused, clockOffsetMs),
     time = now ?? Date.parse(world.born);
   const actors = actorsAt(world, time),
     crowd = world.living ? crowdAt(world.living, world, time, selected) : [],
-    all = [...actors, ...crowd].sort((a, b) => a.position[1] - b.position[1]);
+    frame = director.frame(world, [...actors, ...crowd], events, time, livingSpeechAt(world, time)),
+    all = frame.actors.sort((a, b) => a.position[1] - b.position[1]);
   const current = all.find((a) => a.id === selected) ?? actors[0];
   const wt = worldTime(world, time),
-    speech = livingSpeechAt(world, time);
+    speech = (frame.exchanges.find(e => e.a === selected || e.b === selected) ?? frame.exchanges[0])?.speech;
   const [following, setFollowing] = useState(true),
     [zoom, setZoom] = useState(1.45),
     [center, setCenter] = useState<Point>([1100, 700]),

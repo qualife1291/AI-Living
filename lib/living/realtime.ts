@@ -28,6 +28,7 @@ export type ContextCache = {
 };
 export const WEATHER_URL =
   "https://api.open-meteo.com/v1/forecast?latitude=10.7769&longitude=106.7009&current=temperature_2m,relative_humidity_2m,precipitation,weather_code,wind_speed_10m&timezone=Asia%2FHo_Chi_Minh";
+function safeJson(value: string): unknown { try { return JSON.parse(value); } catch { return null; } }
 async function resource<T>(
   key: string,
   url: string,
@@ -36,35 +37,53 @@ async function resource<T>(
   cache: ContextCache,
   schema: z.ZodType<T>,
   fetcher: typeof fetch,
+  allowFetch = true,
 ) {
   const old = await cache.read(key);
   if (old && old.expires_at > now) {
-    const parsed = schema.safeParse(JSON.parse(old.data));
+    if (old.data === "null") return { data: null, status: "unavailable" as const };
+    const parsed = schema.safeParse(safeJson(old.data));
     if (parsed.success) return { data: parsed.data, status: "fresh" as const };
   }
+  const fallback = () => {
+    if (old && now - old.expires_at < 86400000) {
+      const parsed = schema.safeParse(safeJson(old.data));
+      if (parsed.success) return {data: parsed.data, status: "stale" as const};
+    }
+    return {data: null, status: "unavailable" as const};
+  };
+  if (!allowFetch) return fallback();
+  let timer: ReturnType<typeof setTimeout> | undefined;
   try {
+    const data = await Promise.race([
+      (async () => {
     const response = await fetcher(url, {
-      signal: AbortSignal.timeout(8000),
+      signal: AbortSignal.timeout(2500),
       headers: { accept: "application/json" },
     });
     if (!response.ok) throw new Error("upstream HTTP " + response.status);
-    const data = schema.parse(await response.json());
+    return schema.parse(await response.json());
+      })(),
+      new Promise<never>((_resolve,reject)=>{ timer=setTimeout(()=>reject(new Error("Context deadline")),2500); }),
+    ]);
     await cache.write(key, JSON.stringify(data), now + ttl);
     return { data, status: "fresh" as const };
   } catch (error) {
     void error;
     if (old && now - old.expires_at < 86400000) {
-      const parsed = schema.safeParse(JSON.parse(old.data));
+      const parsed = schema.safeParse(safeJson(old.data));
       if (parsed.success)
         return { data: parsed.data, status: "stale" as const };
     }
+    await cache.write(key, "null", now + 60000);
     return { data: null, status: "unavailable" as const };
-  }
+  } finally { if(timer) clearTimeout(timer); }
 }
 export async function realContext(
   now: number,
   cache: ContextCache,
   fetcher: typeof fetch = fetchProviders,
+  cachedOnly = false,
 ): Promise<RealContext> {
   const date = localDate(now),
     vn = new Date(now + 7 * 3600000);
@@ -77,6 +96,7 @@ export async function realContext(
       cache,
       weatherSchema,
       fetcher,
+      !cachedOnly,
     ),
     resource(
       `vn-holidays-${date.slice(0, 4)}`,
@@ -86,6 +106,7 @@ export async function realContext(
       cache,
       holidaySchema,
       fetcher,
+      !cachedOnly,
     ),
     resource(
       `hcm-events-${date.slice(0, 7)}`,
@@ -95,6 +116,7 @@ export async function realContext(
       cache,
       festivalFeedSchema,
       fetcher,
+      !cachedOnly,
     ),
   ]);
   const current = weather.data?.current;
@@ -200,6 +222,7 @@ export function fetchProviders(
     return fetchFestivalMonth(
       Number(url.searchParams.get("year")),
       Number(url.searchParams.get("month")),
+      (input, options) => fetch(input, { ...options, signal: init?.signal ?? options?.signal }),
     ).then((data) => Response.json(data));
   return fetch(input, init);
 }

@@ -1,30 +1,39 @@
+import { HUMAN_SCALE, VEHICLES, pixelRatio, type Quality } from "@/lib/city/scale";
+import { SocialDirector, type SocialPose, type Exchange } from "@/lib/living/social";
+import { WalkDirector } from "@/lib/city/walkability";
+import { TrafficDirector, TRAFFIC_COUNT, trafficJunctions, type TrafficVehicle } from "@/lib/city/traffic";
+import { venueGeometry, openVenue } from "@/lib/city/footprints";
+import { sceneryTrees, sceneryLamps, streetProps, venueSceneryPose } from "@/lib/city/scenery";
+import { characterShot } from "@/lib/city/cinematography";
+import { groundElevation } from "@/lib/city/ground";
+import { resolveModel } from "@/lib/city/asset-bindings";
+import { createPeople } from "./people";
+import { createAmbience } from "./ambience";
+import { createFauna } from "./fauna";
+import { AssetLibrary, setAssetTransform, type AssetPlacement } from "./assets";
+import { createModelActors } from "./model-actors";
+import { streetModel } from "./streetscape";
 import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import {
   actorsAt,
   animalsAt,
-  along,
   simulationTime,
   type Actor,
-  type Point,
 } from "@/lib/life";
-import { crowdAt, livingSpeechAt } from "@/lib/living/engine";
+import { crowdAt } from "@/lib/living/engine";
 import { worldTime } from "@/lib/clock";
-import {
-  defaultAppearance,
-  themes,
-  type Appearance,
-} from "@/lib/city/appearance";
 import { boulevards, metroLine, venues, type Venue } from "@/lib/city/world";
 import {
   cityBuildings,
   pedestrianSegments,
-  buildingAllowed,
 } from "@/lib/city/three-layout";
-import type { World } from "@/lib/world";
+import type { World, EpisodeEvent } from "@/lib/world";
 
 export type SceneInput = {
   world: World;
+  quality?: Quality;
+  events?: EpisodeEvent[];
   selected: string;
   clockOffsetMs?: number;
   target?: { x: number; y: number; key: number } | null;
@@ -34,9 +43,14 @@ export type SceneStatus = {
   activity: string;
   following: boolean;
   speech: string;
+  speaker: string;
+  listener: string;
+  conversationSource: string;
   x: number;
   y: number;
   visible: boolean;
+  walking: boolean;
+  location: string;
 };
 export type CityRuntime = {
   zoom: (factor: number) => void;
@@ -54,8 +68,8 @@ type Solid = {
   d: number;
   color: string;
   angle?: number;
+  tilt?: number;
 };
-const up = new THREE.Vector3(0, 1, 0);
 
 export function createCity(
   host: HTMLDivElement,
@@ -66,14 +80,15 @@ export function createCity(
     status: (v: SceneStatus) => void;
     fatal: () => void;
   },
+  assets = new AssetLibrary(),
 ): CityRuntime {
   const renderer = new THREE.WebGLRenderer({
     antialias: true,
     alpha: false,
-    powerPreference: "low-power",
+    powerPreference: "high-performance",
   });
   renderer.setPixelRatio(
-    Math.min(devicePixelRatio, innerWidth < 700 ? 1 : 1.5),
+    pixelRatio(input().quality, devicePixelRatio),
   );
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
@@ -84,13 +99,13 @@ export function createCity(
   host.appendChild(renderer.domElement);
   const scene = new THREE.Scene();
   scene.background = new THREE.Color("#d6e4df");
-  const fog = new THREE.Fog("#d6e4df", 1800, 4500);
+  const fog = new THREE.Fog("#d6e4df", 3200, 8500);
   scene.fog = fog;
-  const camera = new THREE.PerspectiveCamera(43, 1, 2, 20000);
+  const camera = new THREE.PerspectiveCamera(38, 1, 2, 20000);
   const controls = new OrbitControls(camera, renderer.domElement);
   controls.enableDamping = true;
   controls.dampingFactor = 0.09;
-  controls.minDistance = 100;
+  controls.minDistance = 42;
   controls.maxDistance = 11000;
   controls.minPolarAngle = 0.22;
   controls.maxPolarAngle = Math.PI / 2 - 0.08;
@@ -99,16 +114,17 @@ export function createCity(
     MIDDLE: THREE.MOUSE.DOLLY,
     RIGHT: THREE.MOUSE.PAN,
   };
-  const ambient = new THREE.HemisphereLight("#e7f6ff", "#b5a18c", 2.6);
+  const ambient = new THREE.HemisphereLight("#d9edff", "#8e7458", 1.25);
   scene.add(ambient);
-  const sun = new THREE.DirectionalLight("#fff0ce", 3.2);
+  const sun = new THREE.DirectionalLight("#fff0ce", 2.6);
   sun.position.set(-400, 1200, 600);
   scene.add(sun);
   const solids: Solid[] = [],
+    facadeDetails: Solid[] = [],
     cylinders: Solid[] = [],
     leaves: Solid[] = [],
     windows: Solid[] = [],
-    shadows: Solid[] = [];
+    shadows: Solid[] = [], propWheels: Solid[] = [], propBuds: Solid[] = [];
   const box = (
     x: number,
     y: number,
@@ -127,6 +143,7 @@ export function createCity(
     h: number,
     color: string,
   ) => cylinders.push({ x, y, z, w, h, d: w, color });
+  const detailBox = (...args: Parameters<typeof box>) => { box(...args); facadeDetails.push(solids.pop()!); };
   const windowBox = (
     x: number,
     y: number,
@@ -153,7 +170,7 @@ export function createCity(
       );
     }
   };
-  box(1200, -4, 570, 3150, 7, 2300, "#c2d0b4");
+  box(1200, -4, 570, 3150, 7, 2300, "#a7cd87");
   // River and a broad promenade at the southern edge of the fictional district.
   road(
     [
@@ -164,7 +181,7 @@ export function createCity(
     ],
     180,
     0.1,
-    "#8cbbb6",
+    "#55b8d1",
   );
   for (const p of boulevards) {
     road(p, 68, 0.5, "#e6dfcc");
@@ -186,14 +203,24 @@ export function createCity(
         );
     }
   }
+  for (const junction of trafficJunctions) cylinder(junction.position[0], 1.15, junction.position[1], junction.radius * 2, .4, "#65767b");
   for (const [a, b] of pedestrianSegments) road([a, b], 8, 1.5, "#eee2c6");
   road(metroLine, 10, 3, "#617878");
   road(metroLine, 5, 3.5, "#bac7bd");
+  const placements: AssetPlacement[] = [];
+  const modelBuildings = ["commercial/building-a", "commercial/building-b", "commercial/building-c"];
+  const modelHomes = ["suburban/building-type-a", "suburban/building-type-b", "suburban/building-type-c"];
+  const propAsset = (prop: typeof streetProps[number]) => resolveModel(prop.kind === "produce" ? prop.venue === "Chợ nhỏ" ? "display-bread" : "display-fruit" : prop.kind) ?? "";
   const buildings = cityBuildings();
   for (let i = 0; i < buildings.length; i++) {
     const b = buildings[i],
       { x, z, width: w, depth: d, height: h } = b;
     box(x, 1.2, z, w + 12, 2, d + 12, "#ded9c6");
+    const modelId = modelHomes[i % modelHomes.length];
+    if (!b.tower && i % 16 === 0 && assets.get(modelId)) {
+      placements.push({ id: modelId, x, y: 2.2, z, width: w, height: h, depth: d, yaw: Math.PI, stretch: true });
+      continue;
+    }
     box(x, h / 2 + 2, z, w, h, d, b.color);
     box(x, h + 4, z, w + 3, 4, d + 3, "#e3e4d5");
     box(x, h + 8, z - 5, w * 0.38, 7, d * 0.35, "#879a95");
@@ -214,20 +241,22 @@ export function createCity(
       box(x, 10, z, w + 8, 18, d + 8, "#e1d7bc");
       if (i % 3 === 0) cylinder(x + w / 4, h + 19, z, 1.4, 25, "#d8dcd2");
     }
-    const levels = Math.floor((h - 18) / 17),
+    const levels = Math.floor((h - 18) / 30),
       cols = Math.max(2, Math.floor(w / 14));
     for (let f = 0; f < levels; f++)
       for (let c = 0; c < cols; c++) {
         const wx = x - w / 2 + ((c + 0.5) * w) / cols,
-          y = 25 + f * 17;
+          y = 25 + f * 30;
+        detailBox(wx, y, z + d / 2 + .3, 9.5, 14, .8, "#e4e1cf");
+        detailBox(wx, y, z - d / 2 - .3, 9.5, 14, .8, "#e4e1cf");
         windowBox(wx, y, z + d / 2 + 0.6, 7, 9, 1, i + c + f);
         windowBox(wx, y, z - d / 2 - 0.6, 7, 9, 1, i + c + f + 1);
       }
     for (let f = 0; f < levels; f++)
       for (let c = 0; c < 3; c++) {
         const wz = z - d / 2 + ((c + 0.5) * d) / 3;
-        windowBox(x + w / 2 + 0.6, 25 + f * 17, wz, 1, 9, 7, i + f);
-        windowBox(x - w / 2 - 0.6, 25 + f * 17, wz, 1, 9, 7, i + f + 1);
+        windowBox(x + w / 2 + 0.6, 25 + f * 30, wz, 1, 12, 8, i + f);
+        windowBox(x - w / 2 - 0.6, 25 + f * 30, wz, 1, 12, 8, i + f + 1);
       }
     box(
       x,
@@ -275,7 +304,7 @@ export function createCity(
     return sprite;
   }
   function tree(x: number, z: number, seed = 0) {
-    cylinder(x, 12, z, 3, 24, "#9c8769");
+    cylinder(x, 17 + (seed % 7) / 2, z, 3, 34 + (seed % 7), "#9c8769");
     shadows.push({
       x: x + 4,
       y: 1.1,
@@ -285,20 +314,14 @@ export function createCity(
       d: 18,
       color: "#a4b69e",
     });
-    leaves.push({
-      x,
-      y: 30 + (seed % 7),
-      z,
-      w: 25,
-      h: 32,
-      d: 25,
-      color: seed % 2 ? "#82a77c" : "#689c83",
+    for (const side of [-1, 0, 1]) leaves.push({
+      x: x + side * 6, y: 36 + (seed % 7) + (side === 0 ? 4 : 0), z: z + (side === 0 ? 0 : 2),
+      w: side === 0 ? 22 : 18, h: side === 0 ? 26 : 20, d: 20,
+      color: side === 0 ? (seed % 2 ? "#84b66e" : "#57a886") : side < 0 ? "#75ad79" : "#9bc783",
     });
   }
-  for (const v of venues) {
-    const open = ["square", "park", "garden", "sport", "bus", "metro"].includes(
-      v.type,
-    );
+  for (const venue of venues) {
+    const open = openVenue(venue), v = venueSceneryPose(venue);
     const height =
       v.type === "office"
         ? 140
@@ -308,9 +331,35 @@ export function createCity(
             ? 48
             : 43;
     box(v.x, 1, v.y - 25, 125, 2, 112, open ? "#c8d3b4" : "#e6dec9");
+    // Functional details at the edges; the central door/frontage slots stay open.
+    if (["cafe", "restaurant"].includes(v.type)) {
+      for (const side of [-1, 1]) {
+        const x = v.x + side * 65, z = v.y + 20;
+        cylinder(x, 7.5, z, 13, 1, "#e7c88b");
+        cylinder(x, 4.5, z, 1.3, 6, "#638783");
+        cylinder(x, 8.6, z, 1.8, 1.4, "#fff4dc");
+        cylinder(x + 3, 8.5, z + 2, 2.4, .35, "#da8970");
+        for (const dz of [-10, 10]) {
+          box(x, 4.5, z + dz, 5, 1, 5, "#69a48f");
+          box(x, 7, z + dz + Math.sign(dz) * 2, 5, 5, 1, "#69a48f");
+          for (const dx of [-1.8, 1.8]) cylinder(x + dx, 2.5, z + dz, .7, 4, "#587a74");
+        }
+      }
+    }
+    if (["park", "square", "bus", "metro", "library"].includes(v.type)) {
+      const x = v.x + 65, z = v.y + 12;
+      box(x, 5, z, 18, 1.5, 5, "#d49b66");
+      box(x, 8, z - 2, 18, 5, 1.5, "#d49b66");
+      for (const dx of [-6, 6]) box(x + dx, 2.8, z, 1.2, 5, 4, "#5f7c75");
+    }
+    if (!open) {
+      for (const side of [-1, 1]) {
+        cylinder(v.x + side * 53, 3, v.y - 4, 5, 5, "#c68668");
+        leaves.push({ x: v.x + side * 53, y: 7.5, z: v.y - 4, w: 6, h: 7, d: 6, color: "#68a879" });
+      }
+    }
     if (open) {
-      tree(v.x - 45, v.y - 47, 1);
-      tree(v.x + 45, v.y - 47, 2);
+
       if (v.type === "square" || v.type === "park") {
         cylinder(v.x, 5, v.y - 44, 25, 8, "#d8d7c2");
         cylinder(v.x, 10, v.y - 44, 20, 3, "#8dbbb4");
@@ -329,20 +378,40 @@ export function createCity(
           {
             hospital: "#e1e8de",
             clinic: "#d9e6d8",
-            school: "#e7c58e",
+            school: "#f2c75c",
             police: "#a4b8c8",
-            cinema: "#bf9294",
+            cinema: "#dc8ba2",
             factory: "#a9b8b4",
-            home: "#e1c3a3",
+            home: "#f0bb89",
           } as Record<string, string>
-        )[v.type] ?? "#d0d7bc";
+        )[v.type] ?? "#8fc7b3";
+      const modelId = v.type === "home" ? modelHomes[venues.indexOf(venue) % modelHomes.length] : modelBuildings[venues.indexOf(venue) % modelBuildings.length];
+      if (assets.get(modelId)) {
+        placements.push({ id: modelId, x: v.x, y: 2, z: v.y - 47, width: 104, height, depth: 72, yaw: Math.PI, stretch: true });
+        box(v.x, 3.5, v.y - 10, 104, 4, 2, "#b8a68d");
+        for (let step = 0; step < 3; step++) box(v.x, 1.2 + step * .6, v.y - 3 - step * 4, 34, 1.2 + step * 1.2, 4, "#c4c5af");
+        if (["cafe", "restaurant", "market"].includes(v.type)) {
+          for (let k = -5; k <= 5; k++) box(v.x + k * 10, 31.2, v.y + 1, 9.5, 1.5, 25, k % 2 ? "#f7e5bd" : "#438f86");
+          for (const dx of [-49, 49]) cylinder(v.x + dx, 15, v.y + 10, 1.4, 28, "#9c7954");
+        }
+      } else {
       box(v.x, height / 2 + 2, v.y - 47, 104, height, 72, color);
       box(v.x, height + 4, v.y - 47, 110, 5, 78, "#e9e3cf");
-      box(v.x, 6, v.y - 7, 34, 12, 12, "#b0bba5");
+      for (const dx of [-53, 53]) box(v.x + dx, height + 7, v.y - 47, 2, 5, 76, "#c1b899");
+      for (const dz of [-86.5, -7.5]) box(v.x, height + 7, v.y + dz, 108, 5, 2, "#c1b899");
+      box(v.x, 3.5, v.y - 10, 104, 4, 2, "#b8a68d");
+      for (let step = 0; step < 3; step++) box(v.x, 1.2 + step * .6, v.y - 3 - step * 4, 34, 1.2 + step * 1.2, 4, "#c4c5af");
+      for (const dx of [-9, 9]) detailBox(v.x + dx, 15, v.y - 8.8, 1, 28, 1, "#e9d5af");
+      detailBox(v.x, 28.5, v.y - 8.8, 19, 1, 1, "#e9d5af");
+      detailBox(v.x + 5.5, 14, v.y - 8, .6, 3.5, .9, "#c5a86f");
       windowBox(v.x, 15, v.y - 10, 17, 26, 2, 1);
-      for (let f = 0; f < Math.floor(height / 22); f++)
-        for (const dx of [-35, -12, 12, 35])
-          windowBox(v.x + dx, 20 + f * 22, v.y - 10, 12, 12, 1, f);
+      for (let f = 0; f < Math.floor(height / 30); f++)
+        for (const dx of [-35, -12, 12, 35]) {
+          if (f === 0 && Math.abs(dx) < 20) continue;
+          detailBox(v.x + dx, 20 + f * 30, v.y - 10.5, 15, 15, 2, "#f3e6cc");
+          windowBox(v.x + dx, 20 + f * 30, v.y - 9.7, 12, 12, 1, f);
+          detailBox(v.x + dx, 12.5 + f * 30, v.y - 8, 16, 1.5, 4, "#d0b997");
+        }
       box(
         v.x,
         31,
@@ -356,6 +425,10 @@ export function createCity(
         box(v.x, height - 12, v.y - 9, 23, 7, 2, "#ba7868");
         box(v.x, height - 12, v.y - 8, 7, 23, 2, "#ba7868");
       }
+      if (["cafe", "restaurant", "market"].includes(v.type)) {
+        for (let k = -5; k <= 5; k++) box(v.x + k * 10, 31.2, v.y + 1, 9.5, 1.5, 25, k % 2 ? "#f7e5bd" : v.type === "cafe" ? "#438f86" : "#df8d6e");
+        for (const dx of [-49, 49]) cylinder(v.x + dx, 15, v.y + 10, 1.4, 28, "#9c7954");
+      }
       if (v.type === "factory")
         for (const dx of [-32, 30])
           cylinder(v.x + dx, height + 22, v.y - 60, 8, 42, "#7b908d");
@@ -363,39 +436,53 @@ export function createCity(
         cylinder(v.x + 35, 67, v.y - 40, 8, 70, "#c6d3cc");
         box(v.x + 35, 103, v.y - 40, 30, 16, 25, "#73969b");
       }
-      tree(v.x - 66, v.y - 14, 3);
+      }
+
     }
     const sign = label(v.name, v.x, open ? 43 : height + 22, v.y - 20, 112);
     if (sign) {
-      sign.userData.venue = v;
+      sign.userData.venue = venue;
       venueLabels.push({ sprite: sign, width: 112 });
     }
   }
-  for (let i = 0; i < 140; i++) {
-    const x = (i * 379 + 41) % 2430,
-      z = (i * 193 + 110) % 1480;
-    if (
-      buildingAllowed(x, z, 6) &&
-      !buildings.some(
-        (b) =>
-          Math.abs(x - b.x) < b.width / 2 + 17 &&
-          Math.abs(z - b.z) < b.depth / 2 + 17,
-      )
-    )
-      tree(x, z, i);
+  for (const t of sceneryTrees) tree(t.x, t.z, t.seed);
+  for (const lamp of sceneryLamps) {
+    cylinder(lamp.x, 26, lamp.z, 1.4, 52, "#728882");
+    box(lamp.x - 4, 52, lamp.z, 11, 2, 5, "#f7dba1");
   }
-  for (const p of boulevards)
-    for (const point of p) {
-      cylinder(point[0] + 30, 26, point[1], 1.4, 52, "#728882");
-      box(point[0] + 26, 52, point[1], 11, 2, 5, "#f7dba1");
+  for (const prop of streetProps) {
+    const id = propAsset(prop);
+    if (id && assets.get(id)) placements.push({ id, x: prop.x, y: groundElevation(prop.x, prop.z), z: prop.z, width: prop.width, depth: prop.depth, height: prop.kind === "bin" ? 8 : 12, yaw: Math.PI });
+    else for (const part of streetModel(prop)) {
+      const list = part.shape === "wheel" ? propWheels : part.shape === "bud" ? propBuds : part.shape === "cylinder" ? cylinders : facadeDetails;
+      list.push(part);
     }
+  }
+  for (const [index, id] of ["watercraft/boat-fishing-small", "watercraft/boat-row-small"].entries()) if (assets.get(id)) placements.push({ id, x: 1100 + index * 280, y: .4, z: 1610 + index * 8, width: 22, depth: 55, height: 30, yaw: Math.PI / 2 });
+  if (assets.get("trains/railroad-straight")) for (let i = 1; i < metroLine.length; i++) {
+    const a = metroLine[i - 1], b = metroLine[i], length = Math.hypot(b[0] - a[0], b[1] - a[1]);
+    for (let n = 20; n < length; n += 40) placements.push({ id: "trains/railroad-straight", x: a[0] + (b[0] - a[0]) * n / length, y: 3.1, z: a[1] + (b[1] - a[1]) * n / length, width: 10, height: 1, depth: 40, yaw: Math.atan2(b[0] - a[0], b[1] - a[1]), stretch: true });
+  }
+  const updateAssetLOD = assets.addWorldLOD(scene, placements);
+  host.dataset.assetPlacements = String(placements.length);
+  host.dataset.loadedAssets = String(assets.stats().loaded);
+  host.dataset.failedAssets = String(assets.stats().failed);
+  host.dataset.streetProps = String(streetProps.length);
   const dummy = new THREE.Object3D(),
     color = new THREE.Color();
+  const detailChunks: { mesh: THREE.InstancedMesh; x: number; z: number }[] = [];
   function batch(
     geometry: THREE.BufferGeometry,
     list: Solid[],
-    material = new THREE.MeshStandardMaterial({ roughness: 0.85 }),
+    material: THREE.Material = new THREE.MeshLambertMaterial(),
+    detail = false,
   ) {
+    if (detail) {
+      const groups = new Map<string, Solid[]>();
+      for (const s of list) { const key = `${Math.floor(s.x / 256)}:${Math.floor(s.z / 256)}`, group = groups.get(key) ?? []; group.push(s); groups.set(key, group); }
+      for (const [key, group] of groups) { const mesh = batch(geometry, group, material); const [x, z] = key.split(":").map(Number); detailChunks.push({ mesh, x: x * 256 + 128, z: z * 256 + 128 }); }
+      return new THREE.InstancedMesh(geometry, material, 0);
+    }
     const mesh = new THREE.InstancedMesh(
       geometry,
       material,
@@ -404,7 +491,7 @@ export function createCity(
     mesh.count = list.length;
     list.forEach((s, i) => {
       dummy.position.set(s.x, s.y, s.z);
-      dummy.rotation.set(0, s.angle ?? 0, 0);
+      dummy.rotation.set(0, s.angle ?? 0, s.tilt ?? 0);
       dummy.scale.set(s.w, s.h, s.d);
       dummy.updateMatrix();
       mesh.setMatrixAt(i, dummy.matrix);
@@ -416,15 +503,17 @@ export function createCity(
   }
   batch(new THREE.CylinderGeometry(0.5, 0.5, 1, 16), shadows);
   batch(new THREE.BoxGeometry(1, 1, 1), solids);
+  batch(new THREE.BoxGeometry(1, 1, 1), facadeDetails, new THREE.MeshLambertMaterial(), true);
   batch(new THREE.CylinderGeometry(0.5, 0.5, 1, 8), cylinders);
-  batch(new THREE.IcosahedronGeometry(0.5, 1), leaves);
-  const windowMaterial = new THREE.MeshStandardMaterial({
-    roughness: 0.35,
-    metalness: 0.15,
+  batch(new THREE.SphereGeometry(.5, 8, 4), leaves);
+  batch(new THREE.TorusGeometry(.42, .08, 4, 12), propWheels);
+  batch(new THREE.IcosahedronGeometry(.5, 0), propBuds, new THREE.MeshLambertMaterial(), true);
+  const windowMaterial = new THREE.MeshPhongMaterial({
+    shininess: 40,
     emissive: "#638082",
     emissiveIntensity: 0.12,
   });
-  batch(new THREE.BoxGeometry(1, 1, 1), windows, windowMaterial);
+  batch(new THREE.BoxGeometry(1, 1, 1), windows, windowMaterial, true);
   host.dataset.buildings = String(
     buildings.length +
       venues.filter(
@@ -436,88 +525,49 @@ export function createCity(
   );
   host.dataset.towers = String(buildings.filter((b) => b.tower).length);
 
-  // A shared mesh per body part keeps dozens of residents affordable on mobile.
-  const capacity = 72,
-    bodyParts: Record<string, THREE.InstancedMesh> = {};
-  const boxGeo = new THREE.BoxGeometry(1, 1, 1),
-    headGeo = new THREE.CylinderGeometry(0.5, 0.5, 1, 12);
-  for (const part of [
-    "torso",
-    "head",
-    "hair",
-    "hat",
-    "leftArm",
-    "rightArm",
-    "leftHand",
-    "rightHand",
-    "leftLeg",
-    "rightLeg",
-    "leftShoe",
-    "rightShoe",
-    "eyeL",
-    "eyeR",
-    "detail",
-    "badge",
-    "glassesL",
-    "glassesR",
-  ]) {
-    const mesh = new THREE.InstancedMesh(
-      part === "head" || part === "hat" ? headGeo : boxGeo,
-      new THREE.MeshStandardMaterial({ roughness: 0.8 }),
-      capacity,
-    );
-    mesh.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
-    mesh.count = 0;
-    mesh.frustumCulled = false;
-    mesh.userData.ids = [];
-    bodyParts[part] = mesh;
-    scene.add(mesh);
-  }
-  const riderVehicles = new THREE.InstancedMesh(
-    boxGeo,
-    new THREE.MeshStandardMaterial({ roughness: 0.55 }),
-    capacity,
-  );
-  scene.add(riderVehicles);
-  riderVehicles.count = 0;
-  riderVehicles.frustumCulled = false;
+  const ambience = createAmbience(scene);
+  host.dataset.fountainStreams = String(ambience.stats.fountainStreams);
+  host.dataset.cloudLobes = String(ambience.stats.cloudLobes);
+  const capacity = 72, people = createPeople(scene, capacity), boxGeo = people.geometry.box;
+  const modelActors = createModelActors(scene, assets);
+  host.dataset.assetActors = String(modelActors.ids.size);
   const trafficBody = new THREE.InstancedMesh(
       boxGeo,
       new THREE.MeshStandardMaterial({ roughness: 0.55 }),
-      26,
+      TRAFFIC_COUNT,
     ),
     trafficGlass = new THREE.InstancedMesh(
       boxGeo,
       new THREE.MeshStandardMaterial({ color: "#496d77", roughness: 0.3 }),
-      26,
+      TRAFFIC_COUNT,
     );
-  scene.add(trafficBody, trafficGlass);
+  const trafficWheels = new THREE.InstancedMesh(new THREE.CylinderGeometry(1,1,1,10),new THREE.MeshStandardMaterial({color:"#273c49",roughness:.9}),TRAFFIC_COUNT * 4);
+  const trafficLights = new THREE.InstancedMesh(boxGeo,new THREE.MeshStandardMaterial({emissive:"#ffe5a0",emissiveIntensity:.25}),TRAFFIC_COUNT * 4);
+  trafficWheels.frustumCulled=trafficLights.frustumCulled=false;
+  scene.add(trafficBody, trafficGlass, trafficWheels, trafficLights);
   trafficBody.frustumCulled = trafficGlass.frustumCulled = false;
+  const carIds = ["car-sedan", "car-hatchback", "car-taxi"].map(key => resolveModel(key)!);
+  const carModels = carIds.map(id => assets.compile(id));
+  const importedCars = carModels.every(Boolean) ? carModels.map(model => {
+    const mesh = new THREE.InstancedMesh(model!.geometry, model!.material, TRAFFIC_COUNT);
+    mesh.frustumCulled = false; mesh.instanceMatrix.setUsage(THREE.DynamicDrawUsage); scene.add(mesh); return mesh;
+  }) : [];
+  host.dataset.assetCars = String(importedCars.length);
   const ring = new THREE.Mesh(
-    new THREE.RingGeometry(15, 17, 40),
+    new THREE.RingGeometry(6, 7, 32),
     new THREE.MeshBasicMaterial({ color: "#ffe0a0", side: THREE.DoubleSide }),
   );
   ring.rotation.x = -Math.PI / 2;
   scene.add(ring);
-  const animalGroup = new THREE.Group();
-  scene.add(animalGroup);
-  const animalMeshes = Array.from({ length: 3 }, (_, i) => {
-    const g = new THREE.Group();
-    const mat = new THREE.MeshStandardMaterial({
-      color: ["#cda17a", "#807f73", "#748c94", "#bdac8e"][i],
-    });
-    const body = new THREE.Mesh(boxGeo, mat);
-    body.scale.set(10, 6, 6);
-    body.position.y = 5;
-    g.add(body);
-    const head = new THREE.Mesh(boxGeo, mat);
-    head.scale.set(5, 5, 5);
-    head.position.set(5, 9, 0);
-    g.add(head);
-    animalGroup.add(g);
-    return g;
-  });
-  const selectedLabel = label("An", 0, 62, 0, 48)!;
+  const fauna = createFauna(scene, people.geometry);
+  host.dataset.animalBatches = String(fauna.stats.batches);
+  const selectedLabel = label("An", 0, 25, 0, 14)!;
+  const shadowCanvas = document.createElement("canvas"); shadowCanvas.width = shadowCanvas.height = 64;
+  const shadowContext = shadowCanvas.getContext("2d")!, gradient = shadowContext.createRadialGradient(32, 32, 3, 32, 32, 31);
+  gradient.addColorStop(0, "rgba(28,44,41,.34)"); gradient.addColorStop(1, "rgba(28,44,41,0)");
+  shadowContext.fillStyle = gradient; shadowContext.fillRect(0, 0, 64, 64);
+  const contactShadows = new THREE.InstancedMesh(new THREE.PlaneGeometry(1, 1).rotateX(-Math.PI / 2), new THREE.MeshBasicMaterial({ map: new THREE.CanvasTexture(shadowCanvas), transparent: true, depthWrite: false }), capacity + TRAFFIC_COUNT);
+  contactShadows.frustumCulled = false; scene.add(contactShadows);
   let lastLabel = "",
     following = true,
     dead = false,
@@ -527,16 +577,21 @@ export function createCity(
     targetKey: number | undefined;
   let current: Actor | undefined,
     actors: Actor[] = [],
+    groundAnimals: ReturnType<typeof animalsAt> = [],
     lastSelected = "";
-  const previousPositions = new Map<string, Point>();
+  let socialPoses = new Map<string, SocialPose>(), exchanges: Exchange[] = [];
+  const walkDirector = new WalkDirector(), trafficDirector = new TrafficDirector(), socialDirector = new SocialDirector();
+  let cars: TrafficVehicle[] = [];
   let lastTime = Date.parse(input().world.born);
   let lastStatus = 0;
-  const viewOffset = new THREE.Vector3(200, 255, 350);
+  const viewOffset = new THREE.Vector3(48, 34, 62);
+  const cameraBuildings = [...venues.filter(v => !openVenue(v)).map(venueGeometry), ...buildings.map(b => ({ x:b.x,z:b.z,width:b.width,depth:b.depth }))];
   function focus(x: number, z: number, offset = viewOffset) {
     scene.fog = fog;
     controls.target.set(x, 15, z);
     camera.position.copy(controls.target).add(offset);
     controls.update();
+    for (const chunk of detailChunks) chunk.mesh.visible = Math.hypot(camera.position.x - chunk.x, camera.position.z - chunk.z) < 520;
   }
   focus(350, 280);
   const onStart = () => {
@@ -568,10 +623,11 @@ export function createCity(
     raycaster.setFromCamera(pointer, camera);
     // Include buildings so picking never selects a resident through a tower.
     const hit = raycaster
-      .intersectObjects(scene.children, false)
+      .intersectObjects(scene.children, true)
       .find((h) => h.object !== ring && h.object !== selectedLabel);
     if (!hit) return;
-    if (hit.object.userData.venue) callbacks.venue(hit.object.userData.venue);
+    if (hit.object.userData.actorId) callbacks.select(hit.object.userData.actorId);
+    else if (hit.object.userData.venue) callbacks.venue(hit.object.userData.venue);
     else if (
       hit.instanceId !== undefined &&
       hit.object.userData.ids?.[hit.instanceId]
@@ -595,308 +651,112 @@ export function createCity(
     camera.updateProjectionMatrix();
   });
   resize.observe(host);
-  const position = new THREE.Vector3(),
-    scale = new THREE.Vector3(),
-    rotation = new THREE.Quaternion(),
-    root = new THREE.Matrix4(),
-    local = new THREE.Matrix4(),
-    result = new THREE.Matrix4();
-  function part(
-    name: string,
-    index: number,
-    id: string,
-    x: number,
-    y: number,
-    z: number,
-    w: number,
-    h: number,
-    d: number,
-    tint: string,
-    angle = 0,
-  ) {
-    const mesh = bodyParts[name];
-    dummy.position.set(x, y, z);
-    dummy.scale.set(w, h, d);
-    if (w === 0) dummy.scale.setScalar(0);
-    dummy.rotation.set(angle, 0, 0);
-    dummy.updateMatrix();
-    local.copy(dummy.matrix);
-    result.multiplyMatrices(root, local);
-    mesh.setMatrixAt(index, result);
-    mesh.setColorAt(index, color.set(tint));
-    mesh.userData.ids[index] = id;
-  }
   const heading = new Map<string, number>();
-  function drawActors(seconds: number, world: World) {
-    for (const mesh of Object.values(bodyParts)) mesh.count = actors.length;
-    riderVehicles.count = actors.length;
-    actors.forEach((a, i) => {
-      const core = world.people.find((p) => p.id === a.id),
-        npc = world.living?.residents.find((p) => p.id === a.id);
-      const appearance: Appearance =
-        world.living?.appearances?.[a.id] ??
-        defaultAppearance(
-          a.id,
-          core?.role ??
-            `${npc?.roleId} ${world.living?.catalog.roles.find((r) => r.id === npc?.roleId)?.label}`,
-        );
-      const old = previousPositions.get(a.id),
-        moving =
-          old &&
-          Math.hypot(a.position[0] - old[0], a.position[1] - old[1]) > 0.05;
-      if (moving)
-        heading.set(
-          a.id,
-          Math.atan2(a.position[0] - old[0], a.position[1] - old[1]),
-        );
-      previousPositions.set(a.id, a.position);
-      const riding = a.walking && a.transport && a.transport !== "walk";
-      const yaw = heading.get(a.id) ?? 0.35,
-        s = core ? 1 : 0.83;
-      position.set(a.position[0], riding ? 8 : 2, a.position[1]);
-      rotation.setFromAxisAngle(up, yaw);
-      scale.setScalar(s);
-      root.compose(position, rotation, scale);
-      const swing = a.walking && !riding ? Math.sin(seconds * 8 + i) * 0.55 : 0;
-      part("torso", i, a.id, 0, 20, 0, 13, 13, 8, appearance.shirt);
-      part("head", i, a.id, 0, 32, 0, 9, 10, 9, appearance.skin);
-      part(
-        "hair",
-        i,
-        a.id,
-        0,
-        38,
-        -1,
-        appearance.hair === "bald" ? 0 : 10,
-        4,
-        9,
-        {
-          black: "#4a4e48",
-          brown: "#7a5d48",
-          gray: "#aeb4aa",
-          bald: "#ead2a2",
-        }[appearance.hair],
-      );
-      const gear =
-        themes.find((t) => t.id === appearance.theme)?.headgear ?? "none";
-      part(
-        "hat",
-        i,
-        a.id,
-        0,
-        gear === "chef" ? 42 : 39,
-        0,
-        gear === "none" ? 0 : 12,
-        gear === "chef" ? 10 : 5,
-        12,
-        gear === "hardhat"
-          ? "#edbc62"
-          : gear === "chef"
-            ? "#f1eadd"
-            : appearance.shirt,
-      );
-      for (const [side, sign] of [
-        ["left", -1],
-        ["right", 1],
-      ] as const) {
-        part(
-          `${side}Arm`,
-          i,
-          a.id,
-          sign * 9,
-          21,
-          0,
-          4,
-          12,
-          5,
-          appearance.shirt,
-          sign * swing,
-        );
-        part(
-          `${side}Hand`,
-          i,
-          a.id,
-          sign * 9,
-          13,
-          Math.sin(sign * swing) * 6,
-          4,
-          4,
-          4,
-          appearance.skin,
-        );
-        part(
-          `${side}Leg`,
-          i,
-          a.id,
-          sign * 3.6,
-          8,
-          0,
-          6,
-          12,
-          7,
-          appearance.trousers,
-          -sign * swing,
-        );
-        part(
-          `${side}Shoe`,
-          i,
-          a.id,
-          sign * 3.6,
-          2,
-          1 + Math.sin(-sign * swing) * 5,
-          6,
-          3,
-          9,
-          "#505d59",
-        );
+  function drawActors(seconds: number, world: World, dt: number) {
+    const updated = people.draw(world, actors, socialPoses, seconds, dt, camera, input().selected, modelActors.ids);
+    heading.clear(); for (const [id, yaw] of updated) heading.set(id, yaw);
+    modelActors.draw(world, actors, socialPoses, heading, seconds);
+  }
+  function traffic() {
+    let fallbackCars = cars;
+    if (importedCars.length) {
+      for (const mesh of importedCars) mesh.count = 0;
+      fallbackCars = [];
+      for (const [index, car] of cars.entries()) {
+        if (Math.hypot(camera.position.x - car.position[0], camera.position.z - car.position[1]) > 450) { fallbackCars.push(car); continue; }
+        const which = index % importedCars.length, mesh = importedCars[which], at = mesh.count++;
+        setAssetTransform(dummy, carModels[which]!.size, { id: carIds[which], x: car.position[0], y: groundElevation(...car.position), z: car.position[1], width: car.width, height: car.height, depth: car.length, yaw: car.yaw + Math.PI, stretch: true });
+        mesh.setMatrixAt(at, dummy.matrix);
       }
-      part("eyeL", i, a.id, -2, 33, 4.5, 1.2, 1.5, 0.8, "#35473d");
-      part("eyeR", i, a.id, 2, 33, 4.5, 1.2, 1.5, 0.8, "#35473d");
-      part(
-        "detail",
-        i,
-        a.id,
-        0,
-        appearance.face === "moustache" ? 30.5 : 29.5,
-        4.7,
-        appearance.face === "moustache" ? 5 : 2.7,
-        1,
-        0.8,
-        "#675744",
-      );
-      const glasses = appearance.face === "glasses";
-      part(
-        "glassesL",
-        i,
-        a.id,
-        -2.2,
-        33,
-        5,
-        glasses ? 3.5 : 0,
-        3,
-        0.6,
-        "#5a665d",
-      );
-      part(
-        "glassesR",
-        i,
-        a.id,
-        2.2,
-        33,
-        5,
-        glasses ? 3.5 : 0,
-        3,
-        0.6,
-        "#5a665d",
-      );
-      part(
-        "badge",
-        i,
-        a.id,
-        2.5,
-        22,
-        4.3,
-        3,
-        4,
-        0.8,
-        ["police", "worker", "firefighter"].includes(appearance.theme)
-          ? "#e6c581"
-          : "#e5dbbc",
-      );
-      dummy.position.set(a.position[0], 8, a.position[1]);
-      dummy.rotation.set(0, yaw, 0);
-      dummy.scale.set(
-        riding ? (["bus", "metro"].includes(a.transport!) ? 22 : 10) : 0,
-        10,
-        ["bus", "metro"].includes(a.transport!) ? 45 : 23,
-      );
-      if (!riding) dummy.scale.setScalar(0);
-      dummy.updateMatrix();
-      riderVehicles.setMatrixAt(i, dummy.matrix);
-      riderVehicles.setColorAt(i, color.set(appearance.shirt));
+      for (const mesh of importedCars) mesh.instanceMatrix.needsUpdate = true;
+    }
+    trafficBody.count = trafficGlass.count = fallbackCars.length;
+    trafficWheels.count = trafficLights.count = fallbackCars.length * 4;
+    fallbackCars.forEach((car, i) => {
+      const a = car.position, angle = car.yaw, dimensions = car;
+      dummy.rotation.set(0, angle, 0);
+      dummy.position.set(a[0], 9, a[1]);
+      dummy.scale.set(dimensions.width, dimensions.height, dimensions.length);
+      dummy.updateMatrix(); trafficBody.setMatrixAt(i, dummy.matrix);
+      trafficBody.setColorAt(i, color.set(["#dc876f", "#e2bb55", "#5c9e9d", "#96adb8"][i % 4]));
+      dummy.position.y += dimensions.height * .4;
+      dummy.scale.set(dimensions.width * .82, dimensions.height * .38, dimensions.length * .58);
+      dummy.updateMatrix(); trafficGlass.setMatrixAt(i, dummy.matrix);
+      for (let wheel = 0; wheel < 4; wheel++) {
+        const side = wheel % 2 === 0 ? -1 : 1, end = wheel < 2 ? -1 : 1;
+        const dx = side * dimensions.width * .48, dz = end * dimensions.length * .3;
+        dummy.position.set(a[0] + dx * Math.cos(angle) + dz * Math.sin(angle), 4, a[1] - dx * Math.sin(angle) + dz * Math.cos(angle));
+        dummy.rotation.set(0, angle, Math.PI / 2); dummy.scale.set(3.5, 2.5, 3.5); dummy.updateMatrix(); trafficWheels.setMatrixAt(i * 4 + wheel, dummy.matrix);
+        const lx = side * dimensions.width * .32, lz = end * dimensions.length * .505;
+        dummy.position.set(a[0] + lx * Math.cos(angle) + lz * Math.sin(angle), 9, a[1] - lx * Math.sin(angle) + lz * Math.cos(angle));
+        dummy.rotation.set(0, angle, 0); dummy.scale.set(3, 2, 1); dummy.updateMatrix(); trafficLights.setMatrixAt(i * 4 + wheel, dummy.matrix); trafficLights.setColorAt(i * 4 + wheel, color.set(end > 0 ? "#fff1b5" : "#ed7864"));
+      }
     });
-    for (const mesh of [...Object.values(bodyParts), riderVehicles]) {
+    for (const mesh of [trafficBody, trafficGlass, trafficWheels, trafficLights]) {
       mesh.instanceMatrix.needsUpdate = true;
       if (mesh.instanceColor) mesh.instanceColor.needsUpdate = true;
     }
   }
-  function traffic(seconds: number) {
-    for (let i = 0; i < 26; i++) {
-      const metro = i > 22,
-        path = (
-          metro ? metroLine : boulevards[i % boulevards.length]
-        ) as Point[];
-      const length = path
-          .slice(1)
-          .reduce(
-            (n, p, j) => n + Math.hypot(p[0] - path[j][0], p[1] - path[j][1]),
-            0,
-          ),
-        at = (seconds * (metro ? 38 : 22 + (i % 5) * 3) + i * 139) % length;
-      const a = along(path, at),
-        b = along(path, Math.min(length, at + 3));
-      const angle = Math.atan2(b[0] - a[0], b[1] - a[1]),
-        bus = i % 7 === 0;
-      dummy.rotation.set(0, angle, 0);
-      dummy.position.set(
-        a[0] + (metro ? 0 : Math.cos(angle) * 10),
-        metro ? 11 : 7,
-        a[1] - (metro ? 0 : Math.sin(angle) * 10),
-      );
-      dummy.scale.set(
-        metro || bus ? 16 : 10,
-        metro || bus ? 14 : 9,
-        metro ? 40 : bus ? 32 : 19,
-      );
-      dummy.updateMatrix();
-      trafficBody.setMatrixAt(i, dummy.matrix);
-      trafficBody.setColorAt(
-        i,
-        color.set(
-          metro
-            ? "#70a9a0"
-            : ["#c58c72", "#d5bb77", "#97b7a2", "#a8bcc4"][i % 4],
-        ),
-      );
-      dummy.position.y += 5;
-      dummy.scale.multiply(new THREE.Vector3(0.86, 0.45, 0.66));
-      dummy.updateMatrix();
-      trafficGlass.setMatrixAt(i, dummy.matrix);
-    }
-    trafficBody.instanceMatrix.needsUpdate =
-      trafficGlass.instanceMatrix.needsUpdate = true;
-    if (trafficBody.instanceColor) trafficBody.instanceColor.needsUpdate = true;
-  }
+  let activeQuality = input().quality;
+  let drawnFrames = 0;
   function tick(stamp: number) {
     if (dead) return;
     frame = requestAnimationFrame(tick);
-    if (stamp - lastDraw < 32) return;
+    if (document.hidden || stamp - lastDraw < 15) return;
+    const dt = Math.min(.15, Math.max(.001, (stamp - lastDraw) / 1000));
     lastDraw = stamp;
     const state = input(),
       { world, selected } = state,
       now = Date.now() + (state.clockOffsetMs ?? 0);
+    if (activeQuality !== state.quality) {
+      activeQuality = state.quality;
+      renderer.setPixelRatio(pixelRatio(activeQuality, devicePixelRatio));
+      renderer.setSize(host.clientWidth, host.clientHeight);
+    }
     lastTime = now; // simulationTime/worldTime apply the persisted pause anchor.
-    if (stamp - lastState > 100 || selected !== lastSelected) {
-      actors = [
+    const seconds = simulationTime(world, lastTime) / 1000;
+    {
+      const rawActors = [
         ...actorsAt(world, lastTime),
         ...(world.living
           ? crowdAt(world.living, world, lastTime, selected)
           : []),
       ].slice(0, capacity);
+      const animalProjections = animalsAt(world, lastTime);
+      cars = trafficDirector.frame(seconds, [...actors, ...groundAnimals].map(a => a.position));
+      const safeAll = walkDirector.frame(world, rawActors, seconds, cars, animalProjections);
+      const byId = new Map(safeAll.map(a => [a.id, a]));
+      groundAnimals = animalProjections.map(a => ({ ...a, ...byId.get(a.id) }));
+      const safeActors = safeAll.filter(a => rawActors.some(p => p.id === a.id));
+      const social = socialDirector.frame(world, safeActors, state.events ?? [], lastTime, null, true);
+      actors = social.actors;
+      socialPoses = social.poses;
+      exchanges = social.exchanges;
       current = actors.find((a) => a.id === selected) ?? actors[0];
       if (lastSelected !== selected) {
         following = true;
-        if (current) focus(current.position[0], current.position[1]);
+        if (current) {
+          const shot = characterShot(current, actors.find(a => a.id === socialPoses.get(current!.id)?.peerId), heading.get(current.id) ?? .35, cameraBuildings, camera.aspect);
+          scene.fog = fog;
+          controls.target.set(...shot.target);
+          camera.position.set(...shot.position);
+          controls.update();
+        }
       }
       lastSelected = selected;
+    }
+    if (stamp - lastState > 500) {
       lastState = stamp;
-      const daylight = worldTime(world, lastTime).daylight;
-      ambient.intensity = 1.0 + daylight * 1.6;
-      sun.intensity = 0.25 + daylight * 2.95;
+      const time = worldTime(world, lastTime);
+      const daylight = time.daylight;
+      ambient.intensity = .5 + daylight * .8;
+      sun.intensity = .2 + daylight * 2.4;
       windowMaterial.emissiveIntensity = 0.15 + (1 - daylight) * 0.7;
-      (scene.background as THREE.Color).set(
-        daylight < 0.35 ? "#6f8796" : "#d6e4df",
-      );
+      const golden = time.phase === "dawn" || time.phase === "dusk";
+      (scene.background as THREE.Color).set("#142638").lerp(new THREE.Color(golden ? "#ffd4ac" : "#94d4f1"), daylight);
+      sun.color.set(golden ? "#ffb77e" : "#fff0d8");
+      sun.position.set(Math.cos(time.hour / 24 * Math.PI * 2) * 1000, 200 + daylight * 1100, 600);
+      renderer.toneMappingExposure = .85 + daylight * .15;
       fog.color.copy(scene.background as THREE.Color);
     }
     if (state.target && state.target.key !== targetKey) {
@@ -904,21 +764,20 @@ export function createCity(
       targetKey = state.target.key;
       focus(state.target.x, state.target.y);
     }
-    const seconds = simulationTime(world, lastTime) / 1000;
-    drawActors(seconds, world);
-    traffic(seconds);
-    animalsAt(world, lastTime)
-      .slice(0, animalMeshes.length)
-      .forEach((a, i) => {
-        animalMeshes[i].position.set(
-          a.position[0],
-          a.species === "bird" ? 25 : 0,
-          a.position[1],
-        );
-      });
+    ambience.update(seconds);
+    drawActors(seconds, world, dt);
+    traffic();
+    contactShadows.count = actors.length + cars.length;
+    for (let i = 0; i < contactShadows.count; i++) {
+      const car = i >= actors.length ? cars[i - actors.length] : null, point = car?.position ?? actors[i].position;
+      dummy.position.set(point[0], groundElevation(point[0], point[1]) + .04, point[1]); dummy.rotation.set(0, car?.yaw ?? 0, 0); dummy.scale.set(car ? car.width * 1.35 : 11, 1, car ? car.length * 1.2 : 8); dummy.updateMatrix(); contactShadows.setMatrixAt(i, dummy.matrix);
+    }
+    contactShadows.instanceMatrix.needsUpdate = true;
+    fauna.draw(groundAnimals, seconds, dt, world.paused);
+    host.dataset.animalPositions = JSON.stringify(groundAnimals.map(a => ({ id: a.id, species: a.species, position: a.position })));
     if (current) {
       ring.position.set(current.position[0], 2, current.position[1]);
-      selectedLabel.position.set(current.position[0], 55, current.position[1]);
+      selectedLabel.position.set(current.position[0], 25, current.position[1]);
       if (lastLabel !== current.name) {
         // Reuse the single selected label texture.
         lastLabel = current.name;
@@ -935,18 +794,17 @@ export function createCity(
         selectedLabel.material.map!.needsUpdate = true;
       }
       if (following) {
-        const next = new THREE.Vector3(
-            current.position[0],
-            15,
-            current.position[1],
-          ),
-          delta = next.sub(controls.target).multiplyScalar(0.2);
-        controls.target.add(delta);
-        camera.position.add(delta);
+        const partnerId = socialPoses.get(current.id)?.peerId;
+        const shot = characterShot(current, actors.find(a => a.id === partnerId), heading.get(current.id) ?? .35, cameraBuildings, camera.aspect);
+        const alpha = 1 - Math.exp(-2.8 * dt);
+        controls.target.lerp(new THREE.Vector3(...shot.target), alpha);
+        camera.position.lerp(new THREE.Vector3(...shot.position), alpha);
       }
     }
     controls.update();
     // Keep signs subordinate to residents; distant districts need no text clutter.
+    updateAssetLOD(camera);
+    for (const chunk of detailChunks) chunk.mesh.visible = Math.hypot(camera.position.x - chunk.x, camera.position.z - chunk.z) < 520;
     const pixelScale =
       (2 * Math.tan(THREE.MathUtils.degToRad(camera.fov) / 2)) /
       Math.max(1, host.clientHeight);
@@ -962,18 +820,28 @@ export function createCity(
     renderer.render(scene, camera);
     if (stamp - lastStatus > 180) {
       lastStatus = stamp;
-      const speech = livingSpeechAt(world, lastTime),
+      const exchange = exchanges.find(e => e.a === current?.id || e.b === current?.id) ?? exchanges.find(e => {
+        const a = actors.find(a => a.id === e.a);
+        return a && current && Math.hypot(a.position[0] - current.position[0], a.position[1] - current.position[1]) < 75;
+      });
+      const speech = exchange?.speech,
         speaker = actors.find((a) => a.id === speech?.speaker);
+      const listener = actors.find(a => a.id === (exchange?.a === speaker?.id ? exchange?.b : exchange?.a));
       const p = new THREE.Vector3(
         speaker?.position[0] ?? 0,
-        74,
+        25,
         speaker?.position[1] ?? 0,
       ).project(camera);
       callbacks.status({
         name: current?.name ?? "An",
         activity: current?.activity ?? "Đang sinh hoạt",
         following,
+        walking: current?.walking ?? false,
+        location: current?.location ?? "",
         speech: speech?.text ?? "",
+        speaker: speaker?.name ?? "",
+        listener: listener?.name ?? "",
+        conversationSource: exchange?.source ?? "",
         x: ((p.x + 1) * host.clientWidth) / 2,
         y: ((1 - p.y) * host.clientHeight) / 2,
         visible:
@@ -985,8 +853,23 @@ export function createCity(
       });
     }
     host.dataset.ready = "true";
+    host.dataset.paused = String(world.paused);
+    host.dataset.frame = String(++drawnFrames);
+    host.dataset.pixelRatio = String(renderer.getPixelRatio());
+    host.dataset.triangles = String(renderer.info.render.triangles);
+    host.dataset.geometries = String(renderer.info.memory.geometries);
+    host.dataset.textures = String(renderer.info.memory.textures);
+    host.dataset.walking = String(current?.walking ?? false);
+    host.dataset.position = current?.position.map(n=>n.toFixed(2)).join(",") ?? "";
+    host.dataset.personHeight = String(40 * HUMAN_SCALE);
+    host.dataset.carLength = String(VEHICLES.car.length);
     host.dataset.actors = String(actors.length);
+    host.dataset.exchanges = String(exchanges.length);
+    host.dataset.socialCast = JSON.stringify(actors.filter(a => socialPoses.get(a.id)?.gesture !== "idle" && socialPoses.has(a.id)).map(a => ({ id: a.id, position: a.position, ...socialPoses.get(a.id) })));
     host.dataset.selected = current?.id ?? "";
+    host.dataset.humanBatches = String(people.stats().batches);
+    host.dataset.humanInstances = String(people.stats().instances);
+    host.dataset.modelActors = JSON.stringify(modelActors.snapshots());
     host.dataset.drawCalls = String(renderer.info.render.calls);
     host.dataset.camera = [
       camera.position.x,
@@ -999,12 +882,15 @@ export function createCity(
   frame = requestAnimationFrame(tick);
   return {
     zoom(factor) {
+      following = false;
+      host.dataset.view = "orbit";
       const offset = camera.position.clone().sub(controls.target);
       offset.multiplyScalar(factor);
-      offset.clampLength(100, 11000);
+      offset.clampLength(42, 11000);
       camera.position.copy(controls.target).add(offset);
     },
     follow() {
+      callbacks.select("an");
       host.dataset.view = "follow";
       following = true;
       if (current) focus(current.position[0], current.position[1]);
@@ -1050,6 +936,7 @@ export function createCity(
             if (map) textures.add(map);
           }
       });
+      assets.collectAndClose({ geometries, materials, textures });
       geometries.forEach((g) => g.dispose());
       materials.forEach((m) => m.dispose());
       textures.forEach((t) => t.dispose());

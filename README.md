@@ -1,5 +1,15 @@
 # Xóm AI — Khu phố của những trí tuệ nhỏ
 
+> Chi tiết nhân vật, rig chuyển động, đạo cụ và hoạt cảnh: [review bản 11](docs/VISUAL_DETAIL_REVIEW.md).
+
+> Vật cản nhỏ, khoảng riêng, camera điện ảnh theo An và sinh hoạt chủ động: [review bản10](docs/SPACE_CAMERA_AUTONOMY.md).
+
+> Sửa phản hồi thực tế về thoại/lag/xuyên nhà: [bằng chứng và giới hạn bản9](docs/GROUND_AND_MOTION_REVIEW.md).
+
+> Cập nhật nhân vật/đối thoại: [review và bằng chứng](docs/SOCIAL_REVIEW.md), [biên kịch bằng agent](docs/SOCIAL_SCRIPT_BIBLE.md), [prompt và chỉ đạo hình ảnh](docs/VISUAL_DIRECTION.md). Nguồn production đang chạy được ghi riêng trong docs/releases/latest.json.
+
+> Production version11 (27/10/2026), owner-private: xem [nhật ký phát hành](docs/releases/2026-10-27-production.md), [quy trình phục hồi](docs/PRODUCTION_RUNBOOK.md) và [khảo sát nguồn map3D](docs/MAP_3D_SOURCES.md).
+
 > Mới nhất: [Thành phố 3D và cao ốc](docs/THREE_WORLD.md) — renderer mặc định mới, điều khiển và bằng chứng local.
 
 > Cập nhật Codex Cloud: xem [docs/CLOUD_REVIEW.md](docs/CLOUD_REVIEW.md) cho ba phase mới, bằng chứng local và các phần còn thiếu. Các trạng thái live trong tài liệu bàn giao dưới đây chưa được xác minh lại.
@@ -36,10 +46,9 @@ Yêu cầu: **Node.js `>=22.13.0`** (khuyến nghị Node 22.18+ hoặc Node 24+
 # Nếu công cụ giải nén của bạn ẩn dotfile, khôi phục từ bản dự phòng:
 # cp -n gitignore.txt .gitignore && cp -n npmrc.txt .npmrc
 
-corepack pnpm install --frozen-lockfile
-node node_modules/vinext/dist/cli.js build
-node --import ./scripts/sites-env.mjs ./node_modules/wrangler/bin/wrangler.js d1 execute DB --local --config dist/server/wrangler.json --persist-to .wrangler/state --file drizzle/0000_deep_firebird.sql
-node --import ./scripts/sites-env.mjs ./node_modules/wrangler/bin/wrangler.js d1 execute DB --local --config dist/server/wrangler.json --persist-to .wrangler/state --file drizzle/0001_living_world_and_training.sql
+npm run install:ci
+npm run build
+node scripts/setup-local.mjs # migration 0000–0003, không reset dữ liệu
 npm run dev
 ```
 
@@ -93,3 +102,8 @@ Trang chủ nay là không gian live gần toàn màn hình: 33 địa điểm, 
 Mỗi cư dân có mô hình hành vi học từ phản hồi đã hoàn tất; ba động vật có policy theo loài. Archive trải nghiệm có thể xuất bằng `npm run training:export`. Đây chưa phải fine-tune trọng số Qwen.
 
 Đọc [báo cáo thành phố](docs/URBAN_WORLD.md) và [ba hướng sản phẩm](docs/DECISIONS/ADR-0009-shared-world-three-product-directions.md): quan sát An, phim trường giáo dục và nhân vật cá nhân. Các hướng public/video/multi-user chưa được mở trong đợt này.
+
+## Độ tin cậy, nội thất và hồ sơ cuộc đời
+Xem `docs/INTERIORS_AND_RELEASE.md` cho phạm vi đã làm, cách cấu hình quyền chủ sở hữu, scheduler opt-in và bằng chứng kiểm thử. Không mở public chỉ bằng đổi audience.
+
+> Bản7 sửa tỷ lệ/độ nét, thêm chat và lượt mở theo phiên; xem [báo cáo trải nghiệm và kiểm thử](docs/EXPERIENCE_REVIEW.md). Lịchcloud mỗi giờ đã bật, lần chạy đầu cần theo dõi; không coi đây là SLA24/7.

@@ -2,8 +2,8 @@ import { z } from "zod";
 import { PLACES, STEP_KINDS } from "../event-schema.ts";
 import scenariosData from "../../data/city/scenarios.json" with { type: "json" };
 import type { LivingState, RealContext } from "./schema.ts";
-import type { World } from "../world";
-import { computeSimMs, hashSeed } from "../clock.ts";
+import type { World, PersonPlan } from "../world";
+import { computeSimMs, hashSeed, worldTime } from "../clock.ts";
 export const scenarioSchema = z
   .object({
     id: z.string().regex(/^[a-z][a-z0-9-]{0,60}$/),
@@ -31,6 +31,8 @@ export const scenarios = z
   .max(100)
   .parse(scenariosData);
 export type Scenario = (typeof scenarios)[number];
+const scenariosByTag = new Map<string, Scenario[]>();
+for (const scenario of scenarios) scenariosByTag.set(scenario.tag, [...(scenariosByTag.get(scenario.tag) ?? []), scenario]);
 export type LearnedAction = { trials: number; meanReward: number };
 export type AgentLearning = {
   adult: true;
@@ -45,6 +47,8 @@ export type AgentLearning = {
   lastTrainedAt?: string;
   lastReward?: number;
   citations?: number;
+  needsUpdatedSimMs?: number;
+  recentActions?: string[];
   pending?: {
     id: string;
     scenarioId: string;
@@ -114,6 +118,8 @@ export function chooseScenario(
     (context.weather.precipitation ?? 0) > 0;
   const candidates = scenarios
     .filter((s) => !s.adultOnly || agent.adult)
+    // Accidents and violations are reactive events, never purposeful errands.
+    .filter((s) => !["minor-injury", "traffic-check", "job-change"].includes(s.id))
     .filter((s) => !rainy || !["sport", "ecology"].includes(s.tag));
   return candidates
     .map((s) => {
@@ -121,6 +127,16 @@ export function chooseScenario(
       const exploration =
         0.45 * Math.sqrt(Math.log(agent.samples + 2) / (model.trials + 1));
       const affinity = s.place === rolePlace ? 0.3 : 0;
+      const energyNeed = Math.max(0, (70 - agent.energy) / 70), foodNeed = Math.max(0, (agent.hunger - 15) / 85);
+      const needs = energyNeed * s.energy / 18 * .8 - foodNeed * s.hunger / 28 * .9;
+      const recent = agent.recentActions ?? [], repetitions = recent.filter(id => id === s.id).length;
+      const novelty = -repetitions * .12 - (recent.at(-1) === s.id ? .18 : 0);
+      const satiety = s.kind === "eat" && agent.hunger < 35 ? -.3 : 0;
+      const unnecessaryRest = s.id === "rest-home" && agent.energy >= 65 ? -.35 : 0;
+      const evening = context.hour >= 18 ? (s.kind === "work" ? -.25 : ["social", "play"].includes(s.kind) ? .12 : 0) : 0;
+      const taste = (hashSeed(`${id}:${s.tag}`) % 101 - 50) / 500;
+      const related = (scenariosByTag.get(s.tag) ?? []).filter(other => other.id !== s.id).map(other => agent.actions[other.id]).filter(Boolean);
+      const transfer = related.length ? related.reduce((sum, action) => sum + action.meanReward * Math.min(1, action.trials / 3), 0) / related.length * .12 : 0;
       const tie =
         (hashSeed(
           `${id}-${context.date}-${Math.floor(context.hour * 4)}-${s.id}`,
@@ -129,7 +145,7 @@ export function chooseScenario(
         5000;
       return {
         scenario: s,
-        score: model.meanReward + exploration + affinity + tie,
+        score: model.meanReward * .7 + exploration + affinity + needs + novelty + satiety + unnecessaryRest + evening + taste + transfer + tie,
       };
     })
     .sort((a, b) => b.score - a.score)[0].scenario;
@@ -174,24 +190,39 @@ export function settleLearning(
     -1,
     Math.min(
       1,
-      0.1 +
-        (agent.skill - before.skill) * 0.2 +
-        (agent.energy - before.energy) * 0.015 +
-        (before.hunger - agent.hunger) * 0.01 +
-        (agent.health - before.health) * 0.025,
+      (agent.skill - before.skill) * .16 +
+        (agent.energy - before.energy) * (.008 + (100 - before.energy) / 100 * .018) +
+        (before.hunger - agent.hunger) * (.005 + before.hunger / 100 * .02) +
+        (agent.health - before.health) * (.015 + (100 - before.health) / 100 * .04),
     ),
   );
   fitAction(agent, scenario.id, reward, now);
+  agent.recentActions = [...(agent.recentActions ?? []), scenario.id].slice(-6);
   agent.memories = [
     ...agent.memories,
     `${now.slice(0, 10)}: ${scenario.title}; phản hồi ${reward.toFixed(2)}.`,
   ].slice(-24);
   return true;
 }
+export function hasUnfinishedLearning(agent: AgentLearning | undefined, plan: PersonPlan | undefined, simMs: number) {
+  const pending = agent?.pending;
+  return !!pending && !pending.completed && plan?.simStartedAt === pending.startedSimMs && simMs < pending.startedSimMs + pending.durationMs;
+}
+
+/** Needs drift in simulation time; legacy agents start at the current anchor.
+ * This never awards a completed meal, skill or income just for elapsed time. */
+function advanceNeeds(agent: AgentLearning, id: string, simMs: number, sleeping: boolean) {
+  const elapsed = Math.min(360, Math.max(0, (simMs - (agent.needsUpdatedSimMs ?? simMs)) / 60000));
+  const metabolism = .9 + hashSeed(id) % 21 / 100;
+  agent.energy = Math.max(0, Math.min(100, agent.energy + (sleeping ? .12 : -.035) * elapsed * metabolism));
+  agent.hunger = Math.max(0, Math.min(100, agent.hunger + (sleeping ? .012 : .04) * elapsed * metabolism));
+  agent.needsUpdatedSimMs = simMs;
+}
 /** Train completed plans for everyone, then schedule a bounded rotating cohort. */
-export function prepareLearning(world: World, state: LivingState, now: number) {
+export function prepareLearning(world: World, state: LivingState, now: number, collect?: (e: Experience) => void) {
   const learning: LearningPopulation = structuredClone(state.learning ?? {});
   const simMs = computeSimMs(world.born, world.clock, now);
+  const hour = worldTime(world, now).hour;
   const all = [
     ...world.people.map((p) => ({ id: p.id, plan: p.plan })),
     ...state.residents.map((r) => ({ id: r.id, plan: r.plan })),
@@ -213,6 +244,7 @@ export function prepareLearning(world: World, state: LivingState, now: number) {
     const existingCore = world.people.find((p) => p.id === person.id);
     if (existingCore)
       agent.skill = Math.max(agent.skill, Math.min(100, existingCore.skill));
+    advanceNeeds(agent, person.id, simMs, hour < 6 || hour >= 22);
     const trained = settleLearning(
       agent,
       simMs,
@@ -221,7 +253,7 @@ export function prepareLearning(world: World, state: LivingState, now: number) {
     );
     if (trained && agent.pending) {
       const action = agent.actions[agent.pending.scenarioId];
-      experiences.push({
+      const experience: Experience = {
         id: agent.pending.id,
         actorId: person.id,
         scenarioId: agent.pending.scenarioId,
@@ -229,7 +261,9 @@ export function prepareLearning(world: World, state: LivingState, now: number) {
         reward: agent.lastReward ?? action.meanReward,
         source: "simulation",
         model: "contextual-bandit-v1",
-      });
+      };
+      experiences.push(experience);
+      collect?.(experience);
       const npc = state.residents.find((r) => r.id === person.id);
       if (npc)
         npc.memories = [...npc.memories, agent.memories.at(-1)!].slice(-20);
@@ -241,10 +275,19 @@ export function prepareLearning(world: World, state: LivingState, now: number) {
   return learning;
 }
 export function cohortIds(state: LivingState, slot: number) {
-  const ids = state.residents.map((r) => r.id);
-  const take = Math.min(12, ids.length);
+  const ids = state.residents.map((r) => r.id).sort((a, b) => hashSeed(a) - hashSeed(b) || a.localeCompare(b));
+  const take = Math.min(24, Math.max(12, Math.ceil(ids.length / 10)), ids.length);
+  if (!take) return [];
+  const groups = Math.ceil(ids.length / take);
+  const gcd = (a: number, b: number): number => b ? gcd(b, a % b) : a;
+  let stride = Math.max(1, Math.floor(groups / 3));
+  while (gcd(stride, groups) !== 1) stride++;
+  // Five-minute viewers and hourly cloud runs both visit every group. The old
+  // slot*12 formula repeatedly selected the same subset on hourly runs.
+  const withinHour = ((slot % 12) + 12) % 12;
+  const group = ((Math.floor(slot / 12) + withinHour * stride) % groups + groups) % groups;
   return Array.from(
     { length: take },
-    (_, i) => ids[(slot * 12 + i) % ids.length],
+    (_, i) => ids[(group * take + i) % ids.length],
   );
 }

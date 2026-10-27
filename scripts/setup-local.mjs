@@ -41,6 +41,10 @@ else if (tables.length !== 2)
 execute(["--file", "drizzle/0001_living_world_and_training.sql"]);
 execute(["--file", "drizzle/0002_living_context_and_turns.sql"]);
 execute(["--file", "drizzle/0003_agent_experiences.sql"]);
+execute(["--file", "drizzle/0004_release_schema_reconciliation.sql"]);
+const visits = JSON.parse(execute(["--json", "--command", "SELECT name FROM sqlite_master WHERE type='table' AND name IN ('site_metrics','view_sessions','visitor_exchanges')"]));
+if (visits[0].results.length === 0) execute(["--file", "drizzle/0005_visits_and_interactions.sql"]);
+else if (visits[0].results.length !== 3) throw new Error("Partial interaction schema; inspect before repair.");
 console.log(
   "Local D1 schema ready; existing snapshots and episodes preserved.",
 );
@@ -56,3 +60,7 @@ execute([
   "--command",
   "INSERT OR IGNORE INTO agent_experiences (id,actor_id,created_at,data) SELECT json_extract(value,'$.id'),json_extract(value,'$.actorId'),json_extract(value,'$.at'),value FROM worlds,json_each(worlds.data,'$.living.experiences') WHERE worlds.id='home'",
 ]);
+
+// Explicit local-only authorization. Worker also requires a loopback URL.
+const localVars = existsSync(".dev.vars") ? readFileSync(".dev.vars", "utf8") : "";
+if (!/^XOM_LOCAL_ADMIN=/m.test(localVars)) appendFileSync(".dev.vars", "\nXOM_LOCAL_ADMIN=true\n");

@@ -1,0 +1,30 @@
+{
+  "renderer": "Chromium SwiftShader",
+  "fixture": "local synthetic An room→Bình room",
+  "frames": 12,
+  "movingFrames": 11,
+  "staleFrameRatio": 0.0,
+  "maximumStepUnits": 2.4084019598065813,
+  "collisionCount": 0,
+  "stats": {
+    "buildings": "279",
+    "towers": "150",
+    "ready": "true",
+    "paused": "false",
+    "frame": "23",
+    "pixelRatio": "1.5",
+    "triangles": "369600",
+    "geometries": "15",
+    "textures": "5",
+    "walking": "true",
+    "position": "317.21,253.81",
+    "personHeight": "17.5",
+    "carLength": "44",
+    "actors": "27",
+    "exchanges": "6",
+    "socialCast": "[{\"id\":\"binh\",\"position\":[790,219],\"peerId\":\"chi\",\"source\":\"script\",\"speaking\":false,\"gesture\":\"listen\"},{\"id\":\"chi\",\"position\":[818,219],\"peerId\":\"binh\",\"source\":\"script\",\"speaking\":true,\"gesture\":\"nod\"},{\"id\":\"neighbor-1\",\"position\":[1072,960],\"peerId\":\"neighbor-3\",\"source\":\"script\",\"speaking\":false,\"gesture\":\"listen\"},{\"id\":\"neighbor-3\",\"position\":[1058,960],\"peerId\":\"neighbor-1\",\"source\":\"script\",\"speaking\":true,\"gesture\":\"laugh\"},{\"id\":\"neighbor-5\",\"position\":[1100,974],\"peerId\":\"neighbor-7\",\"source\":\"script\",\"speaking\":false,\"gesture\":\"listen\"},{\"id\":\"neighbor-7\",\"position\":[1114,974],\"peerId\":\"neighbor-5\",\"source\":\"script\",\"speaking\":true,\"gesture\":\"laugh\"},{\"id\":\"neighbor-12\",\"position\":[1100,988],\"peerId\":\"neighbor-14\",\"source\":\"script\",\"speaking\":false,\"gesture\":\"listen\"},{\"id\":\"neighbor-14\",\"position\":[1114,988],\"peerId\":\"neighbor-12\",\"source\":\"script\",\"speaking\":true,\"gesture\":\"laugh\"},{\"id\":\"neighbor-16\",\"position\":[1128,988],\"peerId\":\"neighbor-18\",\"source\":\"script\",\"speaking\":false,\"gesture\":\"listen\"},{\"id\":\"neighbor-18\",\"position\":[1142,988],\"peerId\":\"neighbor-16\",\"source\":\"script\",\"speaking\":true,\"gesture\":\"laugh\"},{\"id\":\"neighbor-21\",\"position\":[1114,1002],\"peerId\":\"neighbor-23\",\"source\":\"script\",\"speaking\":false,\"gesture\":\"listen\"},{\"id\":\"neighbor-23\",\"position\":[1128,1002],\"peerId\":\"neighbor-21\",\"source\":\"script\",\"speaking\":true,\"gesture\":\"laugh\"}]",
+    "selected": "an",
+    "drawCalls": "34",
+    "camera": "398,85,367"
+  }
+}

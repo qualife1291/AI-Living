@@ -76,3 +76,83 @@
 - Camera orbit/pan/zoom/follow/skyline/overview, HUD/modal cũ, đổi 2D nhẹ, fallback không WebGL2/mất context, dispose context/resources khi tháo. OSM vẫn là khảo sát 2D, không map-match; skyline/chiều cao là hư cấu.
 - Hướng dẫn tiếp nhận và kiểm chứng: docs/THREE_WORLD.md. Kiểm tra thiết bị thật/LOD/nội thất/thời tiết 3D tiếp tục là backlog; không tuyên bố fps hardware hay fine-tune Qwen.
 - 12 suite thuần, TypeScript/lint/build và frozen-lockfile đạt. Chromium SwiftShader WebGL2 desktop/mobile chạy cả dev và Workers build local; kiểm tra chọn cư dân/địa điểm, camera/HUD/panel, 3D↔2D, OSM và fallback không/mất WebGL. Lưu browser QA có thể chạy lại ở scripts/qa-three.mjs; sáu ảnh three-*-preview.png là cloud local, không phải production. Font Google bị CA lỗi trong QA, dùng fallback; không bỏ TLS. Chunk Three >500KB đã tải động; chưa benchmark thiết bị thật.
+
+## Hardening và nội thất — 25/10/2026
+- Xem docs/INTERIORS_AND_RELEASE.md: collector archive giữ batch>200, bound proposal, fail-closed owner gate Worker, health503, context deadline/negative cache, scheduled rules opt-in.
+- Nội thất Three.js mặt cắt với furniture/cabin minh họa; hồ sơ tuổi mô phỏng/ký ức. Chưa indoor graph hay vận chuyển NPC bằng cabin. Nhân vật hiển thị lấy occupancy thật; không giả tạo cuộc sống để làm ảnh.
+- Unit/check/lint/build và API isolated local240 samples/admin403 đạt; Chromium SwiftShader desktop/mobile390 city/profile/interior/floor không lỗi/tràn. Ảnh thật docs/screenshots/hardening. Chưa production hoặc benchmark điện thoại vật lý.
+- Người dùng yêu cầu chủ động push checkpoints và memory để tránh mất context; làm theo AGENTS.md mục13. Nhánh `work`; không tự merge/deploy bằng sự có mặt của source.
+
+## Production version6 và OSM3D — 25/10/2026
+- Đã phát hành Sites native succeeded lúc17:30 giờ Việt Nam, giữ owner-private. IDs/SHA/kết quả ở docs/releases/latest.json; quy trình phục hồi docs/PRODUCTION_RUNBOOK.md. Source đang chạy71d657f; các commit nhật ký sau đó không phải thay source đang chạy.
+- Backup đầy đủ world+2events trước additive migration; DB từ2 lên9 bảng qua0004 schema-only/idempotent, không sửa SQL0000–0003. Journal trước đây chỉ0000; snapshot0004 nối snapshot0000. Healthready/worldrevision3/lịch sử/nhân vật giữ nguyên; writer service POSTlearning200/updated0.
+- Runtime XOM_OWNER_PRIVATE_ORIGIN khớp Site được native xác nhận chỉowner; cần gỡ trước đổi audience và chuyển owner ID cụ thể. Local flags không lên production.
+- OSM khảo sát3D912 polygon kín, mergegeometry <=8drawcalls, không hiển thị cư dân chưa mapmatch. Snapshot cũ height không có: tất cảước lượng12m, không gán chiều cao đo đạc. Importer giữ height/levels cho lần cập nhật sau. Tài liệu nghiên cứu nguồn chính thức tại MAP_3D_SOURCES.
+- Frozen/check/lint/unit/build đạt; migration4 lặp trên old/extendedDB không mấtworld. Chromium desktop/mobile390 OSM912/estimated/noJS/nooverflow đạt; ảnh local docs/screenshots/map3d. Production API/native verified, chưa browser owner login.
+- Automation cũ paused đã xác minh qua peek; giữpaused, không duplicate. Chưa cron/paidAI/video. Source Sites main có lịch sử riêng đã giữ bằng merge ancestry; checkpoint GitHub nhánhwork và Site source được phân biệt trong runbook.
+
+## Production version7 — độ nét, tỷ lệ và nhịp sống
+- Người dùng yêu cầu review chuyên sâu: code/v6 xác nhận không persisted livingTurn,3D bỏ speechAt, người40units còn xe19. Đã sửa người17.5/car44 (10units/m), bánhđènxe/đạo cụ, DPR3preset, HUDbỏblur và hồ sơcollapse, sửa responsecũ saupause bằngforcedrefresh+revision/timeguard.
+- Thêm views session30min khôngIP và visitorconversation có lưu/rules,3table migration0005 generatedappendonly. Clientpulsevisible60s tickslot15min idempotent. WorldGETcached-only/compact8events; refresh có harddeadline. Không gọi rulechat làLLM.
+- Nativeproductionv7succeeded21:46giờVN25/10/2026, source18350eb; metadata đầy đủ latest.json. DB12table, healthready/revision4,2eventcũ/kýức giữ nguyên; livingTurnđầu persist,stale=false,pulse200duplicate,viewsGET200,worldreadsample288ms. Không đưa fixture hoặc testvisitor vào prod.
+-16suite/check/lint/build đạt;16viewretry+8unique/8pulseconcurrency/durablechat/pauseguardsAPI đạt.64worldread0error,p95~357ms so với13.3scoldoldcontext trongenv. Thực tếWorkerdlocalDNScầnrelayNode theo policy; không bypassproxy.
+- Chromiumdesktop/mobileDPRcao: movement/scale/presets/chat/pause/offline/contextloss/noWebGL/reducedmotion đạt.3renderer-cycle không tănggeometry; sample36/33drawcalls,10geometries,6–7textures,JSheap12–13MB. Ảnhfixturetrưa/slowmotion và metrics trongdocs/screenshots/experience; chưaphysicalGPU/24hsoak.
+- Đã update/reuse automation cũ6adcbdcc81cc819188a4a2ae65392369, enabledtrue/hànggiờ/AsiaHoChiMinh. Prompt serviceaccess mới/pulse+AIevent/readback,khôngpausedwrite/paidAPI/video/reset. Chưa có recordedrun tại bàn giao; không coi bật lịch là bằng chứng uptime24/7.
+
+## Review nhân vật và xã hội — nguồn chờ phát hành8
+- Người dùng cho phép dùngAIagents để biên kịch. Hai agent phát triển đã viết/review12cảnh/56lượt và8prompt/bàiđăng thực từyihui-dev/awesome-opus5-5-videos commit92aee2f; không nhậpvideo/ảnh/modelcủarepo. Nguồn/ýápdụng ởVISUAL_DIRECTION, SOCIAL_SCRIPT_BIBLE.
+- Runtime bo góc/sphere/capsule dùng chunggeometry, thở/chớpmắt/taynói/nghegật vàfaceRoot. Sửa vaihở/giàyđi ngược/tóctáchđầu/biểntênto thấy trongQA, cameragầnvàpropsngoàihiên. Giữ10units/m; khôngrig/IK/physics.
+- Crowd theo lịch24h/role/ID xen kẽ ăn/nghỉ/đi làm thayvòng8phútchung. socialFrame sửaoffsetcũởlớpvisual, slot14units easearrival, reservedlate63..71 tránhngười240bịđẩy47m. Ambient4–6turn/cooldown>=180/quiet22–06/privatequiet/latearrivalwaitnextopening. AIeventưu tiên, exacteventkey, đúngco-speaker; không chọnbystander cứu cảnh.
+- Ruleslivingturn dùngthưviệnagentauthored/ghi scriptId, khônggánlocal-llm; overrideLLM gỡscriptId. Cloudinstructions thêm3vai đạo diễn/nhân vật/phảnbiện; localdaemon narrativeguard vàCLI3passlocal. Qwen1.5Bthật đãchạy3passnhưngcriticchấpnhậnlặpý; deterministicguardmới bácđúngsample, khôngghiworld. Không thêmpaidAPI/productionCPUdaemon.
+-18suite/check/lint/build đạt, social20cases +60792poses,63cùngvenue/240population/continuity/pause/night/AIpriority/partner/metadata/repeatguards. Broadbrowserdesktop/mobilemove/DPR/chat/pause/offline/lifecycle/fallbackđạt trướcfixhair/name; targetedbrowser saufixđạt2speakerturn/1.4m/source/noJS/nooverflow.34/32drawcalls,416k triangles,14geometries trênSwiftShader; khônghardwareFPS/longsoak.
+- Ảnhthựcsyntheticnoonlocal ởdocs/screenshots/social đãgửi, khôngbằngchứngproduction. QAmockresponsebịthiếuweatherStateđãsửa; nhiều cặp khácnhau đượcphépnóicùnglúcnênasserttheopair.
+- Automationhourly córecordedruncompleted15:00UTC25/10, outputrevision7/living88/eventai22readback. Pre8read16:14UTChealthready/revision12/3events/memories5,4,4; snapshotbackupgitignoredhashtrongMEMORY_SHORT. Giữownerprivate1owner0external.
+
+## Production version 8 — đã phát hành
+- Native succeeded16:19:02UTC25/10/2026, sourcec9c41676b7f947cb631831ee804aa27f50c2b7bb. IDs/env1/backuphash nằm latest.json và ledger. Owner-private1owner0external không đổi; không migration.
+- Post readback healthready/revision13/3eventscũ/memories6,4,4, instructions3vai đã lên. Authenticatedpulse200duplicate/living93/learning0; GET xác minh không mất history/memory, stale=false. Browserảnh vẫn local, không nhận thànhproductionQA.
+- Automationcũhourlyenabled,2recordedruns15:00+16:00UTCcompleted trước promptmới. Đã update/readback prompt3vai, dùngworldTime.hourquiet22–06, không duplicate schedule/paidAPI. Chưa có run dùngpromptmới, tiếp tục theo dõi. ModelCPU/preview/relay lượt này đãdừng, production không phụ thuộcenv.
+
+## Sửa phản hồi thực tế sau8 — đang kiểm thử bản9
+- User báo1–2câu/chậm, lagdi chuyển, xuyênnhà/xe vàbốicảnhkém. Test2lượt trướcchưa đủ. Đã dùnglại2agent theoủyquyềntrước; sourcecheckpoint4b1400b GitHubwork.
+- SocialDirector statefulpresentation2.4–4s+gap.3, cooldown20–45, khóa cặp/fullscene qua polling/slowclock, actualAI/fullstoredliving. Runtime giữinstance vàdùnggroundactorpositions;2D cũnggiữdirector.
+- WalkDirector shared279bodyfootprints, A*/circle4.8sweeps, routesởlạiquapoll; traffic12car vòngthật/rightlane/brake/yield/follow,4apron42units. Dời bodyvenue khỏiroad, geometrymọilớpchung. Backendhistorykhôngđổi. Navreconstructionlỗi104routes đãbịtestbắt+sửa.
+-20suite/check/lint/build đạt; social28,walk8/1089routes+5401frames,traffic22740states0collision. Replayprivateworld30actors/1800frames0house/caroverlap khôngghi. ColdA*p9511–15ms/cache256; khôngSLA.
+- Browserđãthấy6lượt đầy đủ desktop/mobilequapolling. MẫuchuyểnđộngtrướcLOD khôngstale10HznhưngSwiftShaderchỉ12frames/9s; khôngcoilàhếtlag. ThêmchunkLOD vàLambert/Phongchoenvironment, giảmfill/roofwindowdetails/contactshadow. Đangđolạicùngfixture, metrics/ảnhlocalkhôngprod.
+- Backup trước9:pre-v9-20261026-ground.json hash331e1532845874a6120c64d84c0b56600a1513a0f52dd20afc781cd88bc580be,revision33,5events,memories15/6/5; giữgitignored. Prod8sourcec9c4167chođếnnativebảnsau.
+
+## Production version9 — hoàn tất
+- NativeSucceeded01:14:56UTC26/10, source287f2d837a830f56d7dc71c2013cf7748fa22464; version/deployment/env1 tronglatest.json vàledger26/10. Giữownerprivate1owner0external; khôngmigration/DBrepair.
+- PostAPIhealthready/revision37, đủ5eventcũ/memories17,6,5, living33/stalefalse. ChưaownerbrowserQAprod; ảnh/testsyntheticlocal đãgửi. ModelCPUkhôngbật, preview/relaytest đãdừng.
+- Source/QAbundle cuối đủ6lượtquapoll desktop/mobile, motion26frames9s/stale0/0footprintcollision,118418triangles vs369600/12frames trướcLOD. Hơn2xsoftwarethroughput nhưngvẫnchậm vàchưaphysicalGPU; khôngquảngcáohếtlag/60FPS.
+- Cloudtasklatest01:00UTCcompleted, promptmới đượcchạy; khôngtạotrùngcảnhAIgiờ07, readbackrevision35. Khôngđổi schedule/paidAPI tronglượt9. Chưađồngbộviewerplayback hoặcbackendoccupancyphysical.
+
+
+## Va chạm, camera và hoạt động — source bản10
+- Shared scenery94 cây/507 footprint +279 công trình; renderer dùng venueSceneryPose/sceneryTrees/sceneryLamps. Shelter bus dịch50units về sân,13 đèn duy nhất ngoài làn/nút quay. Foliage cao khỏi đầu, trunk chắn; thêm model phải cập nhật footprint tương ứng.
+- WalkDirector dùng disc4,8units, khoảng riêng9,95; swept collision với người, sidepass/yield/replan, goal đứng cách20,4 để không tạo vòng chặn người đến sau. ID/reorder/poll ổn định, chỉ tìm spawn riêng khi khởi tạo; không dịch chuyển đẩy chồng giữa frame. Grid12/cached256,1.089venue routes đạt.
+- Camera FOV38, tracking gần An, target lệch30% tới listener, chọn góc không xuyên nhà, lùi theo aspect dọc; initial shot đúng ngay, eased movement. Theo chọn lạiAn; zoom thoátfollow/min42, bubble clamp theo viewport, chunkLOD cập nhật khi camera di chuyển.
+- Needs drift có anchor riêng; policy xem nhu cầu/reward/novelty/related-tag/role, loại tai nạn/vi phạm khỏi ý định thường. Giữ pending chưa hoàn tất, cohort12–24 luân phiên cả callers5min/hourly. NPC agenda3–7min, lệchID/quietnight/cache512. Không nhân skill/reward, không nâng model/fine-tune.
+- living-v2 slot5phút tránh ID lịch sử15phút; visiblepulse30giây. Không cron/paidAPI; lúc đóng trang phụ thuộc automationhourly. Backend completion vẫn tính simulationtime, không occupancy vật lý renderer.
+-23suite/check/lint/build đạt; personal-space7, autonomy8, camera180 projection/aspect; traffic22.740states với786obstacles0collision. Browserdesktop/mobile6lượt qua polling/selectBình→followAn/zoom/bubbleclamp đạt; motion20frame/9s,0stale,0collision,stepmax2,408units. SwiftShader chậm/biến thiên20–29frames giữa lượt, chưahardwareGPU/24hsoak. Ảnh thực local synthetic đã gửi; không browserproduction.
+- Backup pre10 gitignored hashc39c1ac9c401e207a9b9b82f8d6996a0d4022df74d365354f18cfee876346918,revision65/12events/memories28,10,10. Khôngmigration/reset/repair. Trạng thái phát hành ởlatest.json/ledger.
+
+
+## Production version10 — hoàn tất
+- Native succeeded17:06:40UTC26/10, source7a7871f8c04967521b9fff3e2cbf06ae75b8ed7e; đúngversion10/env1/1owner0external. Version/deployment/archivehash/latestreadback đầy đủ tronglatest.json/ledger26/10. Giữprivate, khôngmigration.
+- PostGETrevision67/12events/28,10,10memories cònđủ; pulse200duplicate/living-v2-2026-10-27-1 đãpersist/revision68/learningupdated0,healthready/stalefalse. Khôngfixture/testevent/DBrepair. Sourcepush kháccommitledger saudeploy.
+- Localpreview/relay đãdừng; prodkhôngphụthuộcenvlocal. Browserảnh đãgửivàghi rõpreview; chưaownerbrowserprod hoặchardwareFPS. MemorySHORT chỉgiữbacklog/blocker.
+
+
+## Chi tiết đồ họa và rig — source bản 11 (27/10)
+- Hướng giữ thành phố hoạt hình vui, màu xanh ngọc/vàng/san hô, model thủ tục nguyên gốc. Không đổi dependency/model AI/migration/schedule hay appearance đã lưu.
+- People6batch thay19partmeshes; vai/khuỷu/cổtay vàhông/gối/cổchân nối liên tục, geometrylimb36triangle, blendpose/gait theo actualdistance, headyaw cungngắn. Thêm mặt/cổáo/cúc/giày/mũchef, book/cup/wateringcan/tool nốitay; LODchi tiết240units vàselected. GroundElevation khớpmặt cỏ/pad/road/path đểchân/bóng khônghover.
+-66streetProps/7loại/833parts ở33venues, modeltrongsharedfootprint; tổng573scenery+279body=852.94cây nhiều tán/thân nối tán,3bậc cửa thấp. Ambience16tia/128hạt nước+18cloudlobes pooled/simclock, pausekhônguploadbuffer.
+- Thêm6script, tổng18scene/88line gắnsourceKịchbản; không tự tạo inventory/transaction. Mèo/chó/chim dựngriêng5batch, 3policies cũ; sẻ3con làflockvisual. Rawanimalprojections dùngcompanions direct trongWalkDirector, vịtrí nhường người/xe/cùng staticnav; modelnằm trongdisc4,8. Chim lên/xuống vàcánh cóeasing, đuôi/chân/cánh đóngbăng khi pause.
+- Full24suite/check/lint/build đạt; visualtest72nearactors/4230instances/600poseframes/1800mixedhumananimalframes/actualfootheight/matrixfinite/footprintmodelbounds/pause/3policies. Traffic22740states với852obstacles0collision;1089routes, coldA*p957,6ms/max26,246ms trongenv (khôngSLA).
+- Browsercuối desktop/mobile6lượt/polling/controls; motion29frames9s/28moving/0stale/0static&animalcollision/maxstep2,409units,136920triangles/35drawcalls/21geometries.4activitydetailread/garden/eat/market đạt, ảnhlocalsynthetic đãgửi. KhônghardwareGPU/FPSclaim/productionbrowser; vẫncầnsoak/indoorIK/serve-clean/inventory/physicstoànthân.
+- Backup pre11gitignored fc7b3cfe1c571a28c32680c0cda62c38433a4bf8636aa6e0e5ec835a4a394206;revision81/13events/memories32,10,11. Phát hành/readbackxemlatest.json/ledger; sourcepush khôngđồngnghĩa deploy.
+
+
+## Production version11 — hoàn tất
+Native succeeded08:39giờ Việt Nam27/10, sourcec1ddea15e5b59631600796ea49d76bae9c49ddcb/env1/ownerprivate. Latest.json vàledger27/10 cóIDs/hash/test/readback. PostGETrevision83/14events/33,11,11memories; offlinecomparehai backup xácnhận13eventcũ/từngmemory/world.born/3animalpolicy giữnguyên. Khôngmigration/reset/fixtures. Preview/relay đãdừng. Tiếp nhận8ZIPKenney+KịchBản.md cho đợtnângcấpasset tiếp theo; cần đọc scenario/license/metadata trước tíchhợp.

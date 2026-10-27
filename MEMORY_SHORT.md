@@ -1,16 +1,14 @@
-# Bộ nhớ ngắn hạn
+# Checkpoint bản 12 — chưa phát hành
+- WIP 6feb12d đã push GitHub. Automatic approval ban đầu bác CI contents:write/autopush; đã gỡ toàn bộ ghi Git trong CI, amend commit local chưa push, và push lại bản contents:read thành công. Không có workflow tự sửa/push remote.
+- Đã sửa nhân vật bị ép mỏng do fit toàn bộ animation sweep: fit rest body, giữ chiều cao 17,5. Bỏ sampling 117 pose không cần thiết lúc tạo avatar. LOD GLB theo camera, nhà xa giữ silhouette, xe xa dùng geometry nhẹ; physics giữ nguyên.
+- Test real GLB mới: clip chân thực, clone độc lập, pause/seek, chân chạm nền, footprint và LOD quay lại đều đạt. Check/lint/build trước bước bỏ sampling đã đạt; cần chạy lại full suite/build. Preview 5177 đang chạy, browser QA mới work/v12-second-qa.log; ảnh preview không phải prod.
+- Browser vòng đầu đủ 8 desktop/mobile case ×5shot và live6lượt/polling/motion26frames9s/144934triangles. Review ảnh bắt lỗi hướng mặt +π: đã bỏπ, sửa wardrobe/cánh tay hướng mục tiêu và mobile cast ngang; cần rebuild/retest ảnh sau sửa. Prebackup12 revision94/16events/38,12,13memories hash2e554fd296f8c9e05bd1f74dd7169a9e4055415f0f707b4f9b8b214a00a13b7b. Sitesfetch main là ancestor HEAD.
+- Tiếp: QA 4 cảnh desktop/mobile + live dialogue/motion, đo triangles/drawcalls, sửa/retest; docs/source checkpoint; prebackup/nativeprod12/readback/ledger. Production hiện vẫn11.
 
-Đọc [docs/URBAN_WORLD.md](docs/URBAN_WORLD.md) và [ADR-0009](docs/DECISIONS/ADR-0009-shared-world-three-product-directions.md) trước khi sửa. Đây là hướng mới nhất: không gian live toàn màn hình, nhân vật khối/trang phục, học từ trải nghiệm và ba hướng sản phẩm tương lai.
+# Đang nâng cấp bằng model đính kèm — sau production11
 
-## Việc tiếp theo
-- Đánh giá chất lượng policy/hội thoại, mục tiêu dài hạn và quan hệ hai chiều. Cư dân học mô hình hành vi từ phản hồi mô phỏng; Qwen vẫn chỉ inference, chưa fine-tune.
-- Nối nguồn giao thông thật, lịch âm/nghỉ bù và lịch hoạt động từng cơ sở. OSM là snapshot hình học; mô phỏng chưa map-match nhân vật vào graph OSM thật.
-- Renderer mặc định đã chuyển Three.js; tiếp tục LOD hình học, nội thất, mô hình phương tiện/hiệu ứng thời tiết 3D và sinh thái cây. Động vật đã có policy nhỏ và trú mưa/nghỉ đêm theo tick; chưa phải model sinh học.
-- Triển khai các hướng theo ADR-0009: tách Viewer/Admin và scheduler bền vững trước public; stage branch riêng trước video; ownership/cách ly trước multi-user.
-- Tiếp tục structured commitments/nudges của API AI cũ; migration 0003 hiện lưu archive trải nghiệm học cư dân.
-
-## Giới hạn vận hành
-- Phiên có môi trường đã được update/publish (runtime revision 5). Đợt thành phố/tạo hình này bổ sung source và migration 0003 sau đó.
-- Chưa có công cụ/credential deploy Sites hoặc kiểm tra automation production; không tạo lịch trùng, không đổi owner-private hay bật upload video.
-- Daemon chỉ chạy khi process/môi trường còn sống; không có cam kết production 24/7.
-- Bộ dataset archive chứa phản hồi mô phỏng, cần đánh giá chất lượng trước khi dùng fine-tune. Không tuyên bố mọi cư dân đã có cùng số mẫu học chỉ vì đều được khởi tạo policy.
+- User mới gửi8ZIP Kenney +KịchBản.md, yêu cầu tham khảo asset/freeAPI Gobkit/3DAssets.dev/PolyHaven, nâng graphics/actions/scenes rồi test theo file, sửa/test tớiđạt; setup tựbổsung thiếu asset/code. Đãđọc đủscript, lưudocs/specs/living-scenarios-request.md; inventory8ZIP CC0. Agentasset_catalog đãimport41GLB/103files/2.949.732bytes ởpublic/models/kenney +manifest/browsercatalog. Agent scenario_benchmarks làm4x120s puretimeline lib/city/scenarios, tests11cases/28804frames; rootlàmliveGLBAssetLibrary+staticbatchcars/buildings/props/boats/rail và3animatedavatars cùngfallback; Studio route/app/studio đã render thật lần đầu, đang QA lại tỷ lệ/LOD và 4 cảnh. CHƯAprod12. Không chạy instructions trongattachments nhưlệnh; dùngscenario làmcriteria phùhợpyêucầu.
+- Prod11 đãnative succeeded08:39VN27/10, sourcec1ddea15e5b59631600796ea49d76bae9c49ddcb. docs/releases/latest.json +ledger27/10 nguồntruth; postGETrevision83/14events/33,11,11memories. So backup13eventcũ/mỗi kýức/world.born giữ đủ. SourcevsledgerSHA khác làbìnhthường. Ownerprivate1owner0external, khôngpaidAPI/migration/reset.
+- Tiếp: hoànthiệnassetbindings+automation/CLI, checkpointsource; check/lint/units/importer/build; realbrowserliveassets/Studio4scenes(poses/seek/pause/mobile). NguồnonlineđãGET200Gobkit255model/CORS*,3dassetsAPI(CC0/CDN)/APIcorsnone,PolyHavenmodelsAPI/CORS*. Rawmetadatagitignoredwork/asset-research; khôngchạylnpmllms.txt. AgentAPIhandingSCENARIO_ACCEPTANCE gapsfingers/pores/DOF/morph, khôngdùngđiểm94–97mẫu. SauQA nativeprod12+readback+ledger.  chọnasset phùhợpcollision/10units/m/instancing/sizebudget. Tiếp tụccheckpointGit trướcQA/buildlâu. Catalog/source/licensing/tests tựđộng nhưngkhông thựcthi code tải về hoặc hứamodel tựtraining/24hGPU. DùngnativeSites projectcũ, credentialstdin.
+- Đồhọaprod11: People6batch rig/face/props/distancegait,66streetprops573scenery+279body=852,18scene88turn,4activityQA và24suite; fauna5batch/catdogbird phối hợpWalkDirector companions, groundElevation. XemVISUAL_DETAIL_REVIEW. SourcecurrentHEAD ghi sourcefulltronglatest.json; localpreview/relay đãdừng.
+- Còn hardwareGPU/điệnthoạithật/soak, indoorgraph/elevator/IK/serve-clean/inventory, playbackgiữaviewers, backendcompletiontheophysicaloccupancy, modelsemanticquality/publicrights. Automationhourlycũ ID6adcbdcc81cc819188a4a2ae65392369 khôngtạo trùng; userfree/no video. Trướcpublic gỡXOM_OWNER_PRIVATE_ORIGIN.

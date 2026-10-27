@@ -48,3 +48,23 @@
 - Đã dựng renderer Three.js, 282 khối nhà/151 cao ốc, nhân vật và phương tiện trên graph cũ, camera orbit/follow/skyline/overview, chế độ 2D nhẹ và fallback WebGL.
 - Tiếp theo: kiểm tra thiết bị thật, LOD hình học, nội thất, đa dạng xe và thời tiết 3D. Không coi thành phố này là khảo sát công trình thật.
 - Chi tiết và bằng chứng: [docs/THREE_WORLD.md](docs/THREE_WORLD.md).
+
+## Production version6 — 25/10/2026
+Đã phát hành hardening/nội thất/hồ sơ/OSM3D, giữ owner-private. Kết quả thực ở docs/releases/latest.json. Chưa indoor routing, height coverage thật, cron/Qwen production hoặc public viewer. Nguồn phát triển tiếp MAP_3D_SOURCES.md.
+
+## Production version7 — 25/10/2026
+Đã sửa tỷ lệ/độ nét/thoại nền, chat có lưu/rules, lượt mở và pulse. Cloudautomation mỗi giờ enabled theo yêu cầu mới; cần theo dõi run đầu/soak và quota. Còn indoorgraph,collision/IK,physicalGPUbenchmark/freeformLLM và publicpermission.
+
+## Nhân vật và xã hội — bản8
+Nguồn đã hoàn thiện12cảnh/56lượt doagentbiênkịch, crowd24h, spacing1.4m, hỏiđáp/nghe/cửchỉ/nguồnAIriêng, geometrybo vàpropsngoàihiên; test/preview ởSOCIAL_REVIEW. Kiểm tra releaseledger để biết bảnproduction. Còn indoorroute/physics/IK, phục vụ/đạo cụ có trạng thái, giữ encounter trước crowdchange, vàmodelsemanticquality/thiếtbịthật/soak.
+
+## Sửa phản hồi thực tế — production9,26/10/2026
+Đã giữ đủcuộc thoại qua polling, groundnavigation quanhnhà, trafficnhườngngười/giữlàn, chi tiếtmặtđứng vàchunkLOD. XemGROUND_AND_MOTION_REVIEW vàledger26/10. CònphysicalGPUbenchmark, smallprop/animal/indoorcollision, bus/metroboardinghìnhhọcthật, đồngbộplayback giữa viewers vàbackendcompletion theooccupancy.
+
+
+## Vật cản và chủ động — bản10,26/10/2026
+Đã hoàn tất source/QA small-prop/tree/person avoidance, cinematicAn/aspectportrait, nhu cầu/kinh nghiệm/chống lặp/cohort công bằng và agenda độc lập. Bằng chứng SPACE_CAMERA_AUTONOMY; trạng thái production riêng ở releaseledger. Còn physicalGPU/soak, indoor/elevator/animal collision, đồng bộ playback và backend completion theo occupancy.
+
+
+## Chi tiết đồ họa — bản 11, 27/10/2026
+Đã chốt source và localQA cho rig có khớp, props gắn tay,66cụm đồ vật,6cảnh mới, cây/mây/nước và model mèo/chó/chim phối hợp groundnav. XemVISUAL_DETAIL_REVIEW vàreleaseledger. Còn hardwareGPU/soak, IK nội thất/thang máy/serve-clean/inventory và mô hìnhAI chất lượng hơn.

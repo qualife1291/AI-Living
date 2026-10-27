@@ -60,7 +60,10 @@ export function dailyRoutine(id: string): Step[] {
 
 /** Resume today's schedule from a plan's final position, without snapping back. */
 export function routineAfterPlan(id: string, secondOfDay: number): Step[] {
-  const list = dailyRoutine(id);
+  return routineFrom(dailyRoutine(id), secondOfDay);
+}
+
+export function routineFrom(list: Step[], secondOfDay: number): Step[] {
   let t = ((secondOfDay % 86400) + 86400) % 86400;
   let i = 0;
   while (t >= list[i].duration && i < list.length - 1) t -= list[i++].duration;

@@ -4,8 +4,10 @@ import {
   chooseScenario,
   cohortIds,
   scenarios,
+  hasUnfinishedLearning,
 } from "./learning.ts";
 import defaults from "../../data/living/catalog.json" with { type: "json" };
+import socialScripts from "../../data/social-scenes.json" with { type: "json" };
 import {
   catalogSchema,
   type LivingCatalog,
@@ -14,13 +16,16 @@ import {
   type RealContext,
   type Resident,
 } from "./schema.ts";
-import { hashSeed, computeSimMs } from "../clock.ts";
+import { hashSeed, computeSimMs, worldTime } from "../clock.ts";
+import { routineFrom } from "../daily-routines.ts";
 import {
   transitionPath,
   actorTransition,
   actorsAt,
   nearby,
   project,
+  places,
+  distance,
   type Actor,
   type Step,
 } from "../life.ts";
@@ -83,7 +88,7 @@ export function initializeLiving(
   return { ...state, residents: population(state, state.startedOn) };
 }
 export function turnId(now: number) {
-  return `living-${localDate(now)}-${Math.floor(((now + 7 * 3600000) % DAY) / 900000)}`;
+  return `living-v2-${localDate(now)}-${Math.floor(((now + 7 * 3600000) % DAY) / 300000)}`;
 }
 function chooseRole(state: LivingState, context: RealContext) {
   const roles = state.catalog.roles;
@@ -126,7 +131,7 @@ export function planLivingTurn(
   world: World,
   context: RealContext,
   now: number,
-): { state: LivingState; turn: LivingTurn; world: World } {
+): { state: LivingState; turn: LivingTurn; world: World; newExperiences: import("./learning").Experience[] } {
   const state = structuredClone(world.living ?? initializeLiving(now));
   // Add new built-in content without overwriting user roles or erasing residents.
   for (const role of defaultCatalog.roles)
@@ -136,28 +141,29 @@ export function planLivingTurn(
     )
       state.catalog.roles.push(structuredClone(role));
   state.residents = population(state, context.date);
-  const learning = prepareLearning(world, state, now);
+  const newExperiences: import("./learning").Experience[] = [];
+  const learning = prepareLearning(world, state, now, (e) => newExperiences.push(e));
+  const simNow = computeSimMs(world.born, world.clock, now);
+  const anBusy = hasUnfinishedLearning(learning.an, world.people.find(p => p.id === "an")?.plan, simNow);
   state.energy = learning.an.energy;
   state.hunger = learning.an.hunger;
-  // Needs are simulated, elapsed in real time. Bound catch-up, never invent meals or earnings.
+  // Bound the shared social drift; energy/hunger advance per actor in simulation time.
   const minutes = Math.min(
     360,
     Math.max(0, (now - Date.parse(state.lastTickAt)) / 60000),
   );
   const sleeping = context.hour < 6 || context.hour >= 22;
-  state.energy = Math.max(
-    0,
-    Math.min(100, state.energy + (sleeping ? 0.12 : -0.035) * minutes),
-  );
-  state.hunger = Math.max(0, Math.min(100, state.hunger + 0.04 * minutes));
+  // prepareLearning advances every actor's own needs once; do not drift An twice.
   state.social = Math.max(0, Math.min(100, state.social - 0.02 * minutes));
   const role = chooseRole(state, context);
   learning.an.energy = state.energy;
   learning.an.hunger = state.hunger;
   const chosen = chooseScenario(learning.an, "an", context, role.place);
-  const peers = state.residents.filter((r) => r.roleId === role.id);
+  const available = state.residents.filter(r => !hasUnfinishedLearning(learning[r.id], r.plan, simNow));
+  const peers = available.filter((r) => r.roleId === role.id);
   const resident =
-    peers[hashSeed(turnId(now)) % peers.length] ?? state.residents[0];
+    (anBusy ? state.residents.find(r => r.id === world.livingTurn?.residentId) : undefined) ?? peers[hashSeed(turnId(now)) % peers.length] ?? available[hashSeed(turnId(now)) % available.length] ?? state.residents[0];
+  const encounter = !sleeping && !anBusy && available.some(r => r.id === resident.id);
   const festival =
     !sleeping &&
     state.energy >= 28 &&
@@ -188,36 +194,44 @@ export function planLivingTurn(
     activity = chosen.title;
     kind = chosen.kind as Step["kind"];
   }
-  const dialogue = sleeping
+  if (anBusy) {
+    const current = actorsAt(world, now).find(a => a.id === "an");
+    if (current) { location = current.location as typeof location; activity = current.activity; kind = current.kind; }
+  }
+  const matchingScripts = socialScripts.scenes.filter(s => s.places.includes(location) && s.kinds.includes(kind));
+  const script = matchingScripts[hashSeed(turnId(now)) % matchingScripts.length];
+  const dialogue = !encounter
     ? []
-    : [
+    : script ? script.turns.map(line => ({ speaker: line.speaker === "a" ? "an" : resident.id, text: line.text.replaceAll("{a}", "An").replaceAll("{b}", resident.name) })) : [
         {
           speaker: "an",
-          text: `${resident.name}, mình ghé ${location.toLowerCase()} một lát nhé.`,
+          text: `${resident.name}, mình dành một lát ở ${location.toLowerCase()} cùng bạn nhé?`,
         },
-        { speaker: resident.id, text: role.greeting },
+        { speaker: resident.id, text: "Được chứ, mình cùng làm từng việc nhỏ thôi." },
         {
           speaker: "an",
-          text: "Ừ, mình làm từ từ thôi. Có gì mới mình sẽ kể bạn nghe.",
+          text: "Vậy mình bắt đầu từ phần đơn giản trước nhé?",
         },
+        { speaker: resident.id, text: "Ừ, không cần vội. Xong rồi mình nghỉ một chút." },
       ];
   const turn: LivingTurn = {
     id: turnId(now),
     createdAt: new Date(now).toISOString(),
     date: context.date,
-    title: sleeping
+    title: anBusy ? activity : sleeping
       ? "Một đêm yên trong xóm"
-      : `${activity} cùng ${resident.name}`,
-    summary: sleeping
+      : encounter ? `${activity} cùng ${resident.name}` : activity,
+    summary: anBusy ? `An tiếp tục kế hoạch đang làm tại ${location.toLowerCase()}; chưa tạo cuộc gặp mới hoặc ghi nhận kết quả khi chưa hoàn tất.` : sleeping
       ? "An trở về phòng nghỉ. Khu phố vẫn giữ lịch sử và những người đã gặp."
-      : `An dự định ghé ${location.toLowerCase()} và gặp ${resident.name}, ${role.label.toLowerCase()}. Đây là tình huống hư cấu dựa trên bối cảnh có ghi nguồn.`,
+      : encounter ? `An dự định ghé ${location.toLowerCase()} và gặp ${resident.name}, ${role.label.toLowerCase()}. Đây là tình huống hư cấu dựa trên bối cảnh có ghi nguồn.` : `An làm việc riêng tại ${location.toLowerCase()}; những người đang bận tiếp tục kế hoạch của họ.`,
     location,
     activity,
     kind,
     residentId: resident.id,
     dialogue,
     generator: "rules",
-    scenarioId: !festival
+    scriptId: encounter ? script?.id : undefined,
+    scenarioId: anBusy ? learning.an.pending?.scenarioId : !festival
       ? sleeping
         ? "rest-home"
         : state.energy < 28
@@ -226,7 +240,7 @@ export function planLivingTurn(
             ? "lunch"
             : chosen.id
       : undefined,
-    transport: chosen.transport,
+    transport: anBusy ? world.people.find(p => p.id === "an")?.plan?.transport : chosen.transport,
     context,
     simStartedAt: computeSimMs(world.born, world.clock, now),
   };
@@ -235,7 +249,7 @@ export function planLivingTurn(
   state.daysExperienced = dayDiff(state.startedOn, context.date) + 1;
   const next = structuredClone(world);
   const an = next.people.find((p) => p.id === "an");
-  if (an) {
+  if (an && !anBusy) {
     an.plan = {
       createdAt: turn.createdAt,
       pausedMs: next.clock?.pausedMs ?? 0,
@@ -247,7 +261,7 @@ export function planLivingTurn(
     };
     an.activity = activity;
   }
-  if (!sleeping) {
+  if (encounter) {
     const actor = crowdAt(state, { ...world, livingTurn: turn }, now).find(
       (a) => a.id === resident.id,
     );
@@ -273,7 +287,7 @@ export function planLivingTurn(
       };
     }
   }
-  if (turn.scenarioId)
+  if (turn.scenarioId && !anBusy)
     learning.an.pending = {
       id: turn.id,
       scenarioId: turn.scenarioId,
@@ -281,16 +295,17 @@ export function planLivingTurn(
       durationMs: 180000,
       completed: false,
     };
-  const slot = Math.floor(now / 900000);
+  const slot = Math.floor(now / 300000);
   for (const id of ["binh", "chi", ...cohortIds(state, slot)]) {
-    if (id === resident.id) continue; // The conversation partner keeps its encounter route.
+    if (encounter && id === resident.id) continue; // A newly assigned partner keeps its encounter route.
     const agent = learning[id];
     if (!agent) continue;
     const person = next.people.find((p) => p.id === id);
     const npc = state.residents.find((r) => r.id === id);
+    if (hasUnfinishedLearning(agent, person?.plan ?? npc?.plan, simNow)) continue;
     const rolePlace = npc
       ? state.catalog.roles.find((r) => r.id === npc.roleId)?.place
-      : person?.location;
+      : id === "binh" ? "Thư viện" : id === "chi" ? "Vườn nhỏ" : person?.location;
     const scenario = chooseScenario(agent, id, context, rolePlace);
     const previous = person
       ? actorsAt(world, now).find((a) => a.id === id)
@@ -344,7 +359,7 @@ export function planLivingTurn(
     };
   }
   // Keep each partner's learning tied to an activity that actually has a plan.
-  if (resident.plan && !sleeping) {
+  if (resident.plan && encounter) {
     const socialScenario = scenarios.find((s) => s.id === "friendship")!;
     learning[resident.id].pending = {
       id: `${turn.id}-${resident.id}`,
@@ -357,7 +372,72 @@ export function planLivingTurn(
   updateAnimalLearning(world, state, context, now);
   next.livingTurn = turn;
   next.living = state;
-  return { state, turn, world: next };
+  return { state, turn, world: next, newExperiences };
+}
+
+const agendaCache = new Map<string, Step[]>();
+const errands: [string, string, Step["kind"]][] = [
+  ["Thư viện", "Tra một mục sách cho việc đang làm", "read"],
+  ["Quảng trường", "Xem bảng tin rồi trở lại việc riêng", "read"],
+  ["Phố đi bộ", "Đi một đoạn, thư giãn tay và mắt", "rest"],
+  ["Quán cà phê", "Nghỉ chân và hỏi thăm nếu gặp người quen", "social"],
+  ["Chợ nhỏ", "Xem các món cần cho bữa cơm", "read"],
+  ["Bưu điện", "Xem hướng dẫn gửi thư", "read"],
+  ["Lớp học cộng đồng", "Xem lại một ghi chú học tập", "read"],
+  ["Văn phòng", "Trao đổi một ghi chú công việc", "social"],
+  ["Nhà văn hóa", "Xem thông tin sinh hoạt cộng đồng", "read"],
+  ["Trường nghề", "Xem một bài thực hành", "read"],
+  ["Sân chung", "Đi bộ, chào người quen nếu gặp", "social"],
+  ["Siêu thị", "Xem danh sách đồ dùng cần tìm", "read"],
+  ["Xưởng xe máy", "Xem một ghi chú bảo dưỡng dụng cụ", "read"],
+  ["Bến xe buýt", "Xem bảng hướng dẫn đi lại trong khu phố", "read"],
+];
+/** Staggered 24h agendas: residents work, eat, take separate breaks and go home.
+ * Unlike the old eight-minute loop, the whole crowd never gathers at one plaza. */
+export function residentRoutine(state: LivingState, r: Resident): Step[] {
+  const role = state.catalog.roles.find(x => x.id === r.roleId) ?? state.catalog.roles[0];
+  const key = `${r.id}:${role.id}:${role.place}:${role.activity}:${role.kind}`;
+  const cached = agendaCache.get(key); if (cached) return cached;
+  const h = hashSeed(r.id), shift = (h % 45) / 60;
+  const breakPlace = ["Công viên", "Quán cà phê", "Phố đi bộ", "Quảng trường", "Thư viện"][h % 5];
+  const home = "Khu dân cư", workplace = role.id === "rest" ? home : role.place;
+  const slots: [number, string, string, Step["kind"]][] = [
+    [0, home, "Nghỉ đêm trong khu dân cư", "rest"],
+    [6 + shift, h % 2 ? "Chợ nhỏ" : "Quán cà phê", "Ăn sáng trước giờ làm", "eat"],
+    [6.35 + shift, breakPlace, "Chuẩn bị cho công việc trong ngày", "read"],
+    [7.5 + shift, workplace, role.activity, role.kind],
+    [11.25 + shift, h % 2 ? "Nhà hàng" : "Chợ nhỏ", "Ăn trưa, nghỉ một lát", "eat"],
+    [11.6 + shift, breakPlace, "Nghỉ tay sau bữa trưa", "rest"],
+    [12.25 + shift, workplace, role.activity, role.kind],
+    [15.5 + shift, breakPlace, "Tạm nghỉ, trò chuyện nếu gặp bạn", breakPlace === "Thư viện" ? "read" : "social"],
+    [16.25 + shift, workplace, role.activity, role.kind],
+    [18 + shift, h % 3 ? "Nhà hàng" : "Siêu thị", "Ăn tối và mua đồ dùng", "eat"],
+    [18.4 + shift, breakPlace, "Xem lại việc riêng cuối ngày", "read"],
+    [19 + shift, breakPlace, "Đi dạo thư giãn cuối ngày", "social"],
+    [21 + shift, home, "Về nhà nghỉ, giữ yên tĩnh", "rest"],
+  ];
+  const result: Step[] = [];
+  for (const [i, [hour, location, activity, kind]] of slots.entries()) {
+    let remaining = ((slots[i + 1]?.[0] ?? 24) - hour) * 3600;
+    if (location === home || (kind === "eat" && remaining <= 1500) || remaining <= 300) { result.push({ location, activity, kind, duration: remaining }); continue; }
+    const local = errands.filter(([name]) => name !== location && distance(places[name], places[location]) <= 550)
+      .sort((a, b) => distance(places[a[0]], places[location]) - distance(places[b[0]], places[location])).slice(0, 4);
+    let beat = 0;
+    while (remaining > .0001) {
+      const phase = (h + i * 13 + beat) % 4;
+      const labels = ["chuẩn bị phần tiếp theo", "làm một phần nhỏ", "kiểm tra lại kết quả", "sắp xếp chỗ làm"];
+      const duration = Math.min(remaining, 160 + (h + i * 37 + beat * 53) % 151);
+      result.push({ location, activity: `${activity}: ${labels[phase]}`.slice(0, 80), kind, duration }); remaining -= duration;
+      if (remaining > 60 && ++beat % 2 === 0) {
+        const visit = local[(h + beat + i) % local.length];
+        const trip = visit ? distance(places[visit[0]], places[location]) : 0;
+        const pause = Math.min(remaining, Math.max(75 + (h + beat) % 46, trip / 8 + 35));
+        result.push({ location: visit?.[0] ?? location, activity: visit?.[1] ?? "Nghỉ tay, xem lại bước tiếp theo", kind: visit?.[2] ?? "rest", duration: pause }); remaining -= pause;
+      }
+    }
+  }
+  if (agendaCache.size >= 512) agendaCache.delete(agendaCache.keys().next().value!);
+  agendaCache.set(key, result); return result;
 }
 
 /** Crowd members stay stable across ticks; only the visible budget is rendered. */
@@ -378,30 +458,7 @@ export function crowdAt(
     if (preferred && !visible.some((r) => r.id === preferred.id))
       visible[visible.length - 1 - replaced++] = preferred;
   return visible.map((r) => {
-    const i = state.residents.findIndex((person) => person.id === r.id);
-    const role =
-      state.catalog.roles.find((x) => x.id === r.roleId) ??
-      state.catalog.roles[0];
-    const list: Step[] = [
-      {
-        location: role.place,
-        activity: role.activity,
-        kind: role.kind,
-        duration: 240,
-      },
-      {
-        location: "Quảng trường",
-        activity: "Đi dạo và gặp hàng xóm",
-        kind: "social",
-        duration: 90,
-      },
-      {
-        location: "Sân chung",
-        activity: "Nghỉ chân trong xóm",
-        kind: "rest",
-        duration: 150,
-      },
-    ];
+    const list = residentRoutine(state, r);
     const elapsed =
       r.plan?.simStartedAt !== undefined
         ? Math.max(0, seconds - r.plan.simStartedAt / 1000)
@@ -423,8 +480,8 @@ export function crowdAt(
         : project(
             r.id,
             r.name,
-            list,
-            r.plan ? elapsed - total : seconds + i * 31,
+            r.plan ? routineFrom(list, worldTime(world, now).hour * 3600 - (elapsed - total)) : list,
+            r.plan ? elapsed - total : worldTime(world, now).hour * 3600,
             "routine",
             r.plan?.steps.at(-1)?.location,
           );

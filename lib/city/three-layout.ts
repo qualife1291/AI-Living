@@ -1,5 +1,6 @@
 import { boulevards, venues } from "./world.ts";
 import { route, type Point } from "../life.ts";
+import { venueObstacles } from "./footprints.ts";
 
 export type CityBuilding = {
   x: number;
@@ -38,6 +39,7 @@ export function segmentDistance(
   return Math.hypot(x - a[0] - t * dx, z - a[1] - t * dz);
 }
 export function buildingAllowed(x: number, z: number, radius: number) {
+  if (venueObstacles.some(v => Math.hypot(x - v.x, z - v.z) < radius + 85)) return false;
   if (venues.some((v) => Math.hypot(x - v.x, z - (v.y - 28)) < radius + 100))
     return false;
   if (

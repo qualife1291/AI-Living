@@ -12,3 +12,7 @@
 10. Source ZIP không chứa production snapshot; không được suy luận dữ liệu seed là dữ liệu live hiện tại.
 11. Không tự mua dịch vụ, cấu hình billing hoặc tự đăng social. Không thêm subagent nếu không được yêu cầu bởi người dùng hoặc hướng dẫn áp dụng.
 12. Nếu có Sites skill: tái sử dụng project_id trong .openai/hosting.json; xin credential mới bằng native tool, không create_site mới. Nếu không có: tiếp tục local, không đoán token, ID hoặc remote.
+
+13. Yêu cầu mới: push các mốc source lên nhánh hiện hành và cập nhật MEMORY_SHORT.md trong quá trình làm, nhất là trước bước kiểm thử lâu/rủi ro mất env. Ghi rõ WIP và kiểm tra chưa hoàn tất; không để trạng thái chỉ nằm trong chat. Không commit secrets, DB hoặc cache.
+
+14. Khi phát hành: cập nhật docs/releases/latest.json và ledger theo ngày với SHA source, version/deployment ID, status, env revision và kiểm tra readback; push cả mốc trước build và nhật ký sau deploy. Không coi push GitHub là deploy Sites. Không lưu secret/backup DB vào Git. Đọc PRODUCTION_RUNBOOK.md; gỡ XOM_OWNER_PRIVATE_ORIGIN trước thay audience.

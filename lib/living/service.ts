@@ -6,7 +6,7 @@ import { realContext, fetchProviders, type ContextCache } from "./realtime";
 import { initializeLiving, planLivingTurn, turnId, population } from "./engine";
 import { proposalSchema, type LivingTurn, type LivingState } from "./schema";
 
-function fetchContext(input: RequestInfo | URL, init?: RequestInit) {
+export function fetchContext(input: RequestInfo | URL, init?: RequestInit) {
   const relay = env.XOM_CONTEXT_RELAY;
   if (relay) {
     const base = new URL(relay);
@@ -59,9 +59,10 @@ function archiveStatements(
   state: LivingState,
   nonce: string,
   revision: number,
+  extra: import("./learning").Experience[] = [],
 ) {
-  return (state.experiences ?? [])
-    .slice(-32)
+  return [...new Map([...(state.experiences ?? []), ...extra].map((e) => [e.id, e])).values()]
+    
     .map((e) =>
       database()
         .prepare(
@@ -70,7 +71,7 @@ function archiveStatements(
         .bind(e.id, e.actorId, e.at, JSON.stringify(e), revision, nonce),
     );
 }
-export async function tickLiving(proposal?: unknown) {
+export async function tickLiving(proposal?: unknown, basis?: { revision: number; turnId: string }) {
   const now = Date.now(),
     id = turnId(now),
     db = database();
@@ -80,6 +81,8 @@ export async function tickLiving(proposal?: unknown) {
     .first();
   if (existing) return { status: 200, data: { ok: true, duplicate: true, id } };
   const current = await readWorld();
+  if (proposal !== undefined && (!basis || basis.revision !== current.revision || basis.turnId !== id))
+    return { status: 409, data: { error: "Cảnh đã thay đổi; hãy sinh lại hội thoại." } };
   if (current.world.paused)
     return { status: 409, data: { error: "Xóm đang tạm nghỉ" } };
   const context = await realContext(now, contextCache(), fetchContext);
@@ -91,7 +94,7 @@ export async function tickLiving(proposal?: unknown) {
     const allowed = new Set(["an", result.turn.residentId]);
     if (parsed.data.dialogue.every((d) => allowed.has(d.speaker))) {
       const { newRole, ...narrative } = parsed.data;
-      result.turn = { ...result.turn, ...narrative, generator: "local-llm" };
+      result.turn = { ...result.turn, ...narrative, generator: "local-llm", scriptId: undefined };
       result.world.lastAI = result.turn.createdAt;
       if (
         newRole &&
@@ -211,7 +214,7 @@ export async function tickLiving(proposal?: unknown) {
           id,
           id,
         ),
-      ...archiveStatements(result.state, learningCommit, current.revision + 1),
+      ...archiveStatements(result.state, learningCommit, current.revision + 1, result.newExperiences),
     ]);
     if (!results[1].meta.changes) {
       const duplicate = await db
@@ -269,7 +272,8 @@ export async function learnCompleted() {
     (s, a) => s + a.samples,
     0,
   );
-  const learning = prepareLearning(current.world, state, Date.now());
+  const newExperiences: import("./learning").Experience[] = [];
+  const learning = prepareLearning(current.world, state, Date.now(), (e) => newExperiences.push(e));
   const trained =
     Object.values(learning).reduce((s, a) => s + a.samples, 0) - previous;
   const animals = settleAnimalLearning(current.world, state, Date.now());
@@ -295,7 +299,7 @@ export async function learnCompleted() {
         "UPDATE worlds SET data=?,revision=revision+1 WHERE id=? AND revision=?",
       )
       .bind(JSON.stringify(current.world), "home", current.revision),
-    ...archiveStatements(state, nonce, current.revision + 1),
+    ...archiveStatements(state, nonce, current.revision + 1, newExperiences),
   ]);
   const result = batch[0];
   return result.meta.changes

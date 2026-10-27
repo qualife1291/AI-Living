@@ -1,7 +1,9 @@
 "use client";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 import {
   BookOpen,
+  Clapperboard,
   CloudSun,
   Compass,
   EyeOff,
@@ -10,9 +12,16 @@ import {
   Pause,
   Play,
   RefreshCw,
+  Eye,
+  Sparkles,
   Users,
   X,
 } from "lucide-react";
+import { Conversation } from "@/components/city/Conversation";
+import type { Quality } from "@/lib/city/scale";
+import { Osm3D } from "@/components/city/Osm3D";
+import { InteriorView } from "@/components/city/InteriorView";
+import { lifeStory } from "@/lib/city/lifestory";
 import { Wardrobe } from "@/components/characters/Wardrobe";
 import { UrbanMap } from "@/components/city/UrbanMap";
 import { City3D } from "@/components/city/City3D";
@@ -32,6 +41,7 @@ type Snapshot = {
 };
 type Panel = "people" | "context" | "places" | "learning" | "sources" | null;
 export default function Page() {
+  const router = useRouter();
   const [data, setData] = useState<Snapshot | null>(null),
     [error, setError] = useState(""),
     [selected, setSelected] = useState("an"),
@@ -42,6 +52,9 @@ export default function Page() {
     [venue, setVenue] = useState<Venue | null>(null),
     [busy, setBusy] = useState(false),
     [clockOffset, setClockOffset] = useState(0),
+    [quality, setQuality] = useState<Quality>("balanced"),
+    [views, setViews] = useState<number | null>(null),
+    [pulseError, setPulseError] = useState(""),
     [navigation, setNavigation] = useState<{
       x: number;
       y: number;
@@ -49,21 +62,47 @@ export default function Page() {
     } | null>(null);
   const dialog = useRef<HTMLDialogElement>(null),
     restoreFocus = useRef<HTMLElement | null>(null);
-  const load = useCallback(async () => {
+  const loading = useRef(0);
+  const newest = useRef({revision:-1,serverMs:0});
+  const load = useCallback(async (force = false) => {
+    if (loading.current > 0 && !force) return;
+    loading.current++;
     try {
-      const response = await fetch("/api/world");
+      const sentAt = Date.now();
+      const response = await fetch("/api/world?compact=1", { signal: AbortSignal.timeout(10000) });
       if (!response.ok) throw Error("Chưa kết nối được với thành phố.");
       const snapshot = (await response.json()) as Snapshot;
-      setClockOffset(Date.parse(snapshot.serverNow) - Date.now());
+      const serverMs=Date.parse(snapshot.serverNow);
+      if(snapshot.revision < newest.current.revision || (snapshot.revision === newest.current.revision && serverMs < newest.current.serverMs))return;
+      newest.current={revision:snapshot.revision,serverMs};
+      const measuredOffset = serverMs - (sentAt + Date.now()) / 2;
+      setClockOffset(previous => Math.abs(measuredOffset - previous) > 5000 ? measuredOffset : previous * .85 + measuredOffset * .15);
       setData(snapshot);
       setError("");
     } catch (e) {
       setError(e instanceof Error ? e.message : "Lỗi kết nối");
-    }
+    } finally { loading.current--; }
   }, []);
   useEffect(() => {
+    let cancelled=false;
+    async function pulse(){
+      if(document.hidden)return;
+      try{
+        const r=await fetch('/api/living/pulse',{method:'POST',headers:{'content-type':'application/json'},body:'{}',signal:AbortSignal.timeout(12000)});
+        if(!cancelled){if(!r.ok&&r.status!==409)setPulseError('Nhịp sống chưa cập nhật. Thử kết nối lại.');else setPulseError('');await load();}
+      }catch{if(!cancelled)setPulseError('Mất kết nối nhịp sống. Thành phố vẫn giữ trạng thái đã lưu.');}
+    }
+    async function visit(){
+      let session=crypto.randomUUID();
+      try{const old=JSON.parse(sessionStorage.getItem('xom-view')??'null');if(old&&Date.now()-old.at<1800000)session=old.id;else sessionStorage.setItem('xom-view',JSON.stringify({id:session,at:Date.now()}));}catch{/* storage is optional */}
+      try{const r=await fetch('/api/visits',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({session})});if(r.ok&&!cancelled)setViews(((await r.json()) as {views:number}).views);}catch{/* counter does not block viewing */}
+    }
+    const initial=setTimeout(()=>{void pulse();void visit();},0),timer=setInterval(()=>void pulse(),30000);
+    return()=>{cancelled=true;clearTimeout(initial);clearInterval(timer);};
+  },[load]);
+  useEffect(() => {
     const initial = setTimeout(() => void load(), 0),
-      timer = setInterval(() => void load(), 15000);
+      timer = setInterval(() => { if(!document.hidden) void load(); }, 15000);
     return () => {
       clearTimeout(initial);
       clearInterval(timer);
@@ -100,7 +139,7 @@ export default function Page() {
         }),
       });
       if (!r.ok) throw Error("Trạng thái vừa đổi, hãy thử lại.");
-      await load();
+      await load(true);
     } catch (e) {
       setError(e instanceof Error ? e.message : "Lỗi thao tác");
     } finally {
@@ -126,6 +165,7 @@ export default function Page() {
         })) ?? []),
       ]
     : [];
+  const story = world ? lifeStory(world, selected, Date.parse(data!.serverNow)) : null;
   const person = people.find((p) => p.id === selected) ?? people[0],
     agent = world?.living?.learning?.[selected];
   const titles: Record<Exclude<Panel, null>, string> = {
@@ -135,12 +175,14 @@ export default function Page() {
     learning: "Trải nghiệm & thói quen",
     sources: "Nguồn mở cho thế giới",
   };
-  const CityView = mode === "city" && renderer === "3d" ? City3D : UrbanMap;
+  const CityView = mode === "osm" && renderer === "3d" ? Osm3D : mode === "city" && renderer === "3d" ? City3D : UrbanMap;
   return (
     <main className={`live-world ${hidden ? "hud-hidden" : ""}`}>
       {world ? (
         <CityView
           world={world}
+          quality={quality}
+          events={data?.events ?? []}
           selected={selected}
           onSelect={(id) => {
             setSelected(id);
@@ -172,6 +214,7 @@ export default function Page() {
             </small>
           </div>
         </div>
+        {views!==null&&<div className="view-count" title="Lượt mở theo phiên 30 phút, không phải số người duy nhất"><Eye size={15}/><span>{views.toLocaleString('vi-VN')}</span></div>}
         <div className="live-status">
           <CloudSun size={16} />
           <span>{data?.weatherState.label ?? "TP.HCM"}</span>
@@ -194,9 +237,9 @@ export default function Page() {
           {world?.paused ? <Play size={17} /> : <Pause size={17} />}
         </button>
       </header>
-      {error && (
+      {(error || pulseError) && (
         <div className="live-alert" role="alert">
-          {error}
+          {error || pulseError}
           <button onClick={() => void load()} aria-label="Thử kết nối lại">
             <RefreshCw size={15} />
           </button>
@@ -224,10 +267,12 @@ export default function Page() {
           <BookOpen size={19} />
           <span>Bối cảnh</span>
         </button>
+        <button aria-label="Chất lượng đồ họa" title={`Đồ họa: ${quality === 'sharp' ? 'Nét' : quality === 'eco' ? 'Nhẹ' : 'Cân bằng'}`} onClick={()=>setQuality(q=>q==='balanced'?'sharp':q==='sharp'?'eco':'balanced')}><Sparkles size={19}/><span>{quality==='sharp'?'Nét':quality==='eco'?'Nhẹ':'Đồ họa'}</span></button>
         <button aria-label="Học hỏi" onClick={() => setPanel("learning")}>
           <GraduationCap size={19} />
           <span>Học hỏi</span>
         </button>
+        <button aria-label="Kịch bản mô phỏng" title="Bốn câu chuyện trong trường quay riêng" onClick={() => { router.push("/studio"); }}><Clapperboard size={19} /><span>Kịch bản</span></button>
         <button aria-label="Ẩn giao diện" onClick={() => setHidden(true)}>
           <EyeOff size={18} />
           <span>Ẩn</span>
@@ -277,10 +322,9 @@ export default function Page() {
           {panel === "context" && <LivingPanel onUpdated={load} />}
           {panel === "people" && (
             <>
-              <p>
-                Chọn một người để theo dõi trong không gian sống. Nhân vật trong
-                mô phỏng này đều là người trưởng thành.
-              </p>
+              <p>Hỏi chuyện, xem ký ức hoặc chọn một cư dân để theo dõi.</p>
+              {story && <details className="life-story"><summary><b>{person?.name} · {story.age} tuổi mô phỏng</b><small>{story.chapter} · {story.samples} trải nghiệm</small></summary><p>Đến xóm ngày {story.arrivedOn} · {story.days} ngày mô phỏng · {story.samples} trải nghiệm đã học.</p><p className="muted">Tuổi khởi đầu hư cấu {story.baseline}; mỗi năm mô phỏng tăng một tuổi. Không suy ra tuổi từ số lượt học.</p><h4>Những điều còn nhớ</h4><ol>{story.memories.slice(-5).map((m, i) => <li key={i}>{m}</li>)}</ol>{!story.memories.length && <p>Chưa có ký ức được lưu.</p>}</details>}
+              {person && world && <Conversation key={person.id} actorId={person.id} name={person.name} paused={world.paused}/>}
               <details className="wardrobe-details">
                 <summary>Tạo hình của {person?.name ?? "An"}</summary>
                 {person && (
@@ -370,6 +414,7 @@ export default function Page() {
                     .join(" · ") || "Sinh hoạt và gặp gỡ trong thành phố."}
                 </p>
               )}
+              {venue && world && <InteriorView key={venue.name} world={world} venue={venue.name} clockOffset={clockOffset} />}
               <div className="venue-grid">
                 {venues.map((v) => (
                   <button
@@ -382,7 +427,6 @@ export default function Page() {
                         key: (old?.key ?? 0) + 1,
                       }));
                       setMode("city");
-                      setPanel(null);
                     }}
                   >
                     <b>{v.name}</b>

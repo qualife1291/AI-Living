@@ -1,5 +1,33 @@
 # Changelog
 
+## 2026-10-27 — Nhân vật có khớp và bối cảnh sinh hoạt nhiều chi tiết
+- Tay/chân có khuỷu/gối, chuyển đi–đứng mềm theo quãng đường thực, giữ pose khi pause. Bổ sung nét mặt, cổ áo/cúc/đế giày và mũ tròn; sách/ly/bình tưới/dụng cụ theo tay cầm.
+- Gom nhân vật vào sáu batch chung; chi tiết gần camera, chân/bóng theo nền thực của renderer.
+- 66 cụm đồ vật thuộc bảy loại, footprint dùng chung với navigation; thêm tán cây nhiều lớp, bậc cửa thấp, mây và nước đài phun theo simulation clock.
+- Dựng riêng mèo/chó/đàn sẻ; phối hợp vị trí ngoài trời với người và xe để tránh chồng chân.
+- Sáu cảnh trao đổi mới, nâng thư viện lên 18 cảnh/88 lượt; giữ nhãn nguồn và lịch sử đã lưu.
+- Bằng chứng và giới hạn: [VISUAL_DETAIL_REVIEW](docs/VISUAL_DETAIL_REVIEW.md).
+
+## 2026-10-26 — Khoảng riêng, góc quay theo An và sinh hoạt chủ động
+- Cây và đồ đạc dùng chung tọa độ giữa renderer/navigation:94 cây,507 footprint, cộng279 khối nhà. Dời shelter/ghế/cây trạm xe và cột đèn khỏi tuyến xe; bỏ6 cột trùng.
+- Kiểm tra vùng quét của từng người, nhường lối/đi vòng khi đối đầu, đặt điểm đứng riêng để tránh tụm và xuyên nhau. Khi chờ, chân dừng bước.
+- Tracking shot gần An, có người nghe, chọn góc tránh nhà và tự lùi trên màn hình dọc. Nút Theo quay về An; zoom tay thoát chế độ theo.
+- Chọn việc theo năng lượng/đói/kinh nghiệm, hạn chế lặp và giữ kế hoạch chưa hoàn tất; luân phiên cư dân công bằng. Lịch NPC có công việc nhỏ và giờ nghỉ riêng.
+- Khung lập kế hoạch5phút/pulse30giây khi trang đang mở. Không nhân điểm kỹ năng, không đổi model hay thêm dịch vụ trả phí. Giới hạn và bằng chứng: [SPACE_CAMERA_AUTONOMY](docs/SPACE_CAMERA_AUTONOMY.md).
+
+## 2026-10-26 — Sửa thoại bị ngắt, chuyển động và đường đi
+- Giữ trọn4–6lượt qua polling; nhịp2,4–4giây/câu, nghỉ0,3giây, cooldown20–45giây; đọc đầy đủ eventAI và dừng khi pause.
+- Di chuyển theo từngframe với đường vòng quanh footprint, camera theo dt và clockoffset bùRTT. Render/layout/nav dùng chung dấu chân công trình; không đặt nhà trên đường xe.
+- Xe đúng làn trên vòng khép kín, góc bo, có phanh/nhường người/khoảng cách; bỏ xe buýt/metro minh họa ở tuyến chưa có hình học an toàn.
+- Khung cửa/bậu/viền mái/mái hiên sọc/bóng tiếp xúc, ánh sáng rõ khối; vật liệu nhẹ/chunkLOD chi tiết xa. Bằng chứng và giới hạn trong GROUND_AND_MOTION_REVIEW.
+
+## 2026-10-25 — Nhân vật mềm hơn và hội thoại có lượt
+- Đầu cầu/tóc ôm đầu, thân bo góc, tay chân capsule; thở/chớp mắt, quay mặt về đúng bạn, cử chỉ nói/nghe. Sửa vai, giày và tên quá lớn; thêm bàn/ghế/ly/chậu ở rìa địa điểm.
+- Đám đông theo lịch24giờ và nghề, bữa ăn/nghỉ xen kẽ; vị trí riêng cách1,4m, vào vị trí liên tục, giới hạn cả người cuối dân số240.
+- Hai agent phát triển biên kịch/review;12cảnh/56lượt, có khoảng yên và chờ câu mở đầu khi vừa tới. 2D/3D dùng chung điều phối; eventAI ưu tiên, đúng người nghe và nhãn nguồn.
+- Prompt đạo diễn–nhân vật–phản biện cho cloud/local, guard chặn lặp gần nguyên văn. Qwenlocal3vai đã chạy thật nhưng có mẫu kém bị guard bác, không ghi world. Không thêm paidAPI/video.
+- Nguồn tham khảo và hướng tạo hình trong VISUAL_DIRECTION; bằng chứng/test và giới hạn trong SOCIAL_REVIEW.
+
 ## 2026-10-25 — Thành phố 3D và khu cao ốc
 - Đổi không gian sống mặc định sang Three.js/WebGL2; 282 khối nhà, gồm 151 cao ốc, cửa hàng tầng trệt, cây và công trình dịch vụ. Bố trí tất định chừa đường đi và khu vực quanh địa điểm.
 - Nhân vật khối 3D đọc trang phục hiện có; giữ hoạt động, thoại, động vật và phương tiện trên cùng dữ liệu mô phỏng. Camera xoay/dịch/zoom, theo nhân vật, khu cao ốc và toàn cảnh theo tỷ lệ màn hình.
@@ -55,3 +83,22 @@
 - Thêm contextual bandit từng cư dân và policy động vật, fit phản hồi từ hoạt động hoàn tất; không học sớm/trùng/hủy. Qwen chưa fine-tune.
 - Thêm migration 0003 archive trải nghiệm, cập nhật policy + dataset nguyên tử, phân trang JSONL, helper backup SQLite và export local.
 - Ghi ADR-0009 cho ba hướng chung nền thế giới: live viewer, studio giáo dục tách nhánh và nhân vật cá nhân; chưa bật public/video/multi-user.
+
+## 25/10/2026 — Độ tin cậy và góc quan sát nội thất
+- Thêm mặt cắt 3D nội thất, lựa chọn tầng và hoạt cảnh cabin thang máy; hồ sơ tuổi mô phỏng/chương đời sống/ký ức.
+- Cải thiện màu trời và ánh nắng theo giờ; giới hạn công việc render khi tab ẩn.
+- Sửa archive batch lớn, proposal cũ, duplicate event, health/schema, context timeout/cache và polling; thêm gate owner và scheduler rules opt-in.
+- Chưa deploy production; thang máy chưa điều phối cư dân thực. Chi tiết `docs/INTERIORS_AND_RELEASE.md`.
+
+## 25/10/2026 — Production version6 và bản đồ khảo sát3D
+- Phát hành owner-private với additive schema reconciliation và kiểm chứng bảo toàn lịch sử.
+- Thêm khảo sát OSM3D912 công trình, ghi rõ heightước lượng, không lẫn vị trí cư dân mô phỏng.
+- Lưu runbook, releaseledger/SHA, scriptbuild-package-source-sync và nghiên cứu nguồn3D/bối cảnh không phí.
+
+## 25/10/2026 — Tỷ lệ, tương tác và nhịp sống
+- Sửa tỷ lệ người–xe–nhà; thêm bánh/đèn xe, đạo cụ và preset độ nét; HUD sáng rõ, chữ gọn và ít blur.
+- Khôi phục thoại nền3D, thêm chat có lưu theo ngữ cảnh/luật, lượt mở theo phiên và pulseidempotent.
+- WorldGET chỉ đọccache bối cảnh, compact8events; giới hạn refreshcontext và chặn responsecũ sau điều khiển.
+- Kiểm thử concurrency/API, viewportDPR, pause/offline/contextloss/lifecycle và các giới hạn tại EXPERIENCE_REVIEW.md.
+
+- Productionversion7 đã nativepublish/readback; reuse lịchcloud mỗi giờ để cập nhật khi đóng trang. Lịchchưa có recordedrun đầu tại thời điểm bàn giao, không có cam kếtSLA24/7.
