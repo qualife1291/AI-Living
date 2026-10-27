@@ -1,0 +1,18 @@
+{
+  "project_id": "appgprj_6adc7dc364d48191a09202c5b43309e4",
+  "source_commit": "168861bcc9d4476302cbac6779f45b315640bad8",
+  "status": "prepared-not-deployed",
+  "archive_sha256": "3ac77232c35d3ce5a7a9582d3c070779369cddcf3db55e2c324de21307bc1ba9",
+  "archive_local_path": "work/production-168861b.tar.gz",
+  "production_ledger_unchanged": true,
+  "blocker": "Native Sites credential/deploy/status/database tools unavailable in this session; user has already authorized release.",
+  "validation": {
+    "unit_suites_passed": 38,
+    "local_api": true,
+    "typecheck_lint_build_assets": true,
+    "browser_desktop_mobile": true,
+    "six_turn_dialogue": true,
+    "production_readback": false,
+    "hardware_gpu": false
+  }
+}
