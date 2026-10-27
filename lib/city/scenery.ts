@@ -93,7 +93,7 @@ export const streetProps: StreetProp[] = [];
 const propSize: Record<StreetPropKind, [number, number]> = { produce: [22, 14], books: [14, 7], workbench: [22, 10], bicycle: [19, 6], flowers: [18, 12], notice: [16, 5], bin: [5, 5] };
 for (const [index, venue] of venues.entries()) {
   const v = venueSceneryPose(venue);
-  const kind: StreetPropKind = ["cafe", "restaurant", "market"].includes(v.type) ? "produce" : ["school", "library"].includes(v.type) ? "books" : ["factory", "office"].includes(v.type) ? "workbench" : ["park", "garden", "square"].includes(v.type) ? "flowers" : "bicycle";
+  const kind: StreetPropKind = ["cafe", "restaurant", "market"].includes(v.type) ? "produce" : ["school", "library"].includes(v.type) ? "books" : ["factory", "office", "workshop"].includes(v.type) ? "workbench" : ["park", "garden", "square"].includes(v.type) ? "flowers" : "bicycle";
   for (const [slot, type] of [kind, index % 3 === 0 ? "notice" : "bin"].entries()) {
     const typed = type as StreetPropKind, [width, depth] = propSize[typed];
     let chosen: StreetProp | undefined;

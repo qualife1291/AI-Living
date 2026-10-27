@@ -42,6 +42,8 @@ with sync_playwright() as p:
    assert all(speakers[i]!=speakers[i-1] for i in range(1,len(speakers))),speakers
    after=lines[1];assert before.split('→')[0]!=after.split('→')[0],(before,after)
    assert int(host.get_attribute('data-draw-calls'))<90
+   assert host.get_attribute('data-human-batches')=='6'
+   assert host.get_attribute('data-street-props')=='66'
    assert page.evaluate('document.documentElement.scrollWidth<=window.innerWidth')
    assert not errors,errors
    report.append({'viewport':name,'renderer':'Chromium SwiftShader','fixture':'synthetic-workshop-no-world-writes','first':before,'reply':after,'fullDialogue':lines,'pollingCoveredSeconds':24,'stats':host.evaluate('(e)=>({...e.dataset})')})

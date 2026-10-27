@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import { Scene, PerspectiveCamera, Matrix4, Vector3 } from 'three';
 import { HumanMotion } from '../components/city/three/humans.ts';
 import { createPeople } from '../components/city/three/people.ts';
+import { createAmbience } from '../components/city/three/ambience.ts';
 import { streetModel } from '../components/city/three/streetscape.ts';
 import { streetProps } from '../lib/city/scenery.ts';
 import { seed } from '../lib/world.ts';
@@ -58,5 +59,15 @@ for(const prop of streetProps)for(const part of streetModel(prop)) {
  }
  detailParts++;
 }
+const effectsScene=new Scene(), effects=createAmbience(effectsScene);
+effects.update(12.3);
+const drops=effectsScene.children[0].geometry.attributes.position;
+const clouds=effectsScene.children[1].instanceMatrix;
+const still={drops:[...drops.array],clouds:[...clouds.array],version:drops.version};
+effects.update(12.3);
+assert.deepEqual([...drops.array],still.drops);assert.deepEqual([...clouds.array],still.clouds);assert.equal(drops.version,still.version,'Paused effects do not upload buffers');
+effects.update(12.4);assert.notDeepEqual([...drops.array],still.drops);assert.ok([...drops.array,...clouds.array].every(Number.isFinite));
+assert.ok(effects.stats.droplets<=512,'Bounded particle pool');
+for(const mesh of effectsScene.children){mesh.geometry.dispose();mesh.material.dispose();}
 for(const mesh of scene.children)mesh.material.dispose();for(const geometry of Object.values(people.geometry))geometry.dispose();
 console.log(JSON.stringify({suite:'visual-upgrade',humanBatches:6,stressActors:72,instances:instanceCount,motionFrames:600,props:66,propTypes:7,detailParts,pause:'frozen',joints:'connected',provenance:'preserved'}));

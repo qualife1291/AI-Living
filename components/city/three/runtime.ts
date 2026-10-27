@@ -15,7 +15,6 @@ import {
   animalsAt,
   simulationTime,
   type Actor,
-  type Point,
 } from "@/lib/life";
 import { crowdAt } from "@/lib/living/engine";
 import { worldTime } from "@/lib/clock";
@@ -488,6 +487,8 @@ export function createCity(
   host.dataset.towers = String(buildings.filter((b) => b.tower).length);
 
   const ambience = createAmbience(scene);
+  host.dataset.fountainStreams = String(ambience.stats.fountainStreams);
+  host.dataset.cloudLobes = String(ambience.stats.cloudLobes);
   const capacity = 72, people = createPeople(scene, capacity), boxGeo = people.geometry.box;
   const trafficBody = new THREE.InstancedMesh(
       boxGeo,

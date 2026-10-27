@@ -21,4 +21,11 @@ if (process.argv.includes("--motion")) {
   setup(43200000);
   world.people[0].plan = { createdAt: new Date(now).toISOString(), simStartedAt: 43199000, pausedMs: 0, from: "Phòng An", steps: [{ location: "Phòng Bình", activity: "Ghé thăm Bình", kind: "social", duration: 180 }] };
 }
+const detail = process.argv.find(arg => arg.startsWith("--detail="))?.split("=")[1];
+const detailPlaces = { read: ["Thư viện", "read", "Đọc và ghi lại một trang sách"], garden: ["Vườn nhỏ", "garden", "Chăm từng chậu rau trong vườn"], eat: ["Quán cà phê", "eat", "Nghỉ tay với tách nước"], market: ["Chợ nhỏ", "social", "Cùng xem các món cho bữa cơm"] };
+if (detailPlaces[detail]) {
+  setup(43200000);
+  const [location, kind, activity] = detailPlaces[detail];
+  for (const p of world.people) p.plan = { ...p.plan, from: location, steps: [{ location, kind, activity, duration: 3600 }] };
+}
 console.log(JSON.stringify({ world, events: [], revision: 1, serverNow: new Date(now).toISOString(), obstacles: groundObstacles, weatherState: { ...weatherAt(world.born, worldTime(world, now)), label: "Cảnh thử nghiệm · mô phỏng" } }));
