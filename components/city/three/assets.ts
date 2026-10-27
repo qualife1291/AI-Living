@@ -72,9 +72,27 @@ export class AssetLibrary {
       const model = this.compile(id); if (!model) continue;
       const mesh = new THREE.InstancedMesh(model.geometry, model.material, entries.length);
       entries.forEach((p, i) => { setAssetTransform(dummy, model.size, p); mesh.setMatrixAt(i, dummy.matrix); });
+      mesh.instanceMatrix.setUsage(THREE.DynamicDrawUsage); mesh.userData.placements = entries; mesh.userData.assetSize = model.size;
       mesh.instanceMatrix.needsUpdate = true; scene.add(mesh); meshes.set(id, mesh);
     }
     return meshes;
+  }
+  addWorldLOD(scene: THREE.Scene, placements: AssetPlacement[]) {
+    const meshes = this.addBatches(scene, placements), dummy = new THREE.Object3D(), tint = new THREE.Color();
+    const coarse = new THREE.InstancedMesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshLambertMaterial(), Math.max(1, placements.length)); coarse.frustumCulled = false; coarse.instanceMatrix.setUsage(THREE.DynamicDrawUsage); scene.add(coarse);
+    return (camera: THREE.Camera) => {
+      coarse.count = 0;
+      for (const mesh of meshes.values()) {
+        mesh.count = 0;
+        for (const p of mesh.userData.placements as AssetPlacement[]) {
+          const distance = Math.hypot(camera.position.x - p.x, camera.position.z - p.z), building = p.width > 40 && p.height > 30;
+          if (distance < (building ? 650 : p.height < 2 ? 420 : 320)) { setAssetTransform(dummy, mesh.userData.assetSize, p); mesh.setMatrixAt(mesh.count++, dummy.matrix); }
+          else if (building) { dummy.position.set(p.x, p.y + p.height / 2, p.z); dummy.rotation.set(0, p.yaw ?? 0, 0); dummy.scale.set(p.width, p.height, p.depth); dummy.updateMatrix(); coarse.setMatrixAt(coarse.count, dummy.matrix); coarse.setColorAt(coarse.count++, tint.set(p.id.startsWith("commercial") ? "#c9d3cc" : "#d6c9ad")); }
+        }
+        mesh.instanceMatrix.needsUpdate = true;
+      }
+      coarse.instanceMatrix.needsUpdate = true; if (coarse.instanceColor) coarse.instanceColor.needsUpdate = true;
+    };
   }
   collectAndClose(sets: ResourceSets) { this.dead = true; for (const model of this.loaded.values()) collectAssetResources(model.scene, sets); for (const model of this.compiled.values()) { sets.geometries.add(model.geometry); sets.materials.add(model.material); } this.loaded.clear(); this.compiled.clear(); }
   dispose() { const sets: ResourceSets = { geometries: new Set(), materials: new Set(), textures: new Set() }; this.collectAndClose(sets); sets.geometries.forEach(g => g.dispose()); sets.materials.forEach(m => m.dispose()); sets.textures.forEach(t => t.dispose()); }
@@ -101,17 +119,14 @@ export class AssetAvatar {
     this.group.add(this.model); this.mixer = new THREE.AnimationMixer(this.model);
     for (const clip of source.animations) this.actions.set(clip.name, this.mixer.clipAction(clip));
     const rest = new THREE.Box3().setFromObject(this.model), center = rest.getCenter(new THREE.Vector3()), size = rest.getSize(new THREE.Vector3());
-    const envelope = rest.clone();
-    for (const name of ["idle", "walk", "sprint", "sit", "pick-up", "holding-both", "interact-right", "emote-yes", "emote-no"]) {
-      const action = this.actions.get(name); if (!action) continue; this.mixer.stopAllAction(); action.play();
-      for (let sample = 0; sample <= 12; sample++) { this.mixer.setTime(action.getClip().duration * sample / 12); envelope.union(new THREE.Box3().setFromObject(this.model)); }
-    }
-    this.mixer.stopAllAction();
-    const extent = Math.hypot(Math.max(Math.abs(envelope.min.x - center.x), Math.abs(envelope.max.x - center.x)), Math.max(Math.abs(envelope.min.z - center.z), Math.abs(envelope.max.z - center.z)));
+    // Keep the authored body proportions. Extended interaction limbs are not a
+    // body collider: fitting the entire pickup sweep would turn people into strips.
+    const extent = Math.hypot(size.x / 2, size.z / 2);
     const yScale = height / size.y, horizontal = Math.min(yScale, radius / Math.max(.001, extent));
     this.group.scale.set(horizontal, yScale, horizontal); this.model.position.x -= center.x; this.model.position.z -= center.z;
   }
   pose(clip: string, animationTime: number, presentationTime: number, position: readonly number[], yaw: number, floor: number) {
+    if (this.current && presentationTime === this.lastTime) return;
     const name = this.actions.has(clip) ? clip : "idle", delta = Math.max(0, Math.min(.15, presentationTime - this.lastTime)), seek = Math.abs(presentationTime - this.lastTime) > 1;
     if (name !== this.current || seek) { this.previous = seek ? "" : this.current; this.current = name; this.changedAt = seek ? presentationTime - .45 : presentationTime; this.actions.get(name)?.reset().play(); }
     const blend = Math.min(1, Math.max(0, (presentationTime - this.changedAt) / .45));
@@ -135,4 +150,5 @@ export class AssetAvatar {
     if (!mesh?.geometry) return this.group.position.clone().add(new THREE.Vector3(0, 9, 1));
     mesh.geometry.computeBoundingBox(); const box = mesh.geometry.boundingBox!, point = box.getCenter(new THREE.Vector3()); point.y = box.min.y + .12; return mesh.localToWorld(point);
   }
+  snapshot() { const leg = this.model.getObjectByName("leg-left"); return { clip: this.current, leg: leg?.quaternion.toArray(), position: this.group.position.toArray() }; }
 }

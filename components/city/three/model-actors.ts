@@ -29,6 +29,7 @@ export function simpleProp(kind: string) {
 
 export function createModelActors(scene: THREE.Scene, library: AssetLibrary) {
   const avatars = new Map<string, AssetAvatar>(), props = new Map<string, { kind: string; group: THREE.Group }>(), travel = new Map<string, { x: number; z: number; distance: number }>();
+  const posed = new Set<string>();
   for (const [id, modelId] of [["an", resolveModel("character-a")!], ["binh", resolveModel("character-b")!], ["chi", resolveModel("character-c")!]]) {
     const source = library.get(modelId); if (!source) continue;
     const avatar = new AssetAvatar(source); avatar.assignId(id); scene.add(avatar.group); avatars.set(id, avatar);
@@ -38,6 +39,7 @@ export function createModelActors(scene: THREE.Scene, library: AssetLibrary) {
     draw(world: World, actors: Actor[], social: Map<string, SocialPose>, headings: Map<string, number>, seconds: number) {
       for (const [id, avatar] of avatars) {
         const actor = actors.find(a => a.id === id); avatar.group.visible = !!actor; if (!actor) continue;
+        if (world.paused && posed.has(id)) continue;
         const old = travel.get(id), distance = old?.distance ?? 0;
         const walked = world.paused || !old ? 0 : Math.min(3, Math.hypot(actor.position[0] - old.x, actor.position[1] - old.z));
         travel.set(id, { x: actor.position[0], z: actor.position[1], distance: distance + walked });
@@ -48,6 +50,7 @@ export function createModelActors(scene: THREE.Scene, library: AssetLibrary) {
         const clip = actor.walking ? "walk" : holding ? actor.kind === "read" ? "holding-both" : "holding-right" : speaking ? "emote-yes" : "idle";
         const animationTime = actor.walking ? (distance + walked) / 14 * (2 / 3) : seconds;
         avatar.pose(clip, animationTime, seconds, actor.position, headings.get(id) ?? .35, groundElevation(...actor.position));
+        posed.add(id);
         const oldProp = props.get(id);
         if (holding && oldProp?.kind !== actor.kind) {
           if (oldProp) { scene.remove(oldProp.group); oldProp.group.traverse(o => { const m = o as THREE.Mesh; m.geometry?.dispose(); if (m.material) (m.material as THREE.Material).dispose(); }); }
@@ -57,5 +60,6 @@ export function createModelActors(scene: THREE.Scene, library: AssetLibrary) {
         if (prop) { prop.visible = holding; const right = avatar.hand(); prop.position.copy(actor.kind === "read" ? right.add(avatar.hand("left")).multiplyScalar(.5) : right); prop.rotation.set(0, headings.get(id) ?? .35, 0); }
       }
     },
+    snapshots: () => Object.fromEntries([...avatars].map(([id, avatar]) => [id, avatar.snapshot()])),
   };
 }

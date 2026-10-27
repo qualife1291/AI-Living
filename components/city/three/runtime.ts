@@ -463,7 +463,7 @@ export function createCity(
     const a = metroLine[i - 1], b = metroLine[i], length = Math.hypot(b[0] - a[0], b[1] - a[1]);
     for (let n = 20; n < length; n += 40) placements.push({ id: "trains/railroad-straight", x: a[0] + (b[0] - a[0]) * n / length, y: 3.1, z: a[1] + (b[1] - a[1]) * n / length, width: 10, height: 1, depth: 40, yaw: Math.atan2(b[0] - a[0], b[1] - a[1]), stretch: true });
   }
-  assets.addBatches(scene, placements);
+  const updateAssetLOD = assets.addWorldLOD(scene, placements);
   host.dataset.assetPlacements = String(placements.length);
   host.dataset.loadedAssets = String(assets.stats().loaded);
   host.dataset.failedAssets = String(assets.stats().failed);
@@ -658,20 +658,21 @@ export function createCity(
     modelActors.draw(world, actors, socialPoses, heading, seconds);
   }
   function traffic() {
+    let fallbackCars = cars;
     if (importedCars.length) {
-      trafficBody.count = trafficGlass.count = trafficWheels.count = trafficLights.count = 0;
       for (const mesh of importedCars) mesh.count = 0;
+      fallbackCars = [];
       for (const [index, car] of cars.entries()) {
+        if (Math.hypot(camera.position.x - car.position[0], camera.position.z - car.position[1]) > 450) { fallbackCars.push(car); continue; }
         const which = index % importedCars.length, mesh = importedCars[which], at = mesh.count++;
         setAssetTransform(dummy, carModels[which]!.size, { id: carIds[which], x: car.position[0], y: groundElevation(...car.position), z: car.position[1], width: car.width, height: car.height, depth: car.length, yaw: car.yaw + Math.PI, stretch: true });
         mesh.setMatrixAt(at, dummy.matrix);
       }
       for (const mesh of importedCars) mesh.instanceMatrix.needsUpdate = true;
-      return;
     }
-    trafficBody.count = trafficGlass.count = cars.length;
-    trafficWheels.count = trafficLights.count = cars.length * 4;
-    cars.forEach((car, i) => {
+    trafficBody.count = trafficGlass.count = fallbackCars.length;
+    trafficWheels.count = trafficLights.count = fallbackCars.length * 4;
+    fallbackCars.forEach((car, i) => {
       const a = car.position, angle = car.yaw, dimensions = car;
       dummy.rotation.set(0, angle, 0);
       dummy.position.set(a[0], 9, a[1]);
@@ -802,6 +803,7 @@ export function createCity(
     }
     controls.update();
     // Keep signs subordinate to residents; distant districts need no text clutter.
+    updateAssetLOD(camera);
     for (const chunk of detailChunks) chunk.mesh.visible = Math.hypot(camera.position.x - chunk.x, camera.position.z - chunk.z) < 520;
     const pixelScale =
       (2 * Math.tan(THREE.MathUtils.degToRad(camera.fov) / 2)) /
@@ -867,6 +869,7 @@ export function createCity(
     host.dataset.selected = current?.id ?? "";
     host.dataset.humanBatches = String(people.stats().batches);
     host.dataset.humanInstances = String(people.stats().instances);
+    host.dataset.modelActors = JSON.stringify(modelActors.snapshots());
     host.dataset.drawCalls = String(renderer.info.render.calls);
     host.dataset.camera = [
       camera.position.x,
