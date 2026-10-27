@@ -36,4 +36,8 @@ if (process.argv.includes("--pet-walk")) {
   world.living.animalLearning ??= {};
   world.living.animalLearning.cun = { samples: 0, actions: {}, energy: 80, plan: { createdAt: new Date(now).toISOString(), simStartedAt: 43140000, pausedMs: 0, from: "Công viên", steps: [{ location: "Công viên", kind: "play", activity: "Chơi nhẹ", duration: 3600 }] } };
 }
+if (process.argv.includes("--cycle")) {
+  setup(43200000);
+  world.people[0].plan = { createdAt: new Date(now).toISOString(), simStartedAt: 43200000, pausedMs: 0, from: "Công viên", generator: "rules", transport: "bicycle", steps: [{ location: "Sân thể thao", kind: "cycle", activity: "Đạp xe qua khu phố", duration: 3600 }] };
+}
 console.log(JSON.stringify({ world, events: [], revision: 1, serverNow: new Date(now).toISOString(), obstacles: groundObstacles, weatherState: { ...weatherAt(world.born, worldTime(world, now)), label: "Cảnh thử nghiệm · mô phỏng" } }));
