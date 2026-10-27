@@ -2,9 +2,10 @@ import * as THREE from "three";
 import { GLTFLoader, type GLTF } from "three/addons/loaders/GLTFLoader.js";
 import { mergeGeometries } from "three/addons/utils/BufferGeometryUtils.js";
 import catalog from "../../../public/models/kenney/catalog.json" with { type: "json" };
+import resources from "../../../public/models/resources/catalog.json" with { type: "json" };
 import { resolveModel } from "../../../lib/city/asset-bindings.ts";
 
-export const approvedAssets = catalog.assets;
+export const approvedAssets = [...catalog.assets, ...resources.assets];
 export const cityAssetIds = [...["character-a", "character-b", "character-c", "character-d", "character-e", "car-sedan", "car-hatchback", "car-taxi", "display-bread", "display-fruit", "bin"].map(key => resolveModel(key)!).filter(Boolean), "commercial/building-a", "commercial/building-b", "commercial/building-c", "commercial/building-skyscraper-a", "commercial/detail-parasol-a", "suburban/building-type-a", "suburban/building-type-b", "suburban/building-type-c", "suburban/tree-large", "suburban/tree-small", "watercraft/boat-fishing-small", "watercraft/boat-row-small", "watercraft/boat-house-a", "watercraft/buoy", "trains/railroad-straight", "trains/train-tram-modern", "roads/traffic-light"];
 export type AssetPlacement = { id: string; x: number; y: number; z: number; width: number; depth: number; height: number; yaw?: number; stretch?: boolean };
 type Compiled = { geometry: THREE.BufferGeometry; material: THREE.MeshPhongMaterial; size: THREE.Vector3 };
@@ -15,7 +16,8 @@ export function collectAssetResources(root: THREE.Object3D, sets: ResourceSets) 
 
 /** Only checked-in CC0 entries can load; no provider requests from a live viewer. */
 export class AssetLibrary {
-  private loader = new GLTFLoader();
+  private manager = new THREE.LoadingManager();
+  private loader = new GLTFLoader(this.manager);
   private loaded = new Map<string, GLTF>();
   private pending = new Map<string, Promise<GLTF>>();
   private compiled = new Map<string, Compiled>();
@@ -26,7 +28,7 @@ export class AssetLibrary {
     const cached = this.loaded.get(id); if (cached) return cached;
     const request = this.pending.get(id); if (request) return request;
     const metadata = approvedAssets.find(a => a.id === id);
-    if (!metadata || metadata.license !== "CC0-1.0" || !metadata.url.startsWith("/models/kenney/") || metadata.url.includes("..")) throw new Error(`Unapproved asset: ${id}`);
+    if (!metadata || metadata.license !== "CC0-1.0" || !["/models/kenney/", "/models/resources/"].some(prefix => metadata.url.startsWith(prefix)) || metadata.url.includes("..")) throw new Error(`Unapproved asset: ${id}`);
     const promise = this.loader.loadAsync(`${metadata.url}?v=${metadata.sha256.slice(0, 12)}`).then(model => {
       if (this.dead) { const sets: ResourceSets = { geometries: new Set(), materials: new Set(), textures: new Set() }; collectAssetResources(model.scene, sets); sets.geometries.forEach(g => g.dispose()); sets.materials.forEach(m => m.dispose()); sets.textures.forEach(t => t.dispose()); throw new Error("Asset view disposed"); }
       this.loaded.set(id, model); return model;
@@ -98,7 +100,7 @@ export class AssetLibrary {
       coarse.instanceMatrix.needsUpdate = true; if (coarse.instanceColor) coarse.instanceColor.needsUpdate = true;
     };
   }
-  collectAndClose(sets: ResourceSets) { this.dead = true; for (const model of this.loaded.values()) collectAssetResources(model.scene, sets); for (const model of this.compiled.values()) { sets.geometries.add(model.geometry); sets.materials.add(model.material); } this.loaded.clear(); this.compiled.clear(); }
+  collectAndClose(sets: ResourceSets) { this.dead = true; this.manager.abort(); for (const model of this.loaded.values()) collectAssetResources(model.scene, sets); for (const model of this.compiled.values()) { sets.geometries.add(model.geometry); sets.materials.add(model.material); } this.loaded.clear(); this.compiled.clear(); }
   dispose() { const sets: ResourceSets = { geometries: new Set(), materials: new Set(), textures: new Set() }; this.collectAndClose(sets); sets.geometries.forEach(g => g.dispose()); sets.materials.forEach(m => m.dispose()); sets.textures.forEach(t => t.dispose()); }
   stats() { return { loaded: this.loaded.size, failed: this.failures.size }; }
 }
@@ -176,5 +178,6 @@ export class AssetAvatar {
     if (!mesh?.geometry) return this.group.position.clone().add(new THREE.Vector3(0, 9, 1));
     mesh.geometry.computeBoundingBox(); const box = mesh.geometry.boundingBox!, point = box.getCenter(new THREE.Vector3()); point.y = box.min.y + .12; return mesh.localToWorld(point);
   }
+  joint(name: string) { return this.model.getObjectByName(name); }
   snapshot() { const leg = this.model.getObjectByName("leg-left"); return { clip: this.current, leg: leg?.quaternion.toArray(), position: this.group.position.toArray() }; }
 }

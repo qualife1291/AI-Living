@@ -3,6 +3,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import {
   BookOpen,
+  Box,
   Clapperboard,
   CloudSun,
   Compass,
@@ -320,7 +321,7 @@ export default function Page() {
               <X size={20} />
             </button>
           </div>
-          {panel === "context" && <LivingPanel onUpdated={load} />}
+          {panel === "context" && <><button className="asset-library-link" onClick={()=>router.push('/assets')}><Box size={18}/>Khám phá model & chuyển động 3D</button><LivingPanel onUpdated={load} /></>}
           {panel === "people" && (
             <>
               <p>Hỏi chuyện, xem ký ức hoặc chọn một cư dân để theo dõi.</p>
