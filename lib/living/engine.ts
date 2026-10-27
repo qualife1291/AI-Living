@@ -1,5 +1,6 @@
 import { meetingSteps, microActivity, actionSteps } from "./activities.ts";
 import { assignIdentities, nextResidentName, defaultIdentity } from "./identity.ts";
+import { decisionContext } from "./linucb.ts";
 import { assignHomes } from "./households.ts";
 import { DEFAULT_PET_OWNERS } from "./pets.ts";
 import { updateAnimalLearning } from "./animal-learning.ts";
@@ -293,6 +294,7 @@ export function planLivingTurn(
       startedSimMs: turn.simStartedAt!,
       durationMs: (an?.plan?.steps.reduce((sum,step)=>sum+step.duration,0) ?? 180) * 1000,
       completed: false,
+      context: decisionContext(learning.an, context.weather),
     };
   const slot = Math.floor(now / 300000);
   for (const id of ["binh", "chi", ...cohortIds(state, slot)]) {
@@ -346,8 +348,9 @@ export function planLivingTurn(
       id: `${turn.id}-${id}`,
       scenarioId: scenario.id,
       startedSimMs: turn.simStartedAt!,
-      durationMs: 180000,
+      durationMs: plan.steps.reduce((sum, step) => sum + step.duration, 0) * 1000,
       completed: false,
+      context: decisionContext(agent, context.weather),
     };
   }
   // Keep each partner's learning tied to an activity that actually has a plan.
@@ -359,6 +362,7 @@ export function planLivingTurn(
       startedSimMs: turn.simStartedAt!,
       durationMs: resident.plan.steps.reduce((sum,step)=>sum+step.duration,0)*1000,
       completed: false,
+      context: decisionContext(learning[resident.id], context.weather),
     };
   }
   updateAnimalLearning({ ...next, living: state }, state, context, now);

@@ -113,5 +113,8 @@
   ],
   [
     "scripts/test-identities.mjs"
+  ],
+  [
+    "scripts/test-linucb.mjs"
   ]
 ]

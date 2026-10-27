@@ -21,7 +21,8 @@
     "energy": -4,
     "hunger": 3,
     "skill": 2,
-    "adultOnly": false
+    "adultOnly": false,
+    "minSkill": 8
   },
   {
     "id": "learn-trade",
@@ -93,7 +94,8 @@
     "energy": -5,
     "hunger": 4,
     "skill": 2,
-    "adultOnly": false
+    "adultOnly": false,
+    "minSkill": 4
   },
   {
     "id": "ride-bus",
@@ -141,7 +143,8 @@
     "energy": -6,
     "hunger": 5,
     "skill": 2,
-    "adultOnly": false
+    "adultOnly": false,
+    "minSkill": 3
   },
   {
     "id": "job-search",
@@ -369,7 +372,8 @@
     "energy": -3,
     "hunger": 4,
     "skill": 2,
-    "adultOnly": false
+    "adultOnly": false,
+    "minSkill": 2
   },
   {
     "id": "quiet-walk",

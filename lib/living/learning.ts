@@ -4,6 +4,7 @@ import scenariosData from "../../data/city/scenarios.json" with { type: "json" }
 import type { LivingState, RealContext } from "./schema.ts";
 import type { World, PersonPlan } from "../world";
 import { computeSimMs, hashSeed, worldTime } from "../clock.ts";
+import { decisionContext, fitLinear, linearScore, type LinearArm } from "./linucb.ts";
 export const scenarioSchema = z
   .object({
     id: z.string().regex(/^[a-z][a-z0-9-]{0,60}$/),
@@ -23,6 +24,7 @@ export const scenarioSchema = z
     hunger: z.number().int().min(-30).max(20),
     skill: z.number().int().min(0).max(3),
     adultOnly: z.boolean(),
+    minSkill: z.number().int().min(0).max(100).optional(),
   })
   .strict();
 export const scenarios = z
@@ -44,6 +46,7 @@ export type AgentLearning = {
   employment: "employed" | "seeking" | "studying";
   samples: number;
   actions: Record<string, LearnedAction>;
+  linear?: Record<string, LinearArm>;
   memories: string[];
   lastTrainedAt?: string;
   lastReward?: number;
@@ -56,6 +59,7 @@ export type AgentLearning = {
     startedSimMs: number;
     durationMs: number;
     completed: boolean;
+    context?: number[];
   };
 };
 export type Experience = {
@@ -65,7 +69,8 @@ export type Experience = {
   at: string;
   reward: number;
   source: "simulation";
-  model: "contextual-bandit-v1";
+  model: "contextual-bandit-v1" | "disjoint-linucb-v1";
+  context?: number[];
 };
 export type LearningPopulation = Record<string, AgentLearning>;
 export function initializeAgent(id: string): AgentLearning {
@@ -108,6 +113,7 @@ export function chooseScenario(
   id: string,
   context: RealContext,
   rolePlace?: string,
+  policy: "tabular" | "linucb" = "linucb",
 ): Scenario {
   if (context.hour < 6 || context.hour >= 22 || agent.energy < 20)
     return scenarios.find((s) => s.id === "rest-home")!;
@@ -119,6 +125,7 @@ export function chooseScenario(
     context.weather.status === "fresh" &&
     (context.weather.precipitation ?? 0) > 0;
   const candidates = scenarios
+    .filter((s) => agent.skill >= (s.minSkill ?? 0))
     .filter((s) => !s.adultOnly || agent.adult)
     // Accidents and violations are reactive events, never purposeful errands.
     .filter((s) => !["minor-injury", "traffic-check", "job-change"].includes(s.id))
@@ -126,8 +133,13 @@ export function chooseScenario(
   return candidates
     .map((s) => {
       const model = agent.actions[s.id] ?? { trials: 0, meanReward: 0 };
-      const exploration =
+      let exploration =
         0.45 * Math.sqrt(Math.log(agent.samples + 2) / (model.trials + 1));
+      let prediction = model.meanReward * .7;
+      if (policy === "linucb" && agent.linear?.[s.id]) {
+        const estimate = linearScore(agent.linear[s.id], decisionContext(agent, context.weather));
+        prediction = estimate.mean * .7; exploration = estimate.uncertainty;
+      }
       const affinity = s.place === rolePlace ? 0.3 : 0;
       const energyNeed = Math.max(0, (70 - agent.energy) / 70), foodNeed = Math.max(0, (agent.hunger - 15) / 85);
       const needs = energyNeed * s.energy / 18 * .8 - foodNeed * s.hunger / 28 * .9;
@@ -147,7 +159,7 @@ export function chooseScenario(
         5000;
       return {
         scenario: s,
-        score: model.meanReward * .7 + exploration + affinity + needs + novelty + satiety + unnecessaryRest + evening + taste + transfer + tie,
+        score: prediction + exploration + affinity + needs + novelty + satiety + unnecessaryRest + evening + taste + transfer + tie,
       };
     })
     .sort((a, b) => b.score - a.score)[0].scenario;
@@ -199,6 +211,10 @@ export function settleLearning(
     ),
   );
   fitAction(agent, scenario.id, reward, now);
+  if (pending.context?.length === 6 && pending.context.every(v => Number.isFinite(v) && v >= 0 && v <= 1)) {
+    agent.linear ??= {};
+    agent.linear[scenario.id] = fitLinear(agent.linear[scenario.id], pending.context, reward);
+  }
   agent.recentActions = [...(agent.recentActions ?? []), scenario.id].slice(-6);
   agent.memories = [
     ...agent.memories,
@@ -263,7 +279,8 @@ export function prepareLearning(world: World, state: LivingState, now: number, c
         at: new Date(now).toISOString(),
         reward: agent.lastReward ?? action.meanReward,
         source: "simulation",
-        model: "contextual-bandit-v1",
+        model: agent.pending.context && agent.linear?.[agent.pending.scenarioId] ? "disjoint-linucb-v1" : "contextual-bandit-v1",
+        ...(agent.pending.context ? { context: [...agent.pending.context] } : {}),
       };
       experiences.push(experience);
       collect?.(experience);
