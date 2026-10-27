@@ -1,173 +1,829 @@
 {
-  "version": 1,
+  "version": 2,
   "source": "agent-authored",
   "minPairDistance": 14,
   "maxPairDistance": 30,
   "cooldownSeconds": 180,
-  "quietHours": [22, 6],
+  "quietHours": [
+    22,
+    6
+  ],
   "scenes": [
     {
       "id": "courtyard-small-pause",
       "title": "Một nhịp nghỉ ở sân chung",
-      "places": ["Sân chung", "Khu dân cư"],
-      "kinds": ["social", "rest"],
+      "places": [
+        "Sân chung",
+        "Khu dân cư"
+      ],
+      "kinds": [
+        "social",
+        "rest"
+      ],
       "durationSeconds": 36,
       "turns": [
-        {"speaker": "a", "text": "{b}, ngồi yên một lát cùng mình không?", "gesture": "wave", "seconds": 8},
-        {"speaker": "b", "text": "Ừ. Mình đang muốn nghỉ tay một chút.", "gesture": "nod", "seconds": 8},
-        {"speaker": "a", "text": "Vậy mình cứ ngồi đây thôi, chẳng cần nghĩ chuyện gì lớn.", "gesture": "explain", "seconds": 8},
-        {"speaker": "b", "text": "Thế lại hay. Khi nào muốn đi tiếp thì mình đi.", "gesture": "nod", "seconds": 8}
+        {
+          "speaker": "a",
+          "text": "{b}, ngồi yên một lát cùng mình không?",
+          "gesture": "wave",
+          "seconds": 8
+        },
+        {
+          "speaker": "b",
+          "text": "Ừ. Mình đang muốn nghỉ tay một chút.",
+          "gesture": "nod",
+          "seconds": 8
+        },
+        {
+          "speaker": "a",
+          "text": "Vậy mình cứ ngồi đây thôi, chẳng cần nghĩ chuyện gì lớn.",
+          "gesture": "explain",
+          "seconds": 8
+        },
+        {
+          "speaker": "b",
+          "text": "Thế lại hay. Khi nào muốn đi tiếp thì mình đi.",
+          "gesture": "nod",
+          "seconds": 8
+        }
       ]
     },
     {
       "id": "kitchen-share-the-work",
       "title": "Chia nhau việc trong bếp",
-      "places": ["Bếp chung", "Nhà hàng"],
-      "kinds": ["eat", "work", "social"],
+      "places": [
+        "Bếp chung",
+        "Nhà hàng"
+      ],
+      "kinds": [
+        "eat",
+        "work",
+        "social"
+      ],
       "durationSeconds": 46,
       "turns": [
-        {"speaker": "a", "text": "{b}, mình phụ phần nào cho đỡ vướng tay bạn?", "gesture": "wave", "seconds": 7},
-        {"speaker": "b", "text": "Bạn xếp bát giúp mình nhé. Chừa lối ở giữa là được.", "gesture": "point", "seconds": 7},
-        {"speaker": "a", "text": "Để gần nhau hay tách thành từng chỗ?", "gesture": "explain", "seconds": 7},
-        {"speaker": "b", "text": "Từng chỗ nhé, lát ai ngồi đâu cũng dễ lấy.", "gesture": "nod", "seconds": 7},
-        {"speaker": "a", "text": "Ừ, làm từng việc nhỏ thế này dễ hơn hẳn.", "gesture": "nod", "seconds": 7},
-        {"speaker": "b", "text": "Cứ thong thả. Xong rồi mình cùng nghỉ tay.", "gesture": "laugh", "seconds": 7}
+        {
+          "speaker": "a",
+          "text": "{b}, mình phụ phần nào cho đỡ vướng tay bạn?",
+          "gesture": "wave",
+          "seconds": 7
+        },
+        {
+          "speaker": "b",
+          "text": "Bạn xếp bát giúp mình nhé. Chừa lối ở giữa là được.",
+          "gesture": "point",
+          "seconds": 7
+        },
+        {
+          "speaker": "a",
+          "text": "Để gần nhau hay tách thành từng chỗ?",
+          "gesture": "explain",
+          "seconds": 7
+        },
+        {
+          "speaker": "b",
+          "text": "Từng chỗ nhé, lát ai ngồi đâu cũng dễ lấy.",
+          "gesture": "nod",
+          "seconds": 7
+        },
+        {
+          "speaker": "a",
+          "text": "Ừ, làm từng việc nhỏ thế này dễ hơn hẳn.",
+          "gesture": "nod",
+          "seconds": 7
+        },
+        {
+          "speaker": "b",
+          "text": "Cứ thong thả. Xong rồi mình cùng nghỉ tay.",
+          "gesture": "laugh",
+          "seconds": 7
+        }
       ]
     },
     {
       "id": "cafe-choose-a-seat",
       "title": "Nghỉ chân bên quán",
-      "places": ["Quán cà phê"],
-      "kinds": ["social", "eat", "rest"],
+      "places": [
+        "Quán cà phê"
+      ],
+      "kinds": [
+        "social",
+        "eat",
+        "rest"
+      ],
       "durationSeconds": 36,
       "turns": [
-        {"speaker": "a", "text": "{b}, bạn thích ngồi ngoài hiên hay bên trong hơn?", "gesture": "wave", "seconds": 8},
-        {"speaker": "b", "text": "Bên hiên nhé. Mình thích vừa ngồi vừa nhìn người qua lại.", "gesture": "point", "seconds": 8},
-        {"speaker": "a", "text": "Mình cũng vậy. Có lúc chỉ ngắm phố thôi đã thấy dễ chịu.", "gesture": "nod", "seconds": 8},
-        {"speaker": "b", "text": "Ừ, mình nghỉ một chút rồi tiếp việc của mình.", "gesture": "nod", "seconds": 8}
+        {
+          "speaker": "a",
+          "text": "{b}, bạn thích ngồi ngoài hiên hay bên trong hơn?",
+          "gesture": "wave",
+          "seconds": 8
+        },
+        {
+          "speaker": "b",
+          "text": "Bên hiên nhé. Mình thích vừa ngồi vừa nhìn người qua lại.",
+          "gesture": "point",
+          "seconds": 8
+        },
+        {
+          "speaker": "a",
+          "text": "Mình cũng vậy. Có lúc chỉ ngắm phố thôi đã thấy dễ chịu.",
+          "gesture": "nod",
+          "seconds": 8
+        },
+        {
+          "speaker": "b",
+          "text": "Ừ, mình nghỉ một chút rồi tiếp việc của mình.",
+          "gesture": "nod",
+          "seconds": 8
+        }
       ]
     },
     {
       "id": "library-read-at-your-pace",
       "title": "Nói nhỏ ở thư viện",
-      "places": ["Thư viện"],
-      "kinds": ["read", "social"],
+      "places": [
+        "Thư viện"
+      ],
+      "kinds": [
+        "read",
+        "social"
+      ],
       "durationSeconds": 36,
       "turns": [
-        {"speaker": "a", "text": "{b}, mình đọc chậm nên hay phải quay lại một đoạn.", "gesture": "explain", "seconds": 8},
-        {"speaker": "b", "text": "Mình cũng thế. Gặp chỗ khó thì dừng một chút thôi.", "gesture": "nod", "seconds": 8},
-        {"speaker": "a", "text": "Ừ nhỉ, đâu cần đọc nhanh cho bằng người khác.", "gesture": "nod", "seconds": 8},
-        {"speaker": "b", "text": "Đúng rồi. Mình đọc tiếp nhé, nói nhỏ kẻo phiền mọi người.", "gesture": "listen", "seconds": 8}
+        {
+          "speaker": "a",
+          "text": "{b}, mình đọc chậm nên hay phải quay lại một đoạn.",
+          "gesture": "explain",
+          "seconds": 8
+        },
+        {
+          "speaker": "b",
+          "text": "Mình cũng thế. Gặp chỗ khó thì dừng một chút thôi.",
+          "gesture": "nod",
+          "seconds": 8
+        },
+        {
+          "speaker": "a",
+          "text": "Ừ nhỉ, đâu cần đọc nhanh cho bằng người khác.",
+          "gesture": "nod",
+          "seconds": 8
+        },
+        {
+          "speaker": "b",
+          "text": "Đúng rồi. Mình đọc tiếp nhé, nói nhỏ kẻo phiền mọi người.",
+          "gesture": "listen",
+          "seconds": 8
+        }
       ]
     },
     {
       "id": "garden-look-before-watering",
       "title": "Chăm vườn từng chút",
-      "places": ["Vườn nhỏ"],
-      "kinds": ["garden", "work", "social"],
+      "places": [
+        "Vườn nhỏ"
+      ],
+      "kinds": [
+        "garden",
+        "work",
+        "social"
+      ],
       "durationSeconds": 46,
       "turns": [
-        {"speaker": "a", "text": "{b}, cứ tới vườn là mình muốn tưới ngay.", "gesture": "wave", "seconds": 7},
-        {"speaker": "b", "text": "Mình nhìn đất trước đã. Có khi chưa cần thêm nước đâu.", "gesture": "point", "seconds": 7},
-        {"speaker": "a", "text": "À, vậy mình kiểm tra từng chỗ, không tưới một lượt hết?", "gesture": "explain", "seconds": 7},
-        {"speaker": "b", "text": "Ừ, mỗi chỗ có thể khác nhau một chút.", "gesture": "nod", "seconds": 7},
-        {"speaker": "a", "text": "Nghe hợp lý. Mình làm chậm lại vậy.", "gesture": "nod", "seconds": 7},
-        {"speaker": "b", "text": "Cứ quan sát đã. Việc nhỏ cũng có cái thú của nó.", "gesture": "laugh", "seconds": 7}
+        {
+          "speaker": "a",
+          "text": "{b}, cứ tới vườn là mình muốn tưới ngay.",
+          "gesture": "wave",
+          "seconds": 7
+        },
+        {
+          "speaker": "b",
+          "text": "Mình nhìn đất trước đã. Có khi chưa cần thêm nước đâu.",
+          "gesture": "point",
+          "seconds": 7
+        },
+        {
+          "speaker": "a",
+          "text": "À, vậy mình kiểm tra từng chỗ, không tưới một lượt hết?",
+          "gesture": "explain",
+          "seconds": 7
+        },
+        {
+          "speaker": "b",
+          "text": "Ừ, mỗi chỗ có thể khác nhau một chút.",
+          "gesture": "nod",
+          "seconds": 7
+        },
+        {
+          "speaker": "a",
+          "text": "Nghe hợp lý. Mình làm chậm lại vậy.",
+          "gesture": "nod",
+          "seconds": 7
+        },
+        {
+          "speaker": "b",
+          "text": "Cứ quan sát đã. Việc nhỏ cũng có cái thú của nó.",
+          "gesture": "laugh",
+          "seconds": 7
+        }
       ]
     },
     {
       "id": "workshop-measure-first",
       "title": "Bàn cách làm ở xưởng",
-      "places": ["Xưởng sáng tạo", "Xưởng xe máy", "Trường nghề", "Nhà máy"],
-      "kinds": ["work", "read", "social"],
+      "places": [
+        "Xưởng sáng tạo",
+        "Xưởng xe máy",
+        "Trường nghề",
+        "Nhà máy"
+      ],
+      "kinds": [
+        "work",
+        "read",
+        "social"
+      ],
       "durationSeconds": 46,
       "turns": [
-        {"speaker": "a", "text": "{b}, mình đang phân vân nên bắt đầu từ đâu.", "gesture": "explain", "seconds": 7},
-        {"speaker": "b", "text": "Mình chia việc thành từng bước trước nhé?", "gesture": "nod", "seconds": 7},
-        {"speaker": "a", "text": "Ừ. Chọn một phần nhỏ để thử trước cũng đỡ rối.", "gesture": "point", "seconds": 7},
-        {"speaker": "b", "text": "Thử xong mình nhìn lại, chưa ổn thì sửa ngay phần đó.", "gesture": "explain", "seconds": 7},
-        {"speaker": "a", "text": "Vậy rõ hơn rồi. Không cần ôm hết một lúc.", "gesture": "nod", "seconds": 7},
-        {"speaker": "b", "text": "Đúng thế. Mình quay lại việc đang làm nhé.", "gesture": "nod", "seconds": 7}
+        {
+          "speaker": "a",
+          "text": "{b}, mình đang phân vân nên bắt đầu từ đâu.",
+          "gesture": "explain",
+          "seconds": 7
+        },
+        {
+          "speaker": "b",
+          "text": "Mình chia việc thành từng bước trước nhé?",
+          "gesture": "nod",
+          "seconds": 7
+        },
+        {
+          "speaker": "a",
+          "text": "Ừ. Chọn một phần nhỏ để thử trước cũng đỡ rối.",
+          "gesture": "point",
+          "seconds": 7
+        },
+        {
+          "speaker": "b",
+          "text": "Thử xong mình nhìn lại, chưa ổn thì sửa ngay phần đó.",
+          "gesture": "explain",
+          "seconds": 7
+        },
+        {
+          "speaker": "a",
+          "text": "Vậy rõ hơn rồi. Không cần ôm hết một lúc.",
+          "gesture": "nod",
+          "seconds": 7
+        },
+        {
+          "speaker": "b",
+          "text": "Đúng thế. Mình quay lại việc đang làm nhé.",
+          "gesture": "nod",
+          "seconds": 7
+        }
       ]
     },
     {
       "id": "park-leave-some-space",
       "title": "Gặp nhau khi dạo công viên",
-      "places": ["Công viên", "Phố đi bộ", "Quảng trường"],
-      "kinds": ["play", "rest", "social"],
+      "places": [
+        "Công viên",
+        "Phố đi bộ",
+        "Quảng trường"
+      ],
+      "kinds": [
+        "play",
+        "rest",
+        "social"
+      ],
       "durationSeconds": 36,
       "turns": [
-        {"speaker": "a", "text": "Chào {b}. Mình đứng sang bên này để chừa lối nhé.", "gesture": "wave", "seconds": 8},
-        {"speaker": "b", "text": "Ừ, đứng đây nói chuyện cũng thoải mái hơn.", "gesture": "nod", "seconds": 8},
-        {"speaker": "a", "text": "Bạn cứ đi theo nhịp của bạn, mình không vội đâu.", "gesture": "explain", "seconds": 8},
-        {"speaker": "b", "text": "Mình nghỉ chân một lát thôi. Lát gặp lại nhé.", "gesture": "wave", "seconds": 8}
+        {
+          "speaker": "a",
+          "text": "Chào {b}. Mình đứng sang bên này để chừa lối nhé.",
+          "gesture": "wave",
+          "seconds": 8
+        },
+        {
+          "speaker": "b",
+          "text": "Ừ, đứng đây nói chuyện cũng thoải mái hơn.",
+          "gesture": "nod",
+          "seconds": 8
+        },
+        {
+          "speaker": "a",
+          "text": "Bạn cứ đi theo nhịp của bạn, mình không vội đâu.",
+          "gesture": "explain",
+          "seconds": 8
+        },
+        {
+          "speaker": "b",
+          "text": "Mình nghỉ chân một lát thôi. Lát gặp lại nhé.",
+          "gesture": "wave",
+          "seconds": 8
+        }
       ]
     },
     {
       "id": "market-small-list",
       "title": "Chuyện nhỏ lúc đi chợ",
-      "places": ["Chợ nhỏ", "Siêu thị"],
-      "kinds": ["eat", "social", "work"],
+      "places": [
+        "Chợ nhỏ",
+        "Siêu thị"
+      ],
+      "kinds": [
+        "eat",
+        "social",
+        "work"
+      ],
       "durationSeconds": 36,
       "turns": [
-        {"speaker": "a", "text": "{b}, đi chợ mình hay mải nhìn rồi quên định tìm gì.", "gesture": "laugh", "seconds": 8},
-        {"speaker": "b", "text": "Mình thường ghi vài món trước. Ít thôi, cho dễ nhớ.", "gesture": "explain", "seconds": 8},
-        {"speaker": "a", "text": "Chắc mình cũng thử thế. Khỏi đi một vòng rồi quay lại.", "gesture": "nod", "seconds": 8},
-        {"speaker": "b", "text": "Ừ, mình xem tiếp nhé. Bạn cứ thong thả.", "gesture": "wave", "seconds": 8}
+        {
+          "speaker": "a",
+          "text": "{b}, đi chợ mình hay mải nhìn rồi quên định tìm gì.",
+          "gesture": "laugh",
+          "seconds": 8
+        },
+        {
+          "speaker": "b",
+          "text": "Mình thường ghi vài món trước. Ít thôi, cho dễ nhớ.",
+          "gesture": "explain",
+          "seconds": 8
+        },
+        {
+          "speaker": "a",
+          "text": "Chắc mình cũng thử thế. Khỏi đi một vòng rồi quay lại.",
+          "gesture": "nod",
+          "seconds": 8
+        },
+        {
+          "speaker": "b",
+          "text": "Ừ, mình xem tiếp nhé. Bạn cứ thong thả.",
+          "gesture": "wave",
+          "seconds": 8
+        }
       ]
     },
     {
       "id": "transit-read-the-sign",
       "title": "Hỏi đường trong khu mô phỏng",
-      "places": ["Bến xe buýt", "Ga metro", "Sân bay"],
-      "kinds": ["read", "social", "rest"],
+      "places": [
+        "Bến xe buýt",
+        "Ga metro",
+        "Sân bay"
+      ],
+      "kinds": [
+        "read",
+        "social",
+        "rest"
+      ],
       "durationSeconds": 36,
       "turns": [
-        {"speaker": "a", "text": "{b}, mình xem hướng đi trước rồi mới chọn lối nhé?", "gesture": "point", "seconds": 8},
-        {"speaker": "b", "text": "Ừ. Chưa rõ thì mình dừng lại xem, khỏi đi vòng.", "gesture": "nod", "seconds": 8},
-        {"speaker": "a", "text": "Mình đứng gọn sang bên này để người khác đi qua.", "gesture": "explain", "seconds": 8},
-        {"speaker": "b", "text": "Được rồi. Mình xem xong thì đi tiếp nhé.", "gesture": "nod", "seconds": 8}
+        {
+          "speaker": "a",
+          "text": "{b}, mình xem hướng đi trước rồi mới chọn lối nhé?",
+          "gesture": "point",
+          "seconds": 8
+        },
+        {
+          "speaker": "b",
+          "text": "Ừ. Chưa rõ thì mình dừng lại xem, khỏi đi vòng.",
+          "gesture": "nod",
+          "seconds": 8
+        },
+        {
+          "speaker": "a",
+          "text": "Mình đứng gọn sang bên này để người khác đi qua.",
+          "gesture": "explain",
+          "seconds": 8
+        },
+        {
+          "speaker": "b",
+          "text": "Được rồi. Mình xem xong thì đi tiếp nhé.",
+          "gesture": "nod",
+          "seconds": 8
+        }
       ]
     },
     {
       "id": "classroom-ask-again",
       "title": "Hỏi lại một điều chưa hiểu",
-      "places": ["Lớp học cộng đồng", "Nhà văn hóa", "Trường nghề"],
-      "kinds": ["read", "social"],
+      "places": [
+        "Lớp học cộng đồng",
+        "Nhà văn hóa",
+        "Trường nghề"
+      ],
+      "kinds": [
+        "read",
+        "social"
+      ],
       "durationSeconds": 46,
       "turns": [
-        {"speaker": "a", "text": "{b}, mình hỏi lại một chút được không?", "gesture": "wave", "seconds": 7},
-        {"speaker": "b", "text": "Được chứ. Bạn muốn xem lại phần nào?", "gesture": "listen", "seconds": 7},
-        {"speaker": "a", "text": "Mình muốn thử bằng một ví dụ nhỏ, cho dễ hình dung.", "gesture": "explain", "seconds": 7},
-        {"speaker": "b", "text": "Ừ, mình đi từng bước. Chỗ nào chưa rõ thì dừng ở đó.", "gesture": "nod", "seconds": 7},
-        {"speaker": "a", "text": "Nghe vậy mình đỡ ngại hỏi hơn nhiều.", "gesture": "laugh", "seconds": 7},
-        {"speaker": "b", "text": "Cứ hỏi nhé. Giờ mình thử lại từ đầu nào.", "gesture": "nod", "seconds": 7}
+        {
+          "speaker": "a",
+          "text": "{b}, mình hỏi lại một chút được không?",
+          "gesture": "wave",
+          "seconds": 7
+        },
+        {
+          "speaker": "b",
+          "text": "Được chứ. Bạn muốn xem lại phần nào?",
+          "gesture": "listen",
+          "seconds": 7
+        },
+        {
+          "speaker": "a",
+          "text": "Mình muốn thử bằng một ví dụ nhỏ, cho dễ hình dung.",
+          "gesture": "explain",
+          "seconds": 7
+        },
+        {
+          "speaker": "b",
+          "text": "Ừ, mình đi từng bước. Chỗ nào chưa rõ thì dừng ở đó.",
+          "gesture": "nod",
+          "seconds": 7
+        },
+        {
+          "speaker": "a",
+          "text": "Nghe vậy mình đỡ ngại hỏi hơn nhiều.",
+          "gesture": "laugh",
+          "seconds": 7
+        },
+        {
+          "speaker": "b",
+          "text": "Cứ hỏi nhé. Giờ mình thử lại từ đầu nào.",
+          "gesture": "nod",
+          "seconds": 7
+        }
       ]
     },
     {
       "id": "office-one-thing-at-a-time",
       "title": "Một việc trước, một việc sau",
-      "places": ["Văn phòng", "Trung tâm việc làm", "Bưu điện"],
-      "kinds": ["work", "social", "read"],
+      "places": [
+        "Văn phòng",
+        "Trung tâm việc làm",
+        "Bưu điện"
+      ],
+      "kinds": [
+        "work",
+        "social",
+        "read"
+      ],
       "durationSeconds": 36,
       "turns": [
-        {"speaker": "a", "text": "{b}, nhiều việc cùng lúc làm mình khó chọn việc đầu tiên.", "gesture": "explain", "seconds": 8},
-        {"speaker": "b", "text": "Mình chọn một việc vừa sức trước, xong rồi nhìn lại nhé?", "gesture": "nod", "seconds": 8},
-        {"speaker": "a", "text": "Ừ, có một điểm bắt đầu thì dễ tập trung hơn.", "gesture": "nod", "seconds": 8},
-        {"speaker": "b", "text": "Vậy mình quay lại việc của mình. Lúc cần cứ gọi nhé.", "gesture": "wave", "seconds": 8}
+        {
+          "speaker": "a",
+          "text": "{b}, nhiều việc cùng lúc làm mình khó chọn việc đầu tiên.",
+          "gesture": "explain",
+          "seconds": 8
+        },
+        {
+          "speaker": "b",
+          "text": "Mình chọn một việc vừa sức trước, xong rồi nhìn lại nhé?",
+          "gesture": "nod",
+          "seconds": 8
+        },
+        {
+          "speaker": "a",
+          "text": "Ừ, có một điểm bắt đầu thì dễ tập trung hơn.",
+          "gesture": "nod",
+          "seconds": 8
+        },
+        {
+          "speaker": "b",
+          "text": "Vậy mình quay lại việc của mình. Lúc cần cứ gọi nhé.",
+          "gesture": "wave",
+          "seconds": 8
+        }
       ]
     },
     {
       "id": "sport-just-for-fun",
       "title": "Vận động để vui",
-      "places": ["Sân thể thao", "Công viên"],
-      "kinds": ["play", "social", "rest"],
+      "places": [
+        "Sân thể thao",
+        "Công viên"
+      ],
+      "kinds": [
+        "play",
+        "social",
+        "rest"
+      ],
       "durationSeconds": 36,
       "turns": [
-        {"speaker": "a", "text": "{b}, mình chơi nhẹ thôi nhé, không tính hơn thua.", "gesture": "wave", "seconds": 8},
-        {"speaker": "b", "text": "Được chứ. Mình tới đây để đổi không khí mà.", "gesture": "laugh", "seconds": 8},
-        {"speaker": "a", "text": "Khi nào muốn nghỉ thì nói nhé, mình cũng vậy.", "gesture": "nod", "seconds": 8},
-        {"speaker": "b", "text": "Ừ, vậy mới thoải mái. Mình tiếp tục nhé.", "gesture": "nod", "seconds": 8}
+        {
+          "speaker": "a",
+          "text": "{b}, mình chơi nhẹ thôi nhé, không tính hơn thua.",
+          "gesture": "wave",
+          "seconds": 8
+        },
+        {
+          "speaker": "b",
+          "text": "Được chứ. Mình tới đây để đổi không khí mà.",
+          "gesture": "laugh",
+          "seconds": 8
+        },
+        {
+          "speaker": "a",
+          "text": "Khi nào muốn nghỉ thì nói nhé, mình cũng vậy.",
+          "gesture": "nod",
+          "seconds": 8
+        },
+        {
+          "speaker": "b",
+          "text": "Ừ, vậy mới thoải mái. Mình tiếp tục nhé.",
+          "gesture": "nod",
+          "seconds": 8
+        }
+      ]
+    },
+    {
+      "id": "market-plan-a-meal",
+      "title": "Chọn rau cho bữa cơm",
+      "places": [
+        "Chợ nhỏ",
+        "Siêu thị",
+        "Nhà hàng"
+      ],
+      "kinds": [
+        "eat",
+        "read",
+        "social"
+      ],
+      "durationSeconds": 46,
+      "turns": [
+        {
+          "speaker": "a",
+          "text": "{b}, mình đang chọn rau cho bữa tối. Mua vừa một bữa thôi nhé?",
+          "gesture": "wave",
+          "seconds": 7
+        },
+        {
+          "speaker": "b",
+          "text": "Ừ, mình xem món còn trong bếp rồi chọn thêm cho đủ.",
+          "gesture": "nod",
+          "seconds": 7
+        },
+        {
+          "speaker": "a",
+          "text": "Bó lá này hơi dập một góc. Mình chọn bó bên cạnh vậy.",
+          "gesture": "point",
+          "seconds": 7
+        },
+        {
+          "speaker": "b",
+          "text": "Để phần nặng dưới giỏ, rau mềm đặt trên sẽ đỡ bị ép.",
+          "gesture": "explain",
+          "seconds": 7
+        },
+        {
+          "speaker": "a",
+          "text": "Mình ghi lại những món đã chọn để lần sau khỏi mua trùng.",
+          "gesture": "nod",
+          "seconds": 7
+        },
+        {
+          "speaker": "b",
+          "text": "Vậy đủ rồi. Mình nhường chỗ cho người tới sau nhé.",
+          "gesture": "wave",
+          "seconds": 7
+        }
+      ]
+    },
+    {
+      "id": "library-find-a-useful-page",
+      "title": "Một trang sách dùng được",
+      "places": [
+        "Thư viện",
+        "Lớp học cộng đồng"
+      ],
+      "kinds": [
+        "read",
+        "social"
+      ],
+      "durationSeconds": 32,
+      "turns": [
+        {
+          "speaker": "a",
+          "text": "{b}, cuốn này có hình giải thích đúng phần mình đang tìm.",
+          "gesture": "wave",
+          "seconds": 7
+        },
+        {
+          "speaker": "b",
+          "text": "Bạn đánh dấu trang bằng mẩu giấy nhé, mình xem cùng một lát.",
+          "gesture": "nod",
+          "seconds": 7
+        },
+        {
+          "speaker": "a",
+          "text": "Mình thử kể lại bằng lời của mình xem đã hiểu chưa.",
+          "gesture": "point",
+          "seconds": 7
+        },
+        {
+          "speaker": "b",
+          "text": "Ừ. Nếu vướng chỗ nào, mình quay lại đúng hình đó.",
+          "gesture": "explain",
+          "seconds": 7
+        }
+      ]
+    },
+    {
+      "id": "workshop-draw-and-check",
+      "title": "Từ bản vẽ tới một bước thử",
+      "places": [
+        "Xưởng sáng tạo",
+        "Xưởng xe máy",
+        "Trường nghề"
+      ],
+      "kinds": [
+        "work",
+        "read",
+        "social"
+      ],
+      "durationSeconds": 46,
+      "turns": [
+        {
+          "speaker": "a",
+          "text": "{b}, đường đánh dấu trên bản vẽ chưa khớp với mép này.",
+          "gesture": "wave",
+          "seconds": 7
+        },
+        {
+          "speaker": "b",
+          "text": "Mình đặt dụng cụ xuống rồi đo lại hai đầu nhé.",
+          "gesture": "nod",
+          "seconds": 7
+        },
+        {
+          "speaker": "a",
+          "text": "Ừ, mình giữ thước, bạn đọc số giúp mình.",
+          "gesture": "point",
+          "seconds": 7
+        },
+        {
+          "speaker": "b",
+          "text": "Chỗ giữa hơi lệch. Mình sửa nét bút trước khi làm tiếp.",
+          "gesture": "explain",
+          "seconds": 7
+        },
+        {
+          "speaker": "a",
+          "text": "Vậy chưa cần tháo cả phần đã làm, chỉ kiểm tra lại chỗ nối.",
+          "gesture": "nod",
+          "seconds": 7
+        },
+        {
+          "speaker": "b",
+          "text": "Đúng rồi. Xong bước này mình cất thước về chỗ cũ nhé.",
+          "gesture": "wave",
+          "seconds": 7
+        }
+      ]
+    },
+    {
+      "id": "garden-share-a-planter",
+      "title": "Chừa chỗ cho cây lớn lên",
+      "places": [
+        "Vườn nhỏ",
+        "Công viên"
+      ],
+      "kinds": [
+        "garden",
+        "work",
+        "social"
+      ],
+      "durationSeconds": 46,
+      "turns": [
+        {
+          "speaker": "a",
+          "text": "{b}, mình định đặt cây nhỏ này sát mép chậu, bạn thấy sao?",
+          "gesture": "wave",
+          "seconds": 7
+        },
+        {
+          "speaker": "b",
+          "text": "Lùi vào một chút nhé, lúc lớn lên tán lá còn có chỗ.",
+          "gesture": "nod",
+          "seconds": 7
+        },
+        {
+          "speaker": "a",
+          "text": "Mình thử nhìn từ hai phía trước khi quyết định.",
+          "gesture": "point",
+          "seconds": 7
+        },
+        {
+          "speaker": "b",
+          "text": "Chỗ đó được rồi. Đất còn ẩm thì hôm nay tưới ít thôi.",
+          "gesture": "explain",
+          "seconds": 7
+        },
+        {
+          "speaker": "a",
+          "text": "Ừ, mình sẽ quan sát lá và đất, không chỉ nhìn giờ tưới.",
+          "gesture": "nod",
+          "seconds": 7
+        },
+        {
+          "speaker": "b",
+          "text": "Mình chăm từng chậu một nhé, lối giữa vẫn để trống.",
+          "gesture": "wave",
+          "seconds": 7
+        }
+      ]
+    },
+    {
+      "id": "plaza-read-community-board",
+      "title": "Một lời hẹn trên bảng tin",
+      "places": [
+        "Quảng trường",
+        "Nhà văn hóa"
+      ],
+      "kinds": [
+        "read",
+        "social",
+        "rest"
+      ],
+      "durationSeconds": 46,
+      "turns": [
+        {
+          "speaker": "a",
+          "text": "{b}, trên bảng có lời mời góp sách cho góc đọc chung.",
+          "gesture": "wave",
+          "seconds": 7
+        },
+        {
+          "speaker": "b",
+          "text": "Mình muốn xem cần loại sách nào trước khi mang tới.",
+          "gesture": "nod",
+          "seconds": 7
+        },
+        {
+          "speaker": "a",
+          "text": "Ừ, mình hỏi người phụ trách để khỏi góp những cuốn trùng nhau.",
+          "gesture": "point",
+          "seconds": 7
+        },
+        {
+          "speaker": "b",
+          "text": "Rồi mình chọn một việc nhỏ có thể làm được trước nhé.",
+          "gesture": "explain",
+          "seconds": 7
+        },
+        {
+          "speaker": "a",
+          "text": "Mình ghi lời hẹn vào sổ, xong việc đang làm sẽ quay lại xem.",
+          "gesture": "nod",
+          "seconds": 7
+        },
+        {
+          "speaker": "b",
+          "text": "Vậy nhé. Giờ mình đứng sang bên để người khác đọc bảng.",
+          "gesture": "wave",
+          "seconds": 7
+        }
+      ]
+    },
+    {
+      "id": "cafe-cup-and-listen",
+      "title": "Một tách nước và một câu chuyện",
+      "places": [
+        "Quán cà phê",
+        "Bếp chung"
+      ],
+      "kinds": [
+        "eat",
+        "social",
+        "rest"
+      ],
+      "durationSeconds": 32,
+      "turns": [
+        {
+          "speaker": "a",
+          "text": "{b}, mình vừa pha một tách nước. Bạn muốn nghỉ tay một lát không?",
+          "gesture": "wave",
+          "seconds": 7
+        },
+        {
+          "speaker": "b",
+          "text": "Có chứ. Để mình cất đồ đang cầm rồi nghe bạn kể.",
+          "gesture": "nod",
+          "seconds": 7
+        },
+        {
+          "speaker": "a",
+          "text": "Mình đang thử làm từng phần nhỏ, hôm nay thấy bớt rối hơn.",
+          "gesture": "point",
+          "seconds": 7
+        },
+        {
+          "speaker": "b",
+          "text": "Nghe vui đấy. Mình ngồi thêm một nhịp rồi tiếp việc nhé.",
+          "gesture": "explain",
+          "seconds": 7
+        }
       ]
     }
   ]

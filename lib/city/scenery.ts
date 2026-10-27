@@ -1,5 +1,5 @@
 import { boulevards, venues, type Venue } from "./world.ts";
-import { openVenue, venueGeometry, type GroundRect } from "./footprints.ts";
+import { openVenue, venueGeometry, venueObstacles, type GroundRect } from "./footprints.ts";
 import { buildingAllowed, cityBuildings } from "./three-layout.ts";
 import { trafficJunctions } from "./traffic.ts";
 
@@ -85,4 +85,29 @@ for (const road of boulevards) for (const point of road) {
   }
   if (!chosen) throw new Error(`No safe lamp position at ${key}`);
   sceneryLamps.push(chosen); obstacle(chosen.id, chosen.x, chosen.z, 1.4, 1.4);
+}
+
+export type StreetPropKind = "produce" | "books" | "workbench" | "bicycle" | "flowers" | "notice" | "bin";
+export type StreetProp = GroundRect & { id: string; kind: StreetPropKind; seed: number; venue: string };
+export const streetProps: StreetProp[] = [];
+const propSize: Record<StreetPropKind, [number, number]> = { produce: [22, 14], books: [14, 7], workbench: [22, 10], bicycle: [19, 6], flowers: [18, 12], notice: [16, 5], bin: [5, 5] };
+for (const [index, venue] of venues.entries()) {
+  const v = venueSceneryPose(venue);
+  const kind: StreetPropKind = ["cafe", "restaurant", "market"].includes(v.type) ? "produce" : ["school", "library"].includes(v.type) ? "books" : ["factory", "office"].includes(v.type) ? "workbench" : ["park", "garden", "square"].includes(v.type) ? "flowers" : "bicycle";
+  for (const [slot, type] of [kind, index % 3 === 0 ? "notice" : "bin"].entries()) {
+    const typed = type as StreetPropKind, [width, depth] = propSize[typed];
+    let chosen: StreetProp | undefined;
+    for (const radius of [92, 112, 132, 152, 172]) {
+      for (const [dx, dz] of [[-1, .35], [1, .35], [-1, -.4], [1, -.4], [-.7, 1], [.7, 1]]) {
+        const x = v.x + dx * radius, z = v.y + dz * radius;
+        const clearRoad = [-1, 1].every(sx => [-1, 1].every(sz => offRoad(x + sx * width / 2, z + sz * depth / 2)));
+        const occupied = [...buildings, ...venueObstacles, ...sceneryObstacles].some(r => Math.abs(x - r.x) < (width + r.width) / 2 + 7 && Math.abs(z - r.z) < (depth + r.depth) / 2 + 7);
+        if (!clearRoad || occupied || venues.some(p => Math.hypot(x - p.x, z - p.y) < 28)) continue;
+        chosen = { id: `street-prop:${index}:${slot}`, kind: typed, seed: index, venue: v.name, x, z, width, depth }; break;
+      }
+      if (chosen) break;
+    }
+    if (!chosen) throw new Error(`No safe ${typed} placement near ${v.name}`);
+    streetProps.push(chosen); sceneryObstacles.push(chosen);
+  }
 }

@@ -3,9 +3,11 @@ import { SocialDirector, type SocialPose, type Exchange } from "@/lib/living/soc
 import { WalkDirector } from "@/lib/city/walkability";
 import { TrafficDirector, TRAFFIC_COUNT, trafficJunctions, type TrafficVehicle } from "@/lib/city/traffic";
 import { venueGeometry, openVenue } from "@/lib/city/footprints";
-import { sceneryTrees, sceneryLamps, venueSceneryPose } from "@/lib/city/scenery";
+import { sceneryTrees, sceneryLamps, streetProps, venueSceneryPose } from "@/lib/city/scenery";
 import { characterShot } from "@/lib/city/cinematography";
-import { createHumanGeometry, humanPose } from "./humans";
+import { createPeople } from "./people";
+import { createAmbience } from "./ambience";
+import { streetModel } from "./streetscape";
 import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import {
@@ -17,11 +19,6 @@ import {
 } from "@/lib/life";
 import { crowdAt } from "@/lib/living/engine";
 import { worldTime } from "@/lib/clock";
-import {
-  defaultAppearance,
-  themes,
-  type Appearance,
-} from "@/lib/city/appearance";
 import { boulevards, metroLine, venues, type Venue } from "@/lib/city/world";
 import {
   cityBuildings,
@@ -67,8 +64,8 @@ type Solid = {
   d: number;
   color: string;
   angle?: number;
+  tilt?: number;
 };
-const up = new THREE.Vector3(0, 1, 0);
 
 export function createCity(
   host: HTMLDivElement,
@@ -122,7 +119,7 @@ export function createCity(
     cylinders: Solid[] = [],
     leaves: Solid[] = [],
     windows: Solid[] = [],
-    shadows: Solid[] = [];
+    shadows: Solid[] = [], propWheels: Solid[] = [], propBuds: Solid[] = [];
   const box = (
     x: number,
     y: number,
@@ -303,14 +300,10 @@ export function createCity(
       d: 18,
       color: "#a4b69e",
     });
-    leaves.push({
-      x,
-      y: 36 + (seed % 7),
-      z,
-      w: 25,
-      h: 26,
-      d: 25,
-      color: seed % 2 ? "#89b966" : "#48a481",
+    for (const side of [-1, 0, 1]) leaves.push({
+      x: x + side * 6, y: 36 + (seed % 7) + (side === 0 ? 4 : 0), z: z + (side === 0 ? 0 : 2),
+      w: side === 0 ? 22 : 18, h: side === 0 ? 26 : 20, d: 20,
+      color: side === 0 ? (seed % 2 ? "#84b66e" : "#57a886") : side < 0 ? "#75ad79" : "#9bc783",
     });
   }
   for (const venue of venues) {
@@ -383,7 +376,10 @@ export function createCity(
       for (const dx of [-53, 53]) box(v.x + dx, height + 7, v.y - 47, 2, 5, 76, "#c1b899");
       for (const dz of [-86.5, -7.5]) box(v.x, height + 7, v.y + dz, 108, 5, 2, "#c1b899");
       box(v.x, 3.5, v.y - 10, 104, 4, 2, "#b8a68d");
-      box(v.x, 6, v.y - 7, 34, 12, 12, "#b0bba5");
+      for (let step = 0; step < 3; step++) box(v.x, 1.2 + step * .6, v.y - 3 - step * 4, 34, 1.2 + step * 1.2, 4, "#c4c5af");
+      for (const dx of [-9, 9]) detailBox(v.x + dx, 15, v.y - 8.8, 1, 28, 1, "#e9d5af");
+      detailBox(v.x, 28.5, v.y - 8.8, 19, 1, 1, "#e9d5af");
+      detailBox(v.x + 5.5, 14, v.y - 8, .6, 3.5, .9, "#c5a86f");
       windowBox(v.x, 15, v.y - 10, 17, 26, 2, 1);
       for (let f = 0; f < Math.floor(height / 30); f++)
         for (const dx of [-35, -12, 12, 35]) {
@@ -429,6 +425,11 @@ export function createCity(
     cylinder(lamp.x, 26, lamp.z, 1.4, 52, "#728882");
     box(lamp.x - 4, 52, lamp.z, 11, 2, 5, "#f7dba1");
   }
+  for (const prop of streetProps) for (const part of streetModel(prop)) {
+    const list = part.shape === "wheel" ? propWheels : part.shape === "bud" ? propBuds : part.shape === "cylinder" ? cylinders : facadeDetails;
+    list.push(part);
+  }
+  host.dataset.streetProps = String(streetProps.length);
   const dummy = new THREE.Object3D(),
     color = new THREE.Color();
   const detailChunks: { mesh: THREE.InstancedMesh; x: number; z: number }[] = [];
@@ -452,7 +453,7 @@ export function createCity(
     mesh.count = list.length;
     list.forEach((s, i) => {
       dummy.position.set(s.x, s.y, s.z);
-      dummy.rotation.set(0, s.angle ?? 0, 0);
+      dummy.rotation.set(0, s.angle ?? 0, s.tilt ?? 0);
       dummy.scale.set(s.w, s.h, s.d);
       dummy.updateMatrix();
       mesh.setMatrixAt(i, dummy.matrix);
@@ -466,7 +467,9 @@ export function createCity(
   batch(new THREE.BoxGeometry(1, 1, 1), solids);
   batch(new THREE.BoxGeometry(1, 1, 1), facadeDetails, new THREE.MeshLambertMaterial(), true);
   batch(new THREE.CylinderGeometry(0.5, 0.5, 1, 8), cylinders);
-  batch(new THREE.IcosahedronGeometry(0.5, 1), leaves);
+  batch(new THREE.SphereGeometry(.5, 8, 4), leaves);
+  batch(new THREE.TorusGeometry(.42, .08, 4, 12), propWheels);
+  batch(new THREE.IcosahedronGeometry(.5, 0), propBuds, new THREE.MeshLambertMaterial(), true);
   const windowMaterial = new THREE.MeshPhongMaterial({
     shininess: 40,
     emissive: "#638082",
@@ -484,51 +487,8 @@ export function createCity(
   );
   host.dataset.towers = String(buildings.filter((b) => b.tower).length);
 
-  // A shared mesh per body part keeps dozens of residents affordable on mobile.
-  const capacity = 72,
-    bodyParts: Record<string, THREE.InstancedMesh> = {};
-  const humanGeo = createHumanGeometry(), boxGeo = humanGeo.box;
-  for (const part of [
-    "torso",
-    "head",
-    "hair",
-    "hat",
-    "leftArm",
-    "rightArm",
-    "leftHand",
-    "rightHand",
-    "leftLeg",
-    "rightLeg",
-    "leftShoe",
-    "rightShoe",
-    "eyeL",
-    "eyeR",
-    "detail",
-    "badge",
-    "prop",
-    "glassesL",
-    "glassesR",
-  ]) {
-    const mesh = new THREE.InstancedMesh(
-      part === "head" ? humanGeo.head : part === "hair" ? humanGeo.hair : /Arm|Leg|Hand/.test(part) ? humanGeo.limb : /Shoe/.test(part) ? humanGeo.shoe : ["torso", "hat"].includes(part) ? humanGeo.round : boxGeo,
-      new THREE.MeshStandardMaterial({ roughness: 0.8 }),
-      capacity,
-    );
-    mesh.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
-    mesh.count = 0;
-    mesh.frustumCulled = false;
-    mesh.userData.ids = [];
-    bodyParts[part] = mesh;
-    scene.add(mesh);
-  }
-  const riderVehicles = new THREE.InstancedMesh(
-    boxGeo,
-    new THREE.MeshStandardMaterial({ roughness: 0.55 }),
-    capacity,
-  );
-  scene.add(riderVehicles);
-  riderVehicles.count = 0;
-  riderVehicles.frustumCulled = false;
+  const ambience = createAmbience(scene);
+  const capacity = 72, people = createPeople(scene, capacity), boxGeo = people.geometry.box;
   const trafficBody = new THREE.InstancedMesh(
       boxGeo,
       new THREE.MeshStandardMaterial({ roughness: 0.55 }),
@@ -588,7 +548,6 @@ export function createCity(
   let socialPoses = new Map<string, SocialPose>(), exchanges: Exchange[] = [];
   const walkDirector = new WalkDirector(), trafficDirector = new TrafficDirector(), socialDirector = new SocialDirector();
   let cars: TrafficVehicle[] = [];
-  const previousPositions = new Map<string, Point>();
   let lastTime = Date.parse(input().world.born);
   let lastStatus = 0;
   const viewOffset = new THREE.Vector3(48, 34, 62);
@@ -657,236 +616,10 @@ export function createCity(
     camera.updateProjectionMatrix();
   });
   resize.observe(host);
-  const position = new THREE.Vector3(),
-    scale = new THREE.Vector3(),
-    rotation = new THREE.Quaternion(),
-    root = new THREE.Matrix4(),
-    local = new THREE.Matrix4(),
-    result = new THREE.Matrix4(), faceRoot = new THREE.Matrix4(), faceRotation = new THREE.Matrix4(), faceFront = new THREE.Matrix4().makeTranslation(0, 30, 0), faceBack = new THREE.Matrix4().makeTranslation(0, -30, 0);
-  const faceParts = new Set(["head", "hair", "hat", "eyeL", "eyeR", "detail", "glassesL", "glassesR"]);
-  function part(
-    name: string,
-    index: number,
-    id: string,
-    x: number,
-    y: number,
-    z: number,
-    w: number,
-    h: number,
-    d: number,
-    tint: string,
-    angle = 0,
-  ) {
-    const mesh = bodyParts[name];
-    dummy.position.set(x, y, z);
-    dummy.scale.set(w, h, d);
-    if (w === 0) dummy.scale.setScalar(0);
-    dummy.rotation.set(angle, 0, 0);
-    dummy.updateMatrix();
-    local.copy(dummy.matrix);
-    result.multiplyMatrices(faceParts.has(name) ? faceRoot : root, local);
-    mesh.setMatrixAt(index, result);
-    mesh.setColorAt(index, color.set(tint));
-    mesh.userData.ids[index] = id;
-  }
   const heading = new Map<string, number>();
   function drawActors(seconds: number, world: World, dt: number) {
-    for (const mesh of Object.values(bodyParts)) mesh.count = actors.length;
-    riderVehicles.count = actors.length;
-    actors.forEach((a, i) => {
-      const core = world.people.find((p) => p.id === a.id),
-        npc = world.living?.residents.find((p) => p.id === a.id);
-      const appearance: Appearance =
-        world.living?.appearances?.[a.id] ??
-        defaultAppearance(
-          a.id,
-          core?.role ??
-            `${npc?.roleId} ${world.living?.catalog.roles.find((r) => r.id === npc?.roleId)?.label}`,
-        );
-      const old = previousPositions.get(a.id),
-        moving =
-          old &&
-          Math.hypot(a.position[0] - old[0], a.position[1] - old[1]) > 0.05;
-      const movementYaw = moving ? Math.atan2(a.position[0] - old![0], a.position[1] - old![1]) : undefined;
-      previousPositions.set(a.id, a.position);
-      const riding = a.walking && a.transport && a.transport !== "walk";
-      const social = socialPoses.get(a.id), peer = social && social.gesture !== "idle" ? actors.find(p => p.id === social.peerId) : undefined;
-      const wantedYaw = peer ? Math.atan2(peer.position[0] - a.position[0], peer.position[1] - a.position[1]) : movementYaw ?? heading.get(a.id) ?? .35;
-      const oldYaw = heading.get(a.id) ?? wantedYaw;
-      const yaw = oldYaw + Math.atan2(Math.sin(wantedYaw - oldYaw), Math.cos(wantedYaw - oldYaw)) * (world.paused ? 1 : 1 - Math.exp(-12 * dt)),
-        s = HUMAN_SCALE;
-      heading.set(a.id, yaw);
-      const pose = humanPose({ ...a, walking: a.walking && !!moving }, seconds, i, social?.gesture === "idle" ? undefined : social);
-      position.set(a.position[0], (riding ? 8 : 2) + pose.breath * s, a.position[1]);
-      rotation.setFromAxisAngle(up, yaw);
-      scale.setScalar(s);
-      root.compose(position, rotation, scale);
-      faceRotation.makeRotationFromEuler(new THREE.Euler(pose.headTilt, pose.headTurn, 0));
-      faceRoot.copy(root).multiply(faceFront).multiply(faceRotation).multiply(faceBack);
-      const swing = a.walking && moving && !riding ? pose.rightArm : 0;
-      const usingProp = !a.walking && ["read", "garden", "eat", "work"].includes(a.kind);
-      part("prop", i, a.id, 0, 15.5, 8, usingProp ? 7 : 0, a.kind === "read" ? 1 : 3, 5, a.kind === "read" ? "#e9b549" : a.kind === "garden" ? "#50adba" : "#fff5cf");
-      part("torso", i, a.id, 0, 20, 0, 11.5, 13, 7.5, appearance.shirt);
-      part("head", i, a.id, 0, 32, 0, 9, 10, 9, appearance.skin);
-      part(
-        "hair",
-        i,
-        a.id,
-        0,
-        35.8,
-        -.4,
-        appearance.hair === "bald" ? 0 : 10,
-        6,
-        9,
-        {
-          black: "#4a4e48",
-          brown: "#7a5d48",
-          gray: "#aeb4aa",
-          bald: "#ead2a2",
-        }[appearance.hair],
-      );
-      const gear =
-        themes.find((t) => t.id === appearance.theme)?.headgear ?? "none";
-      part(
-        "hat",
-        i,
-        a.id,
-        0,
-        gear === "chef" ? 42 : 39,
-        0,
-        gear === "none" ? 0 : 12,
-        gear === "chef" ? 10 : 5,
-        12,
-        gear === "hardhat"
-          ? "#edbc62"
-          : gear === "chef"
-            ? "#f1eadd"
-            : appearance.shirt,
-      );
-      for (const [side, sign] of [
-        ["left", -1],
-        ["right", 1],
-      ] as const) {
-        part(
-          `${side}Arm`,
-          i,
-          a.id,
-          sign * 7.5,
-          21,
-          0,
-          4,
-          12,
-          5,
-          appearance.shirt,
-          side === "left" ? pose.leftArm : pose.rightArm,
-        );
-        part(
-          `${side}Hand`,
-          i,
-          a.id,
-          sign * 7.5,
-          13 + (side === "left" ? pose.leftHandY : pose.rightHandY),
-          side === "left" ? pose.leftHandZ : pose.rightHandZ,
-          4,
-          4,
-          4,
-          appearance.skin,
-        );
-        part(
-          `${side}Leg`,
-          i,
-          a.id,
-          sign * 3.6,
-          8,
-          0,
-          6,
-          12,
-          7,
-          appearance.trousers,
-          -sign * swing,
-        );
-        part(
-          `${side}Shoe`,
-          i,
-          a.id,
-          sign * 3.6,
-          2 + 6 * (1 - Math.cos(-sign * swing)),
-          1 - Math.sin(-sign * swing) * 6,
-          6,
-          3,
-          9,
-          "#505d59",
-        );
-      }
-      part("eyeL", i, a.id, -2, 33, 4.1, 1.2, 1.5 * pose.blink, 0.8, "#35473d");
-      part("eyeR", i, a.id, 2, 33, 4.1, 1.2, 1.5 * pose.blink, 0.8, "#35473d");
-      part(
-        "detail",
-        i,
-        a.id,
-        0,
-        appearance.face === "moustache" ? 30.5 : 29.5,
-        4.7,
-        appearance.face === "moustache" ? 5 : 2.7,
-        1,
-        0.8,
-        "#675744",
-      );
-      const glasses = appearance.face === "glasses";
-      part(
-        "glassesL",
-        i,
-        a.id,
-        -2.2,
-        33,
-        5,
-        glasses ? 3.5 : 0,
-        3,
-        0.6,
-        "#5a665d",
-      );
-      part(
-        "glassesR",
-        i,
-        a.id,
-        2.2,
-        33,
-        5,
-        glasses ? 3.5 : 0,
-        3,
-        0.6,
-        "#5a665d",
-      );
-      part(
-        "badge",
-        i,
-        a.id,
-        2.5,
-        22,
-        4.3,
-        3,
-        4,
-        0.8,
-        ["police", "worker", "firefighter"].includes(appearance.theme)
-          ? "#e6c581"
-          : "#e5dbbc",
-      );
-      dummy.position.set(a.position[0], 8, a.position[1]);
-      dummy.rotation.set(0, yaw, 0);
-      dummy.scale.set(
-        riding ? (["bus", "metro"].includes(a.transport!) ? 22 : 10) : 0,
-        10,
-        ["bus", "metro"].includes(a.transport!) ? 45 : 23,
-      );
-      if (!riding) dummy.scale.setScalar(0);
-      dummy.updateMatrix();
-      riderVehicles.setMatrixAt(i, dummy.matrix);
-      riderVehicles.setColorAt(i, color.set(appearance.shirt));
-    });
-    for (const mesh of [...Object.values(bodyParts), riderVehicles]) {
-      mesh.instanceMatrix.needsUpdate = true;
-      if (mesh.instanceColor) mesh.instanceColor.needsUpdate = true;
-    }
+    const updated = people.draw(world, actors, socialPoses, seconds, dt, camera, input().selected);
+    heading.clear(); for (const [id, yaw] of updated) heading.set(id, yaw);
   }
   function traffic() {
     trafficBody.count = trafficGlass.count = cars.length;
@@ -922,7 +655,7 @@ export function createCity(
     if (dead) return;
     frame = requestAnimationFrame(tick);
     if (document.hidden || stamp - lastDraw < 15) return;
-    const dt = Math.min(.05, Math.max(.001, (stamp - lastDraw) / 1000));
+    const dt = Math.min(.15, Math.max(.001, (stamp - lastDraw) / 1000));
     lastDraw = stamp;
     const state = input(),
       { world, selected } = state,
@@ -979,6 +712,7 @@ export function createCity(
       targetKey = state.target.key;
       focus(state.target.x, state.target.y);
     }
+    ambience.update(seconds);
     drawActors(seconds, world, dt);
     traffic();
     contactShadows.count = actors.length + cars.length;
@@ -1087,6 +821,8 @@ export function createCity(
     host.dataset.exchanges = String(exchanges.length);
     host.dataset.socialCast = JSON.stringify(actors.filter(a => socialPoses.get(a.id)?.gesture !== "idle" && socialPoses.has(a.id)).map(a => ({ id: a.id, position: a.position, ...socialPoses.get(a.id) })));
     host.dataset.selected = current?.id ?? "";
+    host.dataset.humanBatches = String(people.stats().batches);
+    host.dataset.humanInstances = String(people.stats().instances);
     host.dataset.drawCalls = String(renderer.info.render.calls);
     host.dataset.camera = [
       camera.position.x,

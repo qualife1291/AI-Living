@@ -1,3 +1,9 @@
+# Bản11 — WIP nâng đồ họa, chưa phát hành
+
+- User yêu cầu chi tiết/nhân vật/sự kiện/chuyển động/nhiều đồ vật. Source đang làm: People6batch thay19partmeshes, khớp khuỷu/gối, mắt/mũi/tai/cổ áo/giày, props cầm đúng tay, gait theo quãng đường và transitiondamping. Thêm66streetProps/7loại cùng footprint;6socialscripts, cloud/fountain động theo simclock; cây đa tán, sửa bậc cửa quá cao.
+- Cần full24suite/check/lint/build, browserdesktop/mobile/motion kiểm tra mắt/tay/props/camera/no regression, chốt docs/sourcepush/build/package/native deploy/readback. Chưa được gọi prod11. Nativeconfirmedprod10/1owner0external; Sites source fetched fastforward.
+- Backup pre11gitignored pre-v11-20261027-visual.json SHA256fc7b3cfe1c571a28c32680c0cda62c38433a4bf8636aa6e0e5ec835a4a394206;revision81/13events/memories32,10,11. Khôngmigration/paidAPI/reset.
+
 # Việc còn lại sau production version10
 
 Source đang chạy `7a7871f8c04967521b9fff3e2cbf06ae75b8ed7e`; IDs/readback/backuphash ở docs/releases/latest.json và ledger26/10. Luôn push checkpoint nhánhwork trước bước lâu; commit nhật ký saudeploy khácSHA source là bình thường. KhôngpaidAPI/DBreset, giữowner-private.

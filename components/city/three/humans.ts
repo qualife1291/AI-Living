@@ -34,7 +34,7 @@ export function createHumanGeometry(): {
     round: unitBounds(new RoundedBoxGeometry(1, 1, 1, 1, 0.15)),
     head: unitBounds(new SphereGeometry(0.5, 12, 8)),
     hair: unitBounds(new SphereGeometry(0.5, 12, 6, 0, Math.PI * 2, 0, Math.PI / 2)),
-    limb: unitBounds(new CapsuleGeometry(0.25, 0.5, 2, 8)),
+    limb: unitBounds(new CapsuleGeometry(0.25, 0.5, 1, 6)),
     shoe: unitBounds(new RoundedBoxGeometry(1, 1, 1, 1, 0.2)),
   };
 }
@@ -57,6 +57,7 @@ export function humanPose(
   seconds: number,
   _index: number,
   social?: { gesture: string; speaking: boolean },
+  gait?: { phase: number; weight: number },
 ): {
   headTilt: number;
   headTurn: number;
@@ -68,15 +69,21 @@ export function humanPose(
   rightHandY: number;
   leftHandZ: number;
   rightHandZ: number;
+  leftLeg: number;
+  rightLeg: number;
+  leftKnee: number;
+  rightKnee: number;
+  sway: number;
+  mouth: number;
 } {
   const time = Number.isFinite(seconds) ? seconds : 0;
   const phase = actorPhase(actor.id);
   const angle = phase * Math.PI * 2;
   const riding = actor.walking && actor.transport && actor.transport !== "walk";
   const walk = actor.walking && !riding;
-  const swing = walk
-    ? Math.sin(time * 7 + angle) * 0.48
-    : Math.sin(time * 1.3 + angle) * 0.025;
+  const stridePhase = gait?.phase ?? time * 7 + angle;
+  const weight = gait?.weight ?? (walk ? 1 : 0);
+  const swing = Math.sin(stridePhase) * .48 * weight + Math.sin(time * 1.3 + angle) * .025 * (1 - weight);
   const usingProp = !actor.walking && ["read", "garden", "eat", "work"].includes(actor.kind);
   let leftArm = usingProp ? -0.55 : -swing;
   let rightArm = usingProp ? -0.6 : swing;
@@ -117,5 +124,46 @@ export function humanPose(
     rightHandY: (1 - Math.cos(rightArm)) * 6,
     leftHandZ: -Math.sin(leftArm) * 6,
     rightHandZ: -Math.sin(rightArm) * 6,
+    leftLeg: Math.sin(stridePhase) * .48 * weight,
+    rightLeg: -Math.sin(stridePhase) * .48 * weight,
+    leftKnee: Math.max(0, -Math.sin(stridePhase)) * .72 * weight,
+    rightKnee: Math.max(0, Math.sin(stridePhase)) * .72 * weight,
+    sway: Math.sin(stridePhase) * .025 * weight,
+    mouth: social?.speaking ? .3 + Math.sin(time * 12 + angle) ** 2 * .8 : .16,
   };
+}
+
+export type HumanPose = ReturnType<typeof humanPose>;
+type MotionState = { position: [number, number]; phase: number; weight: number; yaw: number; pose: HumanPose };
+/** Gait follows distance actually travelled, never the requested schedule.
+ * Joint transitions ease without moving the collision-safe root position. */
+export class HumanMotion {
+  private states = new Map<string, MotionState>();
+  frame(actors: Actor[], poses: Map<string, { peerId: string; gesture: string; speaking: boolean }>, seconds: number, dt: number, paused: boolean) {
+    const output = new Map<string, { yaw: number; pose: HumanPose }>();
+    const active = new Set(actors.map(a => a.id));
+    for (const id of this.states.keys()) if (!active.has(id)) this.states.delete(id);
+    const step = Math.max(0, Math.min(.15, Number.isFinite(dt) ? dt : 0));
+    for (const actor of actors) {
+      let state = this.states.get(actor.id);
+      const social = poses.get(actor.id), peer = social?.gesture !== "idle" ? actors.find(a => a.id === social?.peerId) : undefined;
+      if (!state) {
+        state = { position: [...actor.position], phase: actorPhase(actor.id) * Math.PI * 2, weight: 0, yaw: peer ? Math.atan2(peer.position[0] - actor.position[0], peer.position[1] - actor.position[1]) : .35, pose: humanPose({ ...actor, walking: false }, seconds, 0, social) };
+        this.states.set(actor.id, state);
+      }
+      if (!paused) {
+        const dx = actor.position[0] - state.position[0], dz = actor.position[1] - state.position[1], distance = Math.hypot(dx, dz);
+        const walking = actor.walking && distance > .001 && actor.transport === "walk";
+        state.weight += ((walking ? 1 : 0) - state.weight) * (1 - Math.exp(-10 * step));
+        state.phase = (state.phase + Math.min(3, distance) * Math.PI * 2 / 14) % (Math.PI * 2);
+        const wantedYaw = peer ? Math.atan2(peer.position[0] - actor.position[0], peer.position[1] - actor.position[1]) : walking ? Math.atan2(dx, dz) : state.yaw;
+        state.yaw += Math.atan2(Math.sin(wantedYaw - state.yaw), Math.cos(wantedYaw - state.yaw)) * (1 - Math.exp(-7 * step));
+        const wanted = humanPose({ ...actor, walking: state.weight > .05 }, seconds, 0, social?.gesture === "idle" ? undefined : social, { phase: state.phase, weight: state.weight });
+        for (const key of Object.keys(wanted) as (keyof HumanPose)[]) state.pose[key] = key === "blink" ? wanted[key] : state.pose[key] + (wanted[key] - state.pose[key]) * (1 - Math.exp(-14 * step));
+        state.position = [...actor.position];
+      }
+      output.set(actor.id, { yaw: state.yaw, pose: { ...state.pose } });
+    }
+    return output;
+  }
 }
