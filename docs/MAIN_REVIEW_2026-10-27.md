@@ -35,3 +35,9 @@ Tag theo cặp/đổi vai, xe đạp di chuyển có collision toàn thân, thú
 ## Bản vá dependency
 
 Audit production ban đầu báo 23 advisory (3 critical, 7 high, 9 moderate, 4 low). Đây là kết quả dependency graph, không phải khẳng định mọi advisory đều có đường khai thác trên Worker đang chạy. Đã cài Next/eslint-config-next 16.4.1 và Zod 4.6.6, pin các bản vá Babel/browserslist/baseline/source-map-js/fast-uri/sharp. Giữ minimum release age, trustLockfile và strict build policy. Audit production sau cập nhật: **0 advisory** trên 247 dependency/optional dependency; kết quả này có thời điểm, không phải cam kết mọi lỗi bảo mật đã biến mất. TypeScript/lint và 29 suite đã đạt sau cập nhật. Drizzle generate trên bản sao migration trả “No schema changes”.
+
+## Kiểm tra hồi quy hình ảnh
+
+Vòng browser đầu trên main đã bắt được hội thoại thiếu 1/6 lượt; sau sửa cursor, đủ sáu lượt nhưng test tiếp tục bắt ngân sách draw call vượt 90 do các shadow pass mới. Đã giữ shadow của nhân vật chính và bóng tiếp xúc ở Cân bằng; Nét vẫn dùng shadow hình học của cả bối cảnh. Việc này được kiểm tra ở chế độ đứng camera và khi đổi preset, không chỉ so sánh một ảnh đẹp. Geometry procedural của Gemini giữ ở Nét; Cân bằng/Nhẹ dùng ít vertex hơn, không bỏ nhân vật hay đổi ID chọn.
+
+Review thêm phát hiện tán cây mới được tessellate 16×12 trên toàn thành phố, kể cả preset Nhẹ. Đã tách SceneDetail để đổi density theo preset, giữ đúng kích thước và thu hồi cả hai geometry. Tram đặt mới chưa có collider/scale phù hợp: giữ model trong catalog, chờ tuyến/footprint hợp lệ trước khi đặt vào vùng đi lại.

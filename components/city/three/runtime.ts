@@ -12,6 +12,7 @@ import { createAmbience } from "./ambience";
 import { createFauna } from "./fauna";
 import { AssetLibrary, setAssetTransform, type AssetPlacement } from "./assets";
 import { createModelActors } from "./model-actors";
+import { SceneDetail } from "./scene-detail";
 import { streetModel } from "./streetscape";
 import * as THREE from "three";
 import { logClient, recordFrame } from "../../../lib/diagnostics";
@@ -483,7 +484,7 @@ export function createCity(
   }
   for (const [index, id] of ["watercraft/boat-fishing-small", "watercraft/boat-row-small", "watercraft/boat-house-a"].entries()) if (assets.get(id)) placements.push({ id, x: 920 + index * 280, y: .4, z: 1608 + index * 6, width: 24, depth: 56, height: 32, yaw: Math.PI / 2 });
   if (assets.get("watercraft/buoy")) for (const x of [760, 1680]) placements.push({ id: "watercraft/buoy", x, y: .3, z: 1585, width: 8, depth: 8, height: 14 });
-  if (assets.get("trains/train-tram-modern")) placements.push({ id: "trains/train-tram-modern", x: metroLine[1][0], y: 3.6, z: metroLine[1][1], width: 12, height: 18, depth: 46, yaw: Math.atan2(metroLine[1][0] - metroLine[0][0], metroLine[1][1] - metroLine[0][1]) });
+  // Tram models remain available in the catalog until their route and collider agree.
   if (assets.get("trains/railroad-straight")) for (let i = 1; i < metroLine.length; i++) {
     const a = metroLine[i - 1], b = metroLine[i], length = Math.hypot(b[0] - a[0], b[1] - a[1]);
     for (let n = 20; n < length; n += 40) placements.push({ id: "trains/railroad-straight", x: a[0] + (b[0] - a[0]) * n / length, y: 3.1, z: a[1] + (b[1] - a[1]) * n / length, width: 10, height: 1, depth: 40, yaw: Math.atan2(b[0] - a[0], b[1] - a[1]), stretch: true });
@@ -496,6 +497,7 @@ export function createCity(
   const dummy = new THREE.Object3D(),
     color = new THREE.Color();
   const detailChunks: { mesh: THREE.InstancedMesh; x: number; z: number }[] = [];
+  const sceneDetail = new SceneDetail();
   function batch(
     geometry: THREE.BufferGeometry,
     list: Solid[],
@@ -529,10 +531,10 @@ export function createCity(
   batch(new THREE.CylinderGeometry(0.5, 0.5, 1, 20), shadows);
   batch(new THREE.BoxGeometry(1, 1, 1), solids, new THREE.MeshPhongMaterial({ shininess: 10, specular: "#4a4f4a" }));
   batch(new THREE.BoxGeometry(1, 1, 1), facadeDetails, new THREE.MeshPhongMaterial({ shininess: 14, specular: "#595e58" }), true);
-  batch(new THREE.CylinderGeometry(0.5, 0.5, 1, 16), cylinders, new THREE.MeshPhongMaterial({ shininess: 14, specular: "#525752" }));
-  batch(new THREE.SphereGeometry(.5, 16, 12), leaves, new THREE.MeshPhongMaterial({ shininess: 16, specular: "#4e6b52" }));
-  batch(new THREE.TorusGeometry(.42, .08, 8, 18), propWheels);
-  batch(new THREE.IcosahedronGeometry(.5, 1), propBuds, new THREE.MeshPhongMaterial({ shininess: 18 }), true);
+  batch(sceneDetail.register(new THREE.CylinderGeometry(0.5, 0.5, 1, 16), new THREE.CylinderGeometry(0.5, 0.5, 1, 8)), cylinders, new THREE.MeshPhongMaterial({ shininess: 14, specular: "#525752" }));
+  batch(sceneDetail.register(new THREE.SphereGeometry(.5, 16, 12), new THREE.SphereGeometry(.5, 8, 4)), leaves, new THREE.MeshPhongMaterial({ shininess: 16, specular: "#4e6b52" }));
+  batch(sceneDetail.register(new THREE.TorusGeometry(.42, .08, 8, 18), new THREE.TorusGeometry(.42, .08, 4, 12)), propWheels);
+  batch(sceneDetail.register(new THREE.IcosahedronGeometry(.5, 1), new THREE.IcosahedronGeometry(.5, 0)), propBuds, new THREE.MeshPhongMaterial({ shininess: 18 }), true);
   const windowMaterial = new THREE.MeshPhongMaterial({
     shininess: 40,
     emissive: "#638082",
@@ -555,6 +557,7 @@ export function createCity(
   host.dataset.cloudLobes = String(ambience.stats.cloudLobes);
   const capacity = 72, people = createPeople(scene, capacity), boxGeo = people.geometry.box;
   people.setQuality(input().quality);
+  sceneDetail.apply(scene, input().quality);
   const modelActors = createModelActors(scene, assets);
   host.dataset.assetActors = String(modelActors.ids.size);
   const trafficBody = new THREE.InstancedMesh(
@@ -754,6 +757,7 @@ export function createCity(
       renderer.setSize(host.clientWidth, host.clientHeight);
       configureShadows();
       people.setQuality(activeQuality);
+      sceneDetail.apply(scene, activeQuality);
     }
     lastTime = now; // simulationTime/worldTime apply the persisted pause anchor.
     const seconds = simulationTime(world, lastTime) / 1000;
@@ -992,6 +996,7 @@ export function createCity(
       });
       assets.collectAndClose({ geometries, materials, textures });
       people.collectGeometry(geometries);
+      sceneDetail.collect(geometries);
       geometries.forEach((g) => g.dispose());
       materials.forEach((m) => m.dispose());
       textures.forEach((t) => t.dispose());

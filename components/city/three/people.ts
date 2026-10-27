@@ -45,7 +45,7 @@ export function createPeople(scene: THREE.Scene, capacity: number) {
   return {
     geometry,
     setQuality(quality: Quality = "balanced") {
-      for (const key of Object.keys(meshes) as Shape[]) meshes[key].geometry = quality === "sharp" ? geometry[key] : coarse[key];
+      for (const key of Object.keys(meshes) as Shape[]) { meshes[key].geometry = quality === "sharp" ? geometry[key] : coarse[key]; meshes[key].castShadow = quality === "sharp"; }
     },
     collectGeometry(target: Set<THREE.BufferGeometry>) { for (const g of [...Object.values(geometry), ...Object.values(coarse)]) target.add(g); },
     draw(world: World, actors: Actor[], poses: Map<string, SocialPose>, seconds: number, dt: number, camera: THREE.Camera, selected: string, skip = new Set<string>()) {

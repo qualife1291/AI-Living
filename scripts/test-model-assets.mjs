@@ -3,6 +3,7 @@ import { readFileSync } from 'node:fs';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { AssetLibrary, AssetAvatar, setAssetTransform } from '../components/city/three/assets.ts';
+import { SceneDetail } from '../components/city/three/scene-detail.ts';
 const loader = new GLTFLoader();
 // Geometry/clip assertions do not need a browser image decoder.
 loader.register(() => ({name:'qa-material',loadMaterial:()=>Promise.resolve(new THREE.MeshBasicMaterial())}));
@@ -25,3 +26,5 @@ const dummy=new THREE.Object3D();setAssetTransform(dummy,model.size,placement);
 const box=model.geometry.boundingBox.clone().applyMatrix4(dummy.matrix);assert.ok(box.getSize(new THREE.Vector3()).x<=70.0001);assert.ok(box.getSize(new THREE.Vector3()).z<=50.0001);assert.ok(Math.abs(box.min.y-.7)<1e-5);
 const scene=new THREE.Scene(),update=library.addWorldLOD(scene,[placement]),camera=new THREE.PerspectiveCamera();camera.position.set(0,50,100);update(camera);assert.equal(scene.children[0].count,1);assert.equal(scene.children[1].count,0);camera.position.z=1000;update(camera);assert.equal(scene.children[0].count,0);assert.equal(scene.children[1].count,1,'Far building keeps a cheap silhouette');camera.position.z=100;update(camera);assert.equal(scene.children[0].count,1,'Detail returns when camera approaches');assert.equal(scene.children[0].castShadow,false,'Balanced static scenery keeps contact shadows without another full geometry pass');update(camera,true);assert.equal(scene.children[0].castShadow,true,'Sharp restores detailed scenery shadows even when the camera does not move');
 library.dispose();console.log(JSON.stringify({suite:'model-assets',actualGLBClips:true,bodyHeight:17.5,pause:'frozen',seek:'reset',clones:'independent',ground:'aligned',footprints:'bounded',LOD:'returns'}));
+const density=new SceneDetail(),foliage=new THREE.Scene(),fine=new THREE.SphereGeometry(.5,16,12),light=new THREE.SphereGeometry(.5,8,4),leaves=new THREE.InstancedMesh(density.register(fine,light),new THREE.MeshBasicMaterial(),50);
+foliage.add(leaves);density.apply(foliage,'balanced');assert.equal(leaves.geometry,light);assert.equal(leaves.count,50);density.apply(foliage,'sharp');assert.equal(leaves.geometry,fine);fine.computeBoundingBox();light.computeBoundingBox();assert.ok(fine.boundingBox.getSize(new THREE.Vector3()).distanceTo(light.boundingBox.getSize(new THREE.Vector3()))<1e-6,'Foliage LOD must preserve dimensions');const retained=new Set();density.collect(retained);assert.equal(retained.size,2,'Both quality variants are collected for disposal');retained.forEach(g=>g.dispose());leaves.material.dispose();

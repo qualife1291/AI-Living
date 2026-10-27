@@ -19,3 +19,5 @@
 - Saufixcursor, browserđãthấyđủ6 nhưngQAharnessso sánhcurrentbubbleđãlàB vớiline[1]B bịfalsefail; sửa so sánhfirstObservedline[0]. ThêmackHUDsaurender đểGPUstartup3s khôngăn thờigianđọc. Socialtests30caseđạt. Cầnrebuild/rerunfinalsocial/motion/actions, khôngcoi trướcbuildQA làfinal. Nguồncurrentecfdd4c+WIP.
 
 - Browserfinalđãđủ6câu+alternating, cònfaildrawcallbudget90 doGeministaticmeshtạoshadowpasscho từngmodel. Đãđểbalanced dùngGPUshadowchoactors+contactstatic;sharp giữstaticfullshadow. Newunitasserttogglecastkhôngcầnđổicamera. Cầnrebuild+finalQA. Pre12mainbackuprev108/17events/mem39,13,14 hash3bc5b7eb5100bfa1e082025994e0e4d59ada53bf7c09b2f8803575140efd7dcf. NativeDB12tables0006chưaapplied.
+
+- QuickGPUmetrics tìm rõleafgeometryGeminisphere16×12 ápchotấtcảcây làmeco287760triangles; balanced95calls dùđãgỡstaticshadow. ĐãtáchSceneDetail đểbalanced/eco dùngfoliage/cylinder/wheel/bud nhẹ,sharpgiữfine; crowd balanceddùngcontactshadow thaydepthpass,3coreGLBGPUshadow giữ. Unitqualitybounds/dispose/casttoggleđạt. Statictram mớikhôngcócollider/đúngscale đãgỡplacement,modelgiữcatalog chờroute&footprint. Tiếpbuild→quickmetrics→fullbrowser,khônghạassert90.
