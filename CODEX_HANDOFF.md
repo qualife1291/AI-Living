@@ -1,5 +1,7 @@
 # Bàn giao sang Codex (`CODEX_HANDOFF.md`)
 
+> Review main/Gemini mới nhất: [cấu trúc, stack, bugfix và giới hạn](docs/MAIN_REVIEW_2026-10-27.md). Luôn đọc thêm MEMORY_SHORT và docs/releases/latest.json để phân biệt source/production.
+
 > Mới nhất: [Thành phố 3D](docs/THREE_WORLD.md) — Three.js mặc định, skyline 282 khối nhà, WebGL2/2D fallback, không đổi dữ liệu mô phỏng.
 
 > Thành phố 2D trước đó: [Thành phố, tạo hình và học hành vi](docs/URBAN_WORLD.md), [ba hướng sản phẩm](docs/DECISIONS/ADR-0009-shared-world-three-product-directions.md). Ưu tiên các tài liệu này trước ghi chú lịch sử.

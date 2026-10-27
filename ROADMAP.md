@@ -68,3 +68,9 @@ Nguồn đã hoàn thiện12cảnh/56lượt doagentbiênkịch, crowd24h, spaci
 
 ## Chi tiết đồ họa — bản 11, 27/10/2026
 Đã chốt source và localQA cho rig có khớp, props gắn tay,66cụm đồ vật,6cảnh mới, cây/mây/nước và model mèo/chó/chim phối hợp groundnav. XemVISUAL_DETAIL_REVIEW vàreleaseledger. Còn hardwareGPU/soak, IK nội thất/thang máy/serve-clean/inventory và mô hìnhAI chất lượng hơn.
+
+## Review main/Gemini — 27/10/2026
+
+Đã tích hợp phase A/B và sửa lỗi runtime, telemetry, migration metadata, playback/hội thoại cùng ngân sách đồ họa. Bằng chứng, phạm vi và stack: [review main](docs/MAIN_REVIEW_2026-10-27.md). Trạng thái production lấy từ `docs/releases/latest.json`, không suy luận từ việc push Git.
+
+Các phần tiếp theo vẫn mở: tag theo cặp; xe đạp/thú theo chủ có collision đầy đủ; household/density/traffic graph; durable dialogue pool; LinUCB/skill gates; benchmark thiết bị thật và soak. Các mục này chưa được đánh dấu hoàn tất bằng unit test của phase B.

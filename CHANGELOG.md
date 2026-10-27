@@ -1,5 +1,13 @@
 # Changelog
 
+## 2026-10-27 — Review main/Gemini và sửa hồi quy
+- Tích hợp code Gemini/phase A+B từ main; giữ colormap, cử chỉ, thời tiết và catalog model. Phân biệt ảnh AI tham chiếu với ảnh chụp QA thật.
+- Sửa crash khi mua sắm, chuyển động cộng dồn cùng timestamp và đạo cụ/xe tập còn hiện sau khi nhân vật rời cảnh.
+- Giữ đủ lượt hội thoại khi frame trễ và tính thời gian đọc từ lúc HUD hiển thị; trả lời theo cùng chủ đề.
+- Cân bằng/Nhẹ giảm vertex và shadow pass của bối cảnh; Nét giữ geometry chi tiết. Studio dừng GPU khi pause, xử lý hủy tải/unmount và playback đúng elapsed.
+- Log chỉ xóa sau JSON ACK; hoàn thiện migration telemetry mới, index và snapshot Drizzle.
+- Cập nhật dependency có bản vá; audit production sau cập nhật còn 0 advisory. Review và giới hạn: [MAIN_REVIEW_2026-10-27](docs/MAIN_REVIEW_2026-10-27.md).
+
 ## 2026-10-27 — Nhân vật có khớp và bối cảnh sinh hoạt nhiều chi tiết
 - Tay/chân có khuỷu/gối, chuyển đi–đứng mềm theo quãng đường thực, giữ pose khi pause. Bổ sung nét mặt, cổ áo/cúc/đế giày và mũ tròn; sách/ly/bình tưới/dụng cụ theo tay cầm.
 - Gom nhân vật vào sáu batch chung; chi tiết gần camera, chân/bóng theo nền thực của renderer.
