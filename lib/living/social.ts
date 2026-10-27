@@ -41,7 +41,7 @@ export function spaceActors(world: World, actors: Actor[]): Actor[] {
 
 const format = (text: string, a: Actor, b: Actor) => text.replaceAll("{a}", a.name).replaceAll("{b}", b.name);
 
-/** One shared simulation timeline drives speech, turns, facing and gestures in 2D/3D.
+/** One shared simulation timeline drives speech, turns, facing and gestures for the city.
  * Ambient scenes were authored by development agents; they are explicitly scripts.
  * Persisted model events keep their distinct AI provenance and take priority. */
 export function socialFrame(world: World, actors: Actor[], events: EpisodeEvent[], now: number, livingSpeech: Speech | null = null) {

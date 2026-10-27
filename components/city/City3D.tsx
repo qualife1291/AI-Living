@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import { Building2, LocateFixed, Minus, Plus, Scan, MessageCircle, Footprints, Coffee } from "lucide-react";
-import { UrbanMap } from "./UrbanMap";
+import { WebGLUnavailable } from "./WebGLUnavailable";
 import type { CityRuntime, SceneInput, SceneStatus } from "./three/runtime";
 import type { Venue } from "@/lib/city/world";
 
@@ -49,15 +49,7 @@ export function City3D(props: Props) {
       runtime.current = null;
     };
   }, [failed]);
-  if (failed)
-    return (
-      <>
-        <UrbanMap {...props} />
-        <div className="three-notice">
-          Thiết bị chưa mở được 3D · Đang dùng 2D
-        </div>
-      </>
-    );
+  if (failed) return <WebGLUnavailable retry={() => { setStatus(null); setFailed(false); }} />;
   return (
     <div className="urban-map-host city-three">
       <div ref={host} className="three-canvas" />

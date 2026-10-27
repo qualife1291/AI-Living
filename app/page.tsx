@@ -23,7 +23,6 @@ import { Osm3D } from "@/components/city/Osm3D";
 import { InteriorView } from "@/components/city/InteriorView";
 import { lifeStory } from "@/lib/city/lifestory";
 import { Wardrobe } from "@/components/characters/Wardrobe";
-import { UrbanMap } from "@/components/city/UrbanMap";
 import { City3D } from "@/components/city/City3D";
 import { LivingPanel } from "@/components/living/LivingPanel";
 import { venues, type Venue } from "@/lib/city/world";
@@ -47,7 +46,6 @@ export default function Page() {
     [selected, setSelected] = useState("an"),
     [panel, setPanel] = useState<Panel>(null),
     [mode, setMode] = useState<"city" | "osm">("city"),
-    [renderer, setRenderer] = useState<"3d" | "2d">("3d"),
     [hidden, setHidden] = useState(false),
     [venue, setVenue] = useState<Venue | null>(null),
     [busy, setBusy] = useState(false),
@@ -176,7 +174,7 @@ export default function Page() {
     learning: "Trải nghiệm & thói quen",
     sources: "Nguồn mở cho thế giới",
   };
-  const CityView = mode === "osm" && renderer === "3d" ? Osm3D : mode === "city" && renderer === "3d" ? City3D : UrbanMap;
+  const CityView = mode === "osm" ? Osm3D : City3D;
   return (
     <main className={`live-world ${hidden ? "hud-hidden" : ""}`}>
       {world ? (
@@ -194,7 +192,6 @@ export default function Page() {
             setPanel("places");
           }}
           onInspect={() => setPanel("people")}
-          mode={mode}
           target={navigation}
           clockOffsetMs={clockOffset}
         />
@@ -379,31 +376,6 @@ export default function Page() {
                   }}
                 >
                   Tái dựng từ OpenStreetMap
-                </button>
-              </div>
-              <div
-                className="scene-choice"
-                aria-label="Cách hiển thị thành phố"
-              >
-                <button
-                  className={renderer === "3d" ? "active" : ""}
-                  onClick={() => {
-                    setRenderer("3d");
-                    setMode("city");
-                    setPanel(null);
-                  }}
-                >
-                  Không gian 3D
-                </button>
-                <button
-                  className={renderer === "2d" ? "active" : ""}
-                  onClick={() => {
-                    setRenderer("2d");
-                    setMode("city");
-                    setPanel(null);
-                  }}
-                >
-                  Bản đồ 2D · nhẹ
                 </button>
               </div>
               {venue && (

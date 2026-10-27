@@ -1,6 +1,3 @@
 # Ảnh QA
 
-city-robots-preview.jpg là ảnh browser preview của bản robot/khu phố trước lớp sinh hoạt. Không phải bằng chứng animation, camera-follow hoặc live production đã được kiểm thử. Các trạng thái kiểm thử mới nhất nằm ở docs/TESTING.md.
-
-character-design-final.jpg: thiết kế cuối, ba silhouette khác nhau và lời thoại mẫu trong Workshop (preview, không ghi AI event).
-robot-workshop-v2.jpg: vòng kiểm thử rig trước redesign cuối, chỉ giữ để đối chiếu.
+Các ảnh hiện hành ghi rõ preview local hoặc production trong báo cáo tương ứng. Ảnh của renderer SVG/2D và tủ đồ SVG cũ đã được gỡ khi chuyển sang chỉ dùng 3D. Không dùng ảnh sinh AI làm bằng chứng QA. Xem docs/THREE_ONLY_AND_PETS.md cho đợt kiểm chứng mới.
