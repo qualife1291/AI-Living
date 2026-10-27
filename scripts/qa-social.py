@@ -57,6 +57,13 @@ with sync_playwright() as p:
    page.get_by_role('button',name='Theo nhân vật',exact=True).click()
    page.wait_for_function('document.querySelector(`[aria-label="Theo nhân vật"]`)?.getAttribute("aria-pressed")==="true"')
    report[-1]['cameraControls']='select Bình → follow An; zoom exits follow; follow resumes'
+   # Same browser/world after F5 must avoid the already generated scripted lines.
+   old_texts=[line.split('\n')[-1] for line in lines]
+   page.reload(wait_until='domcontentloaded');host.wait_for(timeout=90000);bubble.wait_for(timeout=30000)
+   assert bubble.locator('p').inner_text() not in old_texts,'Reload repeated a recent generated line'
+   page.screenshot(path=str(out/f'reload-{name}-preview.png'))
+   assert not errors,errors;assert page.evaluate('document.documentElement.scrollWidth<=innerWidth')
+   report[-1]['reloadAntiRepeat']=True
    print(name,'PASS complete dialogue through polling, paired speakers, 1.4m personal space, source label, responsive/no errors',len(lines),'lines',flush=True)
    page.close()
   (out/'metrics.json').write_text(json.dumps(report,indent=2,ensure_ascii=False))

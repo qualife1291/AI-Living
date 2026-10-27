@@ -26,10 +26,10 @@
       "assetActors": "3",
       "assetCars": "3",
       "animalBatches": "5",
-      "animalPositions": "[{\"id\":\"muop\",\"species\":\"cat\",\"position\":[682.5132699937622,613.7010388768333]},{\"id\":\"cun\",\"species\":\"dog\",\"position\":[633,407]},{\"id\":\"se\",\"species\":\"bird\",\"position\":[677.5711388006954,552.8587509070613]}]",
+      "animalPositions": "[{\"id\":\"muop\",\"species\":\"cat\",\"position\":[664.881385724582,613.7649225154897]},{\"id\":\"cun\",\"species\":\"dog\",\"position\":[633,407]},{\"id\":\"se\",\"species\":\"bird\",\"position\":[679.4001666312611,551.6771401450892]}]",
       "ready": "true",
       "paused": "false",
-      "frame": "107",
+      "frame": "110",
       "pixelRatio": "1",
       "effectiveQuality": "eco",
       "triangles": "175150",
@@ -48,12 +48,13 @@
       "selected": "an",
       "humanBatches": "6",
       "humanInstances": "673",
-      "modelActors": "{\"an\":{\"clip\":\"holding-right\",\"resolvedClip\":\"Idle\",\"leg\":[3.5527141023169746e-15,0,0,1],\"position\":[804,1.9999999999999998,223],\"skinned\":true,\"modelId\":\"gobkit-human002/it-engineer\"},\"binh\":{\"clip\":\"holding-right\",\"resolvedClip\":\"Idle\",\"leg\":[3.5527141023169746e-15,0,0,1],\"position\":[781.651676224131,1.9879894991219236,230.08575967227654],\"skinned\":true,\"modelId\":\"gobkit-human002/accountant\"},\"chi\":{\"clip\":\"holding-right\",\"resolvedClip\":\"Idle\",\"leg\":[3.5527141023169746e-15,0,0,1],\"position\":[828.5898733222175,1.9877595270215813,220.21484596128232],\"skinned\":true,\"modelId\":\"gobkit-human002/receptionist\"}}",
+      "modelActors": "{\"an\":{\"clip\":\"holding-right\",\"resolvedClip\":\"Idle\",\"leg\":[3.5527141023169746e-15,0,0,1],\"position\":[804,1.9999999999999998,223],\"skinned\":true,\"modelId\":\"gobkit-human002/it-engineer\"},\"binh\":{\"clip\":\"holding-right\",\"resolvedClip\":\"Idle\",\"leg\":[3.5527141023169746e-15,0,0,1],\"position\":[781.651676224131,1.9879894991219236,230.08575967227654],\"skinned\":true,\"modelId\":\"gobkit-human002/accountant\"},\"chi\":{\"clip\":\"holding-right\",\"resolvedClip\":\"Idle\",\"leg\":[3.5527141023169746e-15,0,0,1],\"position\":[828.5898733222175,1.9877595270215809,220.21484596128232],\"skinned\":true,\"modelId\":\"gobkit-human002/receptionist\"}}",
       "drawCalls": "48",
       "camera": "779,31,267",
       "shadowMap": "0"
     },
-    "cameraControls": "select Bình → follow An; zoom exits follow; follow resumes"
+    "cameraControls": "select Bình → follow An; zoom exits follow; follow resumes",
+    "reloadAntiRepeat": true
   },
   {
     "viewport": "mobile",
@@ -82,10 +83,10 @@
       "assetActors": "3",
       "assetCars": "3",
       "animalBatches": "5",
-      "animalPositions": "[{\"id\":\"muop\",\"species\":\"cat\",\"position\":[603,610]},{\"id\":\"cun\",\"species\":\"dog\",\"position\":[633,407]},{\"id\":\"se\",\"species\":\"bird\",\"position\":[825.7616408202807,618.5863154022228]}]",
+      "animalPositions": "[{\"id\":\"muop\",\"species\":\"cat\",\"position\":[603,610]},{\"id\":\"cun\",\"species\":\"dog\",\"position\":[633,407]},{\"id\":\"se\",\"species\":\"bird\",\"position\":[798.5933880764585,610.1000807849903]}]",
       "ready": "true",
       "paused": "false",
-      "frame": "211",
+      "frame": "212",
       "pixelRatio": "1",
       "effectiveQuality": "eco",
       "triangles": "169680",
@@ -109,6 +110,7 @@
       "camera": "779,31,267",
       "shadowMap": "0"
     },
-    "cameraControls": "select Bình → follow An; zoom exits follow; follow resumes"
+    "cameraControls": "select Bình → follow An; zoom exits follow; follow resumes",
+    "reloadAntiRepeat": true
   }
 ]

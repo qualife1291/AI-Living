@@ -87,3 +87,6 @@ Tích hợp giữ nguyên tag/pet-walk/xe đạp/3D-only/overlays/households đ�
 Main đã merge work c83a5e3. Asset/identity/UI milestone đã qua full38unit/API/hash/check/lint/build và5browserharness trên nguồn cuối; gallery239model/15packs, core/focusedNPC có skin độc lập và giữ tỷ lệ. Đây là source candidate, phát hành theo ledger/nativeSites riêng.
 
 Các phase tiếp theo được đánh giá ở docs/GEMINI_REVIEW_2026-10-28.md: ưu tiên LinUCB thực +skillgates/context-at-choice, durable thoại/memory với provenance, homeanchors/transit/collision, sinh thái/audio theo habitat. Không chép số3,71×/score98 hoặc hứa150ms/hardwareFPS từ harnesssynthetic. Native cron/public/LoRA/hardware/soak cần capability và nghiệm thu riêng; không tự biến lịch sử thành đã hoàn thành.
+
+## Phase D nền tảng đã kiểm thử trong source
+DisjointLinUCB/4skillgates/context-at-choice, roleexpansionguard, structuredmemory actor/provenance/CAS/topK/bulkarchive và poolhash/xưnghô đã triển khai;42unit/API/check/lint/build +social6/poll/F5desktopmobile đạt. Chi tiết PHASE_D_LEARNING.md. Chưa hierarchyglobal/role/P2P/skillsvector/policystorage táchsnapshot, occupancyauthority, fullmodelA-B hoặc sinhthái/home/transitphaseC/E.

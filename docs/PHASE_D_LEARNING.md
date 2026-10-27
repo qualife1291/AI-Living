@@ -35,3 +35,5 @@ Server lưu tối đa64scene fingerprints trong living.dialoguePool qua snapshot
 Ambientclient giữ thêm poolhash tronglocalStorage theo world.born đểF5 khônglặp nguyênnhữngcâuvừagenerated, khônglưu rawtext/name/credential. Storage bịchặn/hếtquota cófallbacksession; loại tham chiếuSQLitehistory khôngxóa. Pool chỉghi “đãsinh”, không là bằngchứngngườiđãnghe và khôngtựgrantreward/kỹnăng. Cảnh ambient chưa đồng bộ readingtime/occupancy giữaviewers; khôngclaim clientstorage là backendauthoritativepool cho mọi ambientscene.
 
 Test mới kiểm reciprocalpronouns, JSONpersist/reloadantiRepeat, scopeworldriêng, hash-only vàstoragefailure; sinh500scene giữbudget64record. Suite42/check/lint/build/API vàbrowserreload cuối đang chạy; không nhận WIP là phát hành.
+
+Pool/xưnghô đã qua42/42suite/check/lint/build và API D1 thật: từ chối proposal trùngscene đãlưu, revision khôngđổi khi422; finalLLM pool cóđúngcảnhtrước+cảnhmới, khônglưurulesdraft chưapháthành. Browser desktop/mobile vẫn đủ6lượt/quapoll/cameracontrols, reloadcùngbrowser khônglặp câuđãsinh; ảnhreload ởdocs/screenshots/social. Đây là kiểm thửfixture, không phải lượtmodelthực hoặc đồngbộhaiviewer.

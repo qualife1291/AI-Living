@@ -1,3 +1,4 @@
+import {rememberDialogue,hasDialogue} from "../lib/living/dialogue-pool.ts";
 import { seed } from "../lib/world.ts";
 import { initializeLiving, turnId, localDate, planLivingTurn } from "../lib/living/engine.ts";
 import { scheduleResidentSocial } from "../lib/living/social-scheduler.ts";
@@ -160,5 +161,19 @@ try{
  assert.equal((await db.prepare('SELECT count(*) AS count FROM memories WHERE event_id=?').bind('stale-memory-event').first()).count,0);
  assert.equal((await db.prepare('SELECT count(*) AS count FROM memories WHERE event_id=?').bind('linucb-api-receipt').first()).count,1,'Outcome memory is archived with its original recipient and provenance');
  console.log('PASS structured event/outcome memories persist with CAS, private top-K, idempotency and no cross-actor knowledge');
+ // A final model narrative must persist its pool entry without leaking a rules draft.
+ const poolNow=Date.now(),poolDate=localDate(poolNow),poolVn=new Date(poolNow+7*3600000),poolContext={...context,date:poolDate,hour:poolVn.getUTCHours()+poolVn.getUTCMinutes()/60,weekday:poolVn.getUTCDay(),fetchedAt:new Date(poolNow).toISOString()};
+ const poolRow=await db.prepare("SELECT revision,data FROM worlds WHERE id='home'").first(),poolWorld=JSON.parse(poolRow.data),poolPreview=planLivingTurn(poolWorld,poolContext,poolNow),peerId=poolPreview.turn.residentId;
+ const recent={title:'Cùng dọn góc sách',summary:'An và hàng xóm bàn cách sắp xếp lại góc sách.',dialogue:[{speaker:'an',text:'Mình muốn phân loại mấy quyển sách này trước nhé?'},{speaker:peerId,text:'Được, mình xếp theo chủ đề để dễ tìm hơn.'},{speaker:'an',text:'Vậy mình làm nhãn nhỏ cho từng ngăn nhé.'},{speaker:peerId,text:'Mình giúp viết nhãn rồi cùng kiểm tra lại nhé.'}]};
+ poolWorld.living.dialoguePool=rememberDialogue(undefined,'an',peerId,recent.dialogue,'local-llm');
+ await db.prepare("UPDATE worlds SET data=? WHERE id='home'").bind(JSON.stringify(poolWorld)).run();
+ const narrativePost=proposal=>mf.dispatchFetch('http://localhost/api/living/tick',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({proposal,basis:{revision:poolRow.revision,turnId:turnId(poolNow)}})});
+ const duplicateScene=await narrativePost(recent);assert.equal(duplicateScene.status,422);assert.match((await duplicateScene.json()).error,/trùng/);
+ assert.equal((await db.prepare("SELECT revision FROM worlds WHERE id='home'").first()).revision,poolRow.revision);
+ const novel={...recent,title:'Ghi chú cho từng ngăn sách',dialogue:recent.dialogue.map((line,i)=>({...line,text:['Mình thử ghi tên các nhóm sách lên tờ nhãn này nhé?','Được, mình sẽ chọn màu riêng cho truyện và tài liệu.','Mình đặt nhãn ở cạnh ngăn để mọi người nhìn rõ hơn nhé.','Xong mình cùng xem lại xem có nhóm nào còn thiếu nhé.'][i]}))};
+ const acceptedScene=await narrativePost(novel);assert.equal(acceptedScene.status,200,await acceptedScene.text());
+ const pooled=JSON.parse((await db.prepare("SELECT data FROM worlds WHERE id='home'").first()).data).living.dialoguePool;
+ assert.equal(pooled.entries.length,2);assert(hasDialogue(pooled,'an',peerId,recent.dialogue));assert(hasDialogue(pooled,'an',peerId,novel.dialogue));assert(pooled.entries.every(e=>e.source==='local-llm'));
+ console.log('PASS duplicate persisted narrative is rejected and final model pool excludes the generated rules draft');
  console.log(JSON.stringify({suite:'local-diagnostics-http',ownerReadGuard:true,ownerWriteGuard:true,streamByteLimit:true,schema:true,origin:true,ack:true,jsonlReadback:true,rateLimit:true,retention:true,pulsePersistence:true,pulseRetry:true,pulsePause:true,productionAccess:false}));
 }finally{await mf.dispose();}
