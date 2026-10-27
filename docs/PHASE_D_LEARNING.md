@@ -11,3 +11,5 @@ Cũng sửa pending NPC từ180s cố định sang tổng thời lượng mọi 
 Test mới dùng oracle giải hệ ridge6×6 độc lập qua1.200update, sai số tối đa5,83e-16; ranking đổi theo context, gate/unlock, cần đủduration/capturecontext/noDuplicate/cancel/purity đạt. 38suite cũ đạt với integration trước thêm suite39. Không báo cải thiện model/ngôn ngữ hoặc reward3,71× từ testsynthetic; benchmark/runtimepersistence còn phải nghiệm thu riêng.
 
 Còn phải xử lý storage policy tách khỏi snapshot trước mật độ240, hierarchy/P2P có provenance, durable dialoguepool/memory và benchmark cùng implementation/baseline/holdout. Giữ giới hạn physical completion và nativeSites trong MEMORY_SHORT.
+
+Integration cuối hiện39/39suite/check/lint/build đạt; API Worker/D1 cô lập cũng đã ghi thật context/posterior/experiencearchive, retry không cộng lại và home/petOwners/memory cũ còn nguyên. Posterior cho context lỗi không được gắn provenanceLinUCB. Chưa browserfinal cho phaseD; sourcecandidate168861b cũ vẫn là góiđóngbăng riêng, không coi gói đó chứa các thay đổi này.

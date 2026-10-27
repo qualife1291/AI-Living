@@ -4,7 +4,7 @@ import scenariosData from "../../data/city/scenarios.json" with { type: "json" }
 import type { LivingState, RealContext } from "./schema.ts";
 import type { World, PersonPlan } from "../world";
 import { computeSimMs, hashSeed, worldTime } from "../clock.ts";
-import { decisionContext, fitLinear, linearScore, type LinearArm } from "./linucb.ts";
+import { decisionContext, fitLinear, linearScore, validDecisionContext, type LinearArm } from "./linucb.ts";
 export const scenarioSchema = z
   .object({
     id: z.string().regex(/^[a-z][a-z0-9-]{0,60}$/),
@@ -211,7 +211,7 @@ export function settleLearning(
     ),
   );
   fitAction(agent, scenario.id, reward, now);
-  if (pending.context?.length === 6 && pending.context.every(v => Number.isFinite(v) && v >= 0 && v <= 1)) {
+  if (validDecisionContext(pending.context)) {
     agent.linear ??= {};
     agent.linear[scenario.id] = fitLinear(agent.linear[scenario.id], pending.context, reward);
   }
@@ -279,8 +279,8 @@ export function prepareLearning(world: World, state: LivingState, now: number, c
         at: new Date(now).toISOString(),
         reward: agent.lastReward ?? action.meanReward,
         source: "simulation",
-        model: agent.pending.context && agent.linear?.[agent.pending.scenarioId] ? "disjoint-linucb-v1" : "contextual-bandit-v1",
-        ...(agent.pending.context ? { context: [...agent.pending.context] } : {}),
+        model: validDecisionContext(agent.pending.context) && agent.linear?.[agent.pending.scenarioId] ? "disjoint-linucb-v1" : "contextual-bandit-v1",
+        ...(validDecisionContext(agent.pending.context) ? { context: [...agent.pending.context] } : {}),
       };
       experiences.push(experience);
       collect?.(experience);

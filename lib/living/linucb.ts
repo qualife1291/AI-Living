@@ -10,7 +10,10 @@ export function newArm(): LinearArm {
 }
 function validVector(x: readonly number[]) { return x.length === CONTEXT_DIM && x.every(v => Number.isFinite(v) && Math.abs(v) <= 1); }
 export function validArm(arm: LinearArm) {
-  return arm.version === 1 && arm.inverse.length === 21 && arm.inverse.every(Number.isFinite) && arm.b.length === 6 && arm.b.every(Number.isFinite) && Number.isSafeInteger(arm.samples) && arm.samples >= 0;
+  return arm.version === 1 && Array.isArray(arm.inverse) && arm.inverse.length === 21 && arm.inverse.every(Number.isFinite) && Array.isArray(arm.b) && arm.b.length === 6 && arm.b.every(Number.isFinite) && Number.isSafeInteger(arm.samples) && arm.samples >= 0;
+}
+export function validDecisionContext(x: unknown): x is number[] {
+  return Array.isArray(x) && x.length === CONTEXT_DIM && x[0] === 1 && x.every(v => Number.isFinite(v) && v >= 0 && v <= 1);
 }
 function multiply(arm: LinearArm, x: readonly number[]) {
   return x.map((_, r) => x.reduce((sum, v, c) => sum + arm.inverse[index(r, c)] * v, 0));

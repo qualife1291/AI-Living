@@ -108,5 +108,26 @@ try{
  const repeated=JSON.parse((await db.prepare("SELECT data FROM worlds WHERE id='home'").first()).data);
  assert.deepEqual(repeated.living.residents,homeWorld.living.residents,'Repeated save does not move assigned homes');
  console.log('PASS legacy household and identity backfill persisted through catalog CAS, repeatability and complete history preservation');
+ // Settle one real compiled LinUCB outcome against isolated D1, then retry.
+ await db.prepare('CREATE TABLE agent_experiences(seq INTEGER PRIMARY KEY AUTOINCREMENT,id TEXT NOT NULL UNIQUE,actor_id TEXT NOT NULL,created_at TEXT NOT NULL,data TEXT NOT NULL)').run();
+ const linearWorld=structuredClone(repeated),linearNow=Date.now();linearWorld.paused=false;
+ linearWorld.clock={anchors:[{realMs:linearNow,simMs:200000,scale:1}],pausedAt:null,pausedMs:0,scale:1};
+ for(const policy of Object.values(linearWorld.living.learning??{}))if(policy.pending)policy.pending.completed=true;
+ const learner=linearWorld.living.residents[0],policy=linearWorld.living.learning[learner.id],contextAtChoice=[1,.6,.3,.4,0,.02];
+ const oldSamples=policy.samples,oldMemories=[...learner.memories];
+ policy.pending={id:'linucb-api-receipt',scenarioId:'learn-trade',startedSimMs:0,durationMs:180000,completed:false,context:contextAtChoice};
+ learner.plan={createdAt:new Date(linearNow).toISOString(),pausedMs:0,simStartedAt:0,from:'Khu dân cư',steps:[{location:'Trường nghề',activity:'Học nghề mô phỏng',kind:'read',duration:180}]};
+ await db.prepare("UPDATE worlds SET data=? WHERE id='home'").bind(JSON.stringify(linearWorld)).run();
+ const settle=()=>mf.dispatchFetch('http://localhost/api/living/learning',{method:'POST',headers:{'content-type':'application/json'},body:'{}'});
+ const outcome=await settle();assert.equal(outcome.status,200);assert.equal((await outcome.json()).humanExperiences,1);
+ const learned=JSON.parse((await db.prepare("SELECT data FROM worlds WHERE id='home'").first()).data),fitted=learned.living.learning[learner.id];
+ assert.equal(fitted.samples,oldSamples+1);assert.equal(fitted.linear['learn-trade'].samples,1);
+ assert.deepEqual(learned.living.residents[0].memories.slice(0,oldMemories.length),oldMemories);
+ const archive=JSON.parse((await db.prepare('SELECT data FROM agent_experiences WHERE id=?').bind('linucb-api-receipt').first()).data);
+ assert.equal(archive.model,'disjoint-linucb-v1');assert.deepEqual(archive.context,contextAtChoice);
+ assert.deepEqual(learned.living.petOwners,linearWorld.living.petOwners);assert.deepEqual(learned.living.residents.map(r=>r.home),linearWorld.living.residents.map(r=>r.home));
+ const retry=await settle();assert.equal(retry.status,200);assert.equal((await retry.json()).updated,0);
+ assert.equal((await db.prepare('SELECT count(*) AS count FROM agent_experiences WHERE id=?').bind('linucb-api-receipt').first()).count,1);
+ console.log('PASS compiled LinUCB context/posterior/archive persisted atomically and replay gives no duplicate credit');
  console.log(JSON.stringify({suite:'local-diagnostics-http',ownerReadGuard:true,ownerWriteGuard:true,streamByteLimit:true,schema:true,origin:true,ack:true,jsonlReadback:true,rateLimit:true,retention:true,pulsePersistence:true,pulseRetry:true,pulsePause:true,productionAccess:false}));
 }finally{await mf.dispose();}
