@@ -5,6 +5,7 @@ import { TrafficDirector, TRAFFIC_COUNT, trafficJunctions, type TrafficVehicle }
 import { venueGeometry, openVenue } from "@/lib/city/footprints";
 import { sceneryTrees, sceneryLamps, streetProps, venueSceneryPose } from "@/lib/city/scenery";
 import { characterShot } from "@/lib/city/cinematography";
+import { groundElevation } from "@/lib/city/ground";
 import { createPeople } from "./people";
 import { createAmbience } from "./ambience";
 import { streetModel } from "./streetscape";
@@ -289,7 +290,7 @@ export function createCity(
     return sprite;
   }
   function tree(x: number, z: number, seed = 0) {
-    cylinder(x, 12, z, 3, 24, "#9c8769");
+    cylinder(x, 17 + (seed % 7) / 2, z, 3, 34 + (seed % 7), "#9c8769");
     shadows.push({
       x: x + 4,
       y: 1.1,
@@ -719,7 +720,7 @@ export function createCity(
     contactShadows.count = actors.length + cars.length;
     for (let i = 0; i < contactShadows.count; i++) {
       const car = i >= actors.length ? cars[i - actors.length] : null, point = car?.position ?? actors[i].position;
-      dummy.position.set(point[0], 2.05, point[1]); dummy.rotation.set(0, car?.yaw ?? 0, 0); dummy.scale.set(car ? car.width * 1.35 : 11, 1, car ? car.length * 1.2 : 8); dummy.updateMatrix(); contactShadows.setMatrixAt(i, dummy.matrix);
+      dummy.position.set(point[0], groundElevation(point[0], point[1]) + .04, point[1]); dummy.rotation.set(0, car?.yaw ?? 0, 0); dummy.scale.set(car ? car.width * 1.35 : 11, 1, car ? car.length * 1.2 : 8); dummy.updateMatrix(); contactShadows.setMatrixAt(i, dummy.matrix);
     }
     contactShadows.instanceMatrix.needsUpdate = true;
     animalsAt(world, lastTime)

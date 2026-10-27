@@ -8,6 +8,7 @@ import { streetProps } from '../lib/city/scenery.ts';
 import { seed } from '../lib/world.ts';
 import { initializeLiving } from '../lib/living/engine.ts';
 import { defaultAppearance } from '../lib/city/appearance.ts';
+import { groundElevation } from '../lib/city/ground.ts';
 
 const actor={id:'an',name:'An',position:[0,0],path:[[0,0],[100,0]],from:'Sân chung',location:'Sân chung',activity:'Đi dạo',kind:'social',walking:true,transport:'walk',progress:0,source:'routine'};
 const motion=new HumanMotion(), poses=new Map();let old;
@@ -39,12 +40,18 @@ for(const mesh of scene.children) {
  for(let i=0;i<mesh.count;i++){mesh.getMatrixAt(i,matrix);assert.ok(matrix.elements.every(Number.isFinite));assert.ok(cast.some(a=>a.id===mesh.userData.ids[i]));instanceCount++;}
 }
 const limbs=scene.children.find(mesh=>mesh.geometry===people.geometry.limb);
-assert.equal(limbs.count,cast.length*9);
-for(let person=0;person<cast.length;person++)for(const [upper,lower]of [[1,2],[3,4],[5,6],[7,8]]) {
+assert.equal(limbs.count,cast.length*13);
+for(let person=0;person<cast.length;person++)for(const [upper,lower]of [[1,2],[4,5],[7,8],[10,11]]) {
  const top=new Vector3(0,-.5,0),bottom=new Vector3(0,.5,0);
- limbs.getMatrixAt(person*9+upper,matrix);top.applyMatrix4(matrix);
- limbs.getMatrixAt(person*9+lower,matrix);bottom.applyMatrix4(matrix);
+ limbs.getMatrixAt(person*13+upper,matrix);top.applyMatrix4(matrix);
+ limbs.getMatrixAt(person*13+lower,matrix);bottom.applyMatrix4(matrix);
  assert.ok(top.distanceTo(bottom)<.3,'Shoulder/elbow/knee segments stay connected');
+}
+const shoes=scene.children.find(mesh=>mesh.geometry===people.geometry.shoe);
+for(let n=0;n<cast.length;n++) {
+ const bottoms=[];
+ for(const i of [n*2,n*2+1]){shoes.getMatrixAt(i,matrix);bottoms.push(new Vector3(0,-.5,0).applyMatrix4(matrix).y);}
+ assert.ok(Math.abs(Math.min(...bottoms)-groundElevation(...cast[n].position))<.2,'Feet stay on actual rendered paving/grass height');
 }
 assert.equal(streetProps.length,66);assert.equal(new Set(streetProps.map(p=>p.kind)).size,7);
 let detailParts=0;

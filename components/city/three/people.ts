@@ -2,6 +2,7 @@ import * as THREE from "three";
 import { createHumanGeometry, HumanMotion } from "./humans.ts";
 import { defaultAppearance, themes } from "../../../lib/city/appearance.ts";
 import { HUMAN_SCALE } from "../../../lib/city/scale.ts";
+import { groundElevation } from "../../../lib/city/ground.ts";
 import type { Actor } from "../../../lib/life.ts";
 import type { World } from "../../../lib/world";
 import type { SocialPose } from "../../../lib/living/social.ts";
@@ -10,7 +11,7 @@ import type { SocialPose } from "../../../lib/living/social.ts";
 export function createPeople(scene: THREE.Scene, capacity: number) {
   const geometry = createHumanGeometry(), motion = new HumanMotion();
   type Shape = keyof typeof geometry;
-  const budget: Record<Shape, number> = { box: 42, round: 18, head: 5, hair: 1, limb: 10, shoe: 2 };
+  const budget: Record<Shape, number> = { box: 42, round: 18, head: 5, hair: 1, limb: 14, shoe: 2 };
   const material = new THREE.MeshPhongMaterial({ shininess: 14, specular: "#62675e" });
   const meshes = {} as Record<Shape, THREE.InstancedMesh<THREE.BufferGeometry, THREE.MeshPhongMaterial>>;
   for (const key of Object.keys(geometry) as Shape[]) {
@@ -35,6 +36,7 @@ export function createPeople(scene: THREE.Scene, capacity: number) {
     const palm = [x, elbow[1] - Math.cos(lower) * length, elbow[2] - Math.sin(lower) * length];
     put("limb", x, (y + elbow[1]) / 2, (z + elbow[2]) / 2, width, length + .6, width * 1.1, shirt, upper);
     put("limb", x, (elbow[1] + palm[1]) / 2, (elbow[2] + palm[2]) / 2, width * .8, length + .5, width * .9, skin, lower);
+    put("limb", x, elbow[1], elbow[2], width * .9, width * .9, width * .9, skin);
     return palm;
   }
   return {
@@ -51,7 +53,10 @@ export function createPeople(scene: THREE.Scene, capacity: number) {
         const near = a.id === selected || Math.hypot(camera.position.x - a.position[0], camera.position.z - a.position[1]) < 240;
         const prop = !a.walking && ["read", "garden", "eat", "work"].includes(a.kind);
         const hair = { black: "#303d3d", brown: "#6c4b36", gray: "#a6b3b1", bald: appearance.skin }[appearance.hair];
-        dummy.position.set(a.position[0], 2 + pose.breath * HUMAN_SCALE, a.position[1]);
+        const leftSole = 13.2 - Math.cos(pose.leftLeg) * 5.8 - Math.cos(pose.leftLeg + pose.leftKnee) * 5.8 + .2 - 1.1;
+        const rightSole = 13.2 - Math.cos(pose.rightLeg) * 5.8 - Math.cos(pose.rightLeg + pose.rightKnee) * 5.8 + .2 - 1.1;
+        const base = groundElevation(a.position[0], a.position[1]) - Math.min(leftSole, rightSole) * HUMAN_SCALE;
+        dummy.position.set(a.position[0], base + pose.breath * HUMAN_SCALE, a.position[1]);
         dummy.rotation.set(0, yaw, pose.sway); dummy.scale.setScalar(HUMAN_SCALE); dummy.updateMatrix(); root.copy(dummy.matrix);
         faceTurn.makeRotationFromEuler(new THREE.Euler(pose.headTilt, pose.headTurn, 0));
         face.copy(root).multiply(beforeHead).multiply(faceTurn).multiply(afterHead);
@@ -64,11 +69,11 @@ export function createPeople(scene: THREE.Scene, capacity: number) {
         if (gear !== "none") {
           put("round", 0, 38.1, 0, 10.8, gear === "chef" ? 4 : 3.5, 10, gear === "hardhat" ? "#f3bc4e" : gear === "chef" ? "#fff5df" : appearance.shirt, 0, 0, 0, true);
           put("box", 0, 36.8, 1, 11.6, .7, 11.8, gear === "hardhat" ? "#e7a638" : "#f4e7cd", 0, 0, 0, true);
-          if (gear === "chef") for (const x of [-3, 0, 3]) put("round", x, 40.8, 0, 5, 4.8, 7, "#fff6e4", 0, 0, 0, true);
+          if (gear === "chef") for (const x of [-3, 0, 3]) put("head", x, 40.8, 0, 5, 4.8, 7, "#fff6e4", 0, 0, 0, true);
         }
         const palms: number[][] = [];
         for (const [index, sign] of [-1, 1].entries()) {
-          const angle = index === 0 ? pose.leftArm : pose.rightArm;
+          const angle = prop && a.kind === "read" ? -.55 + pose.breath * .1 : index === 0 ? pose.leftArm : pose.rightArm;
           const lift = a.kind === "eat" && prop && index === 1 ? (Math.sin(seconds * 1.6) + 1) * .23 : 0;
           const palm = chain(sign * 7.1, 25.2, 0, angle - lift, angle - (prop ? .65 : .16) - lift, 6, 3.5, appearance.shirt, appearance.skin);
           palms.push(palm); put("round", palm[0], palm[1], palm[2], 3.3, 3.4, 3.2, appearance.skin);
