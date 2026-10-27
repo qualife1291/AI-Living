@@ -7,8 +7,8 @@
       "labels": 2,
       "maxLabelWidth": 58.390625,
       "bubbleBounds": {
-        "x": 580.734375,
-        "y": 236.125,
+        "x": 583.0625,
+        "y": 234.53125,
         "width": 292,
         "height": 72.1875
       },
@@ -22,10 +22,10 @@
     {
       "viewport": "mobile",
       "labels": 1,
-      "maxLabelWidth": 58.39062309265137,
+      "maxLabelWidth": 58.390624046325684,
       "bubbleBounds": {
         "x": 86,
-        "y": 288.828125,
+        "y": 289.6875,
         "width": 292,
         "height": 68.59375
       },

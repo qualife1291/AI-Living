@@ -1,5 +1,9 @@
 # Roadmap và Lộ trình Sprint bàn giao
 
+> Trạng thái hiện hành 28/10: source đã có rig/gallery/identity, LinUCB/skill gates, structured memory/pool/xưng hô, policy storage, cửa nhà riêng và audio opt-in. Production chỉ xác nhận qua releases/latest.json; candidate.json là gói chuẩn bị, chưa deploy. Backlog chi tiết ở docs/NEXT_PHASES.md.
+>
+> Các mục có ngày cũ phía dưới là lịch sử, bao gồm renderer 2D đã bị gỡ. Không dùng chúng để phục hồi 2D hoặc suy rằng mọi phase đã hoàn tất.
+>
 > Cập nhật Codex Cloud: xem [docs/CLOUD_REVIEW.md](docs/CLOUD_REVIEW.md) cho ba phase mới, bằng chứng local và các phần còn thiếu. Các trạng thái live trong tài liệu bàn giao dưới đây chưa được xác minh lại.
 
 ## Phase 1 — Nền tảng và hình ảnh (Đã xuất bản)

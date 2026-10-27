@@ -1,0 +1,22 @@
+# Các phần chưa hoàn tất sau review Gemini
+
+Danh sách này là backlog thực, không phải tuyên bố các phase đã hoàn thành. Source có LinUCB, skill gates cơ bản, normalized policy, structured memory/top-K, dialogue hashes/xưng hô, 60 cửa nhà và audio opt-in. Candidate và production được ghi riêng trong releases; không suy từ push GitHub.
+
+| Ưu tiên | Phần còn lại | Điều kiện nghiệm thu |
+|---|---|---|
+| P1 | Hoàn thành theo ground và playback chung | Encounter ID ổn định, server-owned timeline/arrival, plan/revision/collision/speed validation; hai viewer mở lệch giờ vẫn thống nhất trạng thái. Client receipt/ETA đơn lẻ không phải authority. Không cấp skill hoặc P2P từ việc mới hết giờ kế hoạch. |
+| P1 | Phát hành owner-private | Native Sites đúng project, credential mới, backup full DB, migration additive 0006/0007 theo tình trạng thật, deploy một candidate, readback mọi history/memory và cập nhật latest ledger. Phiên hiện thiếu các native tools. |
+| P2 | Vector kỹ năng và hierarchy | Tách ngành nghề khỏi scalar legacy, ghi outcome một lần; global/role priors có provenance, giữ cá tính cá nhân; benchmark cùng dữ liệu/seed/holdout và không giả tăng samples. |
+| P2 | P2P và exemplar | Chỉ ghi heard-from-peer khi cuộc gặp/chia sẻ đã được xác nhận; không tăng trials/skill từ lời kể. Exemplar phải có context, validator và nguồn thật; điểm cấu trúc cao không bảo đảm chất lượng ngữ nghĩa. |
+| P2 | Memory/history/export đầy đủ | Backfill additive có checkpoint/CAS và đối chiếu từng ID; RAG cho daemon/NPC theo quyền người biết. Xuất SFT candidates cần validator thật; DPO chỉ ghép chosen/rejected cùng prompt/context và model metadata. Không ghép hai lượt độc lập. |
+| P2 | Bối cảnh ở 33 nơi | Mở 24 context cards hiện tại ra những nơi còn thiếu và lễ hội có nguồn; LocalSceneContext chỉ đưa vật/thú/cây/tàu thực sự có ở gần, không biến seed/projection thành sự kiện đã chứng kiến. |
+| P2 | Mật độ và LOD | Ba tầng có budget skeleton/matrix/draw calls, giữ footprint và tính liên tục khi đổi LOD; kiểm tra 60/120/240 trên GPU thật trước tăng density live. Synthetic 240 không phải bằng chứng hiệu năng thiết bị. |
+| P2 | Giao thông và nội thất | Đồ thị nhiều làn, giao lộ/tín hiệu, parking, ray và vịnh dừng thật; walking→waiting→boarding→riding→alighting có cùng occupancy contract. Không bật bus/tram chỉ từ model đứng rời; indoor có đường vào/ra và collider. |
+| P2 | Habitat, flora, KayKit | Loài đúng asset và sinh cảnh; không fly kiwi/penguin hoặc dùng attack/dead làm loop. Cây có vòng đời/state, props và thay đổi cây dùng cùng footprint/nav. Các model hiện có trong gallery chưa đồng nghĩa đang sống trong city. |
+| P2 | LLM A/B và curation | Model artifacts/license/checksum, chạy cùng prompt/context/schema và guard; đo latency/tokens/acceptance/semantic review thật. Không hứa model lớn hơn tốt hơn hoặc JSON100%/<10s khi chưa đo. |
+| P3 | Tách runtime, bundle và supervisor QA | Refactor theo camera/environment/overlay chỉ khi giữ lifecycle và regression; tránh manualChunks thiếu đo đạc. Supervisor loopback tách khỏi helper credential; không che lỗi bằng restart hoặc hạ assertion. |
+| Theo capability | GPU/soak/ops | GPU phần cứng, telemetry qua phiên dài và kiểm tra lịch đang có trước thay scheduler. Không tạo cron trùng automation. |
+
+Public viewer, nhân vật do viewer sở hữu, video/social và LoRA tự động không được bật trong đợt source này. Owner-private và không phát sinh phí vẫn là yêu cầu của chủ dự án. Hội thoại ba người cần protocol/guard/playback mới; contract hiện hành cố ý dùng đúng hai người, không thêm speaker thứ ba vào schema mà bỏ qua quyền biết và timing.
+
+Các claim 3,71×, 20–50×, score98, JSON100%, GET<150ms và GPU FPS trong tệp Gemini chưa được công nhận. Harness được viết lại dùng runtime đã cho thấy LinUCB có prediction MSE tốt hơn nhưng thưởng tức thời thấp hơn tabular trong synthetic holdout; xem PHASE_D_LEARNING và policy-holdout.json.

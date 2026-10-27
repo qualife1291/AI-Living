@@ -8,3 +8,5 @@
 - Hardware GPU, soak dài, model A/B thực/LoRA và lịch production cần capability thật. Preview dùng SwiftShader/fixtures, API persistence kiểm riêng bằng D1 local. Sau build phải khởi động fresh Worker và không rebuild khi browser QA đang chạy.
 
 - Source mới audio opt-in đã qua check/lint/build/API và browser Web Audio thật desktop/mobile/320px/unsupported. Đang chốt final source có thêm fix daemon không gửi lại proposal đã bị review bác và server reviewNarrative. Còn full45/build/API/hồi quy browser trên compiled source cuối, log /tmp/final-next-*; chưa merge main hoặc tạo candidate mới cho các thay đổi sau f0d2312.
+
+- Guard mới sau browser build: server bác proposal nếu plan không có encounter (đang bận/ngủ); API fixture chuyển đồng hồ cố định trong entry in-memory riêng, kiểm cả ban ngày/busy/night. Còn build/API cuối cho guard này, không sửa UI sau browser. NEXT_PHASES.md ghi rõ phần chưa triển khai; không coi thiếu Sites là blocker của mọi backlog source.

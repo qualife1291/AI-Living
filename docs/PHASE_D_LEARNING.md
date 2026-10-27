@@ -1,47 +1,46 @@
-# Phase D — LinUCB và điều kiện kỹ năng
+# Phase D — lựa chọn hoạt động, dữ liệu học và hội thoại
 
-Đang triển khai source sau release candidate168861b; chưa deploy. Đây là Disjoint LinUCB thực với6features `[1, energy/100, hunger/100, socialNeed/100, isFreshRain, skill/100]`, ridgepriorI, inverse covariance đối xứng21số và b6số. Update Sherman–Morrison từ outcome đã được settle một lần. Score dùng `xᵀA⁻¹b + α√(xᵀA⁻¹x)`, giữ các ưu tiên nhu cầu/ngủ/sức khỏe/rain/novelty hiện hành.
+Đã kiểm thử trong source, chưa deploy. Đây là học policy trong mô phỏng; trọng số Qwen không được fine-tune.
 
-Mỗi pending mới lưu context lúc chọn, không học từ needs đã thay đổi lúc hoàn tất. Snapshot legacy không có context tiếp tục tabular, không gán context giả hoặc xóa history. Tabular meanReward/trials/memories vẫn giữ; experience mới ghi disjoint-linucb-v1/context khi có update contextual. Chưa hierarchy global/role hoặc chuyển weights qua bạn bè; không gọi gradientdemo trong fileGemini là LinUCB.
+## LinUCB và điều kiện kỹ năng
 
-Scenario thêm minSkill optional: dạy lớp8, sửa xe4, văn phòng3, dự án học2; các hoạt động cơ bản/học nghề vẫn mở để tích lũy. Không hủy các kế hoạch advanced đã tồn tại trước rulemới. Các cư dân hiện đều là người lớn mô phỏng, chưa kích hoạt hệ thống trẻ em. Chưa có vector kỹ năng riêng theo ngành.
+Disjoint LinUCB dùng 6 features `[1, energy/100, hunger/100, socialNeed/100, isFreshRain, skill/100]`, ridge prior I, inverse covariance đối xứng 21 số và b 6 số. Sherman–Morrison cập nhật từ outcome hợp lệ; điểm là `xᵀA⁻¹b + α√(xᵀA⁻¹x)`. Các ưu tiên nhu cầu, ngủ, sức khỏe, mưa và tránh lặp vẫn được giữ.
 
-Cũng sửa pending NPC từ180s cố định sang tổng thời lượng mọi bước thực trong plan. Nó tránh thưởng trước bước hậu thoại/cycle thứhai; vẫn là completion theo kế hoạch simulationtime, chưa phải bằng chứng vị trí vật lý hoặc authoritative occupancy đa viewer.
+Pending mới lưu context lúc chọn. Pending cũ thiếu context tiếp tục tabular, không gán context giả; trials, meanReward, memories và archive cũ được giữ. Chỉ hoàn tất đúng kế hoạch một lần mới học. MinSkill mở dạy lớp ở 8, sửa xe ở 4, văn phòng ở 3 và dự án học ở 2; hoạt động học cơ bản vẫn mở. Không hủy hồi tố kế hoạch cũ. Chưa có vector kỹ năng theo ngành hoặc phân cấp global/role/P2P.
 
-Test mới dùng oracle giải hệ ridge6×6 độc lập qua1.200update, sai số tối đa5,83e-16; ranking đổi theo context, gate/unlock, cần đủduration/capturecontext/noDuplicate/cancel/purity đạt. 38suite cũ đạt với integration trước thêm suite39. Không báo cải thiện model/ngôn ngữ hoặc reward3,71× từ testsynthetic; benchmark/runtimepersistence còn phải nghiệm thu riêng.
+Pending NPC đã dùng tổng thời lượng mọi bước thay 180 giây cố định. Completion vẫn theo simulation time và plan matching, **chưa phải bằng chứng vị trí ground**. Không dùng nó để công nhận đã trực tiếp gặp, nghe kể hoặc boarding thật.
 
-Còn phải xử lý storage policy tách khỏi snapshot trước mật độ240, hierarchy/P2P có provenance, durable dialoguepool/memory và benchmark cùng implementation/baseline/holdout. Giữ giới hạn physical completion và nativeSites trong MEMORY_SHORT.
+## Policy tách khỏi snapshot
 
-Integration cuối hiện39/39suite/check/lint/build đạt; API Worker/D1 cô lập cũng đã ghi thật context/posterior/experiencearchive, retry không cộng lại và home/petOwners/memory cũ còn nguyên. Posterior cho context lỗi không được gắn provenanceLinUCB. Chưa browserfinal cho phaseD; sourcecandidate168861b cũ vẫn là góiđóngbăng riêng, không coi gói đó chứa các thay đổi này.
+Migration 0007 tạo learning_policies theo actor với exact revision. Snapshot giữ needs, tabular, memories, pending và policyRevision; ma trận inverse/b/samples ghi cùng transaction CAS/nonce với world/outcome/archive. World polling không query bảng policy; planner, living view cho daemon và learning API hydrate đúng version.
 
-## Guard mở rộng vai trò
+Legacy inline được giữ trước migration, chuyển khi có learning write và bảng đã tồn tại. Inline khớp bản riêng được tiếp nhận; conflict, corrupt hoặc thiếu tham chiếu dừng để bảo toàn dữ liệu. Mixed revision được đọc lại một lần. Không xóa history hoặc policy của actor vắng trong snapshot. Binary cũ không hiểu policyRevision: rollback phải đối chiếu backup và các hàng policy trước khi bật writer, không tự hợp nhất/xóa chúng.
 
-Tiếp tục từ reviewGemini: server cũ thêm hậu tố ngày trước khi ghi role, nhưng chưa chặn ID gốc đã có. reviewRoleExpansion dùng roleSchema thật, kiểm tra ID cả bản gốc/bảnđãsuffixngày, tên trùng, tiếng Việt và lời chào lặp theo Jaccard trigram đúng intersection/union. Guard chạy trước mọi world write, trả422 cho đề xuất không hợp lệ; không tự thêm ba nghề mẫu chỉ vì harness in accepted3/3. Đây là kiểm tra cấu trúc/trùng từ, không gọi là hiểu ngữ nghĩa. Helper/test và server wiring mới đang qua kiểm thử40suite/API.
+D1 test 240 actor × 41 arm: inline 5.131.102 byte, snapshot 57.982 byte, 11 parameter chunks dưới 500KB. Đây là fixture, không cam kết world live dưới 50KB hoặc GET dưới 150ms. Stale CAS không ghi policy; lỗi cuối batch rollback cả world và ma trận.
 
-Guard mở rộng đã qua40/40suite/check/lint/build; compiledWorker/D1 xác nhận đề xuất dùng ID cũ trả422 trước thêm hậu tố ngày và snapshot/revision giữ nguyên. Kiểm thử cached-context chỉ dùng D1côlập, không gọi model/provider hoặc production.
+## Ký ức có provenance
 
-## Ký ức có nguồn và lưu batch
+Bảng memories nhận event-report cho đúng change recipient và simulation-plan-outcome cho đúng actor; không suy người chứng kiến từ speaker của hội thoại tương lai. Stable IDs, INSERT OR IGNORE và revision/nonce guard đi cùng transaction. Archive experiences dùng một INSERT SELECT json_each thay hàng trăm INSERT riêng; không cắt lịch sử đã lưu.
 
-Đang nối bảng memories đã tồn tại (không migration/reset): event-report chỉ cho người được gán change.memory; không tự cho tất cả người nói trong kế hoạch biết báo cáo của người khác. simulation-plan-outcome lưu kết quả theo đồng hồ kế hoạch, không nhận physicaloccupancy. INSERT theo cùng revision/CAS transaction, ID ổn định cho retry. Endpoint owner-only /api/living/memories lấy topK từ tối đa100record của đúng actor; promptinstructions context đính kèm nhóm theo actor, coi chuỗi là dữ liệu.
+GET /api/living/memories owner-only lọc actor/witness, lấy top-K theo topic/importance/time từ 100 hàng gần nhất. Instructions context có 4 record/core, gắn nguồn và coi chuỗi là dữ liệu, không phải chỉ thị. Legacy rows được đọc với nhãn legacy-record. Chưa có backfill đầy đủ mọi chuỗi lịch sử, RAG cho toàn bộ daemon/NPC hoặc tuyển chọn exemplar chất lượng ngữ nghĩa.
 
-Archive trải nghiệm đổi từ mỗi outcome một câu SQL sang một INSERT SELECT json_each trong cùng nonce/revisionguard; bulk memory cũng một câu SQL. Mục tiêu tránh hàng trăm câu lệnh khi cohort240cùng hoàn tất. Snapshot/history/tabular cũ vẫn giữ. Helper ranking/recipient/provenance/purity/bounds đã test; compiledAPIvàfull41suite còn đang chạy, chưa chốtfeature.
+## Chống lặp và xưng hô
 
-Structuredmemory đã qua41/41suite/check/lint/build và compiledWorker/D1 thật: event/outcome record đúngactor/provenance; GETmemories ownerguard; topK không rò actor khác; retry không duplicate; staleCAS không ghi record; archive JSONbulk giữmodel/context. Không migrationmới hoặc xóa snapshot/history. Legacy structured rows được đọc với kindlegacy-record và recipient riêng, không suy ra bằng chứng vật lý. Còn backfill lịch sử cũ theo quy trình riêng và lưu policy riêng khỏi snapshot; không tự gán fullmigration hoàn tất.
+Server lưu 64 scene/line hashes cho lượt An bằng CAS; rule scene lặp dùng grammar còn câu chưa dùng, LLM trùng toàn cảnh bị bác trước write. Pool cuối dùng bản LLM đã nhận, không chứa rules draft bị thay. Generated không đồng nghĩa đã được nghe hoặc đã nhận reward.
 
-## Pool chống lặp và xưng hô — WIP
+Ambient browser lưu hash theo world.born qua F5, không lưu raw text, tên hoặc credential; storage bị chặn có session fallback. Đây chưa phải authority chung cho nhiều viewer. Tuổi/giới đã khai báo cấp cặp xưng hô hai chiều cho template mới và turn.addressing của LLM; unknown dùng mình/bạn. Không rewrite lịch sử hoặc suy tuổi/giới từ model.
 
-Server lưu tối đa64scene fingerprints trong living.dialoguePool qua snapshot CAS, chỉhash/toàncảnh vàhashdòng, khôngthaythếhistoryarchive. Cảnh rules củaAn nếu trùngtoànbộcảnhgầnđây sẽ dùng grammar lấy câu chưa dùng; proposalLLMtrùngcảnhcũ bị422, chỉ finalLLM được ghi pool thaydraft rules. Mỗi LivingTurn mới có addressing hai chiều từ tuổi/giới mô phỏng; grammar vàruletemplates dùng cháu/bác, cháu/cô/chú hoặc mình/bạn phù hợp thông tin. Prompt nhận addressing; fewshotdaemon sửa từ2lượt lên4lượt để khớp guard4–6.
+Server chạy reviewNarrative: 4–6 câu ngắn, hai speaker luân phiên, không lặp gần nguyên văn. Daemon chỉ gán proposal sau review và xóa nó khi fallback; JSON hợp lệ nhưng bị review bác không còn bị gửi lên server. Guard cấu trúc/trùng từ không chứng minh đúng ngữ nghĩa. Role expansion dùng roleSchema và Jaccard intersection/union, chặn ID gốc/dated-ID, label và greeting trùng trước write.
 
-Ambientclient giữ thêm poolhash tronglocalStorage theo world.born đểF5 khônglặp nguyênnhữngcâuvừagenerated, khônglưu rawtext/name/credential. Storage bịchặn/hếtquota cófallbacksession; loại tham chiếuSQLitehistory khôngxóa. Pool chỉghi “đãsinh”, không là bằngchứngngườiđãnghe và khôngtựgrantreward/kỹnăng. Cảnh ambient chưa đồng bộ readingtime/occupancy giữaviewers; khôngclaim clientstorage là backendauthoritativepool cho mọi ambientscene.
+## Benchmark và kiểm chứng
 
-Test mới kiểm reciprocalpronouns, JSONpersist/reloadantiRepeat, scopeworldriêng, hash-only vàstoragefailure; sinh500scene giữbudget64record. Suite42/check/lint/build/API vàbrowserreload cuối đang chạy; không nhận WIP là phát hành.
+`npm run benchmark:policies -- --output docs/validation/policy-holdout.json` import chooseScenario/settleLearning/linearScore thật. 8 seed, mỗi seed 820 outcome training dùng chung, 160 observation holdout độc lập và model đóng băng; cùng needs/weather/skills/gates, không cộng skill/P2P giả.
 
-Pool/xưnghô đã qua42/42suite/check/lint/build và API D1 thật: từ chối proposal trùngscene đãlưu, revision khôngđổi khi422; finalLLM pool cóđúngcảnhtrước+cảnhmới, khônglưurulesdraft chưapháthành. Browser desktop/mobile vẫn đủ6lượt/quapoll/cameracontrols, reloadcùngbrowser khônglặp câuđãsinh; ảnhreload ởdocs/screenshots/social. Đây là kiểm thửfixture, không phải lượtmodelthực hoặc đồngbộhaiviewer.
+| Policy | Reward trung bình | Prediction MSE |
+|---|---:|---:|
+| Tabular | 0,560713 | 0,003851 |
+| LinUCB | 0,550357 | 0,003062 |
 
-## Tách policy khỏi snapshot — đã kiểm thử local
-Migration 0007 tạo learning_policies, không sửa migration cũ. Snapshot giữ needs/tabular/memories/pending và policyRevision; ma trận inverse/b/samples ghi vào hàng riêng cùng transaction CAS/nonce với world/outcome/archive. readWorld thường không query policy; planner, living view cho daemon và learning export hydrate đúng version. Không xóa history hoặc tác động policy của mutation không liên quan. Legacy inline được giữ trước migration; matching inline có thể chuyển khi có learning write; xung đột/corrupt/mất tham chiếu dừng để bảo toàn dữ liệu. Mixed revision được đọc lại một lần. Rollback binary cũ có thể bỏ qua bảng mới nhưng không được coi là khôi phục policy; phải đối chiếu trước ghi learning nếu snapshot cũ không còn reference.
-D1 test 240 actor × 41 arm: inline 5.131.102 byte, snapshot 57.982 byte, 11 parameter chunks dưới 500KB. Đây là fixture riêng; không cam kết world live dưới 50KB hoặc GET dưới 150ms. Stale CAS không ghi policy, failure cuối batch rollback cả world/matrices, thiếu bảng trước migration giữ inline, corrupt/conflict/missing refs không reset. Full 44 suite/check/lint/build và compiled API đạt; API xác minh world polling bỏ matrices, learning endpoint hydrate và retry không tăng credit.
+LinUCB dự đoán tốt hơn nhưng điểm có exploration cho thưởng tức thời thấp hơn trong mẫu này. Reward là công thức mô phỏng, không phải hoàn thành vật lý/chất lượng ngôn ngữ; immediate regret không đo lợi ích dài hạn. Không chỉnh hyperparameter để ép thắng holdout hoặc nhận claim 3,71×/20–50×.
 
-## Benchmark dùng runtime thật
-Chạy `npm run benchmark:policies -- --output docs/validation/policy-holdout.json`. 8 seed, mỗi seed 820 outcome training dùng chung và 160 observation holdout độc lập; cả hai dùng cùng needs/weather/skill/gates, model đóng băng khi đánh giá. Import chooseScenario/settleLearning/linearScore thật; không thêm skill bonus hoặc P2P giả. Reward vẫn là công thức mô phỏng hiện hành, không phải hoàn thành vật lý hoặc chất lượng hội thoại/LLM.
-Kết quả trung bình: tabular reward 0,560713/MSE 0,003851, LinUCB reward 0,550357/MSE 0,003062. LinUCB dự đoán tốt hơn trên mẫu này nhưng quyết định với exploration có thưởng tức thời thấp hơn; không kết luận thuật toán luôn thắng hoặc tăng tốc 3,71×. Immediate regret không đo lợi ích dài hạn. Không chỉnh hyperparameter để ép thắng holdout.
+Oracle ridge độc lập 1.200 update sai số tối đa 5,83e-16; test context-at-choice/gates/no-early/no-duplicate/cancel/legacy/purity đạt. Full 45 suite/check/lint/build/assets và compiled Worker/D1 API đạt, gồm policy hydration, CAS/retry/history, actor privacy, role guard và server review. Browser dialogue/poll/F5 đã đạt ở mốc phase D; lượt nguồn tích hợp mới được ghi riêng trong MEMORY_LONG và candidate ledger sau khi hoàn tất. Chưa có model A/B thực, GPU phần cứng, soak dài hoặc production readback phiên này.

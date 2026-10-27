@@ -110,6 +110,7 @@ async function tickLivingInternal(proposal?: unknown, basis?: { revision: number
   // move entities, invoke tools, or change the activity chosen by the world engine.
   if (proposal !== undefined && !parsed.success) return { status: 422, data: { error: "Proposal schema rejected" } };
   if (parsed.success) {
+    if (!result.turn.dialogue.length) return {status:422,data:{error:"Kế hoạch hiện tại không có cuộc gặp; không thể thêm hội thoại."}};
     if (!parsed.data.dialogue.every(d => ["an", result.turn.residentId].includes(d.speaker))) return { status: 422, data: { error: "Proposal speaker rejected" } };
     if (parsed.data.newRole) {
       const reviewed = reviewRoleExpansion(parsed.data.newRole, result.state.catalog.roles);

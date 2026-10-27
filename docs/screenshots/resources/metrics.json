@@ -11,7 +11,7 @@
         "frames": "11",
         "triangles": "314",
         "clip": "walk",
-        "pose": "{\"clip\":\"walk\",\"resolvedClip\":\"walk\",\"leg\":[-7.672433393369372e-8,0.005869821198361276,0.9999663642413692,0.005732622350108366],\"position\":[0,1.3940799714617924e-7,0],\"skinned\":true}",
+        "pose": "{\"clip\":\"walk\",\"resolvedClip\":\"walk\",\"leg\":[-7.756418617882257e-8,0.02139970965463104,0.9997590293480871,0.004892408779142621],\"position\":[0,2.2065971716500599e-7,0],\"skinned\":true}",
         "model": "gobkit-animal/anglerfish",
         "skinned": "true"
       }
@@ -25,7 +25,7 @@
         "frames": "18",
         "triangles": "364",
         "clip": "walk",
-        "pose": "{\"clip\":\"walk\",\"resolvedClip\":\"walk\",\"leg\":[-1.1531267451877371e-7,0.02143648621725192,0.9997582591954809,0.004888786052382225],\"position\":[0,0.1636675986855152,0],\"skinned\":true}",
+        "pose": "{\"clip\":\"walk\",\"resolvedClip\":\"walk\",\"leg\":[-8.584126748435681e-8,0.03693402627830859,0.9993094984382942,0.004050189362384159],\"position\":[0,0.16505315606387286,0],\"skinned\":true}",
         "model": "gobkit-animal007/chick",
         "skinned": "true"
       }
@@ -39,7 +39,7 @@
         "frames": "25",
         "triangles": "376",
         "clip": "walk",
-        "pose": "{\"clip\":\"walk\",\"resolvedClip\":\"walk\",\"leg\":[-1.0933271535402115e-7,0.025301510386912297,0.9996689117402379,0.004679794035824953],\"position\":[0,9.769962616701378e-15,0],\"skinned\":true}",
+        "pose": "{\"clip\":\"walk\",\"resolvedClip\":\"walk\",\"leg\":[-1.0933271535402109e-7,0.025301510386912345,0.9996689117402379,0.004679794035824951],\"position\":[0,9.769962616701378e-15,0],\"skinned\":true}",
         "model": "gobkit-animalB/bee",
         "skinned": "true"
       }
@@ -64,10 +64,10 @@
         "loading": "false",
         "ready": "true",
         "renderedModel": "gobkit-farm/black-sheep",
-        "frames": "48",
+        "frames": "47",
         "triangles": "888",
         "clip": "walk",
-        "pose": "{\"clip\":\"walk\",\"resolvedClip\":\"walk\",\"leg\":[-1.0930708357227647e-7,0.017544201526218037,0.9998330851563592,0.005099295982007295],\"position\":[0,0.07575311731298365,0],\"skinned\":true}",
+        "pose": "{\"clip\":\"walk\",\"resolvedClip\":\"walk\",\"leg\":[-9.552076914265423e-8,0.033051450665786075,0.9994445708689728,0.004260442396390944],\"position\":[0,0.05759924310982381,0],\"skinned\":true}",
         "model": "gobkit-farm/black-sheep",
         "skinned": "true"
       }
@@ -78,10 +78,10 @@
         "loading": "false",
         "ready": "true",
         "renderedModel": "gobkit-human001/cashier",
-        "frames": "55",
+        "frames": "54",
         "triangles": "2376",
         "clip": "Walk",
-        "pose": "{\"clip\":\"Walk\",\"resolvedClip\":\"Walk\",\"leg\":[0.1743051943755101,0,0,0.9846916772339024],\"position\":[0,-0.04701605136646825,0],\"skinned\":true}",
+        "pose": "{\"clip\":\"Walk\",\"resolvedClip\":\"Walk\",\"leg\":[0.13153040688009723,0,0,0.9913121109987594],\"position\":[0,-0.05124725308753598,0],\"skinned\":true}",
         "model": "gobkit-human001/cashier",
         "skinned": "true"
       }
@@ -92,10 +92,10 @@
         "loading": "false",
         "ready": "true",
         "renderedModel": "gobkit-human002/accountant",
-        "frames": "62",
+        "frames": "61",
         "triangles": "2256",
         "clip": "Walk",
-        "pose": "{\"clip\":\"Walk\",\"resolvedClip\":\"Walk\",\"leg\":[0.13140194745805298,0,0,0.9913291568925264],\"position\":[0,-0.05775906970959688,0],\"skinned\":true}",
+        "pose": "{\"clip\":\"Walk\",\"resolvedClip\":\"Walk\",\"leg\":[0.13153048128170894,0,0,0.9913121109961033],\"position\":[0,-0.05770719091028032,0],\"skinned\":true}",
         "model": "gobkit-human002/accountant",
         "skinned": "true"
       }
@@ -106,10 +106,10 @@
         "loading": "false",
         "ready": "true",
         "renderedModel": "gobkit-human003/archer",
-        "frames": "69",
+        "frames": "68",
         "triangles": "2360",
         "clip": "Walk",
-        "pose": "{\"clip\":\"Walk\",\"resolvedClip\":\"Walk\",\"leg\":[0.14651314492887643,0,0,0.9892087233557183],\"position\":[0,-0.03678961243884177,0],\"skinned\":true}",
+        "pose": "{\"clip\":\"Walk\",\"resolvedClip\":\"Walk\",\"leg\":[0.1316330693827723,0,0,0.9912985095544482],\"position\":[0,-0.040206871428378976,0],\"skinned\":true}",
         "model": "gobkit-human003/archer",
         "skinned": "true"
       }
@@ -120,10 +120,10 @@
         "loading": "false",
         "ready": "true",
         "renderedModel": "gobkit-human004/army-general",
-        "frames": "76",
+        "frames": "75",
         "triangles": "2612",
         "clip": "Walk",
-        "pose": "{\"clip\":\"Walk\",\"resolvedClip\":\"Walk\",\"leg\":[0.10807655435709715,0,0,0.9941425823553334],\"position\":[0,-0.037142923585142935,0],\"skinned\":true}",
+        "pose": "{\"clip\":\"Walk\",\"resolvedClip\":\"Walk\",\"leg\":[0.12795098644760294,0,0,0.9917804917733193],\"position\":[0,-0.029905361571751058,0],\"skinned\":true}",
         "model": "gobkit-human004/army-general",
         "skinned": "true"
       }
@@ -134,10 +134,10 @@
         "loading": "false",
         "ready": "true",
         "renderedModel": "gobkit-human005/chief-surgeon",
-        "frames": "83",
+        "frames": "82",
         "triangles": "2272",
         "clip": "Walk",
-        "pose": "{\"clip\":\"Walk\",\"resolvedClip\":\"Walk\",\"leg\":[0.1613601398843011,0,0,0.9868955898455108],\"position\":[0,-0.040437538696387235,0],\"skinned\":true}",
+        "pose": "{\"clip\":\"Walk\",\"resolvedClip\":\"Walk\",\"leg\":[0.1315304068800978,0,0,0.9913121109987593],\"position\":[0,-0.047549088972147276,0],\"skinned\":true}",
         "model": "gobkit-human005/chief-surgeon",
         "skinned": "true"
       }
@@ -148,10 +148,10 @@
         "loading": "false",
         "ready": "true",
         "renderedModel": "gobkit-human007/extinguisher-operator",
-        "frames": "90",
+        "frames": "89",
         "triangles": "5506",
         "clip": "Walk",
-        "pose": "{\"clip\":\"Walk\",\"resolvedClip\":\"Walk\",\"leg\":[0.1614455347569576,0,0,0.9868816237558788],\"position\":[0,-0.04257195574965706,0],\"skinned\":true}",
+        "pose": "{\"clip\":\"Walk\",\"resolvedClip\":\"Walk\",\"leg\":[0.14642359485050696,0,0,0.9892219826060553],\"position\":[0,-0.04405358331920174,0],\"skinned\":true}",
         "model": "gobkit-human007/extinguisher-operator",
         "skinned": "true"
       }
@@ -162,10 +162,10 @@
         "loading": "false",
         "ready": "true",
         "renderedModel": "gobkit-human008/air-traveller",
-        "frames": "96",
+        "frames": "95",
         "triangles": "4800",
         "clip": "Walk",
-        "pose": "{\"clip\":\"Walk\",\"resolvedClip\":\"Walk\",\"leg\":[0.16144553475695692,0,0,0.9868816237558791],\"position\":[0,-0.04687253326246449,0],\"skinned\":true}",
+        "pose": "{\"clip\":\"Walk\",\"resolvedClip\":\"Walk\",\"leg\":[0.14651314492887643,0,0,0.9892087233557183],\"position\":[0,-0.04864433796033862,0],\"skinned\":true}",
         "model": "gobkit-human008/air-traveller",
         "skinned": "true"
       }
@@ -218,10 +218,10 @@
         "loading": "false",
         "ready": "true",
         "renderedModel": "gobkit-human002/it-engineer",
-        "frames": "114",
+        "frames": "116",
         "triangles": "2906",
         "clip": "Walk",
-        "pose": "{\"clip\":\"Walk\",\"resolvedClip\":\"Walk\",\"leg\":[0.11016523277985946,0,0,0.9939132907695802],\"position\":[0,-0.029342424926142155,0],\"skinned\":true}",
+        "pose": "{\"clip\":\"Walk\",\"resolvedClip\":\"Walk\",\"leg\":[0.08861980329722313,0,0,0.9960655572321351],\"position\":[0,-0.04710684519238278,0],\"skinned\":true}",
         "model": "gobkit-human002/it-engineer",
         "skinned": "true"
       }
@@ -232,10 +232,10 @@
         "loading": "false",
         "ready": "true",
         "renderedModel": "gobkit-human002/receptionist",
-        "frames": "128",
+        "frames": "129",
         "triangles": "2403",
         "clip": "Walk",
-        "pose": "{\"clip\":\"Walk\",\"resolvedClip\":\"Walk\",\"leg\":[0.16136014002944304,0,0,0.9868955898217796],\"position\":[0,-0.04956320004368086,0],\"skinned\":true}",
+        "pose": "{\"clip\":\"Walk\",\"resolvedClip\":\"Walk\",\"leg\":[0.1316331424512492,0,0,0.9912984998517899],\"position\":[0,-0.055276519544305784,0],\"skinned\":true}",
         "model": "gobkit-human002/receptionist",
         "skinned": "true"
       }
@@ -249,7 +249,7 @@
         "frames": "145",
         "triangles": "556",
         "clip": "walk",
-        "pose": "{\"clip\":\"walk\",\"resolvedClip\":\"walk\",\"leg\":[-7.608030539645447e-8,-0.005813713087089338,0.9999628508850804,0.006363771673914019],\"position\":[0,0.15247424546539343,0],\"skinned\":true}",
+        "pose": "{\"clip\":\"walk\",\"resolvedClip\":\"walk\",\"leg\":[-7.735534698131512e-8,0.01750591764018824,0.9998337362152,0.005103212078954138],\"position\":[0,0.19082045120861538,0],\"skinned\":true}",
         "model": "gobkit-animal/corgi",
         "skinned": "true"
       }
@@ -260,10 +260,10 @@
         "loading": "false",
         "ready": "true",
         "renderedModel": "kaykit-adventurers/knight",
-        "frames": "159",
+        "frames": "158",
         "triangles": "5848",
         "clip": "Walking_A",
-        "pose": "{\"clip\":\"Walking_A\",\"resolvedClip\":\"Walking_A\",\"leg\":[0.9852544186536634,-2.358379698213748e-7,-3.025238613487069e-8,0.1710958385936534],\"position\":[0,0.31029782290385066,0],\"skinned\":true}",
+        "pose": "{\"clip\":\"Walking_A\",\"resolvedClip\":\"Walking_A\",\"leg\":[0.9542147939958698,-2.2690263208128768e-7,-1.0320638856494033e-8,0.29912234257251724],\"position\":[0,0.5109102951589121,0],\"skinned\":true}",
         "model": "kaykit-adventurers/knight",
         "skinned": "true"
       }

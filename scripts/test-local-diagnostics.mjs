@@ -10,8 +10,12 @@ import { createRequire } from 'node:module';
 import { resolve } from 'node:path';
 const require=createRequire(realpathSync(resolve('node_modules/wrangler/package.json')));
 const {Miniflare}=require('miniflare');
+// A fixed daytime clock prevents five-minute slot rollovers and night-only
+// behavior from changing what this isolated HTTP fixture actually exercises.
+const NativeDate=Date,fixedNow=Date.parse('2026-10-25T02:00:00.000Z');
+globalThis.Date=class extends NativeDate {constructor(...args){super(...(args.length?args:[fixedNow]));}static now(){return fixedNow;}};
 const moduleFiles=readdirSync("dist/server",{recursive:true}).filter(p=>typeof p==="string"&&p.endsWith(".js")&&p!=="index.js");
-const modules=["index.js",...moduleFiles].map(p=>({type:"ESModule",path:resolve("dist/server",p)}));
+const modules=[{type:'ESModule',path:resolve('dist/server/__fixture_entry.mjs'),contents:`import worker from './index.js';const RealDate=Date;let fixtureNow=${fixedNow};globalThis.Date=class extends RealDate{constructor(...args){super(...(args.length?args:[fixtureNow]))}static now(){return fixtureNow}};export default {fetch(request,env,ctx){const url=new URL(request.url);if(url.pathname==='/__fixture/time'){fixtureNow=Number(url.searchParams.get('now'));return Response.json({ok:true})}return worker.fetch(request,env,ctx)}};`},...["index.js",...moduleFiles].map(p=>({type:"ESModule",path:resolve("dist/server",p)}))];
 const options={modules,modulesRoot:resolve("dist/server"),compatibilityDate:'2026-05-15',compatibilityFlags:['nodejs_compat'],d1Databases:['DB'],bindings:{XOM_LOCAL_ADMIN:'false'},inspectorPort:0};
 const mf=new Miniflare(options);
 try{
@@ -186,5 +190,16 @@ try{
  const pooled=JSON.parse((await db.prepare("SELECT data FROM worlds WHERE id='home'").first()).data).living.dialoguePool;
  assert.equal(pooled.entries.length,2);assert(hasDialogue(pooled,'an',peerId,recent.dialogue));assert(hasDialogue(pooled,'an',peerId,novel.dialogue));assert(pooled.entries.every(e=>e.source==='local-llm'));
  console.log('PASS duplicate persisted narrative is rejected and final model pool excludes the generated rules draft');
+ // This time setter only exists in the in-memory test entry, never the artifact.
+ const quietRow=await db.prepare("SELECT revision,data FROM worlds WHERE id='home'").first();
+ const quietPolicies=await db.prepare('SELECT * FROM learning_policies ORDER BY actor_id').all();
+ for(const advanced of [fixedNow+300000,fixedNow+13*3600000]){
+  await mf.dispatchFetch('http://localhost/__fixture/time?now='+advanced);
+  const quiet=await mf.dispatchFetch('http://localhost/api/living/tick',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({proposal:novel,basis:{revision:quietRow.revision,turnId:turnId(advanced)}})});
+  assert.equal(quiet.status,422);assert.match((await quiet.json()).error,/không có cuộc gặp/);
+  assert.deepEqual(await db.prepare("SELECT revision,data FROM worlds WHERE id='home'").first(),quietRow,'Busy or sleeping actors cannot be forced into a model conversation');
+  assert.deepEqual((await db.prepare('SELECT * FROM learning_policies ORDER BY actor_id').all()).results,quietPolicies.results,'Rejected scene cannot train policies');
+ }
+ console.log('PASS busy and night plans reject model dialogue without world/policy writes');
  console.log(JSON.stringify({suite:'local-diagnostics-http',ownerReadGuard:true,ownerWriteGuard:true,streamByteLimit:true,schema:true,origin:true,ack:true,jsonlReadback:true,rateLimit:true,retention:true,pulsePersistence:true,pulseRetry:true,pulsePause:true,productionAccess:false}));
-}finally{await mf.dispose();}
+}finally{await mf.dispose();globalThis.Date=NativeDate;}

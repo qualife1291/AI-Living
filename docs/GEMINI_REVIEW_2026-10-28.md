@@ -38,3 +38,9 @@ Main đã merge work vào c83a5e3. Phiên này chỉ có cloud-onboarding tools,
 Home anchors đã kiểm thử: 60 cửa/địa chỉ/Xem nhà, walking/full-bike paths, desktop/mobile; xem PHASE_C_HOMES. Policy matrices tách bằng migration 0007/CAS, 44 suite + API đạt; xem PHASE_D_LEARNING. Benchmark mới import runtime thật và shared/frozen holdout đã ghi cả kết quả bất lợi cho LinUCB, không kế thừa claim 3,71×. Không tự bật density/public/cron/LoRA chỉ vì có tên trong bảng đề xuất.
 
 Âm thanh Web Audio opt-in/lifecycle đã có preview; không đồng nghĩa hoàn tất toàn bộ Phase E. Server bổ sung reviewNarrative thay vì chỉ tin guard daemon; lỗi daemon fallback giữ proposal bị bác đã có regression. Các ràng buộc editor này không chứng minh đúng ngữ nghĩa hoặc JSON100% cho model thật.
+
+## Phạm vi còn lại sau đối chiếu toàn bộ báo cáo
+
+Các đề xuất kiến trúc dài hạn không được tự gộp thành “đã triển khai”. [NEXT_PHASES](NEXT_PHASES.md) ghi riêng completion/playback, hierarchy/P2P/vector skill, context cards/LocalSceneContext, density/LOD, multimodal transit/indoor, habitat/flora, exporter curation, runtime/chunk refactor và model A/B.
+
+Không áp dụng trực tiếp: seed theo world.revision để hứa đồng bộ vật lý, hàng nghìn cặp DPO không cùng prompt, auto-LoRA/cron trùng, bật public, gán trẻ em/quan hệ gia đình theo model hoặc tăng mật độ từ số tam giác dự đoán. LLM schema constraining đã có trong daemon; server bổ sung cùng editorial guard. Tiêu chí JSON100%/<10s và model 4B “tốt hơn” cần thực nghiệm thật. Audio đã triển khai là synth trang trí, chưa là đánh giá âm thanh sinh học.

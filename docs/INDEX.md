@@ -4,6 +4,8 @@ Toàn bộ tài liệu của dự án **Xóm AI** được cơ cấu thành **6 
 
 ---
 
+> Hiện hành 28/10: [Review Gemini](GEMINI_REVIEW_2026-10-28.md), [Phase D](PHASE_D_LEARNING.md), [Cửa nhà](PHASE_C_HOMES.md), [Audio](PHASE_E_AMBIENCE.md), [Phần còn lại](NEXT_PHASES.md), [Candidate](releases/candidate.json). Các tài liệu cũ chỉ giữ lịch sử; không phục hồi renderer 2D.
+
 > Tiếp nối mới: [Xe đạp di chuyển và va chạm toàn xe](CYCLING.md).
 
 > Hiện hành: [Chỉ dùng 3D và thú đi theo chủ](THREE_ONLY_AND_PETS.md).
@@ -15,7 +17,7 @@ Toàn bộ tài liệu của dự án **Xóm AI** được cơ cấu thành **6 
 | Tài liệu | Vai trò |
 |---|---|
 | [../README.md](../README.md) | Tổng quan sản phẩm, hướng dẫn cài đặt, chạy kiểm thử và cấu trúc thư mục |
-| [../AGENTS.md](../AGENTS.md) | 12 quy tắc bắt buộc cho tác nhân AI khi đọc/sửa mã nguồn và vận hành |
+| [../AGENTS.md](../AGENTS.md) | Quy tắc bắt buộc hiện hành cho tác nhân AI khi đọc/sửa mã nguồn và vận hành |
 | [../CODEX_HANDOFF.md](../CODEX_HANDOFF.md) | Hướng dẫn bàn giao, trạng thái hiện tại và thứ tự công việc tiếp theo |
 | [../ROADMAP.md](../ROADMAP.md) | Lộ trình phát triển Phase 1–5 kết hợp Sprint 0–4 |
 | [../MEMORY_SHORT.md](../MEMORY_SHORT.md) | Việc chưa xong và các điểm chặn (blockers) hiện hành |
@@ -28,7 +30,7 @@ Toàn bộ tài liệu của dự án **Xóm AI** được cơ cấu thành **6 
 
 | Tài liệu | Nội dung chính |
 |---|---|
-| [THREE_WORLD.md](THREE_WORLD.md) | Renderer 3D mặc định, cao ốc, camera, fallback và bằng chứng kiểm thử |
+| [THREE_WORLD.md](THREE_WORLD.md) | Lịch sử chuyển sang 3D; fallback 2D trong tài liệu này đã bị gỡ |
 | [VISION.md](VISION.md) | Trải nghiệm đích, nguyên tắc nhân quả, ký ức gắn người chứng kiến và đạo đức mô phỏng |
 | [DESIGN_PROPOSALS.md](DESIGN_PROPOSALS.md) | **Thiết kế mở rộng hoàn chỉnh (§0–§8 & Phụ lục G):** Đồng hồ thế giới, chu kỳ ngày/đêm, thời tiết TP.HCM, 16 hoạt cảnh, vòng đời cây trồng, Utility AI động vật, tiếng ríu Web Audio, âm thanh đường phố và phân quyền Viewer/Admin |
 | [CHARACTER_DESIGN.md](CHARACTER_DESIGN.md) | Thiết kế hình khối, khớp xương (rig) và cá tính của 3 robot An, Bình, Chi |
@@ -41,9 +43,9 @@ Toàn bộ tài liệu của dự án **Xóm AI** được cơ cấu thành **6 
 
 | Tài liệu | Nội dung chính |
 |---|---|
-| [ARCHITECTURE.md](ARCHITECTURE.md) | Kiến trúc tổng thể, tách lớp render `StaticScene`, đồng hồ thế giới và phương án mở rộng |
+| [ARCHITECTURE.md](ARCHITECTURE.md) | Kiến trúc hiện hành: Three.js, Worker/D1, planner/presentation và giới hạn authority |
 | [API.md](API.md) | Hợp đồng chi tiết cho `GET/POST /api/world`, `POST /api/events`, `GET /api/instructions`, `GET /api/health` |
-| [DATA_MODEL.md](DATA_MODEL.md) | Cấu trúc bảng D1 (`worlds`, `episodes`, `memories`, `tick_runs`, `commitments`, `nudges`), bất biến dữ liệu và migration `0001` |
+| [DATA_MODEL.md](DATA_MODEL.md) | 14 bảng D1, policy tách snapshot, bất biến dữ liệu và migration append-only đến 0007 |
 | [GLOSSARY.md](GLOSSARY.md) | Từ điển thuật ngữ chuẩn dùng thống nhất trong mã nguồn và tài liệu |
 
 ---

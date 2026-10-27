@@ -5,7 +5,7 @@
 | Source | User đã merge work vào main; HEAD và MEMORY_SHORT cho biết nguồn đang làm, releases/candidate.json cho biết mốc đã đóng gói, latest.json chỉ ghi deploy đã xác minh |
 | Renderer | Chỉ3D; giữ XZ/nav/canvastextures/icon cần dùng, không phục hồi SVG/fallback2D |
 | Tài nguyên | 41Kenney +239Gobkit/KayKit canonical CC0; gallery on-demand; core+focusedNPC dùng skin độc lập |
-| QA nguồn đã merge | 38unit/API/check/lint/build/hash, desktop/mobile social6/cycle/overlay/pet/3Dretry; gallery15packs vàmobile; giới hạn ở MEMORY_LONG |
+| QA nguồn đã merge | 45unit/API/check/lint/build/hash, desktop/mobile social6/cycle/overlay/pet/3Dretry; gallery15packs vàmobile; giới hạn ở MEMORY_LONG |
 | Production | docs/releases/latest.json là ledger đã xác minh cuối; không suy ra từ SHA GitHub |
 
 Đọc AGENTS.md → MEMORY_SHORT.md → MEMORY_LONG.md → ROADMAP.md trước sửa. Sau đó đọc docs/GEMINI_REVIEW_2026-10-28.md, docs/ASSET_EXPANSION.md và docs/PRODUCTION_RUNBOOK.md.
