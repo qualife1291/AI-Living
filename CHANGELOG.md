@@ -1,5 +1,13 @@
 # Changelog
 
+## 2026-10-27 — Nhân vật có khớp và bối cảnh sinh hoạt nhiều chi tiết
+- Tay/chân có khuỷu/gối, chuyển đi–đứng mềm theo quãng đường thực, giữ pose khi pause. Bổ sung nét mặt, cổ áo/cúc/đế giày và mũ tròn; sách/ly/bình tưới/dụng cụ theo tay cầm.
+- Gom nhân vật vào sáu batch chung; chi tiết gần camera, chân/bóng theo nền thực của renderer.
+- 66 cụm đồ vật thuộc bảy loại, footprint dùng chung với navigation; thêm tán cây nhiều lớp, bậc cửa thấp, mây và nước đài phun theo simulation clock.
+- Dựng riêng mèo/chó/đàn sẻ; phối hợp vị trí ngoài trời với người và xe để tránh chồng chân.
+- Sáu cảnh trao đổi mới, nâng thư viện lên 18 cảnh/88 lượt; giữ nhãn nguồn và lịch sử đã lưu.
+- Bằng chứng và giới hạn: [VISUAL_DETAIL_REVIEW](docs/VISUAL_DETAIL_REVIEW.md).
+
 ## 2026-10-26 — Khoảng riêng, góc quay theo An và sinh hoạt chủ động
 - Cây và đồ đạc dùng chung tọa độ giữa renderer/navigation:94 cây,507 footprint, cộng279 khối nhà. Dời shelter/ghế/cây trạm xe và cột đèn khỏi tuyến xe; bỏ6 cột trùng.
 - Kiểm tra vùng quét của từng người, nhường lối/đi vòng khi đối đầu, đặt điểm đứng riêng để tránh tụm và xuyên nhau. Khi chờ, chân dừng bước.

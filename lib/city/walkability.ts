@@ -135,16 +135,17 @@ export class WalkDirector {
   private walkers = new Map<string, Walker>();
   private lastTime: number | null = null;
   private born = "";
-  frame(world: World, input: Actor[], seconds: number, cars: TrafficVehicle[] = []): Actor[] {
+  frame(world: World, input: Actor[], seconds: number, cars: TrafficVehicle[] = [], companions: Actor[] = []): Actor[] {
     if (!Number.isFinite(seconds)) seconds = this.lastTime ?? 0;
     if (this.born !== world.born || (this.lastTime !== null && seconds < this.lastTime - 1)) { this.walkers.clear(); this.lastTime = null; this.born = world.born; }
     const dt = world.paused || this.lastTime === null ? 0 : Math.max(0, Math.min(.15, seconds - this.lastTime)); this.lastTime = seconds;
-    const spaced = spaceActors(world, input);
-    const destinations = spaceActors(world, input.map(a => {
+    // Animals have direct projected coordinates, without legacy human offsets.
+    const spaced = [...spaceActors(world, input), ...companions];
+    const destinations = [...spaceActors(world, input.map(a => {
       const end = a.path.at(-1) ?? a.position, core = world.people.findIndex(p => p.id === a.id);
       const offset: Point = core >= 0 ? [(core - 1) * 25, core * 7] : npcOffset(a.id);
       return { ...a, position: [end[0] + offset[0], end[1] + offset[1]] as Point, walking: false };
-    }));
+    })), ...companions.map(a => ({ ...a, position: a.path.at(-1) ?? a.position, walking: false }))];
     const records = spaced.map((actor, i) => ({ actor, requested: nearestWalkable(destinations[i].position) })).sort((a, b) => a.actor.id.localeCompare(b.actor.id));
     const activeIds = new Set(records.map(record => record.actor.id));
     const reserved: Point[] = [];

@@ -16,7 +16,7 @@ with sync_playwright() as p:
    route.fulfill(status=200,content_type='application/json',body=json.dumps(fixture))
   page.route('**/api/world*',respond);page.route('**/api/living/pulse',lambda r:r.fulfill(status=200,content_type='application/json',body='{"ok":true,"duplicate":true}'))
   page.goto(base,wait_until='domcontentloaded',timeout=60000);host=page.locator('.three-canvas[data-ready="true"]');host.wait_for(timeout=90000)
-  samples=page.evaluate('''async()=>{const samples=[],end=performance.now()+9000;let oldFrame='';while(performance.now()<end){await new Promise(requestAnimationFrame);const e=document.querySelector('.three-canvas');if(e?.dataset.frame!==oldFrame){oldFrame=e.dataset.frame;samples.push({at:performance.now(),position:e.dataset.position.split(',').map(Number),camera:e.dataset.camera,walking:e.dataset.walking==='true'})}}return samples}''')
+  samples=page.evaluate('''async()=>{const samples=[],end=performance.now()+9000;let oldFrame='';while(performance.now()<end){await new Promise(requestAnimationFrame);const e=document.querySelector('.three-canvas');if(e?.dataset.frame!==oldFrame){oldFrame=e.dataset.frame;samples.push({at:performance.now(),position:e.dataset.position.split(',').map(Number),camera:e.dataset.camera,walking:e.dataset.walking==='true',animals:JSON.parse(e.dataset.animalPositions??'[]')})}}return samples}''')
   assert len(samples)>=10,len(samples)
   moving=[(a,b) for a,b in zip(samples,samples[1:]) if a['walking'] and b['walking']]
   assert len(moving)>=8,len(moving)
@@ -24,6 +24,8 @@ with sync_playwright() as p:
   assert stationary/len(moving)<.2,{'staleFrames':stationary,'motionFrames':len(moving)}
   for sample in samples:
    x,z=sample['position']
+   assert len(sample['animals'])==3
+   for animal in sample['animals']:assert sum((animal['position'][i]-sample['position'][i])**2 for i in [0,1])**.5>=9.9, 'Animal overlaps the main character'
    for rect in fixture['obstacles']:assert not(abs(x-rect['x'])<rect['width']/2+4.75 and abs(z-rect['z'])<rect['depth']/2+4.75),(sample,rect)
   jumps=[sum((a['position'][i]-b['position'][i])**2 for i in [0,1])**.5 for a,b in moving]
   assert max(jumps)<=2.5,max(jumps)

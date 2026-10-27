@@ -24,6 +24,10 @@ with sync_playwright() as p:
    page.wait_for_function('(frame)=>Number(document.querySelector(".three-canvas")?.dataset.frame)>frame+7',arg=frame,timeout=30000)
    assert host.get_attribute('data-human-batches')=='6'
    assert host.get_attribute('data-street-props')=='66'
+   assert host.get_attribute('data-animal-batches')=='5'
+   point=list(map(float,host.get_attribute('data-position').split(',')))
+   pets=json.loads(host.get_attribute('data-animal-positions'));assert len(pets)==3
+   assert all(sum((a['position'][i]-point[i])**2 for i in [0,1])**.5>=9.9 for a in pets), 'Animal overlaps An'
    assert int(host.get_attribute('data-draw-calls'))<90
    if activity=='market':
     for _ in range(3):page.get_by_role('button',name='Thu nhỏ',exact=True).click()

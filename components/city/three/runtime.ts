@@ -8,6 +8,7 @@ import { characterShot } from "@/lib/city/cinematography";
 import { groundElevation } from "@/lib/city/ground";
 import { createPeople } from "./people";
 import { createAmbience } from "./ambience";
+import { createFauna } from "./fauna";
 import { streetModel } from "./streetscape";
 import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
@@ -512,24 +513,8 @@ export function createCity(
   );
   ring.rotation.x = -Math.PI / 2;
   scene.add(ring);
-  const animalGroup = new THREE.Group();
-  scene.add(animalGroup);
-  const animalMeshes = Array.from({ length: 3 }, (_, i) => {
-    const g = new THREE.Group();
-    const mat = new THREE.MeshStandardMaterial({
-      color: ["#cda17a", "#807f73", "#748c94", "#bdac8e"][i],
-    });
-    const body = new THREE.Mesh(boxGeo, mat);
-    body.scale.set(6, 3.5, 3.5);
-    body.position.y = 2.5;
-    g.add(body);
-    const head = new THREE.Mesh(boxGeo, mat);
-    head.scale.set(3, 3, 3);
-    head.position.set(3, 5, 0);
-    g.add(head);
-    animalGroup.add(g);
-    return g;
-  });
+  const fauna = createFauna(scene, people.geometry);
+  host.dataset.animalBatches = String(fauna.stats.batches);
   const selectedLabel = label("An", 0, 25, 0, 14)!;
   const shadowCanvas = document.createElement("canvas"); shadowCanvas.width = shadowCanvas.height = 64;
   const shadowContext = shadowCanvas.getContext("2d")!, gradient = shadowContext.createRadialGradient(32, 32, 3, 32, 32, 31);
@@ -546,6 +531,7 @@ export function createCity(
     targetKey: number | undefined;
   let current: Actor | undefined,
     actors: Actor[] = [],
+    groundAnimals: ReturnType<typeof animalsAt> = [],
     lastSelected = "";
   let socialPoses = new Map<string, SocialPose>(), exchanges: Exchange[] = [];
   const walkDirector = new WalkDirector(), trafficDirector = new TrafficDirector(), socialDirector = new SocialDirector();
@@ -676,8 +662,12 @@ export function createCity(
           ? crowdAt(world.living, world, lastTime, selected)
           : []),
       ].slice(0, capacity);
-      cars = trafficDirector.frame(seconds, actors.map(a => a.position));
-      const safeActors = walkDirector.frame(world, rawActors, seconds, cars);
+      const animalProjections = animalsAt(world, lastTime);
+      cars = trafficDirector.frame(seconds, [...actors, ...groundAnimals].map(a => a.position));
+      const safeAll = walkDirector.frame(world, rawActors, seconds, cars, animalProjections);
+      const byId = new Map(safeAll.map(a => [a.id, a]));
+      groundAnimals = animalProjections.map(a => ({ ...a, ...byId.get(a.id) }));
+      const safeActors = safeAll.filter(a => rawActors.some(p => p.id === a.id));
       const social = socialDirector.frame(world, safeActors, state.events ?? [], lastTime, null, true);
       actors = social.actors;
       socialPoses = social.poses;
@@ -723,15 +713,8 @@ export function createCity(
       dummy.position.set(point[0], groundElevation(point[0], point[1]) + .04, point[1]); dummy.rotation.set(0, car?.yaw ?? 0, 0); dummy.scale.set(car ? car.width * 1.35 : 11, 1, car ? car.length * 1.2 : 8); dummy.updateMatrix(); contactShadows.setMatrixAt(i, dummy.matrix);
     }
     contactShadows.instanceMatrix.needsUpdate = true;
-    animalsAt(world, lastTime)
-      .slice(0, animalMeshes.length)
-      .forEach((a, i) => {
-        animalMeshes[i].position.set(
-          a.position[0],
-          a.species === "bird" ? 25 : 0,
-          a.position[1],
-        );
-      });
+    fauna.draw(groundAnimals, seconds, dt, world.paused);
+    host.dataset.animalPositions = JSON.stringify(groundAnimals.map(a => ({ id: a.id, species: a.species, position: a.position })));
     if (current) {
       ring.position.set(current.position[0], 2, current.position[1]);
       selectedLabel.position.set(current.position[0], 25, current.position[1]);
