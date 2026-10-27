@@ -41,13 +41,13 @@ export function createPeople(scene: THREE.Scene, capacity: number) {
   }
   return {
     geometry,
-    draw(world: World, actors: Actor[], poses: Map<string, SocialPose>, seconds: number, dt: number, camera: THREE.Camera, selected: string) {
+    draw(world: World, actors: Actor[], poses: Map<string, SocialPose>, seconds: number, dt: number, camera: THREE.Camera, selected: string, skip = new Set<string>()) {
       for (const mesh of Object.values(meshes)) { mesh.count = 0; mesh.userData.ids.length = 0; }
       const frames = motion.frame(actors, poses, seconds, dt, world.paused);
       headings.clear();
       for (const a of actors) {
         currentId = a.id;
-        const state = frames.get(a.id)!; const { pose, yaw } = state; headings.set(a.id, yaw);
+        const state = frames.get(a.id)!; const { pose, yaw } = state; headings.set(a.id, yaw); if (skip.has(a.id)) continue;
         const core = world.people.find(p => p.id === a.id), npc = world.living?.residents.find(p => p.id === a.id);
         const appearance = world.living?.appearances?.[a.id] ?? defaultAppearance(a.id, core?.role ?? `${npc?.roleId} ${world.living?.catalog.roles.find(r => r.id === npc?.roleId)?.label}`);
         const near = a.id === selected || Math.hypot(camera.position.x - a.position[0], camera.position.z - a.position[1]) < 240;

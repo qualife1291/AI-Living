@@ -23,16 +23,20 @@ export function City3D(props: Props) {
     if (failed) return;
     let cancelled = false;
     import("./three/runtime")
-      .then(({ createCity }) => {
+      .then(async ({ createCity }) => {
         if (cancelled || !host.current) return;
+        const { AssetLibrary } = await import("./three/assets");
+        const assets = await new AssetLibrary().preload();
+        if (cancelled || !host.current) { assets.dispose(); return; }
         try {
           runtime.current = createCity(host.current, () => latest.current, {
             select: (id) => latest.current.onSelect(id),
             venue: (v) => latest.current.onVenue(v),
             status: setStatus,
             fatal: () => setFailed(true),
-          });
+          }, assets);
         } catch {
+          assets.dispose();
           setFailed(true);
         }
       })

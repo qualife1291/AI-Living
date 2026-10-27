@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "preferred": {
+    "character-a": "characters/character-a",
+    "character-b": "characters/character-b",
+    "character-c": "characters/character-e",
+    "character-e": "characters/character-e",
+    "car-sedan": "cars/sedan",
+    "car-hatchback": "cars/hatchback-sports",
+    "car-taxi": "cars/taxi",
+    "display-bread": "market/display-bread",
+    "display-fruit": "market/display-fruit",
+    "bin": "roads/dumpster",
+    "dumpster": "roads/dumpster",
+    "tree": "suburban/tree-large",
+    "house": "suburban/building-type-a"
+  },
+  "procedural": ["bench", "box", "wall", "puddle", "sign", "kitten", "wallet", "phone", "note", "cup", "broom", "leaf", "cloth", "bread", "crutch", "book", "can", "tool"]
+}

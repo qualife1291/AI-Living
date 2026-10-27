@@ -1,7 +1,9 @@
 "use client";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 import {
   BookOpen,
+  Clapperboard,
   CloudSun,
   Compass,
   EyeOff,
@@ -39,6 +41,7 @@ type Snapshot = {
 };
 type Panel = "people" | "context" | "places" | "learning" | "sources" | null;
 export default function Page() {
+  const router = useRouter();
   const [data, setData] = useState<Snapshot | null>(null),
     [error, setError] = useState(""),
     [selected, setSelected] = useState("an"),
@@ -269,6 +272,7 @@ export default function Page() {
           <GraduationCap size={19} />
           <span>Học hỏi</span>
         </button>
+        <button aria-label="Kịch bản mô phỏng" title="Bốn câu chuyện trong trường quay riêng" onClick={() => { router.push("/studio"); }}><Clapperboard size={19} /><span>Kịch bản</span></button>
         <button aria-label="Ẩn giao diện" onClick={() => setHidden(true)}>
           <EyeOff size={18} />
           <span>Ẩn</span>

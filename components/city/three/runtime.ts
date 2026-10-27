@@ -6,9 +6,12 @@ import { venueGeometry, openVenue } from "@/lib/city/footprints";
 import { sceneryTrees, sceneryLamps, streetProps, venueSceneryPose } from "@/lib/city/scenery";
 import { characterShot } from "@/lib/city/cinematography";
 import { groundElevation } from "@/lib/city/ground";
+import { resolveModel } from "@/lib/city/asset-bindings";
 import { createPeople } from "./people";
 import { createAmbience } from "./ambience";
 import { createFauna } from "./fauna";
+import { AssetLibrary, setAssetTransform, type AssetPlacement } from "./assets";
+import { createModelActors } from "./model-actors";
 import { streetModel } from "./streetscape";
 import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
@@ -77,6 +80,7 @@ export function createCity(
     status: (v: SceneStatus) => void;
     fatal: () => void;
   },
+  assets = new AssetLibrary(),
 ): CityRuntime {
   const renderer = new THREE.WebGLRenderer({
     antialias: true,
@@ -203,11 +207,20 @@ export function createCity(
   for (const [a, b] of pedestrianSegments) road([a, b], 8, 1.5, "#eee2c6");
   road(metroLine, 10, 3, "#617878");
   road(metroLine, 5, 3.5, "#bac7bd");
+  const placements: AssetPlacement[] = [];
+  const modelBuildings = ["commercial/building-a", "commercial/building-b", "commercial/building-c"];
+  const modelHomes = ["suburban/building-type-a", "suburban/building-type-b", "suburban/building-type-c"];
+  const propAsset = (prop: typeof streetProps[number]) => resolveModel(prop.kind === "produce" ? prop.venue === "Chợ nhỏ" ? "display-bread" : "display-fruit" : prop.kind) ?? "";
   const buildings = cityBuildings();
   for (let i = 0; i < buildings.length; i++) {
     const b = buildings[i],
       { x, z, width: w, depth: d, height: h } = b;
     box(x, 1.2, z, w + 12, 2, d + 12, "#ded9c6");
+    const modelId = modelHomes[i % modelHomes.length];
+    if (!b.tower && i % 16 === 0 && assets.get(modelId)) {
+      placements.push({ id: modelId, x, y: 2.2, z, width: w, height: h, depth: d, yaw: Math.PI, stretch: true });
+      continue;
+    }
     box(x, h / 2 + 2, z, w, h, d, b.color);
     box(x, h + 4, z, w + 3, 4, d + 3, "#e3e4d5");
     box(x, h + 8, z - 5, w * 0.38, 7, d * 0.35, "#879a95");
@@ -372,6 +385,16 @@ export function createCity(
             home: "#f0bb89",
           } as Record<string, string>
         )[v.type] ?? "#8fc7b3";
+      const modelId = v.type === "home" ? modelHomes[venues.indexOf(venue) % modelHomes.length] : modelBuildings[venues.indexOf(venue) % modelBuildings.length];
+      if (assets.get(modelId)) {
+        placements.push({ id: modelId, x: v.x, y: 2, z: v.y - 47, width: 104, height, depth: 72, yaw: Math.PI, stretch: true });
+        box(v.x, 3.5, v.y - 10, 104, 4, 2, "#b8a68d");
+        for (let step = 0; step < 3; step++) box(v.x, 1.2 + step * .6, v.y - 3 - step * 4, 34, 1.2 + step * 1.2, 4, "#c4c5af");
+        if (["cafe", "restaurant", "market"].includes(v.type)) {
+          for (let k = -5; k <= 5; k++) box(v.x + k * 10, 31.2, v.y + 1, 9.5, 1.5, 25, k % 2 ? "#f7e5bd" : "#438f86");
+          for (const dx of [-49, 49]) cylinder(v.x + dx, 15, v.y + 10, 1.4, 28, "#9c7954");
+        }
+      } else {
       box(v.x, height / 2 + 2, v.y - 47, 104, height, 72, color);
       box(v.x, height + 4, v.y - 47, 110, 5, 78, "#e9e3cf");
       for (const dx of [-53, 53]) box(v.x + dx, height + 7, v.y - 47, 2, 5, 76, "#c1b899");
@@ -413,6 +436,7 @@ export function createCity(
         cylinder(v.x + 35, 67, v.y - 40, 8, 70, "#c6d3cc");
         box(v.x + 35, 103, v.y - 40, 30, 16, 25, "#73969b");
       }
+      }
 
     }
     const sign = label(v.name, v.x, open ? 43 : height + 22, v.y - 20, 112);
@@ -426,10 +450,23 @@ export function createCity(
     cylinder(lamp.x, 26, lamp.z, 1.4, 52, "#728882");
     box(lamp.x - 4, 52, lamp.z, 11, 2, 5, "#f7dba1");
   }
-  for (const prop of streetProps) for (const part of streetModel(prop)) {
-    const list = part.shape === "wheel" ? propWheels : part.shape === "bud" ? propBuds : part.shape === "cylinder" ? cylinders : facadeDetails;
-    list.push(part);
+  for (const prop of streetProps) {
+    const id = propAsset(prop);
+    if (id && assets.get(id)) placements.push({ id, x: prop.x, y: groundElevation(prop.x, prop.z), z: prop.z, width: prop.width, depth: prop.depth, height: prop.kind === "bin" ? 8 : 12, yaw: Math.PI });
+    else for (const part of streetModel(prop)) {
+      const list = part.shape === "wheel" ? propWheels : part.shape === "bud" ? propBuds : part.shape === "cylinder" ? cylinders : facadeDetails;
+      list.push(part);
+    }
   }
+  for (const [index, id] of ["watercraft/boat-fishing-small", "watercraft/boat-row-small"].entries()) if (assets.get(id)) placements.push({ id, x: 1100 + index * 280, y: .4, z: 1610 + index * 8, width: 22, depth: 55, height: 30, yaw: Math.PI / 2 });
+  if (assets.get("trains/railroad-straight")) for (let i = 1; i < metroLine.length; i++) {
+    const a = metroLine[i - 1], b = metroLine[i], length = Math.hypot(b[0] - a[0], b[1] - a[1]);
+    for (let n = 20; n < length; n += 40) placements.push({ id: "trains/railroad-straight", x: a[0] + (b[0] - a[0]) * n / length, y: 3.1, z: a[1] + (b[1] - a[1]) * n / length, width: 10, height: 1, depth: 40, yaw: Math.atan2(b[0] - a[0], b[1] - a[1]), stretch: true });
+  }
+  assets.addBatches(scene, placements);
+  host.dataset.assetPlacements = String(placements.length);
+  host.dataset.loadedAssets = String(assets.stats().loaded);
+  host.dataset.failedAssets = String(assets.stats().failed);
   host.dataset.streetProps = String(streetProps.length);
   const dummy = new THREE.Object3D(),
     color = new THREE.Color();
@@ -492,6 +529,8 @@ export function createCity(
   host.dataset.fountainStreams = String(ambience.stats.fountainStreams);
   host.dataset.cloudLobes = String(ambience.stats.cloudLobes);
   const capacity = 72, people = createPeople(scene, capacity), boxGeo = people.geometry.box;
+  const modelActors = createModelActors(scene, assets);
+  host.dataset.assetActors = String(modelActors.ids.size);
   const trafficBody = new THREE.InstancedMesh(
       boxGeo,
       new THREE.MeshStandardMaterial({ roughness: 0.55 }),
@@ -507,6 +546,13 @@ export function createCity(
   trafficWheels.frustumCulled=trafficLights.frustumCulled=false;
   scene.add(trafficBody, trafficGlass, trafficWheels, trafficLights);
   trafficBody.frustumCulled = trafficGlass.frustumCulled = false;
+  const carIds = ["car-sedan", "car-hatchback", "car-taxi"].map(key => resolveModel(key)!);
+  const carModels = carIds.map(id => assets.compile(id));
+  const importedCars = carModels.every(Boolean) ? carModels.map(model => {
+    const mesh = new THREE.InstancedMesh(model!.geometry, model!.material, TRAFFIC_COUNT);
+    mesh.frustumCulled = false; mesh.instanceMatrix.setUsage(THREE.DynamicDrawUsage); scene.add(mesh); return mesh;
+  }) : [];
+  host.dataset.assetCars = String(importedCars.length);
   const ring = new THREE.Mesh(
     new THREE.RingGeometry(6, 7, 32),
     new THREE.MeshBasicMaterial({ color: "#ffe0a0", side: THREE.DoubleSide }),
@@ -577,10 +623,11 @@ export function createCity(
     raycaster.setFromCamera(pointer, camera);
     // Include buildings so picking never selects a resident through a tower.
     const hit = raycaster
-      .intersectObjects(scene.children, false)
+      .intersectObjects(scene.children, true)
       .find((h) => h.object !== ring && h.object !== selectedLabel);
     if (!hit) return;
-    if (hit.object.userData.venue) callbacks.venue(hit.object.userData.venue);
+    if (hit.object.userData.actorId) callbacks.select(hit.object.userData.actorId);
+    else if (hit.object.userData.venue) callbacks.venue(hit.object.userData.venue);
     else if (
       hit.instanceId !== undefined &&
       hit.object.userData.ids?.[hit.instanceId]
@@ -606,10 +653,22 @@ export function createCity(
   resize.observe(host);
   const heading = new Map<string, number>();
   function drawActors(seconds: number, world: World, dt: number) {
-    const updated = people.draw(world, actors, socialPoses, seconds, dt, camera, input().selected);
+    const updated = people.draw(world, actors, socialPoses, seconds, dt, camera, input().selected, modelActors.ids);
     heading.clear(); for (const [id, yaw] of updated) heading.set(id, yaw);
+    modelActors.draw(world, actors, socialPoses, heading, seconds);
   }
   function traffic() {
+    if (importedCars.length) {
+      trafficBody.count = trafficGlass.count = trafficWheels.count = trafficLights.count = 0;
+      for (const mesh of importedCars) mesh.count = 0;
+      for (const [index, car] of cars.entries()) {
+        const which = index % importedCars.length, mesh = importedCars[which], at = mesh.count++;
+        setAssetTransform(dummy, carModels[which]!.size, { id: carIds[which], x: car.position[0], y: groundElevation(...car.position), z: car.position[1], width: car.width, height: car.height, depth: car.length, yaw: car.yaw + Math.PI, stretch: true });
+        mesh.setMatrixAt(at, dummy.matrix);
+      }
+      for (const mesh of importedCars) mesh.instanceMatrix.needsUpdate = true;
+      return;
+    }
     trafficBody.count = trafficGlass.count = cars.length;
     trafficWheels.count = trafficLights.count = cars.length * 4;
     cars.forEach((car, i) => {
@@ -874,6 +933,7 @@ export function createCity(
             if (map) textures.add(map);
           }
       });
+      assets.collectAndClose({ geometries, materials, textures });
       geometries.forEach((g) => g.dispose());
       materials.forEach((m) => m.dispose());
       textures.forEach((t) => t.dispose());
