@@ -261,6 +261,7 @@ export type Actor = {
   stationaryFor?: number;
   tagGame?: import("./city/tag-game").TagRole;
   petOwnerId?: string;
+  bicycle?: import("./city/bicycle").BicycleMotion;
 };
 
 type Transport = NonNullable<Actor["transport"]>;

@@ -5,3 +5,7 @@
 - Chưa nghiệm thu điện thoại/GPU thật, soak30phút/24giờ,150người/80xe/p95<33ms. Zero collision trong fixture không phải bảo đảm mọi tình huống hết kẹt.
 - Chỉ push work; main vẫn a5b7c5a. Production ledger vẫn version11/c1ddea1, chưa deploy hoặc xác minh live trong lượt này. Trước release cần backup mới, kiểm tra migration0006 thực tế và giữ owner-private. Không reset DB/test fixture lên production.
 - Luôn push checkpoint và cập nhật bàn giao trước test lâu; không commit .dev.vars/DB/cache hoặc tạo automation trùng/API tính phí. Cài: bash scripts/sites-env.sh -- corepack pnpm install --frozen-lockfile --prefer-offline --store-dir .sites-runtime/pnpm-store.
+
+# WIP phaseB xe đạp
+- Đang thêm bicycle metadata/groundradius9.2 bao fullmodel (đo actualGLB+bike tốiđa8.85), safeWalkPath/grid/cache theo2clearance, carforecast theo bodyradius; người đi bộ giữ rulespacing cũ sau regression7caseđạt. Mounted di chuyển22unit/s/accel12, bánh/pedal theoquãngđường, dừng/pausedistancefrozen, dismountẩnxe.
+- Đã tái hiện/sửa chânGLB cộng lặp offset qua các frame khi clipdrive khôngkeymọibone: restorebase trước mixer; modeltest36pose/bounds/stoppedđạt. Ground1200frame/250unit/maxstep1.1, mountchỗhẹp, mixedped1600frame/swept0collision,4000oraclechecksđạt. Cần fullsuite/check/lint/build/API/browserdesktopmobile saucheckpoint; chưaQAvisual/chưadeploy.

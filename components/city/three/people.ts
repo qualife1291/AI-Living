@@ -1,5 +1,5 @@
 import { activityLift, hasHandProp } from "../../../lib/living/action-presentation.ts";
-import { createPracticeBicycle } from "./activity-props.ts";
+import { createBicycle, spinBicycle } from "./activity-props.ts";
 import * as THREE from "three";
 import { createHumanGeometry, HumanMotion } from "./humans.ts";
 import { defaultAppearance, themes } from "../../../lib/city/appearance.ts";
@@ -50,7 +50,7 @@ export function createPeople(scene: THREE.Scene, capacity: number) {
     collectGeometry(target: Set<THREE.BufferGeometry>) { for (const g of [...Object.values(geometry), ...Object.values(coarse)]) target.add(g); },
     draw(world: World, actors: Actor[], poses: Map<string, SocialPose>, seconds: number, dt: number, camera: THREE.Camera, selected: string, skip = new Set<string>()) {
       for (const mesh of Object.values(meshes)) { mesh.count = 0; mesh.userData.ids.length = 0; }
-      for(const [id,bike] of bicycles) bike.visible = actors.some(a => a.id===id && a.kind==="cycle" && !a.walking);
+      for(const [id,bike] of bicycles) bike.visible = actors.some(a => a.id===id && !!a.bicycle);
       const frames = motion.frame(actors, poses, seconds, dt, world.paused);
       headings.clear();
       for (const a of actors) {
@@ -64,7 +64,7 @@ export function createPeople(scene: THREE.Scene, capacity: number) {
         const leftSole = 13.2 - Math.cos(pose.leftLeg) * 5.8 - Math.cos(pose.leftLeg + pose.leftKnee) * 5.8 + .2 - 1.1;
         const rightSole = 13.2 - Math.cos(pose.rightLeg) * 5.8 - Math.cos(pose.rightLeg + pose.rightKnee) * 5.8 + .2 - 1.1;
         const base = groundElevation(a.position[0], a.position[1]) - Math.min(leftSole, rightSole) * HUMAN_SCALE;
-        dummy.position.set(a.position[0], base + pose.breath * HUMAN_SCALE + activityLift(a.kind, seconds) + (a.kind === "cycle" && !a.walking ? 4 : 0), a.position[1]);
+        dummy.position.set(a.position[0], base + pose.breath * HUMAN_SCALE + activityLift(a.kind, seconds) + (a.bicycle ? 4 : 0), a.position[1]);
         dummy.rotation.set(0, yaw, pose.sway); dummy.scale.setScalar(HUMAN_SCALE); dummy.updateMatrix(); root.copy(dummy.matrix);
         faceTurn.makeRotationFromEuler(new THREE.Euler(pose.headTilt, pose.headTurn, 0));
         face.copy(root).multiply(beforeHead).multiply(faceTurn).multiply(afterHead);
@@ -73,9 +73,9 @@ export function createPeople(scene: THREE.Scene, capacity: number) {
         put("limb", 0, 27.2, 0, 3.2, 2.6, 3.2, appearance.skin);
         put("head", 0, 32, 0, 8.8, 9.6, 8.6, appearance.skin, 0, 0, 0, true);
         if (appearance.hair !== "bald") put("hair", 0, 35.3, -.5, 9.1, 5.4, 8.7, hair, 0, 0, 0, true);
-        const cycling = a.kind === "cycle" && !a.walking;
-        if(cycling && !bicycles.has(a.id)){const bike=createPracticeBicycle();scene.add(bike);bicycles.set(a.id,bike);}
-        const bike=bicycles.get(a.id);if(bike){bike.visible=cycling;bike.position.set(a.position[0],groundElevation(...a.position),a.position[1]);bike.rotation.y=yaw;}
+        const cycling = !!a.bicycle;
+        if(cycling && !bicycles.has(a.id)){const bike=createBicycle();scene.add(bike);bicycles.set(a.id,bike);}
+        const bike=bicycles.get(a.id);if(bike){bike.visible=cycling;bike.position.set(a.position[0],groundElevation(...a.position),a.position[1]);bike.rotation.y=yaw;if(a.bicycle)spinBicycle(bike,a.bicycle.distance);}
         const gear = themes.find(t => t.id === appearance.theme)?.headgear ?? "none";
         if (gear !== "none") {
           put("round", 0, 38.1, 0, 10.8, gear === "chef" ? 4 : 3.5, 10, gear === "hardhat" ? "#f3bc4e" : gear === "chef" ? "#fff5df" : appearance.shirt, 0, 0, 0, true);

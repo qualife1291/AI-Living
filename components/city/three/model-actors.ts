@@ -1,5 +1,5 @@
 import { activityLift, hasHandProp, handProp } from "../../../lib/living/action-presentation.ts";
-import { createPracticeBicycle } from "./activity-props.ts";
+import { createBicycle, spinBicycle } from "./activity-props.ts";
 import * as THREE from "three";
 import { AssetAvatar, AssetLibrary } from "./assets.ts";
 import { defaultAppearance } from "../../../lib/city/appearance.ts";
@@ -72,9 +72,10 @@ export function simpleProp(kind: string) {
 
 export function resolveActorClip(actor: Actor, speaking = false): string {
   const act = `${actor.kind} ${actor.activity ?? ""} ${actor.location ?? ""}`.toLowerCase();
+  if (actor.bicycle) return "drive";
+  if (actor.kind === "cycle") return actor.walking ? "walk" : "idle";
   if (actor.walking && actor.transport && actor.transport !== "walk") return "drive";
   if (actor.walking) return ["run", "tag"].includes(actor.kind) || /run|sprint|chạy|vội/.test(act) ? "sprint" : "walk";
-  if (actor.kind === "cycle") return "drive";
   if (actor.kind === "run") return "sprint";
   if (actor.kind === "tag") return "idle"; // Waiting/yielding is not running in place.
   if (/jump|nhảy|cheer|cổ vũ/.test(act)) return "idle";
@@ -90,6 +91,8 @@ export function resolveActorClip(actor: Actor, speaking = false): string {
 export function createModelActors(scene: THREE.Scene, library: AssetLibrary) {
   const avatars = new Map<string, AssetAvatar>(), props = new Map<string, { kind: string; group: THREE.Group }>(), travel = new Map<string, { x: number; z: number; distance: number }>();
   const posed = new Set<string>();
+  const poseTimes = new Map<string, number>();
+  const proceduralBases = new Map<string, Map<THREE.Object3D, THREE.Quaternion>>();
   const bicycles = new Map<string, THREE.Group>();
   for (const [id, modelId] of [["an", resolveModel("character-a")!], ["binh", resolveModel("character-b")!], ["chi", resolveModel("character-c")!]]) {
     const source = library.get(modelId); if (!source) continue;
@@ -112,21 +115,29 @@ export function createModelActors(scene: THREE.Scene, library: AssetLibrary) {
         const holding = !actor.walking && (hasHandProp(actor.kind) || ["cook", "soccer", "swim", "lantern"].includes(propKind));
         const speaking = social.get(id)?.speaking;
         const clip = resolveActorClip(actor, speaking);
-        const animationTime = actor.walking ? (distance + walked) / 14 * (2 / 3) : seconds;
-        const changed = avatar.pose(clip, animationTime, seconds, actor.position, headings.get(id) ?? .35, groundElevation(...actor.position) + activityLift(actor.kind, seconds) + (actor.kind === "cycle" && !actor.walking ? 4 : 0));
+        const animationTime = actor.bicycle ? actor.bicycle.distance / 14 : actor.walking ? (distance + walked) / 14 * (2 / 3) : seconds;
+        // Some authored clips do not key every limb. Restore the previous base
+        // before the mixer runs, so additive pedal/exercise poses never accumulate.
+        const bases = proceduralBases.get(id) ?? new Map<THREE.Object3D, THREE.Quaternion>();
+        proceduralBases.set(id, bases);
+        if (poseTimes.get(id) !== seconds) { for (const [bone, rotation] of bases) bone.quaternion.copy(rotation); bases.clear(); }
+        const changed = avatar.pose(clip, animationTime, seconds, actor.position, headings.get(id) ?? .35, groundElevation(...actor.position) + activityLift(actor.kind, seconds) + (actor.bicycle ? 4 : 0));
+        if (changed) poseTimes.set(id, seconds);
         // Procedural offsets add missing exercise/jump/drink motions to authored clips.
-        if (changed && !actor.walking && ["exercise", "jump", "drink", "cycle"].includes(actor.kind)) {
+        if (changed && (actor.bicycle || !actor.walking && ["exercise", "jump", "drink"].includes(actor.kind))) {
           for (const side of ["left", "right"]) {
             const arm=avatar.model.getObjectByName(`arm-${side}`),leg=avatar.model.getObjectByName(`leg-${side}`),sign=side==="left"?1:-1;
+            if (arm) bases.set(arm, arm.quaternion.clone());
+            if (leg) bases.set(leg, leg.quaternion.clone());
             if(arm && actor.kind === "exercise") arm.rotation.z += sign*(.4+.6*Math.sin(seconds*2));
             if(arm && side === "right" && actor.kind === "drink") arm.rotation.x -= .3+.35*(1+Math.sin(seconds*1.6));
-            if(leg && actor.kind === "cycle") leg.rotation.x += sign*Math.sin(seconds*4)*.6;
+            if(leg && actor.bicycle) leg.rotation.x += sign*Math.sin(actor.bicycle.distance/3)*.6;
           }
           avatar.group.updateMatrixWorld(true);
         }
-        const cycling=actor.kind === "cycle" && !actor.walking;
-        if(cycling && !bicycles.has(id)){const bike=createPracticeBicycle();scene.add(bike);bicycles.set(id,bike);}
-        const bike=bicycles.get(id);if(bike){bike.visible=cycling;bike.position.set(actor.position[0],groundElevation(...actor.position),actor.position[1]);bike.rotation.y=headings.get(id)??.35;}
+        const cycling=!!actor.bicycle;
+        if(cycling && !bicycles.has(id)){const bike=createBicycle();scene.add(bike);bicycles.set(id,bike);}
+        const bike=bicycles.get(id);if(bike){bike.visible=cycling;bike.position.set(actor.position[0],groundElevation(...actor.position),actor.position[1]);bike.rotation.y=headings.get(id)??.35;if(actor.bicycle)spinBicycle(bike,actor.bicycle.distance);}
         posed.add(id);
         const oldProp = props.get(id);
         if (holding && oldProp?.kind !== propKind) {

@@ -773,7 +773,7 @@ export function createCity(
           : []),
       ].slice(0, capacity);
       const animalProjections = animalsAt(world, lastTime);
-      cars = trafficDirector.frame(seconds, [...actors, ...groundAnimals].map(a => a.position));
+      cars = trafficDirector.frame(seconds, [...actors, ...groundAnimals].map(a => a.position), [...actors, ...groundAnimals].map(a => a.bicycle?.radius ?? 4.8));
       const safeAll = walkDirector.frame(world, rawActors, seconds, cars, animalProjections);
       const byId = new Map(safeAll.map(a => [a.id, a]));
       groundAnimals = animalProjections.map(a => ({ ...a, ...byId.get(a.id) }));
