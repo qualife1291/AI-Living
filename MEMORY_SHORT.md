@@ -5,3 +5,7 @@
 - Giới hạn còn: cycle làkinematic với discbảo thủ, chưa lực học lốp/nghiêng/té/IK; pet chưa dây/IK; chưa completion/occupancy authoritative nhiềuviewer. Backend rewardngười vẫn theo kếhoạch, không khẳngđịnh đã thực hiện theo ground. Snapshot không lưu vịtrí ground/wheelphase; reload khởitạo lại presentation.
 - Chưa nghiệm thu GPU/điện thoại thật, soak30phút/24giờ,150người/80xe/p95<33ms. Zero collision trong fixture không chứng minh mọi tình huống hết kẹt. Nhánhmain vẫn a5b7c5a, chỉpushwork; productionledger version11/c1ddea1 chưađổi/chưa xácminhlive lượt này.
 - Trước release cầnbackupmới/kiểmtra0006thựctế/giữownerprivate; khôngresetDB/testfixture lênproduction. Luônpushcheckpointvàbàngiao trước testlâu, khôngcommit secrets/DB/cache hoặc thêmAPI tínhphí/automationtrùng. Cài: bash scripts/sites-env.sh -- corepack pnpm install --frozen-lockfile --prefer-offline --store-dir .sites-runtime/pnpm-store.
+
+# WIP tên/thoại, rồi phaseC hộ ở
+- Đã thay sprite tên đang chọn bằng DOMpill constantpx cho các actor gần/trongkhung, ưu tiên selected/speaking, bounded16, tránh chồng nhau/khungthoại và ẩn sau nhà. Thoại card292px co theo mobile, header tên/source, đủtext vàsafeinsets. Bỏsprite/textureselectedLabel, giữtexturebiểnđịađiểm3D. ACKreadingtime từDOMcommit qua presentSpeech, khôngtừlúcstatuschưarender.
+- Unitlayoutviewport/collision/priority/longnamesđạt; check/lint đangchạy, chưabuild/browserQA. Tiếp theo foundationhousehold choNPC, khôngđổi graph/dân số/claimsphysics. Cầnchụpảnhthật vàpushcheckpoint.

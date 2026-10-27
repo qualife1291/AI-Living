@@ -16,6 +16,7 @@ import { SceneDetail } from "./scene-detail";
 import { QualityBudget } from "../../../lib/city/quality-budget";
 import { streetModel } from "./streetscape";
 import * as THREE from "three";
+import type { LabelAnchor } from "../../../lib/city/overlay-layout";
 import { logClient, recordFrame } from "../../../lib/diagnostics";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import {
@@ -46,6 +47,10 @@ export type SceneStatus = {
   activity: string;
   following: boolean;
   speech: string;
+  speechKey: string;
+  labels: LabelAnchor[];
+  viewportWidth: number;
+  viewportHeight: number;
   speaker: string;
   listener: string;
   conversationSource: string;
@@ -56,6 +61,7 @@ export type SceneStatus = {
   location: string;
 };
 export type CityRuntime = {
+  presentSpeech: (key: string) => void;
   zoom: (factor: number) => void;
   follow: () => void;
   overview: () => void;
@@ -290,6 +296,7 @@ export function createCity(
     for (let c = -1; c <= 1; c++)
       windowBox(x + (c * w) / 3.4, 7, z + d / 2 + 0.8, w / 4, 11, 1, 1);
   }
+  const nameOccluders = buildings.map(b => new THREE.Box3(new THREE.Vector3(b.x-b.width/2, 0, b.z-b.depth/2), new THREE.Vector3(b.x+b.width/2, b.height+6, b.z+b.depth/2)));
   const venueLabels: { sprite: THREE.Sprite; width: number }[] = [];
   function label(
     text: string,
@@ -350,6 +357,7 @@ export function createCity(
           : v.type === "airport"
             ? 48
             : 43;
+    if (!open) nameOccluders.push(new THREE.Box3(new THREE.Vector3(v.x-52,0,v.y-83), new THREE.Vector3(v.x+52,height+6,v.y-11)));
     box(v.x, 1, v.y - 25, 125, 2, 112, open ? "#c8d3b4" : "#e6dec9");
     // Functional details at the edges; the central door/frontage slots stay open.
     if (["cafe", "restaurant"].includes(v.type)) {
@@ -592,15 +600,13 @@ export function createCity(
   scene.add(ring);
   const fauna = createFauna(scene, people.geometry);
   host.dataset.animalBatches = String(fauna.stats.batches);
-  const selectedLabel = label("An", 0, 25, 0, 14)!;
   const shadowCanvas = document.createElement("canvas"); shadowCanvas.width = shadowCanvas.height = 64;
   const shadowContext = shadowCanvas.getContext("2d")!, gradient = shadowContext.createRadialGradient(32, 32, 3, 32, 32, 31);
   gradient.addColorStop(0, "rgba(28,44,41,.34)"); gradient.addColorStop(1, "rgba(28,44,41,0)");
   shadowContext.fillStyle = gradient; shadowContext.fillRect(0, 0, 64, 64);
   const contactShadows = new THREE.InstancedMesh(new THREE.PlaneGeometry(1, 1).rotateX(-Math.PI / 2), new THREE.MeshBasicMaterial({ map: new THREE.CanvasTexture(shadowCanvas), transparent: true, depthWrite: false }), capacity + TRAFFIC_COUNT);
   contactShadows.frustumCulled = false; scene.add(contactShadows);
-  let lastLabel = "",
-    following = true,
+  let following = true,
     dead = false,
     frame = 0,
     lastDraw = 0,
@@ -655,7 +661,7 @@ export function createCity(
     // Include buildings so picking never selects a resident through a tower.
     const hit = raycaster
       .intersectObjects(scene.children, true)
-      .find((h) => h.object !== ring && h.object !== selectedLabel);
+      .find((h) => h.object !== ring);
     if (!hit) return;
     if (hit.object.userData.actorId) callbacks.select(hit.object.userData.actorId);
     else if (hit.object.userData.venue) callbacks.venue(hit.object.userData.venue);
@@ -838,22 +844,6 @@ export function createCity(
     host.dataset.animalPositions = JSON.stringify(groundAnimals.map(a => ({ id: a.id, species: a.species, position: a.position })));
     if (current) {
       ring.position.set(current.position[0], 2, current.position[1]);
-      selectedLabel.position.set(current.position[0], 25, current.position[1]);
-      if (lastLabel !== current.name) {
-        // Reuse the single selected label texture.
-        lastLabel = current.name;
-        const c = selectedLabel.material.map!.image as HTMLCanvasElement,
-          ctx = c.getContext("2d")!;
-        ctx.clearRect(0, 0, 512, 96);
-        ctx.fillStyle = "#f2eddd";
-        ctx.fillRect(0, 0, 512, 96);
-        ctx.fillStyle = "#375a50";
-        ctx.font = "600 42px sans-serif";
-        ctx.textAlign = "center";
-        ctx.textBaseline = "middle";
-        ctx.fillText(current.name, 256, 48, 480);
-        selectedLabel.material.map!.needsUpdate = true;
-      }
       if (following) {
         const partnerId = socialPoses.get(current.id)?.peerId;
         const peer = actors.find(a => a.id === partnerId) ?? groundAnimals.find(a => a.petOwnerId === current!.id);
@@ -894,6 +884,17 @@ export function createCity(
         25,
         speaker?.position[1] ?? 0,
       ).project(camera);
+      const labels: LabelAnchor[] = [];
+      for (const actor of actors) {
+        const head = new THREE.Vector3(actor.position[0], groundElevation(...actor.position) + (actor.bicycle ? 25 : 20.5), actor.position[1]);
+        const ray = new THREE.Ray(camera.position, head.clone().sub(camera.position).normalize()), hit = new THREE.Vector3();
+        if (nameOccluders.some(box => ray.intersectBox(box,hit) && hit.distanceTo(camera.position) < head.distanceTo(camera.position)-.3)) continue;
+        const point = head.project(camera);
+        const selected = actor.id === current?.id, speaking = socialPoses.get(actor.id)?.speaking ?? false;
+        if (point.z < -1 || point.z > 1 || Math.abs(point.x) > .98 || Math.abs(point.y) > .95) continue;
+        if (!selected && !speaking && camera.position.distanceTo(new THREE.Vector3(actor.position[0],0,actor.position[1])) > 240) continue;
+        labels.push({ id: actor.id, name: actor.name, x: (point.x+1)*host.clientWidth/2, y: (1-point.y)*host.clientHeight/2, selected, speaking });
+      }
       callbacks.status({
         name: current?.name ?? "An",
         activity: current?.activity ?? "Đang sinh hoạt",
@@ -901,6 +902,8 @@ export function createCity(
         walking: current?.walking ?? false,
         location: current?.location ?? "",
         speech: speech?.text ?? "",
+        speechKey: speech?.key ?? "",
+        labels, viewportWidth: host.clientWidth, viewportHeight: host.clientHeight,
         speaker: speaker?.name ?? "",
         listener: listener?.name ?? "",
         conversationSource: exchange?.source ?? "",
@@ -913,7 +916,6 @@ export function createCity(
           Math.abs(p.x) < 0.85 &&
           Math.abs(p.y) < 0.8,
       });
-      if (speech && speaker && p.z > -1 && p.z < 1 && Math.abs(p.x) < .85 && Math.abs(p.y) < .8) socialDirector.presented(speech.key, Date.now() + (state.clockOffsetMs ?? 0));
     }
     host.dataset.ready = "true";
     host.dataset.paused = String(world.paused);
@@ -958,6 +960,7 @@ export function createCity(
   }
   frame = requestAnimationFrame(tick);
   return {
+    presentSpeech(key) { socialDirector.presented(key, Date.now() + (input().clockOffsetMs ?? 0)); },
     zoom(factor) {
       following = false;
       host.dataset.view = "orbit";

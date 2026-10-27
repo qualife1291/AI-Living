@@ -1,6 +1,7 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Building2, LocateFixed, Minus, Plus, Scan, MessageCircle, Footprints, Coffee } from "lucide-react";
+import { WorldOverlays } from "./WorldOverlays";
 import { WebGLUnavailable } from "./WebGLUnavailable";
 import type { CityRuntime, SceneInput, SceneStatus } from "./three/runtime";
 import type { Venue } from "@/lib/city/world";
@@ -16,6 +17,7 @@ export function City3D(props: Props) {
     latest = useRef(props);
   const [failed, setFailed] = useState(false),
     [status, setStatus] = useState<SceneStatus | null>(null);
+  const presented = useCallback((key: string) => runtime.current?.presentSpeech(key), []);
   useEffect(() => {
     latest.current = props;
   }, [props]);
@@ -54,15 +56,7 @@ export function City3D(props: Props) {
     <div className="urban-map-host city-three">
       <div ref={host} className="three-canvas" />
       {!status && <div className="three-notice">Đang dựng thành phố 3D…</div>}
-      {status?.visible && status.speech && (
-        <div
-          className="three-speech live-speech"
-          style={{ left: `clamp(118px, ${status.x}px, calc(100% - 118px))`, top: status.y }}
-        >
-          <strong>{status.speaker} <span aria-hidden="true">→</span> {status.listener} <em title={status.conversationSource === "ai" ? "Hội thoại do model sinh và đã lưu" : "Cảnh biên soạn bởi agent, phát theo mô phỏng"}>{status.conversationSource === "ai" ? "AI" : "Kịch bản"}</em></strong>
-          <span>{status.speech}</span>
-        </div>
-      )}
+      {status && <WorldOverlays status={status} onSelect={props.onSelect} onPresented={presented} />}
       <div className="live-hud live-person">
         <span className="person-indicator">{status?.walking ? <Footprints size={16}/> : <Coffee size={16}/>}</span>
         <button onClick={props.onInspect}>
