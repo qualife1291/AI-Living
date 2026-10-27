@@ -692,6 +692,7 @@ export function createCity(
   resize.observe(host);
   const heading = new Map<string, number>();
   function drawActors(seconds: number, world: World, dt: number) {
+    modelActors.prepare(world, input().selected);
     const updated = people.draw(world, actors, socialPoses, seconds, dt, camera, input().selected, modelActors.ids);
     heading.clear(); for (const [id, yaw] of updated) heading.set(id, yaw);
     modelActors.draw(world, actors, socialPoses, heading, seconds);
@@ -879,7 +880,7 @@ export function createCity(
       const speech = exchange?.speech,
         speaker = actors.find((a) => a.id === speech?.speaker);
       const listener = actors.find(a => a.id === (exchange?.a === speaker?.id ? exchange?.b : exchange?.a));
-      const actorHead = (actor: Actor) => new THREE.Vector3(actor.position[0], groundElevation(...actor.position) + (modelActors.ids.has(actor.id) ? 18.2 : 21.5) + (actor.bicycle ? 4 : 0), actor.position[1]);
+      const actorHead = (actor: Actor) => modelActors.head(actor.id)?.add(new THREE.Vector3(0, 1, 0)) ?? new THREE.Vector3(actor.position[0], groundElevation(...actor.position) + 21.5 + (actor.bicycle ? 4 : 0), actor.position[1]);
       const p = speaker ? actorHead(speaker).project(camera) : new THREE.Vector3();
       const labels: LabelAnchor[] = [];
       for (const actor of actors) {
@@ -998,6 +999,7 @@ export function createCity(
       renderer.domElement.removeEventListener("pointerup", pointerUp);
       renderer.domElement.removeEventListener("webglcontextlost", lost);
       document.removeEventListener("visibilitychange", visibilityChanged);
+      modelActors.dispose();
       const geometries = new Set<THREE.BufferGeometry>(),
         materials = new Set<THREE.Material>(),
         textures = new Set<THREE.Texture>();

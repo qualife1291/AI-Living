@@ -21,6 +21,7 @@ export class RiggedAvatar {
  private joints=new Map<string,THREE.Object3D>();
  private current='';private requested='';private previous='';private changedAt=0;private lastTime=NaN;
  private feet:THREE.Object3D[]=[];private footOffset=0;private tintKey='';
+ private attachments=new Map<string,{mesh:THREE.SkinnedMesh;indices:number[]}[]>();
  private colors={shirt:new THREE.Color('white'),trousers:new THREE.Color('white')};
  private wardrobeEnabled={value:0};
  constructor(source:GLTF,height=17.5,radius=4.4) {
@@ -63,6 +64,40 @@ export class RiggedAvatar {
    };
    material.customProgramCacheKey=()=> 'living-wardrobe-v1';
   });
+  this.findAttachments();
+ }
+ /** Surface samples follow the deformed skin, including exporter bind offsets.
+  * Bone origins alone are not necessarily inside the visible hand or head. */
+ private findAttachments() {
+  for(const key of ['head','hand-left','hand-right','foot-left','foot-right']) {
+   const bone=this.joints.get(key);if(!bone)continue;
+   const samples:{mesh:THREE.SkinnedMesh;indices:number[]}[]=[];
+   this.model.traverse(object=>{
+    const mesh=object as THREE.SkinnedMesh;if(!mesh.isSkinnedMesh)return;
+    const boneIndex=mesh.skeleton.bones.indexOf(bone as THREE.Bone);if(boneIndex<0)return;
+    const skin=mesh.geometry.getAttribute('skinIndex'),weights=mesh.geometry.getAttribute('skinWeight');
+    const candidates:{i:number;p:THREE.Vector3}[]=[];
+    for(let i=0;i<skin.count;i++) {
+     let weight=0;for(let j=0;j<4;j++)if(skin.getComponent(i,j)===boneIndex)weight+=weights.getComponent(i,j);
+     if(weight>=.5)candidates.push({i,p:mesh.getVertexPosition(i,new THREE.Vector3()).applyMatrix4(mesh.matrixWorld)});
+    }
+    if(!candidates.length)return;
+    let chosen=candidates;
+    if(key==='head'||key.startsWith('foot')) {
+     const ys=candidates.map(v=>v.p.y),min=Math.min(...ys),max=Math.max(...ys),range=Math.max(.001,max-min);
+     chosen=candidates.filter(v=>key==='head'?v.p.y>=max-range*.12:v.p.y<=min+range*.08);
+    }
+    // Bounded work per frame even on a detailed skinned mesh.
+    samples.push({mesh,indices:chosen.filter((_,i)=>i%Math.max(1,Math.ceil(chosen.length/24))===0).map(v=>v.i)});
+   });
+   if(samples.length)this.attachments.set(key,samples);
+  }
+ }
+ private surface(key:string,extreme?:'min'|'max') {
+  const samples=this.attachments.get(key);if(!samples)return;
+  const result=new THREE.Vector3();let count=0,best=extreme==='min'?Infinity:-Infinity;
+  for(const {mesh,indices} of samples)for(const i of indices){mesh.getVertexPosition(i,scratch).applyMatrix4(mesh.matrixWorld);if(extreme){if(extreme==='min'?scratch.y<best:scratch.y>best){result.copy(scratch);best=scratch.y;}}else result.add(scratch);count++;}
+  return count?extreme?result:result.multiplyScalar(1/count):undefined;
  }
  private findJoints(bones:THREE.Bone[]) {
   const points=bones.map(b=>({b,p:b.getWorldPosition(new THREE.Vector3())}));
@@ -93,7 +128,8 @@ export class RiggedAvatar {
   for(const [name,action] of this.actions){action.enabled=name===resolved||name===this.previous&&blend<1;action.setEffectiveWeight(name===resolved?blend:name===this.previous?1-blend:0);if(name===resolved){const duration=Math.max(.001,action.getClip().duration);action.time=((animationTime%duration)+duration)%duration;}}
   this.mixer.update(0);this.lastTime=presentationTime;this.requested=clip;
   this.group.position.set(position[0],0,position.length>2?position[2]:position[1]);this.group.rotation.set(0,yaw,0);this.group.updateMatrixWorld(true);
-  const bottom=this.feet.length?Math.min(...this.feet.map(b=>b.getWorldPosition(scratch).y))-this.footOffset:0;
+  const contacts=['foot-left','foot-right'].map(key=>this.surface(key,'min')?.y).filter((y):y is number=>y!==undefined);
+  const bottom=contacts.length?Math.min(...contacts):this.feet.length?Math.min(...this.feet.map(b=>b.getWorldPosition(scratch).y))-this.footOffset:0;
   this.group.position.y=floor-bottom;this.group.updateMatrixWorld(true);return true;
  }
  tint(colors:Colors) {
@@ -102,7 +138,8 @@ export class RiggedAvatar {
   this.colors.shirt.set(colors.shirt);this.colors.trousers.set(colors.trousers);
  }
  assignId(id:string){this.model.traverse(o=>{if((o as THREE.Mesh).isMesh)o.userData.actorId=id;});}
- hand(side='right'){return this.joint(`hand-${side}`)?.getWorldPosition(new THREE.Vector3())??this.group.position.clone().add(new THREE.Vector3(0,10,0));}
+ hand(side='right'){return this.surface(`hand-${side}`)??this.joint(`hand-${side}`)?.getWorldPosition(new THREE.Vector3())??this.group.position.clone().add(new THREE.Vector3(0,10,0));}
+ head(){return this.surface('head','max')??this.group.position.clone().add(new THREE.Vector3(0,17.5,0));}
  aimHands(targets:{right?:readonly number[];left?:readonly number[]}) {
   for(const side of ['left','right'] as const){const goal=targets[side],arm=this.joint(`arm-${side}`),hand=this.joint(`hand-${side}`);if(!goal||!arm?.parent||!hand)continue;
    const origin=arm.getWorldPosition(new THREE.Vector3()),direction=hand.getWorldPosition(new THREE.Vector3()).sub(origin).normalize(),target=new THREE.Vector3(...goal).sub(origin).normalize();

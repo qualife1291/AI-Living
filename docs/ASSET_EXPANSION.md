@@ -11,3 +11,13 @@ Không suy ra có clip bay/nói chuyện từ tên pack: nhiều model chỉ cun
 Các thay đổi work hiện hành từ agent khác (tag, pet owner/walk, xe đạp di chuyển, 3D-only, overlays, households) được giữ. Nhân vật được phân nhóm tuổi/giới/cách xưng hô, giữ ID và lịch sử; không tạo tên kiểu “Linh 2”. Test mới và trạng thái release sẽ bổ sung sau triển khai.
 
 Importer đầu đã kiểm tra 418 file, 55.207.250 byte dưới ngân sách 64 MiB, 114 model có skin. Toàn bộ dependency phục vụ từ Site. Human002 có clip Talk/Listen/Nod/Sit thật; các pack động vật thực tế có bốn clip đặt tên riêng, khác mô tả track ghép trong một số README. Chưa thể gọi tích hợp runtime hoàn tất ở mốc chỉ mới import này.
+
+## Tiếp nhận a14e939 và nối runtime (28/10, giờ Việt Nam)
+
+Đã kiểm tra bốn commit mới so với 97fd21d, fast-forward work; main vẫn a5b7c5a. Baseline 36 lệnh unit/check/lint/build đạt trên nguồn nhận. Remote chỉ cấu hình fetch main nên tiếp nối phải fetch rõ refs/heads/work, tránh đọc nhầm origin/work cũ.
+
+Checkpoint mới nối ba core vào Gobkit Human002 (engineer/accountant/receptionist), ưu tiên Talk/Listen khi xã hội; giữ Kenney3D nếu model chưa tải. Chỉ NPC đang chọn tải model theo vai trò, tối đa một NPC skeleton cùng ba core; cư dân khác giữ batched LOD. Chưa đổi nghề/hồ sơ/AI hay tự đưa trang phục sân khấu vào đời thường. Trang phục và phụ kiện gốc của model vẫn thuộc mesh, chưa có tủ đồ theo trang phục của từng pack.
+
+Điểm tay/đỉnh đầu dùng mẫu vertex của skin sau deformation, thay bone origin chưa khớp hình học do bind offsets. Nhãn tên trong city lấy đỉnh đầu thật; pause/pose/bicycle vẫn dùng cùng ground pipeline. Khi dispose phải dừng mixer, giải phóng geometry/material/skeleton clone và giữ nguyên cached source/textures đến khi library đóng. Gallery chờ đúng lần tải đang chọn, có retry lỗi tải/WebGL, sửa width toàn màn hình và camera theo aspect; static/paused model chỉ draw khi thay đổi hoặc xoay/resize.
+
+Đang chạy kiểm thử tích hợp mới actual skin/ground/disc/Talk/Listen/focused NPC/dispose; chưa chốt QA browser cuối tại checkpoint này. Không nhận các test Kenney cũ là bằng chứng mới của Gobkit. Full social6lượt sau DOM ACK và browser15packs/mobile/lifecycle còn bắt buộc trước khi chốt.

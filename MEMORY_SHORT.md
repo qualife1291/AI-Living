@@ -6,3 +6,6 @@
 - Giữ ID/lịch sử/memory/appearance/home/petOwners; thêm metadata tương thích, không reset DB hoặc sửa migration. Không gọi model/API tính phí, không thay owner-private/cron, không deploy khi không có native Sites tools. Tên/tuổi/giới là hồ sơ nhân vật mô phỏng, không suy luận từ dữ liệu người thật.
 - Backlog ngoài đợt tích hợp: loài/habitat/audio; KayKit world placements khớp collider; phaseC individual-home/density/trafficgraph; phaseD LinUCB/skillgates; durable dialogue/modelA-B/occupancy authoritative. Không đổi các mục đó thành hoàn thành nếu chưa có implementation+test.
 - Luôn checkpoint/push trước test lâu, cập nhật kết quả và giới hạn trong docs/ASSET_EXPANSION.md/MEMORY_LONG.md. Dependencies đã có; không cần onboarding/cài lại.
+
+## Checkpoint runtime đang kiểm thử
+- Nối core Gobkit + focusedNPC (tối đa4skin), Talk/Listen thật, surfacehand/head và disposal; gallery retry/loss/selectionrace/mobilecamera/fullwidth. Baseline36suite/check/lint/build đạt. Source mới check/lint/build và regression phaseB/cycleKenney đạt; actual-city-rigs37 đang kiểm tra trướcbrowser. Còn full37suite/API/browser15packs/social6/cycle/overlays/pet/context. Chưa đổi identities/fauna/KayKitplacements/phaseC/D.
