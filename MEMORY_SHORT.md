@@ -1,7 +1,6 @@
-# Tiếp tục từ work — 27/10/2026
-- Đã kiểm tra GitHub: main=a5b7c5a, work=5d50e17 trước lượt này; work chứa main, hơn10commit. Checkout lúc đầu tênwork nhưng ởmain; đã fast-forward đúngorigin/work. Không merge/push main, chưa deploy; production11 xem docs/releases/latest.json.
-- Lỗi telemetry tái hiện bằng32log UTF-8 hợp lệ: JSON>16KiB, HTTP413 lặp không tiến triển. Đã thêm batch theo byte UTF-8 và chuẩn hóa field theo endpoint; regression fail trước/sau đạt. WIP: cần fullunit/check/lint/build/API trên dependencies work mới, không dùng kết quả onboardingmain thay thế.
-- Renderer adaptive balanced ở5d50e17 còn cần browserQA sau build cuối; chưa coi SwiftShader là FPS điện thoại. Browser vònga67 trước đó đủ6lượt,9actions,0collision nhưng11frames/9s. Studio8cases×5shot vàAPI trước đó đã đạt; docs/MAIN_REVIEW_2026-10-27.md ghi phạm vi.
-- Backlog tính năng: tagtheocặp, cyclephysics, petowner, density/household/trafficgraph, LinUCB/skillgates, durablehistory/modelA-B. Chưa hoàn tấtC/D; không tự coi đây là lỗi đã sửa.
-- Migration0006 chưa có bằng chứng áp dụngproduction; backup mới trước deploy/migration. Không resetDB, không dùngtestlocal lênprod. Không tạo automation trùng hoặc API tínhphí; giữownerprivate.
-- Push checkpoint lênwork trong quá trình làm đểagentkhác tiếp nối; khôngcommit .dev.vars/DB/cache. Cài: bash scripts/sites-env.sh -- corepack pnpm install --frozen-lockfile --prefer-offline --store-dir .sites-runtime/pnpm-store (tránhinstaller sửa trackedconfig).
+# Bàn giao work — 27/10/2026
+- Source đã đồng bộ origin/work; main=a5b7c5a là tổ tiên của work5d50e17 trước lượt này. Bug telemetry UTF-8 đã push20c7152/1df9f76; QA đầy đủ và phạm vi xem docs/WORK_REVIEW_2026-10-27.md. Đọc tài liệu đó trước khi bắt đầu để tránh sửa lại lỗi đã hoàn tất.
+- Production ledger vẫn version11/c1ddea1; chưa deploy source work hoặc xác minh live trong lượt này. Trước release: backup mới, kiểm tra migration0006 thực tế, giữ owner-private. Không reset DB hoặc chạy test fixture lên production.
+- Còn feature backlog: tag theo cặp/đổi vai, cycle physics, thú theo chủ, density/household/traffic graph, LinUCB/skill gates, durable dialogue history/model A-B. Chưa hoàn tất C/D; cần chọn từng phần và tiêu chí nghiệm thu rõ ràng.
+- QA SwiftShader desktop/mobile đã có bằng chứng local; chưa có nghiệm thu điện thoại/GPU thật, soak30phút/24giờ hoặc cam kết150người/80xe/p95<33ms. Không suy diễn zero collision trong fixture là mọi tình huống hết kẹt.
+- Luôn push checkpoint lên work và cập nhật bàn giao trước kiểm thử lâu; không commit .dev.vars/DB/cache, không tự tạo automation trùng/API tính phí. Cài bằng: bash scripts/sites-env.sh -- corepack pnpm install --frozen-lockfile --prefer-offline --store-dir .sites-runtime/pnpm-store.

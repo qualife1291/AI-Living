@@ -165,3 +165,5 @@ Thêm enum/scenarios hành động và5bước hậu thoại, schedulerNPC simul
 
 ## 27/10/2026 — tiếp nhận work từ GitHub và sửa UTF-8 telemetry
 GitHub main a5b7c5a đã nằm trong work5d50e17 (10commit hơnmain); checkoutlocal tênwork banđầu ởmain, đãfastforwardorigin/work. Regression32log Unicode hợp lệ làmrequestvượt16KiB táihiện hàngđợikhôngtiếntriển; batching byteUTF-8 gồmJSONenvelope+comma, chuẩn hóa tốiđa8field/32key/100string, bỏnonfinite. Testfailtrước/passsau, giữACK/retry; checkpoint20c7152 đãpushwork. Khôngmergemain/deploy/resetDB. CácbacklogfeatureC/D vẫnphânbiệtbugfix; xemMEMORY_SHORT vàreviewmain choQAđangchạy.
+
+QA cuối lượt tiếp nhận work: full30suite/check/lint/build/API đạt. Browser desktop/mobile đủ6lượt và camera controls;9actions GLB/props/preset đạt; motion64frames/9s,63moving,0stale/0collision,maxstep2.4053unit,155796triangles/46drawcalls,eco. Ảnh thật local synthetic đã hiển thị cho người dùng, không phải production. Kết quả và backlog tiếp nối: docs/WORK_REVIEW_2026-10-27.md. Không benchmark điện thoại hoặc soak; không deploy/main merge.
