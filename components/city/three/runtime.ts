@@ -879,20 +879,16 @@ export function createCity(
       const speech = exchange?.speech,
         speaker = actors.find((a) => a.id === speech?.speaker);
       const listener = actors.find(a => a.id === (exchange?.a === speaker?.id ? exchange?.b : exchange?.a));
-      const p = new THREE.Vector3(
-        speaker?.position[0] ?? 0,
-        25,
-        speaker?.position[1] ?? 0,
-      ).project(camera);
+      const actorHead = (actor: Actor) => new THREE.Vector3(actor.position[0], groundElevation(...actor.position) + (modelActors.ids.has(actor.id) ? 18.2 : 21.5) + (actor.bicycle ? 4 : 0), actor.position[1]);
+      const p = speaker ? actorHead(speaker).project(camera) : new THREE.Vector3();
       const labels: LabelAnchor[] = [];
       for (const actor of actors) {
-        const head = new THREE.Vector3(actor.position[0], groundElevation(...actor.position) + (actor.bicycle ? 25 : 20.5), actor.position[1]);
-        const ray = new THREE.Ray(camera.position, head.clone().sub(camera.position).normalize()), hit = new THREE.Vector3();
-        if (nameOccluders.some(box => ray.intersectBox(box,hit) && hit.distanceTo(camera.position) < head.distanceTo(camera.position)-.3)) continue;
-        const point = head.project(camera);
+        const head = actorHead(actor), point = head.clone().project(camera);
         const selected = actor.id === current?.id, speaking = socialPoses.get(actor.id)?.speaking ?? false;
         if (point.z < -1 || point.z > 1 || Math.abs(point.x) > .98 || Math.abs(point.y) > .95) continue;
         if (!selected && !speaking && camera.position.distanceTo(new THREE.Vector3(actor.position[0],0,actor.position[1])) > 240) continue;
+        const ray = new THREE.Ray(camera.position, head.clone().sub(camera.position).normalize()), hit = new THREE.Vector3();
+        if (nameOccluders.some(box => ray.intersectBox(box,hit) && hit.distanceTo(camera.position) < head.distanceTo(camera.position)-.3)) continue;
         labels.push({ id: actor.id, name: actor.name, x: (point.x+1)*host.clientWidth/2, y: (1-point.y)*host.clientHeight/2, selected, speaking });
       }
       callbacks.status({

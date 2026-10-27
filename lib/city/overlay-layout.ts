@@ -17,7 +17,7 @@ export function nameLabels(anchors: LabelAnchor[], viewport: { width: number; he
   const bottom = viewport.width <= 900 ? 160 : 100;
   for (const a of [...anchors].sort((a,b) => Number(b.selected)-Number(a.selected) || Number(b.speaking)-Number(a.speaking) || a.id.localeCompare(b.id))) {
     if (placed.length >= 16 || !Number.isFinite(a.x + a.y)) continue;
-    const width = Math.min(116, Math.max(48, Array.from(a.name).length * 6.4 + 26)), height = 26;
+    const width = Math.min(116, Math.max(50, Array.from(a.name).length * 6.6 + 32)), height = 26;
     const x = clamp(a.x - width / 2, 10, viewport.width - width - 10);
     if (Math.abs(x + width/2 - a.x) > 32) continue;
     for (const shift of [0, 30]) {

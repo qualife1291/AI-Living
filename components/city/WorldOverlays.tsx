@@ -19,7 +19,7 @@ export function WorldOverlays({ status, onSelect, onPresented }: { status: Scene
   const rect = visible ? speechRect(status,size,viewport) : undefined;
   const labels = nameLabels(status.labels,viewport,rect);
   return <div className="world-overlays">
-    {labels.map(label => <button key={label.id} className={`actor-name${label.selected ? " is-selected" : ""}${label.speaking ? " is-speaking" : ""}`} title={label.name} aria-label={`Theo dõi ${label.name}`} aria-pressed={label.selected}
+    {labels.map(label => <button key={label.id} className={`actor-name${label.selected ? " is-selected" : ""}${label.speaking ? " is-speaking" : ""}`} title={label.name} data-actor-id={label.id} aria-label={`Theo dõi ${label.name}`} aria-pressed={label.selected}
       style={{ width: label.width, transform: `translate3d(${label.x}px,${label.y}px,0)` }} onClick={() => onSelect(label.id)}>
       <span className="actor-name-dot" aria-hidden="true"/><span>{label.name}</span>
     </button>)}
