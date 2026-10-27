@@ -1,47 +1,42 @@
-# Mô hình Dữ liệu, Bất biến Hệ thống & Kế hoạch Migration (`DATA_MODEL.md`)
+# Mô hình dữ liệu hiện hành
 
----
+Nguồn: db/schema.ts, lib/world.ts, lib/event-schema.ts, lib/living/schema.ts. Source có13bảng; số bảng/migration production phải xác minh live, không suy ra từ schema local.
 
-## 1. Các bảng cơ sở dữ liệu D1 (`db/schema.ts`)
+## D1 và migration append-only
 
-### 1.1 Bảng gốc (Migration `0000_deep_firebird.sql`)
-- **`worlds`**:
-  - `id` (`TEXT PRIMARY KEY`): Luôn dùng `'home'` cho khu phố chính.
-  - `revision` (`INTEGER NOT NULL DEFAULT 0`): Số thứ tự phiên bản tăng đơn điệu mỗi lần cập nhật.
-  - `data` (`TEXT NOT NULL`): Chuỗi JSON lưu đối tượng `World`.
-- **`episodes`**:
-  - `id` (`TEXT PRIMARY KEY`): Khóa chống trùng (Idempotency Key), khớp biểu thức `/^[a-zA-Z0-9_-]{1,100}$/`.
-  - `created_at` (`TEXT NOT NULL`): Thời điểm ghi sự kiện (ISO-8601 UTC).
-  - `source` (`TEXT NOT NULL`): `'ai'` hoặc `'opening'`.
-  - `data` (`TEXT NOT NULL`): Chuỗi JSON lưu toàn bộ nội dung sự kiện `{ title, summary, dialogue, changes, relationship?, contextId?, revisionBefore, revisionAfter }` (đã sửa **L2** để không mất `relationship`).
+| Bảng | Vai trò | Migration lịch sử |
+|---|---|---|
+| worlds | JSON snapshot home, revision CAS | 0000 |
+| episodes | Sự kiện bất biến/idempotency, toàn bộ dialogue/changes/relationship và revision metadata | 0000 |
+| memories | person/event/text/kind/importance/witnessed_with/time | 0001 |
+| tick_runs | Idempotency/trạng thái/model/lỗi lượt chạy | 0001 |
+| commitments | Lời hứa from/to/text/due/status/event | 0001 |
+| nudges | Gợi ý owner và event đã tiêu thụ | 0001 |
+| context_cache | Cache dữ liệu nguồn, expiresAt | 0002 |
+| living_turns | Archive hội thoại/kế hoạch có provenance | 0002 |
+| agent_experiences | Archive outcome, seq và ID unique | 0003 |
+| view_sessions | Đếm lượt theo phiên/nonce, không phải số người duy nhất | 0005 |
+| site_metrics | Bộ đếm aggregate | 0005 |
+| visitor_exchanges | Trao đổi visitor có ID/actor/time/data | 0005 |
+| client_logs | Telemetry giới hạn/rate/retention, indexcreated_at | 0006 |
 
-### 1.2 Bảng mở rộng (Migration `0001_living_world_and_training.sql`)
-- **`memories`**: Lưu ký ức có cấu trúc (`id`, `person_id`, `event_id`, `text`, `kind`, `importance` 1..5, `witnessed_with` JSON, `created_at`) kèm chỉ mục `idx_memories_person_time`.
-- **`tick_runs`**: Ghi nhật ký vận hành các lượt chạy tự động (`id`, `started_at`, `finished_at`, `status`, `model`, `event_id`, `neurons_est`, `error`).
-- **`commitments`**: Lưu lời hứa và việc dang dở (`id`, `from_id`, `to_id`, `text`, `due_at`, `status`, `event_id`).
-- **`nudges`**: Lưu gợi ý của chủ dự án cho đạo diễn AI (`id`, `hint`, `created_at`, `consumed_by_event_id`).
+0004 là reconciliation schema cho lịch sử0000–0003; không đăng ký lại các SQL đã áp dụng hoặc sửa migration cũ. Dùng setup-local.mjs/Drizzle journal. Backup trước migration/repair production. memories/commitments có schema nhưng luồng sống vẫn giữ nhiều dữ liệu trong snapshot; không coi các bảng đó đã được khai thác đầy đủ.
 
----
+## Domain
 
-## 2. Kiểu dữ liệu Domain (`lib/world.ts` & `lib/event-schema.ts`)
+Core event API giữ ba ID an/binh/chi. LivingState có NPC neighbor-ID riêng, tối đa240theo catalog; renderer có budget hiển thị riêng. Có33địa điểm và41scenario trong data/city; Gemini ghi32scenario là số cũ trước9actions mới.
 
-- **Danh sách nhân vật hợp lệ (`RESIDENT_IDS`):** `'an' | 'binh' | 'chi'`.
-- **Danh sách 12 địa điểm hợp lệ (`PLACES`):** `'Sân chung'`, `'Phòng An'`, `'Phòng Bình'`, `'Phòng Chi'`, `'Bếp chung'`, `'Vườn nhỏ'`, `'Công viên'`, `'Quán cà phê'`, `'Thư viện'`, `'Xưởng sáng tạo'`, `'Quảng trường'`, `'Phố đi bộ'`.
-- **Danh sách 7 loại hành động (`STEP_KINDS`):** `'work' | 'eat' | 'rest' | 'social' | 'garden' | 'read' | 'play'`.
-- **Biên độ thay đổi mỗi sự kiện (`PersonChange`):**
-  - `moneyDelta`: số nguyên trong `[-30000, 30000]`.
-  - `energyDelta`, `hungerDelta`: số nguyên trong `[-20, 20]`.
-  - `skillDelta`: số nguyên trong `[0, 3]`.
-  - `memory`: chuỗi `1..240` ký tự.
-  - `plan`: mảng `1..8` bước, mỗi bước có `duration` nguyên trong `[30, 180]` giây.
+STEP_KINDS có16giá trị: work,eat,rest,social,garden,read,play,drink,run,jump,tag,cycle,exercise,walk-pet,shop,study. Plan lưu createdAt/pausedMs/from/originPath/simStartedAt/steps/transport/generator; originPath giữ chuyển tiếp liên tục từ vị trí projection cũ. Render ground có thể chậm hơn projection khi bị cản.
 
----
+Resident giữ id/name/roleId/color/arrivedOn/familiarity/memories/plan. home gồm householdId/label/place; identity gồm ageAtArrival/gender/previousNames. Backfill chỉ thêm metadata, đổi đúng tên tự sinh có alias; không thay customname/ID/history/plan. Household là nhóm ở, chưa phải quan hệ cha mẹ/con hoặc nhà vật lý. petOwners là map animal-ID→resident-ID; explicit unassignment được giữ.
 
-## 3. Các bất biến bắt buộc của hệ thống (System Invariants)
+LivingState còn có catalog/needs/skills/learning/experiences/appearances/animalLearning/socialSchedule. experience snapshot giới hạn200mục, archiveDB giữ dữ liệu đầy đủ. Agent policy hiện có meanReward/trials/outcome; chuẩn bị LinUCB phải giữ tabular cũ, context-at-choice và no-double-credit. Animal policy giữ ba loài cũ, không tự gán kỹ năng LLM.
 
-1. **Không âm tiền:** `person.money + change.moneyDelta >= 0` với mọi nhân vật; nếu vi phạm, toàn bộ sự kiện bị từ chối với mã `400`.
-2. **Chỉ số trong biên `[0, 100]`:** `energy`, `hunger`, `skill` và `relationship.trust` luôn được kẹp trong đoạn `[0, 100]`.
-3. **Mỗi nhân vật tối đa 1 mục thay đổi/sự kiện:** Mảng `changes` không được chứa hai phần tử có cùng `id`.
-4. **Tính bất biến khi Tạm nghỉ (`paused = true`):** Mọi lệnh `POST /api/events` (trừ retry trùng `id` đã có) đều bị chặn với mã `409` khi `world.paused === true`.
-5. **Chuyển tiếp không nhảy vị trí (No-Teleport Invariant — L1):** Khi gán `p.plan`, trường `plan.from` luôn được tính từ `resolveTransitionOrigin(world, p.id, nowMs)` thay vì lấy vị trí tĩnh cũ.
-6. **Ký ức gắn người chứng kiến:** Nhân vật không được ghi nhận ký ức về cuộc hội thoại mà mình không tham gia hoặc chưa được nghe kể lại.
+## Bất biến
+
+- Mọi write kiểm tra owner/origin/schema và revision; retry không cộng lại tác động; pause chặn outcome/event mới theo contract endpoint.
+- ID/history/memory và world.born không bị reset để sửa lỗi. Ký ức chỉ thuộc người chứng kiến hoặc có provenance nghe kể.
+- Tiền không âm; needs/skill/trust trong0..100. Event change mỗi coreID tối đa một lần; moneyDelta±30000, needs±20, skillDelta0..3.
+- POST telemetry tính byte UTF-8 của cả JSON envelope, tối đa16KiB; ACK chỉ sau JSON ok:true, retry không làm mấtqueue.
+- Đọc snapshot legacy không tự ghi hàng loạt metadata; persistence bổ sung qua mutation/planner đã được CAS bảo vệ.
+- Tách snapshot/structured records phải có legacy read fallback và transaction; không xóa JSON cũ trước backfill/readback.

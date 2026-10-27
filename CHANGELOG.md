@@ -140,3 +140,10 @@ Thêm9action kinds/scenarios, mapping clip/procedural/props và bike tập; chu�
 - Nhãn tên compact theo pixel, card hội thoại responsive, giữ badge nguồn; đang review trước phát hành.
 - Household metadata cho NPC, hiển thị nhóm/thành viên, giữ lịch sử; chưa thay routing/density.
 - Tạm dừng theo yêu cầu. Việc tiếp nối và kiểm thử còn thiếu ở docs/WIP_OVERLAYS_HOUSEHOLDS.md.
+
+## Source candidate — 28/10/2026, chưa xác minh deploy
+
+- Hoàn thiện tích hợp Gobkit core/focusedNPC, giữ tỷ lệ chibi, Talk/Listen, nhãn bám đầu và đạo cụ theo skin; gallery239model tải từng mục có retry/pause/contextloss.
+- Tên cư dân mới không dùng số; backfill bảo toàn ID/ký ức/tên tự đặt và alias, giữ nhóm ở/người chăm thú qua CAS.
+- Dọn32ảnh reference thừa12,4MB, giữ đủ model/texture/license. Desktop/mobile hoàn tất regression social6/overlay/bike/pet/3Dretry; không nhận SwiftShader là benchmark điện thoại thật.
+- Cập nhật tài liệu3D-only/schema13bảng/41scenario và runner38suite độc lập tối đa4workers, báo toàn bộ lỗi. Review Gemini phân biệt ý tưởng phù hợp với các metric/harness chưa chứng minh.

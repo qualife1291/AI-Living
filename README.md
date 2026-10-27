@@ -1,22 +1,16 @@
 # Xóm AI — Khu phố của những trí tuệ nhỏ
 
-> Hiện hành: [Chỉ dùng 3D và đi dạo cùng thú](docs/THREE_ONLY_AND_PETS.md). Tủ đồ có preview3D; bảng Cư dân cho phép chọn người chăm sóc Cún/Mướp.
+## Trạng thái hiện hành
 
-> Review main/Gemini, stack và các bug thực tế: [báo cáo 27/10](docs/MAIN_REVIEW_2026-10-27.md).
+| Phần | Nguồn sự thật |
+|---|---|
+| Source | Main đã merge work tại c83a5e3; chỉ3D, tag/pet/bike/overlays/households, Gobkit/KayKit và tên Việt không số |
+| Production | [latest.json](docs/releases/latest.json), ledger riêng; chưa coi push là deploy |
+| Kiến trúc/dữ liệu/test | [ARCHITECTURE](docs/ARCHITECTURE.md), [DATA_MODEL](docs/DATA_MODEL.md), [TESTING](docs/TESTING.md) |
+| Phần mới/giới hạn | [ASSET_EXPANSION](docs/ASSET_EXPANSION.md), [review Gemini](docs/GEMINI_REVIEW_2026-10-28.md), MEMORY_SHORT |
+| Bàn giao/phát hành | [CODEX_HANDOFF](CODEX_HANDOFF.md), [AGENTS](AGENTS.md), [runbook](docs/PRODUCTION_RUNBOOK.md) |
 
-> Chi tiết nhân vật, rig chuyển động, đạo cụ và hoạt cảnh: [review bản 11](docs/VISUAL_DETAIL_REVIEW.md).
-
-> Vật cản nhỏ, khoảng riêng, camera điện ảnh theo An và sinh hoạt chủ động: [review bản10](docs/SPACE_CAMERA_AUTONOMY.md).
-
-> Sửa phản hồi thực tế về thoại/lag/xuyên nhà: [bằng chứng và giới hạn bản9](docs/GROUND_AND_MOTION_REVIEW.md).
-
-> Cập nhật nhân vật/đối thoại: [review và bằng chứng](docs/SOCIAL_REVIEW.md), [biên kịch bằng agent](docs/SOCIAL_SCRIPT_BIBLE.md), [prompt và chỉ đạo hình ảnh](docs/VISUAL_DIRECTION.md). Nguồn production đang chạy được ghi riêng trong docs/releases/latest.json.
-
-> Production version11 (27/10/2026), owner-private: xem [nhật ký phát hành](docs/releases/2026-10-27-production.md), [quy trình phục hồi](docs/PRODUCTION_RUNBOOK.md) và [khảo sát nguồn map3D](docs/MAP_3D_SOURCES.md).
-
-> Mới nhất: [Thành phố 3D và cao ốc](docs/THREE_WORLD.md) — renderer mặc định mới, điều khiển và bằng chứng local.
-
-> Cập nhật Codex Cloud: xem [docs/CLOUD_REVIEW.md](docs/CLOUD_REVIEW.md) cho ba phase mới, bằng chứng local và các phần còn thiếu. Các trạng thái live trong tài liệu bàn giao dưới đây chưa được xác minh lại.
+Các mục có ngày24/10 phía dưới là lịch sử sản phẩm. RendererSVG/StaticScene và hướng dẫn chỉ4suite đã được thay thế; dùng lệnh/checklist trong TESTING cho checkout hiện tại.
 
 Dự án mô phỏng một thành phố 3D lấy bối cảnh TP.HCM có ba robot AI **An, Bình, Chi**, cùng mèo **Mướp**, chó **Cún** và **Đàn sẻ**. Nhân vật có mục tiêu, ký ức gắn người chứng kiến, lời hứa và quan hệ; đi lại qua mạng lưới đường phố, làm việc theo nhịp đồng hồ thế giới và gặp nhau trò chuyện.
 
@@ -27,7 +21,7 @@ Dự án mô phỏng một thành phố 3D lấy bối cảnh TP.HCM có ba robo
 
 ---
 
-## 1. Điểm mới trong bản cập nhật toàn diện (24/10/2026)
+## 1. Lịch sử bản cập nhật 24/10/2026
 
 1. **Mã nguồn định dạng sạch & sửa triệt để L1–L10 + 20 lỗi ESLint:**
    - Sửa lỗi **L1 (P0)** bằng `resolveTransitionOrigin()` (`lib/life.ts` + `lib/apply-event.ts`): khi kế hoạch AI mới đến giữa lúc robot đang đi theo routine, điểm xuất phát `plan.from` lấy đúng vị trí mô phỏng hiện tại thay vì nhảy lùi về vị trí cũ.
@@ -52,7 +46,7 @@ Yêu cầu: **Node.js `>=22.18.0`** (khuyến nghị Node 22.18+ hoặc Node 24+
 
 npm run install:ci
 npm run build
-node scripts/setup-local.mjs # migration 0000–0003, không reset dữ liệu
+node scripts/setup-local.mjs # journal/migration hiện hành, không reset dữ liệu
 npm run dev
 ```
 
@@ -61,16 +55,15 @@ npm run dev
 ## 3. Kiểm tra (Unit Tests, TypeScript, Lint & Build)
 
 ```bash
-node scripts/test-life.mjs
-node scripts/test-events.mjs
-node scripts/test-animation.mjs
-node scripts/test-training.mjs
-node node_modules/typescript/bin/tsc --noEmit
+npm run test:unit
+npm run check
 npm run lint
-node node_modules/vinext/dist/cli.js build
+npm run assets:check
+npm run build
+npm run test:api:local
 ```
 
-Cả bốn bộ kiểm thử đơn vị (`test-life`, `test-events`, `test-animation`, `test-training`) đều là kiểm thử thuần, không gọi mạng và không ghi vào production DB.
+Bốn bộ kiểm thử nền tảng lịch sử (`test-life`, `test-events`, `test-animation`, `test-training`) đều là kiểm thử thuần, không gọi mạng và không ghi vào production DB.
 
 ---
 

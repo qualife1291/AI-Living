@@ -4,11 +4,11 @@
   "cases": [
     {
       "viewport": "desktop",
-      "labels": 3,
-      "maxLabelWidth": 71.59375,
+      "labels": 2,
+      "maxLabelWidth": 58.390625,
       "bubbleBounds": {
-        "x": 584.796875,
-        "y": 180.71875,
+        "x": 580.734375,
+        "y": 236.125,
         "width": 292,
         "height": 72.1875
       },
@@ -22,10 +22,10 @@
     {
       "viewport": "mobile",
       "labels": 1,
-      "maxLabelWidth": 58.390625,
+      "maxLabelWidth": 58.39062309265137,
       "bubbleBounds": {
-        "x": 78.8125,
-        "y": 267.03125,
+        "x": 86,
+        "y": 288.828125,
         "width": 292,
         "height": 68.59375
       },

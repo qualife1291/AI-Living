@@ -4,25 +4,29 @@
   "cases": [
     {
       "viewport": "desktop",
-      "frames": 87,
+      "frames": 89,
       "petFollow": true,
       "pause": true,
       "persistedAssignmentMock": true,
       "wardrobe3D": true,
       "OSM3D": true,
       "contextRetry": true,
+      "hideReveal": true,
+      "resize320": true,
       "no2D": true,
       "errors": []
     },
     {
       "viewport": "mobile",
-      "frames": 160,
+      "frames": 146,
       "petFollow": true,
       "pause": true,
       "persistedAssignmentMock": true,
       "wardrobe3D": true,
       "OSM3D": true,
       "contextRetry": true,
+      "hideReveal": true,
+      "resize320": true,
       "no2D": true,
       "errors": []
     }

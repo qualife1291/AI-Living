@@ -31,3 +31,7 @@ Review ảnh city sau đó cho thấy ép chiều cao17,5 cùng XZradius4,4 làm
 ## Dọn tài nguyên không dùng
 
 Theo yêu cầu chỉ giữ phần cần cho3D, đã gỡ32PNG quảng bá/ảnh nội dung và atlas sao chép dưới references/ (12.442.522byte). Giữ đủ239model/15license, mọi PNG/BIN mà glTF tham chiếu và texture nhúng GLB; tài nguyên phục vụ còn386file/42.764.728byte. Importer không tạo lại reference PNG; --prune-references kiểm tra hash/dependency trước khi chỉ xóa file đã ghi trong manifest, có thể chạy trên checkout không còn ZIP. Attachment ZIP của agent trước không tồn tại trong môi trường hiện tại, không cần tải lại để kiểm tra và dọn phần đã nhập. Đã chạy kiểm tra sau dọn đạt.
+
+## Chốt bằng chứng source đã merge
+
+Toàn bộ5harness cuối đã chạy trên Worker mới5194 sau uniformscale và cleanup: social6turn/controls, overlays240char/320px/profile, cyclefullbody, pet/contextloss/noWebGL/hide/resize, gallery19mẫu15pack/mobile. Không JavaScript error hoặc bindingwarning. API local D1 thật, hash386files và239parser/114skin/785clips đạt. Source38suite đạt cả runner tuần tự trước đó và runner process4worker mới (lượt đo9,85s trên môi trường này, không SLA hoặc cam kết giảm% chung). Kết quả chi tiết ở MEMORY_LONG và metrics cạnh ảnh. Giữ các backlog phaseC/D/loài/LLM trong reviewGemini; chỉ phát hành khi có nativeSites/readback.

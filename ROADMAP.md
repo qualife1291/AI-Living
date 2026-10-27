@@ -81,3 +81,9 @@ Cycle/transport=bicycle đã có ground route theo clearance9,2, toàn xe/ngư�
 ## Tài nguyên Gobkit/KayKit và định danh — đang triển khai
 
 Tích hợp giữ nguyên tag/pet-walk/xe đạp/3D-only/overlays/households đã có trên work. Tiếp theo là importer 15 pack CC0, skeleton animation adapter, nhân vật có tên/tuổi/cách xưng hô rõ ràng, môi trường và tập tính theo loài, catalog tải theo nhu cầu. Theo docs/ASSET_EXPANSION.md; test nguồn hợp nhất rồi phát hành một bản production theo yêu cầu mới. Không đánh dấu density/traffic graph/LinUCB/durable history hoàn tất.
+
+## Tiếp nhận main và review Gemini — 28/10/2026
+
+Main đã merge work c83a5e3. Asset/identity/UI milestone đã qua full38unit/API/hash/check/lint/build và5browserharness trên nguồn cuối; gallery239model/15packs, core/focusedNPC có skin độc lập và giữ tỷ lệ. Đây là source candidate, phát hành theo ledger/nativeSites riêng.
+
+Các phase tiếp theo được đánh giá ở docs/GEMINI_REVIEW_2026-10-28.md: ưu tiên LinUCB thực +skillgates/context-at-choice, durable thoại/memory với provenance, homeanchors/transit/collision, sinh thái/audio theo habitat. Không chép số3,71×/score98 hoặc hứa150ms/hardwareFPS từ harnesssynthetic. Native cron/public/LoRA/hardware/soak cần capability và nghiệm thu riêng; không tự biến lịch sử thành đã hoàn thành.

@@ -1,57 +1,17 @@
-# Bàn giao sang Codex (`CODEX_HANDOFF.md`)
+# Tiếp nhận Xóm AI
 
-> Yêu cầu tài nguyên đang triển khai: [Gobkit/KayKit](docs/ASSET_EXPANSION.md). Review main/Gemini trước đó: [báo cáo](docs/MAIN_REVIEW_2026-10-27.md). Đọc MEMORY_SHORT và latest.json để xác định việc còn dở/source production.
+| Trạng thái | Chi tiết |
+|---|---|
+| Source | User đã merge work vào main c83a5e3; tiếp tục theo MEMORY_SHORT và review Gemini |
+| Renderer | Chỉ3D; giữ XZ/nav/canvastextures/icon cần dùng, không phục hồi SVG/fallback2D |
+| Tài nguyên | 41Kenney +239Gobkit/KayKit canonical CC0; gallery on-demand; core+focusedNPC dùng skin độc lập |
+| QA nguồn đã merge | 38unit/API/check/lint/build/hash, desktop/mobile social6/cycle/overlay/pet/3Dretry; gallery15packs vàmobile; giới hạn ở MEMORY_LONG |
+| Production | docs/releases/latest.json là ledger đã xác minh cuối; không suy ra từ SHA GitHub |
 
-> Hiện hành: [Chỉ dùng 3D và pet-walk](docs/THREE_ONLY_AND_PETS.md). Renderer SVG/2D đã được gỡ theo yêu cầu; các ghi chú 2D bên dưới là lịch sử, không phải hướng dẫn khôi phục.
+Đọc AGENTS.md → MEMORY_SHORT.md → MEMORY_LONG.md → ROADMAP.md trước sửa. Sau đó đọc docs/GEMINI_REVIEW_2026-10-28.md, docs/ASSET_EXPANSION.md và docs/PRODUCTION_RUNBOOK.md.
 
-> Thành phố 2D trước đó: [Thành phố, tạo hình và học hành vi](docs/URBAN_WORLD.md), [ba hướng sản phẩm](docs/DECISIONS/ADR-0009-shared-world-three-product-directions.md). Ưu tiên các tài liệu này trước ghi chú lịch sử.
+Cài nếu thiếu node_modules: `bash scripts/sites-env.sh -- corepack pnpm install --frozen-lockfile --prefer-offline --store-dir .sites-runtime/pnpm-store`. Node>=22.18, pnpm11.25.0. Kiểm tra bằng npm run test:unit/check/lint/assets:check/build/test:api:local; browser phải dùng Worker khởi động mới sau build.
 
-> Bản mở rộng mới nhất: [An và RealContext TP.HCM](docs/LIVING_REALTIME.md) — đọc trước các ghi chú lịch sử dưới đây.
+Không resetDB/memory/history; migration append-only, backup trướcprod. Chỉ dùng native Sites credential mới với project cũ, không tìm token trongfile hoặc tạo site khác. User đã cho phép merge/push và một bảnprod; không hỏi lại quyền đã có. Mỗi checkpoint phải push và ghi phần chưa test, không nhận WIP là hoàn tất. Không paidAPI/public/video/crontrùng.
 
-> Cập nhật Codex Cloud: xem [docs/CLOUD_REVIEW.md](docs/CLOUD_REVIEW.md) cho ba phase mới, bằng chứng local và các phần còn thiếu. Các trạng thái live trong tài liệu bàn giao dưới đây chưa được xác minh lại.
-
-## Trạng thái bản bàn giao hiện tại (Đã cập nhật mã nguồn, tài liệu & bộ AI tự training — 24/10/2026)
-
-Bản ZIP này đã hoàn tất việc **định dạng sạch toàn bộ mã nguồn**, **sửa triệt để các lỗi L1–L10 và 20 lỗi ESLint**, **bổ sung Đồng hồ thế giới (`lib/clock.ts`) + 16 hoạt cảnh (`data/scenes.json`)**, **tích hợp thư viện 24 bối cảnh đa chiều & bộ dữ liệu AI tự training (`lib/training.ts`, `data/contexts/`, `data/training/`)**, đồng thời **cơ cấu lại toàn bộ hệ thống tài liệu vào 6 mục chuyên đề** (xem [docs/INDEX.md](docs/INDEX.md)).
-
----
-
-## Những gì đã có sẵn trong gói ZIP này
-
-1. **Mã nguồn ứng dụng đã chuẩn hóa & tối ưu:**
-   - Sửa lỗi **L1 (`resolveTransitionOrigin`)**: kế hoạch AI mới nối tiếp mượt mà từ vị trí mô phỏng hiện tại của robot.
-   - Sửa lỗi **L2–L10**: lưu đầy đủ `relationship` trong `episodes`, bắt race condition trùng `id`, kiểm tra kích thước byte UTF-8 thực tế của request body, bỏ lệnh ghi thừa trong `readWorld()`, trả `serverNow` chống lệch đồng hồ, tách `StaticScene` (`React.memo`) trong `CityMap.tsx`, đổi `<svg role="group">` và thống nhất chính sách `prefers-reduced-motion`.
-2. **Đồng hồ thế giới, Thời tiết & Hoạt cảnh:**
-   - `lib/clock.ts`: Tính `WorldTime` (7 pha ngày/đêm theo giờ Việt Nam, độ sáng `daylight`, mùa mưa/khô TP.HCM) và `weatherAt()` tất định.
-   - `data/scenes.json`: 16 hoạt cảnh gắn theo khung giờ trong ngày.
-3. **Bộ Tổng hợp Bối cảnh Đa chiều & AI Tự Training:**
-   - `data/contexts/neighborhood-contexts.json`: 24 thẻ bối cảnh đa chiều.
-   - `data/training/sft-golden-episodes.json`: 6 mẫu sự kiện chuẩn SFT.
-   - `data/training/dpo-preference-pairs.json`: 6 cặp đối chiếu ưu tiên DPO (`chosen` vs `rejected` + `critique`).
-   - `data/training/self-play-curriculum.json`: Giáo trình 8 cấp độ cho AI tự luyện.
-   - `lib/training.ts`: Hàm tổng hợp prompt `synthesizeContextPrompt()` và hàm chấm điểm phản tư `evaluateCandidateEvent()` trên thang 100 điểm.
-4. **Cơ sở dữ liệu & Kiểm thử:**
-   - Migration gốc `drizzle/0000_deep_firebird.sql` (giữ nguyên) và migration mở rộng `drizzle/0001_living_world_and_training.sql` (`memories`, `tick_runs`, `commitments`, `nudges`).
-   - 4 bộ unit test thuần: `test-life.mjs`, `test-events.mjs`, `test-animation.mjs`, `test-training.mjs`.
-   - Đầy đủ `.gitignore` và `.npmrc` (kèm bản sao `gitignore.txt`, `npmrc.txt`).
-
----
-
-## Việc làm theo thứ tự khi mở ZIP trên môi trường triển khai
-
-1. **Cài đặt & Chạy kiểm tra cơ sở:**
-   ```bash
-   corepack pnpm install --frozen-lockfile
-   npm run test:unit
-   npm run check
-   npm run lint
-   npm run build
-   ```
-2. **Khởi tạo hoặc nâng cấp DB Local:**
-   - Chạy `node scripts/setup-local.mjs` sau build để áp dụng đủ 0000–0003; không reset DB.
-3. **Browser QA (Desktop & Mobile 360–430 px):**
-   - Kiểm tra hiển thị pha ngày/đêm, thời tiết, chuyển động robot, chế độ Theo (`Follow`), tạm dừng (`Pause`) và mục Bối cảnh & Tự huấn luyện AI trong tab **Nhịp sống**.
-   - Chụp ảnh thực tế gửi người dùng kèm nhãn `preview` hoặc `production`.
-4. **Triển khai & Bảo trì dữ liệu Production (nếu có quyền Sites):**
-   - Kiểm tra tác vụ tự động qua `automations.peek` (ID trong `MEMORY_LONG.md`), không tạo tác vụ trùng.
-   - Sao lưu D1 trước khi dọn bản ghi test `-stale` theo quy trình tại [docs/RUNBOOK.md](docs/RUNBOOK.md).
+Tài liệu bàn giao ngày24/10 giữ tại [history/CODEX_HANDOFF_2026-10-24](docs/history/CODEX_HANDOFF_2026-10-24.md) chỉ để tra cứu lịch sử; hướng dẫn hiện hành ở ARCHITECTURE/DATA_MODEL/TESTING.
