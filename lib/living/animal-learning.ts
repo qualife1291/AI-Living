@@ -1,6 +1,8 @@
 import type { LivingState, RealContext } from "./schema";
 import type { World, PersonPlan } from "../world";
-import { animals, animalsAt, actorTransition, type Step } from "../life.ts";
+import { animals, animalsAt, actorsAt, actorTransition, type Step } from "../life.ts";
+import { crowdAt } from "./engine.ts";
+import { petOwners } from "./pets.ts";
 import { computeSimMs, hashSeed } from "../clock.ts";
 import { fitAction, type LearnedAction } from "./learning.ts";
 export type AnimalAction = "rest" | "forage" | "play" | "shelter";
@@ -16,6 +18,7 @@ export type AnimalPolicy = {
     action: AnimalAction;
     started: number;
     done: boolean;
+    cancelled?: boolean;
   };
 };
 const labels: Record<AnimalAction, string> = {
@@ -24,6 +27,12 @@ const labels: Record<AnimalAction, string> = {
   play: "Khám phá và chơi nhẹ",
   shelter: "Trú ở nơi có mái che",
 };
+function accompaniedPets(world: World, state: LivingState, now: number) {
+  const snapshot = { ...world, living: state }, owners = petOwners(snapshot);
+  const walking = new Set([...actorsAt(snapshot, now), ...crowdAt(state, snapshot, now, undefined, state.residents.length)]
+    .filter(a => a.kind === "walk-pet" && (!a.transport || a.transport === "walk")).map(a => a.id));
+  return new Set(Object.entries(owners).filter(([, owner]) => walking.has(owner)).map(([pet]) => pet));
+}
 export function updateAnimalLearning(
   world: World,
   state: LivingState,
@@ -34,7 +43,9 @@ export function updateAnimalLearning(
   const policies = structuredClone(state.animalLearning ?? {});
   const simMs = computeSimMs(world.born, world.clock, now);
   const before = animalsAt(world, now);
+  const accompanied = accompaniedPets(world, state, now);
   for (const animal of animals) {
+    if (accompanied.has(animal.id)) continue; // The walk interrupts autonomous choices, without earning a reward.
     const policy: AnimalPolicy = policies[animal.id] ?? {
       samples: 0,
       actions: {},
@@ -116,7 +127,12 @@ export function settleAnimalLearning(
 ) {
   const simMs = computeSimMs(world.born, world.clock, now);
   let count = 0;
-  for (const policy of Object.values(state.animalLearning ?? {})) {
+  const accompanied = accompaniedPets(world, state, now);
+  for (const [id, policy] of Object.entries(state.animalLearning ?? {})) {
+    if (accompanied.has(id) && policy.pending && !policy.pending.done) {
+      policy.pending.done = true; policy.pending.cancelled = true;
+      continue;
+    }
     if (
       policy.pending &&
       !policy.pending.done &&

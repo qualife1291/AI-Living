@@ -29,4 +29,11 @@ if (detailPlaces[detail]) {
   const [location, kind, activity] = detailPlaces[detail];
   for (const p of world.people) p.plan = { ...p.plan, from: location, steps: [{ location, kind, activity, duration: 3600 }] };
 }
+if (process.argv.includes("--pet-walk")) {
+  setup(43200000);
+  world.living.petOwners = { cun: "an", muop: "chi" };
+  world.people[0].plan = { createdAt: new Date(now).toISOString(), simStartedAt: 43200000, pausedMs: 0, from: "Công viên", generator: "rules", transport: "walk", steps: [{ location: "Phố đi bộ", kind: "walk-pet", activity: "Dắt Cún đi dạo", duration: 3600 }] };
+  world.living.animalLearning ??= {};
+  world.living.animalLearning.cun = { samples: 0, actions: {}, energy: 80, plan: { createdAt: new Date(now).toISOString(), simStartedAt: 43140000, pausedMs: 0, from: "Công viên", steps: [{ location: "Công viên", kind: "play", activity: "Chơi nhẹ", duration: 3600 }] } };
+}
 console.log(JSON.stringify({ world, events: [], revision: 1, serverNow: new Date(now).toISOString(), obstacles: groundObstacles, weatherState: { ...weatherAt(world.born, worldTime(world, now)), label: "Cảnh thử nghiệm · mô phỏng" } }));

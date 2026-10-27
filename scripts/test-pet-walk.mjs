@@ -29,3 +29,14 @@ const cancelled=d.frame(world,[{...owner,kind:'read'}],211,[],[pet]);assert(canc
 const noOwner=d.frame({...world,living:{...world.living,petOwners:{}}},[owner],212,[],[pet]);assert(noOwner.every(a=>!a.petOwnerId));
 assert.equal(JSON.stringify(world),saved);
 console.log(JSON.stringify({suite:'pet-walk',frames:1600,waited,travel,maxGapAfterCatch,pause:true,cancellation:true,explicitUnassignment:true,collisionCount:0,worldWrites:false}));
+const {settleAnimalLearning}=await import('../lib/living/animal-learning.ts');
+const learningWorld=structuredClone(world);
+learningWorld.people[0].plan={createdAt:new Date(now).toISOString(),pausedMs:0,simStartedAt:43100000,from:'Công viên',transport:'walk',steps:[{location:'Phố đi bộ',kind:'walk-pet',activity:'Dắt Cún đi dạo',duration:3600}]};
+learningWorld.clock={pausedAt:null,pausedMs:0,scale:1,anchors:[{realMs:now,simMs:43200000,scale:1}]};
+learningWorld.living.animalLearning={cun:{samples:3,actions:{},energy:70,pending:{id:'pending-forage',action:'forage',started:42000000,done:false}}};
+assert.equal(settleAnimalLearning(learningWorld,learningWorld.living,now),0);
+assert.equal(learningWorld.living.animalLearning.cun.samples,3,'Interrupted autonomous work must not earn a fabricated completion');
+assert.equal(learningWorld.living.animalLearning.cun.pending.cancelled,true);
+learningWorld.people[0].plan=undefined;
+assert.equal(settleAnimalLearning(learningWorld,learningWorld.living,now+400000),0,'No delayed credit after the walk either');
+console.log('PASS accompanied pet cancels pending autonomous learning without fabricated rewards');

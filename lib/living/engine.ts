@@ -358,7 +358,7 @@ export function planLivingTurn(
       completed: false,
     };
   }
-  updateAnimalLearning(world, state, context, now);
+  updateAnimalLearning({ ...next, living: state }, state, context, now);
   next.livingTurn = turn;
   next.living = state;
   return { state, turn, world: next, newExperiences };

@@ -8,7 +8,7 @@ export function Osm3D() {
     if(failed)return;
     import('./three/osm').then(({createOsm})=>{
       if(cancelled||!host.current)return;
-      try{dispose=createOsm(host.current);}catch{setFailed(true);}
+      try{dispose=createOsm(host.current,()=>setFailed(true));}catch{setFailed(true);}
     }).catch(()=>{if(!cancelled)setFailed(true);});
     return()=>{cancelled=true;dispose?.();};
   },[failed]);
