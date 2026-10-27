@@ -152,3 +152,7 @@
 - Full24suite/check/lint/build đạt; visualtest72nearactors/4230instances/600poseframes/1800mixedhumananimalframes/actualfootheight/matrixfinite/footprintmodelbounds/pause/3policies. Traffic22740states với852obstacles0collision;1089routes, coldA*p957,6ms/max26,246ms trongenv (khôngSLA).
 - Browsercuối desktop/mobile6lượt/polling/controls; motion29frames9s/28moving/0stale/0static&animalcollision/maxstep2,409units,136920triangles/35drawcalls/21geometries.4activitydetailread/garden/eat/market đạt, ảnhlocalsynthetic đãgửi. KhônghardwareGPU/FPSclaim/productionbrowser; vẫncầnsoak/indoorIK/serve-clean/inventory/physicstoànthân.
 - Backup pre11gitignored fc7b3cfe1c571a28c32680c0cda62c38433a4bf8636aa6e0e5ec835a4a394206;revision81/13events/memories32,10,11. Phát hành/readbackxemlatest.json/ledger; sourcepush khôngđồngnghĩa deploy.
+
+
+## Production version11 — hoàn tất
+Native succeeded08:39giờ Việt Nam27/10, sourcec1ddea15e5b59631600796ea49d76bae9c49ddcb/env1/ownerprivate. Latest.json vàledger27/10 cóIDs/hash/test/readback. PostGETrevision83/14events/33,11,11memories; offlinecomparehai backup xácnhận13eventcũ/từngmemory/world.born/3animalpolicy giữnguyên. Khôngmigration/reset/fixtures. Preview/relay đãdừng. Tiếp nhận8ZIPKenney+KịchBản.md cho đợtnângcấpasset tiếp theo; cần đọc scenario/license/metadata trước tíchhợp.
