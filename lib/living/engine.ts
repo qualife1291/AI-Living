@@ -1,4 +1,5 @@
 import { meetingSteps, microActivity, actionSteps } from "./activities.ts";
+import { DEFAULT_PET_OWNERS } from "./pets.ts";
 import { updateAnimalLearning } from "./animal-learning.ts";
 import {
   prepareLearning,
@@ -84,6 +85,7 @@ export function initializeLiving(
     hunger: 25,
     social: 60,
     skills: {},
+    petOwners: { ...DEFAULT_PET_OWNERS },
     daysExperienced: 1,
   };
   return { ...state, residents: population(state, state.startedOn) };

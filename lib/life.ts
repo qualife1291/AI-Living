@@ -260,6 +260,7 @@ export type Actor = {
   transport?: "walk" | "bicycle" | "motorbike" | "bus" | "metro";
   stationaryFor?: number;
   tagGame?: import("./city/tag-game").TagRole;
+  petOwnerId?: string;
 };
 
 type Transport = NonNullable<Actor["transport"]>;

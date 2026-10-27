@@ -22,6 +22,7 @@ import type { Quality } from "@/lib/city/scale";
 import { Osm3D } from "@/components/city/Osm3D";
 import { InteriorView } from "@/components/city/InteriorView";
 import { lifeStory } from "@/lib/city/lifestory";
+import { PetCare } from "@/components/characters/PetCare";
 import { Wardrobe } from "@/components/characters/Wardrobe";
 import { City3D } from "@/components/city/City3D";
 import { LivingPanel } from "@/components/living/LivingPanel";
@@ -321,6 +322,7 @@ export default function Page() {
           {panel === "people" && (
             <>
               <p>Hỏi chuyện, xem ký ức hoặc chọn một cư dân để theo dõi.</p>
+              {world && <PetCare world={world} refresh={load} />}
               {story && <details className="life-story"><summary><b>{person?.name} · {story.age} tuổi mô phỏng</b><small>{story.chapter} · {story.samples} trải nghiệm</small></summary><p>Đến xóm ngày {story.arrivedOn} · {story.days} ngày mô phỏng · {story.samples} trải nghiệm đã học.</p><p className="muted">Tuổi khởi đầu hư cấu {story.baseline}; mỗi năm mô phỏng tăng một tuổi. Không suy ra tuổi từ số lượt học.</p><h4>Những điều còn nhớ</h4><ol>{story.memories.slice(-5).map((m, i) => <li key={i}>{m}</li>)}</ol>{!story.memories.length && <p>Chưa có ký ức được lưu.</p>}</details>}
               {person && world && <Conversation key={person.id} actorId={person.id} name={person.name} paused={world.paused}/>}
               <details className="wardrobe-details">
