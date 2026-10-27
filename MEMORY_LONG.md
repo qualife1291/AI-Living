@@ -162,3 +162,6 @@ Bản sửa một phần giai đoạnA, chưadeploy. Chi tiết scope, regressio
 
 ## 27/10/2026 — source candidate phase B
 Thêm enum/scenarios hành động và5bước hậu thoại, schedulerNPC simulation20s/pulse10s/CAS, shared kindtyping và mapping GLB/2D. Không phải model AI mới; còn tagpair/cyclephysics/petowner, C/D và nghiệm thuđiệnthoại. Chi tiết trong docs/PHASE_B_ACTIONS.md.
+
+## 27/10/2026 — tiếp nhận work từ GitHub và sửa UTF-8 telemetry
+GitHub main a5b7c5a đã nằm trong work5d50e17 (10commit hơnmain); checkoutlocal tênwork banđầu ởmain, đãfastforwardorigin/work. Regression32log Unicode hợp lệ làmrequestvượt16KiB táihiện hàngđợikhôngtiếntriển; batching byteUTF-8 gồmJSONenvelope+comma, chuẩn hóa tốiđa8field/32key/100string, bỏnonfinite. Testfailtrước/passsau, giữACK/retry; checkpoint20c7152 đãpushwork. Khôngmergemain/deploy/resetDB. CácbacklogfeatureC/D vẫnphânbiệtbugfix; xemMEMORY_SHORT vàreviewmain choQAđangchạy.

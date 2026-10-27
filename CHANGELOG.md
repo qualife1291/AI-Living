@@ -108,3 +108,7 @@ Thêm log client bounded/batch + owner JSONL, migration0006, audit tick; precomp
 
 ## Local candidate — giai đoạn B
 Thêm9action kinds/scenarios, mapping clip/procedural/props và bike tập; chuỗi5bước hậu thoại, giữ plan còn hoạt động; lịch gặp NPC độc lập qua pulse với nhu cầu/cooldown/CAS. Source-only, chưadeploy. Giới hạn/tag/cycle/pet và nghiệm thu: docs/PHASE_B_ACTIONS.md.
+
+## 27/10/2026 — sửa hàng đợi telemetry trên work
+- Chia batch diagnostics theo kích thước JSON UTF-8 tối đa16KiB, thay vì chỉ đếm32log. Tránh HTTP413 lặp vô hạn với log tiếng Việt/ký tự đa byte.
+- Chuẩn hóa field theo giới hạn endpoint, giữ log chưaACK và chỉ xóa phần batch đã đượcACK. Không đổi migration/production.

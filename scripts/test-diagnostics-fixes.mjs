@@ -35,3 +35,13 @@ assert(clientLogs().length>0,'Only the acknowledged prefix is removed');
 while(clientLogs().length)await flushClientLogs();
 assert.equal(sent,32,'All queued logs eventually reach the server');
 console.log('PASS UTF-8 byte-bounded batches drain without ACK loss');
+logClient('route_slow',{actor:'oversized',detail:'猫'.repeat(2000),invalid:NaN,...Object.fromEntries(Array.from({length:12},(_,i)=>[`extra${i}`,i]))});
+const normalized=clientLogs()[0].data;
+assert.equal(normalized.detail.length,100);
+assert(!('invalid' in normalized));assert(Object.keys(normalized).length<=8);
+globalThis.fetch=async(_url,options)=>{
+ const rows=JSON.parse(options.body).logs;
+ assert(rows.every(r=>Object.keys(r.data).length<=8&&Object.values(r.data).every(v=>typeof v!=='string'||v.length<=100)));
+ return Response.json({ok:true});
+};
+await flushClientLogs();assert.equal(clientLogs().length,0,'Oversized observations are normalized before upload');
