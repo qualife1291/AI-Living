@@ -2,7 +2,7 @@
 
 | Trạng thái | Chi tiết |
 |---|---|
-| Source | User đã merge work vào main c83a5e3; tiếp tục theo MEMORY_SHORT và review Gemini |
+| Source | User đã merge work vào main; HEAD và MEMORY_SHORT cho biết nguồn đang làm, releases/candidate.json cho biết mốc đã đóng gói, latest.json chỉ ghi deploy đã xác minh |
 | Renderer | Chỉ3D; giữ XZ/nav/canvastextures/icon cần dùng, không phục hồi SVG/fallback2D |
 | Tài nguyên | 41Kenney +239Gobkit/KayKit canonical CC0; gallery on-demand; core+focusedNPC dùng skin độc lập |
 | QA nguồn đã merge | 38unit/API/check/lint/build/hash, desktop/mobile social6/cycle/overlay/pet/3Dretry; gallery15packs vàmobile; giới hạn ở MEMORY_LONG |

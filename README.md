@@ -4,7 +4,7 @@
 
 | Phần | Nguồn sự thật |
 |---|---|
-| Source | Main đã merge work tại c83a5e3; chỉ3D, tag/pet/bike/overlays/households, Gobkit/KayKit và tên Việt không số |
+| Source | HEAD của nhánh đang làm là source hiện hành. Mốc sẵn sàng phát hành có SHA chính xác trong [candidate.json](docs/releases/candidate.json); chỉ3D, tag/pet/bike/overlays, Gobkit/KayKit và phaseD đã kiểm thử |
 | Production | [latest.json](docs/releases/latest.json), ledger riêng; chưa coi push là deploy |
 | Kiến trúc/dữ liệu/test | [ARCHITECTURE](docs/ARCHITECTURE.md), [DATA_MODEL](docs/DATA_MODEL.md), [TESTING](docs/TESTING.md) |
 | Phần mới/giới hạn | [ASSET_EXPANSION](docs/ASSET_EXPANSION.md), [review Gemini](docs/GEMINI_REVIEW_2026-10-28.md), MEMORY_SHORT |
