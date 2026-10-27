@@ -78,7 +78,10 @@ export async function createStudio(host: HTMLDivElement, input: () => { id: Scen
     }
     for (const actor of frame.actors) {
       const avatar = stage.actors.get(actor.id);
-      if (avatar) avatar.pose(actor.clip, /walk|sprint/.test(actor.clip) ? actor.animationPhase * (actor.clip === "sprint" ? .5 : 2 / 3) : actor.animationTime, frame.time, actor.position, actor.yaw, 0);
+      if (avatar) {
+        avatar.pose(actor.clip, /walk|sprint/.test(actor.clip) ? actor.animationPhase * (actor.clip === "sprint" ? .5 : 2 / 3) : actor.animationTime, frame.time, actor.position, actor.yaw, 0);
+        if (actor.handTargets) avatar.aimHands(actor.handTargets);
+      }
       else if (actor.species === "cat" && stage.kitten) { stage.kitten.position.set(...actor.position); stage.kitten.rotation.set(0, actor.yaw, Math.sin(frame.time * 5) * .015); }
     }
     for (const prop of frame.props) {

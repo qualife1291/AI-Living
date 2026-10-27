@@ -2,6 +2,7 @@
 - WIP 6feb12d đã push GitHub. Automatic approval ban đầu bác CI contents:write/autopush; đã gỡ toàn bộ ghi Git trong CI, amend commit local chưa push, và push lại bản contents:read thành công. Không có workflow tự sửa/push remote.
 - Đã sửa nhân vật bị ép mỏng do fit toàn bộ animation sweep: fit rest body, giữ chiều cao 17,5. Bỏ sampling 117 pose không cần thiết lúc tạo avatar. LOD GLB theo camera, nhà xa giữ silhouette, xe xa dùng geometry nhẹ; physics giữ nguyên.
 - Test real GLB mới: clip chân thực, clone độc lập, pause/seek, chân chạm nền, footprint và LOD quay lại đều đạt. Check/lint/build trước bước bỏ sampling đã đạt; cần chạy lại full suite/build. Preview 5177 đang chạy, browser QA mới work/v12-second-qa.log; ảnh preview không phải prod.
+- Browser vòng đầu đủ 8 desktop/mobile case ×5shot và live6lượt/polling/motion26frames9s/144934triangles. Review ảnh bắt lỗi hướng mặt +π: đã bỏπ, sửa wardrobe/cánh tay hướng mục tiêu và mobile cast ngang; cần rebuild/retest ảnh sau sửa. Prebackup12 revision94/16events/38,12,13memories hash2e554fd296f8c9e05bd1f74dd7169a9e4055415f0f707b4f9b8b214a00a13b7b. Sitesfetch main là ancestor HEAD.
 - Tiếp: QA 4 cảnh desktop/mobile + live dialogue/motion, đo triangles/drawcalls, sửa/retest; docs/source checkpoint; prebackup/nativeprod12/readback/ledger. Production hiện vẫn11.
 
 # Đang nâng cấp bằng model đính kèm — sau production11

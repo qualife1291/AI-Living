@@ -41,7 +41,7 @@ Character `c` có preview người lớn đầu hói/tóc thưa, áo xanh lá c�
 
 Các clip có sẵn gồm `idle`, `walk`, `sprint`, `sit`, `pick-up`, `holding-right`, `holding-left`, `holding-both`, `interact-right`, `interact-left`, gật/lắc đầu và nhóm wheelchair. Chưa có finger bones, facial morph target, nếp nhăn hoặc shader da chi tiết ở mức milimet. Các yêu cầu đó trong kịch bản cần được ghi là phần chưa hỗ trợ nếu renderer chưa thực hiện.
 
-Default bounds character là `1.6 × 2.7 × 0.8`, đáy ở `Y=0`. Nếu chỉ scale đồng đều lên cao 17,5 world units thì rộng khoảng 10,37 units; phải kiểm tra bề rộng/animation envelope với bán kính tránh va chạm của dự án. `bounds` trong manifest là tư thế mặc định của glTF, không phải bảo đảm bao hết clip động. Hướng mặt dự kiến `-Z` cần xác nhận bằng ảnh render trước khi ghép với heading hiện tại.
+Default bounds character là `1.6 × 2.7 × 0.8`, đáy ở `Y=0`. Nếu chỉ scale đồng đều lên cao 17,5 world units thì rộng khoảng 10,37 units; phải kiểm tra bề rộng/animation envelope với bán kính tránh va chạm của dự án. `bounds` trong manifest là tư thế mặc định của glTF, không phải bảo đảm bao hết clip động. Ảnh render thật xác nhận mặt hướng `+Z`; heading không cộng π. Giả định `-Z` ban đầu đã tạo lỗi quay lưng lúc trao ví và đã được sửa.
 
 Material gốc có texture ngoài; character còn khai báo `KHR_materials_unlit`. Khi đổi sang Phong hoặc vật liệu phù hợp hệ ánh sáng, cần giữ map/color space và UV transform. Không ép cùng một texture của pack khác chỉ vì tên file đều là `colormap.png`.
 
@@ -51,3 +51,21 @@ Material gốc có texture ngoài; character còn khai báo `KHR_materials_unlit
 - Mỗi nhà/xe/đồ vật phải được fit trong footprint đã dành chỗ, đặt đáy đúng nền và kiểm tra lại khoảng trống đường đi. Số polygon nhỏ không thay thế kiểm thử collision hoặc frame time.
 - Các model có preview gốc đi kèm để chọn kiểu. Preview Kenney không phải ảnh chụp ứng dụng và không được dùng làm bằng chứng QA production.
 - API miễn phí bên ngoài do người dùng gợi ý cần kiểm tra license, availability và budget riêng trước khi nhập. Catalog này chỉ chứng thực các file Kenney đã được nhập và kiểm tra; nó không tự chạy mã từ API/manifest hoặc tuyên bố đã fine-tune một model AI.
+
+## Khảo sát API miễn phí ngày 27/10/2026
+
+Đã đọc metadata thực, không chạy lệnh onboarding hoặc hướng dẫn nhúng trong phản hồi API.
+
+| Nguồn | Kết quả truy cập từ môi trường này | Vai trò phù hợp |
+| --- | --- | --- |
+| [Gobkit /api/free](https://gobkit.com/api/free) | HTTP 200; schema 2; 255 model; CORS `*`; URL GLB và clip có trong metadata | Nhân vật/động vật rigged. Model có skin cần clone skeleton; không mặc định dùng cách clone rigid của Kenney |
+| [3DAssets.dev API](https://3dassets.dev/api/v1/assets?q=tree&style=low-poly&limit=2) | HTTP 200; metadata CC0/CDN; API mẫu không gửi CORS header | Tìm asset rồi nhập có kiểm tra; không dựa vào fetch API trực tiếp từ trình duyệt |
+| [Poly Haven models API](https://api.polyhaven.com/assets?type=models) | HTTP 200; CORS `*`; catalog model công khai | Nguồn PBR/HDRI khi có ngân sách GPU/texture và phong cách phù hợp |
+
+Bản này dùng model Kenney tự phục vụ để tránh phụ thuộc availability của ba API khi người xem mở trang. Không tải toàn bộ catalog, không có key hoặc dịch vụ tính phí mới.
+
+## Bổ sung asset có kiểm soát
+
+`npm run assets:maintain` quét nhu cầu semantic của cast/cảnh/props, ghép asset CC0 đã duyệt hoặc công thức procedural đã thực hiện, rồi ghi `data/assets/runtime-bindings.json` trong workspace. Model đã duyệt có tên khớp nhu cầu có thể tự được bind. Nhu cầu chưa có model/công thức và license chưa biết phải hiện `missing` và làm kiểm tra thất bại; không tạo hình hộp giả rồi báo đã hỗ trợ.
+
+CI có quyền `contents:read`, xác minh bindings, hash/texture/license/budget và test logic. Nó không tự sửa/push Git hoặc deploy. Automatic approval đã từ chối bản workflow cấp quyền ghi/autopush trước khi push; thiết kế cuối đã loại bỏ khả năng đó. Công cụ local giúp agent phát hiện phần thiếu, chuẩn bị code/model và kiểm thử; đây không phải tự huấn luyện weights hay một agent production hoạt động liên tục. Chưa có cơ chế tự tải và thực thi code từ bên ngoài.

@@ -137,13 +137,34 @@ export class AssetAvatar {
       else if (active) action.time += delta;
     }
     this.mixer.update(0); this.lastTime = presentationTime;
-    this.group.position.set(position[0], 0, position.length > 2 ? position[2] : position[1]); this.group.rotation.set(0, yaw + Math.PI, 0); this.group.updateMatrixWorld(true);
+    this.group.position.set(position[0], 0, position.length > 2 ? position[2] : position[1]); this.group.rotation.set(0, yaw, 0); this.group.updateMatrixWorld(true);
     this.bounds.setFromObject(this.model); this.group.position.y = floor - this.bounds.min.y; this.group.updateMatrixWorld(true);
   }
   assignId(id: string) { this.model.traverse(o => { const mesh = o as THREE.Mesh; if (mesh.isMesh) mesh.userData.actorId = id; }); }
   tint(colors: { shirt: string; trousers: string; skin: string }) {
     const key = `${colors.shirt}/${colors.trousers}/${colors.skin}`; if (this.tintKey === key) return; this.tintKey = key;
-    this.model.traverse(o => { const mesh = o as THREE.Mesh; if (!mesh.isMesh) return; const color = /torso|arm/i.test(mesh.name) ? colors.shirt : /leg/i.test(mesh.name) ? colors.trousers : /head/i.test(mesh.name) ? colors.skin : undefined; if (color) (mesh.material as THREE.MeshPhongMaterial).color.set(color); });
+    this.model.traverse(o => {
+      const mesh = o as THREE.Mesh; if (!mesh.isMesh || /head/i.test(mesh.name)) return;
+      const material = mesh.material as THREE.MeshPhongMaterial;
+      if (/arm/i.test(mesh.name)) {
+        if (!mesh.userData.wardrobeGeometry) { mesh.geometry = mesh.geometry.clone(); mesh.userData.wardrobeGeometry = true; }
+        const position = mesh.geometry.getAttribute("position"), pixels = new Float32Array(position.count * 3), color = new THREE.Color();
+        mesh.geometry.computeBoundingBox(); const handEnd = mesh.geometry.boundingBox!.min.y + .24;
+        for (let i = 0; i < position.count; i++) { color.set(position.getY(i) <= handEnd ? colors.skin : colors.shirt); color.toArray(pixels, i * 3); }
+        mesh.geometry.setAttribute("color", new THREE.BufferAttribute(pixels, 3)); material.vertexColors = true; material.color.set("white");
+      } else material.color.set(/leg/i.test(mesh.name) ? colors.trousers : colors.shirt);
+      material.map = null; material.needsUpdate = true;
+    });
+  }
+  aimHands(targets: { right?: readonly number[]; left?: readonly number[] }) {
+    for (const side of ["right", "left"] as const) {
+      const goal = targets[side], arm = this.model.getObjectByName(`arm-${side}`) as THREE.Mesh | undefined;
+      if (!goal || !arm?.parent || !arm.geometry) continue;
+      const local = arm.parent.worldToLocal(new THREE.Vector3(...goal)).sub(arm.position);
+      arm.geometry.computeBoundingBox(); const bounds = arm.geometry.boundingBox!, grip = bounds.getCenter(new THREE.Vector3()); grip.y = bounds.min.y + .12;
+      if (local.lengthSq() > .0001) arm.quaternion.setFromUnitVectors(grip.normalize(), local.normalize());
+      arm.updateMatrixWorld(true);
+    }
   }
   hand(side = "right") {
     const mesh = this.model.getObjectByName(`arm-${side}`) as THREE.Mesh | undefined;

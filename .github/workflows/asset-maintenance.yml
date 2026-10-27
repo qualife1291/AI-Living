@@ -17,5 +17,5 @@ jobs:
         with:
           node-version: '24'
       - run: npm run install:ci
-      - run: npm run assets:maintain
+      - run: node scripts/maintain-assets.mjs
       - run: npm run assets:check && npm run check && npm run test:unit

@@ -16,7 +16,7 @@ for(let n=0;n<60;n++) { avatar.pose('walk',n/60,n/60,[n/10,0,0],0,.7); const now
 assert.ok(changed,'Walk clip animates actual model legs');
 const paused=avatar.snapshot();avatar.pose('pick-up',.2,59/60,[999,0,999],2,9);assert.deepEqual(avatar.snapshot(),paused,'Presentation pause freezes transforms and clip');
 assert.notDeepEqual(second.snapshot().leg,paused.leg,'Clones do not share animated transforms');
-avatar.pose('pick-up',.15,80,[10,0,5],.5,.7);assert.equal(avatar.snapshot().clip,'pick-up');assert.ok(avatar.hand().toArray().every(Number.isFinite));
+avatar.pose('pick-up',.15,80,[10,0,5],.5,.7);assert.equal(avatar.snapshot().clip,'pick-up');assert.ok(avatar.hand().toArray().every(Number.isFinite));assert.ok(Math.abs(avatar.group.rotation.y-.5)<1e-8,'Authored +Z face follows the social heading');avatar.aimHands({right:[12,9,7]});assert.ok(avatar.hand().toArray().every(Number.isFinite));
 avatar.pose('idle',0,0,[0,0,0],0,.7);assert.equal(avatar.snapshot().clip,'idle','Backward seek resets blend');
 const library=new AssetLibrary();library.loaded.set('suburban/building-type-a',await parse('suburban/building-type-a'));
 const model=library.compile('suburban/building-type-a');assert.ok(model&&model.geometry.getAttribute('uv'));assert.ok(Math.abs(model.geometry.boundingBox.min.y)<1e-6);
