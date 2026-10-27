@@ -112,7 +112,7 @@ export function createModelActors(scene: THREE.Scene, library: AssetLibrary) {
         avatar.tint(appearance);
         const act = `${actor.kind} ${actor.activity ?? ""} ${actor.location ?? ""}`.toLowerCase();
         const propKind = ["drink", "study", "shop"].includes(actor.kind) ? handProp(actor.kind) : /cook|nấu ăn/.test(act) ? "cook" : /soccer|đá bóng/.test(act) ? "soccer" : /swim|bơi/.test(act) ? "swim" : /lễ hội|festival|đèn lồng/.test(act) ? "lantern" : actor.kind;
-        const holding = !actor.walking && (hasHandProp(actor.kind) || ["cook", "soccer", "swim", "lantern"].includes(propKind));
+        const holding = !actor.bicycle && !actor.walking && (hasHandProp(actor.kind) || ["cook", "soccer", "swim", "lantern"].includes(propKind));
         const speaking = social.get(id)?.speaking;
         const clip = resolveActorClip(actor, speaking);
         const animationTime = actor.bicycle ? actor.bicycle.distance / 14 : actor.walking ? (distance + walked) / 14 * (2 / 3) : seconds;

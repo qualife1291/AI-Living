@@ -59,7 +59,7 @@ export function createPeople(scene: THREE.Scene, capacity: number) {
         const core = world.people.find(p => p.id === a.id), npc = world.living?.residents.find(p => p.id === a.id);
         const appearance = world.living?.appearances?.[a.id] ?? defaultAppearance(a.id, core?.role ?? `${npc?.roleId} ${world.living?.catalog.roles.find(r => r.id === npc?.roleId)?.label}`);
         const near = a.id === selected || Math.hypot(camera.position.x - a.position[0], camera.position.z - a.position[1]) < 240;
-        const prop = !a.walking && hasHandProp(a.kind);
+        const prop = !a.bicycle && !a.walking && hasHandProp(a.kind);
         const hair = { black: "#303d3d", brown: "#6c4b36", gray: "#a6b3b1", bald: appearance.skin }[appearance.hair];
         const leftSole = 13.2 - Math.cos(pose.leftLeg) * 5.8 - Math.cos(pose.leftLeg + pose.leftKnee) * 5.8 + .2 - 1.1;
         const rightSole = 13.2 - Math.cos(pose.rightLeg) * 5.8 - Math.cos(pose.rightLeg + pose.rightKnee) * 5.8 + .2 - 1.1;

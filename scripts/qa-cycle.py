@@ -27,6 +27,7 @@ with sync_playwright() as p:
    samples=page.evaluate('''async()=>{const samples=[],end=performance.now()+12000;let frame='';while(performance.now()<end){await new Promise(requestAnimationFrame);const e=document.querySelector('.three-canvas');if(e?.dataset.frame!==frame){frame=e.dataset.frame;samples.push({cyclists:JSON.parse(e.dataset.cyclists??'[]'),models:JSON.parse(e.dataset.modelActors??'{}'),animals:JSON.parse(e.dataset.animalPositions??'[]')})}}return samples}''')
    assert len(samples)>=15,len(samples);ride=[next(a for a in s['cyclists'] if a['id']=='an') for s in samples]
    assert all(s['models']['an']['clip']=='drive' for s in samples),'Moving rider uses the seated clip'
+   assert sum(a['inFrame'] for a in ride)/len(ride)>.9,'Whole bicycle and rider must remain in frame'
    assert ride[-1]['distance']-ride[0]['distance']>30,'The bicycle must travel instead of pedalling in place'
    for a,c in zip(ride,ride[1:]):
     step=sum((a['position'][i]-c['position'][i])**2 for i in [0,1])**.5
@@ -42,7 +43,7 @@ with sync_playwright() as p:
    fixture['world']['people'][0]['plan']['transport']='walk';fixture['world']['people'][0]['plan']['steps'][0]['kind']='read'
    page.wait_for_function('!JSON.parse(document.querySelector(".three-canvas")?.dataset.cyclists??"[]").some(a=>a.id==="an")',timeout=30000)
    assert not errors,errors;assert page.evaluate('document.documentElement.scrollWidth<=innerWidth')
-   report.append({'viewport':name,'frames':len(samples),'travel':ride[-1]['distance']-ride[0]['distance'],'polls':polls[0],'bodyRadius':9.2,'driveClip':True,'pauseFreezesRig':True,'dismount':True,'noTeleport':True,'errors':errors})
+   report.append({'viewport':name,'frames':len(samples),'travel':ride[-1]['distance']-ride[0]['distance'],'polls':polls[0],'bodyRadius':9.2,'driveClip':True,'wholeBodyFramed':True,'pauseFreezesRig':True,'dismount':True,'noTeleport':True,'errors':errors})
    print(name,'PASS',report[-1],flush=True);page.close()
   (out/'metrics.json').write_text(json.dumps({'production':False,'renderer':'Chromium SwiftShader','cases':report},ensure_ascii=False,indent=2))
  finally:b.close()

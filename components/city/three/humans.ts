@@ -91,7 +91,7 @@ export function humanPose(
   const cooking = !walk && /cook|nấu ăn|bếp/.test(act);
   const jumping = actor.kind === "jump" || !walk && /jump|nhảy|cheer|lễ hội/.test(act);
   const driving = !!actor.bicycle || riding || /drive|lái xe|taxi|scooter/.test(act);
-  const usingProp = !actor.walking && (["read", "study", "drink", "shop", "garden", "eat", "work"].includes(actor.kind) || cooking);
+  const usingProp = !actor.bicycle && !actor.walking && (["read", "study", "drink", "shop", "garden", "eat", "work"].includes(actor.kind) || cooking);
 
   const swimCycle = Math.sin(time * 4.2 + angle);
   const kickCycle = Math.sin(time * 3.6 + angle);

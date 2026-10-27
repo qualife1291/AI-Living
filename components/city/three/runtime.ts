@@ -930,7 +930,14 @@ export function createCity(
     host.dataset.actors = String(actors.length);
     host.dataset.exchanges = String(exchanges.length);
     host.dataset.socialCast = JSON.stringify(actors.filter(a => socialPoses.get(a.id)?.gesture !== "idle" && socialPoses.has(a.id)).map(a => ({ id: a.id, position: a.position, ...socialPoses.get(a.id) })));
-    host.dataset.cyclists = JSON.stringify(actors.filter(a => a.bicycle).map(a => ({ id: a.id, position: a.position, walking: a.walking, ...a.bicycle })));
+    host.dataset.cyclists = JSON.stringify(actors.filter(a => a.bicycle).map(a => {
+      const radius = a.bicycle!.radius;
+      const inFrame = [-radius, radius].every(x => [-radius, radius].every(z => [0, 25].every(y => {
+        const p = new THREE.Vector3(a.position[0] + x, y + groundElevation(...a.position), a.position[1] + z).project(camera);
+        return p.z > -1 && p.z < 1 && Math.abs(p.x) < .95 && Math.abs(p.y) < .95;
+      })));
+      return { id: a.id, position: a.position, walking: a.walking, ...a.bicycle, inFrame };
+    }));
     host.dataset.tagCast = JSON.stringify(actors.filter(a => a.tagGame).map(a => ({ id: a.id, position: a.position, walking: a.walking, ...a.tagGame })));
     host.dataset.petWalks = JSON.stringify(groundAnimals.filter(a => a.petOwnerId).map(a => {
       const screen = new THREE.Vector3(a.position[0], 2, a.position[1]).project(camera);
