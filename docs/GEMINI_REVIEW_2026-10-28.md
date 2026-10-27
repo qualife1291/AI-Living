@@ -36,3 +36,5 @@ Main đã merge work vào c83a5e3. Phiên này chỉ có cloud-onboarding tools,
 
 ## Kết quả tiếp nối
 Home anchors đã kiểm thử: 60 cửa/địa chỉ/Xem nhà, walking/full-bike paths, desktop/mobile; xem PHASE_C_HOMES. Policy matrices tách bằng migration 0007/CAS, 44 suite + API đạt; xem PHASE_D_LEARNING. Benchmark mới import runtime thật và shared/frozen holdout đã ghi cả kết quả bất lợi cho LinUCB, không kế thừa claim 3,71×. Không tự bật density/public/cron/LoRA chỉ vì có tên trong bảng đề xuất.
+
+Âm thanh Web Audio opt-in/lifecycle đã có preview; không đồng nghĩa hoàn tất toàn bộ Phase E. Server bổ sung reviewNarrative thay vì chỉ tin guard daemon; lỗi daemon fallback giữ proposal bị bác đã có regression. Các ràng buộc editor này không chứng minh đúng ngữ nghĩa hoặc JSON100% cho model thật.

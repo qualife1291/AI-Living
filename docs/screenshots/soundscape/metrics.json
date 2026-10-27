@@ -1,0 +1,36 @@
+{
+  "production": false,
+  "renderer": "Chromium SwiftShader; real Web Audio API",
+  "limits": "Graph/lifecycle assertions, no claim of acoustic quality or hardware latency",
+  "unsupportedGraceful": true,
+  "cases": [
+    {
+      "viewport": "desktop",
+      "defaultNoContext": true,
+      "explicitOptIn": true,
+      "realOscillator": true,
+      "measuredPeak": 0.006069754716008902,
+      "pause": true,
+      "hidden": true,
+      "osmSilent": true,
+      "toggleCloses": true,
+      "unmountCloses": true,
+      "responsive320": true,
+      "errors": []
+    },
+    {
+      "viewport": "mobile",
+      "defaultNoContext": true,
+      "explicitOptIn": true,
+      "realOscillator": true,
+      "measuredPeak": 0.00415527168661356,
+      "pause": true,
+      "hidden": true,
+      "osmSilent": true,
+      "toggleCloses": true,
+      "unmountCloses": true,
+      "responsive320": true,
+      "errors": []
+    }
+  ]
+}

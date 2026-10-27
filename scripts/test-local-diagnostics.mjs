@@ -153,6 +153,10 @@ try{
  assert.equal(rejected.status,422);assert.match((await rejected.json()).error,/ID vai trò/);
  const unchanged=await db.prepare("SELECT revision,data FROM worlds WHERE id='home'").first();assert.equal(unchanged.revision,proposalRow.revision);assert.equal(unchanged.data,proposalRow.data);
  console.log('PASS compiled role expansion rejects duplicate IDs before suffixing and preserves snapshot/revision');
+ const shortProposal={title:'Cùng xem góc vườn',summary:'Hai người bàn về góc vườn mô phỏng.',dialogue:duplicateProposal.dialogue};
+ const shortReply=await mf.dispatchFetch('http://localhost/api/living/tick',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({proposal:shortProposal,basis:{revision:proposalRow.revision,turnId:turnId(proposalNow)}})});
+ assert.equal(shortReply.status,422);assert.match((await shortReply.json()).error,/ít nhất4/);
+ assert.deepEqual(await db.prepare("SELECT revision,data FROM worlds WHERE id='home'").first(),unchanged,'Rejected model narratives never write world state');
  // Structured event memory shares the same CAS transaction and is actor-bound.
  const memoryRow=await db.prepare("SELECT revision,data FROM worlds WHERE id='home'").first();
  const memoryEvent={id:'event-memory-integration',revision:memoryRow.revision,source:'ai',title:'Sắp xếp góc sách',summary:'An ghi lại một việc nhỏ trong thế giới mô phỏng.',dialogue:[{speaker:'an',text:'Mình muốn sắp xếp góc sách gọn hơn.'},{speaker:'binh',text:'Bạn thử phân loại sách theo chủ đề nhé.'}],changes:[{id:'an',moneyDelta:0,energyDelta:0,hungerDelta:0,skillDelta:0,activity:'Sắp xếp sách',location:'Sân chung',memory:'Mình ghi nhớ cách phân loại góc sách theo chủ đề.'}]};

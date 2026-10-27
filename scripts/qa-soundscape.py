@@ -18,7 +18,7 @@ with sync_playwright() as p:
      if 'paused' in data:fixture['world']['paused']=data['paused']
      fixture['revision']+=1;route.fulfill(status=200,content_type='application/json',body='{"ok":true}');return
     fixture['serverNow']=datetime.datetime.now(datetime.timezone.utc).isoformat();route.fulfill(status=200,content_type='application/json',body=json.dumps(fixture))
-   page.route('**/api/world*',world);page.route('**/api/living/pulse',lambda route:route.fulfill(status=200,content_type='application/json',body='{"ok":true}'))
+   page.route('**/api/visits',lambda route:route.fulfill(status=200,content_type='application/json',body='{"views":0}'));page.route('**/api/living',lambda route:route.fulfill(status=503,content_type='application/json',body='{"error":"fixture intentionally unavailable"}'));page.route('**/api/world*',world);page.route('**/api/living/pulse',lambda route:route.fulfill(status=200,content_type='application/json',body='{"ok":true}'))
    page.goto(base,wait_until='domcontentloaded',timeout=60000);page.locator('.three-canvas[data-ready="true"]').wait_for(timeout=90000)
    sound=page.get_by_role('button',name='Âm thanh thiên nhiên',exact=True);assert sound.get_attribute('aria-pressed')=='false';assert page.evaluate('window.__soundQA.contexts.length')==0
    sound.click();page.wait_for_function('window.__soundQA.contexts.length===1&&window.__soundQA.contexts[0].state==="running"');page.wait_for_function('window.__soundQA.voices>0',timeout=10000)

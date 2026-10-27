@@ -185,11 +185,13 @@ export async function cycle() {
         });
         if (!reply.ok) throw Error("Model unavailable");
         const output = await reply.json();
-        proposal = proposalSchema.parse(
+        const candidate = proposalSchema.parse(
           JSON.parse(output.choices[0].message.content),
         );
-        if (!reviewNarrative(proposal, ["an", peer.id]).ok) throw Error("Narrative review rejected");
+        if (!reviewNarrative(candidate, ["an", peer.id]).ok) throw Error("Narrative review rejected");
+        proposal = candidate;
       } catch {
+        proposal = undefined;
         console.log("Local model unavailable or invalid; using rule planner.");
       }
     }
@@ -213,8 +215,8 @@ export async function cycle() {
   }
 }
 
-if (process.argv.includes("--once")) await cycle();
-else {
+if (import.meta.main && process.argv.includes("--once")) await cycle();
+else if (import.meta.main) {
   await cycle().catch((error) => console.error(error.message));
   setInterval(
     () => void cycle().catch((error) => console.error(error.message)),
