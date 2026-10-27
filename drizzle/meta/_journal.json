@@ -29,6 +29,13 @@
       "when": 1793084400000,
       "tag": "0006_client_logs",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "6",
+      "when": 1793126871601,
+      "tag": "0007_learning_policies",
+      "breakpoints": true
     }
   ]
 }

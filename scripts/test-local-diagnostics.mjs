@@ -23,8 +23,8 @@ try{
  await mf.setOptions({...options,bindings:{XOM_LOCAL_ADMIN:'true'}});
  const db=await mf.getD1Database('DB');
  await db.prepare('CREATE TABLE memories(id TEXT PRIMARY KEY,person_id TEXT,event_id TEXT,text TEXT,kind TEXT,importance INTEGER,witnessed_with TEXT,created_at TEXT)').run();
- const migration=readMigrationFiles({migrationsFolder:'drizzle'}).at(-1);
- for(const sql of migration.sql)await db.prepare(sql).run();
+ const migrations=readMigrationFiles({migrationsFolder:'drizzle'}).filter(m=>m.sql.some(sql=>sql.includes('client_logs')||sql.includes('learning_policies')));
+ for(const migration of migrations)for(const sql of migration.sql)await db.prepare(sql).run();
  assert(await db.prepare("SELECT name FROM sqlite_master WHERE type='index' AND name='client_logs_created_at'").first(),'Drizzle statement splitting must create the telemetry index');
  await db.prepare('CREATE TABLE tick_runs(id TEXT PRIMARY KEY,started_at TEXT,finished_at TEXT,status TEXT,model TEXT,event_id TEXT,neurons_est INTEGER,error TEXT)').run();
  const post=(body,headers={})=>mf.dispatchFetch(url,{method:'POST',headers:{'content-type':'application/json',...headers},body});
@@ -124,7 +124,13 @@ try{
  const settle=()=>mf.dispatchFetch('http://localhost/api/living/learning',{method:'POST',headers:{'content-type':'application/json'},body:'{}'});
  const outcome=await settle();assert.equal(outcome.status,200);assert.equal((await outcome.json()).humanExperiences,1);
  const learned=JSON.parse((await db.prepare("SELECT data FROM worlds WHERE id='home'").first()).data),fitted=learned.living.learning[learner.id];
- assert.equal(fitted.samples,oldSamples+1);assert.equal(fitted.linear['learn-trade'].samples,1);
+ assert.equal(fitted.samples,oldSamples+1);assert.equal(fitted.linear,undefined,'Ordinary snapshots omit posterior matrices');
+ const separate=await db.prepare('SELECT data,updated_revision FROM learning_policies WHERE actor_id=?').bind(learner.id).first();
+ assert.equal(JSON.parse(separate.data)['learn-trade'].samples,1);assert.equal(separate.updated_revision,fitted.policyRevision);
+ const policyResponse=await mf.dispatchFetch('http://localhost/api/living/learning');assert.equal(policyResponse.status,200);
+ assert.equal((await policyResponse.json()).models[learner.id].linear['learn-trade'].samples,1,'Learning API hydrates the exact posterior');
+ const lightResponse=await mf.dispatchFetch('http://localhost/api/world?compact=1');assert.equal(lightResponse.status,200);
+ assert.equal((await lightResponse.json()).world.living.learning[learner.id].linear,undefined,'Polling world excludes normalized matrices');
  assert.deepEqual(learned.living.residents[0].memories.slice(0,oldMemories.length),oldMemories);
  const archive=JSON.parse((await db.prepare('SELECT data FROM agent_experiences WHERE id=?').bind('linucb-api-receipt').first()).data);
  assert.equal(archive.model,'disjoint-linucb-v1');assert.deepEqual(archive.context,contextAtChoice);

@@ -47,6 +47,8 @@ export type AgentLearning = {
   samples: number;
   actions: Record<string, LearnedAction>;
   linear?: Record<string, LinearArm>;
+  /** Exact version of the separately persisted posterior; never a sample count. */
+  policyRevision?: number;
   memories: string[];
   lastTrainedAt?: string;
   lastReward?: number;

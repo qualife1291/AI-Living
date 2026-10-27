@@ -72,6 +72,13 @@ export const agentExperiences = sqliteTable("agent_experiences", {
   data: text("data").notNull(),
 });
 
+export const learningPolicies = sqliteTable("learning_policies", {
+  actorId: text("actor_id").primaryKey(),
+  data: text("data").notNull(),
+  updatedRevision: integer("updated_revision").notNull(),
+  updatedAt: text("updated_at").notNull(),
+});
+
 export const viewSessions = sqliteTable("view_sessions", {
   id: text("id").primaryKey(),
   nonce: text("nonce").notNull(),

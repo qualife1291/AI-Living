@@ -11,6 +11,7 @@ import { proposalSchema, type LivingTurn, type LivingState } from "./schema";
 import { reviewRoleExpansion } from "./expansion";
 import { memoryInsert, outcomeMemory } from "../memory-records";
 import {hasDialogue,rememberDialogue} from "./dialogue-pool";
+import {preparePolicyWrite} from "./policy-store";
 
 export function fetchContext(input: RequestInfo | URL, init?: RequestInit) {
   const relay = env.XOM_CONTEXT_RELAY;
@@ -48,7 +49,7 @@ export function contextCache(): ContextCache {
   };
 }
 export async function livingView() {
-  const current = await readWorld();
+  const current = await readWorld({includePolicies:true});
   const now = Date.parse(current.serverNow);
   const context = await realContext(now, contextCache(), fetchContext);
   const rows = await database()
@@ -96,7 +97,7 @@ async function tickLivingInternal(proposal?: unknown, basis?: { revision: number
     .bind(id)
     .first();
   if (existing) return { status: 200, data: { ok: true, duplicate: true, id } };
-  const current = await readWorld();
+  const current = await readWorld({includePolicies:true});
   if (proposal !== undefined && (!basis || basis.revision !== current.revision || basis.turnId !== id))
     return { status: 409, data: { error: "Cảnh đã thay đổi; hãy sinh lại hội thoại." } };
   if (current.world.paused)
@@ -205,6 +206,7 @@ async function tickLivingInternal(proposal?: unknown, basis?: { revision: number
   }
   const learningCommit = crypto.randomUUID();
   result.state.learningCommit = learningCommit;
+  const policies = await preparePolicyWrite(db, result.world, current.revision + 1, learningCommit);
   try {
     const results = await db.batch([
       db
@@ -222,7 +224,7 @@ async function tickLivingInternal(proposal?: unknown, basis?: { revision: number
         .prepare(
           "UPDATE worlds SET data=?,revision=revision+1 WHERE id=? AND revision=?",
         )
-        .bind(JSON.stringify(result.world), "home", current.revision),
+        .bind(policies.data, "home", current.revision),
       db
         .prepare(
           "INSERT OR IGNORE INTO tick_runs (id,started_at,finished_at,status,model,event_id) SELECT ?,?,?,?,?,? WHERE EXISTS (SELECT 1 FROM living_turns WHERE id=?)",
@@ -239,6 +241,7 @@ async function tickLivingInternal(proposal?: unknown, basis?: { revision: number
           id,
         ),
       ...archiveStatements(result.state, learningCommit, current.revision + 1, result.newExperiences),
+      ...policies.statements,
     ]);
     if (!results[1].meta.changes) {
       const duplicate = await db
@@ -288,7 +291,7 @@ export async function saveCatalog(
 
 /** Finalize completed experiences independently from the five-minute narrative slot. */
 export async function learnCompleted() {
-  const current = await readWorld();
+  const current = await readWorld({includePolicies:true});
   if (current.world.paused)
     return { status: 409, data: { error: "Xóm đang tạm nghỉ" } };
   const state = current.world.living;
@@ -318,13 +321,15 @@ export async function learnCompleted() {
   }
   const nonce = crypto.randomUUID();
   state.learningCommit = nonce;
+  const policies = await preparePolicyWrite(database(), current.world, current.revision + 1, nonce);
   const batch = await database().batch([
     database()
       .prepare(
         "UPDATE worlds SET data=?,revision=revision+1 WHERE id=? AND revision=?",
       )
-      .bind(JSON.stringify(current.world), "home", current.revision),
+      .bind(policies.data, "home", current.revision),
     ...archiveStatements(state, nonce, current.revision + 1, newExperiences),
+    ...policies.statements,
   ]);
   const result = batch[0];
   return result.meta.changes

@@ -46,6 +46,8 @@ const visits = JSON.parse(execute(["--json", "--command", "SELECT name FROM sqli
 if (visits[0].results.length === 0) execute(["--file", "drizzle/0005_visits_and_interactions.sql"]);
 else if (visits[0].results.length !== 3) throw new Error("Partial interaction schema; inspect before repair.");
 execute(["--file", "drizzle/0006_client_logs.sql"]);
+const policies = JSON.parse(execute(["--json", "--command", "SELECT name FROM sqlite_master WHERE type='table' AND name='learning_policies'"]));
+if (!policies[0].results.length) execute(["--file", "drizzle/0007_learning_policies.sql"]);
 console.log(
   "Local D1 schema ready; existing snapshots and episodes preserved.",
 );

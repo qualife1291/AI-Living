@@ -128,5 +128,8 @@
   ],
   [
     "scripts/test-home-anchors.mjs"
+  ],
+  [
+    "scripts/test-policy-store.mjs"
   ]
 ]

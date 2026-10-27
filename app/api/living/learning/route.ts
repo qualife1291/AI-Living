@@ -2,7 +2,7 @@ import { learnCompleted } from "@/lib/living/service";
 import { readWorld, json, validOrigin, database } from "@/lib/store";
 export const dynamic = "force-dynamic";
 export async function GET(req: Request) {
-  const { world } = await readWorld();
+  const { world } = await readWorld({includePolicies:true});
   const models = world.living?.learning ?? {},
     experiences = world.living?.experiences ?? [];
   const url = new URL(req.url);

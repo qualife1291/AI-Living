@@ -1,5 +1,6 @@
 import { env } from 'cloudflare:workers';
 import { seed, type World, type EpisodeEvent } from './world';
+import { hydratePolicies, PolicyRevisionConflict } from './living/policy-store';
 
 type EpisodeRow = {
   id: string;
@@ -17,7 +18,7 @@ export function database() {
  * Fixes L5: Only runs seed INSERT or 1970 epoch repair when needed instead of every read.
  * Fixes L7: Returns `serverNow` so clients can align their simulation clock.
  */
-export async function readWorld(options: {eventLimit?: number} = {}): Promise<{
+export async function readWorld(options: {eventLimit?: number; includePolicies?: boolean} = {}, policyRetry = true): Promise<{
   revision: number;
   serverNow: string;
   world: World;
@@ -70,6 +71,14 @@ export async function readWorld(options: {eventLimit?: number} = {}): Promise<{
       ...parsed,
     };
   });
+
+  if (options.includePolicies) {
+    try { await hydratePolicies(db, world, row!.revision); }
+    catch (error) {
+      if (error instanceof PolicyRevisionConflict && policyRetry) return readWorld(options, false);
+      throw error;
+    }
+  }
 
   return {
     revision: row!.revision,
