@@ -10,8 +10,9 @@ export function meetingSteps(location: string, title: string): Step[] {
  return [{location,kind:"social",activity:"Tiến lại gần để gặp bạn",duration:120},{location,kind:"social",activity:"Chào và hỏi thăm",duration:30},{location,kind:"social",activity:title.slice(0,80),duration:60},{location,kind:"social",activity:"Thống nhất việc cùng làm",duration:30},followup(location)];
 }
 export function microActivity(id: string, seconds: number, kind: Step["kind"], activity: string) {
- // Intentional sitting/sleeping/working are valid stationary activities.
- if(["rest","eat","read","work","study","drink"].includes(kind))return {kind,activity};
+ // Only idle social/play routines need variety; keep intentional activities
+ // (including tag, exercise and gardening) instead of silently replacing them.
+ if(!["social","play"].includes(kind))return {kind,activity};
  const n=(Math.floor(seconds/20)+hashSeed(id))%4;
  return [{kind:"exercise",activity:"Vươn vai, xoay nhẹ cổ tay"},{kind:"social",activity:"Nhìn quanh và chào người gần đó"},{kind:"garden",activity:"Chăm và thu dọn khu vực bên cạnh"},{kind:"play",activity:"Quan sát hoạt động trong xóm"}][n] as {kind:Step["kind"];activity:string};
 }

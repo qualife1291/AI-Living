@@ -45,3 +45,36 @@ assert(cancelled.every(a=>!a.tagGame),'Changed plans cancel roles');
 const social=new SocialDirector().frame(world,previous,[],now,null,true);assert.equal(social.exchanges.length,0,'Play must not start an ambient conversation');
 assert.equal(JSON.stringify(world),saved,'Presentation must not mutate persisted plans');
 console.log(JSON.stringify({suite:'paired-tag',frames:1800,swaps,motion,maxStep,pause:true,cancellation:true,reorder:true,collisionCount:0,worldWrites:false}));
+// Both supported venues, a third waiting participant, and world replacement.
+const sports=structuredClone(world);
+for(const p of sports.people){p.plan.from='Sân thể thao';p.plan.steps[0].location='Sân thể thao';}
+const sportsDirector=new WalkDirector();let sportsResult,sportsSwaps=0;
+for(let frame=0;frame<1800;frame++){
+ sportsResult=sportsDirector.frame(sports,actorsAt(sports,now+frame*50),43200+frame*.05);
+ assert.equal(sportsResult.filter(a=>a.tagGame).length,frame?2:0);
+ for(const a of sportsResult){assert(walkable(a.position));sportsSwaps=Math.max(sportsSwaps,a.tagGame?.swaps??0);}
+ for(let i=0;i<sportsResult.length;i++)for(let j=i+1;j<sportsResult.length;j++)assert(distance(sportsResult[i].position,sportsResult[j].position)>=PERSONAL_SPACE-1e-6);
+}
+assert(sportsSwaps>=2);
+assert.match(sportsResult.find(a=>!a.tagGame).activity,/Chờ bạn/);
+assert(sportsDirector.frame({...sports,born:'2026-10-25T17:00:00Z'},actorsAt(sports,now),43200).every(a=>!a.tagGame),'New worlds must clear previous games');
+assert.equal(sportsDirector.frame(sports,actorsAt(sports,now),43200).filter(a=>a.tagGame).length,0);
+// A negative clock jump resets the game and navigation together.
+sportsDirector.frame(sports,actorsAt(sports,now),43200.1);
+assert(sportsDirector.frame(sports,actorsAt(sports,now),43000).every(a=>!a.tagGame));
+console.log(JSON.stringify({suite:'paired-tag-sports',frames:1800,sportsSwaps,thirdActorWaits:true,worldAndClockReset:true}));
+const {initializeLiving,crowdAt}=await import('../lib/living/engine.ts');
+const {scheduleResidentSocial}=await import('../lib/living/social-scheduler.ts');
+const scheduled=structuredClone(world);scheduled.living=initializeLiving(now);
+scheduled.clock.anchors[0].simMs=9*3600000;
+for(const role of scheduled.living.catalog.roles){role.place='Công viên';role.kind='tag';}
+const playing=crowdAt(scheduled.living,scheduled,now).filter(a=>a.kind==='tag'&&!a.walking);
+assert(playing.length>0,'Exercise actual NPC routines instead of mocking eligibility');
+const tick=scheduleResidentSocial(scheduled,now);
+for(const a of playing)assert(!tick.world.living.residents.find(r=>r.id===a.id).plan,'NPC meetings must not replace an intentional tag activity');
+console.log('PASS real NPC tag routines are not interrupted by social scheduling');
+const {microActivity,actionSteps}=await import('../lib/living/activities.ts');
+for(const kind of ['tag','run','cycle','exercise','garden','walk-pet','shop','jump']){
+ assert.deepEqual(microActivity('actor',100,kind,'Hoạt động đã chọn'),{kind,activity:'Hoạt động đã chọn'});
+}
+assert.deepEqual(actionSteps('Công viên','Chơi đuổi bắt','tag').map(s=>[s.location,s.duration]),[['Công viên',180]],'A paired game should not split partners across two venues');
