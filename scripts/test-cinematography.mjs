@@ -41,7 +41,7 @@ assert(!cameraRayBlocked(crown,[30,4,0],[30,45,80]),'Parallel ray outside crown 
 assert(cameraRayBlocked(crown,[0,30,35],[0,30,80]),'Camera inside a crown is obstructed');
 for(const aspect of [.4,390/844,1.6]){
  const dog={id:'cun',position:[22,7]},before=JSON.stringify([actor,dog,crown]);
- const shot=characterShot(actor,dog,0,[],aspect,17.5,[crown],5);
+ const shot=characterShot(actor,dog,0,[],aspect,17.5,{boxes:[crown],peerHeight:5});
  for(const [subject,height] of [[actor,17.5],[dog,5]])assert(!cameraRayBlocked(crown,[subject.position[0],height*.8,subject.position[1]],shot.position),'Both subjects have a clear crown sightline');
  assert.equal(JSON.stringify([actor,dog,crown]),before,'Framing never alters actors or scenery');
 }
@@ -50,3 +50,6 @@ const listenerWall={x:14,z:22,width:10,depth:8};
 const pairShot=characterShot(actor,peer,0,[listenerWall]);
 for(const subject of [actor,peer])assert(!segmentHits(listenerWall,subject.position,[pairShot.position[0],pairShot.position[2]],2));
 console.log('PASS three-dimensional foliage clearance for both tracked subjects, low camera option and no world mutation');
+
+const raised=characterShot(actor,{id:'cun',position:[22,7]},0,[],.5,17.5,{boxes:[{...crown,minY:28,maxY:59}],peerHeight:5,elevation:()=>2});
+assert(!cameraRayBlocked({...crown,minY:28,maxY:59},[22,6,7],raised.position),'Raised terrain uses the same pet sight height as the renderer');

@@ -850,7 +850,7 @@ export function createCity(
         if (current) {
           const peer = actors.find(a => a.id === socialPoses.get(current!.id)?.peerId) ?? groundAnimals.find(a => a.petOwnerId === current!.id);
           const height = Math.max(modelActors.height(current.id), peer && modelActors.ids.has(peer.id) ? modelActors.height(peer.id) : peer && actors.some(a => a.id === peer.id) ? 20 : 0);
-          const shot = characterShot(current, peer, heading.get(current.id) ?? .35, cameraBuildings, camera.aspect, height, cameraFoliage, peer && groundAnimals.some(a=>a.id===peer.id) ? 5 : height);
+          const shot = characterShot(current, peer, heading.get(current.id) ?? .35, cameraBuildings, camera.aspect, height, {boxes:cameraFoliage,peerHeight:peer && groundAnimals.some(a=>a.id===peer.id) ? 5 : height,elevation:p=>groundElevation(p[0],p[1])});
           scene.fog = fog;
           controls.target.set(...shot.target);
           camera.position.set(...shot.position);
@@ -917,10 +917,19 @@ export function createCity(
         const partnerId = socialPoses.get(current.id)?.peerId;
         const peer = actors.find(a => a.id === partnerId) ?? groundAnimals.find(a => a.petOwnerId === current!.id);
         const height = Math.max(modelActors.height(current.id), peer && modelActors.ids.has(peer.id) ? modelActors.height(peer.id) : peer && actors.some(a => a.id === peer.id) ? 20 : 0);
-        const shot = characterShot(current, peer, heading.get(current.id) ?? .35, cameraBuildings, camera.aspect, height, cameraFoliage, peer && groundAnimals.some(a=>a.id===peer.id) ? 5 : height);
-        const alpha = 1 - Math.exp(-2.8 * dt);
-        controls.target.lerp(new THREE.Vector3(...shot.target), alpha);
-        camera.position.lerp(new THREE.Vector3(...shot.position), alpha);
+        const shot = characterShot(current, peer, heading.get(current.id) ?? .35, cameraBuildings, camera.aspect, height, {boxes:cameraFoliage,peerHeight:peer && groundAnimals.some(a=>a.id===peer.id) ? 5 : height,elevation:p=>groundElevation(p[0],p[1])});
+        const sightClear=(position:THREE.Vector3)=>[{actor:current!,height},...(peer?[{actor:peer,height:groundAnimals.some(a=>a.id===peer.id)?5:height}]:[])].every(({actor,height:h})=>
+          !cameraFoliage.some(box=>cameraRayBlocked(box,[actor.position[0],groundElevation(...actor.position)+Math.max(2,h*.8),actor.position[1]],position.toArray()))&&
+          !cameraBuildings.some(box=>segmentHits(box,actor.position,[position.x,position.z],2)));
+        const desired=new THREE.Vector3(...shot.position),target=new THREE.Vector3(...shot.target);
+        if(!sightClear(camera.position)&&sightClear(desired)){
+          // Easing through an opaque crown hides the companion even when the
+          // chosen endpoint is clear. Make an explicit deterministic correction.
+          controls.target.copy(target);camera.position.copy(desired);
+        }else{
+          const alpha = 1 - Math.exp(-2.8 * dt);
+          controls.target.lerp(target, alpha);camera.position.lerp(desired, alpha);
+        }
       }
     }
     controls.update();
