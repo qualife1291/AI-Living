@@ -1,0 +1,102 @@
+{
+  "version": 1,
+  "date": "2026-10-28",
+  "phase": "H6b offline dataset curation",
+  "status": "unit-validated-release-checks-pending",
+  "contract": "docs/validation/dataset-curation-contract-v1.json",
+  "contractSha256": "4fe4fcb9bec176c72805bd420ca4b496ea3a6bb45a059265b6f0324b2df36493",
+  "fixture": {
+    "path": "data/training/curation-fixtures-v1.jsonl",
+    "kind": "offline-dataset-curation",
+    "mode": "preview",
+    "report": {
+      "scanned": 6,
+      "foreign": 0,
+      "invalid": 0,
+      "unreviewed": 0,
+      "hashRejected": 0,
+      "validatorRejected": 0,
+      "duplicates": 0,
+      "accepted": 6,
+      "dpo": 6
+    },
+    "splits": {
+      "train": {
+        "fewShot": 5,
+        "dpo": 5
+      },
+      "validation": {
+        "fewShot": 0,
+        "dpo": 0
+      },
+      "holdout": {
+        "fewShot": 1,
+        "dpo": 1
+      }
+    },
+    "sourceKinds": {
+      "synthetic-editorial": 6,
+      "simulation-capture": 0
+    },
+    "inputSha256": "daad4c22194b09ae87aced843f3b64e88362754512a0e4ff9a2bad87a54971ae",
+    "validatorSha256": "882969085b0026ed54882b9d0bbdd58d181106d861a5aea1ccc556dff162e3ac",
+    "datasetSha256": "734a86e612a9ab91b3591c24f3817cac6cdc97aa025628efe7e769c24e4d8eac",
+    "productionAccess": false,
+    "trainsModel": false,
+    "changesRuntime": false,
+    "reviewerKind": "agent",
+    "modelKind": "editorial",
+    "blindHoldout": false,
+    "realModelCaptures": 0
+  },
+  "checks": {
+    "targetSuite": true,
+    "fullUnit": {
+      "total": 61,
+      "passed": 61,
+      "workers": 4,
+      "seconds": 59.48
+    },
+    "typecheck": true,
+    "lintWarnings": 0,
+    "releaseBuild": "pending",
+    "compiledLocalApi": "pending",
+    "assets": "pending",
+    "actorFilterBeforeAudit": true,
+    "ownMemoryAndFactScope": true,
+    "explicitSemanticReview": true,
+    "realProposalAndNarrativeValidators": true,
+    "exactRequestModelSamplingPins": true,
+    "sourceKindsSeparated": true,
+    "duplicateAndContradictionGuards": true,
+    "connectedSplitGroups": true,
+    "trainOnlySelection": true,
+    "recomputedArtifactAdmission": true,
+    "previewZeroWrites": true,
+    "privateAtomicExclusiveOutput": true,
+    "utf8AndByteBudgets": true,
+    "inputPreserved": true
+  },
+  "preservation": {
+    "runtimeImporter": false,
+    "runtimePromptIntegration": false,
+    "modelTraining": false,
+    "modelInference": false,
+    "productionAccess": false,
+    "worldMemoryHistoryPolicyChanged": false,
+    "schemaChanged": false,
+    "newMigration": false,
+    "rendererChanged": false,
+    "productionBackfilled": false,
+    "H10HoldoutObserved": false
+  },
+  "limitations": [
+    "Local file and reviewer identity are operator declarations, not authenticated server or human attestations.",
+    "Structural guards and declared semantic review do not prove model quality or physical completion.",
+    "All6 new pairs are editorial;5train/0validation/1holdout partition is not blind evaluation.",
+    "Existing6partial DPO and6SFT references lack matching capture metadata and remain unchanged.",
+    "Connected groups/splits can change when connected data is added; freeze a new dataset/protocol before evaluation.",
+    "No training, promotion, model calls, paid API/GPU, live DB access or runtime integration."
+  ],
+  "next": "Server-owned ground/timeline/encounter authority foundation; actual model corpus/evaluation needs a separate frozen protocol."
+}

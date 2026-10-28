@@ -233,7 +233,7 @@ export function verifyCuratedDataset(value: unknown, expectedValidatorSha256: st
   return structuredClone(value) as CuratedDataset;
 }
 
-/** Offline convenience only; no live prompt integration or import. Never reads held-out rows. */
+/** Offline convenience only; no live prompt integration or import. Never returns held-out exemplars. */
 export function selectDatasetFewShots(value: unknown, request: CurationRequest, validatorSha256: string, limit = 2) {
   if (!Number.isInteger(limit) || limit < 1 || limit > 4) bad('selection-limit');
   const dataset = verifyCuratedDataset(value, validatorSha256), target = validateCurationRequest(request);

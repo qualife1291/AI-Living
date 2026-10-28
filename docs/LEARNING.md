@@ -34,11 +34,11 @@ Model local opt-in qua `npm run living:up` (llama.cpp/Qwen đã được thử �
 
 ## Dataset và đo lường
 
-`data/training/` có6 mẫu SFT few-shot,6 cặp DPO pairs và curriculum8cấp. `evaluateCandidateEvent()` chấm heuristic5nhóm: schema/bounds25, coloc/timing25, Vietnamese20, repetition15, continuity15. Score không chứng minh chất lượng ngữ nghĩa, không tự thành curation/DPO hoặc quyền auto-patch/fine-tune. Chosen/rejected mới phải cùng prompt/context/model và validator thật.
+`data/training/` giữ6 mẫu SFT,6 cặp DPO dạng partial cũ và curriculum8cấp làm tham khảo biên tập. Chúng thiếu exact request/model nên không được nâng thành matched captures. `curation-fixtures-v1.jsonl` thêm6 cặp biên tập có contract đầy đủ và review agent rõ. `evaluateCandidateEvent()` chấm heuristic5nhóm: schema/bounds25, coloc/timing25, Vietnamese20, repetition15, continuity15; score không là nhãn chất lượng hay quyền auto-patch/fine-tune. Curation offline mới được mô tả cuối tài liệu.
 
 `npm run benchmark:policies` dùng chooseScenario/settleLearning/linearScore runtime,8 seed×820 training chung×160 frozen holdout. V2 explicit single-domain history: tabular reward0,561797/MSE0,003588; LinUCB0,559612/0,002683. Dự đoán tốt hơn nhưng thưởng tức thời chưa thắng. [policy-holdout.json](validation/policy-holdout.json) là số liệu; v1 giữ riêng. Không nhận claim 3,71×/score 98/LLMlatency/FPS hoặc chỉnh để ép thắng holdout.
 
-Suite/unit/API kiểm ridge oracle, gates/context/plan/cancel/retry, transaction rollback/legacy/corruption và actor privacy; xem [TESTING](TESTING.md). H1 rollout và các nghiên cứu H4/H6/H10 được mô tả bên dưới, chưa promote; peer/exemplar, dataset curation và model A/B còn ở ROADMAP.
+Suite/unit/API kiểm ridge oracle, gates/context/plan/cancel/retry, transaction rollback/legacy/corruption và actor privacy; xem [TESTING](TESTING.md). H1 rollout và các nghiên cứu H4/H6/H10 được mô tả bên dưới, chưa promote; peer/exemplar runtime, corpus model thật và model A/B còn ở ROADMAP.
 
 ## H1 — Rollout theo thời gian (28/10)
 
@@ -168,7 +168,7 @@ Numeric curriculum có3stage từ context tại quyết định: needs(energy<0,
 
 Thử nghiệm warm-only là giả thuyết mới sau H4: prior k5 chỉ blend khi **tổng samples tự đạt<24**, sau đó dùng chính hàm personal trên state hiện tại, không reset hậu nghiệm hay ép trajectory trùng baseline. Không đụng personal uncertainty/guards. Train8seed6000–6007,12agent×15ngày; validation prediction8seed7000–7007 cùng kích thước; policy holdout20seed8000–8019,24agent×60ngày/shift30. Dùng2profile và cùng role/place fixture H4; không so số tuyệt đối với H1/H2. Tham số cố định trước kết quả, không tự promote/runtime activation. Actor archive artifacts không dùng làm cohort prior cho holdout.
 
-H6 này cung cấp replay numeric/CLI private và curriculum traversal; chưa SFT/DPO training, memory backfill/CAS, role-history inference hoặc cài artifact lên production. H6b đã thêm multi-file/cursor và memory backfill local ở phần dưới; curation cùng prompt/context/model vẫn là việc riêng trong ROADMAP. Không thêm migration/policy format0007 hoặc thuê GPU/API.
+H6 này cung cấp replay numeric/CLI private và curriculum traversal; chưa SFT/DPO training, role-history inference hoặc cài artifact lên production. H6b đã thêm multi-file/cursor, memory backfill local và curation offline ở phần dưới. Không thêm policy format0007 hoặc thuê GPU/API.
 
 [Evidence H6](validation/learning-h6-2026-10-28.json) và [artifacts synthetic](validation/h6-v1/) ghi69.120train+69.120prediction validation+2.764.800policy holdout plans.56suite/check/lint/build/assets/API compiled đạt; API JSONL→actor replay giữ history/snapshot/earned samples. Full replay train+validation, full warm24stress và H1 repeat cùng byte/hash. Không replay archive production hoặc tạo artifact private trong Git.
 
@@ -237,7 +237,7 @@ Actor được lọc **trước audit/storage**; foreign raw fields không vào 
 
 Chỉ fit **một lượt sau khi hết source set**, global chronological/curriculum như H6 một file; không fit lại posterior từng batch. Artifact và final cursor commit cùng nhau trong job; export là bước riêng, stage+fsync rồi publish exclusive nên không có JSON nửa chừng/ghi đè. Artifact H6 vẫn thuộc actor, source SHA là **JSONL ảo**: nối file theo manifest, thêm LF cho mỗi file không rỗng thiếu LF cuối. Envelope `bulkSource` giữ riêng manifest SHA và hashes/bytes từng file; không gọi manifest SHA là checksum raw JSONL. Model/report/acceptedDigest khớp replay một file trên đúng chuỗi ảo ấy.
 
-Mỗi run/export kiểm lại hash toàn bộ nguồn và ledger; cursor giảm audit phần đã nhận, **không bỏ chi phí checksum**. Job giữ canonical numeric evidence và ID ledger cần dedup, không chép trường thoại/ký ức tự do. Checksum là integrity, không chứng thực file ngoài hay physical authority. Report/model.samples chỉ là replayed records; không import vào own samples/skills/matrices/memories/runtime. Memory backfill/CAS local đã có ở phần tiếp; DPO/SFT/few-shot curation, prior activation và bằng chứng policy tốt hơn còn chờ. H10 holdout vẫn chưa mở.
+Mỗi run/export kiểm lại hash toàn bộ nguồn và ledger; cursor giảm audit phần đã nhận, **không bỏ chi phí checksum**. Job giữ canonical numeric evidence và ID ledger cần dedup, không chép trường thoại/ký ức tự do. Checksum là integrity, không chứng thực file ngoài hay physical authority. Report/model.samples chỉ là replayed records; không import vào own samples/skills/matrices/memories/runtime. Memory backfill/CAS và curation offline đã có ở phần tiếp; prior activation, corpus model thật và bằng chứng policy tốt hơn còn chờ. H10 holdout vẫn chưa mở.
 
 ## H6b — Memory backfill additive, local (28/10)
 
@@ -259,4 +259,25 @@ Stable ID trùng live writer (`event:...:actor`, `outcome:...`); đối chiếu 
 
 Một D1 batch CAS checkpoint/raw world revision+JSON/source page/target scope, rồi INSERT missing memories và receipt có nonce. Receipt cuối assert postconditions bằng NOT NULL để lỗi constraint/trigger, kể cả INSERT bị bỏ qua im lặng, **rollback cả memory/cursor/receipt**. Receipt digest được checkpoint pin. Retry đúng last-plan/previous-head chỉ ACK duplicate; point/plan khác bị409, không tự ghi lại. Có thể bảo trì khi paused vì không tạo outcome/event mới hoặc đổi clock.
 
-Body≤2KiB, mặc định16/max32source rows/trang, source row≤64KiB, tổng source≤512KiB; target≤256row/8KiB mỗi row/tổng256KiB. New appends sau high-water cần job mới; quét lại không thêm trùng. Job/receipt lưu hash/counters/IDs, không chép toàn transcript. Mỗi receipt chứng minh page tại lúc commit; đây **không phải frozen content snapshot toàn DB**. Archives vẫn append-only; source sửa/xóa sau các batch cũ cần review/repair riêng, không tự xóa ký ức. Production chưa được backfill, không bật local-admin để vượt guard Site. Dataset curation là bước tiếp theo.
+Body≤2KiB, mặc định16/max32source rows/trang, source row≤64KiB, tổng source≤512KiB; target≤256row/8KiB mỗi row/tổng256KiB. New appends sau high-water cần job mới; quét lại không thêm trùng. Job/receipt lưu hash/counters/IDs, không chép toàn transcript. Mỗi receipt chứng minh page tại lúc commit; đây **không phải frozen content snapshot toàn DB**. Archives vẫn append-only; source sửa/xóa sau các batch cũ cần review/repair riêng, không tự xóa ký ức. Production chưa được backfill, không bật local-admin để vượt guard Site.
+
+## H6b — Curation few-shot/DPO offline
+
+[Contract](validation/dataset-curation-contract-v1.json), schema/compiler `lib/dataset-curation.ts`, CLI `scripts/curate-training.mjs`. Input là JSONL local pin SHA; không fetch DB/model, không gọi `training:export` tự động. Mỗi record thuộc đúng một actor; foreign actor bị lọc trước deep validation/hash/audit. Context có đúng hai participant, facts phải khai báo actor biết và source, memory chỉ own owner+witness, giữ kind/date/provenance. Không suy knowledge/role lịch sử từ state hiện tại. Nội dung vẫn cần review ngữ nghĩa; kiểm metadata không chứng minh mọi câu thoại giữ đúng kiến thức.
+
+`dialogue-request-v1` lưu system/task/context, source version+snapshotSHA, model artifact/revision (hoặc identity **editorial** rõ), sampling. `renderCurationMessages()` là renderer exact hai message; không tái tạo prompt đã mất. Candidate và review pin cùng requestSHA và completionSHA; đổi prompt/context/model/sampling/source làm mất khớp. `simulation-capture` phải có born/revision/event/time và model artifact, facts/memory provenance phù hợp; đó chỉ là **capture do operator khai báo**, chưa xác thực server, observed outcome hoặc physical completion. Episode/reward JSONL cũ không đủ thông tin để nhập kiểu này. Synthetic/editorial giữ riêng, không giả tên model đã sinh.
+
+Chosen phải qua **proposalSchema + reviewNarrative thật**, đúng hai người, không newRole; đây là proposal dialogue, không kiểm timing/arrival hay cho phép thực thi event. Review human/agent rõ danh tính phải xác nhận relevance/knowledge/causality/Vietnamese và nêu lý do, pin chosen/rejected riêng. Không review/abstain bị bỏ qua; heuristic/score98 không cấp nhãn. Rejected có thể trượt guard; kết quả validator thực của nó được giữ. Hai output giống nhau, source/hash/scope sai không được nhận. Duplicate dedup; ID xung đột hoặc review mâu thuẫn cùng request hủy cả artifact. Review là annotation khai báo, không chữ ký hay chứng minh chất lượng model.
+
+```bash
+# Lấy SHA256 của chính file, truyền giá trị vào SHA_INPUT; mặc định preview không ghi gì.
+sha256sum data/training/curation-fixtures-v1.jsonl
+npm run training:curate -- --in=data/training/curation-fixtures-v1.jsonl --actor=an --expected-sha256=SHA_INPUT
+npm run training:curate -- --in=data/training/curation-fixtures-v1.jsonl --actor=an --expected-sha256=SHA_INPUT --action=export --out=.sites-runtime/training/dataset-an-v1.json
+```
+
+CLI giới hạn8MiB/2000nonblank records **kể cả foreign**,64KiB/line,32KiB/request,8KiB/completion,32MiB/output; UTF8 fatal, BOM từ chối, CRLF/blank/final-no-LF hợp lệ khi hash đúng. Preview chỉ stdout aggregate/hash. Export explicit tạo file600 atomically/exclusive dưới `.sites-runtime/training`; kiểm symlink parent trước mkdir, không ghi đè source/output hoặc in raw text/path lỗi. Artifact giữ inputSHA, exact code-byte validatorSHA, records/review, few-shot/DPO chat JSON và datasetSHA. `verifyCuratedDataset()` chạy lại admission và so exports/splits, không chỉ tin self-hash.
+
+Chia80/10/10 theo SHA **connected groups** chung scene/source/exact prompt/context hoặc simulation event; pair luôn cùng split. Tỷ lệ không ép đủ trên corpus nhỏ; thêm dữ liệu liên kết có thể đổi group/hash/split nên đóng băng artifact trước đánh giá, không chọn lại nhóm để cải thiện kết quả. `selectDatasetFewShots()` chỉ offline, train-only, đúng actor/model/prompt/task/location/cast/source kind, loại toàn nhóm target; chưa nối prompt runtime. Fixture6cặp hiện có5train/0validation/1holdout: tất cả đã được review biên tập, **không là blind holdout hay đo gain**. Không đụng H10 holdout12000–12019.
+
+[Evidence](validation/dataset-curation-2026-10-28.json) ghi kiểm compiler/CLI/fixtures. Không SFT/DPO weight training, model inference, GPU/API phí, importer/promotion, DB migration/world/memory/policy/history/scheduler hoặc thay renderer. Corpus model thật và thử A/B cần exact capture mới, review độc lập và protocol/holdout riêng.

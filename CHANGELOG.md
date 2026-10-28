@@ -4,6 +4,8 @@ Chỉ ghi mốc sản phẩm. Chi tiết commit/review nằm trong Git; số ver
 
 ## 28/10/2026
 
+- H6b thêm curation few-shot/DPO offline: exact request/context/model/sampling/source SHA, review ngữ nghĩa riêng, validator thật, actor-owned memory và connected splits/train-only selector. CLI mặc định preview, export private600/atomic/exclusive;6 cặp mới là biên tập rõ, không nâng nhãn6partial cũ.61suite/check/lint đạt; chưa training, corpus model thật hay runtime importer.
+
 - Memory backfill local có preview/plan-SHA/checkpoint-CAS, nguồn episode đúng recipient/outcome có evidence, stable-ID/legacy reconciliation. Migration0008 thêm job/receipt/index; batch lỗi rollback cả cursor/memory, không rewrite world/policy/history.60suite/API đạt; chưa backfill production, còn dataset curation.
 
 - H6b thêm replay nhiều file local có manifest/source SHA, checkpoint SQLite/CAS và cursor byte+line. Batch lỗi/crash không cộng dở; chỉ fit một lượt khi hoàn tất, export private không ghi đè.59suite và API JSONL→bulk/resume đạt; giữ nguyên own samples/history/runtime, chưa memory backfill hoặc promote policy.
