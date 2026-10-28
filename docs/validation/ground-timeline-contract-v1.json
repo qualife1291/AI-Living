@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "phase": "Ground GND1 local server walking timeline foundation",
+  "scope": "server-ground-core-static-v1: exactly an/binh/chi, shared static footprints and mutual swept-disc collisions; excludes NPCs, animals, traffic, transport, tag and renderer playback",
+  "eligibility": {"reward": false, "P2P": false, "sharedWorldPhysicalArrival": false},
+  "bootstrap": "Explicit local owner start seeds collision-free simulation positions from the current declared locations. Existing plans are baselines only; no historical arrival receipts or observed-memory inference.",
+  "plans": "Observe a changed server world plan with full SHA256, revision and observation simtime. Never adopt client positions/timestamps/paths or backdate motion. Plan replacement cancels unresolved motion; skipped/untracked steps do not receive arrivals. Unsupported/expired plans hold position.",
+  "simulation": "Fixed100ms simulation steps, max600steps (60s) per request, max16units/s walking; backlog remains explicit. Routes use the same bounded A-star/static swept footprints. Stable actor ordering, conservative swept peer clearance, no wall/peer teleport. Reached goal within its source step window can emit one arrival per plan/step. No activity-completion inference.",
+  "clock": "Server Date.now + existing segmented computeSimMs only; pause permits no writes/motion, rewind rejects, no client time or fast-forward. Identical committed checkpoint is identical for all readers.",
+  "persistence": "Append-only migration0009 creates independent session and batch receipts; atomic CAS of exact world raw data/revision + previous session hash/raw nonce. Receipt postassert detects silently ignored writes and rolls back the entire batch. Durable operation IDs deduplicate lost ACK; stale heads and identity/config/receipt tamper fail closed.",
+  "api": "POST /api/living/ground, owner + local-admin + loopback + matching Origin when present. Strict body<=2KiB. Default status/read-only preview; explicit start/advance with operation UUID and expected checkpoint. No scheduler/pulse/runtime integration.",
+  "limits": {"requestBytes": 2048, "worldBytes": 2097152, "stateBytes": 131072, "actors": 3, "planSteps": 8, "pathPoints": 512, "fixedStepMs": 100, "stepsPerBatch": 600, "walkSpeed": 16, "arrivalsPerBatch": 24},
+  "preservation": "No world/IDs/born/plan/policy/skills/memory/history/home/pets edits. Old migrations unchanged. No production migration, backfill, model calls, paid API/GPU or new scheduler. Renderer remains viewer-local until a separate integration phase."
+}
