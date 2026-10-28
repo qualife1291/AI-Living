@@ -1,0 +1,463 @@
+{
+  "version": "bounded-warm-search-v1",
+  "stage": "validation",
+  "identity": {
+    "version": "bounded-warm-search-v1",
+    "protocolSha256": "f6036b13657714a1966f5757d44e79545c9e4f7a0556ea80845119d57c217a7d",
+    "modelHashes": {
+      "ordinary-v1": "8329eced5f8a128c31051bf005fbff5577fbfca98575c171e5919206e85aace8",
+      "cold-stress-v1": "6362c4d70dc68292034d5b127474058846997aaa80e7c232a9782b27724d763e"
+    }
+  },
+  "parentSha256": "add003f4b6102a58befd086b6a26d84a54f9463c7fc0212b819a1f4e7f0637a8",
+  "candidates": [
+    {
+      "id": "w12-k2",
+      "params": {
+        "warmPlans": 12,
+        "priorK": 2
+      }
+    },
+    {
+      "id": "w24-k2",
+      "params": {
+        "warmPlans": 24,
+        "priorK": 2
+      }
+    }
+  ],
+  "scores": [
+    {
+      "id": "w12-k2",
+      "params": {
+        "warmPlans": 12,
+        "priorK": 2
+      },
+      "profiles": [
+        {
+          "profile": "ordinary-v1",
+          "comparison": {
+            "kind": "paired-rollout-comparison-v1",
+            "baseline": "personal-v1",
+            "candidate": "w12-k2",
+            "differences": {
+              "returnPerAgentDay": {
+                "mean": -0.0005376575270094885,
+                "ci95": [
+                  -0.0013547505762032796,
+                  0.0002794355221843026
+                ],
+                "n": 8,
+                "min": -0.0020288578524161327,
+                "max": 0.0007189536365042049
+              },
+              "immediateRegretPerAgentDay": {
+                "mean": -0.0034927812847494466,
+                "ci95": [
+                  -0.011466435707171095,
+                  0.0044808731376722016
+                ],
+                "n": 8,
+                "min": -0.014897248068664659,
+                "max": 0.01229793055449413
+              },
+              "needOkRatio": {
+                "mean": -0.00002531828703702943,
+                "ci95": [
+                  -0.00009181322542545242,
+                  0.00004117665135139356
+                ],
+                "n": 8,
+                "min": -0.00017361111111102723,
+                "max": 0.0000578703703703054
+              },
+              "actionEntropy": {
+                "mean": -0.00029216813435094247,
+                "ci95": [
+                  -0.000737718172636714,
+                  0.00015338190393482913
+                ],
+                "n": 8,
+                "min": -0.0010061256240940786,
+                "max": 0.0005046298139209648
+              },
+              "repeatRate": {
+                "mean": 0.000014477646513771925,
+                "ci95": [
+                  -0.00003564404547118253,
+                  0.00006459933849872637
+                ],
+                "n": 8,
+                "min": -0.00002895529302759936,
+                "max": 0.00014477646513783027
+              }
+            },
+            "entropyMargin": {
+              "mean": 0.11792613579380282,
+              "ci95": [
+                0.11751646136367254,
+                0.1183358102239331
+              ],
+              "n": 8,
+              "min": 0.11696250500514788,
+              "max": 0.11838836431524857
+            },
+            "gates": {
+              "enoughSeeds": false,
+              "fullProfile": true,
+              "returnNonDecrease": false,
+              "regretNonIncrease": false,
+              "needsNonDecrease": false,
+              "entropyFloor": true
+            },
+            "passesProposedOfflineGates": false,
+            "activatesRuntimePolicy": false,
+            "limits": "Same-state one-step opportunity cost is not long-horizon counterfactual regret. Needs/competence can have no headroom in this profile.",
+            "relativeReturnDelta": -0.0004463993997534929,
+            "meanEntropyRatio": 0.9995057142174387,
+            "voluntaryChoiceChanges": 619,
+            "firstDayReturnDelta": {
+              "mean": 0.16751656394907138,
+              "ci95": [
+                0.13817276457485486,
+                0.1968603633232879
+              ],
+              "n": 8,
+              "min": 0.11332407085583274,
+              "max": 0.24006300142333847
+            }
+          }
+        },
+        {
+          "profile": "cold-stress-v1",
+          "comparison": {
+            "kind": "paired-rollout-comparison-v1",
+            "baseline": "personal-v1",
+            "candidate": "w12-k2",
+            "differences": {
+              "returnPerAgentDay": {
+                "mean": 0.0004701976786106177,
+                "ci95": [
+                  -0.0013599940756989803,
+                  0.0023003894329202156
+                ],
+                "n": 8,
+                "min": -0.0025247620187283104,
+                "max": 0.0035894988697986463
+              },
+              "immediateRegretPerAgentDay": {
+                "mean": -0.00003845094551579997,
+                "ci95": [
+                  -0.006532076615568456,
+                  0.006455174724536856
+                ],
+                "n": 8,
+                "min": -0.01178656199229744,
+                "max": 0.01075731839081806
+              },
+              "needOkRatio": {
+                "mean": -0.000014467592592617984,
+                "ci95": [
+                  -0.0001171151620370738,
+                  0.00008817997685183783
+                ],
+                "n": 8,
+                "min": -0.00023148148148155467,
+                "max": 0.00017361111111102723
+              },
+              "actionEntropy": {
+                "mean": 0.0001054333001554858,
+                "ci95": [
+                  -0.0004937748458690789,
+                  0.0007046414461800505
+                ],
+                "n": 8,
+                "min": -0.0006927727107030046,
+                "max": 0.0012389271906879662
+              },
+              "repeatRate": {
+                "mean": 0.00011944058373870164,
+                "ci95": [
+                  -0.0004978825459871067,
+                  0.00073676371346451
+                ],
+                "n": 8,
+                "min": -0.000897614083854581,
+                "max": 0.001389854065323104
+              }
+            },
+            "entropyMargin": {
+              "mean": 0.1054583467694474,
+              "ci95": [
+                0.10509731984299509,
+                0.10581937369589972
+              ],
+              "n": 8,
+              "min": 0.10471976484883716,
+              "max": 0.10628321134905433
+            },
+            "gates": {
+              "enoughSeeds": false,
+              "fullProfile": true,
+              "returnNonDecrease": false,
+              "regretNonIncrease": false,
+              "needsNonDecrease": false,
+              "entropyFloor": true
+            },
+            "passesProposedOfflineGates": false,
+            "activatesRuntimePolicy": false,
+            "limits": "Same-state one-step opportunity cost is not long-horizon counterfactual regret. Needs/competence can have no headroom in this profile.",
+            "relativeReturnDelta": 0.00013988723107115662,
+            "meanEntropyRatio": 1.0002001526045814,
+            "voluntaryChoiceChanges": 291,
+            "firstDayReturnDelta": {
+              "mean": 0.049896468992686294,
+              "ci95": [
+                0.0022356252540018037,
+                0.09755731273137078
+              ],
+              "n": 8,
+              "min": -0.044227961558692463,
+              "max": 0.14707730433636446
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "w24-k2",
+      "params": {
+        "warmPlans": 24,
+        "priorK": 2
+      },
+      "profiles": [
+        {
+          "profile": "ordinary-v1",
+          "comparison": {
+            "kind": "paired-rollout-comparison-v1",
+            "baseline": "personal-v1",
+            "candidate": "w24-k2",
+            "differences": {
+              "returnPerAgentDay": {
+                "mean": -0.0003896428758531634,
+                "ci95": [
+                  -0.0013400309153721837,
+                  0.0005607451636658569
+                ],
+                "n": 8,
+                "min": -0.0023860779693136713,
+                "max": 0.0009210329928883709
+              },
+              "immediateRegretPerAgentDay": {
+                "mean": -0.005537167731009651,
+                "ci95": [
+                  -0.01423047219780229,
+                  0.003156136735782987
+                ],
+                "n": 8,
+                "min": -0.02029074489398175,
+                "max": 0.012215108214362669
+              },
+              "needOkRatio": {
+                "mean": -0.000025318287037071063,
+                "ci95": [
+                  -0.0000777502694678782,
+                  0.00002711369539373608
+                ],
+                "n": 8,
+                "min": -0.00011574074074072183,
+                "max": 0.0000578703703703054
+              },
+              "actionEntropy": {
+                "mean": -0.0002662993446200662,
+                "ci95": [
+                  -0.0006830290125139317,
+                  0.00015043032327379918
+                ],
+                "n": 8,
+                "min": -0.0008872056963780128,
+                "max": 0.00035174372777080354
+              },
+              "repeatRate": {
+                "mean": 0.000028955293027564666,
+                "ci95": [
+                  -0.000024403322725586682,
+                  0.00008231390878071601
+                ],
+                "n": 8,
+                "min": -0.00002895529302759936,
+                "max": 0.00014477646513783027
+              }
+            },
+            "entropyMargin": {
+              "mean": 0.11795200458353369,
+              "ci95": [
+                0.11759727869886945,
+                0.11830673046819794
+              ],
+              "n": 8,
+              "min": 0.11708142493286394,
+              "max": 0.1185906495899583
+            },
+            "gates": {
+              "enoughSeeds": false,
+              "fullProfile": true,
+              "returnNonDecrease": false,
+              "regretNonIncrease": false,
+              "needsNonDecrease": false,
+              "entropyFloor": true
+            },
+            "passesProposedOfflineGates": false,
+            "activatesRuntimePolicy": false,
+            "limits": "Same-state one-step opportunity cost is not long-horizon counterfactual regret. Needs/competence can have no headroom in this profile.",
+            "relativeReturnDelta": -0.00032350769246462585,
+            "meanEntropyRatio": 0.9995494786580902,
+            "voluntaryChoiceChanges": 1692,
+            "firstDayReturnDelta": {
+              "mean": 0.6217340637987592,
+              "ci95": [
+                0.5840377900240397,
+                0.6594303375734787
+              ],
+              "n": 8,
+              "min": 0.5631275208674991,
+              "max": 0.6760687715116678
+            }
+          }
+        },
+        {
+          "profile": "cold-stress-v1",
+          "comparison": {
+            "kind": "paired-rollout-comparison-v1",
+            "baseline": "personal-v1",
+            "candidate": "w24-k2",
+            "differences": {
+              "returnPerAgentDay": {
+                "mean": -0.000516956938973856,
+                "ci95": [
+                  -0.0015820802917412868,
+                  0.0005481664137935748
+                ],
+                "n": 8,
+                "min": -0.002699106525815953,
+                "max": 0.0012518849099425466
+              },
+              "immediateRegretPerAgentDay": {
+                "mean": -0.00617458827039058,
+                "ci95": [
+                  -0.009862595460803567,
+                  -0.0024865810799775926
+                ],
+                "n": 8,
+                "min": -0.015409390916790944,
+                "max": -0.0014841427998275591
+              },
+              "needOkRatio": {
+                "mean": 0.000007233796296232664,
+                "ci95": [
+                  -0.00017736429419171022,
+                  0.00019183188678417555
+                ],
+                "n": 8,
+                "min": -0.00020254629629623544,
+                "max": 0.0004340277777776791
+              },
+              "actionEntropy": {
+                "mean": -0.00021664307105456748,
+                "ci95": [
+                  -0.0006561484574880141,
+                  0.00022286231537887915
+                ],
+                "n": 8,
+                "min": -0.000896497451558842,
+                "max": 0.000660273672095979
+              },
+              "repeatRate": {
+                "mean": 0.00018458999305071694,
+                "ci95": [
+                  -0.00032276062916411063,
+                  0.0006919406152655445
+                ],
+                "n": 8,
+                "min": -0.0003764188093583476,
+                "max": 0.001274032893212873
+              }
+            },
+            "entropyMargin": {
+              "mean": 0.10513627039823735,
+              "ci95": [
+                0.10479042855223095,
+                0.10548211224424375
+              ],
+              "n": 8,
+              "min": 0.10451604010798132,
+              "max": 0.10570455783046234
+            },
+            "gates": {
+              "enoughSeeds": false,
+              "fullProfile": true,
+              "returnNonDecrease": false,
+              "regretNonIncrease": true,
+              "needsNonDecrease": false,
+              "entropyFloor": true
+            },
+            "passesProposedOfflineGates": false,
+            "activatesRuntimePolicy": false,
+            "limits": "Same-state one-step opportunity cost is not long-horizon counterfactual regret. Needs/competence can have no headroom in this profile.",
+            "relativeReturnDelta": -0.00015379845130192573,
+            "meanEntropyRatio": 0.9995887288468434,
+            "voluntaryChoiceChanges": 1209,
+            "firstDayReturnDelta": {
+              "mean": 0.47575709212579875,
+              "ci95": [
+                0.4141859558227379,
+                0.5373282284288596
+              ],
+              "n": 8,
+              "min": 0.31515693107573384,
+              "max": 0.5479224592401222
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "selected": null,
+  "cases": [
+    {
+      "profile": "ordinary-v1",
+      "id": "personal-v1",
+      "sha256": "1c461524c91cb11145142d4f59432a7b2eaeff816ca73f52d1866ea1e16882b3"
+    },
+    {
+      "profile": "ordinary-v1",
+      "id": "w12-k2",
+      "sha256": "88a8e752423bfb5af9fcafb2ea3ae87e1a691e51407e053b4796f5504751625f"
+    },
+    {
+      "profile": "ordinary-v1",
+      "id": "w24-k2",
+      "sha256": "d07cbb27a07579d264ff602359e6e20af7f24fa1af8b8dfeea99734c0faafa70"
+    },
+    {
+      "profile": "cold-stress-v1",
+      "id": "personal-v1",
+      "sha256": "a7b126323398046763911c4f6abd185ba0e3a1e5ea8e548702749ee748558504"
+    },
+    {
+      "profile": "cold-stress-v1",
+      "id": "w12-k2",
+      "sha256": "4716f5b6ceccb5766786c8604cd41751337748619b7417154201f546ff2f1cad"
+    },
+    {
+      "profile": "cold-stress-v1",
+      "id": "w24-k2",
+      "sha256": "f3b19f3938e5218a94046b5517aa1e01b085bf219c9ed030a2d33f3c3b7c39f4"
+    }
+  ],
+  "plans": 1658880,
+  "holdoutOpened": false,
+  "productionAccess": false,
+  "activatesRuntimePolicy": false,
+  "sha256": "a8fe4ae2f89e6a4ceba9db82ccec8ec6b54a94726a1d355a18ff89d605f49ddf"
+}
