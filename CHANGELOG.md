@@ -4,6 +4,8 @@ Chỉ ghi mốc sản phẩm. Chi tiết commit/review nằm trong Git; số ver
 
 ## 28/10/2026
 
+- H10 thêm optimizer offline có grid/budget/seed cohorts cố định, effect/diversity gate và stage hashes.9candidate→2validation, không selection nên giữ holdout chưa dùng và LinUCB hiện hành.57suite/API đạt; không cài config, sửa code tự động hoặc deploy.
+
 - H6 thêm actor-scoped local archive replay có SHA/dedup/conflict guard, one-pass numeric curriculum và warm24 study trên seed mới.56suite/API JSONL integration đạt; ridge order chỉ khác số học, warm24 chưa đủ gates nên giữ LinUCB. Không sửa history, own samples hoặc bật runtime importer.
 
 - H4 thêm global/role.kind priors có H3 provenance, strict artifact/seed split và bounded prediction blend;55suite/API local đạt. Warm-start ngày đầu và MSE tốt hơn trong mô phỏng, nhưng reward60ngày giảm nên chưa promote; default LinUCB cá nhân giữ nguyên.

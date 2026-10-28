@@ -202,3 +202,16 @@ npm run optimize:policy -- --stage=holdout --models=docs/validation/h10-v1/model
 ```
 
 CLI binds protocol bytes +model hashes +parent selection và từng case checksum, kiểm đúng profile/seed/dimension, recompute scoring/shortlist trước sang stage tiếp. Không ghi đè artifact khác. Holdout command không gọi simulator khi validation không chọn được candidate. Runtime chưa có config importer; ngay cả đạt offline cũng còn source review/installation/version/CAS/rollback riêng. Đây là finite parameter search, không genetic self-modifying code hoặc LLM fine-tune.
+
+[Evidence H10](validation/learning-h10-2026-10-28.json) và [stage/case artifacts](validation/h10-v1/) ghi69.120fit+69.120point-validation,691.200search và1.658.880validation plans.57suite/check/lint/build/assets/API local đạt; full search/shortlist/hash, full model bundle, một full validation case và H1 lặp lại giữ nguyên. Verification repeats không phải thêm seed độc lập hoặc candidate mới.
+
+Search giữ9candidate: warm6/k0,5/2/5 có0voluntary choice changes và raw trajectory bằng baseline, nên bị loại dù các metric có thể bằng baseline. Hai cửa sổ được freeze là `w12-k2` và `w24-k2`; commit checkpoint có trước validation.
+
+| Validation candidate/profile | Mean Δreward/agent/ngày | CI95 | Đủ performance gates |
+|---|---:|---|---|
+|w12-k2 / ordinary|−0,000538|[−0,001355;0,000279]|Không|
+|w12-k2 / stress|0,000470|[−0,001360;0,002300]|Không|
+|w24-k2 / ordinary|−0,000390|[−0,001340;0,000561]|Không|
+|w24-k2 / stress|−0,000517|[−0,001582;0,000548]|Không|
+
+Không candidate nào chứng minh được không giảm return/needs trên cả2profile; entropy gate đạt, opportunity-cost có cải thiện rõ ở w24-k2stress nhưng chưa đủ toàn bộ tiêu chí. Đây là thiếu bằng chứng theo gate định trước, không kết luận mọi tham số đều kém trong mọi môi trường. Validation chọn **null**; command holdout ghi reserved/0plan và không sinh outcome directory. Seed12000–12019 vẫn chưa được quan sát; không đưa runner-up hoặc sửa ngưỡng để mở holdout. Giữ LinUCB cá nhân; optimizer chỉ tạo artifact offline, không cài config vào runtime. G0/UX tiếp theo trong backlog, các nghiên cứu học sau cần protocol mới.

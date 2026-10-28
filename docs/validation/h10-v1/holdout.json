@@ -1,0 +1,21 @@
+{
+  "version": "bounded-warm-search-v1",
+  "stage": "holdout",
+  "identity": {
+    "version": "bounded-warm-search-v1",
+    "protocolSha256": "f6036b13657714a1966f5757d44e79545c9e4f7a0556ea80845119d57c217a7d",
+    "modelHashes": {
+      "ordinary-v1": "8329eced5f8a128c31051bf005fbff5577fbfca98575c171e5919206e85aace8",
+      "cold-stress-v1": "6362c4d70dc68292034d5b127474058846997aaa80e7c232a9782b27724d763e"
+    }
+  },
+  "parentSha256": "a8fe4ae2f89e6a4ceba9db82ccec8ec6b54a94726a1d355a18ff89d605f49ddf",
+  "selected": null,
+  "opened": false,
+  "cases": [],
+  "plans": 0,
+  "reason": "No candidate passes all validation performance gates on both profiles; holdout outcomes remain unobserved.",
+  "productionAccess": false,
+  "activatesRuntimePolicy": false,
+  "sha256": "4f456346af6807eb5a2c66d5b7e435357a19495736b77d86ac7fd2be621b6036"
+}
