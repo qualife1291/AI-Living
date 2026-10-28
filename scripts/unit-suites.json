@@ -161,5 +161,8 @@
   ],
   [
     "scripts/test-reward-evidence.mjs"
+  ],
+  [
+    "scripts/test-hierarchical-prior.mjs"
   ]
 ]

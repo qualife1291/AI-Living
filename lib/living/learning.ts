@@ -155,6 +155,7 @@ export function chooseScenario(
   context: RealContext,
   rolePlace?: string,
   policy: "tabular" | "linucb" = "linucb",
+  prior?: (scenario: Scenario) => { mean: number; weight: number } | null,
 ): Scenario {
   const candidates = availableScenarios(agent, context);
   if (candidates.length === 1) return candidates[0];
@@ -167,6 +168,14 @@ export function chooseScenario(
       if (policy === "linucb" && agent.linear?.[s.id]) {
         const estimate = linearScore(agent.linear[s.id], decisionContext(agent, context.weather));
         prediction = estimate.mean * .7; exploration = estimate.uncertainty;
+      }
+      // Optional prediction-only prior. Never install donor samples/matrices or
+      // change personal exploration; production callers do not supply this.
+      const shared=prior?.(s);
+      if(shared) {
+        if(!Number.isFinite(shared.mean)||Math.abs(shared.mean)>1||!Number.isFinite(shared.weight)||shared.weight<0||shared.weight>1)
+          throw Error("Invalid shared prediction prior");
+        prediction+=(shared.mean*.7-prediction)*shared.weight;
       }
       const affinity = s.place === rolePlace ? 0.3 : 0;
       const energyNeed = Math.max(0, (70 - agent.energy) / 70), foodNeed = Math.max(0, (agent.hunger - 15) / 85);

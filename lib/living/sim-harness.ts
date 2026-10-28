@@ -12,6 +12,7 @@ import type { RealContext } from "./schema.ts";
 import type { PersonPlan } from "../world.ts";
 import {indexPrior,newResidualState,observeResidual,selectResidualScenario,residualPrediction,
   RESIDUAL_VERSION,priorKey, type ExperimentalPolicy,type ResidualPrior} from "./residual-policy.ts";
+import {rewardState,type RewardState} from "./reward-evidence.ts";
 
 const HOUR = 3_600_000, DAY = 24 * HOUR;
 const BASE_DAY = Date.UTC(2026, 9, 1);
@@ -28,7 +29,11 @@ export type RolloutOptions = {
   shiftDay: number | null;
   profile?: "ordinary-v1" | "cold-stress-v1";
 };
-export type RolloutInputs = { prior?: ResidualPrior; priorChecksum?: string; collectPrior?: boolean };
+export type RolloutOutcome = {id:string;actorId:string;scenarioId:string;at:string;reward:number;context:number[];
+  sampleBefore:number;sampleAfter:number;before:RewardState;after:RewardState;
+  startedSimMs:number;durationMs:number;settledSimMs:number;declaredPlanKey:string;plan:PersonPlan};
+export type RolloutInputs = { prior?: ResidualPrior; priorChecksum?: string; collectPrior?: boolean;
+  onOutcome?:(outcome:RolloutOutcome)=>void };
 export type Metric = { mean: number; ci95: [number, number] | null; n: number; min: number; max: number };
 type Selector = typeof chooseScenario;
 
@@ -179,12 +184,16 @@ function seedRun(options: RolloutOptions, seed: number, selector: Selector, inpu
         const decisionExpected=expectedReward(agent,choice);
         const correction=experimental?residualPrediction(resident.memory,choice.id,rolePlace,options.policy as ExperimentalPolicy,priors):0;
         advanceNeeds(agent,id,time+duration,sleeping);
+        const observedBefore=inputs.onOutcome?rewardState(agent):undefined;
         const at=new Date(BASE_DAY+time+duration-7*HOUR).toISOString();
         if(!settleLearning(agent,time+duration,at,pendingPlanMatches(agent.pending,plan)) ||
           agent.samples!==samples+1 || !Number.isFinite(agent.lastReward) ||
           Math.abs(agent.lastReward!-predicted)>1e-12)throw Error("Settlement/expected reward mismatch");
         const reward=agent.lastReward!;
         if(reward < -1 || reward > 1 || reward > best+1e-12)throw Error("Invalid reward/oracle bound");
+        inputs.onOutcome?.({id:agent.pending.id,actorId:id,scenarioId:choice.id,at,reward,context:[...agent.pending.context!],
+          sampleBefore:samples,sampleAfter:agent.samples,before:observedBefore!,after:rewardState(agent),
+          startedSimMs:time,durationMs:duration,settledSimMs:time+duration,declaredPlanKey:agent.pending.planKey!,plan});
         totalReturn+=reward;dayReward+=reward;totalRegret+=Math.max(0,best-reward);completedPlans++;
         baseError+=(reward-decisionExpected)**2;residualError+=(reward-decisionExpected-correction)**2;
         if(experimental&&options.policy!=="model-prior-v1") {
