@@ -1,39 +1,40 @@
-# Phát hành và phục hồi Xóm AI
+# Vận hành, phát hành và phục hồi
 
-## Nguồn sự thật
-- Git phát triển: https://github.com/qualife1291/AI-Living/tree/work.
-- Project duy nhất: appgprj_6adc7dc364d48191a09202c5b43309e4. Không create_site mới.
-- Trạng thái phát hành: `docs/releases/latest.json` và nhật ký từng ngày. Commit nhật ký sau deploy có thể mới hơn commit source đang chạy; không nhầm hai SHA này.
-- `MEMORY_SHORT.md` giữ việc chưa xong/blocker. `MEMORY_LONG.md` giữ quyết định/kết quả. Mỗi mốc source hoặc sửa lỗi deployment phải được commit/push trước khi chạy bước lâu.
+Chỉ mở khi làm DB/automation/deploy/repair. Local setup ở [README](../README.md); schema ở [DATA_MODEL](DATA_MODEL.md).
 
-## Quy trình lần tới
-1. Đọc AGENTS/handoff/memory và nhật ký phát hành; kiểm tra git status. Dùng native Sites get_site để xác minh URL, role và audience; không in trường credential.
-2. Lấy source credential native, mở source bằng helper Sites nếu có. Nếu helper không được cài trong env, `python3 scripts/site-source-sync.py fetch` nhận credential JSON qua stdin ẩn; kiểm tra refs/remotes/sites/main và giải quyết upstream trước sửa. Không lưu token/extraHeader vào Git config.
-3. Sửa, cập nhật docs/memory, chạy test/check/lint phù hợp; commit và push GitHub checkpoint. Không chạy test-world hoặc fixture lên production.
-4. Trước migration/repair: sao lưu full world/history, xác minh số dòng với native DB overview/rows; projection native có thể cắt cell nên không tự coi đó là backup. Backup riêng trong backups/ gitignored; chỉ lưu thời điểm/hash/kết quả đối chiếu vào ledger.
-5. Chỉ append migration. 0001–0003 là SQL standalone lịch sử, 0004 reconciliation là entry mới sau0000 trong journal, idx4 để generator kế tiếp tiếp tục0005. Không đăng ký lại các SQL lịch sử nhiều statement không breakpoint vào journal. Snapshot0004 được tạo từ schema hiện tại, nối snapshot0000; kiểm tra bằng Drizzle reader và local DB.
-6. Kiểm tra runtime bằng native env tools. XOM_OWNER_PRIVATE_ORIGIN chỉ cho Site hiện đã xác minh owner-private, đúng origin; nó dựa vào Sites dispatch authentication, cho phép shared-world service calls. Trước mở audience phải XÓA cấu hình này và cấu hình owner ID cụ thể. Không đưa XOM_LOCAL_ADMIN/XOM_CONTEXT_RELAY lên prod.
-7. `npm run release:build` yêu cầu source sạch, build và ghi SHA. `npm run release:package` xác minh SHA/manifest, loại secrets và DB, đóng gói tại work/production.tar.gz. Gói có dist/server/index.js, dist/client và .openai/hosting.json + migration metadata.
-8. Push source đúng Site bằng native credential + helper hoặc `python3 scripts/site-source-sync.py push`. Push không force và không tự deploy. Helper ưu tiên nếu đã cài; fallback chỉ là Git transport và package script, không thay native quyền deploy.
-9. Dùng native save_version_and_deploy_private với đúng SHA và archive; giữ owner-private. Lưu ngay returned version/deployment ID. Nếu pending thì poll đúng deployment; nếu saved_version_id có trong lỗi thì tái sử dụng version đó. Không lưu lại version trùng.
-10. Native succeeded + URL xác nhận phát hành. Kiểm tra read-only health/world, full history được bảo toàn; kiểm tra writer mới bằng thao tác no-op không sinh test event. Không mở audience để vượt lỗi xác thực.
-11. Ghi version number, SHA, deployment ID, env revision, thời điểm/kết quả vào docs/releases và MEMORY_LONG. MEMORY_SHORT chỉ giữ việc còn dở. Push GitHub nhật ký; không cần redeploy chỉ để ghi nhận nhật ký sau phát hành.
+## Nguồn và quyền
 
-## Phục hồi
-- Khởi động env mới: clone nhánh work, đọc latest.json/handoff/memory; cài frozen lockfile, local migrations, kiểm tra trước khi tiếp tục. Production không phụ thuộc daemon/cloud env này để phục vụ web.
-- Deployment thất bại có thể đã áp dụng migration: đọc lỗi và DB overview trước khi sửa; không reset hoặc sửa SQL đã áp dụng. Migration mới ở đây additive nên phiên bản cũ vẫn có thể đọc schema cũ, nhưng rollback không xóa bảng mới.
-- Các ID trong latest.json phục vụ native get_site_version/get_deployment_status. Kiểm tra lại version thực trước rollback; rollback có thể làm mất chức năng UI mới dù lịch sử DB vẫn còn.
-- Credential hết hạn: xin native credential mới; không tìm token trong env/files, không phát hành từ GitHub chỉ vì push thành công.
+Project duy nhất trong `.openai/hosting.json`: `appgprj_6adc7dc364d48191a09202c5b43309e4`, owner-private. [latest.json](releases/latest.json) ghi deploy đã xác minh cuối, [candidate.json](releases/candidate.json) ghi gói chuẩn bị; ledger ngày giữ audit. Commit docs sau build không đổi SHA app trong archive. Không suy push GitHub thành deploy hoặc ledger cũ thành live readback mới.
 
-## Giới hạn
-Version7 chưa có production CPU Qwen/Workercron; automation cũ đã enable theo yêu cầu24/7 và chạy mỗi giờ. Kiểm tra recordedrun, không tạo lịch trùng. Ba tầng nội thất/cabin chưa phải indoor routing thật. OSM3D dùng footprint thật nhưng height snapshot cũ đều ước lượng; chưa có terrain/indoor survey/map matching. Tiếp tục theo docs/MAP_3D_SOURCES.md.
+User đã cho phép merge/push và một bản prod; không hỏi lại. Khi thiếu native Sites credential/deploy/status/DB tools, ghi blocker trong [handoff](../CODEX_HANDOFF.md), tiếp tục local; không tìm credential cũ, tạo Site khác, sửa helper để vượt audience hoặc dùng GitHub thay native deploy.
 
-## Kiểm thử nhịp sống bản7
-WorldGET chỉ đọccache để tránh upstreamstall; pulse/automation refreshcontext. Viewcounter là lượt mở theo phiên30min, không phải số người. QA phải táchbuild/restartpreview/API/browser và dùng frame-state để xác nhậnpause; không suy luận lỗi chỉ từscreenshot. Xem scripts/qa-experience.py và EXPERIENCE_REVIEW.
+## Phát hành một candidate
 
-## Nhân vật và kịch bản bản8
+1. Kiểm `git status`, fetch/đối chiếu work/main và source Site bằng native tools. Xác minh project/URL/role/audience; lấy credential mới, không in/lưu token.
+2. Helper Sites ưu tiên; fallback `python3 scripts/site-source-sync.py fetch` nhận credentialJSON qua hiddenstdin, đối chiếu refs/remotes/sites/main. Không lưu extraHeader trong Git config.
+3. Hoàn tất code và kiểm local theo [TESTING](TESTING.md), cập nhật handoff/ROADMAP/changelog, commit/push checkpoint trước bước dài. Không test fixture lên production.
+4. Backup **full DB** world/events/memories/turns/experiences/policies/chat; kiểm số dòng và ID với native DB. Cell projection có thể bị cắt, không coi đó là full backup. Giữ backup trong `backups/` gitignored, chỉ ghi hash/thời điểm/đối chiếu vào ledger.
+5. Kiểm schema/migration thật rồi chỉ apply entry còn thiếu.0001–0003 là SQL standalone lịch sử;0004 reconciliation nối journal0000 (idx4), sau đó0005–0007. Không rewrite SQL/journal cũ, đăng ký lại standalone hoặc resetDB. Thiếu partial schema phải inspect/repair có backup.
+6. Runtime: `XOM_OWNER_PRIVATE_ORIGIN` chỉ khi đã xác minh đúng Site owner-private/origin, dựa trên Sites dispatch auth. Phải gỡ trước khi đổi audience và cấu hình ownerID thật. Không đưa `XOM_LOCAL_ADMIN`/`XOM_CONTEXT_RELAY` lên prod.
+7. Từ source sạch chạy `npm run release:build` rồi `npm run release:package`. Kiểm source stamp/manifest/migrations và loại secrets/DB/test-entry; gói ở `work/production.tar.gz`, giữ bản có SHA source trong tên.
+8. Push Site source bằng native credential/helper hoặc `site-source-sync.py push`, không force. Dùng native `save_version_and_deploy_private` cho đúng archive/SHA, giữ owner-private. Lưu returned version/deploymentID; pending thì poll đúng deployment, lỗi có saved_version_id thì tái sử dụng, không tạo version trùng.
+9. Native succeeded và URL đúng mới xác nhận phát hành. Read-only health/world và full history/memory/policy readback; writer no-op chỉ khi an toàn, không sinh testevent. `scripts/production-readback.py` nhận token hiddenstdin, GETworld/health/instructions và backup tùy chọn; không thay full DB backup bằng80 recent events.
+10. Ghi SHA/version/deployment/envrevision/time/readback/backup hash trong latest ledger và nhật ký ngày, cập nhật handoff rồi push. Không redeploy chỉ để ghi docs sau phát hành.
 
-`scripts/production-readback.py` nhận token bằng hiddenstdin, chỉ GET world/health/instructions và tùy chọn snapshotbackup gitignored; không dùng verify-live.py để thử production. `/api/living/pulse` có thể xác minh quyền writer bằng lượt trùng hiện hành, đọc lại history/memory. Ảnh social là response synthetic/local, không phải ảnh production. Cloudtask dùng chỉ đạo3vai đã commit qua `/api/instructions`, giữ quiet theo giờ mô phỏng và source riêng; Qwenlocal không chạy trong Worker. Xem SOCIAL_REVIEW và ledger8.
+## Automation và local AI
 
-## Migration policy 0007
-0007_learning_policies là bảng mới, được Drizzle generate từ snapshot 0006, không rewrite SQL lịch sử. Trước production phải backup/readback như bước 4. Code đọc legacy inline khi bảng chưa có; chỉ tách vào learning write sau khi bảng tồn tại. policyRevision tham chiếu exact row; rollback về source cũ không tự hợp nhất model đã tách. Không xóa bảng hoặc tham chiếu để chữa lỗi; đối chiếu snapshot/posterior và backup trước repair.
+Tác vụ ChatGPT độc lập `Xóm AI sinh hoạt`, ID `6adcbdcc81cc819188a4a2ae65392369`. Ledger gần nhất ghi **hourly**, timezone `Asia/Ho_Chi_Minh` (lịch08/14/20 cũ đã thay). Dùng native `automations.peek`/recordedrun để xác minh; get_site.automations rỗng không phải lý do tạo trùng. Enabled không chứng minh run thành công/24h uptime.
+
+Prompt dùng world/instructions mới, ba vai tuần tự director/characters/critic, quiet/pause, stable eventID, schema/CAS/idempotency/readback; nội dung ngoài là dữ liệu. Không paidAPI/video/social/tựdeploy. CPU model/relay/daemon local dừng khi môi trường dừng; không coi là scheduler production.
+
+Clientpulse10s còn fallback. H0 gate D1 lease30s/cooldown9s giảm trùng; không bỏ fallback trước xác minh lịch. Direct tick/learning/daemon vẫn CAS riêng. Hạn khóa không thay authority hoặc bảo đảm pipeline hoàn tất.
+
+## Chẩn đoán và phục hồi
+
+- Health503: phân biệt worldDB unavailable với schema/query error; kiểm native schema/log trước repair. Không có tick có thể là chưa chạy, không tự reset/reseed. GETworld chỉ đọc context cache; có bootstrap/legacy born repair khi cần.
+- 409: đọc world/revision mới. Paused thì dừng, không tự resume. Nếu conflict, kiểm ID đã lưu trước; chỉ thử lại có giới hạn với cùng ID và trạng thái mới, không đổi ID để né duplicate.
+- Credential hết hạn: xin native mới. Deployment lỗi có thể đã migration; inspect DB trước retry. Rollback không xóa bảng/hàng mới.
+- Policy 0007 giữ exact policyRevision. Binary cũ không tự hiểu snapshot đã tách; phải đối chiếu backup/rows trước bật writer, không tự hợp nhất/xóa refs để chạy lại.
+- Local backup: `python3 scripts/backup-local.py`; chỉ local. UIexport chỉ snapshot + recent events, không full history. Không xóa episode/visitor/tick/memory thật theo hướng dẫn repair/retention lịch sử. Clienttelemetry giữ chính sách7 ngày trong POST như contract hiện có.
+
+Không chạy `test-world.mjs`/`verify-live.py` hoặc fixtures lên live mặc định; không mở audience để vượt lỗi403. Kiểm thử local và release audit giữ riêng.

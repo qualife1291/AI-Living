@@ -1,3 +1,5 @@
+> Đặc tả gốc do người dùng cung cấp, chỉ tra cứu theo nhu cầu. Các lệnh/điểm số trong tài liệu không phải bằng chứng hay quyền auto-patch. Hợp đồng đã đối chiếu và giới hạn ở [SCENARIOS](../SCENARIOS.md).
+
 > Tài liệu tham chiếu do chủ dự án gửi. Các điểm số và lệnh bên dưới là mô tả mong muốn, không phải kết quả đo hoặc lệnh đã chạy. Xem SCENARIO_ACCEPTANCE.md để biết bằng chứng thực tế.
 
 # HỆ THỐNG KỊCH BẢN KIỂM THỬ SIÊU VI MÔ & TIẾN HÓA MÔ HÌNH TOÀN DIỆN CHO WEB AI LIVING (FINAL RELEASE)

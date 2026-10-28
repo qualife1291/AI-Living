@@ -1,6 +1,8 @@
-# Tiêu chí kiểm thử bốn kịch bản đính kèm
+# Bốn kịch bản studio — hợp đồng và phạm vi kiểm chứng
 
 Nguồn: file người dùng `Kịch Bản.md`, SHA-256 `787b96e54aaab31c567170074702b3e082184807071e596d126d6eb20954f327`. Nội dung được dùng làm đặc tả cảnh và tiêu chí. Các điểm 94–97/100, câu “hoàn hảo”, lệnh `--auto-patch=true` và `--render-mode=webgpu-ultra` trong file là ví dụ của tài liệu, không phải bằng chứng phần mềm đã chạy hay lệnh đã được thực thi.
+
+Đặc tả gốc dài chỉ tra cứu khi sửa micro-spec: [living-scenarios-request](specs/living-scenarios-request.md). Không cần đọc file đó khi tiếp nhận dự án.
 
 ## API và cách chạy
 

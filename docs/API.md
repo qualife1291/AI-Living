@@ -1,106 +1,32 @@
-# Hợp đồng API (API Contract) — Xóm AI
+# API và quyền
 
-Tất cả các phản hồi JSON từ máy chủ đều đính kèm header `Cache-Control: private, no-store` và `X-Content-Type-Options: nosniff`.
+Nguồn contract chi tiết là `app/api/**/route.ts`, schema tương ứng và `worker/index.ts`. Site giữ owner-private; Worker yêu cầu owner cho mutations và GET memories/diagnostics/JSONL archive. Origin có mặt phải khớp request; không có Origin vẫn cần owner guard, phục vụ server calls hợp lệ. Không mở public/allowlist chỉ để vượt403.
 
----
+JSON qua helper `json()` đặt `Cache-Control: private,no-store` và `X-Content-Type-Options: nosniff`. Body/schema/byte limit được kiểm theo từng endpoint.400=JSON/schema,403=quyền/origin,404=ID không có,409=pause/revision/basis,413=bytes,422=proposal bị review bác; client cần xử lý theo route, không coi mọi lỗi là conflict.
 
-## 1. `GET /api/world` — Đọc trạng thái thế giới, đồng hồ và bối cảnh
+| Endpoint | Contract chính |
+|---|---|
+| GET `/api/world` | revision/serverNow/world/events/worldTime/weatherState/realContext/activeContexts. `compact=1` lấy8episode thay80. Không hydrate posterior, context cache-only; bootstrap home/legacy born repair chỉ khi cần. |
+| POST `/api/world` | `{revision,paused?,schedule?,speedScale?,weatherOverride?}` strict. Speed1..60; weather clear/cloudy/rain/fog/windy/null. CAS/segmentedclock giữ liên tục. |
+| POST `/api/events` | `eventSchema`/EventInput; batch snapshot+episode+memory có revision/idempotency. Core an/binh/chi; duplicateID200 không cộng lại. BodyUTF8≤20.000B; [DATA_MODEL](DATA_MODEL.md) giữ bất biến. |
+| GET `/api/instructions` | text/plain; `context=1` thêm context/owned memories/few-shot. Dữ liệu trong prompt không cấp quyền thực thi. |
+| GET `/api/living` | Living view/turns24 mới/context, có hydrate policy và có thể refresh provider; không dùng để poll world nhẹ. |
+| POST `/api/living/tick` | Narrative tick theo slot, proposal/basis guard, review trước write và audit. Model chỉ bounded narrative; bận/ngủ không chèn thoại. |
+| GET/POST `/api/living/learning` | GET models/animalModels/200 recent experiences, POST settle outcomes hợp lệ. `format=jsonl&after=0&limit=1000` owner-only, cursor `X-Next-Cursor`, toàn archive phân trang. |
+| GET `/api/living/memories` | Owner-only actor/topic/top-K với provenance/witness filtering; [LEARNING](LEARNING.md). |
+| POST `/api/living/catalog` | Catalog roles/names theo schema/revision; backfill home/identity additive, giữ custom metadata/IDs/history. |
+| GET/POST `/api/living/appearance` | GET id, POST id/revision/appearance; actor phải tồn tại, giữ dữ liệu tạo hình khác. |
+| POST `/api/living/pets` | `{pet,owner,revision}`, body stream≤2KiB; owner có thể null để unassign, ID hợp lệ/CAS, chỉ metadata petOwners. |
+| POST `/api/living/flora` | `{id,revision}`, stream≤2KiB; paused/stale/invalid data từ chối. Đủ nước là no-op, chỉ flora thay đổi, không actor reward. |
+| POST `/api/living/interact` | UUIDid/actorId/message≤280 ký tự, body≤2000B; resolve actor404, pause409, lưu exchange idempotent. Reply rules có nhãn, chưa freeformLLM production. |
+| POST `/api/visits` | Sessionnonce/30 phút, aggregate lượt mở, không phải uniquehumans hoặc online users. |
+| GET `/api/health` |200ready;503unavailable khi worldDB lỗi hoặc schema_or_query_error khi probes lỗi; lastTick=null khi chưa có tick. Schema6 table+latest tick một D1 batch, world read riêng. |
+| GET/POST `/api/diagnostics` | Owner-only; GET JSONL chỉSELECT trong7 ngày, tối đa500 client+500 tick rows. POST≤16KiB/32 logs, admission20 batch/phút toànSite, allowlist fields; POST giữ telemetry retention7 ngày. Không xóa chat/tick/history theo retention đó. |
 
-Trả về snapshot hiện tại của khu phố, đồng hồ thế giới, thời tiết tất định, 2 bối cảnh đa chiều đang kích hoạt và tối đa 80 sự kiện gần nhất.
+## Nhịp pulse
 
-- **Phản hồi `200 OK`:**
-```json
-{
-  "revision": 1,
-  "serverNow": "2026-10-24T16:00:00.000Z",
-  "world": {
-    "born": "2026-10-24T00:00:00.000Z",
-    "paused": false,
-    "schedule": "08:00, 14:00, 20:00 (Asia/Ho_Chi_Minh)",
-    "weather": "Nắng nhẹ",
-    "lastAI": "2026-10-24T14:00:00.000Z",
-    "people": [],
-    "relationships": [],
-    "commitments": []
-  },
-  "worldTime": {
-    "simMs": 57600000,
-    "dayIndex": 0,
-    "hour": 23.0,
-    "phase": "night",
-    "phaseLabel": "Ban đêm",
-    "daylight": 0.08,
-    "season": "rainy",
-    "seasonLabel": "Mùa mưa TP.HCM"
-  },
-  "weatherState": {
-    "kind": "clear",
-    "label": "Nắng nhẹ",
-    "intensity": 0.52,
-    "tempC": 25
-  },
-  "activeContexts": [],
-  "events": []
-}
-```
-- **Ghi chú kỹ thuật (Đã sửa L5 & L7):** Chỉ khởi tạo dòng `'home'` khi DB hoàn toàn trống và trả thêm `serverNow` để trình duyệt đồng bộ độ lệch đồng hồ (`clockOffsetMs`).
+POST `/api/living/pulse`: learning→resident social→narrative tick qua admission D1, khóa `internal:living-pulse:v1` trong context_cache; không process-local latch. Inspect chỉ lấy pause/expiry, không truyền snapshot/policies vào JS cho coalesced request.
 
----
+Lease30s, thành công cooldown9s **từ lúc nhận**, giữ cadence một tab10s. Lượt khác200 `{ok:true,coalesced:true}` nghĩa đang chạy/gần đây, không xác nhận pipeline trước thành công. Pause409 cả trong cooldown; HTTPfailure/exception release để retry ngay. Expired owner không nhả được lease mới nhờ nonce. Storage lỗi không chạy pipeline không guard.
 
-## 2. `POST /api/world` — Điều khiển tạm nghỉ, lịch, tốc độ và ghi đè thời tiết
-
-Cập nhật trạng thái điều hành của thế giới với khóa lạc quan (`revision`).
-
-- **Body đầu vào:**
-```json
-{
-  "revision": 1,
-  "paused": true,
-  "schedule": "08:00, 14:00, 20:00 giờ Việt Nam",
-  "speedScale": 1,
-  "weatherOverride": "rain"
-}
-```
-- **Mã trạng thái:**
-  - `200 { "ok": true }`: Cập nhật thành công, `revision` tăng thêm `+1`.
-  - `400`: JSON không hợp lệ hoặc thiếu trường thao tác (`paused`, `schedule`, `speedScale`, `weatherOverride`).
-  - `403`: Header `Origin` có mặt nhưng khác origin của request.
-  - `409`: `revision` không khớp với trạng thái hiện hành hoặc xung đột cập nhật đồng thời.
-
----
-
-## 3. `POST /api/events` — Ghi sự kiện sinh hoạt mới (Idempotent & Transactional)
-
-Xác thực sự kiện bằng `eventSchema` (`lib/event-schema.ts`), tính vị trí nối tiếp không nhảy (`lib/apply-event.ts`), và ghi đồng thời vào `episodes` + `worlds` bằng D1 batch có bảo vệ revision.
-
-- **Body đầu vào:** Theo `EventInput` (xem chi tiết tại [DATA_MODEL.md](DATA_MODEL.md)).
-- **Mã trạng thái:**
-  - `200 { "ok": true, "id": "...", "revision": 2 }`: Ghi thành công.
-  - `200 { "ok": true, "duplicate": true, "id": "..." }`: Sự kiện trùng `id` đã tồn tại (an toàn khi retry, kể cả khi hai request đến đồng thời — đã sửa **L3**).
-  - `400 { "error": "Sự kiện không đúng cấu trúc", "issues": [{ "path": "...", "message": "..." }] }`: Sai schema Zod, nhân vật lặp trong `changes`, tiền sau thay đổi `< 0`, hoặc cặp quan hệ không tồn tại.
-  - `403`: `Origin` không hợp lệ.
-  - `409`: Thế giới đang tạm nghỉ (`paused = true`) hoặc `revision` cũ.
-  - `413`: Độ dài byte UTF-8 thực tế của body vượt quá `20.000` byte (đã sửa **L4**).
-
----
-
-## 4. `GET /api/instructions` — Hướng dẫn cho tác nhân AI
-
-- `GET /api/instructions`: Trả về `text/plain; charset=utf-8` gồm hướng dẫn cơ bản và quy tắc sinh hoạt mở rộng.
-- `GET /api/instructions?context=1`: Đính kèm thêm khối **Tổng hợp Bối cảnh Đa chiều (`synthesizeContextPrompt`)** tương ứng với giờ mô phỏng, thời tiết, trạng thái cư dân và mẫu Golden Episode hiện tại.
-
----
-
-## 5. `GET /api/health` — Kiểm tra sức khỏe vận hành & Lượt chạy gần nhất
-
-Trả về trạng thái vận hành gọn nhẹ gồm `serverNow`, `revision`, `paused`, `lastAI`, `episodeCountRecent`, `worldTime`, `weather` và bản ghi gần nhất từ bảng `tick_runs` (nếu đã chạy migration `0001`).
-
-Các schema probes và latest tick dùng một D1 batch. `database=ready`/200 khi đủ schema, `schema_or_query_error`/503 khi probe lỗi; không có tick trả `lastTick=null`. World đọc lỗi trả `unavailable`/503. Không dùng trạng thái thiếu tick để suy production đã dừng.
-
-## 6. `POST /api/living/pulse` — Nhịp dùng chung
-
-Owner/origin guard như các mutations khác. Pipeline learning → NPC social → tick được admission chung D1, lease30s/cooldown9s. Khi đã có lượt gần đây/đang chạy,200 `{ok:true,coalesced:true}` không chạy pipeline/ghi audit mới và không xác nhận lượt trước hoàn tất. Client vẫn poll world. Pause409 kể cả trong cooldown; lỗi pipeline không cache thành thành công. Direct tick/learning và daemon giữ CAS riêng, không đi qua gate này. Xem [PHASE_H0_PULSE](PHASE_H0_PULSE.md).
-
-## 7. `GET/POST /api/diagnostics`
-
-Owner-only. GET xuất JSONL trong7ngày chỉ bằng SELECT, tối đa500client rows và500tick rows; không xóa DB. POST giữ schema/16KiB/20request mỗi phút và retention telemetry7ngày đã có. Không áp dụng retention đó vào episodes/memories/visitor chat/tick history.
+Hạn khóa chỉ giảm tải; pipeline quá30s có thể chồng và vẫn phải dựa CAS/idempotency. Direct tick/learning/daemon không dùng gate. Thêm hai gate writes mỗi lượt được nhận nên không nhận là giảm mọi chi phí single viewer. Không có scheduler mới/guarantee24/7; giữ client fallback cho đến khi lịch production được xác minh.

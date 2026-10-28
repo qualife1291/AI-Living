@@ -123,8 +123,8 @@ function extractBigrams(text: string): Set<string> {
 }
 
 /**
- * Evaluates a candidate AI event against the 5 quality metrics from XOM-AI_REVIEW.md §6.9
- * and generates a self-critique Reflexion prompt for iterative self-training.
+ * Evaluates a candidate event against the five heuristic metrics in docs/LEARNING.md
+ * and generates a critique prompt; this does not train model weights.
  */
 export function evaluateCandidateEvent(
   candidate: unknown,

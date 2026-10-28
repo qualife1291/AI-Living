@@ -25,9 +25,9 @@ Nguồn: db/schema.ts, lib/world.ts, lib/event-schema.ts, lib/living/schema.ts. 
 
 ## Domain
 
-Core event API giữ ba ID an/binh/chi. LivingState có NPC neighbor-ID riêng, tối đa240theo catalog; renderer có budget hiển thị riêng. Có33địa điểm và41scenario trong data/city; Gemini ghi32scenario là số cũ trước9actions mới.
+Core event API giữ ba ID an/binh/chi. LivingState có NPC neighbor-ID riêng, tối đa240theo catalog; renderer có budget hiển thị riêng. Có33 địa điểm và41 scenario trong data/city; Gemini ghi32 scenario là số cũ trước9 actions mới.
 
-STEP_KINDS có16giá trị: work,eat,rest,social,garden,read,play,drink,run,jump,tag,cycle,exercise,walk-pet,shop,study. Plan lưu createdAt/pausedMs/from/originPath/simStartedAt/steps/transport/generator; originPath giữ chuyển tiếp liên tục từ vị trí projection cũ. Render ground có thể chậm hơn projection khi bị cản.
+STEP_KINDS có16 giá trị: work,eat,rest,social,garden,read,play,drink,run,jump,tag,cycle,exercise,walk-pet,shop,study. Plan lưu createdAt/pausedMs/from/originPath/simStartedAt/steps/transport/generator; originPath giữ chuyển tiếp liên tục từ vị trí projection cũ. Render ground có thể chậm hơn projection khi bị cản.
 
 Resident giữ id/name/roleId/color/arrivedOn/familiarity/memories/plan. home gồm householdId/label/place và anchorId/address optional; identity gồm ageAtArrival/gender/previousNames. Backfill chỉ thêm metadata, đổi đúng tên tự sinh có alias; không thay customname/ID/history/plan. Household là nhóm ở, chưa phải quan hệ cha mẹ/con; 60 cửa riêng đã có ground routing, chưa có nội thất. petOwners là map animal-ID→resident-ID; explicit unassignment được giữ.
 
@@ -42,7 +42,7 @@ LivingState còn có catalog/needs/skills/learning/experiences/appearances/anima
 - Đọc snapshot legacy không tự ghi hàng loạt metadata; persistence bổ sung qua mutation/planner đã được CAS bảo vệ.
 - Tách snapshot/structured records phải có legacy read fallback và transaction; không xóa JSON cũ trước backfill/readback.
 
-Domain skills là metadata additive của AgentLearning: domainSkills và legacySkillGates, không phải backfill earned points. Experience mới có skillGain optional domain/before/after/amount, vẫn source simulation. Context cards49/33nơi là catalog source editorial, không ghi thành event/memory; RAG daemon đọc memories hiện có và không ghi knowledge transfer.
+Domain skills là metadata additive của AgentLearning: domainSkills và legacySkillGates, không phải backfill earned points. Experience mới có skillGain optional domain/before/after/amount, vẫn source simulation. Context cards49/33 nơi là catalog source editorial, không ghi thành event/memory; RAG daemon đọc memories hiện có và không ghi knowledge transfer.
 
 Pending mới có planKey để phát hiện plan bị thay dù giữ timestamp, không là proof arrival/security. reportedEncounters giữ64 ID đã report contextual simulation result để tránh cộng lại. Các field optional, legacy đọc được, không sửa migration hoặc xóa history.
 

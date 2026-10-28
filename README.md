@@ -1,109 +1,38 @@
-# Xóm AI — Khu phố của những trí tuệ nhỏ
+# Xóm AI
 
-## Trạng thái hiện hành
+Thành phố3D mô phỏng đời sống của An, Bình, Chi và các cư dân, với ký ức, nhu cầu, quan hệ và học lựa chọn hoạt động. Three.js/React/Vinext chạy trên Cloudflare Worker + D1. Tiếng Việt, owner-private, không dùng API tính phí.
 
-| Phần | Nguồn sự thật |
-|---|---|
-| Source | HEAD của nhánh đang làm là source hiện hành. Mốc sẵn sàng phát hành có SHA chính xác trong [candidate.json](docs/releases/candidate.json); chỉ3D, tag/pet/bike/overlays, Gobkit/KayKit, phaseD, cửa nhà riêng, audio opt-in và vườn cây có trạng thái đã có source kiểm thử |
-| Production | [latest.json](docs/releases/latest.json), ledger riêng; chưa coi push là deploy |
-| Kiến trúc/dữ liệu/test | [ARCHITECTURE](docs/ARCHITECTURE.md), [DATA_MODEL](docs/DATA_MODEL.md), [TESTING](docs/TESTING.md) |
-| Phần mới/giới hạn | [ASSET_EXPANSION](docs/ASSET_EXPANSION.md), [review Claude](docs/CLAUDE_REVIEW_2026-10-28.md), [H0 nhịp chung](docs/PHASE_H0_PULSE.md), [review Gemini](docs/GEMINI_REVIEW_2026-10-28.md), [context và memory](docs/CONTEXT_AND_MEMORY.md), [vườn cây](docs/PHASE_E_GARDENS.md), [phần còn lại](docs/NEXT_PHASES.md), MEMORY_SHORT |
-| Bàn giao/phát hành | [CODEX_HANDOFF](CODEX_HANDOFF.md), [AGENTS](AGENTS.md), [runbook](docs/PRODUCTION_RUNBOOK.md) |
+**Agent bắt đầu:** [AGENTS](AGENTS.md) → [CODEX_HANDOFF](CODEX_HANDOFF.md). Không cần đọc toàn bộ tài liệu. Việc tiếp theo chỉ ghi tại [ROADMAP](ROADMAP.md).
 
-Các mục có ngày24/10 phía dưới là lịch sử sản phẩm. RendererSVG/StaticScene và hướng dẫn chỉ4suite đã được thay thế; dùng lệnh/checklist trong TESTING cho checkout hiện tại.
+## Chạy local
 
-Dự án mô phỏng một thành phố 3D lấy bối cảnh TP.HCM có ba robot AI **An, Bình, Chi**, cùng mèo **Mướp**, chó **Cún** và **Đàn sẻ**. Nhân vật có mục tiêu, ký ức gắn người chứng kiến, lời hứa và quan hệ; đi lại qua mạng lưới đường phố, làm việc theo nhịp đồng hồ thế giới và gặp nhau trò chuyện.
-
-- **Bản đồ toàn bộ hệ thống tài liệu (đã cơ cấu thành 6 mục chuyên đề):** xem [docs/INDEX.md](docs/INDEX.md).
-- **Đọc đầu tiên khi tiếp nhận dự án:** [CODEX_HANDOFF.md](CODEX_HANDOFF.md) và [AGENTS.md](AGENTS.md).
-- **Báo cáo kỹ thuật & Thiết kế mở rộng:** [docs/TECHNICAL_REVIEW.md](docs/TECHNICAL_REVIEW.md) và [docs/DESIGN_PROPOSALS.md](docs/DESIGN_PROPOSALS.md).
-- **Kỹ thuật tổng hợp bối cảnh & Bộ dữ liệu cho AI tự training:** [docs/AI_TRAINING_AND_CONTEXTS.md](docs/AI_TRAINING_AND_CONTEXTS.md).
-
----
-
-## 1. Lịch sử bản cập nhật 24/10/2026
-
-1. **Mã nguồn định dạng sạch & sửa triệt để L1–L10 + 20 lỗi ESLint:**
-   - Sửa lỗi **L1 (P0)** bằng `resolveTransitionOrigin()` (`lib/life.ts` + `lib/apply-event.ts`): khi kế hoạch AI mới đến giữa lúc robot đang đi theo routine, điểm xuất phát `plan.from` lấy đúng vị trí mô phỏng hiện tại thay vì nhảy lùi về vị trí cũ.
-   - Sửa lỗi **L2–L5, L7, L9, L10**: lưu đầy đủ `relationship` vào `episodes`, xử lý race condition trùng `id` trả `duplicate: true`, kiểm tra kích thước byte UTF-8 thực tế của body, bỏ câu ghi thừa trên mỗi lần `GET /api/world`, trả `serverNow` chống lệch đồng hồ, tách `StaticScene` (`React.memo`) giảm tải render SVG, và đổi `<svg role="group">` để hỗ trợ trình đọc màn hình.
-2. **Đồng hồ thế giới & Thời tiết tất định (`lib/clock.ts`) + Danh mục 16 hoạt cảnh (`data/scenes.json`):**
-   - Chu kỳ 7 pha ngày/đêm (`dawn` → `night`) theo giờ Việt Nam (`Asia/Ho_Chi_Minh`), độ sáng `daylight`, mùa mưa/mùa khô TP.HCM và thời tiết tất định theo hạt giống (`mulberry32`).
-3. **Kỹ thuật Tổng hợp Bối cảnh Đa chiều & Bộ AI Tự Training (`lib/training.ts`, `data/contexts/`, `data/training/`):**
-   - **24 bối cảnh đa chiều** (`data/contexts/neighborhood-contexts.json`) thuộc 6 nhóm: Thời tiết & Mùa màng, Kinh tế vi mô, Lời hứa xã hội, Sinh thái động vật, Văn hóa Việt Nam và Thấu cảm.
-   - **6 mẫu Golden Episodes chuẩn SFT** (`data/training/sft-golden-episodes.json`), **6 cặp đối chiếu ưu tiên DPO** (`data/training/dpo-preference-pairs.json`), **Giáo trình tự luyện 8 cấp độ** (`data/training/self-play-curriculum.json`) và **Hàm chấm điểm phản tư tự động `evaluateCandidateEvent()`** trên thang 100 điểm.
-4. **Đầy đủ tệp cấu hình `.gitignore` & `.npmrc`:**
-   - Có mặt trực tiếp tại thư mục gốc (`.gitignore`, `.npmrc`) kèm bản sao dự phòng (`gitignore.txt`, `npmrc.txt`) và được kiểm tra tự động trong `scripts/package-handoff.py`.
-
----
-
-## 2. Chạy ở môi trường phát triển
-
-Yêu cầu: **Node.js `>=22.18.0`** (khuyến nghị Node 22.18+ hoặc Node 24+ để chạy trực tiếp các kiểm thử `.mjs` nhập module `.ts`, đã xác minh cài sạch trên Node 22.22.2). Trình quản lý gói được pin trong `package.json`: **pnpm `11.25.0`**.
+Node≥22.18, pnpm11.25.0; môi trường đã kiểm dùng Node24.19. Chạy từ thư mục repo:
 
 ```bash
-# Nếu công cụ giải nén của bạn ẩn dotfile, khôi phục từ bản dự phòng:
-# cp -n gitignore.txt .gitignore && cp -n npmrc.txt .npmrc
-
-npm run install:ci
-npm run build
-node scripts/setup-local.mjs # journal/migration hiện hành, không reset dữ liệu
-npm run dev
-```
-
----
-
-## 3. Kiểm tra (Unit Tests, TypeScript, Lint & Build)
-
-```bash
-npm run test:unit
-npm run check
-npm run lint
-npm run assets:check
-npm run build
-npm run test:api:local
-```
-
-Bốn bộ kiểm thử nền tảng lịch sử (`test-life`, `test-events`, `test-animation`, `test-training`) đều là kiểm thử thuần, không gọi mạng và không ghi vào production DB.
-
----
-
-## 4. Hệ thống Tài liệu (Đã cơ cấu theo 6 mục chuyên đề)
-
-Xem danh mục đầy đủ tại **[docs/INDEX.md](docs/INDEX.md)**:
-
-- **Mục I — Tầm nhìn, Thiết kế Mở rộng & Sinh thái:** [VISION.md](docs/VISION.md) · [DESIGN_PROPOSALS.md](docs/DESIGN_PROPOSALS.md) · [CHARACTER_DESIGN.md](docs/CHARACTER_DESIGN.md) · [ANIMAL_BEHAVIOR.md](docs/ANIMAL_BEHAVIOR.md) · [ANIMATION_SOURCES.md](docs/ANIMATION_SOURCES.md)
-- **Mục II — Kiến trúc, Hợp đồng API & Mô hình Dữ liệu:** [ARCHITECTURE.md](docs/ARCHITECTURE.md) · [API.md](docs/API.md) · [DATA_MODEL.md](docs/DATA_MODEL.md) · [GLOSSARY.md](docs/GLOSSARY.md)
-- **Mục III — Trí tuệ Nhân tạo, Bối cảnh & Bộ AI Tự Training:** [AI_BEHAVIOR.md](docs/AI_BEHAVIOR.md) · [AI_TRAINING_AND_CONTEXTS.md](docs/AI_TRAINING_AND_CONTEXTS.md)
-- **Mục IV — Hồ sơ Quyết định Kiến trúc (ADR):** `docs/DECISIONS/ADR-0001` → `ADR-0008`
-- **Mục V — Vận hành, Bảo mật & Đóng góp:** [OPERATIONS.md](docs/OPERATIONS.md) · [RUNBOOK.md](docs/RUNBOOK.md) · [SECURITY.md](docs/SECURITY.md) · [CONTRIBUTING.md](docs/CONTRIBUTING.md) · [STARTER_REFERENCE.md](docs/STARTER_REFERENCE.md)
-- **Mục VI — Kiểm thử & Báo cáo Đánh giá:** [TESTING.md](docs/TESTING.md) · [TECHNICAL_REVIEW.md](docs/TECHNICAL_REVIEW.md) · [ZIP_REVIEW.md](docs/ZIP_REVIEW.md)
-
-## An và bối cảnh TP.HCM — bản mở rộng 25/10/2026
-
-Đã thêm cư dân phụ tăng theo ngày, điểm học/khám/chợ, planner theo giờ Việt Nam, dữ liệu Open-Meteo/Nager.Date và AI local không gọi API tính phí. Xem [thiết kế, nguồn dữ liệu và kiểm chứng](docs/LIVING_REALTIME.md), gồm các giới hạn về kẹt xe, lịch âm, lễ hội và production.
-
-```bash
-corepack pnpm install --frozen-lockfile
+bash scripts/sites-env.sh -- corepack pnpm install --frozen-lockfile --prefer-offline --store-dir .sites-runtime/pnpm-store
 npm run build
 node scripts/setup-local.mjs
-python3 scripts/setup-local-ai.py
-npm run living:up
+npm start
 ```
 
-Cần Node 24+, Python 3.12 và khoảng 2 GiB đĩa cho model/binary/cache AI. Giữ `living:up` chạy để relay, model và daemon hoạt động. Đây là quy trình cloud local; Publish môi trường không phải deploy Site hoặc tạo scheduler production.
+Setup chỉ áp dụng D1 local, giữ dữ liệu đã có. `npm run dev` dùng khi phát triển; sau build, restart Worker mới trước browser QA. `npm run living:up` là model/relay/daemon **local opt-in**, không phải scheduler production. Credential và runtime files không commit.
 
-## Thành phố và tạo hình — cập nhật mới
+## Tra cứu đúng chủ đề
 
-Trang chủ nay là không gian live gần toàn màn hình: 33 địa điểm, 32 tình huống, di chuyển đi bộ/xe máy/buýt/metro trong mô phỏng, 14 bộ tạo hình khối có thể đổi màu và lưu riêng. Có chế độ khảo sát trung tâm TP.HCM từ 2.106 đường/công trình OpenStreetMap, giữ attribution ODbL.
+| Khi cần | Tài liệu |
+|---|---|
+| Context hiện tại, blocker, bước kế | [CODEX_HANDOFF](CODEX_HANDOFF.md) · [ROADMAP](ROADMAP.md) |
+| Luồng chạy và module | [ARCHITECTURE](docs/ARCHITECTURE.md) |
+| D1, snapshot, bất biến, migration | [DATA_MODEL](docs/DATA_MODEL.md) |
+| Endpoint, quyền, pause/CAS/pulse | [API](docs/API.md) |
+| Learning, memory, context, hội thoại | [LEARNING](docs/LEARNING.md) |
+| Ground, camera, rigs, pet/bike/tag, flora/audio | [RENDERING](docs/RENDERING.md) |
+| Asset/OSM, license, import/hash/budget | [ASSETS](docs/ASSETS.md) |
+| Bốn cảnh studio và phạm vi đã kiểm | [SCENARIOS](docs/SCENARIOS.md) |
+| Quyết định kiến trúc/sản phẩm | [DECISIONS](docs/DECISIONS.md) |
+| Test và bằng chứng | [TESTING](docs/TESTING.md) |
+| Backup, deploy, automation, phục hồi | [PRODUCTION_RUNBOOK](docs/PRODUCTION_RUNBOOK.md) |
 
-Mỗi cư dân có mô hình hành vi học từ phản hồi đã hoàn tất; ba động vật có policy theo loài. Archive trải nghiệm có thể xuất bằng `npm run training:export`. Đây chưa phải fine-tune trọng số Qwen.
+[CHANGELOG](CHANGELOG.md) ghi mốc sản phẩm; Git lưu lịch sử review/WIP đã gộp. [candidate.json](docs/releases/candidate.json) là gói chuẩn bị, [latest.json](docs/releases/latest.json) là deploy đã xác minh cuối. Push GitHub không chứng minh đang chạy production.
 
-Đọc [báo cáo thành phố](docs/URBAN_WORLD.md) và [ba hướng sản phẩm](docs/DECISIONS/ADR-0009-shared-world-three-product-directions.md): quan sát An, phim trường giáo dục và nhân vật cá nhân. Các hướng public/video/multi-user chưa được mở trong đợt này.
-
-## Độ tin cậy, nội thất và hồ sơ cuộc đời
-Xem `docs/INTERIORS_AND_RELEASE.md` cho phạm vi đã làm, cách cấu hình quyền chủ sở hữu, scheduler opt-in và bằng chứng kiểm thử. Không mở public chỉ bằng đổi audience.
-
-> Bản7 sửa tỷ lệ/độ nét, thêm chat và lượt mở theo phiên; xem [báo cáo trải nghiệm và kiểm thử](docs/EXPERIENCE_REVIEW.md). Lịchcloud mỗi giờ đã bật, lần chạy đầu cần theo dõi; không coi đây là SLA24/7.
-
-## Source candidate phase B
-Hành động và hậu thoại mới: xem [docs/PHASE_B_ACTIONS.md](docs/PHASE_B_ACTIONS.md) để biết cách test và giới hạn. Chưa hoàn tất mọi giai đoạn A–D.
+Chuyển động/rules, kịch bản biên tập và lượt LLM có nguồn riêng. Kết quả học theo kế hoạch mô phỏng chưa chứng minh đến nơi bằng ground. Không fine-tune tự động, xuất video hoặc mở public trong phạm vi hiện tại.

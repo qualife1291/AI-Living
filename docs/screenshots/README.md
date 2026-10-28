@@ -1,3 +1,5 @@
 # Ảnh QA
 
-Các ảnh hiện hành ghi rõ preview local hoặc production trong báo cáo tương ứng. Ảnh của renderer SVG/2D và tủ đồ SVG cũ đã được gỡ khi chuyển sang chỉ dùng 3D. Không dùng ảnh sinh AI làm bằng chứng QA. Xem docs/THREE_ONLY_AND_PETS.md cho đợt kiểm chứng mới.
+Ảnh/metrics trong từng thư mục là bằng chứng preview local hoặc production theo ghi chú của đợt đó; đa số là fixtures Chromium/SwiftShader. Không suy GPU FPS, dữ liệu live hoặc deploy từ ảnh local. Ảnh sinh AI và preview asset không là bằng chứng QA. Renderer2D cũ đã bỏ.
+
+[TESTING](../TESTING.md) chỉ cách chạy harness và đọc bằng chứng. Không cần đọc/tải toàn bộ ảnh khi tiếp nhận dự án.

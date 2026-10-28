@@ -1,20 +1,15 @@
 # Kiểm thử và bằng chứng
 
-`npm run test:unit` chạy danh sách trong scripts/unit-suites.json bằng scripts/run-unit-tests.mjs. Có51suite ở mốc nguồn tích hợp hiện tại (38suite ở c83a5e3); `node scripts/run-unit-tests.mjs --list` là danh sách hiện hành. Mỗi process độc lập, mặc định tối đa4worker, chạy đủ các suite và trả mã lỗi nếu bất kỳ suite thất bại. `XOM_TEST_JOBS=1` dùng khi cần tuần tự hoặc máy ít tài nguyên. Không hứa tỷ lệ tăng tốc chưa đo.
+`scripts/unit-suites.json` là danh sách suite hiện hành; `npm run test:unit` dùng process độc lập, tối đa 4 workers, thu đủ lỗi thay vì fail-fast. `XOM_TEST_JOBS=1` chạy tuần tự. Mốc H0 có 51 suite đã đạt; đây không phải kết quả chạy mới mỗi khi sửa tài liệu.
 
-## Các nhóm kiểm tra
+## Chọn kiểm tra theo thay đổi
 
-| Nhóm | Suite tiêu biểu |
+| Thay đổi | Kiểm tra |
 |---|---|
-| Core/schema/time | life, events, animation, training, continuity, daily-routines, living, festivals |
-| Learning/autonomy/social | learning, social, autonomy, phase-b, scenario-benchmarks, tag-game, pet-walk, identities, households, linucb, memory-records, role-expansion, dialogue-pool, policy-store, daemon-fallback, domain-skills, context-cards, prompt-memories, plan-completion, flora |
-| Ground/traffic/camera | city, three-city, walkability, personal-space, traffic, cinematography, cycle, home-anchors |
-| Geometry/assets/lifecycle | appearance, human-visuals, visual-upgrade, maintain-assets self-test, model-assets, resource-packs, city-rigs |
-| Security/operations | hardening, map-release, liveness, context-deadline, diagnostics-fixes, quality-budget, overlay-layout, pulse-gate |
-
-Unit dùng bộ nhớ/fixture hoặc D1 cô lập cho policy transaction, không truy cập production. Geometry parser Node thay material để không cần image decoder; không thay thế kiểm thử texture/browser. Synthetic240người không là bằng chứng đang bật density240live.
-
-## Gate local
+| Chỉ tài liệu/comment | Liên kết/path/anchor, tham chiếu file đã xóa, `git diff --check`; nếu đổi danh sách ZIP phải tạo/verify ZIP thật. Không cần chạy lại toàn ứng dụng. |
+| Simulation/learning | Suite trực tiếp và full unit, TypeScript/lint; API compiled D1 khi đổi persistence/guards/CAS. |
+| Renderer/UI/assets | Unit geometry/nav/lifecycle, TypeScript/lint/build/assets; browser desktop/mobile, pause/resume/poll/resize/context loss và ảnh thật. |
+| Release | Full gates bên dưới, exact-SHA package, backup/live schema/native deploy/readback theo [runbook](PRODUCTION_RUNBOOK.md). |
 
 ```bash
 npm run test:unit
@@ -25,22 +20,30 @@ npm run build
 npm run test:api:local
 ```
 
-API test dùng Worker build + D1 cô lập, kiểm tra owner/origin/body/schema, pulse admission12viewer/retry/pause, diagnosticsGETread-only/POSTretention, healthschema batch, petassignment, CASrace, backfillhome/identity, normalized policies, structured memories, model editorial guard và giữhistory. Không reset DB thật. Đọc docs/PRODUCTION_RUNBOOK.md cho migration/release; push thành công không là deploy.
+Unit dùng memory/fixtures/D1 cô lập, không production. Có core/schema/time, learning/social/domain/plan-completion, ground/traffic/camera/household, geometry/assets/rigs, security/telemetry/pulse-gate. `node scripts/run-unit-tests.mjs --list` liệt kê đầy đủ, không cần chép 51 tên vào docs.
 
-Sau build phải khởi động Worker mới từ dist/server/wrangler.json; tránh dùng process đang giữ bundle cũ. QA_BASE bắt buộc loopback, ví dụ http://127.0.0.1:5194 (chỉ nội bộ, không gửi làm publicpreview).
+API dùng Worker mới build và D1 riêng: owner/origin/schema/bytes, pet/flora/CAS/history, policy/memories/actor privacy, proposal guards, pulse 12 viewer không audit trùng, diagnostics GET chỉ đọc/POST retention và health schema. D1 gate suite riêng kiểm 20 request→1 pipeline, pause/failure/expiry/nonce/cadence. Không gọi đây là production load/billing benchmark.
 
-| Browser harness | Bất biến chính |
+## Browser
+
+Restart Worker từ `dist/server/wrangler.json` sau build. `QA_BASE` bắt buộc loopback; không gửi localhost làm link preview cho người dùng. Ví dụ lệnh nội bộ: `QA_BASE=http://127.0.0.1:5320 python3 scripts/qa-social.py`.
+
+| Harness trong scripts/ | Điều phải giữ |
 |---|---|
-| qa-social.py | Desktop/mobile đủ6lượt, luân phiên, polling, sourcebadge, chọn Bình/followAn/zoom |
-| qa-overlays-households.py | Pillcompact/click/occlusion layout, câu240ký tự/tên dài/320px, householdprofile |
-| qa-cycle.py | Fullbike9,2unit di chuyển, fullbodyportrait, pause, dismount/noTeleport |
-| qa-three-only-pets.py | Companion/caretaker UI, pause, hide/reveal, resize320, wardrobe3D/OSM, loss/retry/noWebGL, không2D |
-| qa-gardens.py | Năm phase, chăm cây, pause, camera framed, CAS/error UI và320px |
-| qa-domain-skills.py | Tám nhóm, bốn gate, legacy compatibility và 320px |
-| qa-home-anchors.py | 60 cửa, đích nhà riêng, hồ sơ/địa chỉ, Xem nhà desktop/mobile |
-| qa-soundscape.py | Web Audio thật opt-in, pause/hidden/OSM/off/unmount, 320px và unsupported |
-| qa-resource-gallery.py | 19model mẫu/15packs, texture/clip, mobile, pause dừngdraw, clipchange, selectionrace, context/loadretry |
+| qa-social.py | Đủ 6 lượt, luân phiên/poll/F5/source badge/camera. |
+| qa-overlays-households.py | Tên dài/câu 240 ký tự, pill/occlusion/click, hồ sơ và 320px. |
+| qa-cycle.py, qa-tag.py | Full bike/ground/pause/dismount, đổi vai/no teleport/cancel. |
+| qa-three-only-pets.py | Follow/pause/assignment/wardrobe/OSM, hide/resize, WebGL loss/retry/no2D. |
+| qa-home-anchors.py | 60 cửa/đích riêng/địa chỉ/camera desktop/mobile. |
+| qa-gardens.py | 5 phase/care/pause/framing/CAS/errors/320px. |
+| qa-domain-skills.py | 8 domain/4 gate/legacy/no overflow. |
+| qa-soundscape.py | Gesture opt-in, signal thật, pause/hidden/OSM/off/unmount/unsupported. |
+| qa-resource-gallery.py | 19 mẫu/15 pack, texture/clip, selection race/load retry/pause/dispose. |
 
-Ảnh thật fixture preview ở docs/screenshots, kèm metrics. Phải gửi ảnh thực cho người dùng và ghi rõ preview hay production. SwiftShader không chứng minh FPS/pin/nhiệt trên điện thoại thật; cần đo hardware và soak riêng. Không tự đưa fixture/test-world/verify-live lên production. Chi tiết kết quả/giới hạn của nguồn đã merge nằm trong MEMORY_LONG và ASSET_EXPANSION.
+Ảnh và metrics ở [screenshots](screenshots/), bằng chứng máy đọc ở [validation](validation/). Browser có thể mock mutations; persistence phải kiểm D1 riêng. Gửi ảnh QA thực cho người dùng, ghi preview local hay production. Ảnh AI/asset preview không thay QA; SwiftShader và synthetic 240 không chứng minh hardware FPS/pin/nhiệt/density live hoặc soak 24 giờ.
 
-`npm run benchmark:policies` chạy synthetic holdout bằng runtime thật và báo cả hai phía; không phải benchmark LLM hoặc dữ liệu production. Chi tiết và kết quả ở PHASE_D_LEARNING.
+[LEARNING](LEARNING.md) mô tả benchmark policy runtime; không phải model A/B hoặc bằng chứng ngữ nghĩa. Không tự chạy `test-world.mjs`/`verify-live.py` hay fixtures lên production.
+
+## ZIP source
+
+Sau commit/push: `python3 scripts/package-handoff.py /tmp/xom-ai-source.zip`. Script quét credential patterns/exclusions, kiểm required files, manifest/hash từng file và đọc lại ZIP. Gói này khác production archive. `TRANSFER_MANIFEST.json` được sinh ở repo để đóng gói; không commit file sinh ra hoặc ZIP/DB/cache.

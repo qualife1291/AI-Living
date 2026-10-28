@@ -1,192 +1,23 @@
 # Changelog
 
-## 2026-10-28 — Nhịp mô phỏng dùng chung (source)
-- Nhiều tab dùng một lượt xử lý pulse qua D1, có hạn khóa/cooldown và retry khi lỗi; giữ pause/owner/history và client fallback hiện có.
-- Diagnostics GET chỉ đọc; health gom kiểm tra schema/tick vào một batch, vẫn báo lỗi DB rõ ràng.
-- Đối chiếu phản hồi Claude và thêm các đề xuất phù hợp vào phase H1/G0/UX và backlog có điều kiện. 51suite/check/lint/build/API local đạt; chưa deploy Sites.
+Chỉ ghi mốc sản phẩm. Chi tiết commit/review nằm trong Git; số version/deployment và readback nằm ở [releases](docs/releases/).
 
-## 2026-10-28 — Vườn cây có nhịp phát triển (source)
-- 5 khóm hoa/30 cây có năm giai đoạn và độ ẩm theo đồng hồ xóm. Tưới được lưu, giữ dữ liệu cũ và không cộng điểm/ký ức cho cư dân.
-- Địa điểm có bảng Vườn cây và Xem cây; camera vừa màn hình dọc, mọi giai đoạn giữ footprint cũ trong hai batch3D.
-- 50 suite/check/lint/build/API đạt; preview desktop/mobile đạt. Chưa deploy Sites hoặc mở loài/habitat mới.
+## 28/10/2026
 
-## 2026-10-28 — Giữ kết quả đúng kế hoạch (source)
-- Không cộng outcome cho kế hoạch mới bị thay nội dung nhưng giữ timestamp; giữ khả năng đọc pending cũ.
-- Chờ đủ toàn bộ thời lượng hai kế hoạch trước khi ghi ngữ cảnh gặp; qua slot đang bận vẫn giữ đúng liên kết gốc, retry không cộng lại. Giữ lịch sử cũ, ghi rõ đây là kế hoạch mô phỏng.
-- 49 suite và API D1 đạt; chưa phải xác nhận đến nơi bằng ground hoặc deploy production.
+- Dọn tài liệu: hai file để tiếp nhận, một backlog, tài liệu theo chủ đề; bỏ bản sao/review/WIP cũ và bộ nhớ lặp. Giữ license, đặc tả gốc, release ledger và bằng chứng QA. Không đổi hành vi ứng dụng.
+- H0: pulse dùng admission chung D1, expiry/nonce/retry; diagnosticsGET chỉđọc và healthschema batch.51 suite/check/lint/build/assets/API đạt; chưa deploy Sites.
+- Flora:5 khóm/30 cây,5 phase/moisture theo simclock, care owner/CAS và camera; hai batch giữ footprint cũ. Browser desktop/mobile đạt.
+- Learning:LinUCB6D/policy store0007,8 domain skills/gates, structured memories/top-K/RAG, dialogue pool/xưng hô,49 context cards/33 nơi; planKey/full-duration report không cộng sớm/trùng.
+- 60 cửa và địa chỉ household additive, camera Xem nhà; audio WebAudio opt-in có pause/hidden/dispose. Không indoor/arrival authority hay fine-tune.
 
-## 2026-10-28 — Thực hành theo nhóm và bối cảnh đầy đủ (source)
-- Tám nhóm điểm và bốn điều kiện ngành; giữ hoạt động đã mở của dữ liệu cũ, không tự tạo điểm chuyên môn từ scalar. Hồ sơ học hiển thị điểm và trạng thái mở khóa.
-- 49 thẻ biên tập phủ 33 địa điểm, lọc đúng nơi/pha ngày/thời tiết; lễ hội cần nguồn và ngày khớp.
-- Daemon lấy ký ức theo chủ đề của đúng hai actor, giữ nguồn/người sở hữu và giới hạn prompt; không chuyển ký ức hoặc ghi học P2P.
-- 48 suite/check/lint/build/API đạt; chưa deploy Sites, chưa benchmark LLM thực.
+## 27/10/2026
 
-## 2026-10-28 — Âm thanh và bảo vệ hội thoại (source)
-- Nút âm thanh thiên nhiên mặc định tắt; gió/mưa/chim mô phỏng dừng khi pause, ẩn tab hoặc sang OSM, thu hồi khi tắt/rời trang.
-- Daemon bỏ proposal bị review bác trước khi fallback. Server kiểm lượt nói và chặn chèn hội thoại vào kế hoạch đang bận hoặc ngủ.
-- 45 suite và API D1 local đạt; bảy nhóm browser có bằng chứng preview desktop/mobile. Chưa deploy Sites.
+- Chỉ giữ3D; pet assignment/follow, tag theo cặp và xe đạp di chuyển với vùng va chạm toàn xe; DOM tên/thoại gọn, camera mobile.
+- 239 Gobkit/KayKit canonical CC0 và gallery on-demand; clone skeleton độc lập, clip mapping/lifecycle. Giữ appearance và lịch sử.
+- Sửa chuyển động cộng dồn, props còn sau đổi plan, cắt thoại khi frame trễ, mất telemetry khi HTML200/ACK lỗi và batch UTF8 quá lớn. Migration0006 thêm telemetry/index.
 
-## 2026-10-28 — Policy learning riêng (source)
-- Tách ma trận LinUCB vào bảng D1 riêng bằng migration mới, giữ needs/tabular và history; ghi cùng transaction có CAS để tránh mất kết quả học.
-- World polling tải dữ liệu nhẹ hơn; learning API vẫn trả đầy đủ policy. Benchmark dùng runtime và cùng điều kiện, báo cả kết quả LinUCB chưa tốt hơn về thưởng tức thời.
-- 44 suite/check/lint/build/API local đạt; chưa migration production.
+## 24–26/10/2026
 
-## 2026-10-28 — Nhà riêng cho nhóm cư dân (source)
-- Gán cửa và địa chỉ riêng cho nhóm ở; giữ dữ liệu nhà và lịch sử cũ. Cư dân nghỉ tại khu nhà đi về cửa qua navigation đang có.
-- Hồ sơ hiển thị địa chỉ và nút Xem nhà, camera chọn hướng tránh công trình. 60 cửa dùng một batch vẽ; chưa mở nội thất hoặc tăng dân số live.
-- 43 suite, API và browser desktop/mobile đạt; chi tiết [PHASE_C_HOMES](docs/PHASE_C_HOMES.md). Chưa deploy.
-
-## 2026-10-27 — Review main/Gemini và sửa hồi quy
-- Tích hợp code Gemini/phase A+B từ main; giữ colormap, cử chỉ, thời tiết và catalog model. Phân biệt ảnh AI tham chiếu với ảnh chụp QA thật.
-- Sửa crash khi mua sắm, chuyển động cộng dồn cùng timestamp và đạo cụ/xe tập còn hiện sau khi nhân vật rời cảnh.
-- Giữ đủ lượt hội thoại khi frame trễ và tính thời gian đọc từ lúc HUD hiển thị; trả lời theo cùng chủ đề.
-- Cân bằng/Nhẹ giảm vertex và shadow pass của bối cảnh; Nét giữ geometry chi tiết. Studio dừng GPU khi pause, xử lý hủy tải/unmount và playback đúng elapsed.
-- Log chỉ xóa sau JSON ACK; hoàn thiện migration telemetry mới, index và snapshot Drizzle.
-- Cập nhật dependency có bản vá; audit production sau cập nhật còn 0 advisory. Review và giới hạn: [MAIN_REVIEW_2026-10-27](docs/MAIN_REVIEW_2026-10-27.md).
-
-## 2026-10-27 — Nhân vật có khớp và bối cảnh sinh hoạt nhiều chi tiết
-- Tay/chân có khuỷu/gối, chuyển đi–đứng mềm theo quãng đường thực, giữ pose khi pause. Bổ sung nét mặt, cổ áo/cúc/đế giày và mũ tròn; sách/ly/bình tưới/dụng cụ theo tay cầm.
-- Gom nhân vật vào sáu batch chung; chi tiết gần camera, chân/bóng theo nền thực của renderer.
-- 66 cụm đồ vật thuộc bảy loại, footprint dùng chung với navigation; thêm tán cây nhiều lớp, bậc cửa thấp, mây và nước đài phun theo simulation clock.
-- Dựng riêng mèo/chó/đàn sẻ; phối hợp vị trí ngoài trời với người và xe để tránh chồng chân.
-- Sáu cảnh trao đổi mới, nâng thư viện lên 18 cảnh/88 lượt; giữ nhãn nguồn và lịch sử đã lưu.
-- Bằng chứng và giới hạn: [VISUAL_DETAIL_REVIEW](docs/VISUAL_DETAIL_REVIEW.md).
-
-## 2026-10-26 — Khoảng riêng, góc quay theo An và sinh hoạt chủ động
-- Cây và đồ đạc dùng chung tọa độ giữa renderer/navigation:94 cây,507 footprint, cộng279 khối nhà. Dời shelter/ghế/cây trạm xe và cột đèn khỏi tuyến xe; bỏ6 cột trùng.
-- Kiểm tra vùng quét của từng người, nhường lối/đi vòng khi đối đầu, đặt điểm đứng riêng để tránh tụm và xuyên nhau. Khi chờ, chân dừng bước.
-- Tracking shot gần An, có người nghe, chọn góc tránh nhà và tự lùi trên màn hình dọc. Nút Theo quay về An; zoom tay thoát chế độ theo.
-- Chọn việc theo năng lượng/đói/kinh nghiệm, hạn chế lặp và giữ kế hoạch chưa hoàn tất; luân phiên cư dân công bằng. Lịch NPC có công việc nhỏ và giờ nghỉ riêng.
-- Khung lập kế hoạch5phút/pulse30giây khi trang đang mở. Không nhân điểm kỹ năng, không đổi model hay thêm dịch vụ trả phí. Giới hạn và bằng chứng: [SPACE_CAMERA_AUTONOMY](docs/SPACE_CAMERA_AUTONOMY.md).
-
-## 2026-10-26 — Sửa thoại bị ngắt, chuyển động và đường đi
-- Giữ trọn4–6lượt qua polling; nhịp2,4–4giây/câu, nghỉ0,3giây, cooldown20–45giây; đọc đầy đủ eventAI và dừng khi pause.
-- Di chuyển theo từngframe với đường vòng quanh footprint, camera theo dt và clockoffset bùRTT. Render/layout/nav dùng chung dấu chân công trình; không đặt nhà trên đường xe.
-- Xe đúng làn trên vòng khép kín, góc bo, có phanh/nhường người/khoảng cách; bỏ xe buýt/metro minh họa ở tuyến chưa có hình học an toàn.
-- Khung cửa/bậu/viền mái/mái hiên sọc/bóng tiếp xúc, ánh sáng rõ khối; vật liệu nhẹ/chunkLOD chi tiết xa. Bằng chứng và giới hạn trong GROUND_AND_MOTION_REVIEW.
-
-## 2026-10-25 — Nhân vật mềm hơn và hội thoại có lượt
-- Đầu cầu/tóc ôm đầu, thân bo góc, tay chân capsule; thở/chớp mắt, quay mặt về đúng bạn, cử chỉ nói/nghe. Sửa vai, giày và tên quá lớn; thêm bàn/ghế/ly/chậu ở rìa địa điểm.
-- Đám đông theo lịch24giờ và nghề, bữa ăn/nghỉ xen kẽ; vị trí riêng cách1,4m, vào vị trí liên tục, giới hạn cả người cuối dân số240.
-- Hai agent phát triển biên kịch/review;12cảnh/56lượt, có khoảng yên và chờ câu mở đầu khi vừa tới. 2D/3D dùng chung điều phối; eventAI ưu tiên, đúng người nghe và nhãn nguồn.
-- Prompt đạo diễn–nhân vật–phản biện cho cloud/local, guard chặn lặp gần nguyên văn. Qwenlocal3vai đã chạy thật nhưng có mẫu kém bị guard bác, không ghi world. Không thêm paidAPI/video.
-- Nguồn tham khảo và hướng tạo hình trong VISUAL_DIRECTION; bằng chứng/test và giới hạn trong SOCIAL_REVIEW.
-
-## 2026-10-25 — Thành phố 3D và khu cao ốc
-- Đổi không gian sống mặc định sang Three.js/WebGL2; 282 khối nhà, gồm 151 cao ốc, cửa hàng tầng trệt, cây và công trình dịch vụ. Bố trí tất định chừa đường đi và khu vực quanh địa điểm.
-- Nhân vật khối 3D đọc trang phục hiện có; giữ hoạt động, thoại, động vật và phương tiện trên cùng dữ liệu mô phỏng. Camera xoay/dịch/zoom, theo nhân vật, khu cao ốc và toàn cảnh theo tỷ lệ màn hình.
-- HUD toàn viewport, biển tên thu gọn theo khoảng cách; chuyển 2D nhẹ và tự fallback khi WebGL không khả dụng/mất context. Giải phóng tài nguyên khi chuyển renderer. OSM vẫn là khảo sát 2D riêng có attribution.
-- Instancing và runtime tải động; thêm kiểm thử hình học/đường đi và QA WebGL desktop/mobile. Chi tiết: [docs/THREE_WORLD.md](docs/THREE_WORLD.md). Không đổi DB hoặc phương pháp học AI.
-
-## 2026-10-24 — Cập nhật mã nguồn toàn diện, Đồng hồ thế giới, Tổng hợp bối cảnh & Bộ AI Tự Training
-- **Định dạng mã & Sửa lỗi ESLint:** Định dạng sạch toàn bộ các tệp mã nguồn trước đây bị nén 1 dòng (`CityMap.tsx`, `app/page.tsx`, `lib/life.ts`, `app/globals.css`...); sửa triệt để 20 lỗi ESLint và 6 cảnh báo (loại bỏ `any`, sửa `react-hooks/refs`, `set-state-in-effect`, `purity`, `@next/next/no-html-link-for-pages`, `prefer-const`).
-- **Khắc phục lỗi logic & kiến trúc L1–L10:**
-  - **L1 (P0):** Thêm `resolveTransitionOrigin()` trong `lib/life.ts` và `lib/apply-event.ts` để kế hoạch AI mới xuất phát từ đúng vị trí mô phỏng hiện tại, chấm dứt hiện tượng nhảy vị trí (teleport).
-  - **L2 (P1):** Lưu đầy đủ `relationship`, `contextId`, `revisionBefore`, `revisionAfter` vào bảng `episodes`.
-  - **L3 (P1):** Bắt ngoại lệ `UNIQUE`/`PRIMARY KEY` khi hai request trùng `id` đến cùng lúc để trả về `{ ok: true, duplicate: true, id }`.
-  - **L4 (P2):** Kiểm tra độ dài byte UTF-8 thực tế của body (`<= 20.000` byte) và trả danh sách đường dẫn lỗi Zod an toàn khi mã `400`.
-  - **L5 & L7 (P2):** Tách câu lệnh khởi tạo khỏi đường đọc thường xuyên trong `readWorld()` và trả thêm `serverNow` để đồng bộ đồng hồ client–server.
-  - **L6 & L9 (P1/P2):** Tách component `StaticScene` bọc `React.memo` và đổi `<svg role="group">` trong `CityMap.tsx`; thống nhất chính sách `prefers-reduced-motion` và bỏ transition gây trễ trên `.map-person`.
-- **Đồng hồ thế giới & Thời tiết tất định (`lib/clock.ts`, `data/scenes.json`):** Bổ sung chu kỳ 7 pha ngày/đêm theo giờ Việt Nam, thời tiết tất định theo mùa mưa/mùa khô TP.HCM (`mulberry32`), lớp phủ ánh sáng/mưa trên bản đồ và danh mục 16 hoạt cảnh chuẩn.
-- **Tổng hợp bối cảnh đa chiều & Bộ AI Tự Training (`lib/training.ts`, `data/contexts/`, `data/training/`):**
-  - Thêm 24 bối cảnh đa chiều (`neighborhood-contexts.json`), 6 mẫu SFT Golden Episodes (`sft-golden-episodes.json`), 6 cặp đối chiếu DPO (`dpo-preference-pairs.json`), giáo trình tự luyện 8 cấp độ (`self-play-curriculum.json`) và hàm chấm điểm phản tư `evaluateCandidateEvent()`.
-  - Thêm bộ kiểm thử đơn vị thứ 4: `scripts/test-training.mjs`.
-- **Database & Vận hành:** Thêm migration `drizzle/0001_living_world_and_training.sql` (`memories`, `tick_runs`, `commitments`, `nudges`) và endpoint `GET /api/health`.
-- **Cơ cấu lại hệ thống tài liệu & Bổ sung Dotfiles:** Hoàn thiện đầy đủ các mục §3–§8 và Phụ lục G của `DESIGN_PROPOSALS.md`; tạo bản đồ tài liệu `docs/INDEX.md`, `API.md`, `DATA_MODEL.md`, `GLOSSARY.md`, `RUNBOOK.md`, `SECURITY.md`, `CONTRIBUTING.md`, `AI_TRAINING_AND_CONTEXTS.md` và 8 hồ sơ quyết định kiến trúc `docs/DECISIONS/ADR-0001..0008.md`; đưa `.gitignore` và `.npmrc` (kèm `gitignore.txt`, `npmrc.txt`) vào gói ZIP.
-
-## 2026-10-24 — Review kỹ thuật toàn diện (trước khi cập nhật mã)
-- Cài sạch từ lockfile (pnpm 11.25.0, Node 22.22.2): `test-life`, `test-events`, `test-animation` PASS; `tsc` 0 lỗi; `build` PASS.
-- Phát hiện 20 lỗi ESLint, 6 cảnh báo; phát hiện lỗi L1–L10 và thiếu `.gitignore`/`.npmrc` trong bản nén cũ.
-
-## 2026-10-24 — Initial implementation & Animated character handoff v2
-- Xây dựng khu phố 2D với 3 robot AI An, Bình, Chi, mèo Mướp, chó Cún, đàn sẻ, 4 xe giao thông theo pha đèn, Xưởng nhân vật và bong bóng thoại.
-- Lưu trữ trạng thái trong D1 (`worlds`, `episodes`), kiểm tra Zod, khóa lạc quan `revision` và chống trùng `id`.
-
-## Codex Cloud — nhập source và phát triển nhịp sống
-- Nhập source gốc lên GitHub main; chuẩn bị Workers/D1 local có thể khởi động lại.
-- Sửa nhảy đồng hồ khi đổi tốc độ, vị trí khi thay kế hoạch; đồng bộ kế hoạch/thoại mới với simulation clock.
-- Thêm lịch 24 giờ riêng cho ba cư dân: ăn uống, làm việc, nghỉ trưa, gặp gỡ và ngủ đêm.
-- Kiểm tra chặt điều khiển thế giới; thêm hai bộ regression test và ảnh Chromium desktop/mobile thực tế.
-- Xem docs/CLOUD_REVIEW.md cho kết quả, giới hạn và phần chưa triển khai.
-
-## 25/10/2026 — An và khu phố mở rộng
-- Thêm cư dân phụ có danh tính ổn định, dân số tăng theo ngày, mức quen thuộc và ký ức riêng; thêm vai trò từ dữ liệu/giao diện mà không sửa code.
-- An chọn sinh hoạt theo giờ TP.HCM, lịch, thời tiết còn mới và nhu cầu; có học, làm việc, khám mô phỏng, đi chợ, ăn và chơi. Người gặp cùng đi tới điểm hẹn trước khi phát thoại.
-- Kết nối thời tiết Open-Meteo, ngày lễ Nager.Date, cache/timestamp và trạng thái nguồn rõ ràng. Kẹt xe/lễ hội chưa có nguồn được ghi unavailable.
-- Thêm AI CPU mã nguồn mở llama.cpp/Qwen, xác minh artifact SHA-256, output JSON/tiếng Việt có kiểm tra và fallback quy tắc; hỗ trợ đề xuất vai trò mới mỗi ngày.
-- Thêm migration 0002, API living/catalog/tick và tick audit nguyên tử; supervisor local khởi động relay/model/web/daemon.
-- Thêm kiểm thử provenance, mất nguồn, dân số, nhu cầu, đồng vị trí, đồng thời và fixture AI; chụp ảnh Chromium desktop/mobile thực tế. Chưa deploy production.
-
-- Nối lịch sự kiện VisitHCMC với khoảng ngày có kiểm tra, cache sáu giờ và nguồn/link trong UI; chỉ lấy cảm hứng cho An khi ngày thực nằm trong khoảng sự kiện.
-
-## 25/10/2026 — Thành phố toàn màn hình, tạo hình và học hành vi
-- Chuyển trang chủ sang canvas toàn viewport với HUD nhỏ, panel ẩn, camera pan/zoom/follow và chế độ ẩn UI. Giữ bảng cũ ở /dashboard.
-- Vẽ thư viện công trình/phương tiện SVG cho 33 điểm đến và 32 tình huống. Nối graph trường, bệnh viện, công an, nhà máy, rạp phim, sân bay, bến buýt và metro; có chuyển tiếp tiếp cận/đi phương tiện/đi bộ cuối.
-- Thêm snapshot OSM 2.106 đối tượng có attribution ODbL, tải khi mở khảo sát; tách rõ hình học thật với thành phố mô phỏng.
-- Thêm 14 theme nhân vật khối, có đồng phục cảnh sát/tài xế công nghệ/công nhân/giáo viên/người chú. Đổi và lưu màu áo, quần, da, tóc, kính/râu theo từng nhân vật.
-- Thêm contextual bandit từng cư dân và policy động vật, fit phản hồi từ hoạt động hoàn tất; không học sớm/trùng/hủy. Qwen chưa fine-tune.
-- Thêm migration 0003 archive trải nghiệm, cập nhật policy + dataset nguyên tử, phân trang JSONL, helper backup SQLite và export local.
-- Ghi ADR-0009 cho ba hướng chung nền thế giới: live viewer, studio giáo dục tách nhánh và nhân vật cá nhân; chưa bật public/video/multi-user.
-
-## 25/10/2026 — Độ tin cậy và góc quan sát nội thất
-- Thêm mặt cắt 3D nội thất, lựa chọn tầng và hoạt cảnh cabin thang máy; hồ sơ tuổi mô phỏng/chương đời sống/ký ức.
-- Cải thiện màu trời và ánh nắng theo giờ; giới hạn công việc render khi tab ẩn.
-- Sửa archive batch lớn, proposal cũ, duplicate event, health/schema, context timeout/cache và polling; thêm gate owner và scheduler rules opt-in.
-- Chưa deploy production; thang máy chưa điều phối cư dân thực. Chi tiết `docs/INTERIORS_AND_RELEASE.md`.
-
-## 25/10/2026 — Production version6 và bản đồ khảo sát3D
-- Phát hành owner-private với additive schema reconciliation và kiểm chứng bảo toàn lịch sử.
-- Thêm khảo sát OSM3D912 công trình, ghi rõ heightước lượng, không lẫn vị trí cư dân mô phỏng.
-- Lưu runbook, releaseledger/SHA, scriptbuild-package-source-sync và nghiên cứu nguồn3D/bối cảnh không phí.
-
-## 25/10/2026 — Tỷ lệ, tương tác và nhịp sống
-- Sửa tỷ lệ người–xe–nhà; thêm bánh/đèn xe, đạo cụ và preset độ nét; HUD sáng rõ, chữ gọn và ít blur.
-- Khôi phục thoại nền3D, thêm chat có lưu theo ngữ cảnh/luật, lượt mở theo phiên và pulseidempotent.
-- WorldGET chỉ đọccache bối cảnh, compact8events; giới hạn refreshcontext và chặn responsecũ sau điều khiển.
-- Kiểm thử concurrency/API, viewportDPR, pause/offline/contextloss/lifecycle và các giới hạn tại EXPERIENCE_REVIEW.md.
-
-- Productionversion7 đã nativepublish/readback; reuse lịchcloud mỗi giờ để cập nhật khi đóng trang. Lịchchưa có recordedrun đầu tại thời điểm bàn giao, không có cam kếtSLA24/7.
-
-## Local candidate 27/10/2026 — diagnostics và routing
-Thêm log client bounded/batch + owner JSONL, migration0006, audit tick; precompute1089venue routes vàLRU; grammar ambient/history50. Các gói hành vi/dân số/giao thông chưa làm; xem docs/FIXES_PHASE_A.md.
-
-## Local candidate — giai đoạn B
-Thêm9action kinds/scenarios, mapping clip/procedural/props và bike tập; chuỗi5bước hậu thoại, giữ plan còn hoạt động; lịch gặp NPC độc lập qua pulse với nhu cầu/cooldown/CAS. Source-only, chưadeploy. Giới hạn/tag/cycle/pet và nghiệm thu: docs/PHASE_B_ACTIONS.md.
-
-## 27/10/2026 — sửa hàng đợi telemetry trên work
-- Chia batch diagnostics theo kích thước JSON UTF-8 tối đa16KiB, thay vì chỉ đếm32log. Tránh HTTP413 lặp vô hạn với log tiếng Việt/ký tự đa byte.
-- Chuẩn hóa field theo giới hạn endpoint, giữ log chưaACK và chỉ xóa phần batch đã đượcACK. Không đổi migration/production.
-
-## 27/10/2026 — đuổi bắt theo cặp trong 3D
-- Hai nhân vật cùng chọn tag ở Công viên/Sân thể thao có thể đuổi nhau và đổi vai khi đến gần, giữ tránh vật cản/khoảng cách cá nhân; hỗ trợ pause, polling và hủy khi đổi kế hoạch.
-- Người chưa có cặp chờ thay vì chạy tại chỗ. Giữ hoạt động NPC đã chọn, chỉ đổi micro-activity khi idle social/play.
-- Vai thuộc phiên 3D, chưa đồng bộ nhiều viewer/2D hoặc ghi vào ký ức/phần thưởng. Chưa deploy.
-
-## 27/10/2026 — thành phố chỉ dùng 3D, thú đi theo người chăm sóc
-- Gỡ renderer SVG/2D, dashboard cũ, mẫu nhân vật/công trình/xe và tài nguyên chỉ phục vụ2D; dashboard chuyển về trang chủ. Preview tủ đồ dùng3D; lỗi WebGL có nút thử lại.
-- Phân công người chăm sóc Cún/Mướp trong bảng Cư dân, lưu bằng revisionCAS. Khi đi dạo, thú đi từ vị trí thật qua đường an toàn, người chờ nếu thú còn xa. Pause/đổi phân công/ngừng hoạt động giữ chuyển động liên tục.
-- Pending tự tìm ăn/chơi bị đi dạo ngắt sẽ không nhận reward giả. Không reset DB, sửa migration, thêm dịch vụ trả phí hoặc deploy.
-
-## 27/10/2026 — xe đạp di chuyển
-- Cycle và chuyến transport=bicycle dùng xe đang di chuyển, có tăng/giảm tốc, vùng tránh vật cản bao toàn xe/người và ô tô nhường theo kích thước thực.
-- Bánh/pedal theo quãng đường; dừng/pause đóng băng, tới đích ground mới xuống xe. Người tìm chỗ thoáng để lên xe mà không teleport.
-- Sửa cộng dồn góc chân ở clip thiếu keyframe; camera mobile mở đủ rộng cho cả xe/người. Chưa lực học toàn xe hoặc đồng bộ occupancy nhiều viewer; chưa deploy.
-
-## WIP 27/10/2026 — tên/thoại và nhóm ở chung
-- Nhãn tên compact theo pixel, card hội thoại responsive, giữ badge nguồn; đang review trước phát hành.
-- Household metadata cho NPC, hiển thị nhóm/thành viên, giữ lịch sử; chưa thay routing/density.
-- Tạm dừng theo yêu cầu. Việc tiếp nối và kiểm thử còn thiếu ở docs/WIP_OVERLAYS_HOUSEHOLDS.md.
-
-## Source candidate — 28/10/2026, chưa xác minh deploy
-
-- Hoàn thiện tích hợp Gobkit core/focusedNPC, giữ tỷ lệ chibi, Talk/Listen, nhãn bám đầu và đạo cụ theo skin; gallery239model tải từng mục có retry/pause/contextloss.
-- Tên cư dân mới không dùng số; backfill bảo toàn ID/ký ức/tên tự đặt và alias, giữ nhóm ở/người chăm thú qua CAS.
-- Dọn32ảnh reference thừa12,4MB, giữ đủ model/texture/license. Desktop/mobile hoàn tất regression social6/overlay/bike/pet/3Dretry; không nhận SwiftShader là benchmark điện thoại thật.
-- Cập nhật tài liệu3D-only/schema13bảng/41scenario và runner38suite độc lập tối đa4workers, báo toàn bộ lỗi. Review Gemini phân biệt ý tưởng phù hợp với các metric/harness chưa chứng minh.
-
-## Phase D source — 28/10/2026, chưa deploy
-
-- DisjointLinUCB thực, context lúc chọn và điều kiện kỹ năng; giữ bảng học cũ, chốt outcome theo đủ thời lượng kế hoạch và chống thưởng lặp.
-- Chặn nghề trùng trước hậu tố ngày; lưu ký ức đúngactor/nguồn qua CAS, đọc topK riêng tư và bulkarchive giảm số SQL.
-- Poolhash chống lặp cho cảnh server/ambientF5, cách xưng hô hai chiều theo thông tin mô phỏng và addressing trong prompt. Không gọi hashgenerated là ký ức đã nghe hoặc fine-tune LLM.
-- 42suite/check/lint/build/API local và browser social desktop/mobile/F5 đạt; còn physicsauthority, storagepolicy/hierarchy, phaseC/E và hardware/LLMreal.
+- Snapshot/events/idempotency/CAS, segmentedclock/routine và planner; NPC, contexts/cache, daemon local, experience archive0003.
+- Thành phố Three.js, OSM snapshot có attribution, wardrobe/interior preview, social scripts, visitor chat/rules, lượt mở và pulse.
+- Production đếnversion11 được ghi trong ledger riêng; không suy rằng source mới đã deploy hoặc scheduler/LLM đang chạy24/7.

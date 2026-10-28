@@ -29,14 +29,27 @@ blocked = {
     '__pycache__',
 }
 
-tracked_extensions = [
+required = [
     '.gitignore',
     '.npmrc',
-    'gitignore.txt',
-    'npmrc.txt',
-    'XOM-AI_REVIEW.md',
-    'XOM-AI_DESIGN_PROPOSALS.md',
+    'README.md',
+    'AGENTS.md',
+    'CODEX_HANDOFF.md',
+    'ROADMAP.md',
+    'CHANGELOG.md',
+    'docs/ARCHITECTURE.md',
+    'docs/API.md',
+    'docs/DATA_MODEL.md',
+    'docs/TESTING.md',
+    'docs/PRODUCTION_RUNBOOK.md',
+    'docs/ASSETS.md',
+    'docs/RENDERING.md',
+    'docs/LEARNING.md',
+    'docs/DECISIONS.md',
+    'docs/SCENARIOS.md',
     'lib/clock.ts',
+    'lib/life.ts',
+    'lib/speech.ts',
     'lib/apply-event.ts',
     'lib/training.ts',
     'app/api/health/route.ts',
@@ -47,24 +60,7 @@ tracked_extensions = [
     'data/training/dpo-preference-pairs.json',
     'data/training/self-play-curriculum.json',
     'scripts/test-training.mjs',
-    'docs/INDEX.md',
-    'docs/DESIGN_PROPOSALS.md',
-    'docs/TECHNICAL_REVIEW.md',
-    'docs/AI_TRAINING_AND_CONTEXTS.md',
-    'docs/API.md',
-    'docs/DATA_MODEL.md',
-    'docs/GLOSSARY.md',
-    'docs/RUNBOOK.md',
-    'docs/SECURITY.md',
-    'docs/CONTRIBUTING.md',
-    'docs/DECISIONS/ADR-0001-event-sourcing-snapshot.md',
-    'docs/DECISIONS/ADR-0002-shared-deterministic-simulation.md',
-    'docs/DECISIONS/ADR-0003-server-tick-and-automation.md',
-    'docs/DECISIONS/ADR-0004-segmented-world-clock.md',
-    'docs/DECISIONS/ADR-0005-witness-bound-memory-retrieval.md',
-    'docs/DECISIONS/ADR-0006-framework-vinext-vs-spa-hono.md',
-    'docs/DECISIONS/ADR-0007-isolated-testing-and-production-safety.md',
-    'docs/DECISIONS/ADR-0008-access-control-viewer-vs-admin.md',
+    'pnpm-lock.yaml',
 ]
 
 try:
@@ -88,9 +84,9 @@ except Exception:
         and p.name != 'TRANSFER_MANIFEST.json'
         and not (set(p.relative_to(root).parts) & blocked)
     ]
-    source_commit = '2d62353b9d46e9e5ac43e900879a938e658beb1a-updated-20261024'
+    source_commit = 'unversioned-source-export'
 
-for rel in tracked_extensions:
+for rel in required:
     if (root / rel).is_file() and rel not in files:
         files.append(rel)
 
@@ -107,7 +103,7 @@ manifest = {
     'project': 'Xóm AI',
     'source_commit': source_commit,
     'created_utc': datetime.datetime.now(datetime.timezone.utc).isoformat(),
-    'delivery': 'Complete source, restructured documentation, world clock, multi-context synthesis & AI self-training suite',
+    'delivery': 'Tracked source, focused documentation, simulation data and licenses',
     'excluded': [
         'credentials',
         'Git internals/history',
@@ -145,34 +141,6 @@ with zipfile.ZipFile(out, 'w', zipfile.ZIP_DEFLATED, compresslevel=9) as z:
 
 with zipfile.ZipFile(out) as z:
     assert z.testzip() is None
-    required = [
-        '.gitignore',
-        '.npmrc',
-        'README.md',
-        'AGENTS.md',
-        'CODEX_HANDOFF.md',
-        'MEMORY_LONG.md',
-        'MEMORY_SHORT.md',
-        'ROADMAP.md',
-        'lib/clock.ts',
-        'lib/life.ts',
-        'lib/speech.ts',
-        'lib/apply-event.ts',
-        'lib/training.ts',
-        'data/scenes.json',
-        'data/contexts/neighborhood-contexts.json',
-        'data/training/sft-golden-episodes.json',
-        'data/training/dpo-preference-pairs.json',
-        'data/training/self-play-curriculum.json',
-        'pnpm-lock.yaml',
-        'docs/INDEX.md',
-        'docs/CHARACTER_DESIGN.md',
-        'docs/ANIMATION_SOURCES.md',
-        'docs/TESTING.md',
-        'docs/AI_TRAINING_AND_CONTEXTS.md',
-        'docs/DESIGN_PROPOSALS.md',
-        'docs/TECHNICAL_REVIEW.md',
-    ]
     for name in required:
         assert 'xom-ai/' + name in z.namelist(), f'Missing required file: {name}'
     for entry in manifest['files']:

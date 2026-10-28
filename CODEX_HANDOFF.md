@@ -1,17 +1,19 @@
-# Tiếp nhận Xóm AI
+# Tiếp tục từ đây — 28/10/2026
 
-| Trạng thái | Chi tiết |
+Chỉ cần đọc [AGENTS](AGENTS.md) và file này để bắt đầu. [README](README.md) chỉ mục tài liệu theo công việc; [ROADMAP](ROADMAP.md) là backlog duy nhất.
+
+| Phần | Context hiện tại |
 |---|---|
-| Source | User đã merge work vào main; HEAD và MEMORY_SHORT cho biết nguồn đang làm, releases/candidate.json cho biết mốc đã đóng gói, latest.json chỉ ghi deploy đã xác minh |
-| Renderer | Chỉ3D; giữ XZ/nav/canvastextures/icon cần dùng, không phục hồi SVG/fallback2D |
-| Tài nguyên | 41Kenney +239Gobkit/KayKit canonical CC0; gallery on-demand; core+focusedNPC dùng skin độc lập |
-| QA nguồn đã merge | 51unit/API/check/lint/build/hash, H0pulseD1admission/diagnosticsreadonly/healthbatch; desktop/mobile social6/cycle/overlay/pet/3Dretry; gallery15packs vàmobile, garden5phase/30plants/care/camera; giới hạn ở MEMORY_LONG |
-| Production | docs/releases/latest.json là ledger đã xác minh cuối; không suy ra từ SHA GitHub |
+| Source | `work` và `main` đã đồng bộ ở mốc H0; xem `git status/log` cho HEAD hiện tại. Đợt tiếp nối chỉ dọn tài liệu và sửa tham chiếu của công cụ ZIP. |
+| Sản phẩm | Thành phố Three.js, An/Bình/Chi + NPC, tag/pet/bike, nhãn/thoại DOM, 60 cửa nhà, audio opt-in, 5 khóm hoa/30 cây có growth/moisture/care. Không còn renderer 2D. |
+| AI/dữ liệu | LinUCB6D,8 domain skills/gates, policy table0007/CAS, memories top-K/RAG, dialogue hashes,49 context cards/33 nơi. Đây là học policy mô phỏng, chưa fine-tune LLM. |
+| Đã kiểm | H0 source:51 suite + TypeScript/lint/build/assets/API local đạt. D1:20 pulse→1 pipeline; compiledHTTP:12 viewer→1 pipeline. Browser flora/social/home/cycle/pet desktop/mobile đã đạt ở UI trước H0; H0 không đổi renderer. |
+| Production | [latest.json](docs/releases/latest.json) là lần deploy đã xác minh cuối, chưa readback lại. [candidate.json](docs/releases/candidate.json) ghi source/gói đã chuẩn bị, **chưa deploy**. Không suy trạng thái live từ Git. |
 
-Đọc AGENTS.md → MEMORY_SHORT.md → MEMORY_LONG.md → ROADMAP.md trước sửa. Sau đó đọc docs/CLAUDE_REVIEW_2026-10-28.md, docs/PHASE_H0_PULSE.md, docs/GEMINI_REVIEW_2026-10-28.md, docs/ASSET_EXPANSION.md và docs/PRODUCTION_RUNBOOK.md.
+**Bước code tiếp:** H1 benchmark rollout runtime≥20 seed, regret/entropy/repeat/needs stability/variance; sau đó G0 tải/resolution và UX. Đọc [ROADMAP](ROADMAP.md), rồi chỉ [LEARNING](docs/LEARNING.md) và script benchmark nếu làm H1.
 
-Cài nếu thiếu node_modules: `bash scripts/sites-env.sh -- corepack pnpm install --frozen-lockfile --prefer-offline --store-dir .sites-runtime/pnpm-store`. Node>=22.18, pnpm11.25.0. Kiểm tra bằng npm run test:unit/check/lint/assets:check/build/test:api:local; browser phải dùng Worker khởi động mới sau build.
+**Blocker:** phiên gần nhất thiếu native Sites credential/deploy/status/DB tools. User đã cho phép merge/push/prod; thiếu capability không phải thiếu quyền. Khi công cụ có lại, xác minh project/audience, backup/schema0006/0007, deploy đúng candidate và readback theo [runbook](docs/PRODUCTION_RUNBOOK.md). Không tạo cron/Site khác, bỏ client pulse hoặc tìm credential cũ.
 
-Không resetDB/memory/history; migration append-only, backup trướcprod. Chỉ dùng native Sites credential mới với project cũ, không tìm token trongfile hoặc tạo site khác. User đã cho phép merge/push và một bảnprod; không hỏi lại quyền đã có. Mỗi checkpoint phải push và ghi phần chưa test, không nhận WIP là hoàn tất. Không paidAPI/public/video/crontrùng.
+**Giới hạn cần nhớ:** ground/playback/tag/pet/bike còn theo viewer; backend completion theo simtime+plan matching, chưa authoritative arrival. Không cấp skill/P2P từ ETA, lời kể hoặc render. Gallery không đồng nghĩa mọi loài đã sống trong phố. Chưa GPU điện thoại/soak/model A/B thực.
 
-Tài liệu bàn giao ngày24/10 giữ tại [history/CODEX_HANDOFF_2026-10-24](docs/history/CODEX_HANDOFF_2026-10-24.md) chỉ để tra cứu lịch sử; hướng dẫn hiện hành ở ARCHITECTURE/DATA_MODEL/TESTING.
+Đợt dọn docs đang kiểm liên kết và ZIP; chưa đánh dấu hoàn tất trước khi các kiểm tra đó đạt. Kết quả backend/UI cũ giữ tại [validation](docs/validation/), [ảnh QA](docs/screenshots/) và [release ledgers](docs/releases/); lịch sử triển khai chi tiết nằm trong Git, không cần đọc mặc định.

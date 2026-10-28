@@ -1,20 +1,16 @@
-# Hướng dẫn cho Codex tiếp tục Xóm AI
+# Quy tắc làm việc
 
-1. Đọc CODEX_HANDOFF.md, MEMORY_SHORT.md, MEMORY_LONG.md và ROADMAP.md trước khi sửa.
-2. Yêu cầu chủ dự án: tất cả không phát sinh phí; chưa làm video; giữ Site owner-private; tiếng Việt; Asia/Ho_Chi_Minh.
-3. Chia phase, triển khai tuần tự. Mỗi lần browser QA có ảnh phải gửi ảnh thực tế cho người dùng, phân biệt preview và production. Không gửi ảnh minh họa như bằng chứng test.
-4. Cập nhật tài liệu cùng thay đổi. MEMORY_SHORT.md chỉ chứa context mới, việc chưa xong và blocker; xóa mục hoàn thành, xóa file nếu trống. MEMORY_LONG.md lưu stack, quyết định, theme, chuẩn test, kết quả và giới hạn. CHANGELOG.md ghi thay đổi sản phẩm.
-5. Không reset DB, không xóa lịch sử/ký ức thật để xử lý lỗi. Không sửa migration đã áp dụng; append migration mới. Backup trước repair production.
-6. Không hardcode/in/lưu token, API key hoặc .env trong source/ZIP/logs. Credential chỉ truyền qua cơ chế bí mật hoặc stdin. Không dùng service access để bỏ qua audience.
-7. Tác vụ ChatGPT độc lập có ID trong MEMORY_LONG.md; không tạo trùng vì get_site.automations rỗng. Dùng automations.peek nếu có công cụ.
-8. Đường đi, động vật, câu chào theo luật là mô phỏng. Lượt LLM sinh kế hoạch/hội thoại có nguồn riêng. Không gọi là suy nghĩ 24/7, tự huấn luyện hoặc AI động vật chuyên biệt.
-9. Chạy test-life, test-events, TypeScript và build sau thay đổi liên quan. Kiểm thử local trước live. Không chạy verify-live.py hoặc test-world.mjs lên production mặc định.
-10. Source ZIP không chứa production snapshot; không được suy luận dữ liệu seed là dữ liệu live hiện tại.
-11. Không tự mua dịch vụ, cấu hình billing hoặc tự đăng social. Không thêm subagent nếu không được yêu cầu bởi người dùng hoặc hướng dẫn áp dụng.
-12. Nếu có Sites skill: tái sử dụng project_id trong .openai/hosting.json; xin credential mới bằng native tool, không create_site mới. Nếu không có: tiếp tục local, không đoán token, ID hoặc remote.
+Đọc **file này và [CODEX_HANDOFF.md](CODEX_HANDOFF.md)** khi bắt đầu. Chỉ mở tài liệu đúng chủ đề được liên kết từ handoff/README; không đọc toàn bộ docs hoặc lịch sử Git để lấy context mặc định.
 
-13. Yêu cầu mới: push các mốc source lên nhánh hiện hành và cập nhật MEMORY_SHORT.md trong quá trình làm, nhất là trước bước kiểm thử lâu/rủi ro mất env. Ghi rõ WIP và kiểm tra chưa hoàn tất; không để trạng thái chỉ nằm trong chat. Không commit secrets, DB hoặc cache.
+- Tiếng Việt, `Asia/Ho_Chi_Minh`; không phát sinh phí, giữ Site **owner-private**. Video/social/public/multi-user chưa được bật.
+- Chỉ renderer 3D. Giữ XZ/navigation, texture canvas và icon còn dùng; không khôi phục SVG/fallback 2D.
+- Giữ ID, `world.born`, ký ức, history, home, petOwners và policy. Không reset DB/xóa dữ liệu thật để sửa lỗi. Migration append-only, backup đầy đủ trước repair/migration production.
+- Không commit/in token, credential, `.env`, DB hoặc cache. Credential mới qua native Sites/hidden stdin; không tìm token cũ, tạo Site khác hoặc vượt audience. Dùng project trong `.openai/hosting.json`.
+- Không tạo automation trùng. ID/lịch đã ghi ở [runbook](docs/PRODUCTION_RUNBOOK.md); xác minh trước khi sửa. Thiếu native tools thì tiếp tục local và ghi blocker.
+- Không thêm subagent nếu người dùng hoặc hướng dẫn áp dụng chưa yêu cầu. Không tự gửi email/tin nhắn, mua dịch vụ hoặc đăng social.
+- Rules/animation/plan outcome, editorial script và lượt LLM có nguồn riêng. Không gọi chúng là suy nghĩ 24/7, fine-tune hay physical completion khi chưa có bằng chứng ground.
+- Chia phase, push checkpoint `work` trước bước dài; ghi WIP/blocker trong handoff. Quyền merge/push và một bản prod đã có từ chủ dự án; không hỏi lại. Task tài liệu không tự yêu cầu deploy app.
+- Kiểm thử theo thay đổi ở [TESTING](docs/TESTING.md). Không chạy `test-world.mjs`/`verify-live.py` lên production mặc định. Browser QA phải dùng build mới và gửi ảnh thực, ghi preview hay production; không dùng ảnh AI làm bằng chứng.
+- Phát hành theo runbook: backup/schema, exact source SHA, version/deployment/env revision/readback, cập nhật ledger. GitHub push không phải Sites deploy. Gỡ `XOM_OWNER_PRIVATE_ORIGIN` trước khi thay audience.
 
-14. Khi phát hành: cập nhật docs/releases/latest.json và ledger theo ngày với SHA source, version/deployment ID, status, env revision và kiểm tra readback; push cả mốc trước build và nhật ký sau deploy. Không coi push GitHub là deploy Sites. Không lưu secret/backup DB vào Git. Đọc PRODUCTION_RUNBOOK.md; gỡ XOM_OWNER_PRIVATE_ORIGIN trước thay audience.
-
-15. Yêu cầu mới: chỉ giữ renderer 3D; không khôi phục bản đồ/nhân vật SVG hoặc fallback 2D từ tài liệu lịch sử. Giữ tọa độ XZ, navigation, texture canvas và icon giao diện khi 3D còn dùng. Đọc docs/THREE_ONLY_AND_PETS.md trước khi tiếp tục phase B/C/D.
+**Giữ tài liệu gọn:** handoff chỉ context hiện tại/blocker; ROADMAP chỉ việc chưa xong; CHANGELOG chỉ mốc sản phẩm; hợp đồng/giới hạn ở tài liệu chủ đề. Không tạo MEMORY_SHORT/LONG, WIP/review theo phiên hoặc chép lại nhật ký kiểm thử. Dùng Git history, validation JSON và release ledger cho bằng chứng cũ. Xóa/gộp tài liệu phải sửa cả liên kết và danh sách đóng gói; giữ giấy phép, đặc tả gốc cần tra cứu và release audit.
