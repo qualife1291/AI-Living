@@ -12,7 +12,7 @@ Nguồn: db/schema.ts, lib/world.ts, lib/event-schema.ts, lib/living/schema.ts. 
 | tick_runs | Idempotency/trạng thái/model/lỗi lượt chạy | 0001 |
 | commitments | Lời hứa from/to/text/due/status/event | 0001 |
 | nudges | Gợi ý owner và event đã tiêu thụ | 0001 |
-| context_cache | Cache dữ liệu nguồn, expiresAt | 0002 |
+| context_cache | Cache nguồn và pulse lease/cooldown tạm thời có nonce, expiresAt | 0002 |
 | living_turns | Archive hội thoại/kế hoạch có provenance | 0002 |
 | agent_experiences | Archive outcome, seq và ID unique | 0003 |
 | view_sessions | Đếm lượt theo phiên/nonce, không phải số người duy nhất | 0005 |

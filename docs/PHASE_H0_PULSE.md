@@ -14,4 +14,6 @@ Lease chỉ giảm tải, không thay authority: revision CAS/nonce của world/
 
 ## Kiểm chứng
 
-WIP: suite D1 mới kiểm20request cạnh tranh, cooldown/cadence, pause, HTTP/exception retry, expiry/nonce và giữ world/history/cache nguồn. CompiledWorker/API bổ sung wave12viewer/không audit trùng, owner/origin và diagnostics read-only. Cần chạy full51suite/check/lint/build/API trước hoàn tất; chưa có production readback. Không thay renderer/UI nên bằng chứng browser flora source trước vẫn có phạm vi như cũ.
+51/51suite đạt với4workers (mẫu29,47s khi chạy đồng thời build); TypeScript/lint/build và API Worker/D1 cô lập đạt. Suite D1 mới kiểm20request cạnh tranh chỉ1pipeline/19coalesced, cooldown/cadence, pause, HTTP/exception retry, expiry/nonce và giữ world/history/cache nguồn. CompiledWorker/API kiểm wave12viewer chỉ1pipeline, retry không audit trùng, owner/origin, diagnostics GET không xóa và POST giữ retention; health503 khi thiếu schema,200 sau bổ sung bảng và world nguyên vẹn.
+
+Bằng chứng máy đọc: [pulse-2026-10-28.json](validation/pulse-2026-10-28.json). Không thay renderer/UI nên không chạy lại browser chỉ để xác nhận backend; ảnh flora desktop/mobile ở milestone trước vẫn có phạm vi như cũ. Chưa đo production D1 billing/CPU/load hoặc hardware GPU; không nhận số request giảm trong fixture là SLA. Chưa production readback.

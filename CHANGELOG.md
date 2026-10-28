@@ -1,5 +1,10 @@
 # Changelog
 
+## 2026-10-28 — Nhịp mô phỏng dùng chung (source)
+- Nhiều tab dùng một lượt xử lý pulse qua D1, có hạn khóa/cooldown và retry khi lỗi; giữ pause/owner/history và client fallback hiện có.
+- Diagnostics GET chỉ đọc; health gom kiểm tra schema/tick vào một batch, vẫn báo lỗi DB rõ ràng.
+- Đối chiếu phản hồi Claude và thêm các đề xuất phù hợp vào phase H1/G0/UX và backlog có điều kiện. 51suite/check/lint/build/API local đạt; chưa deploy Sites.
+
 ## 2026-10-28 — Vườn cây có nhịp phát triển (source)
 - 5 khóm hoa/30 cây có năm giai đoạn và độ ẩm theo đồng hồ xóm. Tưới được lưu, giữ dữ liệu cũ và không cộng điểm/ký ức cho cư dân.
 - Địa điểm có bảng Vườn cây và Xem cây; camera vừa màn hình dọc, mọi giai đoạn giữ footprint cũ trong hai batch3D.

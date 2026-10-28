@@ -1,6 +1,6 @@
 # Các phần chưa hoàn tất sau review Gemini / Claude
 
-Đối chiếu Claude: [CLAUDE_REVIEW_2026-10-28](CLAUDE_REVIEW_2026-10-28.md). H0 pulse admission/read-only diagnostics/health đang triển khai; chưa thay scheduler production.
+Đối chiếu Claude: [CLAUDE_REVIEW_2026-10-28](CLAUDE_REVIEW_2026-10-28.md). [H0 pulse admission/read-only diagnostics/health](PHASE_H0_PULSE.md) đã đạt gate source51/API; chưa thay scheduler production. Tiếp H1, sau đó G0/UX.
 
 | Phase bổ sung | Điều kiện nghiệm thu |
 |---|---|

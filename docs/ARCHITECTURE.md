@@ -34,11 +34,11 @@ Planner/rules hoặc local LLM sinh kế hoạch và hội thoại có nguồn r
 | identity.ts, households.ts, pets.ts | Metadata snapshot additive, ID/history ổn định, household mới tối đa4/người chăm thú có CAS |
 | lib/living/social.ts, dialogue-grammar.ts | Lời thoại đến đúng nơi, nguồn AI/script, chống lặp và thời gian đọc; server pool cho lượt An + browser hash pool bền qua F5; reading/occupancy còn viewer-local |
 | lib/living/learning.ts, animal-learning.ts | Outcome learning theo luật; không phải fine-tune LLM hoặc AI động vật chuyên biệt |
-| lib/store.ts, apply-event.ts, living/service.ts | Snapshot+episode/living history, revision/idempotency, không reset DB |
+| lib/store.ts, apply-event.ts, living/service.ts, living/pulse-gate.ts | Snapshot+episode/living history, revision/idempotency, pulse D1 admission chung, không reset DB |
 | living/context-cards.ts, prompt-memories.ts | Catalog gợi ý theo nơi/phase/weather/festival; private top-K đúng actor cho daemon, không ghi sự kiện hoặc trao ký ức cho peer |
 | living/flora.ts, city/garden-plots.ts, three/gardens.ts | Pure growth/owner care metadata, generated shared footprints và hai batch3D; không ghi actor outcomes từ render |
 | lib/training.ts, living/director.ts | Context/data mẫu/reflection và guard; không coi điểm heuristic là chứng minh chất lượng model |
 
 ## Giới hạn và hướng tiếp
 
-Household hiện chưa có cửa nhà riêng/indoor route; bus/metro chưa authoritative boarding. Core chibi giữ tỷ lệ gốc trong disc thay vì kéo dài tới chiều cao người thủ tục. Gallery đủ asset on-demand; không thả tất cả loài/fantasy vào phố. GPU thật, soak, privacy public viewer, production scheduler và native deploy phải được kiểm chứng riêng. Quyết định SVG cũ trong ADR0006 đã được thay thế; không dùng lịch sử để phục hồi2D.
+Household đã có60cửa riêng; chưa có indoor route; bus/metro chưa authoritative boarding. Core chibi giữ tỷ lệ gốc trong disc thay vì kéo dài tới chiều cao người thủ tục. Gallery đủ asset on-demand; không thả tất cả loài/fantasy vào phố. GPU thật, soak, privacy public viewer, production scheduler và native deploy phải được kiểm chứng riêng. Quyết định SVG cũ trong ADR0006 đã được thay thế; không dùng lịch sử để phục hồi2D.

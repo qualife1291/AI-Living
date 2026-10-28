@@ -94,3 +94,13 @@ Xác thực sự kiện bằng `eventSchema` (`lib/event-schema.ts`), tính vị
 ## 5. `GET /api/health` — Kiểm tra sức khỏe vận hành & Lượt chạy gần nhất
 
 Trả về trạng thái vận hành gọn nhẹ gồm `serverNow`, `revision`, `paused`, `lastAI`, `episodeCountRecent`, `worldTime`, `weather` và bản ghi gần nhất từ bảng `tick_runs` (nếu đã chạy migration `0001`).
+
+Các schema probes và latest tick dùng một D1 batch. `database=ready`/200 khi đủ schema, `schema_or_query_error`/503 khi probe lỗi; không có tick trả `lastTick=null`. World đọc lỗi trả `unavailable`/503. Không dùng trạng thái thiếu tick để suy production đã dừng.
+
+## 6. `POST /api/living/pulse` — Nhịp dùng chung
+
+Owner/origin guard như các mutations khác. Pipeline learning → NPC social → tick được admission chung D1, lease30s/cooldown9s. Khi đã có lượt gần đây/đang chạy,200 `{ok:true,coalesced:true}` không chạy pipeline/ghi audit mới và không xác nhận lượt trước hoàn tất. Client vẫn poll world. Pause409 kể cả trong cooldown; lỗi pipeline không cache thành thành công. Direct tick/learning và daemon giữ CAS riêng, không đi qua gate này. Xem [PHASE_H0_PULSE](PHASE_H0_PULSE.md).
+
+## 7. `GET/POST /api/diagnostics`
+
+Owner-only. GET xuất JSONL trong7ngày chỉ bằng SELECT, tối đa500client rows và500tick rows; không xóa DB. POST giữ schema/16KiB/20request mỗi phút và retention telemetry7ngày đã có. Không áp dụng retention đó vào episodes/memories/visitor chat/tick history.

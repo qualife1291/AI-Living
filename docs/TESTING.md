@@ -1,6 +1,6 @@
 # Kiểm thử và bằng chứng
 
-`npm run test:unit` chạy danh sách trong scripts/unit-suites.json bằng scripts/run-unit-tests.mjs. Có50suite ở mốc nguồn tích hợp hiện tại (38suite ở c83a5e3); `node scripts/run-unit-tests.mjs --list` là danh sách hiện hành. Mỗi process độc lập, mặc định tối đa4worker, chạy đủ các suite và trả mã lỗi nếu bất kỳ suite thất bại. `XOM_TEST_JOBS=1` dùng khi cần tuần tự hoặc máy ít tài nguyên. Không hứa tỷ lệ tăng tốc chưa đo.
+`npm run test:unit` chạy danh sách trong scripts/unit-suites.json bằng scripts/run-unit-tests.mjs. Có51suite ở mốc nguồn tích hợp hiện tại (38suite ở c83a5e3); `node scripts/run-unit-tests.mjs --list` là danh sách hiện hành. Mỗi process độc lập, mặc định tối đa4worker, chạy đủ các suite và trả mã lỗi nếu bất kỳ suite thất bại. `XOM_TEST_JOBS=1` dùng khi cần tuần tự hoặc máy ít tài nguyên. Không hứa tỷ lệ tăng tốc chưa đo.
 
 ## Các nhóm kiểm tra
 
@@ -10,7 +10,7 @@
 | Learning/autonomy/social | learning, social, autonomy, phase-b, scenario-benchmarks, tag-game, pet-walk, identities, households, linucb, memory-records, role-expansion, dialogue-pool, policy-store, daemon-fallback, domain-skills, context-cards, prompt-memories, plan-completion, flora |
 | Ground/traffic/camera | city, three-city, walkability, personal-space, traffic, cinematography, cycle, home-anchors |
 | Geometry/assets/lifecycle | appearance, human-visuals, visual-upgrade, maintain-assets self-test, model-assets, resource-packs, city-rigs |
-| Security/operations | hardening, map-release, liveness, context-deadline, diagnostics-fixes, quality-budget, overlay-layout |
+| Security/operations | hardening, map-release, liveness, context-deadline, diagnostics-fixes, quality-budget, overlay-layout, pulse-gate |
 
 Unit dùng bộ nhớ/fixture hoặc D1 cô lập cho policy transaction, không truy cập production. Geometry parser Node thay material để không cần image decoder; không thay thế kiểm thử texture/browser. Synthetic240người không là bằng chứng đang bật density240live.
 
@@ -25,7 +25,7 @@ npm run build
 npm run test:api:local
 ```
 
-API test dùng Worker build + D1 cô lập, kiểm tra owner/origin/body/schema, pulse, petassignment, CASrace, backfillhome/identity, normalized policies, structured memories, model editorial guard và giữhistory. Không reset DB thật. Đọc docs/PRODUCTION_RUNBOOK.md cho migration/release; push thành công không là deploy.
+API test dùng Worker build + D1 cô lập, kiểm tra owner/origin/body/schema, pulse admission12viewer/retry/pause, diagnosticsGETread-only/POSTretention, healthschema batch, petassignment, CASrace, backfillhome/identity, normalized policies, structured memories, model editorial guard và giữhistory. Không reset DB thật. Đọc docs/PRODUCTION_RUNBOOK.md cho migration/release; push thành công không là deploy.
 
 Sau build phải khởi động Worker mới từ dist/server/wrangler.json; tránh dùng process đang giữ bundle cũ. QA_BASE bắt buộc loopback, ví dụ http://127.0.0.1:5194 (chỉ nội bộ, không gửi làm publicpreview).
 

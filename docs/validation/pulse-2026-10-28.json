@@ -1,0 +1,62 @@
+{
+  "phase": "H0",
+  "tested_source_before_docs": "5fb0469dce2667658e60def8c6ba58c083e5a485",
+  "application_trees": {
+    "app": "ad954d6f6e5126d1dc5b270f8d1356dfd80fc51d",
+    "lib": "7ca6818789d3e2ceffd403d00042ea53f4ea8395"
+  },
+  "unit": {
+    "suite": "unit-summary",
+    "total": 51,
+    "passed": 51,
+    "failed": [],
+    "workers": 4,
+    "seconds": 29.47
+  },
+  "typecheck": true,
+  "lint": true,
+  "build": true,
+  "compiled_worker_d1_api": {
+    "suite": "local-diagnostics-http",
+    "ownerReadGuard": true,
+    "ownerWriteGuard": true,
+    "streamByteLimit": true,
+    "schema": true,
+    "origin": true,
+    "ack": true,
+    "jsonlReadback": true,
+    "rateLimit": true,
+    "retention": true,
+    "diagnosticsReadOnly": true,
+    "pulsePersistence": true,
+    "pulseRetry": true,
+    "pulseConcurrentViewers": 12,
+    "pulseNoDuplicateAudit": true,
+    "pulsePause": true,
+    "healthSchemaBatch": true,
+    "productionAccess": false
+  },
+  "isolated_d1_gate": {
+    "concurrent_requests": 20,
+    "pipelines": 1,
+    "coalesced": 19,
+    "cooldown_ms": 9000,
+    "lease_ms": 30000,
+    "pause": true,
+    "http_error_retry": true,
+    "exception_retry": true,
+    "expired_owner_cannot_release_new_lease": true,
+    "history_and_source_cache_preserved": true
+  },
+  "renderer_changed": false,
+  "new_browser_qa_run": false,
+  "production_access": false,
+  "production_readback": false,
+  "hardware_gpu": false,
+  "limits": [
+    "Isolated D1 fixtures, not production load/billing evidence.",
+    "Gate coordinates client pulses; direct tick, daemon and learning still rely on CAS/idempotency.",
+    "No scheduler or audience change; native Sites deployment tools unavailable."
+  ],
+  "asset_integrity": true
+}
