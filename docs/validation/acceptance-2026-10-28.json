@@ -1,0 +1,1068 @@
+{
+  "kind": "implemented-phases-acceptance-v1",
+  "date": "2026-10-28",
+  "timezone": "Asia/Ho_Chi_Minh",
+  "status": "in-progress",
+  "contract": "docs/validation/acceptance-contract-2026-10-28.json",
+  "productionVerified": false,
+  "productionBlocker": "Native Sites deployment/database/status tools unavailable. No live migration, reset, scheduler or model promotion.",
+  "runs": [
+    {
+      "name": "scenario-logic",
+      "command": [
+        "npm",
+        "run",
+        "simulate:living",
+        "--",
+        "--record-metrics"
+      ],
+      "source": "a9ff02daef6b956db1bfd88b9f6cbe98dfa5534f",
+      "dirtyPathsAtStart": [],
+      "startedUtc": "2026-10-28T15:16:22Z",
+      "seconds": 2.276,
+      "exitCode": 0,
+      "status": "passed",
+      "log": "work/acceptance-2026-10-28/scenario-logic.log",
+      "logSha256": "fabc7289a5f3a6a19f28ff3da96d54379f2e225928b1ec7e0a1e76653445268b"
+    },
+    {
+      "name": "core-check",
+      "command": [
+        "npm",
+        "run",
+        "check"
+      ],
+      "source": "a9ff02daef6b956db1bfd88b9f6cbe98dfa5534f",
+      "dirtyPathsAtStart": [],
+      "startedUtc": "2026-10-28T15:16:22Z",
+      "seconds": 32.571,
+      "exitCode": 0,
+      "status": "passed",
+      "log": "work/acceptance-2026-10-28/core-check.log",
+      "logSha256": "7221a45908fd614e50740555b80013f82555e49102f1f3d4d719a531ed487e4b"
+    },
+    {
+      "name": "policy-benchmark",
+      "command": [
+        "npm",
+        "run",
+        "benchmark:policies",
+        "--",
+        "--output=work/acceptance-2026-10-28/policy-benchmark.json"
+      ],
+      "source": "a9ff02daef6b956db1bfd88b9f6cbe98dfa5534f",
+      "dirtyPathsAtStart": [],
+      "startedUtc": "2026-10-28T15:16:24Z",
+      "seconds": 47.729,
+      "exitCode": 0,
+      "status": "passed",
+      "log": "work/acceptance-2026-10-28/policy-benchmark.log",
+      "logSha256": "f1d6761ee867cc2386006d5f4c4bce5c55a498398dbad90a8936c6a8feaf81fc"
+    },
+    {
+      "name": "core-lint",
+      "command": [
+        "npm",
+        "run",
+        "lint"
+      ],
+      "source": "a9ff02daef6b956db1bfd88b9f6cbe98dfa5534f",
+      "dirtyPathsAtStart": [
+        "scripts/qa-actions.py",
+        "scripts/qa-cycle.py",
+        "scripts/qa-domain-skills.py",
+        "scripts/qa-experience.py",
+        "scripts/qa-g0-ux.py",
+        "scripts/qa-gardens.py",
+        "scripts/qa-home-anchors.py",
+        "scripts/qa-interiors.py",
+        "scripts/qa-motion.py",
+        "scripts/qa-overlays-households.py",
+        "scripts/qa-resource-gallery.py",
+        "scripts/qa-shared-ground.py",
+        "scripts/qa-social.py",
+        "scripts/qa-soundscape.py",
+        "scripts/qa-studio.py",
+        "scripts/qa-tag.py",
+        "scripts/qa-three-only-pets.py",
+        "scripts/qa-visual-upgrade.py"
+      ],
+      "startedUtc": "2026-10-28T15:16:55Z",
+      "seconds": 51.659,
+      "exitCode": 0,
+      "status": "passed",
+      "log": "work/acceptance-2026-10-28/core-lint.log",
+      "logSha256": "9d4ed79a683eccf54173b6034d4187b97e629a26e9f9dbedc55bc19d45839445"
+    },
+    {
+      "name": "core-assets",
+      "command": [
+        "npm",
+        "run",
+        "assets:check"
+      ],
+      "source": "a9ff02daef6b956db1bfd88b9f6cbe98dfa5534f",
+      "dirtyPathsAtStart": [
+        "scripts/qa-actions.py",
+        "scripts/qa-cycle.py",
+        "scripts/qa-domain-skills.py",
+        "scripts/qa-experience.py",
+        "scripts/qa-g0-ux.py",
+        "scripts/qa-gardens.py",
+        "scripts/qa-home-anchors.py",
+        "scripts/qa-interiors.py",
+        "scripts/qa-motion.py",
+        "scripts/qa-overlays-households.py",
+        "scripts/qa-resource-gallery.py",
+        "scripts/qa-shared-ground.py",
+        "scripts/qa-social.py",
+        "scripts/qa-soundscape.py",
+        "scripts/qa-studio.py",
+        "scripts/qa-tag.py",
+        "scripts/qa-three-only-pets.py",
+        "scripts/qa-visual-upgrade.py"
+      ],
+      "startedUtc": "2026-10-28T15:17:47Z",
+      "seconds": 4.459,
+      "exitCode": 0,
+      "status": "passed",
+      "log": "work/acceptance-2026-10-28/core-assets.log",
+      "logSha256": "104729b3577d111132628e8abb16a1ac1f1af156bb6600a5b797ee705ca102bd"
+    },
+    {
+      "name": "core-unit",
+      "command": [
+        "npm",
+        "run",
+        "test:unit"
+      ],
+      "source": "a9ff02daef6b956db1bfd88b9f6cbe98dfa5534f",
+      "dirtyPathsAtStart": [],
+      "startedUtc": "2026-10-28T15:16:22Z",
+      "seconds": 109.715,
+      "exitCode": 0,
+      "status": "passed",
+      "log": "work/acceptance-2026-10-28/core-unit.log",
+      "logSha256": "b000b62173928014a231d0e251e2054c2cd269696b8301dce80dd5a573d9b870"
+    },
+    {
+      "name": "core-build",
+      "command": [
+        "npm",
+        "run",
+        "build"
+      ],
+      "source": "a9ff02daef6b956db1bfd88b9f6cbe98dfa5534f",
+      "dirtyPathsAtStart": [
+        "scripts/qa-actions.py",
+        "scripts/qa-cycle.py",
+        "scripts/qa-domain-skills.py",
+        "scripts/qa-experience.py",
+        "scripts/qa-g0-ux.py",
+        "scripts/qa-gardens.py",
+        "scripts/qa-home-anchors.py",
+        "scripts/qa-interiors.py",
+        "scripts/qa-motion.py",
+        "scripts/qa-overlays-households.py",
+        "scripts/qa-resource-gallery.py",
+        "scripts/qa-shared-ground.py",
+        "scripts/qa-social.py",
+        "scripts/qa-soundscape.py",
+        "scripts/qa-studio.py",
+        "scripts/qa-tag.py",
+        "scripts/qa-three-only-pets.py",
+        "scripts/qa-visual-upgrade.py"
+      ],
+      "startedUtc": "2026-10-28T15:17:52Z",
+      "seconds": 38.677,
+      "exitCode": 0,
+      "status": "passed",
+      "log": "work/acceptance-2026-10-28/core-build.log",
+      "logSha256": "107f72e2d52d65e7bcddf006c3d0b9ad009d72ba8871d1161103bf777dec14d5"
+    },
+    {
+      "name": "h1-tabular-full",
+      "command": [
+        "node",
+        "scripts/sim-learning.mjs",
+        "--policy",
+        "tabular",
+        "--mode",
+        "full",
+        "--out",
+        "work/acceptance-2026-10-28/h1-tabular-full.json"
+      ],
+      "source": "a9ff02daef6b956db1bfd88b9f6cbe98dfa5534f",
+      "dirtyPathsAtStart": [
+        "scripts/qa-actions.py",
+        "scripts/qa-cycle.py",
+        "scripts/qa-domain-skills.py",
+        "scripts/qa-experience.py",
+        "scripts/qa-g0-ux.py",
+        "scripts/qa-gardens.py",
+        "scripts/qa-home-anchors.py",
+        "scripts/qa-interiors.py",
+        "scripts/qa-motion.py",
+        "scripts/qa-overlays-households.py",
+        "scripts/qa-resource-gallery.py",
+        "scripts/qa-shared-ground.py",
+        "scripts/qa-social.py",
+        "scripts/qa-soundscape.py",
+        "scripts/qa-studio.py",
+        "scripts/qa-tag.py",
+        "scripts/qa-three-only-pets.py",
+        "scripts/qa-visual-upgrade.py"
+      ],
+      "startedUtc": "2026-10-28T15:17:34Z",
+      "seconds": 64.771,
+      "exitCode": 0,
+      "status": "passed",
+      "log": "work/acceptance-2026-10-28/h1-tabular-full.log",
+      "logSha256": "fc1b3d1c63c2bddfc583c116d80d735ea97a40e67bbbb4d2758e782aa4a41966"
+    },
+    {
+      "name": "api-current",
+      "command": [
+        "npm",
+        "run",
+        "test:api:local"
+      ],
+      "source": "c7e2d024a129744ed1abc7bc47a54e4d588eae19",
+      "dirtyPathsAtStart": [],
+      "startedUtc": "2026-10-28T15:18:56Z",
+      "seconds": 20.48,
+      "exitCode": 0,
+      "status": "passed",
+      "log": "work/acceptance-2026-10-28/api-current.log",
+      "logSha256": "47d19794f30dc9e1f44a0b9f834cfb5ef4f979ea8930adc6da004e6abde46282"
+    },
+    {
+      "name": "api-ground",
+      "command": [
+        "npm",
+        "run",
+        "test:api:ground"
+      ],
+      "source": "c7e2d024a129744ed1abc7bc47a54e4d588eae19",
+      "dirtyPathsAtStart": [],
+      "startedUtc": "2026-10-28T15:19:17Z",
+      "seconds": 13.911,
+      "exitCode": 0,
+      "status": "passed",
+      "log": "work/acceptance-2026-10-28/api-ground.log",
+      "logSha256": "11f63ae7515da7a7993ad2cbb085b7f3577c82c3306d26fab85987252910d746"
+    },
+    {
+      "name": "h1-linucb-full",
+      "command": [
+        "node",
+        "scripts/sim-learning.mjs",
+        "--policy",
+        "linucb",
+        "--mode",
+        "full",
+        "--out",
+        "work/acceptance-2026-10-28/h1-linucb-full.json"
+      ],
+      "source": "c7e2d024a129744ed1abc7bc47a54e4d588eae19",
+      "dirtyPathsAtStart": [],
+      "startedUtc": "2026-10-28T15:18:38Z",
+      "seconds": 75.737,
+      "exitCode": 0,
+      "status": "passed",
+      "log": "work/acceptance-2026-10-28/h1-linucb-full.log",
+      "logSha256": "b06603e4ccb05ae1031dfb1e4953bb02ba435ef8bedcebca6671e7de713b429b"
+    },
+    {
+      "name": "h1-paired",
+      "command": [
+        "node",
+        "scripts/compare-learning.mjs",
+        "--baseline",
+        "work/acceptance-2026-10-28/h1-tabular-full.json",
+        "--candidate",
+        "work/acceptance-2026-10-28/h1-linucb-full.json",
+        "--out",
+        "work/acceptance-2026-10-28/h1-paired.json"
+      ],
+      "source": "c7e2d024a129744ed1abc7bc47a54e4d588eae19",
+      "dirtyPathsAtStart": [
+        "scripts/qa-three.mjs"
+      ],
+      "startedUtc": "2026-10-28T15:19:54Z",
+      "seconds": 0.549,
+      "exitCode": 0,
+      "status": "passed",
+      "log": "work/acceptance-2026-10-28/h1-paired.log",
+      "logSha256": "0328860a35949e28315da4a0ae64c0c057061a1f0ecf25b48cf4b56054e96b96"
+    },
+    {
+      "name": "api-shared",
+      "command": [
+        "npm",
+        "run",
+        "test:api:shared-ground"
+      ],
+      "source": "c7e2d024a129744ed1abc7bc47a54e4d588eae19",
+      "dirtyPathsAtStart": [
+        "scripts/qa-three.mjs"
+      ],
+      "startedUtc": "2026-10-28T15:19:31Z",
+      "seconds": 32.114,
+      "exitCode": 0,
+      "status": "passed",
+      "log": "work/acceptance-2026-10-28/api-shared.log",
+      "logSha256": "76832a808dbe3def8d67d5cf25c922d79010f765b5d2f0b827a348d25f20f483"
+    },
+    {
+      "name": "browser-studio",
+      "command": [
+        "python3",
+        "scripts/qa-studio.py"
+      ],
+      "source": "c7e2d024a129744ed1abc7bc47a54e4d588eae19",
+      "dirtyPathsAtStart": [
+        "scripts/qa-three.mjs"
+      ],
+      "startedUtc": "2026-10-28T15:19:46Z",
+      "seconds": 50.361,
+      "exitCode": 0,
+      "status": "passed",
+      "log": "work/acceptance-2026-10-28/browser-studio.log",
+      "logSha256": "5560a23aa7be664d0028b39feb6b28da94306ad0bf21b27e5abcc4f2ef255057"
+    },
+    {
+      "name": "frozen-learning-audit",
+      "command": [
+        "node",
+        "scripts/audit-learning-evidence.mjs",
+        "--out",
+        "work/acceptance-2026-10-28/frozen-learning-audit.json"
+      ],
+      "source": "c7e2d024a129744ed1abc7bc47a54e4d588eae19",
+      "dirtyPathsAtStart": [
+        "scripts/qa-three.mjs"
+      ],
+      "startedUtc": "2026-10-28T15:22:29Z",
+      "seconds": 0.726,
+      "exitCode": 1,
+      "status": "failed",
+      "log": "work/acceptance-2026-10-28/frozen-learning-audit.log",
+      "logSha256": "aeb088f5ae80a9ba5ddbf29b3dc956403a834ddf0d6f3b5ca38a1ac2a2d09e98"
+    },
+    {
+      "name": "browser-g0-ux",
+      "command": [
+        "python3",
+        "scripts/qa-g0-ux.py"
+      ],
+      "source": "c7e2d024a129744ed1abc7bc47a54e4d588eae19",
+      "dirtyPathsAtStart": [
+        "scripts/qa-three.mjs"
+      ],
+      "startedUtc": "2026-10-28T15:20:36Z",
+      "seconds": 122.684,
+      "exitCode": 0,
+      "status": "passed",
+      "log": "work/acceptance-2026-10-28/browser-g0-ux.log",
+      "logSha256": "51cb0c46515cafd28a2e76cfb2bbaf2aba0eafee3b4e599ba4e6219ee5ef3114"
+    },
+    {
+      "name": "frozen-learning-audit-rerun",
+      "command": [
+        "node",
+        "scripts/audit-learning-evidence.mjs",
+        "--out",
+        "work/acceptance-2026-10-28/frozen-learning-audit.json"
+      ],
+      "source": "c7e2d024a129744ed1abc7bc47a54e4d588eae19",
+      "dirtyPathsAtStart": [
+        "scripts/qa-three.mjs"
+      ],
+      "startedUtc": "2026-10-28T15:23:17Z",
+      "seconds": 0.868,
+      "exitCode": 0,
+      "status": "passed",
+      "log": "work/acceptance-2026-10-28/frozen-learning-audit-rerun.log",
+      "logSha256": "264a3cd2fc2ba598bf9f6d0c8883be9d63d608f8e287857c6988a477e14c4c99"
+    },
+    {
+      "name": "local-model-setup",
+      "command": [
+        "python3",
+        "scripts/setup-local-ai.py"
+      ],
+      "source": "c7e2d024a129744ed1abc7bc47a54e4d588eae19",
+      "dirtyPathsAtStart": [
+        "scripts/qa-three.mjs"
+      ],
+      "startedUtc": "2026-10-28T15:21:02Z",
+      "seconds": 151.839,
+      "exitCode": 0,
+      "status": "passed",
+      "log": "work/acceptance-2026-10-28/local-model-setup.log",
+      "logSha256": "aa430608c047f066265009c97dca80b18fbe82687aa30ed5703654616d9f1b3d"
+    },
+    {
+      "name": "browser-shared-ground",
+      "command": [
+        "python3",
+        "scripts/qa-shared-ground.py"
+      ],
+      "source": "c7e2d024a129744ed1abc7bc47a54e4d588eae19",
+      "dirtyPathsAtStart": [
+        "scripts/qa-three.mjs"
+      ],
+      "startedUtc": "2026-10-28T15:22:39Z",
+      "seconds": 105.624,
+      "exitCode": 1,
+      "status": "failed",
+      "log": "work/acceptance-2026-10-28/browser-shared-ground.log",
+      "logSha256": "990d3c3d3cfed4e7d758218e33cb730280a6ee09936c90f8a6d30e379b4c27c9"
+    },
+    {
+      "name": "browser-overlays-households",
+      "command": [
+        "python3",
+        "scripts/qa-overlays-households.py"
+      ],
+      "source": "c7e2d024a129744ed1abc7bc47a54e4d588eae19",
+      "dirtyPathsAtStart": [
+        "scripts/qa-three.mjs"
+      ],
+      "startedUtc": "2026-10-28T15:24:25Z",
+      "seconds": 46.087,
+      "exitCode": 1,
+      "status": "failed",
+      "log": "work/acceptance-2026-10-28/browser-overlays-households.log",
+      "logSha256": "42d3f15bbd07010beb01bb587aaf3e5850552a0324fb8bd784088a53b9599e0c"
+    },
+    {
+      "name": "local-model-schema",
+      "command": [
+        "node",
+        "scripts/test-local-ai.mjs"
+      ],
+      "source": "c7e2d024a129744ed1abc7bc47a54e4d588eae19",
+      "dirtyPathsAtStart": [
+        "scripts/qa-studio.py",
+        "scripts/qa-three.mjs"
+      ],
+      "startedUtc": "2026-10-28T15:25:03Z",
+      "seconds": 23.753,
+      "exitCode": 0,
+      "status": "passed",
+      "log": "work/acceptance-2026-10-28/local-model-schema.log",
+      "logSha256": "66e829539875baf1d50cfb8a7e97617f89afd30198ea29d33130e41d8d53a945"
+    },
+    {
+      "name": "local-model-daemon",
+      "command": [
+        "node",
+        "scripts/test-daemon-ai.mjs"
+      ],
+      "source": "7b4501cd28e4bae7e0aecbd8841f67d1ff561da3",
+      "dirtyPathsAtStart": [],
+      "startedUtc": "2026-10-28T15:25:27Z",
+      "seconds": 91.335,
+      "exitCode": 1,
+      "status": "failed",
+      "log": "work/acceptance-2026-10-28/local-model-daemon.log",
+      "logSha256": "5a38cba4c94822c0ce6a7b6a05c71244c648bf2786c22d96adad7488e405c0d3"
+    },
+    {
+      "name": "browser-social",
+      "command": [
+        "python3",
+        "scripts/qa-social.py"
+      ],
+      "source": "7b4501cd28e4bae7e0aecbd8841f67d1ff561da3",
+      "dirtyPathsAtStart": [],
+      "startedUtc": "2026-10-28T15:25:11Z",
+      "seconds": 122.554,
+      "exitCode": 0,
+      "status": "passed",
+      "log": "work/acceptance-2026-10-28/browser-social.log",
+      "logSha256": "99bcefc3df235ff3cf7bdca480c0de1df721325dc94550fea71d18784ad28a7c"
+    },
+    {
+      "name": "browser-cycle",
+      "command": [
+        "python3",
+        "scripts/qa-cycle.py"
+      ],
+      "source": "7b4501cd28e4bae7e0aecbd8841f67d1ff561da3",
+      "dirtyPathsAtStart": [
+        "scripts/qa-overlays-households.py",
+        "scripts/qa-shared-ground.py"
+      ],
+      "startedUtc": "2026-10-28T15:27:13Z",
+      "seconds": 56.74,
+      "exitCode": 1,
+      "status": "failed",
+      "log": "work/acceptance-2026-10-28/browser-cycle.log",
+      "logSha256": "87379f8c60b5673de9131d9b3f5eeb2b48912ece3948303cb24ad347b835b5ee"
+    },
+    {
+      "name": "browser-tag",
+      "command": [
+        "python3",
+        "scripts/qa-tag.py"
+      ],
+      "source": "7b4501cd28e4bae7e0aecbd8841f67d1ff561da3",
+      "dirtyPathsAtStart": [
+        "scripts/qa-overlays-households.py",
+        "scripts/qa-shared-ground.py",
+        "scripts/qa-studio.py"
+      ],
+      "startedUtc": "2026-10-28T15:28:10Z",
+      "seconds": 27.697,
+      "exitCode": 1,
+      "status": "failed",
+      "log": "work/acceptance-2026-10-28/browser-tag.log",
+      "logSha256": "f71273c81307f18f459e4216cbaf71cb1c75c9e915e6bda683ad5b5a5813cd79"
+    },
+    {
+      "name": "browser-three-only-pets",
+      "command": [
+        "python3",
+        "scripts/qa-three-only-pets.py"
+      ],
+      "source": "7b4501cd28e4bae7e0aecbd8841f67d1ff561da3",
+      "dirtyPathsAtStart": [
+        "scripts/qa-overlays-households.py",
+        "scripts/qa-shared-ground.py",
+        "scripts/qa-studio.py"
+      ],
+      "startedUtc": "2026-10-28T15:28:38Z",
+      "seconds": 30.82,
+      "exitCode": 1,
+      "status": "failed",
+      "log": "work/acceptance-2026-10-28/browser-three-only-pets.log",
+      "logSha256": "65d3aaaf0f47b4f986cbeb0fd3f00d7af097c38419a55f1cae2722f43edbab32"
+    },
+    {
+      "name": "browser-home-anchors",
+      "command": [
+        "python3",
+        "scripts/qa-home-anchors.py"
+      ],
+      "source": "7b4501cd28e4bae7e0aecbd8841f67d1ff561da3",
+      "dirtyPathsAtStart": [
+        "scripts/qa-cycle.py",
+        "scripts/qa-overlays-households.py",
+        "scripts/qa-shared-ground.py",
+        "scripts/qa-studio.py"
+      ],
+      "startedUtc": "2026-10-28T15:29:09Z",
+      "seconds": 54.456,
+      "exitCode": 0,
+      "status": "passed",
+      "log": "work/acceptance-2026-10-28/browser-home-anchors.log",
+      "logSha256": "9d07cfc65fc5c766586a27bba1cf6ff04da8bef3f54326f74c401291f618085b"
+    },
+    {
+      "name": "release-artifact",
+      "command": [
+        "python3",
+        "work/acceptance-2026-10-28/audit-release.py"
+      ],
+      "source": "7b4501cd28e4bae7e0aecbd8841f67d1ff561da3",
+      "dirtyPathsAtStart": [
+        "scripts/qa-cycle.py",
+        "scripts/qa-overlays-households.py",
+        "scripts/qa-shared-ground.py",
+        "scripts/qa-studio.py",
+        "scripts/qa-tag.py",
+        "scripts/qa-three-only-pets.py"
+      ],
+      "startedUtc": "2026-10-28T15:31:24Z",
+      "seconds": 1.053,
+      "exitCode": 1,
+      "status": "failed",
+      "log": "work/acceptance-2026-10-28/release-artifact.log",
+      "logSha256": "c86329dae1753f174513da69961bfcea7330b5c1d4d7b42eab0692657970c2f3"
+    },
+    {
+      "name": "api-legacy",
+      "command": [
+        "node",
+        "scripts/test-legacy-api.mjs"
+      ],
+      "source": "7b4501cd28e4bae7e0aecbd8841f67d1ff561da3",
+      "dirtyPathsAtStart": [
+        "scripts/qa-cycle.py",
+        "scripts/qa-overlays-households.py",
+        "scripts/qa-shared-ground.py",
+        "scripts/qa-studio.py"
+      ],
+      "startedUtc": "2026-10-28T15:30:33Z",
+      "seconds": 56.389,
+      "exitCode": 1,
+      "status": "failed",
+      "log": "work/acceptance-2026-10-28/api-legacy.log",
+      "logSha256": "4fbb93d7be87067abff73d2ff930fe7e8bdc26f666e922658bbc24800506fc30"
+    },
+    {
+      "name": "browser-gardens",
+      "command": [
+        "python3",
+        "scripts/qa-gardens.py"
+      ],
+      "source": "7b4501cd28e4bae7e0aecbd8841f67d1ff561da3",
+      "dirtyPathsAtStart": [
+        "scripts/qa-cycle.py",
+        "scripts/qa-overlays-households.py",
+        "scripts/qa-shared-ground.py",
+        "scripts/qa-studio.py"
+      ],
+      "startedUtc": "2026-10-28T15:30:03Z",
+      "seconds": 117.075,
+      "exitCode": 0,
+      "status": "passed",
+      "log": "work/acceptance-2026-10-28/browser-gardens.log",
+      "logSha256": "6fb39df5f3d853b17c596cfaaa7f873871271bfbd3168e891fc655e97ac83feb"
+    },
+    {
+      "name": "browser-domain-skills",
+      "command": [
+        "python3",
+        "scripts/qa-domain-skills.py"
+      ],
+      "source": "7b4501cd28e4bae7e0aecbd8841f67d1ff561da3",
+      "dirtyPathsAtStart": [
+        "scripts/qa-cycle.py",
+        "scripts/qa-overlays-households.py",
+        "scripts/qa-shared-ground.py",
+        "scripts/qa-studio.py",
+        "scripts/qa-tag.py",
+        "scripts/qa-three-only-pets.py"
+      ],
+      "startedUtc": "2026-10-28T15:32:01Z",
+      "seconds": 55.522,
+      "exitCode": 0,
+      "status": "passed",
+      "log": "work/acceptance-2026-10-28/browser-domain-skills.log",
+      "logSha256": "91097b2f5dbb72ed7107a2d9c8e3edb77c51398fe93ed1390789326016072616"
+    },
+    {
+      "name": "release-artifact-rerun",
+      "command": [
+        "python3",
+        "work/acceptance-2026-10-28/audit-release.py"
+      ],
+      "source": "7b4501cd28e4bae7e0aecbd8841f67d1ff561da3",
+      "dirtyPathsAtStart": [
+        "scripts/qa-cycle.py",
+        "scripts/qa-overlays-households.py",
+        "scripts/qa-shared-ground.py",
+        "scripts/qa-studio.py",
+        "scripts/qa-tag.py",
+        "scripts/qa-three-only-pets.py",
+        "scripts/test-liveness-api.mjs",
+        "scripts/test-proposal-api.mjs"
+      ],
+      "startedUtc": "2026-10-28T15:33:46Z",
+      "seconds": 2.081,
+      "exitCode": 0,
+      "status": "passed",
+      "log": "work/acceptance-2026-10-28/release-artifact-rerun.log",
+      "logSha256": "3842100f3527adce3d2ee5af4400fc7f6f162a0cf9df525212e263c54a655c3e"
+    },
+    {
+      "name": "api-legacy-rerun",
+      "command": [
+        "node",
+        "scripts/test-legacy-api.mjs",
+        "learning",
+        "liveness",
+        "proposal"
+      ],
+      "source": "7b4501cd28e4bae7e0aecbd8841f67d1ff561da3",
+      "dirtyPathsAtStart": [
+        "scripts/qa-cycle.py",
+        "scripts/qa-overlays-households.py",
+        "scripts/qa-shared-ground.py",
+        "scripts/qa-studio.py",
+        "scripts/qa-tag.py",
+        "scripts/qa-three-only-pets.py",
+        "scripts/test-liveness-api.mjs",
+        "scripts/test-proposal-api.mjs"
+      ],
+      "startedUtc": "2026-10-28T15:33:45Z",
+      "seconds": 66.005,
+      "exitCode": 1,
+      "status": "failed",
+      "log": "work/acceptance-2026-10-28/api-legacy-rerun.log",
+      "logSha256": "6ad1b1026ef8cdc83eb2a23e96a1a6f2d7f08c2a087cc13b40954b8fbd99d7f9"
+    },
+    {
+      "name": "browser-soundscape",
+      "command": [
+        "python3",
+        "scripts/qa-soundscape.py"
+      ],
+      "source": "7b4501cd28e4bae7e0aecbd8841f67d1ff561da3",
+      "dirtyPathsAtStart": [
+        "scripts/qa-cycle.py",
+        "scripts/qa-overlays-households.py",
+        "scripts/qa-shared-ground.py",
+        "scripts/qa-studio.py",
+        "scripts/qa-tag.py",
+        "scripts/qa-three-only-pets.py"
+      ],
+      "startedUtc": "2026-10-28T15:32:56Z",
+      "seconds": 136.223,
+      "exitCode": 0,
+      "status": "passed",
+      "log": "work/acceptance-2026-10-28/browser-soundscape.log",
+      "logSha256": "68e9ec61c3145cf7e4babd8c6a1e53b9c42143a8e8881b856cc5470cd8f76e1e"
+    },
+    {
+      "name": "api-liveness-diagnostic",
+      "command": [
+        "node",
+        "scripts/test-legacy-api.mjs",
+        "liveness"
+      ],
+      "source": "1b827b689b70d4a5bfc9304a7cbad49f6d434592",
+      "dirtyPathsAtStart": [
+        "scripts/test-legacy-api.mjs"
+      ],
+      "startedUtc": "2026-10-28T15:35:30Z",
+      "seconds": 20.911,
+      "exitCode": 1,
+      "status": "failed",
+      "log": "work/acceptance-2026-10-28/api-liveness-diagnostic.log",
+      "logSha256": "01cba4184e59f21ec71b4383d984197640f3f8aa9bd133f5de96b76391b45072"
+    },
+    {
+      "name": "browser-resource-gallery",
+      "command": [
+        "python3",
+        "scripts/qa-resource-gallery.py"
+      ],
+      "source": "1b827b689b70d4a5bfc9304a7cbad49f6d434592",
+      "dirtyPathsAtStart": [],
+      "startedUtc": "2026-10-28T15:35:12Z",
+      "seconds": 93.077,
+      "exitCode": 1,
+      "status": "failed",
+      "log": "work/acceptance-2026-10-28/browser-resource-gallery.log",
+      "logSha256": "4d5275f7a5101ce2f033f6cc720ee43d93dbeee9125bca114abd52012ac8b62f"
+    },
+    {
+      "name": "browser-motion",
+      "command": [
+        "python3",
+        "scripts/qa-motion.py"
+      ],
+      "source": "1b827b689b70d4a5bfc9304a7cbad49f6d434592",
+      "dirtyPathsAtStart": [
+        "scripts/test-legacy-api.mjs"
+      ],
+      "startedUtc": "2026-10-28T15:36:46Z",
+      "seconds": 19.026,
+      "exitCode": 0,
+      "status": "passed",
+      "log": "work/acceptance-2026-10-28/browser-motion.log",
+      "logSha256": "7819d4d170795c0baf320494748e8621424ab04ed396e446e53fc8b16fe9366d"
+    },
+    {
+      "name": "browser-interiors",
+      "command": [
+        "python3",
+        "scripts/qa-interiors.py"
+      ],
+      "source": "1b827b689b70d4a5bfc9304a7cbad49f6d434592",
+      "dirtyPathsAtStart": [
+        "scripts/test-legacy-api.mjs"
+      ],
+      "startedUtc": "2026-10-28T15:37:05Z",
+      "seconds": 12.338,
+      "exitCode": 1,
+      "status": "failed",
+      "log": "work/acceptance-2026-10-28/browser-interiors.log",
+      "logSha256": "1c377c95c78307c046b4e732324e38b6d1af7774fce1e4402c9c883ac1c0949c"
+    },
+    {
+      "name": "browser-actions",
+      "command": [
+        "python3",
+        "scripts/qa-actions.py"
+      ],
+      "source": "1b827b689b70d4a5bfc9304a7cbad49f6d434592",
+      "dirtyPathsAtStart": [
+        "scripts/test-legacy-api.mjs"
+      ],
+      "startedUtc": "2026-10-28T15:37:17Z",
+      "seconds": 36.287,
+      "exitCode": 1,
+      "status": "failed",
+      "log": "work/acceptance-2026-10-28/browser-actions.log",
+      "logSha256": "5a9f40570b1a3761087143be7a8ae6ecb8f9057e0d1ed6cfeaec7d99314a680d"
+    },
+    {
+      "name": "browser-visual-upgrade",
+      "command": [
+        "python3",
+        "scripts/qa-visual-upgrade.py"
+      ],
+      "source": "1b827b689b70d4a5bfc9304a7cbad49f6d434592",
+      "dirtyPathsAtStart": [
+        "scripts/test-legacy-api.mjs"
+      ],
+      "startedUtc": "2026-10-28T15:37:54Z",
+      "seconds": 100.835,
+      "exitCode": 0,
+      "status": "passed",
+      "log": "work/acceptance-2026-10-28/browser-visual-upgrade.log",
+      "logSha256": "59df7001c94c6549be7875d79547934a9fa19d59b023974d0880f56a9a8d1225"
+    },
+    {
+      "name": "browser-experience",
+      "command": [
+        "python3",
+        "scripts/qa-experience.py"
+      ],
+      "source": "1b827b689b70d4a5bfc9304a7cbad49f6d434592",
+      "dirtyPathsAtStart": [
+        "scripts/test-legacy-api.mjs"
+      ],
+      "startedUtc": "2026-10-28T15:39:34Z",
+      "seconds": 28.99,
+      "exitCode": 1,
+      "status": "failed",
+      "log": "work/acceptance-2026-10-28/browser-experience.log",
+      "logSha256": "17509f32f770b0800eea457874c9080a7e76b8df931128bff25951a0a284567b"
+    },
+    {
+      "name": "api-liveness-warm",
+      "command": [
+        "node",
+        "scripts/test-legacy-api.mjs",
+        "liveness"
+      ],
+      "source": "1b827b689b70d4a5bfc9304a7cbad49f6d434592",
+      "dirtyPathsAtStart": [
+        "scripts/qa-actions.py",
+        "scripts/qa-interiors.py",
+        "scripts/qa-resource-gallery.py",
+        "scripts/qa-studio.py",
+        "scripts/test-legacy-api.mjs"
+      ],
+      "startedUtc": "2026-10-28T16:40:52Z",
+      "seconds": 19.001,
+      "exitCode": 1,
+      "status": "failed",
+      "log": "work/acceptance-2026-10-28/api-liveness-warm.log",
+      "logSha256": "04fed7716dd5f259f6482bdde435dbee2385f3da5b26812f4fb38ab27af830f7"
+    },
+    {
+      "name": "local-model-daemon-idle",
+      "command": [
+        "node",
+        "scripts/test-daemon-ai.mjs"
+      ],
+      "source": "1b827b689b70d4a5bfc9304a7cbad49f6d434592",
+      "dirtyPathsAtStart": [
+        "scripts/qa-actions.py",
+        "scripts/qa-interiors.py",
+        "scripts/qa-resource-gallery.py",
+        "scripts/qa-studio.py",
+        "scripts/test-legacy-api.mjs"
+      ],
+      "startedUtc": "2026-10-28T16:41:24Z",
+      "seconds": 21.694,
+      "exitCode": 0,
+      "status": "passed",
+      "log": "work/acceptance-2026-10-28/local-model-daemon-idle.log",
+      "logSha256": "fe8beb021932e4b02fc59eb9a4d55e55e14492bce4c358b76769faa78c5716e8"
+    },
+    {
+      "name": "local-model-director",
+      "command": [
+        "npm",
+        "run",
+        "living:direct"
+      ],
+      "source": "1b827b689b70d4a5bfc9304a7cbad49f6d434592",
+      "dirtyPathsAtStart": [
+        "scripts/qa-actions.py",
+        "scripts/qa-experience.py",
+        "scripts/qa-interiors.py",
+        "scripts/qa-resource-gallery.py",
+        "scripts/qa-studio.py",
+        "scripts/test-legacy-api.mjs"
+      ],
+      "startedUtc": "2026-10-28T16:41:46Z",
+      "seconds": 38.79,
+      "exitCode": 1,
+      "status": "failed",
+      "log": "work/acceptance-2026-10-28/local-model-director.log",
+      "logSha256": "ab1454b90f3241c4c7f4eeded5a41545fc38a0cad7d29f9fff162122279bca69"
+    },
+    {
+      "name": "api-liveness-ticking",
+      "command": [
+        "node",
+        "scripts/test-legacy-api.mjs",
+        "liveness"
+      ],
+      "source": "1b827b689b70d4a5bfc9304a7cbad49f6d434592",
+      "dirtyPathsAtStart": [
+        "scripts/qa-actions.py",
+        "scripts/qa-experience.py",
+        "scripts/qa-interiors.py",
+        "scripts/qa-resource-gallery.py",
+        "scripts/qa-studio.py",
+        "scripts/test-legacy-api.mjs"
+      ],
+      "startedUtc": "2026-10-28T16:42:52Z",
+      "seconds": 10.077,
+      "exitCode": 1,
+      "status": "failed",
+      "log": "work/acceptance-2026-10-28/api-liveness-ticking.log",
+      "logSha256": "6190bc7e40b5d83360f49096a6e46d14ac937e3ae2911c919442b0be8e76462d"
+    },
+    {
+      "name": "api-liveness-trace",
+      "command": [
+        "node",
+        "scripts/test-legacy-api.mjs",
+        "liveness"
+      ],
+      "source": "1b827b689b70d4a5bfc9304a7cbad49f6d434592",
+      "dirtyPathsAtStart": [
+        "scripts/qa-actions.py",
+        "scripts/qa-experience.py",
+        "scripts/qa-interiors.py",
+        "scripts/qa-resource-gallery.py",
+        "scripts/qa-studio.py",
+        "scripts/test-legacy-api.mjs"
+      ],
+      "startedUtc": "2026-10-28T16:43:55Z",
+      "seconds": 14.901,
+      "exitCode": 1,
+      "status": "failed",
+      "log": "work/acceptance-2026-10-28/api-liveness-trace.log",
+      "logSha256": "3bd2caf3c69b7cb306ee373118f03151c53ca5e27ed2984be2cac98f4f155a77"
+    },
+    {
+      "name": "browser-studio-rerun",
+      "command": [
+        "python3",
+        "scripts/qa-studio.py"
+      ],
+      "source": "1b827b689b70d4a5bfc9304a7cbad49f6d434592",
+      "dirtyPathsAtStart": [
+        "scripts/qa-actions.py",
+        "scripts/qa-experience.py",
+        "scripts/qa-interiors.py",
+        "scripts/qa-resource-gallery.py",
+        "scripts/qa-studio.py",
+        "scripts/test-legacy-api.mjs"
+      ],
+      "startedUtc": "2026-10-28T16:43:53Z",
+      "seconds": 62.034,
+      "exitCode": 0,
+      "status": "passed",
+      "log": "work/acceptance-2026-10-28/browser-studio-rerun.log",
+      "logSha256": "5560a23aa7be664d0028b39feb6b28da94306ad0bf21b27e5abcc4f2ef255057"
+    },
+    {
+      "name": "api-liveness-fresh-connections",
+      "command": [
+        "node",
+        "scripts/test-legacy-api.mjs",
+        "liveness"
+      ],
+      "source": "1b827b689b70d4a5bfc9304a7cbad49f6d434592",
+      "dirtyPathsAtStart": [
+        "scripts/qa-actions.py",
+        "scripts/qa-experience.py",
+        "scripts/qa-interiors.py",
+        "scripts/qa-resource-gallery.py",
+        "scripts/qa-studio.py",
+        "scripts/test-legacy-api.mjs",
+        "scripts/test-liveness-api.mjs"
+      ],
+      "startedUtc": "2026-10-28T16:45:00Z",
+      "seconds": 16.431,
+      "exitCode": 0,
+      "status": "passed",
+      "log": "work/acceptance-2026-10-28/api-liveness-fresh-connections.log",
+      "logSha256": "0d90dd35f427886f02e47c4733f89d66f78165592ddff99926b30cb12ea7e955"
+    },
+    {
+      "name": "browser-shared-ground-rerun",
+      "command": [
+        "python3",
+        "scripts/qa-shared-ground.py"
+      ],
+      "source": "1b827b689b70d4a5bfc9304a7cbad49f6d434592",
+      "dirtyPathsAtStart": [
+        "scripts/qa-actions.py",
+        "scripts/qa-experience.py",
+        "scripts/qa-interiors.py",
+        "scripts/qa-resource-gallery.py",
+        "scripts/qa-studio.py",
+        "scripts/test-legacy-api.mjs"
+      ],
+      "startedUtc": "2026-10-28T16:44:55Z",
+      "seconds": 123.09,
+      "exitCode": 0,
+      "status": "passed",
+      "log": "work/acceptance-2026-10-28/browser-shared-ground-rerun.log",
+      "logSha256": "ec3dfb942f57c4a6cff185325821a2d4a3ccd6888a8288daa62b851ac7a85230"
+    },
+    {
+      "name": "browser-overlays-households-rerun",
+      "command": [
+        "python3",
+        "scripts/qa-overlays-households.py"
+      ],
+      "source": "865d2dc37453d642aec04ae6502ed4e0639b5670",
+      "dirtyPathsAtStart": [],
+      "startedUtc": "2026-10-28T16:46:59Z",
+      "seconds": 70.286,
+      "exitCode": 0,
+      "status": "passed",
+      "log": "work/acceptance-2026-10-28/browser-overlays-households-rerun.log",
+      "logSha256": "9ebeec6f1d0f355697fe0fbed63b5d5578795573d7a1552e948aee3112939e19"
+    }
+  ],
+  "h1": {
+    "freshFullRollouts": true,
+    "policies": [
+      "tabular",
+      "linucb"
+    ],
+    "seeds": 20,
+    "agents": 24,
+    "days": 60,
+    "completedPlansPerPolicy": 691200,
+    "matchesFrozenChecksums": true,
+    "passesPerformanceGates": false
+  },
+  "frozenStudies": {
+    "artifacts": 76,
+    "comparisons": 42,
+    "outcome": "Historical gates recompute exactly; H2/H4/H6/H10 remain unpromoted. H10 reserved holdout not observed."
+  },
+  "model": {
+    "provider": "local CPU llama.cpp",
+    "setup": "Pinned public binary/model downloaded and SHA verified; no paid API",
+    "schema": "passed",
+    "daemon": "passed when run separately; concurrent run timed out and used rules",
+    "semanticQuality": "not accepted: generated role/action and dialogue mismatch in daemon sample",
+    "threeRoles": "truncated JSON on first run; bounded role prompts/output admission fixed, rerun pending"
+  },
+  "unresolved": [
+    "Browser rerun still in progress for pause/camera and stale fixtures.",
+    "Legacy liveness HTTP: stale pooled socket after bad request; dedicated connections pass unchanged concurrency assertions.",
+    "LLM semantic consistency and baseline benefit are not demonstrated.",
+    "Production/GPU/long soak not verified."
+  ],
+  "next": "Complete functional acceptance before GND3, per latest user instruction."
+}
