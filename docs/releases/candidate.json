@@ -1,13 +1,13 @@
 {
   "project_id": "appgprj_6adc7dc364d48191a09202c5b43309e4",
-  "source_commit": "891691f742ec687db77bf73d66048eb97cb11ca9",
+  "source_commit": "cccc5445c15d8e852ed4c5b8bcf09b013cacaf43",
   "status": "prepared-not-deployed",
-  "archive_sha256": "c7f756c11b11d92c0c150f09082972157d7919783e89a23e988ddeee8fd5efda",
-  "archive_local_path": "work/production-891691f.tar.gz",
+  "archive_sha256": "9e387b00fde64dfdb972897e8904aba6deb78de656a9b2bb5e52be043d2a206b",
+  "archive_local_path": "work/production-cccc544.tar.gz",
   "production_ledger_unchanged": true,
   "blocker": "Native Sites credential/deploy/status/database tools unavailable in this session; user has already authorized release.",
   "validation": {
-    "unit_suites_passed": 54,
+    "unit_suites_passed": 55,
     "local_api": true,
     "typecheck_lint_build_assets": true,
     "browser_desktop_mobile": true,
@@ -29,7 +29,7 @@
     "unchanged_plan_binding": true,
     "full_duration_encounter_reporting": true,
     "physical_arrival_authority": false,
-    "browser_source_note": "Garden/social/home/cycle/pet desktop/mobile evidence from c77c21c UI. H0 changes backend; H1/H2 are offline experiments. H3 adds versioned evidence to the existing atomic archive and keeps serialized snapshots compact; raw reward/LinUCB and UI unchanged. Fresh compiled local API/CAS race/JSONL evidence passed; no new browser or production readback.",
+    "browser_source_note": "Garden/social/home/cycle/pet desktop/mobile evidence from c77c21c UI. H0 changes backend; H1/H2 are offline experiments; H3 archives reward evidence. H4 adds optional prediction-prior injection with no production caller, plus offline-only trainers/evaluation. Default policy, raw reward, matrices/persistence and UI unchanged. Fresh compiled local API/CAS/history passed; no new browser or production readback.",
     "garden_plots": 5,
     "garden_plants": 30,
     "garden_phases": 5,
@@ -108,9 +108,29 @@
       "new_society_runtime_features": false,
       "future_work_in_ROADMAP": true
     },
-    "offline_audit_code_in_worker": false
+    "offline_audit_code_in_worker": false,
+    "learning_h4": {
+      "evidence": "docs/validation/learning-h4-2026-10-28.json",
+      "protocol": "docs/validation/learning-h4-protocol-v1.json",
+      "training_plans": 552960,
+      "validation_plans": 1658880,
+      "holdout_plans": 4147200,
+      "profiles": 2,
+      "variants": 3,
+      "training_validation_holdout_disjoint": true,
+      "prior_and_full_role_stress_repeats_identical_bytes": true,
+      "H1_full_repeat_identical_bytes": true,
+      "default_policy_changed": false,
+      "donor_counts_not_earned": true,
+      "persistence_schema_unchanged": true,
+      "candidates_passing_both_profiles": [],
+      "first_day_reward_and_same_decision_MSE_improved": true,
+      "full_horizon_reward_gate_failed": true,
+      "runtime_hierarchy_installed": false,
+      "offline_code_excluded_from_worker": true
+    }
   },
-  "prepared_at_utc": "2026-10-28T06:26:44.597743Z",
+  "prepared_at_utc": "2026-10-28T07:01:37.396912Z",
   "migrations_to_check": [
     "0006_client_logs",
     "0007_learning_policies"
