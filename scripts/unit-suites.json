@@ -164,5 +164,8 @@
   ],
   [
     "scripts/test-hierarchical-prior.mjs"
+  ],
+  [
+    "scripts/test-outcome-replay.mjs"
   ]
 ]

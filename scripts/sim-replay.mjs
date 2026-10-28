@@ -1,0 +1,16 @@
+import {parseArgs} from 'node:util';
+import {performance} from 'node:perf_hooks';
+import {hashSeed} from '../lib/clock.ts';
+import {runReplayRollout,compareReplayRollouts} from '../lib/living/replay-harness.ts';
+import {verifiedReplayFile,writeReplayFile} from './replay-files.mjs';
+const {values}=parseArgs({options:{variant:{type:'string',default:'personal-v1'},profile:{type:'string',default:'cold-stress-v1'},seeds:{type:'string',default:'20'},'seed-start':{type:'string',default:'8000'},agents:{type:'string',default:'24'},days:{type:'string',default:'60'},prior:{type:'string'},baseline:{type:'string'},out:{type:'string'}},strict:true,allowPositionals:false});
+const count=Number(values.seeds),start=Number(values['seed-start']),agents=Number(values.agents),days=Number(values.days);
+if(!Number.isSafeInteger(count)||count<1||count>100||!Number.isSafeInteger(start)||start<0||start>1e6)throw Error('Invalid replay evaluation seeds');
+const file=values.prior?verifiedReplayFile(values.prior):null,seeds=Array.from({length:count},(_,i)=>hashSeed(`H1-seed:${start+i}`));
+if(file?.validationSeeds?.some(s=>seeds.includes(s)))throw Error('Replay validation/holdout seed overlap');
+const prior=file?.models?.curriculum??file?.artifact,begin=performance.now();
+const report=runReplayRollout({variant:values.variant,profile:values.profile,agents,days,seeds,shiftDay:Math.floor(days/2)},prior);
+const comparison=values.baseline?compareReplayRollouts(verifiedReplayFile(values.baseline).report,report):null;
+const payload={report,priorChecksum:file?.sha256??null,comparison};
+const sha256=values.out?writeReplayFile(values.out,payload):null;
+console.log(JSON.stringify({sha256,summary:report.raw.summary,secondary:report.summary,gates:comparison?.gates??null,seconds:+((performance.now()-begin)/1000).toFixed(3)}));
