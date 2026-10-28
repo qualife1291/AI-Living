@@ -1,0 +1,78 @@
+{
+  "kind": "paired-rollout-comparison-v1",
+  "baseline": "residual-ema-v1",
+  "candidate": "residual-warm-v1",
+  "differences": {
+    "returnPerAgentDay": {
+      "mean": -0.00006041029260299702,
+      "ci95": [
+        -0.0003721255989551767,
+        0.0002513050137491827
+      ],
+      "n": 20,
+      "min": -0.001607227245778553,
+      "max": 0.001222732733248133
+    },
+    "immediateRegretPerAgentDay": {
+      "mean": -0.0003922789887662148,
+      "ci95": [
+        -0.001842560917757453,
+        0.0010580029402250234
+      ],
+      "n": 20,
+      "min": -0.006905888103150737,
+      "max": 0.005391872211733428
+    },
+    "needOkRatio": {
+      "mean": 0.00003906249999997002,
+      "ci95": [
+        -0.000015861663062996337,
+        0.00009398666306293638
+      ],
+      "n": 20,
+      "min": -0.00014467592592604106,
+      "max": 0.00034722222222194343
+    },
+    "actionEntropy": {
+      "mean": -0.00008962852977004998,
+      "ci95": [
+        -0.00019492129784260884,
+        0.000015664238302508888
+      ],
+      "n": 20,
+      "min": -0.0005842175948518324,
+      "max": 0.00016459266870905154
+    },
+    "repeatRate": {
+      "mean": 0.0000014477646513827436,
+      "ci95": [
+        -0.00007322710672483234,
+        0.00007612263602759782
+      ],
+      "n": 20,
+      "min": -0.000289552930275605,
+      "max": 0.00040537410238589144
+    }
+  },
+  "entropyMargin": {
+    "mean": 0.10083125754989883,
+    "ci95": [
+      0.10049877833986726,
+      0.1011637367599304
+    ],
+    "n": 20,
+    "min": 0.09884443586747049,
+    "max": 0.10190544052668288
+  },
+  "gates": {
+    "enoughSeeds": true,
+    "fullProfile": true,
+    "returnNonDecrease": false,
+    "regretNonIncrease": false,
+    "needsNonDecrease": false,
+    "entropyFloor": true
+  },
+  "passesProposedOfflineGates": false,
+  "activatesRuntimePolicy": false,
+  "limits": "Same-state one-step opportunity cost is not long-horizon counterfactual regret. Needs/competence can have no headroom in this profile."
+}

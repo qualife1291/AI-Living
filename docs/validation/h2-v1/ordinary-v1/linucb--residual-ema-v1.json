@@ -1,0 +1,78 @@
+{
+  "kind": "paired-rollout-comparison-v1",
+  "baseline": "linucb",
+  "candidate": "residual-ema-v1",
+  "differences": {
+    "returnPerAgentDay": {
+      "mean": -0.001290490673781397,
+      "ci95": [
+        -0.0025333884250336976,
+        -0.00004759292252909668
+      ],
+      "n": 20,
+      "min": -0.006472169991071475,
+      "max": 0.002798423409835271
+    },
+    "immediateRegretPerAgentDay": {
+      "mean": -0.12375672435308478,
+      "ci95": [
+        -0.13534553881256256,
+        -0.112167909893607
+      ],
+      "n": 20,
+      "min": -0.160516895669935,
+      "max": -0.06162392129917915
+    },
+    "needOkRatio": {
+      "mean": 0.000050636574074081066,
+      "ci95": [
+        0.00001779473549779123,
+        0.00008347841265037091
+      ],
+      "n": 20,
+      "min": 0,
+      "max": 0.00023148148148144365
+    },
+    "actionEntropy": {
+      "mean": -0.03712461630944971,
+      "ci95": [
+        -0.037668279591605264,
+        -0.03658095302729415
+      ],
+      "n": 20,
+      "min": -0.039056176361718764,
+      "max": -0.03454947191548563
+    },
+    "repeatRate": {
+      "mean": 0.0002837618716701212,
+      "ci95": [
+        0.0002105080776224188,
+        0.00035701566571782366
+      ],
+      "n": 20,
+      "min": -0.00002895529302759936,
+      "max": 0.0006080611535788649
+    }
+  },
+  "entropyMargin": {
+    "mean": 0.08128747769925584,
+    "ci95": [
+      0.08051527289345971,
+      0.08205968250505198
+    ],
+    "n": 20,
+    "min": 0.07808750651346774,
+    "max": 0.08518655603126002
+  },
+  "gates": {
+    "enoughSeeds": true,
+    "fullProfile": true,
+    "returnNonDecrease": false,
+    "regretNonIncrease": true,
+    "needsNonDecrease": true,
+    "entropyFloor": true
+  },
+  "passesProposedOfflineGates": false,
+  "activatesRuntimePolicy": false,
+  "limits": "Same-state one-step opportunity cost is not long-horizon counterfactual regret. Needs/competence can have no headroom in this profile."
+}

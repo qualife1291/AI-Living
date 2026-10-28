@@ -1,0 +1,78 @@
+{
+  "kind": "paired-rollout-comparison-v1",
+  "baseline": "model-prior-v1",
+  "candidate": "residual-ema-v1",
+  "differences": {
+    "returnPerAgentDay": {
+      "mean": 0.007348745462063255,
+      "ci95": [
+        0.006401694745328681,
+        0.00829579617879783
+      ],
+      "n": 20,
+      "min": 0.002904102052465607,
+      "max": 0.012289129452681014
+    },
+    "immediateRegretPerAgentDay": {
+      "mean": 0.028773507968335287,
+      "ci95": [
+        0.02615368098954851,
+        0.03139333494712206
+      ],
+      "n": 20,
+      "min": 0.017976606282441576,
+      "max": 0.03738513599440774
+    },
+    "needOkRatio": {
+      "mean": -0.00036168981481480845,
+      "ci95": [
+        -0.0004937533055606217,
+        -0.0002296263240689952
+      ],
+      "n": 20,
+      "min": -0.0009548611111110938,
+      "max": 0.00014467592592604106
+    },
+    "actionEntropy": {
+      "mean": 0.0034183858433039726,
+      "ci95": [
+        0.003162554877778808,
+        0.003674216808829137
+      ],
+      "n": 20,
+      "min": 0.0025055348351079587,
+      "max": 0.004612988932015505
+    },
+    "repeatRate": {
+      "mean": -0.000013029881862391957,
+      "ci95": [
+        -0.00013258884506332018,
+        0.00010652908133853627
+      ],
+      "n": 20,
+      "min": -0.0003764188093583476,
+      "max": 0.0006080611535790315
+    }
+  },
+  "entropyMargin": {
+    "mean": 0.10365559475431203,
+    "ci95": [
+      0.10343980422405431,
+      0.10387138528456975
+    ],
+    "n": 20,
+    "min": 0.10254158762060245,
+    "max": 0.10444426898796044
+  },
+  "gates": {
+    "enoughSeeds": true,
+    "fullProfile": true,
+    "returnNonDecrease": true,
+    "regretNonIncrease": false,
+    "needsNonDecrease": false,
+    "entropyFloor": true
+  },
+  "passesProposedOfflineGates": false,
+  "activatesRuntimePolicy": false,
+  "limits": "Same-state one-step opportunity cost is not long-horizon counterfactual regret. Needs/competence can have no headroom in this profile."
+}

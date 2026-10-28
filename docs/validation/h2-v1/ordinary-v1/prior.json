@@ -1,0 +1,6233 @@
+{
+  "prior": {
+    "version": 1,
+    "source": "synthetic-H2-training",
+    "expectedVersion": "scenario-outcome-v1",
+    "scenarioSignature": 4091955440,
+    "profile": "ordinary-v1",
+    "trainingSeeds": [
+      4015017979,
+      3998240360,
+      4048573217,
+      4031795598,
+      4082128455,
+      4065350836,
+      4115683693,
+      4098906074
+    ],
+    "rows": [
+      {
+        "rolePlace": "Bến xe buýt",
+        "scenarioId": "airport-visit",
+        "mean": -0.00015502369565217376,
+        "support": 23
+      },
+      {
+        "rolePlace": "Bến xe buýt",
+        "scenarioId": "cafe-shift",
+        "mean": -0.00017393375999999488,
+        "support": 25
+      },
+      {
+        "rolePlace": "Bến xe buýt",
+        "scenarioId": "cinema-evening",
+        "mean": 0.0006025631037150417,
+        "support": 246
+      },
+      {
+        "rolePlace": "Bến xe buýt",
+        "scenarioId": "culture",
+        "mean": 0.00038957848147401215,
+        "support": 102
+      },
+      {
+        "rolePlace": "Bến xe buýt",
+        "scenarioId": "date-invitation",
+        "mean": 0.0003649396517730034,
+        "support": 263
+      },
+      {
+        "rolePlace": "Bến xe buýt",
+        "scenarioId": "factory-shift",
+        "mean": -0.0002497769999999957,
+        "support": 7
+      },
+      {
+        "rolePlace": "Bến xe buýt",
+        "scenarioId": "fire-training",
+        "mean": -0.00012718042105263038,
+        "support": 19
+      },
+      {
+        "rolePlace": "Bến xe buýt",
+        "scenarioId": "friendship",
+        "mean": 0.0006158642072482046,
+        "support": 306
+      },
+      {
+        "rolePlace": "Bến xe buýt",
+        "scenarioId": "garden-care",
+        "mean": -0.0001124038285714317,
+        "support": 35
+      },
+      {
+        "rolePlace": "Bến xe buýt",
+        "scenarioId": "groceries",
+        "mean": 0.000587283710961105,
+        "support": 9
+      },
+      {
+        "rolePlace": "Bến xe buýt",
+        "scenarioId": "hospital-check",
+        "mean": 0.0009047548707005665,
+        "support": 172
+      },
+      {
+        "rolePlace": "Bến xe buýt",
+        "scenarioId": "job-search",
+        "mean": -0.00013182557142857245,
+        "support": 28
+      },
+      {
+        "rolePlace": "Bến xe buýt",
+        "scenarioId": "learn-trade",
+        "mean": -0.0001498006329113928,
+        "support": 79
+      },
+      {
+        "rolePlace": "Bến xe buýt",
+        "scenarioId": "library",
+        "mean": 0.00007028135537837552,
+        "support": 185
+      },
+      {
+        "rolePlace": "Bến xe buýt",
+        "scenarioId": "lunch",
+        "mean": 0.001534011254616282,
+        "support": 835
+      },
+      {
+        "rolePlace": "Bến xe buýt",
+        "scenarioId": "market-chat",
+        "mean": -0.00005489772289157018,
+        "support": 166
+      },
+      {
+        "rolePlace": "Bến xe buýt",
+        "scenarioId": "neighborhood",
+        "mean": 0.0000031115453803671147,
+        "support": 219
+      },
+      {
+        "rolePlace": "Bến xe buýt",
+        "scenarioId": "post-office",
+        "mean": -0.00002893885483871152,
+        "support": 186
+      },
+      {
+        "rolePlace": "Bến xe buýt",
+        "scenarioId": "practice-cycle",
+        "mean": -0.00006361412903225765,
+        "support": 93
+      },
+      {
+        "rolePlace": "Bến xe buýt",
+        "scenarioId": "practice-drink",
+        "mean": 0.00017103044971109193,
+        "support": 275
+      },
+      {
+        "rolePlace": "Bến xe buýt",
+        "scenarioId": "practice-exercise",
+        "mean": -0.000060652285714285985,
+        "support": 35
+      },
+      {
+        "rolePlace": "Bến xe buýt",
+        "scenarioId": "practice-jump",
+        "mean": -0.000060564000000000086,
+        "support": 44
+      },
+      {
+        "rolePlace": "Bến xe buýt",
+        "scenarioId": "practice-run",
+        "mean": -0.00006258559322034115,
+        "support": 59
+      },
+      {
+        "rolePlace": "Bến xe buýt",
+        "scenarioId": "practice-shop",
+        "mean": -0.00006367217647058765,
+        "support": 34
+      },
+      {
+        "rolePlace": "Bến xe buýt",
+        "scenarioId": "practice-study",
+        "mean": -0.0000585473684210495,
+        "support": 19
+      },
+      {
+        "rolePlace": "Bến xe buýt",
+        "scenarioId": "practice-tag",
+        "mean": -0.00005998605555555625,
+        "support": 108
+      },
+      {
+        "rolePlace": "Bến xe buýt",
+        "scenarioId": "practice-walk-pet",
+        "mean": -0.00006284545000000166,
+        "support": 120
+      },
+      {
+        "rolePlace": "Bến xe buýt",
+        "scenarioId": "quiet-walk",
+        "mean": 0.0006661777804845976,
+        "support": 172
+      },
+      {
+        "rolePlace": "Bến xe buýt",
+        "scenarioId": "rehabilitate",
+        "mean": 0.0010791844844432496,
+        "support": 297
+      },
+      {
+        "rolePlace": "Bến xe buýt",
+        "scenarioId": "rest-home",
+        "mean": -0.00008156044318524172,
+        "support": 3361
+      },
+      {
+        "rolePlace": "Bến xe buýt",
+        "scenarioId": "ride-bus",
+        "mean": -0.000029471102590147392,
+        "support": 1969
+      },
+      {
+        "rolePlace": "Bến xe buýt",
+        "scenarioId": "ride-metro",
+        "mean": -0.000030433309090911016,
+        "support": 55
+      },
+      {
+        "rolePlace": "Bến xe buýt",
+        "scenarioId": "school-project",
+        "mean": -0.0001505245479452101,
+        "support": 73
+      },
+      {
+        "rolePlace": "Bến xe buýt",
+        "scenarioId": "shared-meal",
+        "mean": 0.001189462486661713,
+        "support": 354
+      },
+      {
+        "rolePlace": "Bến xe buýt",
+        "scenarioId": "sports",
+        "mean": -0.00024214764705882868,
+        "support": 17
+      },
+      {
+        "rolePlace": "Bến xe buýt",
+        "scenarioId": "teach-class",
+        "mean": -0.00014887919999999967,
+        "support": 90
+      },
+      {
+        "rolePlace": "Bệnh viện",
+        "scenarioId": "airport-visit",
+        "mean": -0.00014419670588235544,
+        "support": 51
+      },
+      {
+        "rolePlace": "Bệnh viện",
+        "scenarioId": "cafe-shift",
+        "mean": -0.0001701413999999974,
+        "support": 20
+      },
+      {
+        "rolePlace": "Bệnh viện",
+        "scenarioId": "cinema-evening",
+        "mean": 0.0006091762311360047,
+        "support": 175
+      },
+      {
+        "rolePlace": "Bệnh viện",
+        "scenarioId": "culture",
+        "mean": 0.0005617674162594284,
+        "support": 106
+      },
+      {
+        "rolePlace": "Bệnh viện",
+        "scenarioId": "date-invitation",
+        "mean": 0.0006160183286956771,
+        "support": 139
+      },
+      {
+        "rolePlace": "Bệnh viện",
+        "scenarioId": "factory-shift",
+        "mean": -0.0002321159999999998,
+        "support": 6
+      },
+      {
+        "rolePlace": "Bệnh viện",
+        "scenarioId": "fire-training",
+        "mean": -0.00012393224999999964,
+        "support": 16
+      },
+      {
+        "rolePlace": "Bệnh viện",
+        "scenarioId": "friendship",
+        "mean": 0.0005715332375287152,
+        "support": 141
+      },
+      {
+        "rolePlace": "Bệnh viện",
+        "scenarioId": "garden-care",
+        "mean": -0.00010726087499999181,
+        "support": 16
+      },
+      {
+        "rolePlace": "Bệnh viện",
+        "scenarioId": "groceries",
+        "mean": 0.0006315814204799708,
+        "support": 5
+      },
+      {
+        "rolePlace": "Bệnh viện",
+        "scenarioId": "hospital-check",
+        "mean": 0.0008488770698652654,
+        "support": 1330
+      },
+      {
+        "rolePlace": "Bệnh viện",
+        "scenarioId": "job-search",
+        "mean": -0.00011870330232558014,
+        "support": 43
+      },
+      {
+        "rolePlace": "Bệnh viện",
+        "scenarioId": "learn-trade",
+        "mean": -0.00014048400000001775,
+        "support": 22
+      },
+      {
+        "rolePlace": "Bệnh viện",
+        "scenarioId": "library",
+        "mean": 0.0006156341325375142,
+        "support": 28
+      },
+      {
+        "rolePlace": "Bệnh viện",
+        "scenarioId": "lunch",
+        "mean": 0.0014881755524496665,
+        "support": 537
+      },
+      {
+        "rolePlace": "Bệnh viện",
+        "scenarioId": "market-chat",
+        "mean": -0.000052293903614457736,
+        "support": 83
+      },
+      {
+        "rolePlace": "Bệnh viện",
+        "scenarioId": "neighborhood",
+        "mean": 0.0001778816822394654,
+        "support": 114
+      },
+      {
+        "rolePlace": "Bệnh viện",
+        "scenarioId": "office-shift",
+        "mean": -0.00021895837499999373,
+        "support": 16
+      },
+      {
+        "rolePlace": "Bệnh viện",
+        "scenarioId": "post-office",
+        "mean": -0.000027194834254144012,
+        "support": 181
+      },
+      {
+        "rolePlace": "Bệnh viện",
+        "scenarioId": "practice-cycle",
+        "mean": -0.000058471227272725545,
+        "support": 44
+      },
+      {
+        "rolePlace": "Bệnh viện",
+        "scenarioId": "practice-drink",
+        "mean": 0.0005742918129578918,
+        "support": 266
+      },
+      {
+        "rolePlace": "Bệnh viện",
+        "scenarioId": "practice-exercise",
+        "mean": -0.000059848677165354566,
+        "support": 127
+      },
+      {
+        "rolePlace": "Bệnh viện",
+        "scenarioId": "practice-jump",
+        "mean": -0.00005918315625000123,
+        "support": 128
+      },
+      {
+        "rolePlace": "Bệnh viện",
+        "scenarioId": "practice-run",
+        "mean": -0.00005632955555555683,
+        "support": 27
+      },
+      {
+        "rolePlace": "Bệnh viện",
+        "scenarioId": "practice-shop",
+        "mean": -0.00005717292307692264,
+        "support": 78
+      },
+      {
+        "rolePlace": "Bệnh viện",
+        "scenarioId": "practice-study",
+        "mean": -0.00005995302272727194,
+        "support": 88
+      },
+      {
+        "rolePlace": "Bệnh viện",
+        "scenarioId": "practice-tag",
+        "mean": -0.000056808461538457364,
+        "support": 26
+      },
+      {
+        "rolePlace": "Bệnh viện",
+        "scenarioId": "practice-walk-pet",
+        "mean": -0.0000571628391608388,
+        "support": 143
+      },
+      {
+        "rolePlace": "Bệnh viện",
+        "scenarioId": "quiet-walk",
+        "mean": 0.0007759242120673806,
+        "support": 187
+      },
+      {
+        "rolePlace": "Bệnh viện",
+        "scenarioId": "rehabilitate",
+        "mean": 0.0009289868108961566,
+        "support": 155
+      },
+      {
+        "rolePlace": "Bệnh viện",
+        "scenarioId": "rest-home",
+        "mean": -0.00004998458311199972,
+        "support": 2400
+      },
+      {
+        "rolePlace": "Bệnh viện",
+        "scenarioId": "ride-bus",
+        "mean": -0.000027188197674417038,
+        "support": 172
+      },
+      {
+        "rolePlace": "Bệnh viện",
+        "scenarioId": "ride-metro",
+        "mean": -0.000027420786885244797,
+        "support": 61
+      },
+      {
+        "rolePlace": "Bệnh viện",
+        "scenarioId": "school-project",
+        "mean": -0.00014048400000000685,
+        "support": 21
+      },
+      {
+        "rolePlace": "Bệnh viện",
+        "scenarioId": "shared-meal",
+        "mean": 0.0011044216230315217,
+        "support": 176
+      },
+      {
+        "rolePlace": "Bệnh viện",
+        "scenarioId": "sports",
+        "mean": -0.00022174537500000007,
+        "support": 40
+      },
+      {
+        "rolePlace": "Bệnh viện",
+        "scenarioId": "teach-class",
+        "mean": -0.00013579199999999377,
+        "support": 32
+      },
+      {
+        "rolePlace": "Bếp chung",
+        "scenarioId": "airport-visit",
+        "mean": -0.00015457938461538526,
+        "support": 13
+      },
+      {
+        "rolePlace": "Bếp chung",
+        "scenarioId": "cafe-shift",
+        "mean": -0.00017091359999999863,
+        "support": 5
+      },
+      {
+        "rolePlace": "Bếp chung",
+        "scenarioId": "cinema-evening",
+        "mean": 0.0005505528617713334,
+        "support": 199
+      },
+      {
+        "rolePlace": "Bếp chung",
+        "scenarioId": "culture",
+        "mean": 0.0004995953158448261,
+        "support": 194
+      },
+      {
+        "rolePlace": "Bếp chung",
+        "scenarioId": "date-invitation",
+        "mean": 0.0004448619140843238,
+        "support": 182
+      },
+      {
+        "rolePlace": "Bếp chung",
+        "scenarioId": "factory-shift",
+        "mean": -0.0002553275999999952,
+        "support": 10
+      },
+      {
+        "rolePlace": "Bếp chung",
+        "scenarioId": "fire-training",
+        "mean": -0.00013677333333333085,
+        "support": 54
+      },
+      {
+        "rolePlace": "Bếp chung",
+        "scenarioId": "friendship",
+        "mean": 0.000567145158370733,
+        "support": 212
+      },
+      {
+        "rolePlace": "Bếp chung",
+        "scenarioId": "garden-care",
+        "mean": -0.0001117607142857074,
+        "support": 14
+      },
+      {
+        "rolePlace": "Bếp chung",
+        "scenarioId": "hospital-check",
+        "mean": 0.0009014976106821393,
+        "support": 300
+      },
+      {
+        "rolePlace": "Bếp chung",
+        "scenarioId": "job-search",
+        "mean": -0.0001284029999999954,
+        "support": 13
+      },
+      {
+        "rolePlace": "Bếp chung",
+        "scenarioId": "learn-trade",
+        "mean": -0.0001515123333333253,
+        "support": 54
+      },
+      {
+        "rolePlace": "Bếp chung",
+        "scenarioId": "library",
+        "mean": 0.00005014191667242051,
+        "support": 174
+      },
+      {
+        "rolePlace": "Bếp chung",
+        "scenarioId": "lunch",
+        "mean": 0.0017090890065428427,
+        "support": 7
+      },
+      {
+        "rolePlace": "Bếp chung",
+        "scenarioId": "market-chat",
+        "mean": -0.00005276050819672,
+        "support": 122
+      },
+      {
+        "rolePlace": "Bếp chung",
+        "scenarioId": "neighborhood",
+        "mean": 0.00005139836471452678,
+        "support": 155
+      },
+      {
+        "rolePlace": "Bếp chung",
+        "scenarioId": "post-office",
+        "mean": -0.000029664391719745253,
+        "support": 314
+      },
+      {
+        "rolePlace": "Bếp chung",
+        "scenarioId": "practice-cycle",
+        "mean": -0.00006207466666666687,
+        "support": 108
+      },
+      {
+        "rolePlace": "Bếp chung",
+        "scenarioId": "practice-drink",
+        "mean": 0.000154054730780328,
+        "support": 155
+      },
+      {
+        "rolePlace": "Bếp chung",
+        "scenarioId": "practice-exercise",
+        "mean": -0.00006028752631578793,
+        "support": 76
+      },
+      {
+        "rolePlace": "Bếp chung",
+        "scenarioId": "practice-jump",
+        "mean": -0.00006269890909090791,
+        "support": 77
+      },
+      {
+        "rolePlace": "Bếp chung",
+        "scenarioId": "practice-run",
+        "mean": -0.00006511768421052655,
+        "support": 38
+      },
+      {
+        "rolePlace": "Bếp chung",
+        "scenarioId": "practice-shop",
+        "mean": -0.00006276293023255743,
+        "support": 86
+      },
+      {
+        "rolePlace": "Bếp chung",
+        "scenarioId": "practice-study",
+        "mean": -0.00006195594392523217,
+        "support": 107
+      },
+      {
+        "rolePlace": "Bếp chung",
+        "scenarioId": "practice-tag",
+        "mean": -0.000060061874999998164,
+        "support": 32
+      },
+      {
+        "rolePlace": "Bếp chung",
+        "scenarioId": "practice-walk-pet",
+        "mean": -0.00006145946938775399,
+        "support": 98
+      },
+      {
+        "rolePlace": "Bếp chung",
+        "scenarioId": "quiet-walk",
+        "mean": 0.0008230030495504005,
+        "support": 117
+      },
+      {
+        "rolePlace": "Bếp chung",
+        "scenarioId": "rehabilitate",
+        "mean": 0.0010374493388535795,
+        "support": 388
+      },
+      {
+        "rolePlace": "Bếp chung",
+        "scenarioId": "rest-home",
+        "mean": -0.0000617971975146663,
+        "support": 2400
+      },
+      {
+        "rolePlace": "Bếp chung",
+        "scenarioId": "ride-bus",
+        "mean": -0.000029758449152541686,
+        "support": 236
+      },
+      {
+        "rolePlace": "Bếp chung",
+        "scenarioId": "ride-metro",
+        "mean": -0.00002993399999999998,
+        "support": 97
+      },
+      {
+        "rolePlace": "Bếp chung",
+        "scenarioId": "school-project",
+        "mean": -0.00015277764406779654,
+        "support": 59
+      },
+      {
+        "rolePlace": "Bếp chung",
+        "scenarioId": "shared-meal",
+        "mean": 0.0015468246757011116,
+        "support": 1011
+      },
+      {
+        "rolePlace": "Bếp chung",
+        "scenarioId": "sports",
+        "mean": -0.00023849999999999547,
+        "support": 35
+      },
+      {
+        "rolePlace": "Bếp chung",
+        "scenarioId": "teach-class",
+        "mean": -0.00014430070588235133,
+        "support": 51
+      },
+      {
+        "rolePlace": "Bưu điện",
+        "scenarioId": "airport-visit",
+        "mean": -0.00014888250000000004,
+        "support": 26
+      },
+      {
+        "rolePlace": "Bưu điện",
+        "scenarioId": "cafe-shift",
+        "mean": -0.00017310149999999642,
+        "support": 8
+      },
+      {
+        "rolePlace": "Bưu điện",
+        "scenarioId": "cinema-evening",
+        "mean": 0.0005859996007734458,
+        "support": 320
+      },
+      {
+        "rolePlace": "Bưu điện",
+        "scenarioId": "culture",
+        "mean": 0.000363502423373143,
+        "support": 311
+      },
+      {
+        "rolePlace": "Bưu điện",
+        "scenarioId": "date-invitation",
+        "mean": 0.0003174931809881755,
+        "support": 148
+      },
+      {
+        "rolePlace": "Bưu điện",
+        "scenarioId": "fire-training",
+        "mean": -0.00012766094117647094,
+        "support": 34
+      },
+      {
+        "rolePlace": "Bưu điện",
+        "scenarioId": "friendship",
+        "mean": 0.0005922781195000042,
+        "support": 168
+      },
+      {
+        "rolePlace": "Bưu điện",
+        "scenarioId": "garden-care",
+        "mean": -0.00011603863636363616,
+        "support": 22
+      },
+      {
+        "rolePlace": "Bưu điện",
+        "scenarioId": "groceries",
+        "mean": 0.0006156208286166463,
+        "support": 9
+      },
+      {
+        "rolePlace": "Bưu điện",
+        "scenarioId": "hospital-check",
+        "mean": 0.0009322227799714515,
+        "support": 252
+      },
+      {
+        "rolePlace": "Bưu điện",
+        "scenarioId": "job-search",
+        "mean": -0.0001336573333333324,
+        "support": 27
+      },
+      {
+        "rolePlace": "Bưu điện",
+        "scenarioId": "learn-trade",
+        "mean": -0.00015145063636362967,
+        "support": 44
+      },
+      {
+        "rolePlace": "Bưu điện",
+        "scenarioId": "library",
+        "mean": 0.000017490965718745576,
+        "support": 72
+      },
+      {
+        "rolePlace": "Bưu điện",
+        "scenarioId": "lunch",
+        "mean": 0.0015184834752742528,
+        "support": 887
+      },
+      {
+        "rolePlace": "Bưu điện",
+        "scenarioId": "market-chat",
+        "mean": -0.00005333791558441432,
+        "support": 154
+      },
+      {
+        "rolePlace": "Bưu điện",
+        "scenarioId": "neighborhood",
+        "mean": 0.000028106583134045935,
+        "support": 210
+      },
+      {
+        "rolePlace": "Bưu điện",
+        "scenarioId": "office-shift",
+        "mean": -0.0002466260000000248,
+        "support": 15
+      },
+      {
+        "rolePlace": "Bưu điện",
+        "scenarioId": "post-office",
+        "mean": -0.000028838663048607437,
+        "support": 2119
+      },
+      {
+        "rolePlace": "Bưu điện",
+        "scenarioId": "practice-cycle",
+        "mean": -0.00006240588235294139,
+        "support": 102
+      },
+      {
+        "rolePlace": "Bưu điện",
+        "scenarioId": "practice-drink",
+        "mean": 0.00022575549267075452,
+        "support": 265
+      },
+      {
+        "rolePlace": "Bưu điện",
+        "scenarioId": "practice-exercise",
+        "mean": -0.000059681142857142755,
+        "support": 126
+      },
+      {
+        "rolePlace": "Bưu điện",
+        "scenarioId": "practice-jump",
+        "mean": -0.0000643785517241383,
+        "support": 58
+      },
+      {
+        "rolePlace": "Bưu điện",
+        "scenarioId": "practice-run",
+        "mean": -0.00006252099999999688,
+        "support": 30
+      },
+      {
+        "rolePlace": "Bưu điện",
+        "scenarioId": "practice-shop",
+        "mean": -0.00006235098795180975,
+        "support": 83
+      },
+      {
+        "rolePlace": "Bưu điện",
+        "scenarioId": "practice-study",
+        "mean": -0.00006017610638297748,
+        "support": 94
+      },
+      {
+        "rolePlace": "Bưu điện",
+        "scenarioId": "practice-tag",
+        "mean": -0.000060375166666667105,
+        "support": 144
+      },
+      {
+        "rolePlace": "Bưu điện",
+        "scenarioId": "practice-walk-pet",
+        "mean": -0.00006163736842105571,
+        "support": 19
+      },
+      {
+        "rolePlace": "Bưu điện",
+        "scenarioId": "quiet-walk",
+        "mean": 0.0007175475184868138,
+        "support": 216
+      },
+      {
+        "rolePlace": "Bưu điện",
+        "scenarioId": "rehabilitate",
+        "mean": 0.001036075828374111,
+        "support": 330
+      },
+      {
+        "rolePlace": "Bưu điện",
+        "scenarioId": "rest-home",
+        "mean": -0.0000692227180808888,
+        "support": 3600
+      },
+      {
+        "rolePlace": "Bưu điện",
+        "scenarioId": "ride-bus",
+        "mean": -0.000028749148936170365,
+        "support": 282
+      },
+      {
+        "rolePlace": "Bưu điện",
+        "scenarioId": "ride-metro",
+        "mean": -0.00002864941935483655,
+        "support": 124
+      },
+      {
+        "rolePlace": "Bưu điện",
+        "scenarioId": "school-project",
+        "mean": -0.000150675837209304,
+        "support": 43
+      },
+      {
+        "rolePlace": "Bưu điện",
+        "scenarioId": "shared-meal",
+        "mean": 0.0011994289834758912,
+        "support": 365
+      },
+      {
+        "rolePlace": "Bưu điện",
+        "scenarioId": "sports",
+        "mean": -0.0002463808695652156,
+        "support": 23
+      },
+      {
+        "rolePlace": "Bưu điện",
+        "scenarioId": "teach-class",
+        "mean": -0.00014742109090908523,
+        "support": 66
+      },
+      {
+        "rolePlace": "Chợ nhỏ",
+        "scenarioId": "airport-visit",
+        "mean": -0.00015056219999999565,
+        "support": 5
+      },
+      {
+        "rolePlace": "Chợ nhỏ",
+        "scenarioId": "cafe-shift",
+        "mean": -0.00016919760000000674,
+        "support": 5
+      },
+      {
+        "rolePlace": "Chợ nhỏ",
+        "scenarioId": "cinema-evening",
+        "mean": 0.0003029393793766506,
+        "support": 137
+      },
+      {
+        "rolePlace": "Chợ nhỏ",
+        "scenarioId": "culture",
+        "mean": 0.0002044603453770001,
+        "support": 100
+      },
+      {
+        "rolePlace": "Chợ nhỏ",
+        "scenarioId": "date-invitation",
+        "mean": 0.0002502256631613446,
+        "support": 163
+      },
+      {
+        "rolePlace": "Chợ nhỏ",
+        "scenarioId": "fire-training",
+        "mean": -0.00012919133333333464,
+        "support": 9
+      },
+      {
+        "rolePlace": "Chợ nhỏ",
+        "scenarioId": "friendship",
+        "mean": 0.00035190407012451524,
+        "support": 208
+      },
+      {
+        "rolePlace": "Chợ nhỏ",
+        "scenarioId": "garden-care",
+        "mean": -0.00010532353846154309,
+        "support": 13
+      },
+      {
+        "rolePlace": "Chợ nhỏ",
+        "scenarioId": "groceries",
+        "mean": 0.0003385719999999969,
+        "support": 9
+      },
+      {
+        "rolePlace": "Chợ nhỏ",
+        "scenarioId": "hospital-check",
+        "mean": 0.0007729692950142893,
+        "support": 147
+      },
+      {
+        "rolePlace": "Chợ nhỏ",
+        "scenarioId": "job-search",
+        "mean": -0.0001251418235294115,
+        "support": 17
+      },
+      {
+        "rolePlace": "Chợ nhỏ",
+        "scenarioId": "learn-trade",
+        "mean": -0.00015135623999999916,
+        "support": 50
+      },
+      {
+        "rolePlace": "Chợ nhỏ",
+        "scenarioId": "library",
+        "mean": 0.00004715458557899687,
+        "support": 119
+      },
+      {
+        "rolePlace": "Chợ nhỏ",
+        "scenarioId": "lunch",
+        "mean": 0.0013979270102299644,
+        "support": 906
+      },
+      {
+        "rolePlace": "Chợ nhỏ",
+        "scenarioId": "market-chat",
+        "mean": -0.00005202643767011339,
+        "support": 1837
+      },
+      {
+        "rolePlace": "Chợ nhỏ",
+        "scenarioId": "neighborhood",
+        "mean": 0.00005603933731157653,
+        "support": 95
+      },
+      {
+        "rolePlace": "Chợ nhỏ",
+        "scenarioId": "office-shift",
+        "mean": -0.00022406400000000708,
+        "support": 34
+      },
+      {
+        "rolePlace": "Chợ nhỏ",
+        "scenarioId": "post-office",
+        "mean": -0.000028421554285713307,
+        "support": 175
+      },
+      {
+        "rolePlace": "Chợ nhỏ",
+        "scenarioId": "practice-cycle",
+        "mean": -0.000060630214285714675,
+        "support": 28
+      },
+      {
+        "rolePlace": "Chợ nhỏ",
+        "scenarioId": "practice-drink",
+        "mean": 0.00010887022248873442,
+        "support": 213
+      },
+      {
+        "rolePlace": "Chợ nhỏ",
+        "scenarioId": "practice-exercise",
+        "mean": -0.00006289474285714171,
+        "support": 35
+      },
+      {
+        "rolePlace": "Chợ nhỏ",
+        "scenarioId": "practice-jump",
+        "mean": -0.00006108586666666652,
+        "support": 45
+      },
+      {
+        "rolePlace": "Chợ nhỏ",
+        "scenarioId": "practice-run",
+        "mean": -0.00006123459574468038,
+        "support": 47
+      },
+      {
+        "rolePlace": "Chợ nhỏ",
+        "scenarioId": "practice-shop",
+        "mean": -0.00006063823536585382,
+        "support": 1640
+      },
+      {
+        "rolePlace": "Chợ nhỏ",
+        "scenarioId": "practice-study",
+        "mean": -0.00006134753571428862,
+        "support": 56
+      },
+      {
+        "rolePlace": "Chợ nhỏ",
+        "scenarioId": "practice-tag",
+        "mean": -0.000060934799999998575,
+        "support": 35
+      },
+      {
+        "rolePlace": "Chợ nhỏ",
+        "scenarioId": "practice-walk-pet",
+        "mean": -0.00006105840000000112,
+        "support": 10
+      },
+      {
+        "rolePlace": "Chợ nhỏ",
+        "scenarioId": "quiet-walk",
+        "mean": 0.0004484769091189745,
+        "support": 195
+      },
+      {
+        "rolePlace": "Chợ nhỏ",
+        "scenarioId": "rehabilitate",
+        "mean": 0.0009217980971302963,
+        "support": 269
+      },
+      {
+        "rolePlace": "Chợ nhỏ",
+        "scenarioId": "rest-home",
+        "mean": -0.0001894114070288075,
+        "support": 3603
+      },
+      {
+        "rolePlace": "Chợ nhỏ",
+        "scenarioId": "ride-bus",
+        "mean": -0.000028843235294115824,
+        "support": 119
+      },
+      {
+        "rolePlace": "Chợ nhỏ",
+        "scenarioId": "ride-metro",
+        "mean": -0.000029144769230769804,
+        "support": 39
+      },
+      {
+        "rolePlace": "Chợ nhỏ",
+        "scenarioId": "school-project",
+        "mean": -0.00015057916666666758,
+        "support": 36
+      },
+      {
+        "rolePlace": "Chợ nhỏ",
+        "scenarioId": "shared-meal",
+        "mean": 0.0009528081523998652,
+        "support": 358
+      },
+      {
+        "rolePlace": "Chợ nhỏ",
+        "scenarioId": "sports",
+        "mean": -0.00023147749999999858,
+        "support": 18
+      },
+      {
+        "rolePlace": "Chợ nhỏ",
+        "scenarioId": "teach-class",
+        "mean": -0.0001431720000000102,
+        "support": 21
+      },
+      {
+        "rolePlace": "Công viên",
+        "scenarioId": "cinema-evening",
+        "mean": 0.0001067012977080019,
+        "support": 50
+      },
+      {
+        "rolePlace": "Công viên",
+        "scenarioId": "culture",
+        "mean": 0.000008449874999993251,
+        "support": 8
+      },
+      {
+        "rolePlace": "Công viên",
+        "scenarioId": "date-invitation",
+        "mean": 0.00029743328517855725,
+        "support": 49
+      },
+      {
+        "rolePlace": "Công viên",
+        "scenarioId": "friendship",
+        "mean": 0.00018858226717552323,
+        "support": 1614
+      },
+      {
+        "rolePlace": "Công viên",
+        "scenarioId": "groceries",
+        "mean": 0.0003450830000000084,
+        "support": 9
+      },
+      {
+        "rolePlace": "Công viên",
+        "scenarioId": "hospital-check",
+        "mean": 0.0004757634302902189,
+        "support": 46
+      },
+      {
+        "rolePlace": "Công viên",
+        "scenarioId": "learn-trade",
+        "mean": -0.00015375715384613461,
+        "support": 13
+      },
+      {
+        "rolePlace": "Công viên",
+        "scenarioId": "library",
+        "mean": -0.000010233999999994964,
+        "support": 6
+      },
+      {
+        "rolePlace": "Công viên",
+        "scenarioId": "lunch",
+        "mean": 0.0011881815988003972,
+        "support": 871
+      },
+      {
+        "rolePlace": "Công viên",
+        "scenarioId": "market-chat",
+        "mean": -0.00005274599999999704,
+        "support": 9
+      },
+      {
+        "rolePlace": "Công viên",
+        "scenarioId": "neighborhood",
+        "mean": 0.00004481423549999794,
+        "support": 10
+      },
+      {
+        "rolePlace": "Công viên",
+        "scenarioId": "post-office",
+        "mean": -0.000029301461538460546,
+        "support": 39
+      },
+      {
+        "rolePlace": "Công viên",
+        "scenarioId": "practice-cycle",
+        "mean": -0.00006161043730569997,
+        "support": 965
+      },
+      {
+        "rolePlace": "Công viên",
+        "scenarioId": "practice-drink",
+        "mean": 0.00008669375000000044,
+        "support": 24
+      },
+      {
+        "rolePlace": "Công viên",
+        "scenarioId": "practice-exercise",
+        "mean": -0.00006221199999999899,
+        "support": 9
+      },
+      {
+        "rolePlace": "Công viên",
+        "scenarioId": "practice-jump",
+        "mean": -0.00006142919999999052,
+        "support": 5
+      },
+      {
+        "rolePlace": "Công viên",
+        "scenarioId": "practice-run",
+        "mean": -0.00006126639354838811,
+        "support": 930
+      },
+      {
+        "rolePlace": "Công viên",
+        "scenarioId": "practice-tag",
+        "mean": -0.00006177313043478268,
+        "support": 943
+      },
+      {
+        "rolePlace": "Công viên",
+        "scenarioId": "practice-walk-pet",
+        "mean": -0.00006153610059171645,
+        "support": 1014
+      },
+      {
+        "rolePlace": "Công viên",
+        "scenarioId": "quiet-walk",
+        "mean": 0.00025439055022702714,
+        "support": 37
+      },
+      {
+        "rolePlace": "Công viên",
+        "scenarioId": "rehabilitate",
+        "mean": 0.0008144352195403767,
+        "support": 161
+      },
+      {
+        "rolePlace": "Công viên",
+        "scenarioId": "rest-home",
+        "mean": -0.00034232347848288765,
+        "support": 3600
+      },
+      {
+        "rolePlace": "Công viên",
+        "scenarioId": "ride-bus",
+        "mean": -0.000029454260869564523,
+        "support": 46
+      },
+      {
+        "rolePlace": "Công viên",
+        "scenarioId": "ride-metro",
+        "mean": -0.00002892540000001276,
+        "support": 5
+      },
+      {
+        "rolePlace": "Công viên",
+        "scenarioId": "school-project",
+        "mean": -0.00015090352941177546,
+        "support": 17
+      },
+      {
+        "rolePlace": "Công viên",
+        "scenarioId": "shared-meal",
+        "mean": 0.0008347294724321151,
+        "support": 288
+      },
+      {
+        "rolePlace": "Công viên",
+        "scenarioId": "teach-class",
+        "mean": -0.00014464800000000647,
+        "support": 6
+      },
+      {
+        "rolePlace": "Ga metro",
+        "scenarioId": "airport-visit",
+        "mean": -0.00015117300000000344,
+        "support": 7
+      },
+      {
+        "rolePlace": "Ga metro",
+        "scenarioId": "cafe-shift",
+        "mean": -0.00016825831578947724,
+        "support": 19
+      },
+      {
+        "rolePlace": "Ga metro",
+        "scenarioId": "cinema-evening",
+        "mean": 0.0005354809710416477,
+        "support": 317
+      },
+      {
+        "rolePlace": "Ga metro",
+        "scenarioId": "culture",
+        "mean": 0.0004178442129175318,
+        "support": 154
+      },
+      {
+        "rolePlace": "Ga metro",
+        "scenarioId": "date-invitation",
+        "mean": 0.00036354996581628145,
+        "support": 390
+      },
+      {
+        "rolePlace": "Ga metro",
+        "scenarioId": "factory-shift",
+        "mean": -0.00025513837500001224,
+        "support": 8
+      },
+      {
+        "rolePlace": "Ga metro",
+        "scenarioId": "fire-training",
+        "mean": -0.00012507391304347718,
+        "support": 23
+      },
+      {
+        "rolePlace": "Ga metro",
+        "scenarioId": "friendship",
+        "mean": 0.0005847601378127428,
+        "support": 412
+      },
+      {
+        "rolePlace": "Ga metro",
+        "scenarioId": "garden-care",
+        "mean": -0.00011095028571428808,
+        "support": 21
+      },
+      {
+        "rolePlace": "Ga metro",
+        "scenarioId": "groceries",
+        "mean": 0.0006473756378800016,
+        "support": 10
+      },
+      {
+        "rolePlace": "Ga metro",
+        "scenarioId": "hospital-check",
+        "mean": 0.0008401483873279364,
+        "support": 136
+      },
+      {
+        "rolePlace": "Ga metro",
+        "scenarioId": "job-search",
+        "mean": -0.0001320462000000034,
+        "support": 35
+      },
+      {
+        "rolePlace": "Ga metro",
+        "scenarioId": "learn-trade",
+        "mean": -0.00014858065116279043,
+        "support": 43
+      },
+      {
+        "rolePlace": "Ga metro",
+        "scenarioId": "library",
+        "mean": 0.00007830070146858017,
+        "support": 113
+      },
+      {
+        "rolePlace": "Ga metro",
+        "scenarioId": "lunch",
+        "mean": 0.0015295970901518029,
+        "support": 832
+      },
+      {
+        "rolePlace": "Ga metro",
+        "scenarioId": "market-chat",
+        "mean": -0.00005238505882353094,
+        "support": 153
+      },
+      {
+        "rolePlace": "Ga metro",
+        "scenarioId": "neighborhood",
+        "mean": 0.00008774431789442044,
+        "support": 188
+      },
+      {
+        "rolePlace": "Ga metro",
+        "scenarioId": "post-office",
+        "mean": -0.00002826941295546472,
+        "support": 247
+      },
+      {
+        "rolePlace": "Ga metro",
+        "scenarioId": "practice-cycle",
+        "mean": -0.00006172361797752947,
+        "support": 89
+      },
+      {
+        "rolePlace": "Ga metro",
+        "scenarioId": "practice-drink",
+        "mean": 0.00020170137817561158,
+        "support": 369
+      },
+      {
+        "rolePlace": "Ga metro",
+        "scenarioId": "practice-exercise",
+        "mean": -0.00006184860674157111,
+        "support": 89
+      },
+      {
+        "rolePlace": "Ga metro",
+        "scenarioId": "practice-jump",
+        "mean": -0.000060490677966102656,
+        "support": 59
+      },
+      {
+        "rolePlace": "Ga metro",
+        "scenarioId": "practice-run",
+        "mean": -0.000060303281249998593,
+        "support": 64
+      },
+      {
+        "rolePlace": "Ga metro",
+        "scenarioId": "practice-shop",
+        "mean": -0.0000615682500000117,
+        "support": 8
+      },
+      {
+        "rolePlace": "Ga metro",
+        "scenarioId": "practice-study",
+        "mean": -0.00005786245714285442,
+        "support": 35
+      },
+      {
+        "rolePlace": "Ga metro",
+        "scenarioId": "practice-tag",
+        "mean": -0.00005990587012987144,
+        "support": 154
+      },
+      {
+        "rolePlace": "Ga metro",
+        "scenarioId": "practice-walk-pet",
+        "mean": -0.00006287019512195321,
+        "support": 82
+      },
+      {
+        "rolePlace": "Ga metro",
+        "scenarioId": "quiet-walk",
+        "mean": 0.0006606516929136437,
+        "support": 198
+      },
+      {
+        "rolePlace": "Ga metro",
+        "scenarioId": "rehabilitate",
+        "mean": 0.0010376421784448156,
+        "support": 251
+      },
+      {
+        "rolePlace": "Ga metro",
+        "scenarioId": "rest-home",
+        "mean": -0.00005942688806952365,
+        "support": 3360
+      },
+      {
+        "rolePlace": "Ga metro",
+        "scenarioId": "ride-bus",
+        "mean": -0.00002920558407079619,
+        "support": 113
+      },
+      {
+        "rolePlace": "Ga metro",
+        "scenarioId": "ride-metro",
+        "mean": -0.00002885888571428412,
+        "support": 1610
+      },
+      {
+        "rolePlace": "Ga metro",
+        "scenarioId": "school-project",
+        "mean": -0.00014879372093023276,
+        "support": 43
+      },
+      {
+        "rolePlace": "Ga metro",
+        "scenarioId": "shared-meal",
+        "mean": 0.001182204825711069,
+        "support": 330
+      },
+      {
+        "rolePlace": "Ga metro",
+        "scenarioId": "sports",
+        "mean": -0.00023871681818182398,
+        "support": 22
+      },
+      {
+        "rolePlace": "Ga metro",
+        "scenarioId": "teach-class",
+        "mean": -0.00014902786956521831,
+        "support": 92
+      },
+      {
+        "rolePlace": "Khu dân cư",
+        "scenarioId": "airport-visit",
+        "mean": -0.00014992877777777588,
+        "support": 27
+      },
+      {
+        "rolePlace": "Khu dân cư",
+        "scenarioId": "cafe-shift",
+        "mean": -0.00016969333333333324,
+        "support": 9
+      },
+      {
+        "rolePlace": "Khu dân cư",
+        "scenarioId": "cinema-evening",
+        "mean": 0.0006034488509708001,
+        "support": 298
+      },
+      {
+        "rolePlace": "Khu dân cư",
+        "scenarioId": "culture",
+        "mean": 0.0004843698765942346,
+        "support": 156
+      },
+      {
+        "rolePlace": "Khu dân cư",
+        "scenarioId": "date-invitation",
+        "mean": 0.0006359214865459063,
+        "support": 233
+      },
+      {
+        "rolePlace": "Khu dân cư",
+        "scenarioId": "factory-shift",
+        "mean": -0.0002494165714285655,
+        "support": 7
+      },
+      {
+        "rolePlace": "Khu dân cư",
+        "scenarioId": "fire-training",
+        "mean": -0.00012718042105263003,
+        "support": 38
+      },
+      {
+        "rolePlace": "Khu dân cư",
+        "scenarioId": "friendship",
+        "mean": 0.0007011042516131536,
+        "support": 262
+      },
+      {
+        "rolePlace": "Khu dân cư",
+        "scenarioId": "garden-care",
+        "mean": -0.00010747922727272429,
+        "support": 44
+      },
+      {
+        "rolePlace": "Khu dân cư",
+        "scenarioId": "groceries",
+        "mean": 0.0007034077848428308,
+        "support": 14
+      },
+      {
+        "rolePlace": "Khu dân cư",
+        "scenarioId": "hospital-check",
+        "mean": 0.0009076027349842333,
+        "support": 219
+      },
+      {
+        "rolePlace": "Khu dân cư",
+        "scenarioId": "job-search",
+        "mean": -0.00012451725000000162,
+        "support": 20
+      },
+      {
+        "rolePlace": "Khu dân cư",
+        "scenarioId": "learn-trade",
+        "mean": -0.00015202375714285142,
+        "support": 70
+      },
+      {
+        "rolePlace": "Khu dân cư",
+        "scenarioId": "library",
+        "mean": 0.00007534810331073403,
+        "support": 219
+      },
+      {
+        "rolePlace": "Khu dân cư",
+        "scenarioId": "lunch",
+        "mean": 0.0015438496780132557,
+        "support": 964
+      },
+      {
+        "rolePlace": "Khu dân cư",
+        "scenarioId": "market-chat",
+        "mean": -0.00005265229411764988,
+        "support": 102
+      },
+      {
+        "rolePlace": "Khu dân cư",
+        "scenarioId": "neighborhood",
+        "mean": 0.00016813820509944721,
+        "support": 2247
+      },
+      {
+        "rolePlace": "Khu dân cư",
+        "scenarioId": "office-shift",
+        "mean": -0.00022561999999999122,
+        "support": 6
+      },
+      {
+        "rolePlace": "Khu dân cư",
+        "scenarioId": "post-office",
+        "mean": -0.000028202514563106258,
+        "support": 309
+      },
+      {
+        "rolePlace": "Khu dân cư",
+        "scenarioId": "practice-cycle",
+        "mean": -0.00006101074698795114,
+        "support": 83
+      },
+      {
+        "rolePlace": "Khu dân cư",
+        "scenarioId": "practice-drink",
+        "mean": 0.00019593959187939923,
+        "support": 364
+      },
+      {
+        "rolePlace": "Khu dân cư",
+        "scenarioId": "practice-exercise",
+        "mean": -0.00006213236974789853,
+        "support": 119
+      },
+      {
+        "rolePlace": "Khu dân cư",
+        "scenarioId": "practice-jump",
+        "mean": -0.00006020047058823299,
+        "support": 68
+      },
+      {
+        "rolePlace": "Khu dân cư",
+        "scenarioId": "practice-run",
+        "mean": -0.00006146660526315814,
+        "support": 76
+      },
+      {
+        "rolePlace": "Khu dân cư",
+        "scenarioId": "practice-shop",
+        "mean": -0.000060530136986299486,
+        "support": 73
+      },
+      {
+        "rolePlace": "Khu dân cư",
+        "scenarioId": "practice-study",
+        "mean": -0.000060761234042552973,
+        "support": 94
+      },
+      {
+        "rolePlace": "Khu dân cư",
+        "scenarioId": "practice-tag",
+        "mean": -0.000060267874999999666,
+        "support": 48
+      },
+      {
+        "rolePlace": "Khu dân cư",
+        "scenarioId": "practice-walk-pet",
+        "mean": -0.00005800959999999957,
+        "support": 75
+      },
+      {
+        "rolePlace": "Khu dân cư",
+        "scenarioId": "quiet-walk",
+        "mean": 0.0007778832597602011,
+        "support": 132
+      },
+      {
+        "rolePlace": "Khu dân cư",
+        "scenarioId": "rehabilitate",
+        "mean": 0.0009960424727980285,
+        "support": 332
+      },
+      {
+        "rolePlace": "Khu dân cư",
+        "scenarioId": "rest-home",
+        "mean": -0.00006223327189270715,
+        "support": 3840
+      },
+      {
+        "rolePlace": "Khu dân cư",
+        "scenarioId": "ride-bus",
+        "mean": -0.00002908122580645096,
+        "support": 279
+      },
+      {
+        "rolePlace": "Khu dân cư",
+        "scenarioId": "ride-metro",
+        "mean": -0.00002909150364963358,
+        "support": 137
+      },
+      {
+        "rolePlace": "Khu dân cư",
+        "scenarioId": "school-project",
+        "mean": -0.00015125064406779724,
+        "support": 59
+      },
+      {
+        "rolePlace": "Khu dân cư",
+        "scenarioId": "shared-meal",
+        "mean": 0.001210968702701944,
+        "support": 433
+      },
+      {
+        "rolePlace": "Khu dân cư",
+        "scenarioId": "sports",
+        "mean": -0.00022720263157894574,
+        "support": 38
+      },
+      {
+        "rolePlace": "Khu dân cư",
+        "scenarioId": "teach-class",
+        "mean": -0.00014612400000001667,
+        "support": 26
+      },
+      {
+        "rolePlace": "Lớp học cộng đồng",
+        "scenarioId": "airport-visit",
+        "mean": -0.000153209000000006,
+        "support": 15
+      },
+      {
+        "rolePlace": "Lớp học cộng đồng",
+        "scenarioId": "cafe-shift",
+        "mean": -0.0001727103529411744,
+        "support": 34
+      },
+      {
+        "rolePlace": "Lớp học cộng đồng",
+        "scenarioId": "cinema-evening",
+        "mean": 0.0004005498957164145,
+        "support": 265
+      },
+      {
+        "rolePlace": "Lớp học cộng đồng",
+        "scenarioId": "culture",
+        "mean": 0.00045012635024317427,
+        "support": 154
+      },
+      {
+        "rolePlace": "Lớp học cộng đồng",
+        "scenarioId": "date-invitation",
+        "mean": 0.0003642353100118735,
+        "support": 320
+      },
+      {
+        "rolePlace": "Lớp học cộng đồng",
+        "scenarioId": "factory-shift",
+        "mean": -0.0002591481428571405,
+        "support": 7
+      },
+      {
+        "rolePlace": "Lớp học cộng đồng",
+        "scenarioId": "fire-training",
+        "mean": -0.00014236320000000137,
+        "support": 25
+      },
+      {
+        "rolePlace": "Lớp học cộng đồng",
+        "scenarioId": "friendship",
+        "mean": 0.00036610366169770173,
+        "support": 392
+      },
+      {
+        "rolePlace": "Lớp học cộng đồng",
+        "scenarioId": "garden-care",
+        "mean": -0.00011089799999999784,
+        "support": 22
+      },
+      {
+        "rolePlace": "Lớp học cộng đồng",
+        "scenarioId": "groceries",
+        "mean": 0.000516400348925021,
+        "support": 12
+      },
+      {
+        "rolePlace": "Lớp học cộng đồng",
+        "scenarioId": "hospital-check",
+        "mean": 0.0008395490561353636,
+        "support": 222
+      },
+      {
+        "rolePlace": "Lớp học cộng đồng",
+        "scenarioId": "job-search",
+        "mean": -0.00012770999999999456,
+        "support": 39
+      },
+      {
+        "rolePlace": "Lớp học cộng đồng",
+        "scenarioId": "learn-trade",
+        "mean": -0.0001584262500000055,
+        "support": 28
+      },
+      {
+        "rolePlace": "Lớp học cộng đồng",
+        "scenarioId": "library",
+        "mean": 0.000004469953431819922,
+        "support": 55
+      },
+      {
+        "rolePlace": "Lớp học cộng đồng",
+        "scenarioId": "lunch",
+        "mean": 0.0014882807980998915,
+        "support": 898
+      },
+      {
+        "rolePlace": "Lớp học cộng đồng",
+        "scenarioId": "market-chat",
+        "mean": -0.00005376374999999938,
+        "support": 196
+      },
+      {
+        "rolePlace": "Lớp học cộng đồng",
+        "scenarioId": "neighborhood",
+        "mean": 0.000058508684081833216,
+        "support": 256
+      },
+      {
+        "rolePlace": "Lớp học cộng đồng",
+        "scenarioId": "office-shift",
+        "mean": -0.00024086880000001172,
+        "support": 10
+      },
+      {
+        "rolePlace": "Lớp học cộng đồng",
+        "scenarioId": "post-office",
+        "mean": -0.000030874622950818035,
+        "support": 183
+      },
+      {
+        "rolePlace": "Lớp học cộng đồng",
+        "scenarioId": "practice-cycle",
+        "mean": -0.00006077153731343255,
+        "support": 134
+      },
+      {
+        "rolePlace": "Lớp học cộng đồng",
+        "scenarioId": "practice-drink",
+        "mean": 0.00015874715059776174,
+        "support": 179
+      },
+      {
+        "rolePlace": "Lớp học cộng đồng",
+        "scenarioId": "practice-exercise",
+        "mean": -0.00006417311999999662,
+        "support": 50
+      },
+      {
+        "rolePlace": "Lớp học cộng đồng",
+        "scenarioId": "practice-jump",
+        "mean": -0.000059214699999999316,
+        "support": 60
+      },
+      {
+        "rolePlace": "Lớp học cộng đồng",
+        "scenarioId": "practice-run",
+        "mean": -0.0000623522553191497,
+        "support": 47
+      },
+      {
+        "rolePlace": "Lớp học cộng đồng",
+        "scenarioId": "practice-shop",
+        "mean": -0.00006401449999999986,
+        "support": 72
+      },
+      {
+        "rolePlace": "Lớp học cộng đồng",
+        "scenarioId": "practice-study",
+        "mean": -0.00006310174468085082,
+        "support": 47
+      },
+      {
+        "rolePlace": "Lớp học cộng đồng",
+        "scenarioId": "practice-tag",
+        "mean": -0.00006435022784810042,
+        "support": 79
+      },
+      {
+        "rolePlace": "Lớp học cộng đồng",
+        "scenarioId": "practice-walk-pet",
+        "mean": -0.00006548806451613054,
+        "support": 31
+      },
+      {
+        "rolePlace": "Lớp học cộng đồng",
+        "scenarioId": "quiet-walk",
+        "mean": 0.0005097802987988218,
+        "support": 258
+      },
+      {
+        "rolePlace": "Lớp học cộng đồng",
+        "scenarioId": "rehabilitate",
+        "mean": 0.0010371329238335941,
+        "support": 390
+      },
+      {
+        "rolePlace": "Lớp học cộng đồng",
+        "scenarioId": "rest-home",
+        "mean": -0.00012229637407328877,
+        "support": 3362
+      },
+      {
+        "rolePlace": "Lớp học cộng đồng",
+        "scenarioId": "ride-bus",
+        "mean": -0.00002976677952755971,
+        "support": 254
+      },
+      {
+        "rolePlace": "Lớp học cộng đồng",
+        "scenarioId": "ride-metro",
+        "mean": -0.00003002896153846193,
+        "support": 104
+      },
+      {
+        "rolePlace": "Lớp học cộng đồng",
+        "scenarioId": "school-project",
+        "mean": -0.00015743661783439587,
+        "support": 1413
+      },
+      {
+        "rolePlace": "Lớp học cộng đồng",
+        "scenarioId": "shared-meal",
+        "mean": 0.001034338422549751,
+        "support": 400
+      },
+      {
+        "rolePlace": "Lớp học cộng đồng",
+        "scenarioId": "sports",
+        "mean": -0.0002385953999999943,
+        "support": 25
+      },
+      {
+        "rolePlace": "Lớp học cộng đồng",
+        "scenarioId": "teach-class",
+        "mean": -0.00015522600000000069,
+        "support": 42
+      },
+      {
+        "rolePlace": "Nhà hàng",
+        "scenarioId": "airport-visit",
+        "mean": -0.00015836898750000124,
+        "support": 80
+      },
+      {
+        "rolePlace": "Nhà hàng",
+        "scenarioId": "cafe-shift",
+        "mean": -0.00017705600000000345,
+        "support": 39
+      },
+      {
+        "rolePlace": "Nhà hàng",
+        "scenarioId": "cinema-evening",
+        "mean": 0.0005333265167617887,
+        "support": 263
+      },
+      {
+        "rolePlace": "Nhà hàng",
+        "scenarioId": "culture",
+        "mean": 0.0005286941725906071,
+        "support": 181
+      },
+      {
+        "rolePlace": "Nhà hàng",
+        "scenarioId": "date-invitation",
+        "mean": 0.0005270696566185582,
+        "support": 439
+      },
+      {
+        "rolePlace": "Nhà hàng",
+        "scenarioId": "factory-shift",
+        "mean": -0.00024858970588235584,
+        "support": 17
+      },
+      {
+        "rolePlace": "Nhà hàng",
+        "scenarioId": "fire-training",
+        "mean": -0.00014271280645161363,
+        "support": 62
+      },
+      {
+        "rolePlace": "Nhà hàng",
+        "scenarioId": "friendship",
+        "mean": 0.0006308224619521659,
+        "support": 483
+      },
+      {
+        "rolePlace": "Nhà hàng",
+        "scenarioId": "garden-care",
+        "mean": -0.000105957,
+        "support": 54
+      },
+      {
+        "rolePlace": "Nhà hàng",
+        "scenarioId": "hospital-check",
+        "mean": 0.0008768233456011584,
+        "support": 258
+      },
+      {
+        "rolePlace": "Nhà hàng",
+        "scenarioId": "job-search",
+        "mean": -0.00013503600000000043,
+        "support": 78
+      },
+      {
+        "rolePlace": "Nhà hàng",
+        "scenarioId": "learn-trade",
+        "mean": -0.00014929606250000302,
+        "support": 48
+      },
+      {
+        "rolePlace": "Nhà hàng",
+        "scenarioId": "library",
+        "mean": 0.00036444304743750525,
+        "support": 20
+      },
+      {
+        "rolePlace": "Nhà hàng",
+        "scenarioId": "lunch",
+        "mean": 0.0022064106230399658,
+        "support": 1296
+      },
+      {
+        "rolePlace": "Nhà hàng",
+        "scenarioId": "market-chat",
+        "mean": -0.0000547432840909093,
+        "support": 264
+      },
+      {
+        "rolePlace": "Nhà hàng",
+        "scenarioId": "neighborhood",
+        "mean": 0.0000769701878555387,
+        "support": 334
+      },
+      {
+        "rolePlace": "Nhà hàng",
+        "scenarioId": "office-shift",
+        "mean": -0.00023878615384614568,
+        "support": 13
+      },
+      {
+        "rolePlace": "Nhà hàng",
+        "scenarioId": "post-office",
+        "mean": -0.00003081079838709633,
+        "support": 248
+      },
+      {
+        "rolePlace": "Nhà hàng",
+        "scenarioId": "practice-cycle",
+        "mean": -0.00006046825352112623,
+        "support": 71
+      },
+      {
+        "rolePlace": "Nhà hàng",
+        "scenarioId": "practice-drink",
+        "mean": 0.00039111750556074194,
+        "support": 363
+      },
+      {
+        "rolePlace": "Nhà hàng",
+        "scenarioId": "practice-exercise",
+        "mean": -0.00006033790243902425,
+        "support": 123
+      },
+      {
+        "rolePlace": "Nhà hàng",
+        "scenarioId": "practice-jump",
+        "mean": -0.00006252923999999703,
+        "support": 50
+      },
+      {
+        "rolePlace": "Nhà hàng",
+        "scenarioId": "practice-run",
+        "mean": -0.00006150619672131253,
+        "support": 122
+      },
+      {
+        "rolePlace": "Nhà hàng",
+        "scenarioId": "practice-shop",
+        "mean": -0.000064219774647888,
+        "support": 71
+      },
+      {
+        "rolePlace": "Nhà hàng",
+        "scenarioId": "practice-study",
+        "mean": -0.00006301584782608671,
+        "support": 92
+      },
+      {
+        "rolePlace": "Nhà hàng",
+        "scenarioId": "practice-tag",
+        "mean": -0.00006017540909090699,
+        "support": 132
+      },
+      {
+        "rolePlace": "Nhà hàng",
+        "scenarioId": "practice-walk-pet",
+        "mean": -0.00006250628571428409,
+        "support": 98
+      },
+      {
+        "rolePlace": "Nhà hàng",
+        "scenarioId": "quiet-walk",
+        "mean": 0.0007512717919920179,
+        "support": 257
+      },
+      {
+        "rolePlace": "Nhà hàng",
+        "scenarioId": "rehabilitate",
+        "mean": 0.0009972908142177165,
+        "support": 364
+      },
+      {
+        "rolePlace": "Nhà hàng",
+        "scenarioId": "rest-home",
+        "mean": -0.00007437125010952346,
+        "support": 3360
+      },
+      {
+        "rolePlace": "Nhà hàng",
+        "scenarioId": "ride-bus",
+        "mean": -0.000029335038461538807,
+        "support": 390
+      },
+      {
+        "rolePlace": "Nhà hàng",
+        "scenarioId": "ride-metro",
+        "mean": -0.000029392347222221836,
+        "support": 216
+      },
+      {
+        "rolePlace": "Nhà hàng",
+        "scenarioId": "school-project",
+        "mean": -0.00014779410638298353,
+        "support": 47
+      },
+      {
+        "rolePlace": "Nhà hàng",
+        "scenarioId": "shared-meal",
+        "mean": 0.0009437211715624949,
+        "support": 12
+      },
+      {
+        "rolePlace": "Nhà hàng",
+        "scenarioId": "sports",
+        "mean": -0.00024430349999999873,
+        "support": 60
+      },
+      {
+        "rolePlace": "Nhà hàng",
+        "scenarioId": "teach-class",
+        "mean": -0.00014429949999998943,
+        "support": 72
+      },
+      {
+        "rolePlace": "Nhà máy",
+        "scenarioId": "airport-visit",
+        "mean": -0.0001556267500000038,
+        "support": 12
+      },
+      {
+        "rolePlace": "Nhà máy",
+        "scenarioId": "cafe-shift",
+        "mean": -0.00017312533333333705,
+        "support": 9
+      },
+      {
+        "rolePlace": "Nhà máy",
+        "scenarioId": "cinema-evening",
+        "mean": 0.00022685603262962784,
+        "support": 324
+      },
+      {
+        "rolePlace": "Nhà máy",
+        "scenarioId": "culture",
+        "mean": 0.00021933288804814195,
+        "support": 162
+      },
+      {
+        "rolePlace": "Nhà máy",
+        "scenarioId": "date-invitation",
+        "mean": 0.00020491660921718712,
+        "support": 253
+      },
+      {
+        "rolePlace": "Nhà máy",
+        "scenarioId": "factory-shift",
+        "mean": -0.0002587864361702133,
+        "support": 846
+      },
+      {
+        "rolePlace": "Nhà máy",
+        "scenarioId": "fire-training",
+        "mean": -0.00013341771428571517,
+        "support": 14
+      },
+      {
+        "rolePlace": "Nhà máy",
+        "scenarioId": "friendship",
+        "mean": 0.000264272042543932,
+        "support": 330
+      },
+      {
+        "rolePlace": "Nhà máy",
+        "scenarioId": "garden-care",
+        "mean": -0.0001143749999999918,
+        "support": 12
+      },
+      {
+        "rolePlace": "Nhà máy",
+        "scenarioId": "groceries",
+        "mean": 0.0006802450458923115,
+        "support": 13
+      },
+      {
+        "rolePlace": "Nhà máy",
+        "scenarioId": "hospital-check",
+        "mean": 0.0005621989764002903,
+        "support": 168
+      },
+      {
+        "rolePlace": "Nhà máy",
+        "scenarioId": "job-search",
+        "mean": -0.00013007892857142981,
+        "support": 14
+      },
+      {
+        "rolePlace": "Nhà máy",
+        "scenarioId": "learn-trade",
+        "mean": -0.00014888249999999378,
+        "support": 28
+      },
+      {
+        "rolePlace": "Nhà máy",
+        "scenarioId": "library",
+        "mean": 0.00005441433232330516,
+        "support": 103
+      },
+      {
+        "rolePlace": "Nhà máy",
+        "scenarioId": "lunch",
+        "mean": 0.0012542338787437937,
+        "support": 758
+      },
+      {
+        "rolePlace": "Nhà máy",
+        "scenarioId": "market-chat",
+        "mean": -0.000053357591489363135,
+        "support": 235
+      },
+      {
+        "rolePlace": "Nhà máy",
+        "scenarioId": "motorbike-repair",
+        "mean": -0.00019050000000001195,
+        "support": 15
+      },
+      {
+        "rolePlace": "Nhà máy",
+        "scenarioId": "neighborhood",
+        "mean": 0.0000450218268562347,
+        "support": 313
+      },
+      {
+        "rolePlace": "Nhà máy",
+        "scenarioId": "office-shift",
+        "mean": -0.00024110220000000962,
+        "support": 10
+      },
+      {
+        "rolePlace": "Nhà máy",
+        "scenarioId": "post-office",
+        "mean": -0.000029672135593220333,
+        "support": 177
+      },
+      {
+        "rolePlace": "Nhà máy",
+        "scenarioId": "practice-cycle",
+        "mean": -0.00006161552238806138,
+        "support": 67
+      },
+      {
+        "rolePlace": "Nhà máy",
+        "scenarioId": "practice-drink",
+        "mean": 0.00014870764743228062,
+        "support": 268
+      },
+      {
+        "rolePlace": "Nhà máy",
+        "scenarioId": "practice-exercise",
+        "mean": -0.00006422732530120396,
+        "support": 83
+      },
+      {
+        "rolePlace": "Nhà máy",
+        "scenarioId": "practice-jump",
+        "mean": -0.00006289621428571473,
+        "support": 84
+      },
+      {
+        "rolePlace": "Nhà máy",
+        "scenarioId": "practice-run",
+        "mean": -0.0000632012790697681,
+        "support": 86
+      },
+      {
+        "rolePlace": "Nhà máy",
+        "scenarioId": "practice-shop",
+        "mean": -0.0000625257906976749,
+        "support": 86
+      },
+      {
+        "rolePlace": "Nhà máy",
+        "scenarioId": "practice-study",
+        "mean": -0.00006154249999999779,
+        "support": 24
+      },
+      {
+        "rolePlace": "Nhà máy",
+        "scenarioId": "practice-tag",
+        "mean": -0.00005991289285714519,
+        "support": 56
+      },
+      {
+        "rolePlace": "Nhà máy",
+        "scenarioId": "practice-walk-pet",
+        "mean": -0.00006241800000000298,
+        "support": 20
+      },
+      {
+        "rolePlace": "Nhà máy",
+        "scenarioId": "quiet-walk",
+        "mean": 0.0002848390691603833,
+        "support": 154
+      },
+      {
+        "rolePlace": "Nhà máy",
+        "scenarioId": "rehabilitate",
+        "mean": 0.0008644719059639266,
+        "support": 391
+      },
+      {
+        "rolePlace": "Nhà máy",
+        "scenarioId": "rest-home",
+        "mean": -0.00014175928958916974,
+        "support": 2881
+      },
+      {
+        "rolePlace": "Nhà máy",
+        "scenarioId": "ride-bus",
+        "mean": -0.00003005185161290553,
+        "support": 155
+      },
+      {
+        "rolePlace": "Nhà máy",
+        "scenarioId": "ride-metro",
+        "mean": -0.000029876000000001467,
+        "support": 57
+      },
+      {
+        "rolePlace": "Nhà máy",
+        "scenarioId": "school-project",
+        "mean": -0.0001493683636363604,
+        "support": 33
+      },
+      {
+        "rolePlace": "Nhà máy",
+        "scenarioId": "shared-meal",
+        "mean": 0.0008945679755040464,
+        "support": 333
+      },
+      {
+        "rolePlace": "Nhà máy",
+        "scenarioId": "sports",
+        "mean": -0.00023909624999999927,
+        "support": 16
+      },
+      {
+        "rolePlace": "Nhà máy",
+        "scenarioId": "teach-class",
+        "mean": -0.00014538599999999873,
+        "support": 50
+      },
+      {
+        "rolePlace": "Nhà văn hóa",
+        "scenarioId": "airport-visit",
+        "mean": -0.00015009511764706404,
+        "support": 34
+      },
+      {
+        "rolePlace": "Nhà văn hóa",
+        "scenarioId": "cafe-shift",
+        "mean": -0.00017617599999999886,
+        "support": 33
+      },
+      {
+        "rolePlace": "Nhà văn hóa",
+        "scenarioId": "cinema-evening",
+        "mean": 0.0005711122030068229,
+        "support": 330
+      },
+      {
+        "rolePlace": "Nhà văn hóa",
+        "scenarioId": "culture",
+        "mean": 0.0006026599428800071,
+        "support": 2148
+      },
+      {
+        "rolePlace": "Nhà văn hóa",
+        "scenarioId": "date-invitation",
+        "mean": 0.0005664643958164761,
+        "support": 176
+      },
+      {
+        "rolePlace": "Nhà văn hóa",
+        "scenarioId": "factory-shift",
+        "mean": -0.000246938625000007,
+        "support": 8
+      },
+      {
+        "rolePlace": "Nhà văn hóa",
+        "scenarioId": "fire-training",
+        "mean": -0.000135681562500002,
+        "support": 32
+      },
+      {
+        "rolePlace": "Nhà văn hóa",
+        "scenarioId": "friendship",
+        "mean": 0.00061513635731393,
+        "support": 201
+      },
+      {
+        "rolePlace": "Nhà văn hóa",
+        "scenarioId": "garden-care",
+        "mean": -0.00011169100000000095,
+        "support": 18
+      },
+      {
+        "rolePlace": "Nhà văn hóa",
+        "scenarioId": "groceries",
+        "mean": 0.0005329859417666752,
+        "support": 9
+      },
+      {
+        "rolePlace": "Nhà văn hóa",
+        "scenarioId": "hospital-check",
+        "mean": 0.0008532285321538461,
+        "support": 312
+      },
+      {
+        "rolePlace": "Nhà văn hóa",
+        "scenarioId": "job-search",
+        "mean": -0.0001288838571428609,
+        "support": 14
+      },
+      {
+        "rolePlace": "Nhà văn hóa",
+        "scenarioId": "learn-trade",
+        "mean": -0.00014958611764706248,
+        "support": 51
+      },
+      {
+        "rolePlace": "Nhà văn hóa",
+        "scenarioId": "library",
+        "mean": 0.0002685487663234251,
+        "support": 128
+      },
+      {
+        "rolePlace": "Nhà văn hóa",
+        "scenarioId": "lunch",
+        "mean": 0.0015613427212253805,
+        "support": 920
+      },
+      {
+        "rolePlace": "Nhà văn hóa",
+        "scenarioId": "market-chat",
+        "mean": -0.00005345536153846258,
+        "support": 130
+      },
+      {
+        "rolePlace": "Nhà văn hóa",
+        "scenarioId": "neighborhood",
+        "mean": 0.00011961817250943829,
+        "support": 212
+      },
+      {
+        "rolePlace": "Nhà văn hóa",
+        "scenarioId": "office-shift",
+        "mean": -0.00023828018181819036,
+        "support": 11
+      },
+      {
+        "rolePlace": "Nhà văn hóa",
+        "scenarioId": "post-office",
+        "mean": -0.00002901402272727286,
+        "support": 220
+      },
+      {
+        "rolePlace": "Nhà văn hóa",
+        "scenarioId": "practice-cycle",
+        "mean": -0.00006283000000000067,
+        "support": 108
+      },
+      {
+        "rolePlace": "Nhà văn hóa",
+        "scenarioId": "practice-drink",
+        "mean": 0.00033343959031088,
+        "support": 308
+      },
+      {
+        "rolePlace": "Nhà văn hóa",
+        "scenarioId": "practice-exercise",
+        "mean": -0.000060359337662339464,
+        "support": 154
+      },
+      {
+        "rolePlace": "Nhà văn hóa",
+        "scenarioId": "practice-jump",
+        "mean": -0.0000617790508474597,
+        "support": 59
+      },
+      {
+        "rolePlace": "Nhà văn hóa",
+        "scenarioId": "practice-run",
+        "mean": -0.00006031679999999962,
+        "support": 70
+      },
+      {
+        "rolePlace": "Nhà văn hóa",
+        "scenarioId": "practice-shop",
+        "mean": -0.00006046260937500113,
+        "support": 128
+      },
+      {
+        "rolePlace": "Nhà văn hóa",
+        "scenarioId": "practice-study",
+        "mean": -0.00006025805940593967,
+        "support": 101
+      },
+      {
+        "rolePlace": "Nhà văn hóa",
+        "scenarioId": "practice-tag",
+        "mean": -0.000060899485714286385,
+        "support": 105
+      },
+      {
+        "rolePlace": "Nhà văn hóa",
+        "scenarioId": "practice-walk-pet",
+        "mean": -0.00006299479999999972,
+        "support": 75
+      },
+      {
+        "rolePlace": "Nhà văn hóa",
+        "scenarioId": "quiet-walk",
+        "mean": 0.0008102213862055568,
+        "support": 189
+      },
+      {
+        "rolePlace": "Nhà văn hóa",
+        "scenarioId": "rehabilitate",
+        "mean": 0.0009864608110823957,
+        "support": 426
+      },
+      {
+        "rolePlace": "Nhà văn hóa",
+        "scenarioId": "rest-home",
+        "mean": -0.00005885718048666676,
+        "support": 3840
+      },
+      {
+        "rolePlace": "Nhà văn hóa",
+        "scenarioId": "ride-bus",
+        "mean": -0.00002858745317220474,
+        "support": 331
+      },
+      {
+        "rolePlace": "Nhà văn hóa",
+        "scenarioId": "ride-metro",
+        "mean": -0.000028213359375000674,
+        "support": 128
+      },
+      {
+        "rolePlace": "Nhà văn hóa",
+        "scenarioId": "school-project",
+        "mean": -0.000149001266666665,
+        "support": 45
+      },
+      {
+        "rolePlace": "Nhà văn hóa",
+        "scenarioId": "shared-meal",
+        "mean": 0.0011947211577222007,
+        "support": 392
+      },
+      {
+        "rolePlace": "Nhà văn hóa",
+        "scenarioId": "sports",
+        "mean": -0.00022895999999999634,
+        "support": 30
+      },
+      {
+        "rolePlace": "Nhà văn hóa",
+        "scenarioId": "teach-class",
+        "mean": -0.0001450170000000028,
+        "support": 44
+      },
+      {
+        "rolePlace": "Phố đi bộ",
+        "scenarioId": "airport-visit",
+        "mean": -0.00015575399999999753,
+        "support": 22
+      },
+      {
+        "rolePlace": "Phố đi bộ",
+        "scenarioId": "cafe-shift",
+        "mean": -0.00016823664000000237,
+        "support": 25
+      },
+      {
+        "rolePlace": "Phố đi bộ",
+        "scenarioId": "cinema-evening",
+        "mean": 0.0007031608378517563,
+        "support": 257
+      },
+      {
+        "rolePlace": "Phố đi bộ",
+        "scenarioId": "culture",
+        "mean": 0.0005868376466063998,
+        "support": 117
+      },
+      {
+        "rolePlace": "Phố đi bộ",
+        "scenarioId": "date-invitation",
+        "mean": 0.0006605904980690027,
+        "support": 300
+      },
+      {
+        "rolePlace": "Phố đi bộ",
+        "scenarioId": "factory-shift",
+        "mean": -0.00026239199999998397,
+        "support": 6
+      },
+      {
+        "rolePlace": "Phố đi bộ",
+        "scenarioId": "fire-training",
+        "mean": -0.00014198238461538457,
+        "support": 26
+      },
+      {
+        "rolePlace": "Phố đi bộ",
+        "scenarioId": "friendship",
+        "mean": 0.0007534352687753202,
+        "support": 318
+      },
+      {
+        "rolePlace": "Phố đi bộ",
+        "scenarioId": "garden-care",
+        "mean": -0.0001176190909090858,
+        "support": 33
+      },
+      {
+        "rolePlace": "Phố đi bộ",
+        "scenarioId": "groceries",
+        "mean": 0.001007541895488445,
+        "support": 13
+      },
+      {
+        "rolePlace": "Phố đi bộ",
+        "scenarioId": "hospital-check",
+        "mean": 0.0009314463869581343,
+        "support": 117
+      },
+      {
+        "rolePlace": "Phố đi bộ",
+        "scenarioId": "job-search",
+        "mean": -0.00012867202173913082,
+        "support": 46
+      },
+      {
+        "rolePlace": "Phố đi bộ",
+        "scenarioId": "learn-trade",
+        "mean": -0.00015834989999999785,
+        "support": 50
+      },
+      {
+        "rolePlace": "Phố đi bộ",
+        "scenarioId": "library",
+        "mean": -0.000005074632970077442,
+        "support": 127
+      },
+      {
+        "rolePlace": "Phố đi bộ",
+        "scenarioId": "lunch",
+        "mean": 0.0016721631476808618,
+        "support": 862
+      },
+      {
+        "rolePlace": "Phố đi bộ",
+        "scenarioId": "market-chat",
+        "mean": -0.00005541977272727077,
+        "support": 198
+      },
+      {
+        "rolePlace": "Phố đi bộ",
+        "scenarioId": "neighborhood",
+        "mean": 0.000059242589862843696,
+        "support": 257
+      },
+      {
+        "rolePlace": "Phố đi bộ",
+        "scenarioId": "office-shift",
+        "mean": -0.0002314903636363643,
+        "support": 11
+      },
+      {
+        "rolePlace": "Phố đi bộ",
+        "scenarioId": "post-office",
+        "mean": -0.000030757734597156254,
+        "support": 211
+      },
+      {
+        "rolePlace": "Phố đi bộ",
+        "scenarioId": "practice-cycle",
+        "mean": -0.0000613315796178342,
+        "support": 157
+      },
+      {
+        "rolePlace": "Phố đi bộ",
+        "scenarioId": "practice-drink",
+        "mean": 0.0001898773527037715,
+        "support": 199
+      },
+      {
+        "rolePlace": "Phố đi bộ",
+        "scenarioId": "practice-exercise",
+        "mean": -0.0000658968539325847,
+        "support": 89
+      },
+      {
+        "rolePlace": "Phố đi bộ",
+        "scenarioId": "practice-jump",
+        "mean": -0.0000633169090909074,
+        "support": 88
+      },
+      {
+        "rolePlace": "Phố đi bộ",
+        "scenarioId": "practice-run",
+        "mean": -0.00006523445901639352,
+        "support": 61
+      },
+      {
+        "rolePlace": "Phố đi bộ",
+        "scenarioId": "practice-shop",
+        "mean": -0.00006341591803278704,
+        "support": 122
+      },
+      {
+        "rolePlace": "Phố đi bộ",
+        "scenarioId": "practice-study",
+        "mean": -0.00006316610526315939,
+        "support": 19
+      },
+      {
+        "rolePlace": "Phố đi bộ",
+        "scenarioId": "practice-tag",
+        "mean": -0.00006367055357143033,
+        "support": 112
+      },
+      {
+        "rolePlace": "Phố đi bộ",
+        "scenarioId": "practice-walk-pet",
+        "mean": -0.00006598474285714472,
+        "support": 35
+      },
+      {
+        "rolePlace": "Phố đi bộ",
+        "scenarioId": "quiet-walk",
+        "mean": 0.0008607610600152555,
+        "support": 1784
+      },
+      {
+        "rolePlace": "Phố đi bộ",
+        "scenarioId": "rehabilitate",
+        "mean": 0.0010407224405274839,
+        "support": 182
+      },
+      {
+        "rolePlace": "Phố đi bộ",
+        "scenarioId": "rest-home",
+        "mean": -0.000044674273242143185,
+        "support": 3360
+      },
+      {
+        "rolePlace": "Phố đi bộ",
+        "scenarioId": "ride-bus",
+        "mean": -0.000030505624548735205,
+        "support": 277
+      },
+      {
+        "rolePlace": "Phố đi bộ",
+        "scenarioId": "ride-metro",
+        "mean": -0.000030662951612904096,
+        "support": 124
+      },
+      {
+        "rolePlace": "Phố đi bộ",
+        "scenarioId": "school-project",
+        "mean": -0.0001585092391304258,
+        "support": 46
+      },
+      {
+        "rolePlace": "Phố đi bộ",
+        "scenarioId": "shared-meal",
+        "mean": 0.0012682053290769065,
+        "support": 368
+      },
+      {
+        "rolePlace": "Phố đi bộ",
+        "scenarioId": "sports",
+        "mean": -0.0002465336842105265,
+        "support": 19
+      },
+      {
+        "rolePlace": "Phố đi bộ",
+        "scenarioId": "teach-class",
+        "mean": -0.00015259028571428643,
+        "support": 42
+      },
+      {
+        "rolePlace": "Phòng An",
+        "scenarioId": "airport-visit",
+        "mean": -0.00014964600000000292,
+        "support": 19
+      },
+      {
+        "rolePlace": "Phòng An",
+        "scenarioId": "cafe-shift",
+        "mean": -0.0001711709999999954,
+        "support": 12
+      },
+      {
+        "rolePlace": "Phòng An",
+        "scenarioId": "cinema-evening",
+        "mean": 0.0005288121614311754,
+        "support": 263
+      },
+      {
+        "rolePlace": "Phòng An",
+        "scenarioId": "culture",
+        "mean": 0.0003791186322167603,
+        "support": 188
+      },
+      {
+        "rolePlace": "Phòng An",
+        "scenarioId": "date-invitation",
+        "mean": 0.000503109509609856,
+        "support": 223
+      },
+      {
+        "rolePlace": "Phòng An",
+        "scenarioId": "factory-shift",
+        "mean": -0.0002456484545454472,
+        "support": 11
+      },
+      {
+        "rolePlace": "Phòng An",
+        "scenarioId": "fire-training",
+        "mean": -0.00012681731250000145,
+        "support": 64
+      },
+      {
+        "rolePlace": "Phòng An",
+        "scenarioId": "friendship",
+        "mean": 0.0005496622915477361,
+        "support": 266
+      },
+      {
+        "rolePlace": "Phòng An",
+        "scenarioId": "garden-care",
+        "mean": -0.0001132769999999991,
+        "support": 42
+      },
+      {
+        "rolePlace": "Phòng An",
+        "scenarioId": "groceries",
+        "mean": 0.0006947863192124984,
+        "support": 12
+      },
+      {
+        "rolePlace": "Phòng An",
+        "scenarioId": "hospital-check",
+        "mean": 0.000831140869721886,
+        "support": 338
+      },
+      {
+        "rolePlace": "Phòng An",
+        "scenarioId": "job-search",
+        "mean": -0.00012980314285714552,
+        "support": 21
+      },
+      {
+        "rolePlace": "Phòng An",
+        "scenarioId": "learn-trade",
+        "mean": -0.00015334941379310885,
+        "support": 87
+      },
+      {
+        "rolePlace": "Phòng An",
+        "scenarioId": "library",
+        "mean": 0.0001556302814215077,
+        "support": 200
+      },
+      {
+        "rolePlace": "Phòng An",
+        "scenarioId": "lunch",
+        "mean": 0.0015506431222852414,
+        "support": 675
+      },
+      {
+        "rolePlace": "Phòng An",
+        "scenarioId": "market-chat",
+        "mean": -0.000052668323741007964,
+        "support": 139
+      },
+      {
+        "rolePlace": "Phòng An",
+        "scenarioId": "neighborhood",
+        "mean": 0.000104833109020703,
+        "support": 174
+      },
+      {
+        "rolePlace": "Phòng An",
+        "scenarioId": "office-shift",
+        "mean": -0.00022764280000000896,
+        "support": 15
+      },
+      {
+        "rolePlace": "Phòng An",
+        "scenarioId": "post-office",
+        "mean": -0.000028361629310345024,
+        "support": 348
+      },
+      {
+        "rolePlace": "Phòng An",
+        "scenarioId": "practice-cycle",
+        "mean": -0.000060641249999998185,
+        "support": 120
+      },
+      {
+        "rolePlace": "Phòng An",
+        "scenarioId": "practice-drink",
+        "mean": 0.0002306578746623833,
+        "support": 303
+      },
+      {
+        "rolePlace": "Phòng An",
+        "scenarioId": "practice-exercise",
+        "mean": -0.00006113971578947298,
+        "support": 190
+      },
+      {
+        "rolePlace": "Phòng An",
+        "scenarioId": "practice-jump",
+        "mean": -0.00005942389655172429,
+        "support": 58
+      },
+      {
+        "rolePlace": "Phòng An",
+        "scenarioId": "practice-run",
+        "mean": -0.00006279830769230519,
+        "support": 52
+      },
+      {
+        "rolePlace": "Phòng An",
+        "scenarioId": "practice-shop",
+        "mean": -0.00006142793877550952,
+        "support": 98
+      },
+      {
+        "rolePlace": "Phòng An",
+        "scenarioId": "practice-study",
+        "mean": -0.000059546117647057774,
+        "support": 136
+      },
+      {
+        "rolePlace": "Phòng An",
+        "scenarioId": "practice-tag",
+        "mean": -0.00005893209375000167,
+        "support": 64
+      },
+      {
+        "rolePlace": "Phòng An",
+        "scenarioId": "practice-walk-pet",
+        "mean": -0.00005843387234042543,
+        "support": 141
+      },
+      {
+        "rolePlace": "Phòng An",
+        "scenarioId": "quiet-walk",
+        "mean": 0.0006964431992271204,
+        "support": 70
+      },
+      {
+        "rolePlace": "Phòng An",
+        "scenarioId": "rehabilitate",
+        "mean": 0.0009900096182639245,
+        "support": 445
+      },
+      {
+        "rolePlace": "Phòng An",
+        "scenarioId": "rest-home",
+        "mean": -0.00007618068241344078,
+        "support": 2909
+      },
+      {
+        "rolePlace": "Phòng An",
+        "scenarioId": "ride-bus",
+        "mean": -0.000028793817391303586,
+        "support": 345
+      },
+      {
+        "rolePlace": "Phòng An",
+        "scenarioId": "ride-metro",
+        "mean": -0.000028959575581394417,
+        "support": 172
+      },
+      {
+        "rolePlace": "Phòng An",
+        "scenarioId": "school-project",
+        "mean": -0.00015387596551724438,
+        "support": 87
+      },
+      {
+        "rolePlace": "Phòng An",
+        "scenarioId": "shared-meal",
+        "mean": 0.0010968127426953238,
+        "support": 268
+      },
+      {
+        "rolePlace": "Phòng An",
+        "scenarioId": "sports",
+        "mean": -0.00022836374999999492,
+        "support": 20
+      },
+      {
+        "rolePlace": "Phòng An",
+        "scenarioId": "teach-class",
+        "mean": -0.00014619318749999727,
+        "support": 64
+      },
+      {
+        "rolePlace": "Phòng khám",
+        "scenarioId": "airport-visit",
+        "mean": -0.00015527681250000714,
+        "support": 16
+      },
+      {
+        "rolePlace": "Phòng khám",
+        "scenarioId": "cafe-shift",
+        "mean": -0.00016481771428571753,
+        "support": 21
+      },
+      {
+        "rolePlace": "Phòng khám",
+        "scenarioId": "cinema-evening",
+        "mean": 0.0006552239854231847,
+        "support": 218
+      },
+      {
+        "rolePlace": "Phòng khám",
+        "scenarioId": "culture",
+        "mean": 0.0006006924082140857,
+        "support": 142
+      },
+      {
+        "rolePlace": "Phòng khám",
+        "scenarioId": "date-invitation",
+        "mean": 0.000611441816601962,
+        "support": 205
+      },
+      {
+        "rolePlace": "Phòng khám",
+        "scenarioId": "factory-shift",
+        "mean": -0.00025818700000000537,
+        "support": 9
+      },
+      {
+        "rolePlace": "Phòng khám",
+        "scenarioId": "fire-training",
+        "mean": -0.00013679082352941255,
+        "support": 34
+      },
+      {
+        "rolePlace": "Phòng khám",
+        "scenarioId": "friendship",
+        "mean": 0.0006688986980615993,
+        "support": 207
+      },
+      {
+        "rolePlace": "Phòng khám",
+        "scenarioId": "garden-care",
+        "mean": -0.00011106270000000134,
+        "support": 20
+      },
+      {
+        "rolePlace": "Phòng khám",
+        "scenarioId": "groceries",
+        "mean": 0.0006769816875000136,
+        "support": 8
+      },
+      {
+        "rolePlace": "Phòng khám",
+        "scenarioId": "hospital-check",
+        "mean": 0.0009168342675417905,
+        "support": 97
+      },
+      {
+        "rolePlace": "Phòng khám",
+        "scenarioId": "job-search",
+        "mean": -0.00012783267391304446,
+        "support": 46
+      },
+      {
+        "rolePlace": "Phòng khám",
+        "scenarioId": "learn-trade",
+        "mean": -0.00015553585714285926,
+        "support": 49
+      },
+      {
+        "rolePlace": "Phòng khám",
+        "scenarioId": "library",
+        "mean": 0.0000634393241713996,
+        "support": 56
+      },
+      {
+        "rolePlace": "Phòng khám",
+        "scenarioId": "lunch",
+        "mean": 0.0015706551446429582,
+        "support": 581
+      },
+      {
+        "rolePlace": "Phòng khám",
+        "scenarioId": "market-chat",
+        "mean": -0.00005263233027522735,
+        "support": 109
+      },
+      {
+        "rolePlace": "Phòng khám",
+        "scenarioId": "neighborhood",
+        "mean": 0.00011234022855030562,
+        "support": 157
+      },
+      {
+        "rolePlace": "Phòng khám",
+        "scenarioId": "office-shift",
+        "mean": -0.00023820529411766275,
+        "support": 17
+      },
+      {
+        "rolePlace": "Phòng khám",
+        "scenarioId": "post-office",
+        "mean": -0.000028812031249999304,
+        "support": 192
+      },
+      {
+        "rolePlace": "Phòng khám",
+        "scenarioId": "practice-cycle",
+        "mean": -0.00006200600000000294,
+        "support": 81
+      },
+      {
+        "rolePlace": "Phòng khám",
+        "scenarioId": "practice-drink",
+        "mean": 0.0003310295397676113,
+        "support": 241
+      },
+      {
+        "rolePlace": "Phòng khám",
+        "scenarioId": "practice-exercise",
+        "mean": -0.00005939279032258189,
+        "support": 124
+      },
+      {
+        "rolePlace": "Phòng khám",
+        "scenarioId": "practice-jump",
+        "mean": -0.00006034512500000119,
+        "support": 96
+      },
+      {
+        "rolePlace": "Phòng khám",
+        "scenarioId": "practice-run",
+        "mean": -0.00006452377777778076,
+        "support": 54
+      },
+      {
+        "rolePlace": "Phòng khám",
+        "scenarioId": "practice-shop",
+        "mean": -0.00005823325714285745,
+        "support": 70
+      },
+      {
+        "rolePlace": "Phòng khám",
+        "scenarioId": "practice-study",
+        "mean": -0.000060973897959184596,
+        "support": 98
+      },
+      {
+        "rolePlace": "Phòng khám",
+        "scenarioId": "practice-tag",
+        "mean": -0.000060617275862068695,
+        "support": 58
+      },
+      {
+        "rolePlace": "Phòng khám",
+        "scenarioId": "practice-walk-pet",
+        "mean": -0.00005861465142857192,
+        "support": 175
+      },
+      {
+        "rolePlace": "Phòng khám",
+        "scenarioId": "quiet-walk",
+        "mean": 0.0008246761757463826,
+        "support": 193
+      },
+      {
+        "rolePlace": "Phòng khám",
+        "scenarioId": "rehabilitate",
+        "mean": 0.001001265225332747,
+        "support": 1659
+      },
+      {
+        "rolePlace": "Phòng khám",
+        "scenarioId": "rest-home",
+        "mean": -0.000040210033889999554,
+        "support": 2880
+      },
+      {
+        "rolePlace": "Phòng khám",
+        "scenarioId": "ride-bus",
+        "mean": -0.00002911718987341729,
+        "support": 237
+      },
+      {
+        "rolePlace": "Phòng khám",
+        "scenarioId": "ride-metro",
+        "mean": -0.000029303150943395614,
+        "support": 106
+      },
+      {
+        "rolePlace": "Phòng khám",
+        "scenarioId": "school-project",
+        "mean": -0.00015542083636362953,
+        "support": 55
+      },
+      {
+        "rolePlace": "Phòng khám",
+        "scenarioId": "shared-meal",
+        "mean": 0.0011743984602006962,
+        "support": 219
+      },
+      {
+        "rolePlace": "Phòng khám",
+        "scenarioId": "sports",
+        "mean": -0.00023932557692308133,
+        "support": 26
+      },
+      {
+        "rolePlace": "Phòng khám",
+        "scenarioId": "teach-class",
+        "mean": -0.0001512548571428628,
+        "support": 84
+      },
+      {
+        "rolePlace": "Quán cà phê",
+        "scenarioId": "airport-visit",
+        "mean": -0.000149455124999991,
+        "support": 8
+      },
+      {
+        "rolePlace": "Quán cà phê",
+        "scenarioId": "cafe-shift",
+        "mean": -0.00017420871676300772,
+        "support": 1038
+      },
+      {
+        "rolePlace": "Quán cà phê",
+        "scenarioId": "cinema-evening",
+        "mean": 0.0004576933289964853,
+        "support": 128
+      },
+      {
+        "rolePlace": "Quán cà phê",
+        "scenarioId": "culture",
+        "mean": 0.00013437099196070864,
+        "support": 42
+      },
+      {
+        "rolePlace": "Quán cà phê",
+        "scenarioId": "date-invitation",
+        "mean": 0.00043164220954487194,
+        "support": 1989
+      },
+      {
+        "rolePlace": "Quán cà phê",
+        "scenarioId": "factory-shift",
+        "mean": -0.0002517953999999878,
+        "support": 5
+      },
+      {
+        "rolePlace": "Quán cà phê",
+        "scenarioId": "fire-training",
+        "mean": -0.00012978600000001505,
+        "support": 5
+      },
+      {
+        "rolePlace": "Quán cà phê",
+        "scenarioId": "friendship",
+        "mean": 0.0004785905765197918,
+        "support": 144
+      },
+      {
+        "rolePlace": "Quán cà phê",
+        "scenarioId": "garden-care",
+        "mean": -0.00010778699999999808,
+        "support": 6
+      },
+      {
+        "rolePlace": "Quán cà phê",
+        "scenarioId": "groceries",
+        "mean": 0.0007292708574166572,
+        "support": 9
+      },
+      {
+        "rolePlace": "Quán cà phê",
+        "scenarioId": "hospital-check",
+        "mean": 0.0007159773578726962,
+        "support": 141
+      },
+      {
+        "rolePlace": "Quán cà phê",
+        "scenarioId": "job-search",
+        "mean": -0.0001263404999999977,
+        "support": 6
+      },
+      {
+        "rolePlace": "Quán cà phê",
+        "scenarioId": "learn-trade",
+        "mean": -0.0001509074347826033,
+        "support": 23
+      },
+      {
+        "rolePlace": "Quán cà phê",
+        "scenarioId": "library",
+        "mean": -0.000010358666666666944,
+        "support": 18
+      },
+      {
+        "rolePlace": "Quán cà phê",
+        "scenarioId": "lunch",
+        "mean": 0.001368645436269997,
+        "support": 870
+      },
+      {
+        "rolePlace": "Quán cà phê",
+        "scenarioId": "market-chat",
+        "mean": -0.000052197299999997976,
+        "support": 50
+      },
+      {
+        "rolePlace": "Quán cà phê",
+        "scenarioId": "neighborhood",
+        "mean": 0.0001922091502622101,
+        "support": 86
+      },
+      {
+        "rolePlace": "Quán cà phê",
+        "scenarioId": "post-office",
+        "mean": -0.000029722045871559583,
+        "support": 109
+      },
+      {
+        "rolePlace": "Quán cà phê",
+        "scenarioId": "practice-cycle",
+        "mean": -0.00006090733333333248,
+        "support": 9
+      },
+      {
+        "rolePlace": "Quán cà phê",
+        "scenarioId": "practice-drink",
+        "mean": 0.00024958466858309445,
+        "support": 1878
+      },
+      {
+        "rolePlace": "Quán cà phê",
+        "scenarioId": "practice-exercise",
+        "mean": -0.00006324843750000184,
+        "support": 32
+      },
+      {
+        "rolePlace": "Quán cà phê",
+        "scenarioId": "practice-jump",
+        "mean": -0.000060426666666665544,
+        "support": 9
+      },
+      {
+        "rolePlace": "Quán cà phê",
+        "scenarioId": "practice-run",
+        "mean": -0.00006456168749999908,
+        "support": 32
+      },
+      {
+        "rolePlace": "Quán cà phê",
+        "scenarioId": "practice-shop",
+        "mean": -0.00006193733333333272,
+        "support": 18
+      },
+      {
+        "rolePlace": "Quán cà phê",
+        "scenarioId": "practice-study",
+        "mean": -0.00006009432000000148,
+        "support": 25
+      },
+      {
+        "rolePlace": "Quán cà phê",
+        "scenarioId": "practice-tag",
+        "mean": -0.00006499905882352796,
+        "support": 34
+      },
+      {
+        "rolePlace": "Quán cà phê",
+        "scenarioId": "practice-walk-pet",
+        "mean": -0.00006534614285714074,
+        "support": 42
+      },
+      {
+        "rolePlace": "Quán cà phê",
+        "scenarioId": "quiet-walk",
+        "mean": 0.000447176729427057,
+        "support": 85
+      },
+      {
+        "rolePlace": "Quán cà phê",
+        "scenarioId": "rehabilitate",
+        "mean": 0.000974435293314176,
+        "support": 240
+      },
+      {
+        "rolePlace": "Quán cà phê",
+        "scenarioId": "rest-home",
+        "mean": -0.00008452737794270739,
+        "support": 3840
+      },
+      {
+        "rolePlace": "Quán cà phê",
+        "scenarioId": "ride-bus",
+        "mean": -0.000030432913793104708,
+        "support": 174
+      },
+      {
+        "rolePlace": "Quán cà phê",
+        "scenarioId": "ride-metro",
+        "mean": -0.00003058923529411929,
+        "support": 34
+      },
+      {
+        "rolePlace": "Quán cà phê",
+        "scenarioId": "school-project",
+        "mean": -0.00015231824999999938,
+        "support": 28
+      },
+      {
+        "rolePlace": "Quán cà phê",
+        "scenarioId": "shared-meal",
+        "mean": 0.000978829939089308,
+        "support": 332
+      },
+      {
+        "rolePlace": "Quán cà phê",
+        "scenarioId": "sports",
+        "mean": -0.00023574807692307778,
+        "support": 13
+      },
+      {
+        "rolePlace": "Quán cà phê",
+        "scenarioId": "teach-class",
+        "mean": -0.0001512900000000043,
+        "support": 14
+      },
+      {
+        "rolePlace": "Rạp phim",
+        "scenarioId": "airport-visit",
+        "mean": -0.00015239459999999983,
+        "support": 10
+      },
+      {
+        "rolePlace": "Rạp phim",
+        "scenarioId": "cafe-shift",
+        "mean": -0.00017054399999999521,
+        "support": 13
+      },
+      {
+        "rolePlace": "Rạp phim",
+        "scenarioId": "cinema-evening",
+        "mean": 0.0006544705045448246,
+        "support": 2258
+      },
+      {
+        "rolePlace": "Rạp phim",
+        "scenarioId": "culture",
+        "mean": 0.00047316194243867435,
+        "support": 181
+      },
+      {
+        "rolePlace": "Rạp phim",
+        "scenarioId": "date-invitation",
+        "mean": 0.0006319153144584549,
+        "support": 319
+      },
+      {
+        "rolePlace": "Rạp phim",
+        "scenarioId": "factory-shift",
+        "mean": -0.00025187949999999046,
+        "support": 6
+      },
+      {
+        "rolePlace": "Rạp phim",
+        "scenarioId": "fire-training",
+        "mean": -0.00014035620000000227,
+        "support": 30
+      },
+      {
+        "rolePlace": "Rạp phim",
+        "scenarioId": "friendship",
+        "mean": 0.0007270870681742133,
+        "support": 353
+      },
+      {
+        "rolePlace": "Rạp phim",
+        "scenarioId": "garden-care",
+        "mean": -0.00010878646153845878,
+        "support": 26
+      },
+      {
+        "rolePlace": "Rạp phim",
+        "scenarioId": "groceries",
+        "mean": 0.0009349878295026153,
+        "support": 19
+      },
+      {
+        "rolePlace": "Rạp phim",
+        "scenarioId": "hospital-check",
+        "mean": 0.0009171034751977512,
+        "support": 199
+      },
+      {
+        "rolePlace": "Rạp phim",
+        "scenarioId": "job-search",
+        "mean": -0.00013057199999999758,
+        "support": 33
+      },
+      {
+        "rolePlace": "Rạp phim",
+        "scenarioId": "learn-trade",
+        "mean": -0.00014980217045453323,
+        "support": 88
+      },
+      {
+        "rolePlace": "Rạp phim",
+        "scenarioId": "library",
+        "mean": 0.0002460751003851567,
+        "support": 135
+      },
+      {
+        "rolePlace": "Rạp phim",
+        "scenarioId": "lunch",
+        "mean": 0.0015869575269928536,
+        "support": 992
+      },
+      {
+        "rolePlace": "Rạp phim",
+        "scenarioId": "market-chat",
+        "mean": -0.00005293333576642247,
+        "support": 137
+      },
+      {
+        "rolePlace": "Rạp phim",
+        "scenarioId": "neighborhood",
+        "mean": 0.00021432472832097927,
+        "support": 200
+      },
+      {
+        "rolePlace": "Rạp phim",
+        "scenarioId": "office-shift",
+        "mean": -0.00023129940000000265,
+        "support": 10
+      },
+      {
+        "rolePlace": "Rạp phim",
+        "scenarioId": "post-office",
+        "mean": -0.00002985506842105201,
+        "support": 190
+      },
+      {
+        "rolePlace": "Rạp phim",
+        "scenarioId": "practice-cycle",
+        "mean": -0.00006284584615384661,
+        "support": 91
+      },
+      {
+        "rolePlace": "Rạp phim",
+        "scenarioId": "practice-drink",
+        "mean": 0.00020733663957707999,
+        "support": 262
+      },
+      {
+        "rolePlace": "Rạp phim",
+        "scenarioId": "practice-exercise",
+        "mean": -0.00006259077419354725,
+        "support": 93
+      },
+      {
+        "rolePlace": "Rạp phim",
+        "scenarioId": "practice-jump",
+        "mean": -0.0000620013707865167,
+        "support": 89
+      },
+      {
+        "rolePlace": "Rạp phim",
+        "scenarioId": "practice-run",
+        "mean": -0.00006404772580645215,
+        "support": 124
+      },
+      {
+        "rolePlace": "Rạp phim",
+        "scenarioId": "practice-shop",
+        "mean": -0.00006472814285714302,
+        "support": 42
+      },
+      {
+        "rolePlace": "Rạp phim",
+        "scenarioId": "practice-study",
+        "mean": -0.00006149786666666749,
+        "support": 90
+      },
+      {
+        "rolePlace": "Rạp phim",
+        "scenarioId": "practice-tag",
+        "mean": -0.00006081926086956467,
+        "support": 92
+      },
+      {
+        "rolePlace": "Rạp phim",
+        "scenarioId": "practice-walk-pet",
+        "mean": -0.00006111044210526332,
+        "support": 95
+      },
+      {
+        "rolePlace": "Rạp phim",
+        "scenarioId": "quiet-walk",
+        "mean": 0.0008221368554321877,
+        "support": 230
+      },
+      {
+        "rolePlace": "Rạp phim",
+        "scenarioId": "rehabilitate",
+        "mean": 0.0009799456326207994,
+        "support": 267
+      },
+      {
+        "rolePlace": "Rạp phim",
+        "scenarioId": "rest-home",
+        "mean": -0.00006025175628020848,
+        "support": 3840
+      },
+      {
+        "rolePlace": "Rạp phim",
+        "scenarioId": "ride-bus",
+        "mean": -0.00002946049253731219,
+        "support": 268
+      },
+      {
+        "rolePlace": "Rạp phim",
+        "scenarioId": "ride-metro",
+        "mean": -0.000029350862068964623,
+        "support": 116
+      },
+      {
+        "rolePlace": "Rạp phim",
+        "scenarioId": "school-project",
+        "mean": -0.00014955154639175,
+        "support": 97
+      },
+      {
+        "rolePlace": "Rạp phim",
+        "scenarioId": "shared-meal",
+        "mean": 0.0012240438411333704,
+        "support": 436
+      },
+      {
+        "rolePlace": "Rạp phim",
+        "scenarioId": "sports",
+        "mean": -0.0002344114285714252,
+        "support": 14
+      },
+      {
+        "rolePlace": "Rạp phim",
+        "scenarioId": "teach-class",
+        "mean": -0.00014889887999999777,
+        "support": 75
+      },
+      {
+        "rolePlace": "Sân bay",
+        "scenarioId": "airport-visit",
+        "mean": -0.0001495382117647065,
+        "support": 1275
+      },
+      {
+        "rolePlace": "Sân bay",
+        "scenarioId": "cafe-shift",
+        "mean": -0.00016530799999999886,
+        "support": 12
+      },
+      {
+        "rolePlace": "Sân bay",
+        "scenarioId": "cinema-evening",
+        "mean": 0.0004014848208686431,
+        "support": 153
+      },
+      {
+        "rolePlace": "Sân bay",
+        "scenarioId": "culture",
+        "mean": 0.00028259050200095474,
+        "support": 156
+      },
+      {
+        "rolePlace": "Sân bay",
+        "scenarioId": "date-invitation",
+        "mean": 0.0003565615554746566,
+        "support": 294
+      },
+      {
+        "rolePlace": "Sân bay",
+        "scenarioId": "factory-shift",
+        "mean": -0.00023918039999999834,
+        "support": 5
+      },
+      {
+        "rolePlace": "Sân bay",
+        "scenarioId": "fire-training",
+        "mean": -0.00013060938461538176,
+        "support": 13
+      },
+      {
+        "rolePlace": "Sân bay",
+        "scenarioId": "friendship",
+        "mean": 0.00040226595596607357,
+        "support": 367
+      },
+      {
+        "rolePlace": "Sân bay",
+        "scenarioId": "garden-care",
+        "mean": -0.00010516399999999402,
+        "support": 9
+      },
+      {
+        "rolePlace": "Sân bay",
+        "scenarioId": "groceries",
+        "mean": 0.0007602765109949894,
+        "support": 10
+      },
+      {
+        "rolePlace": "Sân bay",
+        "scenarioId": "hospital-check",
+        "mean": 0.0008648675309357863,
+        "support": 310
+      },
+      {
+        "rolePlace": "Sân bay",
+        "scenarioId": "job-search",
+        "mean": -0.00012673732499999917,
+        "support": 40
+      },
+      {
+        "rolePlace": "Sân bay",
+        "scenarioId": "learn-trade",
+        "mean": -0.0001490352000000057,
+        "support": 55
+      },
+      {
+        "rolePlace": "Sân bay",
+        "scenarioId": "library",
+        "mean": 0.00009772805125846172,
+        "support": 71
+      },
+      {
+        "rolePlace": "Sân bay",
+        "scenarioId": "lunch",
+        "mean": 0.0014685938627215418,
+        "support": 805
+      },
+      {
+        "rolePlace": "Sân bay",
+        "scenarioId": "market-chat",
+        "mean": -0.00005190826704545468,
+        "support": 176
+      },
+      {
+        "rolePlace": "Sân bay",
+        "scenarioId": "neighborhood",
+        "mean": 0.00012766350385143098,
+        "support": 209
+      },
+      {
+        "rolePlace": "Sân bay",
+        "scenarioId": "office-shift",
+        "mean": -0.00023073257142855664,
+        "support": 7
+      },
+      {
+        "rolePlace": "Sân bay",
+        "scenarioId": "post-office",
+        "mean": -0.00002841627876106261,
+        "support": 226
+      },
+      {
+        "rolePlace": "Sân bay",
+        "scenarioId": "practice-cycle",
+        "mean": -0.0000593086874999991,
+        "support": 64
+      },
+      {
+        "rolePlace": "Sân bay",
+        "scenarioId": "practice-drink",
+        "mean": 0.00030020436011619575,
+        "support": 250
+      },
+      {
+        "rolePlace": "Sân bay",
+        "scenarioId": "practice-exercise",
+        "mean": -0.00006233714018691597,
+        "support": 107
+      },
+      {
+        "rolePlace": "Sân bay",
+        "scenarioId": "practice-jump",
+        "mean": -0.0000604013684210517,
+        "support": 76
+      },
+      {
+        "rolePlace": "Sân bay",
+        "scenarioId": "practice-run",
+        "mean": -0.00006239423076923005,
+        "support": 26
+      },
+      {
+        "rolePlace": "Sân bay",
+        "scenarioId": "practice-shop",
+        "mean": -0.00006161459999999853,
+        "support": 60
+      },
+      {
+        "rolePlace": "Sân bay",
+        "scenarioId": "practice-study",
+        "mean": -0.00005965219672131283,
+        "support": 61
+      },
+      {
+        "rolePlace": "Sân bay",
+        "scenarioId": "practice-tag",
+        "mean": -0.000060727083333334296,
+        "support": 72
+      },
+      {
+        "rolePlace": "Sân bay",
+        "scenarioId": "practice-walk-pet",
+        "mean": -0.000060859565217390166,
+        "support": 23
+      },
+      {
+        "rolePlace": "Sân bay",
+        "scenarioId": "quiet-walk",
+        "mean": 0.0004748990504226505,
+        "support": 192
+      },
+      {
+        "rolePlace": "Sân bay",
+        "scenarioId": "rehabilitate",
+        "mean": 0.0010187387966288108,
+        "support": 470
+      },
+      {
+        "rolePlace": "Sân bay",
+        "scenarioId": "rest-home",
+        "mean": -0.00009325999301377746,
+        "support": 3121
+      },
+      {
+        "rolePlace": "Sân bay",
+        "scenarioId": "ride-bus",
+        "mean": -0.00002851995302013568,
+        "support": 149
+      },
+      {
+        "rolePlace": "Sân bay",
+        "scenarioId": "ride-metro",
+        "mean": -0.000028270432835822623,
+        "support": 67
+      },
+      {
+        "rolePlace": "Sân bay",
+        "scenarioId": "school-project",
+        "mean": -0.00014855528571428858,
+        "support": 49
+      },
+      {
+        "rolePlace": "Sân bay",
+        "scenarioId": "shared-meal",
+        "mean": 0.0009363227653601771,
+        "support": 324
+      },
+      {
+        "rolePlace": "Sân bay",
+        "scenarioId": "sports",
+        "mean": -0.00023483732142856644,
+        "support": 28
+      },
+      {
+        "rolePlace": "Sân bay",
+        "scenarioId": "teach-class",
+        "mean": -0.0001439099999999931,
+        "support": 28
+      },
+      {
+        "rolePlace": "Sân thể thao",
+        "scenarioId": "airport-visit",
+        "mean": -0.00015178379999999657,
+        "support": 10
+      },
+      {
+        "rolePlace": "Sân thể thao",
+        "scenarioId": "cafe-shift",
+        "mean": -0.0001727439999999969,
+        "support": 15
+      },
+      {
+        "rolePlace": "Sân thể thao",
+        "scenarioId": "cinema-evening",
+        "mean": 0.00003973936398750005,
+        "support": 140
+      },
+      {
+        "rolePlace": "Sân thể thao",
+        "scenarioId": "culture",
+        "mean": 0.00008401953389594268,
+        "support": 74
+      },
+      {
+        "rolePlace": "Sân thể thao",
+        "scenarioId": "date-invitation",
+        "mean": 0.00010018938017973355,
+        "support": 111
+      },
+      {
+        "rolePlace": "Sân thể thao",
+        "scenarioId": "factory-shift",
+        "mean": -0.0002532461250000142,
+        "support": 8
+      },
+      {
+        "rolePlace": "Sân thể thao",
+        "scenarioId": "fire-training",
+        "mean": -0.00013608247058824176,
+        "support": 17
+      },
+      {
+        "rolePlace": "Sân thể thao",
+        "scenarioId": "friendship",
+        "mean": 0.00009075539746666407,
+        "support": 180
+      },
+      {
+        "rolePlace": "Sân thể thao",
+        "scenarioId": "garden-care",
+        "mean": -0.00011058428571428445,
+        "support": 7
+      },
+      {
+        "rolePlace": "Sân thể thao",
+        "scenarioId": "groceries",
+        "mean": 0.0004259212834666687,
+        "support": 9
+      },
+      {
+        "rolePlace": "Sân thể thao",
+        "scenarioId": "hospital-check",
+        "mean": 0.000383920904091974,
+        "support": 187
+      },
+      {
+        "rolePlace": "Sân thể thao",
+        "scenarioId": "job-search",
+        "mean": -0.00012912900000000406,
+        "support": 9
+      },
+      {
+        "rolePlace": "Sân thể thao",
+        "scenarioId": "learn-trade",
+        "mean": -0.00014673081818182302,
+        "support": 22
+      },
+      {
+        "rolePlace": "Sân thể thao",
+        "scenarioId": "library",
+        "mean": 0.00003118982313845806,
+        "support": 39
+      },
+      {
+        "rolePlace": "Sân thể thao",
+        "scenarioId": "lunch",
+        "mean": 0.0011412345010303382,
+        "support": 898
+      },
+      {
+        "rolePlace": "Sân thể thao",
+        "scenarioId": "market-chat",
+        "mean": -0.000052644857142857254,
+        "support": 56
+      },
+      {
+        "rolePlace": "Sân thể thao",
+        "scenarioId": "neighborhood",
+        "mean": -0.0000038526585339445466,
+        "support": 81
+      },
+      {
+        "rolePlace": "Sân thể thao",
+        "scenarioId": "post-office",
+        "mean": -0.0000296175983606569,
+        "support": 122
+      },
+      {
+        "rolePlace": "Sân thể thao",
+        "scenarioId": "practice-cycle",
+        "mean": -0.00006380114285714715,
+        "support": 21
+      },
+      {
+        "rolePlace": "Sân thể thao",
+        "scenarioId": "practice-drink",
+        "mean": 0.00010375667223676552,
+        "support": 102
+      },
+      {
+        "rolePlace": "Sân thể thao",
+        "scenarioId": "practice-exercise",
+        "mean": -0.00006148204965517233,
+        "support": 1450
+      },
+      {
+        "rolePlace": "Sân thể thao",
+        "scenarioId": "practice-jump",
+        "mean": -0.00006143395694716201,
+        "support": 1533
+      },
+      {
+        "rolePlace": "Sân thể thao",
+        "scenarioId": "practice-run",
+        "mean": -0.00006179999999999627,
+        "support": 14
+      },
+      {
+        "rolePlace": "Sân thể thao",
+        "scenarioId": "practice-shop",
+        "mean": -0.00005976423529411869,
+        "support": 34
+      },
+      {
+        "rolePlace": "Sân thể thao",
+        "scenarioId": "practice-study",
+        "mean": -0.00006142478571428682,
+        "support": 28
+      },
+      {
+        "rolePlace": "Sân thể thao",
+        "scenarioId": "practice-tag",
+        "mean": -0.0000624866666666695,
+        "support": 18
+      },
+      {
+        "rolePlace": "Sân thể thao",
+        "scenarioId": "practice-walk-pet",
+        "mean": -0.00006284584615384405,
+        "support": 26
+      },
+      {
+        "rolePlace": "Sân thể thao",
+        "scenarioId": "quiet-walk",
+        "mean": 0.00029014026518395827,
+        "support": 159
+      },
+      {
+        "rolePlace": "Sân thể thao",
+        "scenarioId": "rehabilitate",
+        "mean": 0.0006114282650566809,
+        "support": 486
+      },
+      {
+        "rolePlace": "Sân thể thao",
+        "scenarioId": "rest-home",
+        "mean": -0.00036938808151711734,
+        "support": 3610
+      },
+      {
+        "rolePlace": "Sân thể thao",
+        "scenarioId": "ride-bus",
+        "mean": -0.000029514115384616872,
+        "support": 130
+      },
+      {
+        "rolePlace": "Sân thể thao",
+        "scenarioId": "ride-metro",
+        "mean": -0.00002954090909090797,
+        "support": 33
+      },
+      {
+        "rolePlace": "Sân thể thao",
+        "scenarioId": "school-project",
+        "mean": -0.0001469737499999943,
+        "support": 28
+      },
+      {
+        "rolePlace": "Sân thể thao",
+        "scenarioId": "shared-meal",
+        "mean": 0.000821626892672297,
+        "support": 352
+      },
+      {
+        "rolePlace": "Sân thể thao",
+        "scenarioId": "sports",
+        "mean": -0.0002373925680933837,
+        "support": 771
+      },
+      {
+        "rolePlace": "Sân thể thao",
+        "scenarioId": "teach-class",
+        "mean": -0.0001401277499999986,
+        "support": 16
+      },
+      {
+        "rolePlace": "Siêu thị",
+        "scenarioId": "airport-visit",
+        "mean": -0.00015048584999999593,
+        "support": 20
+      },
+      {
+        "rolePlace": "Siêu thị",
+        "scenarioId": "cafe-shift",
+        "mean": -0.00017040626086957148,
+        "support": 46
+      },
+      {
+        "rolePlace": "Siêu thị",
+        "scenarioId": "cinema-evening",
+        "mean": 0.0005430007788819921,
+        "support": 333
+      },
+      {
+        "rolePlace": "Siêu thị",
+        "scenarioId": "culture",
+        "mean": 0.0004753773793002246,
+        "support": 221
+      },
+      {
+        "rolePlace": "Siêu thị",
+        "scenarioId": "date-invitation",
+        "mean": 0.0005251983281820563,
+        "support": 351
+      },
+      {
+        "rolePlace": "Siêu thị",
+        "scenarioId": "factory-shift",
+        "mean": -0.0002514590000000031,
+        "support": 12
+      },
+      {
+        "rolePlace": "Siêu thị",
+        "scenarioId": "fire-training",
+        "mean": -0.0001411590000000008,
+        "support": 14
+      },
+      {
+        "rolePlace": "Siêu thị",
+        "scenarioId": "friendship",
+        "mean": 0.0005701879284268249,
+        "support": 412
+      },
+      {
+        "rolePlace": "Siêu thị",
+        "scenarioId": "garden-care",
+        "mean": -0.00011543780769230608,
+        "support": 52
+      },
+      {
+        "rolePlace": "Siêu thị",
+        "scenarioId": "groceries",
+        "mean": 0.0009011653619262371,
+        "support": 1176
+      },
+      {
+        "rolePlace": "Siêu thị",
+        "scenarioId": "hospital-check",
+        "mean": 0.0008391508885528182,
+        "support": 392
+      },
+      {
+        "rolePlace": "Siêu thị",
+        "scenarioId": "job-search",
+        "mean": -0.00012983931147541079,
+        "support": 61
+      },
+      {
+        "rolePlace": "Siêu thị",
+        "scenarioId": "learn-trade",
+        "mean": -0.0001579935999999958,
+        "support": 45
+      },
+      {
+        "rolePlace": "Siêu thị",
+        "scenarioId": "library",
+        "mean": 0.000048918949491106204,
+        "support": 45
+      },
+      {
+        "rolePlace": "Siêu thị",
+        "scenarioId": "lunch",
+        "mean": 0.001562951027107604,
+        "support": 552
+      },
+      {
+        "rolePlace": "Siêu thị",
+        "scenarioId": "market-chat",
+        "mean": -0.000053098003759395693,
+        "support": 266
+      },
+      {
+        "rolePlace": "Siêu thị",
+        "scenarioId": "neighborhood",
+        "mean": 0.00016571749712492422,
+        "support": 319
+      },
+      {
+        "rolePlace": "Siêu thị",
+        "scenarioId": "office-shift",
+        "mean": -0.0002476633333333515,
+        "support": 9
+      },
+      {
+        "rolePlace": "Siêu thị",
+        "scenarioId": "post-office",
+        "mean": -0.000030284662721890976,
+        "support": 169
+      },
+      {
+        "rolePlace": "Siêu thị",
+        "scenarioId": "practice-cycle",
+        "mean": -0.00006259689473684137,
+        "support": 76
+      },
+      {
+        "rolePlace": "Siêu thị",
+        "scenarioId": "practice-drink",
+        "mean": 0.0004026767614022626,
+        "support": 398
+      },
+      {
+        "rolePlace": "Siêu thị",
+        "scenarioId": "practice-exercise",
+        "mean": -0.00006151020338983015,
+        "support": 177
+      },
+      {
+        "rolePlace": "Siêu thị",
+        "scenarioId": "practice-jump",
+        "mean": -0.00006253297674418666,
+        "support": 43
+      },
+      {
+        "rolePlace": "Siêu thị",
+        "scenarioId": "practice-run",
+        "mean": -0.00006249723076923175,
+        "support": 156
+      },
+      {
+        "rolePlace": "Siêu thị",
+        "scenarioId": "practice-shop",
+        "mean": -0.0000644580645161292,
+        "support": 93
+      },
+      {
+        "rolePlace": "Siêu thị",
+        "scenarioId": "practice-study",
+        "mean": -0.00006260514084507058,
+        "support": 142
+      },
+      {
+        "rolePlace": "Siêu thị",
+        "scenarioId": "practice-tag",
+        "mean": -0.00006344589795918279,
+        "support": 196
+      },
+      {
+        "rolePlace": "Siêu thị",
+        "scenarioId": "practice-walk-pet",
+        "mean": -0.00006375498039215757,
+        "support": 153
+      },
+      {
+        "rolePlace": "Siêu thị",
+        "scenarioId": "quiet-walk",
+        "mean": 0.0007457728393495316,
+        "support": 208
+      },
+      {
+        "rolePlace": "Siêu thị",
+        "scenarioId": "rehabilitate",
+        "mean": 0.0009974824857276361,
+        "support": 543
+      },
+      {
+        "rolePlace": "Siêu thị",
+        "scenarioId": "rest-home",
+        "mean": -0.00007528069980500042,
+        "support": 3840
+      },
+      {
+        "rolePlace": "Siêu thị",
+        "scenarioId": "ride-bus",
+        "mean": -0.000029779451162789122,
+        "support": 430
+      },
+      {
+        "rolePlace": "Siêu thị",
+        "scenarioId": "ride-metro",
+        "mean": -0.00002981312252964479,
+        "support": 253
+      },
+      {
+        "rolePlace": "Siêu thị",
+        "scenarioId": "school-project",
+        "mean": -0.00015706721999999285,
+        "support": 50
+      },
+      {
+        "rolePlace": "Siêu thị",
+        "scenarioId": "shared-meal",
+        "mean": 0.0010640234915710975,
+        "support": 154
+      },
+      {
+        "rolePlace": "Siêu thị",
+        "scenarioId": "sports",
+        "mean": -0.00024368737500000335,
+        "support": 40
+      },
+      {
+        "rolePlace": "Siêu thị",
+        "scenarioId": "teach-class",
+        "mean": -0.000147963945205484,
+        "support": 73
+      },
+      {
+        "rolePlace": "Thư viện",
+        "scenarioId": "airport-visit",
+        "mean": -0.0001499513999999924,
+        "support": 5
+      },
+      {
+        "rolePlace": "Thư viện",
+        "scenarioId": "cafe-shift",
+        "mean": -0.00017705999999999972,
+        "support": 11
+      },
+      {
+        "rolePlace": "Thư viện",
+        "scenarioId": "cinema-evening",
+        "mean": 0.00048584194764278904,
+        "support": 194
+      },
+      {
+        "rolePlace": "Thư viện",
+        "scenarioId": "culture",
+        "mean": 0.00031949354497783067,
+        "support": 106
+      },
+      {
+        "rolePlace": "Thư viện",
+        "scenarioId": "date-invitation",
+        "mean": 0.00036770250555913776,
+        "support": 197
+      },
+      {
+        "rolePlace": "Thư viện",
+        "scenarioId": "factory-shift",
+        "mean": -0.0002573459999999997,
+        "support": 6
+      },
+      {
+        "rolePlace": "Thư viện",
+        "scenarioId": "friendship",
+        "mean": 0.0004076295306463949,
+        "support": 236
+      },
+      {
+        "rolePlace": "Thư viện",
+        "scenarioId": "garden-care",
+        "mean": -0.00011089800000000447,
+        "support": 11
+      },
+      {
+        "rolePlace": "Thư viện",
+        "scenarioId": "groceries",
+        "mean": 0.0005100316571999969,
+        "support": 6
+      },
+      {
+        "rolePlace": "Thư viện",
+        "scenarioId": "hospital-check",
+        "mean": 0.0008189023741760515,
+        "support": 144
+      },
+      {
+        "rolePlace": "Thư viện",
+        "scenarioId": "job-search",
+        "mean": -0.00012709124999999674,
+        "support": 28
+      },
+      {
+        "rolePlace": "Thư viện",
+        "scenarioId": "learn-trade",
+        "mean": -0.0001569490434782622,
+        "support": 23
+      },
+      {
+        "rolePlace": "Thư viện",
+        "scenarioId": "library",
+        "mean": 0.00010948630742063318,
+        "support": 1478
+      },
+      {
+        "rolePlace": "Thư viện",
+        "scenarioId": "lunch",
+        "mean": 0.0014930714846980299,
+        "support": 758
+      },
+      {
+        "rolePlace": "Thư viện",
+        "scenarioId": "market-chat",
+        "mean": -0.00005171123076922911,
+        "support": 65
+      },
+      {
+        "rolePlace": "Thư viện",
+        "scenarioId": "neighborhood",
+        "mean": 0.000042128981405450464,
+        "support": 110
+      },
+      {
+        "rolePlace": "Thư viện",
+        "scenarioId": "post-office",
+        "mean": -0.00002951242446043186,
+        "support": 139
+      },
+      {
+        "rolePlace": "Thư viện",
+        "scenarioId": "practice-cycle",
+        "mean": -0.000060732545454544115,
+        "support": 11
+      },
+      {
+        "rolePlace": "Thư viện",
+        "scenarioId": "practice-drink",
+        "mean": 0.0001933827921629392,
+        "support": 112
+      },
+      {
+        "rolePlace": "Thư viện",
+        "scenarioId": "practice-exercise",
+        "mean": -0.00006484246153846249,
+        "support": 39
+      },
+      {
+        "rolePlace": "Thư viện",
+        "scenarioId": "practice-jump",
+        "mean": -0.000060088615384614805,
+        "support": 52
+      },
+      {
+        "rolePlace": "Thư viện",
+        "scenarioId": "practice-run",
+        "mean": -0.00006118200000000279,
+        "support": 41
+      },
+      {
+        "rolePlace": "Thư viện",
+        "scenarioId": "practice-shop",
+        "mean": -0.00005990964705882313,
+        "support": 34
+      },
+      {
+        "rolePlace": "Thư viện",
+        "scenarioId": "practice-study",
+        "mean": -0.00006139291853932605,
+        "support": 1424
+      },
+      {
+        "rolePlace": "Thư viện",
+        "scenarioId": "practice-tag",
+        "mean": -0.00006394482352941134,
+        "support": 17
+      },
+      {
+        "rolePlace": "Thư viện",
+        "scenarioId": "practice-walk-pet",
+        "mean": -0.00006494150000000039,
+        "support": 12
+      },
+      {
+        "rolePlace": "Thư viện",
+        "scenarioId": "quiet-walk",
+        "mean": 0.0007262474966776408,
+        "support": 199
+      },
+      {
+        "rolePlace": "Thư viện",
+        "scenarioId": "rehabilitate",
+        "mean": 0.0010160895643768807,
+        "support": 240
+      },
+      {
+        "rolePlace": "Thư viện",
+        "scenarioId": "rest-home",
+        "mean": -0.00012675602390435967,
+        "support": 3120
+      },
+      {
+        "rolePlace": "Thư viện",
+        "scenarioId": "ride-bus",
+        "mean": -0.000028905270676691624,
+        "support": 133
+      },
+      {
+        "rolePlace": "Thư viện",
+        "scenarioId": "ride-metro",
+        "mean": -0.000028557681818182992,
+        "support": 44
+      },
+      {
+        "rolePlace": "Thư viện",
+        "scenarioId": "school-project",
+        "mean": -0.0001575863999999899,
+        "support": 20
+      },
+      {
+        "rolePlace": "Thư viện",
+        "scenarioId": "shared-meal",
+        "mean": 0.001062719514362172,
+        "support": 304
+      },
+      {
+        "rolePlace": "Thư viện",
+        "scenarioId": "sports",
+        "mean": -0.00024207750000000304,
+        "support": 16
+      },
+      {
+        "rolePlace": "Thư viện",
+        "scenarioId": "teach-class",
+        "mean": -0.00015376447058823613,
+        "support": 17
+      },
+      {
+        "rolePlace": "Trạm cứu hỏa",
+        "scenarioId": "airport-visit",
+        "mean": -0.0001575504705882381,
+        "support": 17
+      },
+      {
+        "rolePlace": "Trạm cứu hỏa",
+        "scenarioId": "cafe-shift",
+        "mean": -0.00017715657142857252,
+        "support": 21
+      },
+      {
+        "rolePlace": "Trạm cứu hỏa",
+        "scenarioId": "cinema-evening",
+        "mean": 0.0002388155267001827,
+        "support": 268
+      },
+      {
+        "rolePlace": "Trạm cứu hỏa",
+        "scenarioId": "culture",
+        "mean": 0.00025100279382183645,
+        "support": 277
+      },
+      {
+        "rolePlace": "Trạm cứu hỏa",
+        "scenarioId": "date-invitation",
+        "mean": 0.00022525211297419354,
+        "support": 186
+      },
+      {
+        "rolePlace": "Trạm cứu hỏa",
+        "scenarioId": "factory-shift",
+        "mean": -0.00026743800000000455,
+        "support": 5
+      },
+      {
+        "rolePlace": "Trạm cứu hỏa",
+        "scenarioId": "fire-training",
+        "mean": -0.00013641388781431287,
+        "support": 1551
+      },
+      {
+        "rolePlace": "Trạm cứu hỏa",
+        "scenarioId": "friendship",
+        "mean": 0.0002578882862853964,
+        "support": 226
+      },
+      {
+        "rolePlace": "Trạm cứu hỏa",
+        "scenarioId": "garden-care",
+        "mean": -0.00011306170588235245,
+        "support": 34
+      },
+      {
+        "rolePlace": "Trạm cứu hỏa",
+        "scenarioId": "groceries",
+        "mean": 0.0007617986381666787,
+        "support": 9
+      },
+      {
+        "rolePlace": "Trạm cứu hỏa",
+        "scenarioId": "hospital-check",
+        "mean": 0.0008026195244659815,
+        "support": 144
+      },
+      {
+        "rolePlace": "Trạm cứu hỏa",
+        "scenarioId": "job-search",
+        "mean": -0.0001330436249999986,
+        "support": 32
+      },
+      {
+        "rolePlace": "Trạm cứu hỏa",
+        "scenarioId": "learn-trade",
+        "mean": -0.00015969579069766986,
+        "support": 43
+      },
+      {
+        "rolePlace": "Trạm cứu hỏa",
+        "scenarioId": "library",
+        "mean": -0.000010590999999998574,
+        "support": 72
+      },
+      {
+        "rolePlace": "Trạm cứu hỏa",
+        "scenarioId": "lunch",
+        "mean": 0.0014783371301066157,
+        "support": 824
+      },
+      {
+        "rolePlace": "Trạm cứu hỏa",
+        "scenarioId": "market-chat",
+        "mean": -0.0000533305657894738,
+        "support": 152
+      },
+      {
+        "rolePlace": "Trạm cứu hỏa",
+        "scenarioId": "neighborhood",
+        "mean": 0.000018438440361397594,
+        "support": 171
+      },
+      {
+        "rolePlace": "Trạm cứu hỏa",
+        "scenarioId": "post-office",
+        "mean": -0.000028985606896551475,
+        "support": 290
+      },
+      {
+        "rolePlace": "Trạm cứu hỏa",
+        "scenarioId": "practice-cycle",
+        "mean": -0.00006372742574257669,
+        "support": 101
+      },
+      {
+        "rolePlace": "Trạm cứu hỏa",
+        "scenarioId": "practice-drink",
+        "mean": 0.00009309157621628066,
+        "support": 258
+      },
+      {
+        "rolePlace": "Trạm cứu hỏa",
+        "scenarioId": "practice-exercise",
+        "mean": -0.00006251070000000023,
+        "support": 80
+      },
+      {
+        "rolePlace": "Trạm cứu hỏa",
+        "scenarioId": "practice-jump",
+        "mean": -0.00006570170149253921,
+        "support": 67
+      },
+      {
+        "rolePlace": "Trạm cứu hỏa",
+        "scenarioId": "practice-run",
+        "mean": -0.00006543075000000041,
+        "support": 56
+      },
+      {
+        "rolePlace": "Trạm cứu hỏa",
+        "scenarioId": "practice-shop",
+        "mean": -0.00006262400000000084,
+        "support": 30
+      },
+      {
+        "rolePlace": "Trạm cứu hỏa",
+        "scenarioId": "practice-study",
+        "mean": -0.00006340480645161281,
+        "support": 62
+      },
+      {
+        "rolePlace": "Trạm cứu hỏa",
+        "scenarioId": "practice-tag",
+        "mean": -0.00006219397499999905,
+        "support": 80
+      },
+      {
+        "rolePlace": "Trạm cứu hỏa",
+        "scenarioId": "practice-walk-pet",
+        "mean": -0.000062811272727272,
+        "support": 11
+      },
+      {
+        "rolePlace": "Trạm cứu hỏa",
+        "scenarioId": "quiet-walk",
+        "mean": 0.0006411699053946025,
+        "support": 167
+      },
+      {
+        "rolePlace": "Trạm cứu hỏa",
+        "scenarioId": "rehabilitate",
+        "mean": 0.0010027601577338046,
+        "support": 284
+      },
+      {
+        "rolePlace": "Trạm cứu hỏa",
+        "scenarioId": "rest-home",
+        "mean": -0.0001390134059558964,
+        "support": 3120
+      },
+      {
+        "rolePlace": "Trạm cứu hỏa",
+        "scenarioId": "ride-bus",
+        "mean": -0.0000305186249999997,
+        "support": 160
+      },
+      {
+        "rolePlace": "Trạm cứu hỏa",
+        "scenarioId": "ride-metro",
+        "mean": -0.000030923599999995585,
+        "support": 45
+      },
+      {
+        "rolePlace": "Trạm cứu hỏa",
+        "scenarioId": "school-project",
+        "mean": -0.0001603762702702793,
+        "support": 37
+      },
+      {
+        "rolePlace": "Trạm cứu hỏa",
+        "scenarioId": "shared-meal",
+        "mean": 0.0009697869863728251,
+        "support": 403
+      },
+      {
+        "rolePlace": "Trạm cứu hỏa",
+        "scenarioId": "sports",
+        "mean": -0.00024684750000000116,
+        "support": 34
+      },
+      {
+        "rolePlace": "Trạm cứu hỏa",
+        "scenarioId": "teach-class",
+        "mean": -0.0001526760000000003,
+        "support": 41
+      },
+      {
+        "rolePlace": "Trụ sở công an",
+        "scenarioId": "airport-visit",
+        "mean": -0.00016053859999999912,
+        "support": 15
+      },
+      {
+        "rolePlace": "Trụ sở công an",
+        "scenarioId": "cafe-shift",
+        "mean": -0.00017359427027027134,
+        "support": 37
+      },
+      {
+        "rolePlace": "Trụ sở công an",
+        "scenarioId": "cinema-evening",
+        "mean": 0.0005278545987153562,
+        "support": 306
+      },
+      {
+        "rolePlace": "Trụ sở công an",
+        "scenarioId": "culture",
+        "mean": 0.000512343012115239,
+        "support": 328
+      },
+      {
+        "rolePlace": "Trụ sở công an",
+        "scenarioId": "date-invitation",
+        "mean": 0.0005292123205484998,
+        "support": 405
+      },
+      {
+        "rolePlace": "Trụ sở công an",
+        "scenarioId": "factory-shift",
+        "mean": -0.0002569855714285773,
+        "support": 7
+      },
+      {
+        "rolePlace": "Trụ sở công an",
+        "scenarioId": "fire-training",
+        "mean": -0.00013249916666666775,
+        "support": 36
+      },
+      {
+        "rolePlace": "Trụ sở công an",
+        "scenarioId": "friendship",
+        "mean": 0.000602847631665205,
+        "support": 496
+      },
+      {
+        "rolePlace": "Trụ sở công an",
+        "scenarioId": "garden-care",
+        "mean": -0.00011144700000000116,
+        "support": 52
+      },
+      {
+        "rolePlace": "Trụ sở công an",
+        "scenarioId": "groceries",
+        "mean": 0.0008273426288454591,
+        "support": 11
+      },
+      {
+        "rolePlace": "Trụ sở công an",
+        "scenarioId": "hospital-check",
+        "mean": 0.0009365876848856486,
+        "support": 324
+      },
+      {
+        "rolePlace": "Trụ sở công an",
+        "scenarioId": "job-search",
+        "mean": -0.00013155999999999666,
+        "support": 63
+      },
+      {
+        "rolePlace": "Trụ sở công an",
+        "scenarioId": "learn-trade",
+        "mean": -0.00015538483516483977,
+        "support": 91
+      },
+      {
+        "rolePlace": "Trụ sở công an",
+        "scenarioId": "library",
+        "mean": 0.0002198264164547114,
+        "support": 254
+      },
+      {
+        "rolePlace": "Trụ sở công an",
+        "scenarioId": "lunch",
+        "mean": 0.0015753787104090236,
+        "support": 952
+      },
+      {
+        "rolePlace": "Trụ sở công an",
+        "scenarioId": "market-chat",
+        "mean": -0.000053295733576641324,
+        "support": 274
+      },
+      {
+        "rolePlace": "Trụ sở công an",
+        "scenarioId": "neighborhood",
+        "mean": 0.00017071031891259525,
+        "support": 349
+      },
+      {
+        "rolePlace": "Trụ sở công an",
+        "scenarioId": "office-shift",
+        "mean": -0.0002384570000000079,
+        "support": 24
+      },
+      {
+        "rolePlace": "Trụ sở công an",
+        "scenarioId": "post-office",
+        "mean": -0.000029504710084032712,
+        "support": 238
+      },
+      {
+        "rolePlace": "Trụ sở công an",
+        "scenarioId": "practice-cycle",
+        "mean": -0.00006154250000000039,
+        "support": 84
+      },
+      {
+        "rolePlace": "Trụ sở công an",
+        "scenarioId": "practice-drink",
+        "mean": 0.00028289318473471634,
+        "support": 432
+      },
+      {
+        "rolePlace": "Trụ sở công an",
+        "scenarioId": "practice-exercise",
+        "mean": -0.00006365001290322573,
+        "support": 155
+      },
+      {
+        "rolePlace": "Trụ sở công an",
+        "scenarioId": "practice-jump",
+        "mean": -0.00006250585294117705,
+        "support": 204
+      },
+      {
+        "rolePlace": "Trụ sở công an",
+        "scenarioId": "practice-run",
+        "mean": -0.00006376065989847794,
+        "support": 197
+      },
+      {
+        "rolePlace": "Trụ sở công an",
+        "scenarioId": "practice-shop",
+        "mean": -0.00006409635789473684,
+        "support": 95
+      },
+      {
+        "rolePlace": "Trụ sở công an",
+        "scenarioId": "practice-study",
+        "mean": -0.00006166164179104382,
+        "support": 67
+      },
+      {
+        "rolePlace": "Trụ sở công an",
+        "scenarioId": "practice-tag",
+        "mean": -0.0000615527999999983,
+        "support": 145
+      },
+      {
+        "rolePlace": "Trụ sở công an",
+        "scenarioId": "practice-walk-pet",
+        "mean": -0.00006053824999999932,
+        "support": 120
+      },
+      {
+        "rolePlace": "Trụ sở công an",
+        "scenarioId": "quiet-walk",
+        "mean": 0.000730393614274554,
+        "support": 342
+      },
+      {
+        "rolePlace": "Trụ sở công an",
+        "scenarioId": "rehabilitate",
+        "mean": 0.0010197865843350226,
+        "support": 454
+      },
+      {
+        "rolePlace": "Trụ sở công an",
+        "scenarioId": "rest-home",
+        "mean": -0.00005747747061166575,
+        "support": 3840
+      },
+      {
+        "rolePlace": "Trụ sở công an",
+        "scenarioId": "ride-bus",
+        "mean": -0.000029340755395683105,
+        "support": 417
+      },
+      {
+        "rolePlace": "Trụ sở công an",
+        "scenarioId": "ride-metro",
+        "mean": -0.000029193119999999266,
+        "support": 200
+      },
+      {
+        "rolePlace": "Trụ sở công an",
+        "scenarioId": "school-project",
+        "mean": -0.0001562238461538466,
+        "support": 78
+      },
+      {
+        "rolePlace": "Trụ sở công an",
+        "scenarioId": "shared-meal",
+        "mean": 0.0011574733666401941,
+        "support": 352
+      },
+      {
+        "rolePlace": "Trụ sở công an",
+        "scenarioId": "sports",
+        "mean": -0.0002447010000000166,
+        "support": 10
+      },
+      {
+        "rolePlace": "Trụ sở công an",
+        "scenarioId": "teach-class",
+        "mean": -0.0001523410909090907,
+        "support": 66
+      },
+      {
+        "rolePlace": "Trung tâm việc làm",
+        "scenarioId": "airport-visit",
+        "mean": -0.00016010363636363438,
+        "support": 33
+      },
+      {
+        "rolePlace": "Trung tâm việc làm",
+        "scenarioId": "cafe-shift",
+        "mean": -0.00018532799999999798,
+        "support": 13
+      },
+      {
+        "rolePlace": "Trung tâm việc làm",
+        "scenarioId": "cinema-evening",
+        "mean": 0.0002314431273718293,
+        "support": 71
+      },
+      {
+        "rolePlace": "Trung tâm việc làm",
+        "scenarioId": "culture",
+        "mean": 0.00023801845314192573,
+        "support": 62
+      },
+      {
+        "rolePlace": "Trung tâm việc làm",
+        "scenarioId": "date-invitation",
+        "mean": 0.00028747181503390525,
+        "support": 261
+      },
+      {
+        "rolePlace": "Trung tâm việc làm",
+        "scenarioId": "factory-shift",
+        "mean": -0.0002654195999999887,
+        "support": 5
+      },
+      {
+        "rolePlace": "Trung tâm việc làm",
+        "scenarioId": "fire-training",
+        "mean": -0.00014354828571428759,
+        "support": 28
+      },
+      {
+        "rolePlace": "Trung tâm việc làm",
+        "scenarioId": "friendship",
+        "mean": 0.00039941572899353386,
+        "support": 317
+      },
+      {
+        "rolePlace": "Trung tâm việc làm",
+        "scenarioId": "garden-care",
+        "mean": -0.00011748600000001088,
+        "support": 14
+      },
+      {
+        "rolePlace": "Trung tâm việc làm",
+        "scenarioId": "groceries",
+        "mean": 0.000364232999999987,
+        "support": 6
+      },
+      {
+        "rolePlace": "Trung tâm việc làm",
+        "scenarioId": "hospital-check",
+        "mean": 0.0008097665020997455,
+        "support": 187
+      },
+      {
+        "rolePlace": "Trung tâm việc làm",
+        "scenarioId": "job-search",
+        "mean": -0.0001326079270752533,
+        "support": 1289
+      },
+      {
+        "rolePlace": "Trung tâm việc làm",
+        "scenarioId": "learn-trade",
+        "mean": -0.0001549285945945914,
+        "support": 37
+      },
+      {
+        "rolePlace": "Trung tâm việc làm",
+        "scenarioId": "library",
+        "mean": 0.00011045540501344947,
+        "support": 145
+      },
+      {
+        "rolePlace": "Trung tâm việc làm",
+        "scenarioId": "lunch",
+        "mean": 0.0014880127271677908,
+        "support": 768
+      },
+      {
+        "rolePlace": "Trung tâm việc làm",
+        "scenarioId": "market-chat",
+        "mean": -0.0000552892625698313,
+        "support": 179
+      },
+      {
+        "rolePlace": "Trung tâm việc làm",
+        "scenarioId": "neighborhood",
+        "mean": -0.0000015590306297053233,
+        "support": 239
+      },
+      {
+        "rolePlace": "Trung tâm việc làm",
+        "scenarioId": "office-shift",
+        "mean": -0.000250424470588239,
+        "support": 34
+      },
+      {
+        "rolePlace": "Trung tâm việc làm",
+        "scenarioId": "post-office",
+        "mean": -0.000030761179372195996,
+        "support": 223
+      },
+      {
+        "rolePlace": "Trung tâm việc làm",
+        "scenarioId": "practice-cycle",
+        "mean": -0.00006219988235294356,
+        "support": 51
+      },
+      {
+        "rolePlace": "Trung tâm việc làm",
+        "scenarioId": "practice-drink",
+        "mean": 0.00016627715923593463,
+        "support": 160
+      },
+      {
+        "rolePlace": "Trung tâm việc làm",
+        "scenarioId": "practice-exercise",
+        "mean": -0.00006187270588234175,
+        "support": 17
+      },
+      {
+        "rolePlace": "Trung tâm việc làm",
+        "scenarioId": "practice-jump",
+        "mean": -0.00006369520000000239,
+        "support": 15
+      },
+      {
+        "rolePlace": "Trung tâm việc làm",
+        "scenarioId": "practice-run",
+        "mean": -0.00006172166197183234,
+        "support": 71
+      },
+      {
+        "rolePlace": "Trung tâm việc làm",
+        "scenarioId": "practice-shop",
+        "mean": -0.00006600240000000101,
+        "support": 35
+      },
+      {
+        "rolePlace": "Trung tâm việc làm",
+        "scenarioId": "practice-study",
+        "mean": -0.00006275729411764774,
+        "support": 51
+      },
+      {
+        "rolePlace": "Trung tâm việc làm",
+        "scenarioId": "practice-tag",
+        "mean": -0.00006205447058823629,
+        "support": 34
+      },
+      {
+        "rolePlace": "Trung tâm việc làm",
+        "scenarioId": "practice-walk-pet",
+        "mean": -0.00006133077777777557,
+        "support": 54
+      },
+      {
+        "rolePlace": "Trung tâm việc làm",
+        "scenarioId": "quiet-walk",
+        "mean": 0.0003888718930243623,
+        "support": 310
+      },
+      {
+        "rolePlace": "Trung tâm việc làm",
+        "scenarioId": "rehabilitate",
+        "mean": 0.0009986458803201426,
+        "support": 313
+      },
+      {
+        "rolePlace": "Trung tâm việc làm",
+        "scenarioId": "rest-home",
+        "mean": -0.00012839687336288136,
+        "support": 2888
+      },
+      {
+        "rolePlace": "Trung tâm việc làm",
+        "scenarioId": "ride-bus",
+        "mean": -0.000030707363207545734,
+        "support": 212
+      },
+      {
+        "rolePlace": "Trung tâm việc làm",
+        "scenarioId": "ride-metro",
+        "mean": -0.000031007038834949027,
+        "support": 103
+      },
+      {
+        "rolePlace": "Trung tâm việc làm",
+        "scenarioId": "school-project",
+        "mean": -0.00015351024489795878,
+        "support": 49
+      },
+      {
+        "rolePlace": "Trung tâm việc làm",
+        "scenarioId": "shared-meal",
+        "mean": 0.0009821074040230846,
+        "support": 312
+      },
+      {
+        "rolePlace": "Trung tâm việc làm",
+        "scenarioId": "sports",
+        "mean": -0.00025236833333332697,
+        "support": 27
+      },
+      {
+        "rolePlace": "Trung tâm việc làm",
+        "scenarioId": "teach-class",
+        "mean": -0.00015678399999999673,
+        "support": 27
+      },
+      {
+        "rolePlace": "Trường nghề",
+        "scenarioId": "airport-visit",
+        "mean": -0.0001473223043478279,
+        "support": 23
+      },
+      {
+        "rolePlace": "Trường nghề",
+        "scenarioId": "cafe-shift",
+        "mean": -0.00016816799999999632,
+        "support": 8
+      },
+      {
+        "rolePlace": "Trường nghề",
+        "scenarioId": "cinema-evening",
+        "mean": 0.00009230012994490247,
+        "support": 196
+      },
+      {
+        "rolePlace": "Trường nghề",
+        "scenarioId": "culture",
+        "mean": 0.00012428888072658505,
+        "support": 79
+      },
+      {
+        "rolePlace": "Trường nghề",
+        "scenarioId": "date-invitation",
+        "mean": 0.00012464330558000118,
+        "support": 120
+      },
+      {
+        "rolePlace": "Trường nghề",
+        "scenarioId": "fire-training",
+        "mean": -0.00012961874999999588,
+        "support": 8
+      },
+      {
+        "rolePlace": "Trường nghề",
+        "scenarioId": "friendship",
+        "mean": 0.00014582712318090933,
+        "support": 165
+      },
+      {
+        "rolePlace": "Trường nghề",
+        "scenarioId": "garden-care",
+        "mean": -0.00010970018181818282,
+        "support": 11
+      },
+      {
+        "rolePlace": "Trường nghề",
+        "scenarioId": "groceries",
+        "mean": 0.0006085093110500076,
+        "support": 9
+      },
+      {
+        "rolePlace": "Trường nghề",
+        "scenarioId": "hospital-check",
+        "mean": 0.00043836423453675434,
+        "support": 215
+      },
+      {
+        "rolePlace": "Trường nghề",
+        "scenarioId": "job-search",
+        "mean": -0.00012049537499999544,
+        "support": 8
+      },
+      {
+        "rolePlace": "Trường nghề",
+        "scenarioId": "learn-trade",
+        "mean": -0.00014732869709127415,
+        "support": 997
+      },
+      {
+        "rolePlace": "Trường nghề",
+        "scenarioId": "library",
+        "mean": 0.00001272337524791882,
+        "support": 24
+      },
+      {
+        "rolePlace": "Trường nghề",
+        "scenarioId": "lunch",
+        "mean": 0.0011434381468426811,
+        "support": 785
+      },
+      {
+        "rolePlace": "Trường nghề",
+        "scenarioId": "market-chat",
+        "mean": -0.00005276633108108232,
+        "support": 148
+      },
+      {
+        "rolePlace": "Trường nghề",
+        "scenarioId": "neighborhood",
+        "mean": -0.000015704671374383683,
+        "support": 162
+      },
+      {
+        "rolePlace": "Trường nghề",
+        "scenarioId": "post-office",
+        "mean": -0.00002780747499999899,
+        "support": 120
+      },
+      {
+        "rolePlace": "Trường nghề",
+        "scenarioId": "practice-cycle",
+        "mean": -0.00006123993750000291,
+        "support": 32
+      },
+      {
+        "rolePlace": "Trường nghề",
+        "scenarioId": "practice-drink",
+        "mean": 0.00015902394691956733,
+        "support": 230
+      },
+      {
+        "rolePlace": "Trường nghề",
+        "scenarioId": "practice-exercise",
+        "mean": -0.00006198176470587995,
+        "support": 51
+      },
+      {
+        "rolePlace": "Trường nghề",
+        "scenarioId": "practice-jump",
+        "mean": -0.000059916571428570376,
+        "support": 63
+      },
+      {
+        "rolePlace": "Trường nghề",
+        "scenarioId": "practice-run",
+        "mean": -0.000061182000000001,
+        "support": 22
+      },
+      {
+        "rolePlace": "Trường nghề",
+        "scenarioId": "practice-shop",
+        "mean": -0.00006119916666666911,
+        "support": 36
+      },
+      {
+        "rolePlace": "Trường nghề",
+        "scenarioId": "practice-study",
+        "mean": -0.00006022410000000302,
+        "support": 40
+      },
+      {
+        "rolePlace": "Trường nghề",
+        "scenarioId": "practice-tag",
+        "mean": -0.00005990185714285803,
+        "support": 14
+      },
+      {
+        "rolePlace": "Trường nghề",
+        "scenarioId": "practice-walk-pet",
+        "mean": -0.0000589031250000031,
+        "support": 16
+      },
+      {
+        "rolePlace": "Trường nghề",
+        "scenarioId": "quiet-walk",
+        "mean": 0.0002239528291225661,
+        "support": 164
+      },
+      {
+        "rolePlace": "Trường nghề",
+        "scenarioId": "rehabilitate",
+        "mean": 0.0006924004749676764,
+        "support": 419
+      },
+      {
+        "rolePlace": "Trường nghề",
+        "scenarioId": "rest-home",
+        "mean": -0.00024418555886884097,
+        "support": 2882
+      },
+      {
+        "rolePlace": "Trường nghề",
+        "scenarioId": "ride-bus",
+        "mean": -0.000028400361702126156,
+        "support": 94
+      },
+      {
+        "rolePlace": "Trường nghề",
+        "scenarioId": "ride-metro",
+        "mean": -0.000028604222222220666,
+        "support": 27
+      },
+      {
+        "rolePlace": "Trường nghề",
+        "scenarioId": "school-project",
+        "mean": -0.0001443015000000096,
+        "support": 8
+      },
+      {
+        "rolePlace": "Trường nghề",
+        "scenarioId": "shared-meal",
+        "mean": 0.0007811266009235045,
+        "support": 283
+      },
+      {
+        "rolePlace": "Trường nghề",
+        "scenarioId": "sports",
+        "mean": -0.00022830954545454714,
+        "support": 22
+      },
+      {
+        "rolePlace": "Trường nghề",
+        "scenarioId": "teach-class",
+        "mean": -0.00014483186159169707,
+        "support": 1156
+      },
+      {
+        "rolePlace": "Văn phòng",
+        "scenarioId": "airport-visit",
+        "mean": -0.00014599447826087278,
+        "support": 23
+      },
+      {
+        "rolePlace": "Văn phòng",
+        "scenarioId": "cafe-shift",
+        "mean": -0.0001733159999999928,
+        "support": 11
+      },
+      {
+        "rolePlace": "Văn phòng",
+        "scenarioId": "cinema-evening",
+        "mean": 0.0003476896472065157,
+        "support": 69
+      },
+      {
+        "rolePlace": "Văn phòng",
+        "scenarioId": "culture",
+        "mean": 0.00036710437331946214,
+        "support": 172
+      },
+      {
+        "rolePlace": "Văn phòng",
+        "scenarioId": "date-invitation",
+        "mean": 0.0003956237112617031,
+        "support": 282
+      },
+      {
+        "rolePlace": "Văn phòng",
+        "scenarioId": "fire-training",
+        "mean": -0.00013957452631579005,
+        "support": 19
+      },
+      {
+        "rolePlace": "Văn phòng",
+        "scenarioId": "friendship",
+        "mean": 0.000508844650772994,
+        "support": 311
+      },
+      {
+        "rolePlace": "Văn phòng",
+        "scenarioId": "garden-care",
+        "mean": -0.00010964314285714134,
+        "support": 7
+      },
+      {
+        "rolePlace": "Văn phòng",
+        "scenarioId": "groceries",
+        "mean": 0.0007938254683350077,
+        "support": 10
+      },
+      {
+        "rolePlace": "Văn phòng",
+        "scenarioId": "hospital-check",
+        "mean": 0.000624579391484137,
+        "support": 369
+      },
+      {
+        "rolePlace": "Văn phòng",
+        "scenarioId": "job-search",
+        "mean": -0.00012207194999999912,
+        "support": 20
+      },
+      {
+        "rolePlace": "Văn phòng",
+        "scenarioId": "learn-trade",
+        "mean": -0.000153455940594061,
+        "support": 101
+      },
+      {
+        "rolePlace": "Văn phòng",
+        "scenarioId": "library",
+        "mean": 0.00008256208369258464,
+        "support": 209
+      },
+      {
+        "rolePlace": "Văn phòng",
+        "scenarioId": "lunch",
+        "mean": 0.0013722090838496157,
+        "support": 787
+      },
+      {
+        "rolePlace": "Văn phòng",
+        "scenarioId": "market-chat",
+        "mean": -0.00005272721632653044,
+        "support": 245
+      },
+      {
+        "rolePlace": "Văn phòng",
+        "scenarioId": "neighborhood",
+        "mean": 0.00010517155004465403,
+        "support": 290
+      },
+      {
+        "rolePlace": "Văn phòng",
+        "scenarioId": "office-shift",
+        "mean": -0.00022694946089850073,
+        "support": 601
+      },
+      {
+        "rolePlace": "Văn phòng",
+        "scenarioId": "post-office",
+        "mean": -0.00002880640178571442,
+        "support": 224
+      },
+      {
+        "rolePlace": "Văn phòng",
+        "scenarioId": "practice-cycle",
+        "mean": -0.00006025174736842174,
+        "support": 95
+      },
+      {
+        "rolePlace": "Văn phòng",
+        "scenarioId": "practice-drink",
+        "mean": 0.00027899803083190287,
+        "support": 199
+      },
+      {
+        "rolePlace": "Văn phòng",
+        "scenarioId": "practice-exercise",
+        "mean": -0.000060722914285712425,
+        "support": 70
+      },
+      {
+        "rolePlace": "Văn phòng",
+        "scenarioId": "practice-jump",
+        "mean": -0.00005990785185185262,
+        "support": 81
+      },
+      {
+        "rolePlace": "Văn phòng",
+        "scenarioId": "practice-run",
+        "mean": -0.00006085916417910452,
+        "support": 67
+      },
+      {
+        "rolePlace": "Văn phòng",
+        "scenarioId": "practice-shop",
+        "mean": -0.00006089676923076586,
+        "support": 78
+      },
+      {
+        "rolePlace": "Văn phòng",
+        "scenarioId": "practice-study",
+        "mean": -0.00006038560824742214,
+        "support": 97
+      },
+      {
+        "rolePlace": "Văn phòng",
+        "scenarioId": "practice-tag",
+        "mean": -0.00006191477142857132,
+        "support": 70
+      },
+      {
+        "rolePlace": "Văn phòng",
+        "scenarioId": "practice-walk-pet",
+        "mean": -0.00005931292682926794,
+        "support": 41
+      },
+      {
+        "rolePlace": "Văn phòng",
+        "scenarioId": "quiet-walk",
+        "mean": 0.0005262333246157697,
+        "support": 276
+      },
+      {
+        "rolePlace": "Văn phòng",
+        "scenarioId": "rehabilitate",
+        "mean": 0.0009750829989369811,
+        "support": 519
+      },
+      {
+        "rolePlace": "Văn phòng",
+        "scenarioId": "rest-home",
+        "mean": -0.00005678075544633147,
+        "support": 3121
+      },
+      {
+        "rolePlace": "Văn phòng",
+        "scenarioId": "ride-bus",
+        "mean": -0.000029432269090908063,
+        "support": 275
+      },
+      {
+        "rolePlace": "Văn phòng",
+        "scenarioId": "ride-metro",
+        "mean": -0.000029479565217389958,
+        "support": 138
+      },
+      {
+        "rolePlace": "Văn phòng",
+        "scenarioId": "school-project",
+        "mean": -0.00015439666666667198,
+        "support": 99
+      },
+      {
+        "rolePlace": "Văn phòng",
+        "scenarioId": "shared-meal",
+        "mean": 0.001031489756024067,
+        "support": 320
+      },
+      {
+        "rolePlace": "Văn phòng",
+        "scenarioId": "sports",
+        "mean": -0.00024112350000000046,
+        "support": 20
+      },
+      {
+        "rolePlace": "Văn phòng",
+        "scenarioId": "teach-class",
+        "mean": -0.00015457410000000186,
+        "support": 40
+      },
+      {
+        "rolePlace": "Vườn nhỏ",
+        "scenarioId": "airport-visit",
+        "mean": -0.00015612258620689712,
+        "support": 29
+      },
+      {
+        "rolePlace": "Vườn nhỏ",
+        "scenarioId": "cafe-shift",
+        "mean": -0.0001760837419354815,
+        "support": 31
+      },
+      {
+        "rolePlace": "Vườn nhỏ",
+        "scenarioId": "cinema-evening",
+        "mean": 0.00028038368807873943,
+        "support": 254
+      },
+      {
+        "rolePlace": "Vườn nhỏ",
+        "scenarioId": "culture",
+        "mean": 0.00036559449223853293,
+        "support": 157
+      },
+      {
+        "rolePlace": "Vườn nhỏ",
+        "scenarioId": "date-invitation",
+        "mean": 0.00034203176513592133,
+        "support": 213
+      },
+      {
+        "rolePlace": "Vườn nhỏ",
+        "scenarioId": "factory-shift",
+        "mean": -0.0002623919999999921,
+        "support": 6
+      },
+      {
+        "rolePlace": "Vườn nhỏ",
+        "scenarioId": "fire-training",
+        "mean": -0.00013881750000000782,
+        "support": 24
+      },
+      {
+        "rolePlace": "Vườn nhỏ",
+        "scenarioId": "friendship",
+        "mean": 0.00033446555880641617,
+        "support": 234
+      },
+      {
+        "rolePlace": "Vườn nhỏ",
+        "scenarioId": "garden-care",
+        "mean": -0.00011440465196548545,
+        "support": 1043
+      },
+      {
+        "rolePlace": "Vườn nhỏ",
+        "scenarioId": "groceries",
+        "mean": 0.0006154162531285653,
+        "support": 7
+      },
+      {
+        "rolePlace": "Vườn nhỏ",
+        "scenarioId": "hospital-check",
+        "mean": 0.0008575254977947326,
+        "support": 228
+      },
+      {
+        "rolePlace": "Vườn nhỏ",
+        "scenarioId": "job-search",
+        "mean": -0.00013199472000000154,
+        "support": 25
+      },
+      {
+        "rolePlace": "Vườn nhỏ",
+        "scenarioId": "learn-trade",
+        "mean": -0.00015790215254237223,
+        "support": 59
+      },
+      {
+        "rolePlace": "Vườn nhỏ",
+        "scenarioId": "library",
+        "mean": -0.000010630173913042384,
+        "support": 161
+      },
+      {
+        "rolePlace": "Vườn nhỏ",
+        "scenarioId": "lunch",
+        "mean": 0.0015338146600427866,
+        "support": 742
+      },
+      {
+        "rolePlace": "Vườn nhỏ",
+        "scenarioId": "market-chat",
+        "mean": -0.00005588180597014594,
+        "support": 67
+      },
+      {
+        "rolePlace": "Vườn nhỏ",
+        "scenarioId": "neighborhood",
+        "mean": -0.00003579865116279068,
+        "support": 86
+      },
+      {
+        "rolePlace": "Vườn nhỏ",
+        "scenarioId": "office-shift",
+        "mean": -0.00023962399999999384,
+        "support": 6
+      },
+      {
+        "rolePlace": "Vườn nhỏ",
+        "scenarioId": "post-office",
+        "mean": -0.00003029913962264059,
+        "support": 265
+      },
+      {
+        "rolePlace": "Vườn nhỏ",
+        "scenarioId": "practice-cycle",
+        "mean": -0.00006415539622641582,
+        "support": 159
+      },
+      {
+        "rolePlace": "Vườn nhỏ",
+        "scenarioId": "practice-drink",
+        "mean": 0.0000888461698113225,
+        "support": 318
+      },
+      {
+        "rolePlace": "Vườn nhỏ",
+        "scenarioId": "practice-exercise",
+        "mean": -0.00006412093333333414,
+        "support": 90
+      },
+      {
+        "rolePlace": "Vườn nhỏ",
+        "scenarioId": "practice-jump",
+        "mean": -0.00006454903448275927,
+        "support": 87
+      },
+      {
+        "rolePlace": "Vườn nhỏ",
+        "scenarioId": "practice-run",
+        "mean": -0.00006704391176470656,
+        "support": 68
+      },
+      {
+        "rolePlace": "Vườn nhỏ",
+        "scenarioId": "practice-shop",
+        "mean": -0.00006339059016393358,
+        "support": 61
+      },
+      {
+        "rolePlace": "Vườn nhỏ",
+        "scenarioId": "practice-study",
+        "mean": -0.00006413634146341602,
+        "support": 41
+      },
+      {
+        "rolePlace": "Vườn nhỏ",
+        "scenarioId": "practice-tag",
+        "mean": -0.00006388746666666648,
+        "support": 45
+      },
+      {
+        "rolePlace": "Vườn nhỏ",
+        "scenarioId": "practice-walk-pet",
+        "mean": -0.00006385999999999777,
+        "support": 21
+      },
+      {
+        "rolePlace": "Vườn nhỏ",
+        "scenarioId": "quiet-walk",
+        "mean": 0.0006492624480325307,
+        "support": 166
+      },
+      {
+        "rolePlace": "Vườn nhỏ",
+        "scenarioId": "rehabilitate",
+        "mean": 0.0010556260972628363,
+        "support": 366
+      },
+      {
+        "rolePlace": "Vườn nhỏ",
+        "scenarioId": "rest-home",
+        "mean": -0.00011646497222249983,
+        "support": 2880
+      },
+      {
+        "rolePlace": "Vườn nhỏ",
+        "scenarioId": "ride-bus",
+        "mean": -0.000030423357142856772,
+        "support": 210
+      },
+      {
+        "rolePlace": "Vườn nhỏ",
+        "scenarioId": "ride-metro",
+        "mean": -0.000030383384615385558,
+        "support": 78
+      },
+      {
+        "rolePlace": "Vườn nhỏ",
+        "scenarioId": "school-project",
+        "mean": -0.00015849694444443213,
+        "support": 54
+      },
+      {
+        "rolePlace": "Vườn nhỏ",
+        "scenarioId": "shared-meal",
+        "mean": 0.001001825776486604,
+        "support": 291
+      },
+      {
+        "rolePlace": "Vườn nhỏ",
+        "scenarioId": "sports",
+        "mean": -0.0002481027631578946,
+        "support": 38
+      },
+      {
+        "rolePlace": "Vườn nhỏ",
+        "scenarioId": "teach-class",
+        "mean": -0.00015434039999999563,
+        "support": 30
+      },
+      {
+        "rolePlace": "Xưởng xe máy",
+        "scenarioId": "airport-visit",
+        "mean": -0.00016016533333333493,
+        "support": 45
+      },
+      {
+        "rolePlace": "Xưởng xe máy",
+        "scenarioId": "cafe-shift",
+        "mean": -0.00017234100000000074,
+        "support": 44
+      },
+      {
+        "rolePlace": "Xưởng xe máy",
+        "scenarioId": "cinema-evening",
+        "mean": 0.0005756715879853606,
+        "support": 249
+      },
+      {
+        "rolePlace": "Xưởng xe máy",
+        "scenarioId": "culture",
+        "mean": 0.0005580640506080475,
+        "support": 168
+      },
+      {
+        "rolePlace": "Xưởng xe máy",
+        "scenarioId": "date-invitation",
+        "mean": 0.0005321421431576502,
+        "support": 288
+      },
+      {
+        "rolePlace": "Xưởng xe máy",
+        "scenarioId": "factory-shift",
+        "mean": -0.00026239200000000414,
+        "support": 7
+      },
+      {
+        "rolePlace": "Xưởng xe máy",
+        "scenarioId": "fire-training",
+        "mean": -0.00013772172413792626,
+        "support": 29
+      },
+      {
+        "rolePlace": "Xưởng xe máy",
+        "scenarioId": "friendship",
+        "mean": 0.0006076411399535027,
+        "support": 315
+      },
+      {
+        "rolePlace": "Xưởng xe máy",
+        "scenarioId": "garden-care",
+        "mean": -0.00011084809090909706,
+        "support": 22
+      },
+      {
+        "rolePlace": "Xưởng xe máy",
+        "scenarioId": "groceries",
+        "mean": 0.0007066640948214005,
+        "support": 7
+      },
+      {
+        "rolePlace": "Xưởng xe máy",
+        "scenarioId": "hospital-check",
+        "mean": 0.0009411145465287594,
+        "support": 367
+      },
+      {
+        "rolePlace": "Xưởng xe máy",
+        "scenarioId": "job-search",
+        "mean": -0.00013084500000000023,
+        "support": 66
+      },
+      {
+        "rolePlace": "Xưởng xe máy",
+        "scenarioId": "learn-trade",
+        "mean": -0.00016218248148147576,
+        "support": 81
+      },
+      {
+        "rolePlace": "Xưởng xe máy",
+        "scenarioId": "library",
+        "mean": 0.000016233434373653266,
+        "support": 241
+      },
+      {
+        "rolePlace": "Xưởng xe máy",
+        "scenarioId": "lunch",
+        "mean": 0.0016136766501336334,
+        "support": 852
+      },
+      {
+        "rolePlace": "Xưởng xe máy",
+        "scenarioId": "market-chat",
+        "mean": -0.000055605656249998984,
+        "support": 288
+      },
+      {
+        "rolePlace": "Xưởng xe máy",
+        "scenarioId": "neighborhood",
+        "mean": -0.000028618211734912738,
+        "support": 348
+      },
+      {
+        "rolePlace": "Xưởng xe máy",
+        "scenarioId": "office-shift",
+        "mean": -0.0002319412499999984,
+        "support": 16
+      },
+      {
+        "rolePlace": "Xưởng xe máy",
+        "scenarioId": "post-office",
+        "mean": -0.000030256205357141922,
+        "support": 224
+      },
+      {
+        "rolePlace": "Xưởng xe máy",
+        "scenarioId": "practice-cycle",
+        "mean": -0.00006400277227722821,
+        "support": 101
+      },
+      {
+        "rolePlace": "Xưởng xe máy",
+        "scenarioId": "practice-drink",
+        "mean": 0.00023925429615653527,
+        "support": 398
+      },
+      {
+        "rolePlace": "Xưởng xe máy",
+        "scenarioId": "practice-exercise",
+        "mean": -0.00006242372222222339,
+        "support": 108
+      },
+      {
+        "rolePlace": "Xưởng xe máy",
+        "scenarioId": "practice-jump",
+        "mean": -0.00006417094339622726,
+        "support": 159
+      },
+      {
+        "rolePlace": "Xưởng xe máy",
+        "scenarioId": "practice-run",
+        "mean": -0.00006445207947019964,
+        "support": 151
+      },
+      {
+        "rolePlace": "Xưởng xe máy",
+        "scenarioId": "practice-shop",
+        "mean": -0.0000637986382978749,
+        "support": 94
+      },
+      {
+        "rolePlace": "Xưởng xe máy",
+        "scenarioId": "practice-study",
+        "mean": -0.00006642563636363646,
+        "support": 33
+      },
+      {
+        "rolePlace": "Xưởng xe máy",
+        "scenarioId": "practice-tag",
+        "mean": -0.0000666203999999963,
+        "support": 40
+      },
+      {
+        "rolePlace": "Xưởng xe máy",
+        "scenarioId": "practice-walk-pet",
+        "mean": -0.0000620125919999997,
+        "support": 125
+      },
+      {
+        "rolePlace": "Xưởng xe máy",
+        "scenarioId": "quiet-walk",
+        "mean": 0.0007239821495015044,
+        "support": 303
+      },
+      {
+        "rolePlace": "Xưởng xe máy",
+        "scenarioId": "rehabilitate",
+        "mean": 0.0010681057369658022,
+        "support": 475
+      },
+      {
+        "rolePlace": "Xưởng xe máy",
+        "scenarioId": "rest-home",
+        "mean": -0.000064968545501905,
+        "support": 3360
+      },
+      {
+        "rolePlace": "Xưởng xe máy",
+        "scenarioId": "ride-bus",
+        "mean": -0.000030127393643029778,
+        "support": 409
+      },
+      {
+        "rolePlace": "Xưởng xe máy",
+        "scenarioId": "ride-metro",
+        "mean": -0.0000301528909090898,
+        "support": 220
+      },
+      {
+        "rolePlace": "Xưởng xe máy",
+        "scenarioId": "school-project",
+        "mean": -0.00016218798876404083,
+        "support": 89
+      },
+      {
+        "rolePlace": "Xưởng xe máy",
+        "scenarioId": "shared-meal",
+        "mean": 0.0011675383317008466,
+        "support": 297
+      },
+      {
+        "rolePlace": "Xưởng xe máy",
+        "scenarioId": "sports",
+        "mean": -0.000247172727272727,
+        "support": 11
+      },
+      {
+        "rolePlace": "Xưởng xe máy",
+        "scenarioId": "teach-class",
+        "mean": -0.00015255936000000024,
+        "support": 50
+      }
+    ]
+  },
+  "training": {
+    "kind": "synthetic-hourly-ordinary-rollout-v1",
+    "agents": 24,
+    "days": 60,
+    "summary": {
+      "returnPerAgentDay": {
+        "mean": 1.2002169263826143,
+        "ci95": [
+          1.185053780901456,
+          1.2153800718637726
+        ],
+        "n": 8,
+        "min": 1.168102711141222,
+        "max": 1.2224910203167172
+      },
+      "immediateRegretPerAgentDay": {
+        "mean": 3.3348292727933786,
+        "ci95": [
+          3.210945670254634,
+          3.458712875332123
+        ],
+        "n": 8,
+        "min": 3.0748669950298475,
+        "max": 3.526875026636038
+      },
+      "needOkRatio": {
+        "mean": 1,
+        "ci95": [
+          1,
+          1
+        ],
+        "n": 8,
+        "min": 1,
+        "max": 1
+      },
+      "timeToCompetenceDays": {
+        "mean": 3,
+        "ci95": [
+          3,
+          3
+        ],
+        "n": 8,
+        "min": 3,
+        "max": 3
+      },
+      "competentFraction": {
+        "mean": 1,
+        "ci95": [
+          1,
+          1
+        ],
+        "n": 8,
+        "min": 1,
+        "max": 1
+      },
+      "daysToRecover": {
+        "mean": 3,
+        "ci95": [
+          3,
+          3
+        ],
+        "n": 8,
+        "min": 3,
+        "max": 3
+      },
+      "recoveredFraction": {
+        "mean": 1,
+        "ci95": [
+          1,
+          1
+        ],
+        "n": 8,
+        "min": 1,
+        "max": 1
+      },
+      "actionEntropy": {
+        "mean": 0.5557924650141977,
+        "ci95": [
+          0.5512187190549478,
+          0.5603662109734475
+        ],
+        "n": 8,
+        "min": 0.5470993987760212,
+        "max": 0.5632582458493602
+      },
+      "voluntaryActionEntropy": {
+        "mean": 0.5768515251401919,
+        "ci95": [
+          0.5699737960442286,
+          0.5837292542361552
+        ],
+        "n": 8,
+        "min": 0.5636559800321195,
+        "max": 0.5879676368778048
+      },
+      "repeatRate": {
+        "mean": 0.2915182707899004,
+        "ci95": [
+          0.29139384678118097,
+          0.2916426947986198
+        ],
+        "n": 8,
+        "min": 0.29129024785730834,
+        "max": 0.29169562195969423
+      },
+      "meanMaxActionShare": {
+        "mean": 0.3335431134259191,
+        "ci95": [
+          0.33343824946105743,
+          0.3336479773907807
+        ],
+        "n": 8,
+        "min": 0.33342013888888206,
+        "max": 0.3337962962962894
+      },
+      "worstAgentDayActionShare": {
+        "mean": 0.375,
+        "ci95": [
+          0.375,
+          0.375
+        ],
+        "n": 8,
+        "min": 0.375,
+        "max": 0.375
+      },
+      "forcedFraction": {
+        "mean": 0.3333333333333333,
+        "ci95": [
+          0.3333333333333333,
+          0.3333333333333333
+        ],
+        "n": 8,
+        "min": 0.3333333333333333,
+        "max": 0.3333333333333333
+      }
+    },
+    "earnedOutcomes": 276480
+  },
+  "productionAccess": false,
+  "sha256": "4f1319ba90a58f2c32c5b06ed1cbbc4601cfa6468229268500a06d48a277d34d"
+}
