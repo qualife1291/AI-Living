@@ -170,6 +170,7 @@ try{
  assert.equal(archive.rewardEvidence.plan.binding,'legacy-start-time','Legacy pending keeps the weaker start-time label');
  assert.equal(archive.rewardEvidence.samples.before,oldSamples);assert.equal(archive.rewardEvidence.samples.after,oldSamples+1);
  assert.deepEqual(archive.rewardEvidence.decisionContext,contextAtChoice);
+ assert.equal(learned.living.experiences.find(e=>e.id===archive.id).rewardEvidence,undefined,'Snapshot summaries keep detailed evidence in the durable archive');
  const exportedRewards=await mf.dispatchFetch('http://localhost/api/living/learning?format=jsonl&limit=1000');
  const exportedRecords=(await exportedRewards.text()).trim().split('\n').map(s=>JSON.parse(s));
  assert.deepEqual(exportedRecords.find(e=>e.id===archive.id),archive,'JSONL exports the same durable evidence');

@@ -4,6 +4,7 @@ import { z } from "zod";
 import { validDecisionContext } from "./linucb.ts";
 import { planKey } from "./plan-identity.ts";
 import type { PersonPlan } from "../world";
+import type { World } from "../world";
 
 export const REWARD_VERSION = "scenario-outcome-v1" as const;
 export const FEATURE_VERSION = "needs-6d-v1" as const;
@@ -23,6 +24,16 @@ export function matchedPlanEvidence(plan: PersonPlan | undefined) {
   const duration=steps.reduce((n,s)=>n+s.duration,0)*1000;
   if(!Number.isFinite(duration))return {matchedKey:null,matchedDurationMs:null};
   return {matchedKey:planKey(plan)!,matchedDurationMs:duration};
+}
+/** Archive the full records in the same batch before committing this projection.
+ * Keep repeated world polling/writes small; never mutate the archive input. */
+export function rewardEvidenceSnapshot(world: World): World {
+  const experiences=world.living?.experiences;
+  if(!experiences?.some(e=>e.rewardEvidence!==undefined))return world;
+  return {...world,living:{...world.living!,experiences:experiences.map(e=>{
+    if(e.rewardEvidence===undefined)return e;
+    const summary={...e};delete summary.rewardEvidence;return summary;
+  })}};
 }
 
 /** Preserve the original operation order and clipping, including saturation. */

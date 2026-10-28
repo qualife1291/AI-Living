@@ -9,6 +9,7 @@ import {initializeAgent,prepareLearning,scenarios} from '../lib/living/learning.
 import {decisionContext} from '../lib/living/linucb.ts';
 import {planKey} from '../lib/living/plan-identity.ts';
 import {auditExperience,auditExperiences} from '../lib/living/experience-audit.ts';
+import {rewardEvidenceSnapshot} from '../lib/living/reward-evidence.ts';
 import {fixtureContext} from './learning-fixtures.mjs';
 
 const now=Date.parse('2026-10-28T02:00:00Z');
@@ -33,6 +34,12 @@ assert.equal(e.plan.binding,'fingerprint-v1');assert.equal(e.plan.declaredKey,e.
 assert.equal(e.samples.after-e.samples.before,1);assert.deepEqual(e.decisionContext,contextAtChoice);
 assert.notEqual(e.before.energy,50,'Settlement state includes elapsed needs, not invented decision-time needs');
 assert.equal(e.total,record.reward);assert.equal(world.born,born);
+const fullBytes=JSON.stringify(world),compact=rewardEvidenceSnapshot(world);
+assert.equal(compact.living.experiences[0].rewardEvidence,undefined);
+assert.equal(JSON.stringify(world),fullBytes,'Snapshot projection does not strip the full archive input');
+assert.deepEqual(compact.living.experiences.map(e=>e.id),world.living.experiences.map(e=>e.id));
+assert.deepEqual(compact.living.learning,world.living.learning,'Snapshot projection cannot change models or reward');
+assert.equal(rewardEvidenceSnapshot(compact),compact,'Repeated projection is idempotent');
 assert.deepEqual(settle(world),[],'Retry cannot create another evidence record or sample');
 assert.equal(world.living.learning.an.samples,1);
 const repeated=fixture();assert.deepEqual(settle(repeated),[record],'Fixed input gives byte-equivalent evidence');

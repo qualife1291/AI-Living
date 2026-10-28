@@ -14,6 +14,7 @@ import {hasDialogue,rememberDialogue} from "./dialogue-pool";
 import {preparePolicyWrite} from "./policy-store";
 import {reviewNarrative} from "./director";
 import {pendingPlanMatches} from "./plan-identity";
+import {rewardEvidenceSnapshot} from "./reward-evidence";
 
 export function fetchContext(input: RequestInfo | URL, init?: RequestInit) {
   const relay = env.XOM_CONTEXT_RELAY;
@@ -221,7 +222,7 @@ async function tickLivingInternal(proposal?: unknown, basis?: { revision: number
   }
   const learningCommit = crypto.randomUUID();
   result.state.learningCommit = learningCommit;
-  const policies = await preparePolicyWrite(db, result.world, current.revision + 1, learningCommit);
+  const policies = await preparePolicyWrite(db, rewardEvidenceSnapshot(result.world), current.revision + 1, learningCommit);
   try {
     const results = await db.batch([
       db
@@ -336,7 +337,7 @@ export async function learnCompleted() {
   }
   const nonce = crypto.randomUUID();
   state.learningCommit = nonce;
-  const policies = await preparePolicyWrite(database(), current.world, current.revision + 1, nonce);
+  const policies = await preparePolicyWrite(database(), rewardEvidenceSnapshot(current.world), current.revision + 1, nonce);
   const batch = await database().batch([
     database()
       .prepare(
