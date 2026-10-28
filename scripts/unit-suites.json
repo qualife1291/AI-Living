@@ -140,5 +140,8 @@
   ],
   [
     "scripts/test-context-cards.mjs"
+  ],
+  [
+    "scripts/test-prompt-memories.mjs"
   ]
 ]

@@ -246,3 +246,6 @@ Main và work đã fast-forward lên source e90021b72806c780d385111b846f30bb1de6
 ## 28/10/2026 — domain practice
 7274635 WIP đã push. Tám domain skill, minDomainSkill cho bốn scenario, cùng actual skillGain trong archive; chỉ completed matching plan một lần. Legacy giữ gate cũ bằng danh sách compat, không tạo proficiency hoặc tăng sample từ scalar; core progress trước khi có policy cũng được giữ. Không migration/history reset.
 Full46 suite (18,71s)/check/lint/build/API đạt; domain UI desktop/mobile/320px earned2/locked2 và legacy4 open đạt; social6/poll/F5 regression đạt. Ảnh actual preview đã gửi; không production/GPU thật. Benchmarkv2 explicit one-domain synthetic history, reward/MSE tabular0,561797/0,003588 và LinUCB0,559612/0,002683; v1 lưu riêng. Candidate e90021b/main0992549 vẫn là mốc trước domain, chưa có native Sites.
+
+## 28/10/2026 — context cards 33 nơi
+c6f1f69 WIP đã push. 49 thẻ/33places, strict schema/source editorial/phase/weather/location, weekend và festival/date/source gating; daemon nhận tối đa2thẻ đúng scene. Full47/check/lint/build/API đạt;40weather-phase cases + pure/deterministic/festival fresh date origin. Không coi gợi ý là observed event; không có scene props/occupancy context thật. Chi tiết CONTEXT_AND_MEMORY. Tiếp RAG private cho daemon, targeted tests đạt nhưng chưa full48 ở checkpoint.

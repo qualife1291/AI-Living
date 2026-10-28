@@ -4,6 +4,7 @@ import { proposalSchema } from "../lib/living/schema.ts";
 import { reviewNarrative, socialDirectionInstructions } from "../lib/living/director.ts";
 import {selectContextCards} from "../lib/living/context-cards.ts";
 import {observedWeather} from "../lib/living/realtime.ts";
+import {retrievePromptMemories} from "../lib/living/prompt-memories.ts";
 
 const origin = process.env.XOM_ORIGIN ?? "http://127.0.0.1:5173";
 const modelOrigin = process.env.XOM_LOCAL_AI_ORIGIN ?? "http://127.0.0.1:8090";
@@ -55,6 +56,7 @@ export async function cycle() {
         const allowNewRole =
           view.living.lastExpansionOn !== view.context.date &&
           view.living.catalog.roles.length < 40;
+        const memoryContext=await retrievePromptMemories(origin,["an",peer.id],`${result.turn.location} ${result.turn.activity}`);
         const reply = await fetch(modelOrigin + "/v1/chat/completions", {
           method: "POST",
           headers: { "content-type": "application/json" },
@@ -92,6 +94,7 @@ export async function cycle() {
                     "BẮT BUỘC tiếng Việt có dấu, 4–6 lượt luân phiên, dùng scene.addressing khi có",
                   scene: {
                     ...result.turn,
+                    memoryContext,
                     contextCards:selectContextCards(view.world,Date.parse(view.serverNow),2,{location:result.turn.location,weather:view.world.clock?.weatherOverride??observedWeather(view.context)?.kind,context:view.context}),
                     contextCardScope:"Đây là gợi ý biên tập cho kế hoạch tương lai, không phải quan sát, ký ức hoặc sự kiện đã xảy ra. Không tự gán đồ vật, giao dịch, người chứng kiến hay lịch chuyến thực.",
                     context: {
@@ -115,11 +118,11 @@ export async function cycle() {
                   peer: {
                     id: peer.id,
                     name: peer.name,
-                    memories: peer.memories.slice(-3),
+                    memories: memoryContext.byActor[peer.id]?.status==="unavailable"?peer.memories.slice(-3):undefined,
                   },
-                  anMemories: view.world.people
+                  anMemories: memoryContext.byActor.an?.status==="unavailable"?view.world.people
                     .find((p) => p.id === "an")
-                    ?.memories.slice(-3),
+                    ?.memories.slice(-3):undefined,
                 }),
               },
             ],

@@ -1,0 +1,18 @@
+import assert from 'node:assert/strict';
+import {retrievePromptMemories} from '../lib/living/prompt-memories.ts';
+const record={id:'record-one',personId:'an',eventId:'event-one',text:'Một ghi chú của An.',kind:'event-report',importance:3,witnessedWith:['an'],createdAt:'2026-10-28T02:00:00Z'};
+let calls=0;
+const fetcher=async(url,init)=>{calls++;assert(init.signal instanceof AbortSignal);assert.equal(url.searchParams.get('topic'),'góc sách');return Response.json({records:[{...record,personId:'binh'}, {...record,witnessedWith:['binh']},{...record,kind:'invented-live-observation'},record]});};
+const result=await retrievePromptMemories('http://127.0.0.1:5300',['an','binh','an'],'góc sách',fetcher);
+assert.equal(calls,2);assert.equal(result.byActor.an.records.length,1);assert.equal(result.byActor.an.records[0].ownerId,'an');assert.equal(result.byActor.binh.records.length,0);
+assert.equal(result.byActor.an.records[0].text,record.text);assert.equal(result.byActor.an.records[0].truncated,false);
+const long={...record,text:'Ký ức riêng. '.repeat(100)};
+const bounded=await retrievePromptMemories('http://localhost:5300',['an'],'topic',async()=>Response.json({records:Array.from({length:10},(_,i)=>({...long,id:`m-${i}`}))}));
+assert.equal(bounded.byActor.an.records.length,3);assert(bounded.byActor.an.records.every(r=>r.text.length===400&&r.truncated));assert(long.text.length>400,'Prompt truncation cannot change stored text');
+const denied=await retrievePromptMemories('http://localhost:5300',['an'],'topic',async()=>new Response('{}',{status:403}));assert.deepEqual(denied.byActor.an,{status:'denied',records:[]});
+const failed=await retrievePromptMemories('http://localhost:5300',['an'],'topic',async()=>{throw Error('offline');});assert.deepEqual(failed.byActor.an,{status:'unavailable',records:[]});
+const invalid=await retrievePromptMemories('http://localhost:5300',['an'],'topic',async()=>new Response('not JSON'));assert.equal(invalid.byActor.an.status,'unavailable');
+await assert.rejects(retrievePromptMemories('https://example.invalid',['an'],'topic',fetcher),/local authenticated/);
+await assert.rejects(retrievePromptMemories('http://localhost:5300',['../an'],'topic',fetcher),/participant/);
+assert.equal(calls,2,'Rejected origins/IDs cannot trigger requests');
+console.log('PASS private actor/witness filtering, provenance, bounded prompt context, explicit denied/unavailable states and no external calls');
