@@ -22,10 +22,11 @@ with sync_playwright() as p:
     before=float(host.get_attribute('data-time'));page.get_by_role('button',name='Phát kịch bản',exact=True).click();page.wait_for_function('(t)=>Number(document.querySelector(".studio-canvas")?.dataset.time)>t+.3',arg=before,timeout=15000);page.get_by_role('button',name='Tạm dừng kịch bản',exact=True).click();page.wait_for_timeout(500);paused=host.get_attribute('data-time');cast=host.get_attribute('data-cast');frozen_frames=host.get_attribute('data-frames');page.wait_for_timeout(500);assert host.get_attribute('data-frames')==frozen_frames,'A paused, unchanged studio must stop GPU draws';assert host.get_attribute('data-time')==paused;assert host.get_attribute('data-cast')==cast
     # Exercise actual rendering at the end and seek backward, not only shot buttons.
     slider=page.get_by_label('Thời gian kịch bản',exact=True)
+    def seek(second):slider.evaluate("(e,t)=>{Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,'value').set.call(e,String(t));e.dispatchEvent(new Event('input',{bubbles:true}));e.dispatchEvent(new Event('change',{bubbles:true}))}",second)
     for second in [0,24,48,72,96,119.9,120,37.5]:
-     slider.fill(str(second));page.wait_for_function('(t)=>Math.abs(Number(document.querySelector(".studio-canvas")?.dataset.time)-t)<.001',arg=second)
+     seek(second);page.wait_for_function('(t)=>Math.abs(Number(document.querySelector(".studio-canvas")?.dataset.time)-t)<.001',arg=second)
      assert host.get_attribute('data-asset-failures')=='0'
-    slider.fill('119.9');page.get_by_role('button',name='Phát kịch bản',exact=True).click()
+    seek(119.9);page.get_by_role('button',name='Phát kịch bản',exact=True).click()
     page.wait_for_function('document.querySelector(".studio-canvas")?.dataset.time==="120.000"',timeout=15000)
     page.wait_for_timeout(500);frames=host.get_attribute('data-frames');page.wait_for_timeout(400);assert host.get_attribute('data-time')=='120.000';assert host.get_attribute('data-frames')==frames,'Completed scene stops drawing'
     page.get_by_role('button',name='Phát kịch bản',exact=True).click()

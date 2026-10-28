@@ -14,7 +14,7 @@ with sync_playwright() as p:
   page.goto(base,wait_until='domcontentloaded',timeout=60000)
   page.locator('.three-canvas[data-ready="true"]').wait_for(timeout=90000)
   page.screenshot(path=str(out/f'city-{name}-preview.png'))
-  page.locator('.live-person button').click()
+  page.locator('.live-person > button').first.click()
   page.locator('.life-story').wait_for()
   assert 'tuổi mô phỏng' in page.locator('.life-story').inner_text()
   page.screenshot(path=str(out/f'profile-{name}-preview.png'))

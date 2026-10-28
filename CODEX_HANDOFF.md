@@ -1,6 +1,6 @@
 # Tiếp tục từ đây — 28/10/2026
 
-**WIP nghiệm thu toàn bộ:** đang thực hiện theo [contract](docs/validation/acceptance-contract-2026-10-28.json), trước GND3. Chạy mới core/API/scenarios/browser trên fixture local cô lập, audit negative learning; core63/63/check/lint/assets/build và3API đã đạt;4studio desktop/mobile đã chạy, browser còn tiếp tục. H1 full2policy tái lập checksum nhưng vẫn trượt gate, không promote. Logs/metrics tạm ở `work/acceptance-2026-10-28/`; chưa có kết luận cuối. Không migrate/reset DB thật; native Sites vẫn thiếu.
+**WIP nghiệm thu toàn bộ:** đang thực hiện theo [contract](docs/validation/acceptance-contract-2026-10-28.json), trước GND3. Chạy mới core/API/scenarios/browser trên fixture local cô lập, audit negative learning; core63/63/check/lint/assets/build và3API đã đạt; H2/H4/H6/H10 có76artifact/42comparison tính lại đúng;18browser harness đã chạy, đang sửa/rerun các fixture stale và kiểm pause/camera. User yêu cầu sau nghiệm thu đạt tiếp GND3. H1 full2policy tái lập checksum nhưng vẫn trượt gate, không promote. Logs/metrics tạm ở `work/acceptance-2026-10-28/`; chưa có kết luận cuối. Không migrate/reset DB thật; native Sites vẫn thiếu.
 
 Chỉ đọc [AGENTS](AGENTS.md) và file này khi bắt đầu. [ROADMAP](ROADMAP.md) là backlog duy nhất; [README](README.md) chỉ mục theo công việc.
 

@@ -46,13 +46,18 @@ with sync_playwright() as p:
   page.wait_for_function('(id)=>document.querySelector(".asset-canvas")?.dataset.renderedModel===id&&document.querySelector(".asset-canvas")?.dataset.ready==="true"',arg=ids[-1],timeout=60000)
   assert host.locator('canvas').count()==1
   # A failed fetch is retryable without navigating away or resetting any world data.
-  failed=[False]
+  # A recoverable load failure must reject compressed and canonical transports.
+  transfer=json.loads((Path(__file__).resolve().parent.parent/'data/assets/city-transfer-manifest.json').read_text())
+  target=next(a for a in transfer['assets'] if a['id']=='gobkit-human002/it-engineer')
+  failed=[False];rejecting=[True]
   def fail_once(route):
-   if not failed[0]:failed[0]=True;route.abort()
+   if rejecting[0]:failed[0]=True;route.abort()
    else:route.continue_()
+  page.route('**'+target['url'],fail_once)
   page.route('**/gobkit-human002/ItEngineer.glb*',fail_once)
   page.locator('[data-model-id="gobkit-human002/it-engineer"]').click()
   page.get_by_role('button',name='Thử lại 3D',exact=True).wait_for(timeout=20000)
+  rejecting[0]=False
   page.get_by_role('button',name='Thử lại 3D',exact=True).click()
   page.wait_for_function('document.querySelector(".asset-canvas")?.dataset.renderedModel==="gobkit-human002/it-engineer"&&document.querySelector(".asset-canvas")?.dataset.ready==="true"',timeout=60000)
   assert failed[0] and not page.locator('.asset-error').count()

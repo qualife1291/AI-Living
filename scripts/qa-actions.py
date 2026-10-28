@@ -17,6 +17,11 @@ with sync_playwright() as p:
   page.route('**/api/world*',respond);page.route('**/api/living/pulse',lambda r:r.fulfill(status=200,content_type='application/json',body='{"ok":true,"duplicate":true}'))
   for kind,clip in expected.items():
    fixture=json.loads(subprocess.check_output(['node','scripts/social-preview-fixture.mjs',f'--detail={kind}'],text=True))
+   # Measure the requested clip without unrelated ambient conversation overrides.
+   if kind!='tag':
+    fixture['world']['living']['residents']=[]
+    for peer,place in zip(fixture['world']['people'][1:],['Phòng Bình','Phòng Chi']):
+     peer['plan']['from']=place;peer['plan']['steps'][0]['location']=place
    page.goto(base,wait_until='domcontentloaded',timeout=60000);host=page.locator('.three-canvas[data-ready="true"]');host.wait_for(timeout=90000)
    frame=int(host.get_attribute('data-frame'));page.wait_for_function('(f)=>Number(document.querySelector(".three-canvas")?.dataset.frame)>f+5',arg=frame,timeout=30000)
    if kind=='tag':clip='sprint' if host.get_attribute('data-walking')=='true' else 'idle'
