@@ -1,0 +1,96 @@
+{
+  "production": false,
+  "renderer": "Chromium SwiftShader",
+  "fixture": "Synthetic world; all APIs mocked. Compiled local D1 persistence tested separately.",
+  "cases": [
+    {
+      "viewport": "desktop",
+      "initial": {
+        "canvas": [
+          1788,
+          1118
+        ],
+        "css": [
+          1440,
+          900
+        ],
+        "quality": "balanced",
+        "pixelRatio": 1.2422599874998832
+      },
+      "pauseErrors": [
+        403,
+        409,
+        503,
+        "network",
+        "invalid-ack"
+      ],
+      "noDuplicateWrite": true,
+      "pausedMotionFrozen": true,
+      "chatFocusDraftAndNoSteal": true,
+      "keyboard": true,
+      "metadata": true,
+      "responsive320": true,
+      "presetsAndResize": true,
+      "dynamicDPR": true,
+      "pollKeepsCanvas": true,
+      "OSMRemount": true,
+      "hiddenResume": true,
+      "contextLossRetry": true,
+      "pageErrors": []
+    },
+    {
+      "viewport": "mobile",
+      "initial": {
+        "canvas": [
+          585,
+          1266
+        ],
+        "css": [
+          390,
+          844
+        ],
+        "quality": "balanced",
+        "pixelRatio": 1.5
+      },
+      "pauseErrors": [
+        403,
+        409,
+        503,
+        "network",
+        "invalid-ack"
+      ],
+      "noDuplicateWrite": true,
+      "pausedMotionFrozen": true,
+      "chatFocusDraftAndNoSteal": true,
+      "keyboard": true,
+      "metadata": true,
+      "responsive320": true,
+      "presetsAndResize": true,
+      "dynamicDPR": true,
+      "pollKeepsCanvas": true,
+      "OSMRemount": true,
+      "hiddenResume": true,
+      "contextLossRetry": true,
+      "pageErrors": []
+    },
+    {
+      "reducedMotion": true,
+      "preferenceChange": true,
+      "worldNotPaused": true,
+      "pageErrors": []
+    },
+    {
+      "transportFallback": "unsupported",
+      "pageErrors": []
+    },
+    {
+      "transportFallback": "corrupt",
+      "pageErrors": []
+    },
+    {
+      "transportFallback": "core-failure",
+      "pageErrors": []
+    }
+  ],
+  "implementationSource": "e5f5583"
+}

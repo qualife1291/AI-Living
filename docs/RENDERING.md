@@ -8,6 +8,10 @@ Một hệ10 world units/m; tỷ lệ procedural người khoảng17,5 unit, xe 
 
 Camera mặc định ưu tiên đời sống mặt đường, thấy cả cặp/xe/thú trên portrait. Focus nhà/vườn dùng aspect và segment clearance, có fallback nhìn từ trên. Ground có thể dừng khi projection đã báo đến; không dùng label/location thay kiểm vị trí thực. LOD/pause/poll phải giữ liên tục; không đổi appearance theo frame.
 
+G0 giới hạn render target thành phố eco1M/balanced2M/sharp6M pixel, đồng thời giữ capDPR1/1,75/2,5 (balanced dưới700px cap1,5). Resize/DPR/preset tính lại budget; DOM tên/thoại giữ độ nét CSS. Phím mũi tên chỉ điều khiển khi canvas có focus, không bắt phím chat. `prefers-reduced-motion` tắt camera tự theo và damping; chọn cư dân/nút Theo chỉ frame một lần, đổi preference có hiệu lực ngay và không pause clock. Mark `xom-city-start-to-first-frame` và `data-first-frame-ms` đo first render sau khi dựng scene, không phải toàn bộ asset/pixel đã được GPU trình bày.
+
+Pause chỉ xác nhận từ `{ok:true}` rồi đọc lại snapshot;403 hướng về tài khoản owner,409 refresh revision để người dùng kiểm tra,5xx/network/ACK lỗi giữ thông báo và không tự retry write. Poll thành công không xóa lỗi điều khiển. Chat giữ focus/bản nháp khi lỗi hoặc đang gửi, không giành focus nếu đã chuyển sang nút khác; response thiếu reply không được nhận là thành công.
+
 | Hành vi | Hợp đồng |
 |---|---|
 | Đi/chạy | Walk16 unit/s; run/tag tối đa28, cùng swept navigation. Không cam kết mọi chỗ hết kẹt trong20s. |

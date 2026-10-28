@@ -20,7 +20,7 @@ with sync_playwright() as p:
      if data.get('paused'):clock['pausedAt']=now
      elif clock['pausedAt'] is not None:clock['anchors'][-1]['realMs']+=now-clock['pausedAt'];clock['pausedAt']=None
      fixture['world']['paused']=data.get('paused',False)
-    r.fulfill(status=200,content_type='application/json',body=json.dumps(fixture))
+    r.fulfill(status=200,content_type='application/json',body=json.dumps({'ok':True} if r.request.method=='POST' else fixture))
    page.route('**/api/world*',world_route)
    page.route('**/api/living/pulse',lambda r:r.fulfill(status=200,content_type='application/json',body='{"ok":true,"duplicate":true}'))
    def pet_route(r):

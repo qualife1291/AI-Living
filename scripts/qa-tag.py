@@ -29,7 +29,7 @@ with sync_playwright() as p:
       else:
        clock=fixture['world']['clock'];clock['anchors'][-1]['realMs']+=now-clock['pausedAt'];clock['pausedAt']=None
       fixture['world']['paused']=body['paused']
-    route.fulfill(status=200,content_type='application/json',body=json.dumps(fixture))
+    route.fulfill(status=200,content_type='application/json',body=json.dumps({'ok':True} if route.request.method=='POST' else fixture))
    page.route('**/api/world*',respond)
    page.route('**/api/living/pulse',lambda r:r.fulfill(status=200,content_type='application/json',body='{"ok":true,"duplicate":true}'))
    page.goto(base,wait_until='domcontentloaded',timeout=60000)

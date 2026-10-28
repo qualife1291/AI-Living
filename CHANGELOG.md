@@ -4,6 +4,8 @@ Chỉ ghi mốc sản phẩm. Chi tiết commit/review nằm trong Git; số ver
 
 ## 28/10/2026
 
+- G0/UX thêm26 transport gzip lossless/hash-pinned, fallback canonical và tải avatar dự phòng khi cần; render pixel budget theo màn hình/DPR. Pause phân biệt lỗi/ACK, chat giữ focus/draft, camera keyboard/reduced-motion và metadata hiện hành.58suite/API và browser desktop/mobile đạt; canonical/license/dữ liệu học giữ nguyên.
+
 - H10 thêm optimizer offline có grid/budget/seed cohorts cố định, effect/diversity gate và stage hashes.9candidate→2validation, không selection nên giữ holdout chưa dùng và LinUCB hiện hành.57suite/API đạt; không cài config, sửa code tự động hoặc deploy.
 
 - H6 thêm actor-scoped local archive replay có SHA/dedup/conflict guard, one-pass numeric curriculum và warm24 study trên seed mới.56suite/API JSONL integration đạt; ridge order chỉ khác số học, warm24 chưa đủ gates nên giữ LinUCB. Không sửa history, own samples hoặc bật runtime importer.

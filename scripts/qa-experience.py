@@ -17,10 +17,10 @@ with sync_playwright() as p:
    before=host.get_attribute('data-position');page.wait_for_function('(p)=>document.querySelector(".three-canvas")?.dataset.position!==p',arg=before,timeout=20000)
    assert float(host.get_attribute('data-person-height'))<float(host.get_attribute('data-car-length'))/2
    assert int(host.get_attribute('data-draw-calls'))<90
-   canvas=host.locator('canvas');assert canvas.evaluate('(c)=>c.width/c.clientWidth')>=1.4
+   canvas=host.locator('canvas');assert canvas.evaluate('(c)=>c.width>0&&c.width*c.height<=2000000')
    page.get_by_role('button',name='Chất lượng đồ họa',exact=True).click()
    page.wait_for_function('(dpr)=>Number(document.querySelector(".three-canvas")?.dataset.pixelRatio)===Math.min(dpr,2.5)',arg=dpr,timeout=20000)
-   page.get_by_role('button',name='Chất lượng đồ họa',exact=True).click();page.wait_for_function('Number(document.querySelector(".three-canvas")?.dataset.pixelRatio)===1')
+   page.get_by_role('button',name='Chất lượng đồ họa',exact=True).click();page.wait_for_function('document.querySelector(".three-canvas")?.dataset.effectiveQuality==="eco"');assert canvas.evaluate('(c)=>c.width*c.height<=1000000')
    page.get_by_role('button',name='Chất lượng đồ họa',exact=True).click()
    page.get_by_role('button',name='Trò chuyện với An',exact=True).click();page.get_by_role('button',name='Bạn có dự định gì?',exact=True).click()
    page.locator('.conversation blockquote').wait_for(timeout=15000);assert 'quầy nước' in page.locator('.conversation blockquote').inner_text()

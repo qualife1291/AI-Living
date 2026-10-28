@@ -1,6 +1,6 @@
 # Kiểm thử và bằng chứng
 
-`scripts/unit-suites.json` là danh sách suite hiện hành; `npm run test:unit` dùng process độc lập, tối đa 4 workers, thu đủ lỗi thay vì fail-fast. `XOM_TEST_JOBS=1` chạy tuần tự. Mốc H10 có57suite đã đạt; đây không phải kết quả chạy mới mỗi khi sửa tài liệu.
+`scripts/unit-suites.json` là danh sách suite hiện hành; `npm run test:unit` dùng process độc lập, tối đa 4 workers, thu đủ lỗi thay vì fail-fast. `XOM_TEST_JOBS=1` chạy tuần tự. Mốc G0/UX có58suite đã đạt; đây không phải kết quả chạy mới mỗi khi sửa tài liệu.
 
 ## Chọn kiểm tra theo thay đổi
 
@@ -30,6 +30,8 @@ Restart Worker từ `dist/server/wrangler.json` sau build. `QA_BASE` bắt buộ
 
 | Harness trong scripts/ | Điều phải giữ |
 |---|---|
+| qa-g0-ux.py | Gzip/canonical fallback, pause403/409/5xx/network/ACK, chat focus/draft, keyboard,320px, presets/resize/hidden/context loss/retry và reduced-motion. |
+| qa-loading.py | Hai compiled loopback builds,3 cold-page repeat/viewport, network profile cố định, bytes/first-frame và asset completeness; không SLA thiết bị thật. |
 | qa-social.py | Đủ 6 lượt, luân phiên/poll/F5/source badge/camera. |
 | qa-overlays-households.py | Tên dài/câu 240 ký tự, pill/occlusion/click, hồ sơ và 320px. |
 | qa-cycle.py, qa-tag.py | Full bike/ground/pause/dismount, đổi vai/no teleport/cancel. |
@@ -59,3 +61,5 @@ H10 `test-bounded-search.mjs` kiểm miền tham số, grid/budget/seed isolatio
 ## ZIP source
 
 Sau commit/push: `python3 scripts/package-handoff.py /tmp/xom-ai-source.zip`. Script quét credential patterns/exclusions, kiểm required files, manifest/hash từng file và đọc lại ZIP. Gói này khác production archive. `TRANSFER_MANIFEST.json` được sinh ở repo để đóng gói; không commit file sinh ra hoặc ZIP/DB/cache.
+
+G0 `test-g0-ux.mjs` kiểm giải nén byte-identical cho26model, corruption/missing/abort canonical fallback và disposed không retry, pixel budget đến8K, pause HTTP/ACK/network, deadline signal và không tự gửi lại write. Mocks cũ pause phải trả `{ok:true}` như endpoint thật. Browser/metrics và so sánh tải ở [g0 evidence](validation/g0-ux-2026-10-28.json); không dùng timings local hay SwiftShader để kết luận hardware FPS.

@@ -17,11 +17,14 @@ python3 scripts/import-kenney.py --source-dir /workspace/attachments
 python3 scripts/import-resource-packs.py --help
 npm run assets:check
 npm run assets:maintain
+npm run assets:compress # Tạo lại gzip transport từ canonical đã kiểm hash
 ```
 
 `assets:maintain` ghi semantic bindings; `assets:check` kiểm manifest/hash/texture/license và công thức procedural. Asset unknown-license hoặc nhu cầu thiếu phải báo lỗi; không dựng hộp giả rồi nhận đã hỗ trợ. Importer chỉ đọc whitelist/dependencies, từ chối traversal/URL ngoài/symlink/duplicate entries, có giới hạn bytes; không chạy code/HTML/URL trong ZIP. Dùng source ZIP chỉ khi cần reimport, không thêm ZIP vào Git/production.
 
 Giữ canonical và nguồn/license/hash nếu làm compressed derivative. Dependencies tự phục vụ từ Site, không hotlink CDN lúc runtime. Texture PNG được chủ dự án tùy biến đã có hash mới; không tự thay atlas giữa hai pack chỉ vì cùng tên `colormap.png`.
+
+G0 dùng26 gzip transport GLB trong `public/models/derivatives`, manifest `data/assets/city-transfer-manifest.json`:3.700.500 byte canonical→899.690 byte gzip, giải nén ra đúng từng byte. Giữ nguyên catalog, rig/clip/material/texture và license gốc. `assets:check` kiểm cả hai checksum, bytes và giải nén. Browser chỉ dùng derivative khớp canonical hash, kiểm hash trước/sau giải nén; unsupported/lỗi dùng canonical, disposed không retry. Không preload4 model Kenney dự phòng (5 binding) khi core thành công; chỉ tải fallback tương ứng nếu core thất bại. Gallery/NPC vẫn on-demand. Đây là giảm bytes truyền, không giảm kích thước canonical hay số polygon.
 
 ## Runtime và rigs
 

@@ -1,0 +1,639 @@
+{
+  "phase": "G0/UX loading and controls",
+  "date": "2026-10-28",
+  "timezone": "Asia/Ho_Chi_Minh",
+  "implementationSource": "e5f5583",
+  "baselineBuildSource": "6473e988b99f5209c0c9782ac1563c5c89631f59",
+  "transport": {
+    "manifest": "data/assets/city-transfer-manifest.json",
+    "manifestSha256": "d06c1d239d5b9cb869fcbe399dc8faeb4750c9194480007fead4edc05cd1b374",
+    "derivatives": 26,
+    "sourceBytes": 3700500,
+    "gzipBytes": 899690,
+    "lossless": true,
+    "canonicalCatalogsAssetsLicensesUnchanged": true,
+    "checksumsBeforeAndAfterDecompression": true,
+    "canonicalFallbackOnUnsupportedMissingOrCorrupt": true,
+    "noFallbackAfterDispose": true,
+    "unusedUniqueFallbackModelsRemovedFromPreload": 4,
+    "removedFallbackBindings": 5,
+    "fallbackLoadedOnlyOnCorrespondingCoreFailure": true
+  },
+  "loading": {
+    "production": false,
+    "renderer": "Chromium SwiftShader",
+    "network": {
+      "latencyMs": 30,
+      "downloadBytesPerSecond": 2000000,
+      "uploadBytesPerSecond": 1000000,
+      "cacheDisabled": true
+    },
+    "fixture": "Synthetic, API mocked, three fresh-page repeats per viewport/build; alternating build order. Not a hardware/phone/production SLA.",
+    "cases": [
+      {
+        "firstReadyMs": 5070.800000000745,
+        "firstFrameMarkMs": null,
+        "loadedAssets": 30,
+        "failedAssets": 0,
+        "modelEncodedBytes": 4325825,
+        "modelTransferBytes": 4342925,
+        "modelRequests": 57,
+        "jsEncodedBytes": 470129,
+        "canvas": [
+          2520,
+          1575
+        ],
+        "css": [
+          1440,
+          900
+        ],
+        "quality": "balanced",
+        "drawCalls": 63,
+        "version": "before",
+        "viewport": "desktop",
+        "repeat": 0,
+        "errors": []
+      },
+      {
+        "firstReadyMs": 2624.300000000745,
+        "firstFrameMarkMs": 2623.4,
+        "loadedAssets": 26,
+        "failedAssets": 0,
+        "modelEncodedBytes": 1022010,
+        "modelTransferBytes": 1036710,
+        "modelRequests": 49,
+        "jsEncodedBytes": 473962,
+        "canvas": [
+          1788,
+          1118
+        ],
+        "css": [
+          1440,
+          900
+        ],
+        "quality": "balanced",
+        "drawCalls": 63,
+        "version": "after",
+        "viewport": "desktop",
+        "repeat": 0,
+        "errors": []
+      },
+      {
+        "firstReadyMs": 2835,
+        "firstFrameMarkMs": 2833.7,
+        "loadedAssets": 26,
+        "failedAssets": 0,
+        "modelEncodedBytes": 1022010,
+        "modelTransferBytes": 1036710,
+        "modelRequests": 49,
+        "jsEncodedBytes": 473962,
+        "canvas": [
+          1788,
+          1118
+        ],
+        "css": [
+          1440,
+          900
+        ],
+        "quality": "balanced",
+        "drawCalls": 63,
+        "version": "after",
+        "viewport": "desktop",
+        "repeat": 1,
+        "errors": []
+      },
+      {
+        "firstReadyMs": 4409.300000000745,
+        "firstFrameMarkMs": null,
+        "loadedAssets": 30,
+        "failedAssets": 0,
+        "modelEncodedBytes": 4325825,
+        "modelTransferBytes": 4342925,
+        "modelRequests": 57,
+        "jsEncodedBytes": 470129,
+        "canvas": [
+          2520,
+          1575
+        ],
+        "css": [
+          1440,
+          900
+        ],
+        "quality": "balanced",
+        "drawCalls": 63,
+        "version": "before",
+        "viewport": "desktop",
+        "repeat": 1,
+        "errors": []
+      },
+      {
+        "firstReadyMs": 4343.800000000745,
+        "firstFrameMarkMs": null,
+        "loadedAssets": 30,
+        "failedAssets": 0,
+        "modelEncodedBytes": 4325825,
+        "modelTransferBytes": 4342925,
+        "modelRequests": 57,
+        "jsEncodedBytes": 470129,
+        "canvas": [
+          2520,
+          1575
+        ],
+        "css": [
+          1440,
+          900
+        ],
+        "quality": "balanced",
+        "drawCalls": 63,
+        "version": "before",
+        "viewport": "desktop",
+        "repeat": 2,
+        "errors": []
+      },
+      {
+        "firstReadyMs": 2765.7000000011176,
+        "firstFrameMarkMs": 2764.8,
+        "loadedAssets": 26,
+        "failedAssets": 0,
+        "modelEncodedBytes": 1022010,
+        "modelTransferBytes": 1036710,
+        "modelRequests": 49,
+        "jsEncodedBytes": 473962,
+        "canvas": [
+          1788,
+          1118
+        ],
+        "css": [
+          1440,
+          900
+        ],
+        "quality": "balanced",
+        "drawCalls": 63,
+        "version": "after",
+        "viewport": "desktop",
+        "repeat": 2,
+        "errors": []
+      },
+      {
+        "firstReadyMs": 4331.299999998882,
+        "firstFrameMarkMs": null,
+        "loadedAssets": 30,
+        "failedAssets": 0,
+        "modelEncodedBytes": 4325825,
+        "modelTransferBytes": 4342925,
+        "modelRequests": 57,
+        "jsEncodedBytes": 470129,
+        "canvas": [
+          682,
+          1477
+        ],
+        "css": [
+          390,
+          844
+        ],
+        "quality": "balanced",
+        "drawCalls": 57,
+        "version": "before",
+        "viewport": "mobile",
+        "repeat": 0,
+        "errors": []
+      },
+      {
+        "firstReadyMs": 2630.0999999996275,
+        "firstFrameMarkMs": 2629,
+        "loadedAssets": 26,
+        "failedAssets": 0,
+        "modelEncodedBytes": 1022010,
+        "modelTransferBytes": 1036710,
+        "modelRequests": 49,
+        "jsEncodedBytes": 473962,
+        "canvas": [
+          585,
+          1266
+        ],
+        "css": [
+          390,
+          844
+        ],
+        "quality": "balanced",
+        "drawCalls": 57,
+        "version": "after",
+        "viewport": "mobile",
+        "repeat": 0,
+        "errors": []
+      },
+      {
+        "firstReadyMs": 2607.300000000745,
+        "firstFrameMarkMs": 2605.8,
+        "loadedAssets": 26,
+        "failedAssets": 0,
+        "modelEncodedBytes": 1022010,
+        "modelTransferBytes": 1036710,
+        "modelRequests": 49,
+        "jsEncodedBytes": 473962,
+        "canvas": [
+          585,
+          1266
+        ],
+        "css": [
+          390,
+          844
+        ],
+        "quality": "balanced",
+        "drawCalls": 57,
+        "version": "after",
+        "viewport": "mobile",
+        "repeat": 1,
+        "errors": []
+      },
+      {
+        "firstReadyMs": 4187,
+        "firstFrameMarkMs": null,
+        "loadedAssets": 30,
+        "failedAssets": 0,
+        "modelEncodedBytes": 4325825,
+        "modelTransferBytes": 4342925,
+        "modelRequests": 57,
+        "jsEncodedBytes": 470129,
+        "canvas": [
+          682,
+          1477
+        ],
+        "css": [
+          390,
+          844
+        ],
+        "quality": "balanced",
+        "drawCalls": 57,
+        "version": "before",
+        "viewport": "mobile",
+        "repeat": 1,
+        "errors": []
+      },
+      {
+        "firstReadyMs": 4207.799999998882,
+        "firstFrameMarkMs": null,
+        "loadedAssets": 30,
+        "failedAssets": 0,
+        "modelEncodedBytes": 4325825,
+        "modelTransferBytes": 4342925,
+        "modelRequests": 57,
+        "jsEncodedBytes": 470129,
+        "canvas": [
+          682,
+          1477
+        ],
+        "css": [
+          390,
+          844
+        ],
+        "quality": "balanced",
+        "drawCalls": 57,
+        "version": "before",
+        "viewport": "mobile",
+        "repeat": 2,
+        "errors": []
+      },
+      {
+        "firstReadyMs": 2629.7999999988824,
+        "firstFrameMarkMs": 2628.4,
+        "loadedAssets": 26,
+        "failedAssets": 0,
+        "modelEncodedBytes": 1022010,
+        "modelTransferBytes": 1036710,
+        "modelRequests": 49,
+        "jsEncodedBytes": 473962,
+        "canvas": [
+          585,
+          1266
+        ],
+        "css": [
+          390,
+          844
+        ],
+        "quality": "balanced",
+        "drawCalls": 57,
+        "version": "after",
+        "viewport": "mobile",
+        "repeat": 2,
+        "errors": []
+      }
+    ],
+    "summary": [
+      {
+        "viewport": "desktop",
+        "version": "before",
+        "samples": 3,
+        "medianFirstReadyMs": 4409.300000000745,
+        "medianModelEncodedBytes": 4325825,
+        "medianModelTransferBytes": 4342925,
+        "loadedAssets": [
+          30,
+          30,
+          30
+        ]
+      },
+      {
+        "viewport": "desktop",
+        "version": "after",
+        "samples": 3,
+        "medianFirstReadyMs": 2765.7000000011176,
+        "medianModelEncodedBytes": 1022010,
+        "medianModelTransferBytes": 1036710,
+        "loadedAssets": [
+          26,
+          26,
+          26
+        ]
+      },
+      {
+        "viewport": "mobile",
+        "version": "before",
+        "samples": 3,
+        "medianFirstReadyMs": 4207.799999998882,
+        "medianModelEncodedBytes": 4325825,
+        "medianModelTransferBytes": 4342925,
+        "loadedAssets": [
+          30,
+          30,
+          30
+        ]
+      },
+      {
+        "viewport": "mobile",
+        "version": "after",
+        "samples": 3,
+        "medianFirstReadyMs": 2629.7999999988824,
+        "medianModelEncodedBytes": 1022010,
+        "medianModelTransferBytes": 1036710,
+        "loadedAssets": [
+          26,
+          26,
+          26
+        ]
+      }
+    ],
+    "beforeBuildSource": "6473e988b99f5209c0c9782ac1563c5c89631f59",
+    "afterImplementationSource": "e5f5583"
+  },
+  "uncontrolledSingleRuns": {
+    "note": "Unshaped before/after single samples. After run overlapped browser QA; scheduling/cold-start differ. These samples do not establish latency improvement.",
+    "cases": [
+      {
+        "version": "before",
+        "firstReadyMs": 3722.89999999851,
+        "canvas": [
+          2520,
+          1575
+        ],
+        "css": [
+          1440,
+          900
+        ],
+        "dpr": 2,
+        "quality": "balanced",
+        "pixelRatio": "1.75",
+        "drawCalls": "63",
+        "viewport": "desktop",
+        "errors": [],
+        "modelBytes": 4325825,
+        "jsBytes": 470129
+      },
+      {
+        "version": "before",
+        "firstReadyMs": 1958.8999999985099,
+        "canvas": [
+          682,
+          1477
+        ],
+        "css": [
+          390,
+          844
+        ],
+        "dpr": 3,
+        "quality": "balanced",
+        "pixelRatio": "1.75",
+        "drawCalls": "57",
+        "viewport": "mobile",
+        "errors": [],
+        "modelBytes": 4325825,
+        "jsBytes": 470129
+      },
+      {
+        "version": "after",
+        "firstReadyMs": 3439.5999999996275,
+        "canvas": [
+          1788,
+          1118
+        ],
+        "css": [
+          1440,
+          900
+        ],
+        "dpr": 2,
+        "quality": "balanced",
+        "pixelRatio": "1.2422599874998832",
+        "drawCalls": "63",
+        "viewport": "desktop",
+        "errors": [],
+        "modelBytes": 1022010,
+        "jsBytes": 473962
+      },
+      {
+        "version": "after",
+        "firstReadyMs": 2780.5999999996275,
+        "canvas": [
+          585,
+          1266
+        ],
+        "css": [
+          390,
+          844
+        ],
+        "dpr": 3,
+        "quality": "balanced",
+        "pixelRatio": "1.5",
+        "drawCalls": "57",
+        "viewport": "mobile",
+        "errors": [],
+        "modelBytes": 1022010,
+        "jsBytes": 473962
+      }
+    ]
+  },
+  "browser": {
+    "metrics": "docs/screenshots/g0/metrics.json",
+    "metricsSha256": "019f700e088c8b63feadadf04d3b11687e01945515e70a300b059a18603fb93c",
+    "cases": [
+      {
+        "viewport": "desktop",
+        "initial": {
+          "canvas": [
+            1788,
+            1118
+          ],
+          "css": [
+            1440,
+            900
+          ],
+          "quality": "balanced",
+          "pixelRatio": 1.2422599874998832
+        },
+        "pauseErrors": [
+          403,
+          409,
+          503,
+          "network",
+          "invalid-ack"
+        ],
+        "noDuplicateWrite": true,
+        "pausedMotionFrozen": true,
+        "chatFocusDraftAndNoSteal": true,
+        "keyboard": true,
+        "metadata": true,
+        "responsive320": true,
+        "presetsAndResize": true,
+        "dynamicDPR": true,
+        "pollKeepsCanvas": true,
+        "OSMRemount": true,
+        "hiddenResume": true,
+        "contextLossRetry": true,
+        "pageErrors": []
+      },
+      {
+        "viewport": "mobile",
+        "initial": {
+          "canvas": [
+            585,
+            1266
+          ],
+          "css": [
+            390,
+            844
+          ],
+          "quality": "balanced",
+          "pixelRatio": 1.5
+        },
+        "pauseErrors": [
+          403,
+          409,
+          503,
+          "network",
+          "invalid-ack"
+        ],
+        "noDuplicateWrite": true,
+        "pausedMotionFrozen": true,
+        "chatFocusDraftAndNoSteal": true,
+        "keyboard": true,
+        "metadata": true,
+        "responsive320": true,
+        "presetsAndResize": true,
+        "dynamicDPR": true,
+        "pollKeepsCanvas": true,
+        "OSMRemount": true,
+        "hiddenResume": true,
+        "contextLossRetry": true,
+        "pageErrors": []
+      },
+      {
+        "reducedMotion": true,
+        "preferenceChange": true,
+        "worldNotPaused": true,
+        "pageErrors": []
+      },
+      {
+        "transportFallback": "unsupported",
+        "pageErrors": []
+      },
+      {
+        "transportFallback": "corrupt",
+        "pageErrors": []
+      },
+      {
+        "transportFallback": "core-failure",
+        "pageErrors": []
+      }
+    ],
+    "screenshots": [
+      {
+        "path": "docs/screenshots/g0/desktop-chat-preview.png",
+        "sha256": "8fac07e333d1b6c0005bd055064b58c25306792e33afb21082a9fde8d2c5d6a8"
+      },
+      {
+        "path": "docs/screenshots/g0/desktop-pause-error-preview.png",
+        "sha256": "bb0a5d2caaf87026b0000e0c9ed35d428b100a4dc20a8ed42865778b823e5768"
+      },
+      {
+        "path": "docs/screenshots/g0/desktop-preview.png",
+        "sha256": "69be0c9baef3f9a3bce40561a3989af47e1477f61a1eb2f521da667598562b2b"
+      },
+      {
+        "path": "docs/screenshots/g0/mobile-chat-preview.png",
+        "sha256": "38a23250653033bb4fec68fcd1597f3354e11f50907609847342b78ab43c8ed8"
+      },
+      {
+        "path": "docs/screenshots/g0/mobile-pause-error-preview.png",
+        "sha256": "cace34d5aafbea97c3ecf5c3bed9dd229876f5a610adb1baae1a74eb61045113"
+      },
+      {
+        "path": "docs/screenshots/g0/mobile-preview.png",
+        "sha256": "ea599ce52339c83a519e393692b05ca3b294d352e5538e35e281c867eee56af5"
+      },
+      {
+        "path": "docs/screenshots/g0/mobile-reduced-motion-preview.png",
+        "sha256": "bb6f738f9cc741f98637c7e4ea5532440ae1da0ba6e8d68e721a0a017f686de1"
+      }
+    ]
+  },
+  "verification": {
+    "unit": {
+      "suite": "unit-summary",
+      "total": 58,
+      "passed": 58,
+      "failed": [],
+      "workers": 4,
+      "seconds": 40.87
+    },
+    "typecheck": true,
+    "lintNoWarnings": true,
+    "build": true,
+    "assetManifestAndLosslessChecks": true,
+    "compiledLocalAPI": {
+      "suite": "local-diagnostics-http",
+      "ownerReadGuard": true,
+      "ownerWriteGuard": true,
+      "streamByteLimit": true,
+      "schema": true,
+      "origin": true,
+      "ack": true,
+      "jsonlReadback": true,
+      "rateLimit": true,
+      "retention": true,
+      "diagnosticsReadOnly": true,
+      "pulsePersistence": true,
+      "pulseRetry": true,
+      "pulseConcurrentViewers": 12,
+      "pulseNoDuplicateAudit": true,
+      "pulsePause": true,
+      "healthSchemaBatch": true,
+      "productionAccess": false
+    },
+    "sourceAfterTestsOnlyDocumentationEvidenceAndQAHarness": true,
+    "noRuntimePolicyRewardHistoryOrPersistenceChanges": true,
+    "newMigrations": false,
+    "documentation": {
+      "markdownFiles": 23,
+      "localLinksChecked": 92
+    }
+  },
+  "productionAccess": false,
+  "productionDeployed": false,
+  "limits": [
+    "Chromium SwiftShader, no hardware GPU/physical phone/soak/power/FPS evidence.",
+    "Three cold-page samples per viewport/build with fixed CDP network conditions; no production SLA or statistical significance claim. First-ready marks indicate rendered commands and DOM readiness, not GPU pixel presentation or full catalog load.",
+    "Main-city render pixel budget does not change actor geometry, navigation or simulation authority. Reduced motion suppresses automatic camera movement, not the persisted world clock.",
+    "All browser API mutations mocked; persistence/owner/origin/CAS separately checked in compiled local D1. No database reset or production archive processing.",
+    "Native Sites deploy/status/database tools unavailable; production ledger remains unchanged."
+  ],
+  "next": "H6b bounded local bulk/cursor replay; additive backfill/curation and authority-dependent features remain separate work."
+}

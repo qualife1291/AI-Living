@@ -1566,5 +1566,7 @@
       "modelBytes": 4325825,
       "jsBytes": 470129
     }
-  ]
+  ],
+  "buildSource": "6473e988b99f5209c0c9782ac1563c5c89631f59",
+  "sourceNote": "Repository HEAD3de9350 changes only handoff/release ledger after build6473e98; production source unchanged."
 }
