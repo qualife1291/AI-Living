@@ -4,7 +4,7 @@ Chỉ cần đọc [AGENTS](AGENTS.md) và file này khi bắt đầu. [ROADMAP]
 
 | Phần | Context hiện tại |
 |---|---|
-| Source | `work` đang chốt H10; `main` chờ merge. Xem Git cho HEAD. Default giữ LinUCB cá nhân; H10 chỉ thêm optimizer offline, không đổi runtime/reward/features/persistence. |
+| Source | `main`/`work` đã đồng bộ H10; xem Git cho HEAD (commit sau gói chỉ cập nhật ledger/handoff). Default giữ LinUCB cá nhân; H10 chỉ thêm optimizer offline, không đổi runtime/reward/features/persistence. |
 | Sản phẩm | Thành phố Three.js, An/Bình/Chi+NPC, tag/pet/bike, nhãn/thoại DOM,60cửa, audio opt-in,5khóm/30cây có care. Không renderer2D. |
 | AI/dữ liệu | LinUCB6D,8domain skills/gates, policy store0007/CAS, memories top-K/RAG, dialogue hashes,49context cards/33nơi; H3 archived reward evidence, snapshot chỉ summary. Không fine-tune LLM. |
 | Đã kiểm | H10:57suite/check/lint/build/assets/API local đạt. Full search/selection/model/case repeat và H1 byte/hash giữ nguyên. API JSONL→actor replay/CAS giữ history/own samples. Không UI/browser/GPU QA mới. |
@@ -16,6 +16,6 @@ Chỉ cần đọc [AGENTS](AGENTS.md) và file này khi bắt đầu. [ROADMAP]
 
 **Nền học cần giữ:** H2/H4/H6 đều chưa promote; H6 có actor-scoped local JSONL replay SHA-pinned, unique source records một lượt, conflicts reject, legacy không suy bổ sung. Private model artifacts chỉ Gitignored .sites-runtime/training. Không tăng earned trials/skills/memory hoặc chép donor posterior. Seeds đã xem: H2eval2000–2019; H4train3000/val4000/holdout5000; H6train6000/val7000/holdout8000; H10fit9000/point9500/search10000/val11000 (xem protocol cho range). Không gán role lịch sử từ role hiện tại.
 
-**Blocker prod:** thiếu native Sites credential/deploy/status/DB tools; user đã cho phép merge/push/prod, không hỏi lại. Candidate H6 source5e9a079 vẫn ở candidate.json cho tới cập nhật gói H10. Khi công cụ có lại: xác minh project/audience, backup/schema0006/0007, exact-SHA deploy/readback theo [runbook](docs/PRODUCTION_RUNBOOK.md). Không tạo Site/cron khác hoặc tìm credential cũ. Git push không phải Sites deploy.
+**Blocker prod:** thiếu native Sites credential/deploy/status/DB tools; user đã cho phép merge/push/prod, không hỏi lại. Gói H10 source`6473e98` đã build/package, SHA256 và796entries đã xác minh trong candidate.json; gói local `work/production-6473e98.tar.gz` **chưa deploy**. Khi công cụ có lại: xác minh project/audience, backup/schema0006/0007, exact-SHA deploy/readback theo [runbook](docs/PRODUCTION_RUNBOOK.md). Không tạo Site/cron khác hoặc tìm credential cũ. Git push không phải Sites deploy.
 
 **Giới hạn:** ground/playback/tag/pet/bike còn theo viewer; completion backend theo simtime+plan match, chưa physical arrival. Không cấp skill/P2P từ ETA/thoại/render. Gallery không là placement của mọi loài. Society WP20–27/NIM vẫn backlog có điều kiện; không hosted trial API/output vào production. Bằng chứng cũ ở validation/screenshots/releases, không cần đọc toàn bộ mặc định.

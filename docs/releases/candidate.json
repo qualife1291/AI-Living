@@ -1,13 +1,13 @@
 {
   "project_id": "appgprj_6adc7dc364d48191a09202c5b43309e4",
-  "source_commit": "5e9a079469d20e401cb339bf875c49c87f568c2e",
+  "source_commit": "6473e988b99f5209c0c9782ac1563c5c89631f59",
   "status": "prepared-not-deployed",
-  "archive_sha256": "d79b8b1defc645a7c9416c9322241310c5abbf7afd1a2208454cfd4eab588c07",
-  "archive_local_path": "work/production-5e9a079.tar.gz",
+  "archive_sha256": "19f38a6303ce0d2981d41d70d1de5c4852597dfa8b54310f301b933e11c6e269",
+  "archive_local_path": "work/production-6473e98.tar.gz",
   "production_ledger_unchanged": true,
   "blocker": "Native Sites credential/deploy/status/database tools unavailable in this session; user has already authorized release.",
   "validation": {
-    "unit_suites_passed": 56,
+    "unit_suites_passed": 57,
     "local_api": true,
     "typecheck_lint_build_assets": true,
     "browser_desktop_mobile": true,
@@ -29,7 +29,7 @@
     "unchanged_plan_binding": true,
     "full_duration_encounter_reporting": true,
     "physical_arrival_authority": false,
-    "browser_source_note": "Garden/social/home/cycle/pet desktop/mobile evidence from c77c21c UI. H0 backend, H1/H2/H4 offline studies, H3 archived reward evidence. H6 adds offline-only replay/curriculum/CLI with no production import or activation. Runtime/renderer/persistence source unchanged from H4; fresh compiled local API JSONL -> actor replay preserves snapshots/history/earned samples. No new browser or production readback.",
+    "browser_source_note": "Garden/social/home/cycle/pet desktop/mobile evidence from c77c21c UI. H10 adds only offline bounded search; no runtime/renderer/persistence changes or production activation. Fresh compiled local API JSONL -> actor replay preserves snapshots/history/earned samples. No new browser, hardware GPU QA or production readback.",
     "garden_plots": 5,
     "garden_plants": 30,
     "garden_phases": 5,
@@ -149,9 +149,36 @@
       "production_archive_processed": false,
       "offline_code_excluded_from_worker": true,
       "new_migrations": false
+    },
+    "learning_h10": {
+      "protocol": "docs/validation/learning-h10-protocol-v1.json",
+      "evidence": "docs/validation/learning-h10-2026-10-28.json",
+      "grid_candidates": 9,
+      "search_plans": 691200,
+      "shortlist": [
+        "w12-k2",
+        "w24-k2"
+      ],
+      "validation_plans": 1658880,
+      "selected": null,
+      "holdout_opened": false,
+      "holdout_plans": 0,
+      "reserved_holdout_seeds": [
+        12000,
+        12019
+      ],
+      "forced_sleep_negative_controls": 3,
+      "voluntary_effect_gate_registered_before_search": true,
+      "fit_point_search_validation_holdout_disjoint": true,
+      "all_candidates_failed_both_profile_selection_gates": true,
+      "own_samples_skills_matrices_preserved": true,
+      "full_search_model_validation_case_H1_repeats_identical": true,
+      "offline_code_excluded_from_worker": true,
+      "runtime_policy_changed": false,
+      "new_migrations": false
     }
   },
-  "prepared_at_utc": "2026-10-28T07:45:06.374004Z",
+  "prepared_at_utc": "2026-10-28T08:25:35.641247Z",
   "migrations_to_check": [
     "0006_client_logs",
     "0007_learning_policies"
