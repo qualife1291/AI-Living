@@ -182,3 +182,23 @@ H6 này cung cấp replay numeric/CLI private và curriculum traversal; chưa SF
 Ngày1 có Δreward+0,611826 ordinary (CI95[0,593999;0,629653]) và+0,502788stress ([0,466311;0,539265]). Nhưng60ngày ordinary Δ−0,000209 với CI chứa0, chưa chứng minh không giảm; stress Δ−0,001384 với CI dưới0. Needs gates chưa đạt ở cả hai; opportunity-cost đạt ở stress, chưa chứng minh không tăng ở ordinary; entropy floor đạt. Không đổi tham số theo holdout và **không promote**.
 
 Chronological/curriculum validation có max prediction difference3,22e−13 ordinary/2,17e−13stress, dưới ngưỡng1e−8; đây là khác biệt số học, không là cải thiện từ curriculum. Prior predictions sau plan tự đạt thứ24 bằng0. Giữ LinUCB cá nhân; H10 tối ưu offline có budget/seed mới là bước nghiên cứu tiếp, không tự sửa code hoặc deploy.
+
+## H10 — Tìm tham số offline có budget (28/10)
+
+[Protocol](validation/learning-h10-protocol-v1.json) đăng ký trước kết quả: fit8seed9000–9007, point-validation9500–9507, search10000–10003, validation11000–11007 và holdout12000–12019. Hai profile và source synthetic replay H3/H6 tương thích; mô hình numeric frozen, không đọc archive private. Search9cấu hình warm6/12/24 ×k0,5/2/5 +baseline,12agent×30ngày×4seed/profile. Ngân sách691.200search plans; validation≤2candidate+baseline,8seed×24×60/profile (≤1.658.880plan); holdout≤1candidate+baseline,20seed/profile (≤2.764.800plan).
+
+Tầng policy `bounded-search.ts` chỉ blend prediction trong số plan tự đạt đã khai báo; reward/features/uncertainty/emergency/gates và own updates giữ nguyên. K/window thuộc config H10 riêng, không sửa descriptor warm24/k5 của model H6 hoặc chép donor counts/matrices. Config schema giới hạn window≤72/k≤5 và không nhận code/effect/reward fields.
+
+Amendment **trước search**: H1 bắt đầu lúc00h nên warm6 chỉ trùng forced sleep; giữ3cấu hình này làm negative controls nhưng require voluntary-choice effect>0 ở cả2profile trước shortlist và validation selection. Effect đếm lựa chọn khác personal trên **cùng state hiện tại**, không là counterfactual trajectory return. Không lấy MSE tốt hơn ở action forced để gọi là cải thiện hành vi. Search giữ tất cả9case, kể cả đối chứng bị loại.
+
+Ranking dùng worst-profile relative mean Δreturn, rồi average và ID lexical; chỉ shortlist entropy≥80% baseline và≤2 window khác nhau. Validation dùng bốn paired CI95 performance gates ở cả2profile;8seed là bước chọn, chưa phải holdout20seed. Nếu đủ điều kiện, freeze≤1config trước holdout; nếu không có thì ghi status reserved với0plan và không sinh holdout outcome files. Không đưa runner-up vào thử lại sau holdout. Artifact chỉ cấu hình/dữ liệu, không tự sửa code/DB/policy/deploy.
+
+```bash
+# Trước tiên tạo model mới mỗi profile bằng train:replay với --seed-start=9000 --validation-start=9500.
+npm run optimize:policy -- --stage=search --models=docs/validation/h10-v1/models --out=docs/validation/h10-v1
+npm run optimize:policy -- --stage=validation --models=docs/validation/h10-v1/models --out=docs/validation/h10-v1
+# Review và push checkpoint selection/model/protocol hashes trước bước cuối.
+npm run optimize:policy -- --stage=holdout --models=docs/validation/h10-v1/models --out=docs/validation/h10-v1
+```
+
+CLI binds protocol bytes +model hashes +parent selection và từng case checksum, kiểm đúng profile/seed/dimension, recompute scoring/shortlist trước sang stage tiếp. Không ghi đè artifact khác. Holdout command không gọi simulator khi validation không chọn được candidate. Runtime chưa có config importer; ngay cả đạt offline cũng còn source review/installation/version/CAS/rollback riêng. Đây là finite parameter search, không genetic self-modifying code hoặc LLM fine-tune.

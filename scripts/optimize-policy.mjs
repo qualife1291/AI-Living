@@ -6,7 +6,7 @@ import {join} from 'node:path';
 import {performance} from 'node:perf_hooks';
 import assert from 'node:assert/strict';
 import {searchProtocolSchema,searchGrid,seedValues,runBoundedRollout,compareBoundedRollouts,
- shortlistCandidates,selectValidationCandidate,SEARCH_VERSION,warmConfigId} from '../lib/living/bounded-search.ts';
+ shortlistCandidates,selectValidationCandidate,SEARCH_VERSION} from '../lib/living/bounded-search.ts';
 import {replayArtifactSchema} from '../lib/living/outcome-replay.ts';
 import {digest,verifiedReplayFile,writeReplayFile} from './replay-files.mjs';
 

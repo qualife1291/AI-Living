@@ -1,0 +1,620 @@
+{
+  "stage": "search",
+  "profile": "cold-stress-v1",
+  "id": "w12-k0p5",
+  "identity": {
+    "version": "bounded-warm-search-v1",
+    "protocolSha256": "f6036b13657714a1966f5757d44e79545c9e4f7a0556ea80845119d57c217a7d",
+    "modelHashes": {
+      "ordinary-v1": "8329eced5f8a128c31051bf005fbff5577fbfca98575c171e5919206e85aace8",
+      "cold-stress-v1": "6362c4d70dc68292034d5b127474058846997aaa80e7c232a9782b27724d763e"
+    }
+  },
+  "modelChecksum": "6362c4d70dc68292034d5b127474058846997aaa80e7c232a9782b27724d763e",
+  "report": {
+    "kind": "bounded-parameter-rollout-v1",
+    "config": {
+      "profile": "cold-stress-v1",
+      "params": {
+        "warmPlans": 12,
+        "priorK": 0.5
+      },
+      "agents": 12,
+      "days": 30,
+      "seeds": [
+        2255330449,
+        2238552830,
+        2221775211,
+        2204997592
+      ],
+      "shiftDay": 15
+    },
+    "raw": {
+      "kind": "synthetic-hourly-cold-stress-rollout-v1",
+      "config": {
+        "policy": "linucb",
+        "profile": "cold-stress-v1",
+        "agents": 12,
+        "days": 30,
+        "seeds": [
+          2255330449,
+          2238552830,
+          2221775211,
+          2204997592
+        ],
+        "shiftDay": 15
+      },
+      "acceptanceProfile": false,
+      "runtime": [
+        "initializeAgent",
+        "chooseScenario",
+        "availableScenarios",
+        "actionSteps",
+        "advanceNeeds",
+        "pendingPlanMatches",
+        "settleLearning"
+      ],
+      "oracle": "Depth-1 feasible completion reward on each policy's own state, same elapsed needs drift. Not counterfactual long-horizon regret.",
+      "sampling": "One completed ordinary plan per agent per simulation hour; 3-minute actionSteps, hourly gaps. No social encounters, travel/ground/city cohort simulation.",
+      "intervention": "Seeded rain probability .2 to .8 and role-place rotation on shiftDay; no live weather or law/calendar claims.",
+      "uncertainty": "95% Student-t intervals over independent seed means; competence/recovery means conditional on attainment, fractions report censoring.",
+      "socialDensity": null,
+      "diffusionDays": null,
+      "productionAccess": false,
+      "runs": [
+        {
+          "seed": 2255330449,
+          "completedPlans": 8640,
+          "trainedSamples": 8640,
+          "returnPerAgentDay": 3.768849489714298,
+          "immediateRegretPerAgentDay": 3.4373747186295054,
+          "needOkRatio": 0.9886574074074074,
+          "timeToCompetenceDays": 3.5833333333333335,
+          "competentFraction": 1,
+          "daysToRecover": 3,
+          "recoveredFraction": 1,
+          "actionEntropy": 0.5351425635440087,
+          "voluntaryActionEntropy": 0.5998001117812198,
+          "repeatRate": 0.29844691701437176,
+          "meanMaxActionShare": 0.3837962962962971,
+          "worstAgentDayActionShare": 0.4583333333333333,
+          "forcedFraction": 0.33784722222222224,
+          "dailyNeedOk": [
+            0.7152777777777778,
+            0.9895833333333334,
+            0.9756944444444443,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            0.9791666666666666,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "dailyReturn": [
+            5.946112303992737,
+            4.685758093030605,
+            4.690885209051115,
+            4.176426043579582,
+            4.163692552707036,
+            4.066093910271121,
+            4.253347777469208,
+            4.054245319191016,
+            4.026483172470962,
+            3.4781310100549114,
+            2.7350376665142875,
+            2.4235664071766005,
+            2.47346125865167,
+            2.445632041807182,
+            2.3498583625238747,
+            5.51409883941943,
+            3.7521399839699954,
+            3.781316598258923,
+            3.6795637672384607,
+            3.8020796486843835,
+            3.63848961203802,
+            3.7316696278035395,
+            3.5757087841299864,
+            3.7046452149408444,
+            3.6964062865009706,
+            3.51258263853641,
+            3.715256814039472,
+            3.676696901117752,
+            3.710808084473092,
+            3.6052907617860375
+          ],
+          "study": {
+            "residualUpdates": 0,
+            "earnedResidualSamples": 0,
+            "modelOnlyMSE": 8.023604787483843e-7,
+            "residualMSE": 8.023604787483843e-7,
+            "firstDayNeedOk": 0.7152777777777778,
+            "postShiftNeedOk": 0.9986111111111111
+          }
+        },
+        {
+          "seed": 2238552830,
+          "completedPlans": 8640,
+          "trainedSamples": 8640,
+          "returnPerAgentDay": 3.758266545955202,
+          "immediateRegretPerAgentDay": 3.52025071158814,
+          "needOkRatio": 0.9921296296296295,
+          "timeToCompetenceDays": 3.5,
+          "competentFraction": 1,
+          "daysToRecover": 3,
+          "recoveredFraction": 1,
+          "actionEntropy": 0.5348021877917394,
+          "voluntaryActionEntropy": 0.5963471209953293,
+          "repeatRate": 0.2972878998609179,
+          "meanMaxActionShare": 0.3805555555555559,
+          "worstAgentDayActionShare": 0.5,
+          "forcedFraction": 0.3366898148148148,
+          "dailyNeedOk": [
+            0.8124999999999999,
+            0.9930555555555557,
+            0.9791666666666666,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            0.9791666666666666,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "dailyReturn": [
+            5.529951038404824,
+            4.633487185618058,
+            4.790739963330908,
+            4.142683252587006,
+            4.119314607146234,
+            4.166327871571333,
+            4.242741402710893,
+            3.9300771960352403,
+            3.8248001533152323,
+            3.449667770038492,
+            3.0760245647741233,
+            2.516302149506401,
+            2.465009445629436,
+            2.508919088583965,
+            2.3761359111461693,
+            5.589725050242236,
+            3.731765656287754,
+            3.7693066721000896,
+            3.726064459399284,
+            3.6705333278842773,
+            3.7110149703953184,
+            3.6041019430399097,
+            3.681219847649615,
+            3.6440270715030323,
+            3.717425128280252,
+            3.5102080781569516,
+            3.6592068598246943,
+            3.5985174001436167,
+            3.6858999970828883,
+            3.6767983162676376
+          ],
+          "study": {
+            "residualUpdates": 0,
+            "earnedResidualSamples": 0,
+            "modelOnlyMSE": 8.332552302599392e-7,
+            "residualMSE": 8.332552302599392e-7,
+            "firstDayNeedOk": 0.8124999999999999,
+            "postShiftNeedOk": 0.9986111111111111
+          }
+        },
+        {
+          "seed": 2221775211,
+          "completedPlans": 8640,
+          "trainedSamples": 8640,
+          "returnPerAgentDay": 3.7801818716866378,
+          "immediateRegretPerAgentDay": 3.4845112046033244,
+          "needOkRatio": 0.9875,
+          "timeToCompetenceDays": 3.75,
+          "competentFraction": 1,
+          "daysToRecover": 3,
+          "recoveredFraction": 1,
+          "actionEntropy": 0.5372915609101706,
+          "voluntaryActionEntropy": 0.5976215631101028,
+          "repeatRate": 0.2970560964302272,
+          "meanMaxActionShare": 0.3775462962962972,
+          "worstAgentDayActionShare": 0.4583333333333333,
+          "forcedFraction": 0.33773148148148147,
+          "dailyNeedOk": [
+            0.7118055555555557,
+            0.96875,
+            0.9791666666666666,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            0.9722222222222223,
+            0.9965277777777778,
+            1,
+            1,
+            0.9965277777777777,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "dailyReturn": [
+            5.776320926798738,
+            4.5745374106913514,
+            4.960432756018171,
+            4.076132342862276,
+            4.079483628075731,
+            4.249013222173456,
+            4.12259186429741,
+            4.141075957350253,
+            4.289684740431971,
+            3.2464133507221558,
+            2.6934399906339777,
+            2.423008469241798,
+            2.4807381165851106,
+            2.5195438111162347,
+            2.3436460377293065,
+            5.533489466775845,
+            3.8447658648027687,
+            3.7133711970069707,
+            3.784316152066349,
+            3.7710211356697196,
+            3.7884377275228793,
+            3.710874320120443,
+            3.612375334125854,
+            3.751079655176872,
+            3.6323240987351366,
+            3.7563142248268746,
+            3.607617420201762,
+            3.678857242893749,
+            3.592325456692047,
+            3.6522242292540343
+          ],
+          "study": {
+            "residualUpdates": 0,
+            "earnedResidualSamples": 0,
+            "modelOnlyMSE": 8.797902033033831e-7,
+            "residualMSE": 8.797902033033831e-7,
+            "firstDayNeedOk": 0.7118055555555557,
+            "postShiftNeedOk": 0.9976851851851852
+          }
+        },
+        {
+          "seed": 2204997592,
+          "completedPlans": 8640,
+          "trainedSamples": 8640,
+          "returnPerAgentDay": 3.7791210298300117,
+          "immediateRegretPerAgentDay": 3.481379339409953,
+          "needOkRatio": 0.9894675925925926,
+          "timeToCompetenceDays": 3.5,
+          "competentFraction": 1,
+          "daysToRecover": 3,
+          "recoveredFraction": 1,
+          "actionEntropy": 0.5328706979268213,
+          "voluntaryActionEntropy": 0.5995301737882155,
+          "repeatRate": 0.2980992118683356,
+          "meanMaxActionShare": 0.38761574074074095,
+          "worstAgentDayActionShare": 0.5,
+          "forcedFraction": 0.3375,
+          "dailyNeedOk": [
+            0.7569444444444445,
+            0.9930555555555557,
+            0.96875,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            0.9687500000000001,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            0.9965277777777777,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "dailyReturn": [
+            5.78628710770941,
+            4.599292427669004,
+            4.937694896725837,
+            4.431657935287018,
+            4.061861304217309,
+            4.330510031723532,
+            4.31695092425191,
+            4.446843439004772,
+            3.9811739410966154,
+            2.978335792193866,
+            2.5277960097092516,
+            2.4910120631125365,
+            2.3960547689314535,
+            2.3364048210423567,
+            2.4915313369960503,
+            5.598495759178639,
+            3.851444396906482,
+            3.6788292973707772,
+            3.7221416538505863,
+            3.748139379180218,
+            3.658125211571765,
+            3.739120092879063,
+            3.716438323504303,
+            3.646608847737335,
+            3.609666196124836,
+            3.743372887490416,
+            3.616086335181025,
+            3.668943587301119,
+            3.6231516510260082,
+            3.639660475926881
+          ],
+          "study": {
+            "residualUpdates": 0,
+            "earnedResidualSamples": 0,
+            "modelOnlyMSE": 8.208575571757256e-7,
+            "residualMSE": 8.208575571757256e-7,
+            "firstDayNeedOk": 0.7569444444444445,
+            "postShiftNeedOk": 0.9976851851851852
+          }
+        }
+      ],
+      "summary": {
+        "returnPerAgentDay": {
+          "mean": 3.7716047342965373,
+          "ci95": [
+            3.755287334430648,
+            3.7879221341624265
+          ],
+          "n": 4,
+          "min": 3.758266545955202,
+          "max": 3.7801818716866378
+        },
+        "immediateRegretPerAgentDay": {
+          "mean": 3.4808789935577304,
+          "ci95": [
+            3.426877120555062,
+            3.534880866560399
+          ],
+          "n": 4,
+          "min": 3.4373747186295054,
+          "max": 3.52025071158814
+        },
+        "needOkRatio": {
+          "mean": 0.9894386574074073,
+          "ci95": [
+            0.9863086689572861,
+            0.9925686458575286
+          ],
+          "n": 4,
+          "min": 0.9875,
+          "max": 0.9921296296296295
+        },
+        "timeToCompetenceDays": {
+          "mean": 3.5833333333333335,
+          "ci95": [
+            3.395832185188701,
+            3.770834481477966
+          ],
+          "n": 4,
+          "min": 3.5,
+          "max": 3.75
+        },
+        "competentFraction": {
+          "mean": 1,
+          "ci95": [
+            1,
+            1
+          ],
+          "n": 4,
+          "min": 1,
+          "max": 1
+        },
+        "daysToRecover": {
+          "mean": 3,
+          "ci95": [
+            3,
+            3
+          ],
+          "n": 4,
+          "min": 3,
+          "max": 3
+        },
+        "recoveredFraction": {
+          "mean": 1,
+          "ci95": [
+            1,
+            1
+          ],
+          "n": 4,
+          "min": 1,
+          "max": 1
+        },
+        "actionEntropy": {
+          "mean": 0.535026752543185,
+          "ci95": [
+            0.5321450698568156,
+            0.5379084352295543
+          ],
+          "n": 4,
+          "min": 0.5328706979268213,
+          "max": 0.5372915609101706
+        },
+        "voluntaryActionEntropy": {
+          "mean": 0.5983247424187168,
+          "ci95": [
+            0.5957209363658373,
+            0.6009285484715963
+          ],
+          "n": 4,
+          "min": 0.5963471209953293,
+          "max": 0.5998001117812198
+        },
+        "repeatRate": {
+          "mean": 0.2977225312934631,
+          "ci95": [
+            0.29667534270072227,
+            0.29876971988620393
+          ],
+          "n": 4,
+          "min": 0.2970560964302272,
+          "max": 0.29844691701437176
+        },
+        "meanMaxActionShare": {
+          "mean": 0.3823784722222228,
+          "ci95": [
+            0.3754976865516376,
+            0.389259257892808
+          ],
+          "n": 4,
+          "min": 0.3775462962962972,
+          "max": 0.38761574074074095
+        },
+        "worstAgentDayActionShare": {
+          "mean": 0.47916666666666663,
+          "ci95": [
+            0.4408931550716377,
+            0.5174401782616956
+          ],
+          "n": 4,
+          "min": 0.4583333333333333,
+          "max": 0.5
+        },
+        "forcedFraction": {
+          "mean": 0.3374421296296296,
+          "ci95": [
+            0.33661178051426605,
+            0.33827247874499317
+          ],
+          "n": 4,
+          "min": 0.3366898148148148,
+          "max": 0.33784722222222224
+        }
+      },
+      "experiment": {
+        "profile": "cold-stress-v1",
+        "version": "H2-v1",
+        "expectedVersion": "scenario-outcome-v1",
+        "priorTrainingSeeds": [],
+        "priorChecksum": null,
+        "stress": "Synthetic low initial needs, daytime load and day-shift shock; not production metabolism.",
+        "residualScope": "Outcome minus decision-time expected reward; separate from raw trials/means. Same-decision MSE ablation, not a physical/LLM learning claim."
+      }
+    },
+    "runs": [
+      {
+        "seed": 2255330449,
+        "personalMSE": 0.007382726457158719,
+        "blendedMSE": 0.0054191263571562445,
+        "firstDayReturn": 5.946112303992737,
+        "priorPredictions": 144,
+        "priorPredictionsAfterCutoff": 0,
+        "voluntaryChoiceChanges": 22
+      },
+      {
+        "seed": 2238552830,
+        "personalMSE": 0.007023254953726021,
+        "blendedMSE": 0.00533833412626386,
+        "firstDayReturn": 5.529951038404824,
+        "priorPredictions": 144,
+        "priorPredictionsAfterCutoff": 0,
+        "voluntaryChoiceChanges": 21
+      },
+      {
+        "seed": 2221775211,
+        "personalMSE": 0.007190091950670359,
+        "blendedMSE": 0.005371363013124035,
+        "firstDayReturn": 5.776320926798738,
+        "priorPredictions": 144,
+        "priorPredictionsAfterCutoff": 0,
+        "voluntaryChoiceChanges": 17
+      },
+      {
+        "seed": 2204997592,
+        "personalMSE": 0.007179645084454969,
+        "blendedMSE": 0.00533954424974297,
+        "firstDayReturn": 5.78628710770941,
+        "priorPredictions": 144,
+        "priorPredictionsAfterCutoff": 0,
+        "voluntaryChoiceChanges": 24
+      }
+    ],
+    "sameDecisionMSEDelta": {
+      "mean": -0.0018268376749307398,
+      "ci95": [
+        -0.0020084395182516667,
+        -0.0016452358316098128
+      ],
+      "n": 4,
+      "min": -0.0019636001000024744,
+      "max": -0.0016849208274621616
+    },
+    "productionAccess": false,
+    "activatesRuntimePolicy": false
+  },
+  "sha256": "9d9942fe9ead802ddaa332b862247cb2b497e3f95001bb7494f899325449f46b"
+}
