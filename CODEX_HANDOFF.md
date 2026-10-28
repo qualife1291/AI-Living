@@ -1,5 +1,7 @@
 # Tiếp tục từ đây — 28/10/2026
 
+**Cloudflare staging đã phát hành (28/10/2026):** xem [CLOUDFLARE_STAGING](docs/CLOUDFLARE_STAGING.md) mục cập nhật 0. Worker `ai-living-staging` đã được bảo vệ Cloudflare Access owner-only, deployed version `01929deb` / deployment `75a4ac0f` lên `ai-living-staging.hoanglonglea1mtl.workers.dev`, binding D1 staging riêng. Build source `2c51d4c`, API release thành công nhưng **chưa QA browser owner** và DB mới còn trống; không nhầm với Site A production, không bật cron/training 24/7. Cloudflare build trigger staging là upload-only, deploy 100% được thực hiện thủ công qua API.
+
 Chỉ đọc [AGENTS](AGENTS.md) và file này khi bắt đầu. Khi làm hosting Cloudflare, đọc [CLOUDFLARE_STAGING](docs/CLOUDFLARE_STAGING.md). [ROADMAP](ROADMAP.md) là backlog duy nhất; [README](README.md) chỉ mục theo công việc.
 
 | Phần | Context hiện tại |
