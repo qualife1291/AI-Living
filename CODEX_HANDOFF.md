@@ -4,7 +4,7 @@ Chỉ cần đọc [AGENTS](AGENTS.md) và file này khi bắt đầu. [ROADMAP]
 
 | Phần | Context hiện tại |
 |---|---|
-| Source | `main`/`work` đã đồng bộ G0/UX; xem Git cho HEAD. QA source`e5f5583`, các commit sau chỉ docs/evidence/harness/ledger. LinUCB cá nhân giữ nguyên; G0 đổi transport/renderer/controls, không đổi reward/features/persistence. |
+| Source | `work` đang làm H6b bulk/cursor local, `main` ở G0/UX; xem Git cho HEAD. QA source`e5f5583`, các commit sau chỉ docs/evidence/harness/ledger. LinUCB cá nhân giữ nguyên; G0 đổi transport/renderer/controls, không đổi reward/features/persistence. |
 | Sản phẩm | Thành phố Three.js, An/Bình/Chi+NPC, tag/pet/bike, nhãn/thoại DOM,60cửa, audio opt-in,5khóm/30cây có care. Không renderer2D. |
 | AI/dữ liệu | LinUCB6D,8domain skills/gates, policy store0007/CAS, memories top-K/RAG, dialogue hashes,49context cards/33nơi; H3 archived reward evidence, snapshot chỉ summary. Không fine-tune LLM. |
 | Đã kiểm | G0:58suite/check/lint/build/assets/API local đạt. Browser desktop/mobile: lỗi pause/ACK, chat, keyboard,320px,DPR/poll/OSM/hidden/context retry/reduced-motion/fallback. SwiftShader, không hardware GPU/live QA. |
@@ -14,7 +14,7 @@ Chỉ cần đọc [AGENTS](AGENTS.md) và file này khi bắt đầu. [ROADMAP]
 
 **G0/UX đã xong:** [evidence](docs/validation/g0-ux-2026-10-28.json), [ASSETS](docs/ASSETS.md), [RENDERING](docs/RENDERING.md).26 gzip transport giữ canonical/license/hash; pixel budget thành phố, pause status/ACK không tự retry, chat focus/draft, keyboard/reduced-motion và metadata. Browser encoded model resources4,33→1,02MB;3repeat với CDP30ms/2MBs cho median first-ready desktop4,41→2,77s/mobile4,21→2,63s, không SLA. Unshaped single samples còn trong evidence, không suy nhanh hơn mọi thiết bị.
 
-**Bước code tiếp:** H6b bulk/cursor replay **local** theo [ROADMAP](ROADMAP.md), giữ actor isolation/source SHA/dedup/conflict và chỉ tăng checkpoint sau batch được chấp nhận; không tự ghi DB/production. Memory backfill additive/CAS và dataset curation là phần còn lại riêng. H3b/H5 chờ server ground/encounter authority; runtime priors vẫn cần protocol/version/rollback/CAS và bằng chứng trước activation.
+**Đang làm H6b:** contract `docs/validation/learning-h6b-contract-v1.json` đã chốt, implementation/tests chưa xong. Checkpoint SQLite riêng, manifest/raw SHA, CAS hash, một batch một transaction; chỉ fit lúc source set hoàn tất. Tiếp H6b bulk/cursor replay **local** theo [ROADMAP](ROADMAP.md), giữ actor isolation/source SHA/dedup/conflict và chỉ tăng checkpoint sau batch được chấp nhận; không tự ghi DB/production. Memory backfill additive/CAS và dataset curation là phần còn lại riêng. H3b/H5 chờ server ground/encounter authority; runtime priors vẫn cần protocol/version/rollback/CAS và bằng chứng trước activation.
 
 **Nền học cần giữ:** H2/H4/H6 đều chưa promote; H6 có actor-scoped local JSONL replay SHA-pinned, unique source records một lượt, conflicts reject, legacy không suy bổ sung. Private model artifacts chỉ Gitignored .sites-runtime/training. Không tăng earned trials/skills/memory hoặc chép donor posterior. Seeds đã xem: H2eval2000–2019; H4train3000/val4000/holdout5000; H6train6000/val7000/holdout8000; H10fit9000/point9500/search10000/val11000 (xem protocol cho range). Không gán role lịch sử từ role hiện tại.
 

@@ -1,0 +1,59 @@
+{
+  "version": 1,
+  "phase": "H6b local bulk/cursor replay foundation",
+  "kind": "local-bulk-replay-contract-v1",
+  "scope": "One explicitly selected actor across an immutable hash-pinned local source set. No runtime/DB production importer, memory backfill or SFT/DPO curation.",
+  "budgets": {
+    "sourceFiles": 64,
+    "bytesPerFile": 33554432,
+    "totalBytes": 268435456,
+    "manifestBytes": 65536,
+    "lineBytes": 65536,
+    "globalNonblankRecords": 100000,
+    "batchRecordsMax": 5000,
+    "batchBytes": 8388608,
+    "batchPhysicalLines": 10000,
+    "maxBatchesPerInvocation": 20,
+    "defaultBatchesPerInvocation": 1
+  },
+  "sourceManifest": {
+    "version": 1,
+    "kind": "local-owner-replay-set-v1",
+    "required": [
+      "actorId",
+      "order",
+      "batchRecords",
+      "sources[].file",
+      "sources[].sha256",
+      "sources[].bytes"
+    ],
+    "paths": "Relative local JSONL files below manifest directory; no URLs, traversal, symlinks or nonregular files. Raw manifest SHA required on every action."
+  },
+  "virtualJsonl": "Hash each source in declared order, appending LF only to nonempty sources lacking a terminal LF. Empty files contribute no bytes. Existing local-owner-jsonl artifact SHA identifies this exact virtual JSONL; outer envelope additionally binds the raw source-manifest SHA and individual hashes/bytes.",
+  "checkpoint": {
+    "storage": "Dedicated Gitignored .sites-runtime/training/<job>/state.sqlite, owner-only files; application_id/schema identity; no world DB. SQLite BEGIN IMMEDIATE/FULL sync commits admitted rows, dedup/legacy ledger, counters, byte+line cursor and final artifact together.",
+    "compareAndSwap": "Initial --expected-checkpoint=new; resume requires last reported checkpoint SHA. Header checksum includes all admitted canonical rows/ledger. Status is read-only and exposes only hashes/counts/cursor.",
+    "batchFailure": "Invalid JSON/UTF8/record, strong/weak identity conflict, reused sample, temporal fork, changed source, over-budget or fault rolls back entire current batch. Earlier committed batches remain. CLI emits a line after each commit so later failure does not hide accepted progress.",
+    "crash": "Kernel/SQLite transaction rollback; no user PID lease or forced stale-lock deletion. Status may need normal run recovery if a killed writer left a hot journal.",
+    "training": "Do not fit per batch. Only fit once after the entire source set has been accepted, in the same global chronological/curriculum order as single-file replay. Final model and final cursor share one transaction.",
+    "export": "Separate action, private JSON exclusive-create, current source/head verified; export failure never changes checkpoint."
+  },
+  "privacy": [
+    "Actor filter before audit or storage. Foreign raw records never enter the checkpoint.",
+    "Only accepted numeric/canonical evidence and bounded unverified-ID ledger are stored privately; no source dialogue/memory fields copied.",
+    "Console/errors expose no actor IDs, raw records or source paths. SHA integrity is not external authenticity."
+  ],
+  "verification": [
+    "Same report/acceptedDigest/model rows and complete artifact as single-file replay on exact virtual concatenation.",
+    "Cross-file duplicates/conflicts, legacy/strong collision both orders, actor filter, temporal neighbor checks and Unicode/CRLF/no-final-newline/empty files.",
+    "Resume/complete retries, stale SHA/concurrent writer, crash/rollback, source/manifest/checkpoint tamper, byte/row/path budgets and failed exclusive export.",
+    "Compiled local D1 JSONL -> bulk/cursor -> private export keeps snapshot/history/earned samples unchanged.",
+    "Full unit/typecheck/lint/build; verify offline implementation is absent from production Worker."
+  ],
+  "learningEvidence": "Engineering equivalence/transaction tests only; no new policy candidates, holdout reads, training-benefit claims or reward/features changes.",
+  "nextSeparateWork": [
+    "Additive historical memory backfill with checkpoint/CAS/ID reconciliation.",
+    "Dataset/few-shot/SFT/DPO curation with same prompt/context/model and real validators."
+  ],
+  "productionAccess": false
+}
