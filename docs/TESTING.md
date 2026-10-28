@@ -1,6 +1,6 @@
 # Kiểm thử và bằng chứng
 
-`scripts/unit-suites.json` là danh sách suite hiện hành; `npm run test:unit` dùng process độc lập, tối đa 4 workers, thu đủ lỗi thay vì fail-fast. `XOM_TEST_JOBS=1` chạy tuần tự. Mốc H2 có 53 suite đã đạt; đây không phải kết quả chạy mới mỗi khi sửa tài liệu.
+`scripts/unit-suites.json` là danh sách suite hiện hành; `npm run test:unit` dùng process độc lập, tối đa 4 workers, thu đủ lỗi thay vì fail-fast. `XOM_TEST_JOBS=1` chạy tuần tự. Mốc H3 bổ sung suite reward evidence vào53suite H2; đây không phải kết quả chạy mới mỗi khi sửa tài liệu.
 
 ## Chọn kiểm tra theo thay đổi
 
@@ -47,6 +47,8 @@ Restart Worker từ `dist/server/wrangler.json` sau build. `QA_BASE` bắt buộ
 ## Learning rollout
 
 `node scripts/test-learning-policy.mjs` kiểm golden trước refactor, outcome/purity/gates, oracle/drift, determinism/censoring/CI/seed alignment. `npm run simulate:learning` và `scripts/compare-learning.mjs` chạy offline; profile/limits/hash và kết quả ở [LEARNING](LEARNING.md). CLI từ chối ghi đè baseline khác và so sánh report sai checksum. Không đưa rollout/synthetic outcomes vào DB thật. H2 thêm `test-residual-policy.mjs`: ownership/completion/replay/checkpoint, raw models/skills không đổi, EMA shift, prior không tạo samples, cap không chặn emergency, cold-stress và H1 row giữ nguyên. Evidence H2 ghi full repeat byte/hash, prior checksum/profile/seed-overlap và immutable-output CLI guards; negative result không cho phép tự bật policy.
+
+H3 `test-reward-evidence.mjs` kiểm settlement khác decision state, đầy đủ duration/key/legacy, saturation và negative outcome, actor/context/version/domain tamper, replay và inspector không backfill/ghi đè/lộ raw record kể cả JSONL lỗi. Compiled API kiểm evidence trong archive/JSONL, legacy bytes giữ nguyên và hai request học cạnh tranh chỉ tạo một sample/receipt/archive. Golden và full H1 hash phải giữ nguyên. Kết quả thực tế từng mốc nằm trong validation JSON, không suy từ tên suite.
 
 ## ZIP source
 

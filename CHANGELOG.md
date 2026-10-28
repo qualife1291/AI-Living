@@ -4,6 +4,8 @@ Chỉ ghi mốc sản phẩm. Chi tiết commit/review nằm trong Git; số ver
 
 ## 28/10/2026
 
+- Review Society/NIM, đưa phần phù hợp vào backlog có phụ thuộc và sửa accounting/knowledge/retention assumptions. H3 thêm evidence/version/breakdown cho reward simulation hiện hành và audit JSONL offline; giữ raw reward/LinUCB/legacy, chưa có reward dài hạn hoặc tích hợp NIM.
+
 - H2 thêm cold-stress, model-prior/residual-EMA và warm prior có provenance/seed split, receipt chống replay; hơn5,5 triệu plan đánh giá offline. Cả3 candidate chưa đủ gates thay LinUCB; giữ default, không ghi liveDB.53suite/check/lint/build/assets/API local đạt.
 
 - Review hai spec Claude/Deepseek và ưu tiên lộ trình học hành vi/offline prior trước các mở rộng đồ họa. H1 thêm rollout runtime20seed×60ngày×24agent và paired confidence intervals; expected outcome/gates tách thuần,15375golden outcomes/1500choices giữ nguyên.52suite/check/lint/build/API local đạt; chưa bật policy mới hoặc deploy.

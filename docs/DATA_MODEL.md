@@ -47,3 +47,6 @@ Domain skills là metadata additive của AgentLearning: domainSkills và legacy
 Pending mới có planKey để phát hiện plan bị thay dù giữ timestamp, không là proof arrival/security. reportedEncounters giữ64 ID đã report contextual simulation result để tránh cộng lại. Các field optional, legacy đọc được, không sửa migration hoặc xóa history.
 
 LivingState.flora optional chứa record growth/anchor/moisture theo ID khóm, không migration. Default cho legacy chỉ là tuổi biên tập; care ghi bằng CAS, không tạo nhân vật/ký ức/reward hoặc sửa namespace học. Catalog garden-plots JSON sinh từ footprint hiện có; không dùng projection làm receipt.
+
+
+Experience.rewardEvidence optional (H3) lưu version reward/features, identity/catalog signature, settlement before/after/components, decision context, sample delta và mức plan binding. New prepareLearning outcomes ghi cùng archive/world/policy CAS; legacy archive không backfill, không DDL mới. Authority simulation-plan-time không là ground/encounter receipt hoặc chữ ký của nguồn ngoài. Audit JSONL offline phân loại consistency; không có write/import/training API từ evidence. Chi tiết và giới hạn ở [LEARNING](LEARNING.md).

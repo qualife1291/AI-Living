@@ -97,3 +97,20 @@ npm run simulate:learning -- --policy=residual-warm-v1 --profile=cold-stress-v1 
 ```
 
 CLI kiểm SHA256/schema/version/profile/seed separation và không ghi đè artifact khác; SHA là integrity, không là chữ ký/nguồn tin cậy. Kết thúc thí nghiệm v1 với quyết định **không promote**, runtime giữ LinUCB. Full repeats/hash,53suite và compiled local API ở evidence; không liveDB, browser/UI mới hoặc Sites deploy. H3 reward provenance vẫn là bước tiếp trong backlog; policy v2 phải có protocol/train-validation-holdout mới trước khi đo, không ép v1 thắng.
+
+## H3 — Evidence cho reward hiện hành (28/10)
+
+`reward-evidence.ts` giữ công thức **scenario-outcome-v1** đúng thứ tự phép tính/clipping; breakdown chỉ gồm scalar skill, energy, hunger và health đang có. Không cộng social/travel/commitment reward hay đổi LinUCB/matrices. Feature6D được gắn nhãn `needs-6d-v1`; semantics mới sau này phải tách version/namespace, không trộn vào posterior cũ.
+
+Experience mới từ `prepareLearning` có `rewardEvidence` v1: actor/experience/scenario identity, catalog fingerprint, before/after **tại settlement sau needs drift**, từng component/unclipped/total, raw sample before→after và context nguyên bản tại decision. Plan ghi start/duration/settlement, duration của plan đang match cùng key khai báo/thực tế. Legacy chỉ có start anchor giữ matched key/duration=null và audit là legacy-unverified, không làm mất outcome hoặc gán fingerprint giả. `fingerprint-v1` là phát hiện plan thay đổi; legacy thiếu key giữ nhãn yếu hơn `legacy-start-time`. Authority là **simulation-plan-time-v1**, không physical arrival, gặp nhau, nghe kể hoặc commitment đã thực hiện. Metadata không là chữ ký xác thực.
+
+Metadata đi cùng ExperienceID/world/policy/archive trong CAS/nonce batch hiện có; retry/cancel/early không tạo credit mới. Không thêm bảng/migration, đổi reward/policy mặc định, sửa archive cũ hoặc gán evidence hồi tố. Stable ID và pending/CAS bảo vệ pipeline hiện tại; inspector không phải một API nhận receipt ngoài để cấp thưởng. Snapshot vẫn chỉ200experience; archive đầy đủ giữ nguyên.
+
+```bash
+npm run training:export
+npm run audit:learning-rewards -- --in=.sites-runtime/training/experiences-....jsonl --out=/tmp/reward-audit.json
+```
+
+Exporter chỉ instance local đã xác thực. Audit chỉ đọc JSONL local≤32MiB, không fetch/DB/train/import; output chỉ aggregate + SHA256, không chép ID/thoại/ký ức. File output dùng exclusive create, không ghi đè. Mã thoát2 khi có record bị bác; JSONL lỗi báo số dòng, không echo nội dung. Các nhóm: `verified-contextual`, `verified-tabular`, `legacy-unverified`, `rejected`; binding legacy được đếm riêng. Kiểm schema/version/identity/plan/time/sample, scenario transition, decision context, domain gain và component/total; duplicate ID bị bác. “Verified” chỉ là **nhất quán với simulation record**, không chứng minh một file ngoài là đáng tin hay cho phép replay vào runtime. Thiếu evidence không được biến thành dữ liệu huấn luyện tương thích bằng phỏng đoán.
+
+H3 này hoàn thành nền provenance cho outcome hiện hành; reward dài hạn vẫn chờ authority và thí nghiệm chống reward hacking. H4 có thể nghiên cứu priors từ nguồn/version tương thích, tách earned samples; H6 archive replay chưa tự động được bật. [Review Society/NIM](validation/society-nim-review-2026-10-28.json) đã gộp vào ROADMAP; không gọi inference NIM, không thêm hosted trial vào production.

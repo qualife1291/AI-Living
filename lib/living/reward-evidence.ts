@@ -2,6 +2,8 @@
  * not physical arrival, a peer encounter, or an authenticated external receipt. */
 import { z } from "zod";
 import { validDecisionContext } from "./linucb.ts";
+import { planKey } from "./plan-identity.ts";
+import type { PersonPlan } from "../world";
 
 export const REWARD_VERSION = "scenario-outcome-v1" as const;
 export const FEATURE_VERSION = "needs-6d-v1" as const;
@@ -12,6 +14,15 @@ export type RewardState = {
 export function rewardState(state: RewardState): RewardState {
   return {energy:state.energy,hunger:state.hunger,health:state.health,skill:state.skill,
     employment:state.employment,...(state.citations!==undefined?{citations:state.citations}:{})};
+}
+/** Old plans may contain only a start anchor. Keep that uncertainty explicit. */
+export function matchedPlanEvidence(plan: PersonPlan | undefined) {
+  const steps=plan?.steps;
+  if(!Array.isArray(steps)||!steps.length||steps.some(s=>!s||!Number.isFinite(s.duration)||s.duration<=0))
+    return {matchedKey:null,matchedDurationMs:null};
+  const duration=steps.reduce((n,s)=>n+s.duration,0)*1000;
+  if(!Number.isFinite(duration))return {matchedKey:null,matchedDurationMs:null};
+  return {matchedKey:planKey(plan)!,matchedDurationMs:duration};
 }
 
 /** Preserve the original operation order and clipping, including saturation. */
@@ -37,7 +48,7 @@ export const rewardEvidenceSchema=z.object({
   scenarioSignature:z.number().int().min(0).max(0xffffffff),
   identity:z.object({experienceId:identifier,actorId:identifier,scenarioId:identifier}).strict(),
   plan:z.object({binding:z.enum(["fingerprint-v1","legacy-start-time"]),
-    declaredKey:fingerprint.nullable(),matchedKey:fingerprint,
+    declaredKey:fingerprint.nullable(),matchedKey:fingerprint.nullable(),matchedDurationMs:finite.positive().nullable(),
     startedSimMs:finite.nonnegative(),durationMs:finite.positive(),settledSimMs:finite.nonnegative()}).strict(),
   samples:z.object({before:z.number().int().nonnegative().safe(),after:z.number().int().nonnegative().safe()}).strict(),
   featureVersion:z.literal(FEATURE_VERSION).nullable(),

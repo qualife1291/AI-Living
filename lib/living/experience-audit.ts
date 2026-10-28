@@ -30,10 +30,12 @@ export function auditExperience(value:unknown):{status:AuditStatus;reason:string
   if(e.scenarioSignature!==OUTCOME_SCENARIO_SIGNATURE)return reject("scenario-version-mismatch");
   const scenario=scenarios.find(s=>s.id===record.scenarioId);
   if(!scenario)return reject("unknown-scenario");
-  if(e.plan.binding==="fingerprint-v1"?(e.plan.declaredKey===null||e.plan.declaredKey!==e.plan.matchedKey):e.plan.declaredKey!==null)
+  if(e.plan.binding==="fingerprint-v1"?(e.plan.declaredKey===null||e.plan.matchedKey===null||e.plan.declaredKey!==e.plan.matchedKey):e.plan.declaredKey!==null)
     return reject("plan-binding-mismatch");
   if(e.plan.settledSimMs-e.plan.startedSimMs<e.plan.durationMs)return reject("early-settlement");
   if(e.samples.after!==e.samples.before+1)return reject("sample-sequence-mismatch");
+  if((e.plan.matchedKey===null)!==(e.plan.matchedDurationMs===null))return reject("plan-binding-mismatch");
+  if(e.plan.matchedDurationMs!==null&&!close(e.plan.matchedDurationMs,e.plan.durationMs))return reject("plan-duration-mismatch");
   const contextual=record.context!==undefined;
   if(contextual?(!validDecisionContext(record.context)||e.featureVersion===null||e.decisionContext===null||
     !record.context!.every((n,i)=>n===e.decisionContext![i])||record.model!=="disjoint-linucb-v1"):
@@ -48,6 +50,7 @@ export function auditExperience(value:unknown):{status:AuditStatus;reason:string
   const gain=record.skillGain;
   if(gain&&(gain.domain!==scenario.skillDomain||!close(gain.after,Math.min(100,gain.before+scenario.skill))||
     !close(gain.amount,gain.after-gain.before)))return reject("domain-gain-mismatch");
+  if(e.plan.matchedKey===null)return {status:"legacy-unverified",reason:"incomplete-legacy-plan",binding:e.plan.binding};
   return {status:contextual?"verified-contextual":"verified-tabular",reason:"consistent-simulation-evidence",binding:e.plan.binding};
 }
 

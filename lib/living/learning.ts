@@ -6,8 +6,8 @@ import type { World, PersonPlan } from "../world";
 import { computeSimMs, hashSeed, worldTime } from "../clock.ts";
 import { decisionContext, fitLinear, linearScore, validDecisionContext, type LinearArm } from "./linucb.ts";
 import {SKILL_DOMAINS,type SkillDomain,type DomainGain} from "./skills.ts";
-import {pendingPlanMatches,planKey} from "./plan-identity.ts";
-import {scenarioReward,rewardState,createRewardEvidence,type RewardEvidence,type RewardState} from "./reward-evidence.ts";
+import {pendingPlanMatches} from "./plan-identity.ts";
+import {scenarioReward,rewardState,matchedPlanEvidence,createRewardEvidence,type RewardEvidence,type RewardState} from "./reward-evidence.ts";
 export const scenarioSchema = z
   .object({
     id: z.string().regex(/^[a-z][a-z0-9-]{0,60}$/),
@@ -328,7 +328,7 @@ export function prepareLearning(world: World, state: LivingState, now: number, c
         rewardEvidence:createRewardEvidence({scenarioSignature:OUTCOME_SCENARIO_SIGNATURE,
           identity:{experienceId:agent.pending.id,actorId:person.id,scenarioId:agent.pending.scenarioId},
           plan:{binding:agent.pending.planKey?"fingerprint-v1":"legacy-start-time",
-            declaredKey:agent.pending.planKey??null,matchedKey:planKey(person.plan)!,
+            declaredKey:agent.pending.planKey??null,...matchedPlanEvidence(person.plan),
             startedSimMs:agent.pending.startedSimMs,durationMs:agent.pending.durationMs,settledSimMs:simMs},
           samples:{before:sampleBefore,after:agent.samples},
           decisionContext:validDecisionContext(agent.pending.context)?[...agent.pending.context]:null,
