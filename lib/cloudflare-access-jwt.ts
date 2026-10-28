@@ -92,7 +92,7 @@ export async function verifiedQaAccessRequest(
   // verification against the team's JWKS succeeds.
   const fromHeader = request.headers.get("cf-access-jwt-assertion");
   const cookie = request.headers.get("cookie") ?? "";
-  const cookieMatch = /(?:^|;\\s*)CF_Authorization=([^;]+)/.exec(cookie);
+  const cookieMatch = /(?:^|;\s*)CF_Authorization=([^;]+)/.exec(cookie);
   const assertion = fromHeader || cookieMatch?.[1];
   if (!assertion) {
     console.warn("qa_jwt_diagnostic", { reason: "signed_assertion_missing" });
