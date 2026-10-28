@@ -41,3 +41,5 @@ LivingState còn có catalog/needs/skills/learning/experiences/appearances/anima
 - POST telemetry tính byte UTF-8 của cả JSON envelope, tối đa16KiB; ACK chỉ sau JSON ok:true, retry không làm mấtqueue.
 - Đọc snapshot legacy không tự ghi hàng loạt metadata; persistence bổ sung qua mutation/planner đã được CAS bảo vệ.
 - Tách snapshot/structured records phải có legacy read fallback và transaction; không xóa JSON cũ trước backfill/readback.
+
+Domain skills là metadata additive của AgentLearning: domainSkills và legacySkillGates, không phải backfill earned points. Experience mới có skillGain optional domain/before/after/amount, vẫn source simulation. Context cards49/33nơi là catalog source editorial, không ghi thành event/memory; RAG daemon đọc memories hiện có và không ghi knowledge transfer.

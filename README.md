@@ -7,7 +7,7 @@
 | Source | HEAD của nhánh đang làm là source hiện hành. Mốc sẵn sàng phát hành có SHA chính xác trong [candidate.json](docs/releases/candidate.json); chỉ3D, tag/pet/bike/overlays, Gobkit/KayKit, phaseD, cửa nhà riêng và audio opt-in đã có source kiểm thử |
 | Production | [latest.json](docs/releases/latest.json), ledger riêng; chưa coi push là deploy |
 | Kiến trúc/dữ liệu/test | [ARCHITECTURE](docs/ARCHITECTURE.md), [DATA_MODEL](docs/DATA_MODEL.md), [TESTING](docs/TESTING.md) |
-| Phần mới/giới hạn | [ASSET_EXPANSION](docs/ASSET_EXPANSION.md), [review Gemini](docs/GEMINI_REVIEW_2026-10-28.md), [phần còn lại](docs/NEXT_PHASES.md), MEMORY_SHORT |
+| Phần mới/giới hạn | [ASSET_EXPANSION](docs/ASSET_EXPANSION.md), [review Gemini](docs/GEMINI_REVIEW_2026-10-28.md), [context và memory](docs/CONTEXT_AND_MEMORY.md), [phần còn lại](docs/NEXT_PHASES.md), MEMORY_SHORT |
 | Bàn giao/phát hành | [CODEX_HANDOFF](CODEX_HANDOFF.md), [AGENTS](AGENTS.md), [runbook](docs/PRODUCTION_RUNBOOK.md) |
 
 Các mục có ngày24/10 phía dưới là lịch sử sản phẩm. RendererSVG/StaticScene và hướng dẫn chỉ4suite đã được thay thế; dùng lệnh/checklist trong TESTING cho checkout hiện tại.

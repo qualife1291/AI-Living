@@ -1,6 +1,6 @@
 # Các phần chưa hoàn tất sau review Gemini
 
-Danh sách này là backlog thực, không phải tuyên bố các phase đã hoàn thành. Source có LinUCB, skill gates cơ bản, normalized policy, structured memory/top-K, dialogue hashes/xưng hô, 60 cửa nhà và audio opt-in. Candidate và production được ghi riêng trong releases; không suy từ push GitHub.
+Danh sách này là backlog thực, không phải tuyên bố các phase đã hoàn thành. Source có LinUCB, skill gates và tám nhóm điểm thực hành, normalized policy, structured memory/top-K, dialogue hashes/xưng hô, 49 context cards/33 nơi, RAG theo chủ đề cho daemon, 60 cửa nhà và audio opt-in. Candidate và production được ghi riêng trong releases; không suy từ push GitHub.
 
 | Ưu tiên | Phần còn lại | Điều kiện nghiệm thu |
 |---|---|---|
@@ -8,8 +8,8 @@ Danh sách này là backlog thực, không phải tuyên bố các phase đã ho
 | P1 | Phát hành owner-private | Native Sites đúng project, credential mới, backup full DB, migration additive 0006/0007 theo tình trạng thật, deploy một candidate, readback mọi history/memory và cập nhật latest ledger. Phiên hiện thiếu các native tools. |
 | P2 | Vector kỹ năng và hierarchy | Tám nhóm và bốn domain gates đã có source kiểm thử, giữ legacy gates; còn global/role priors có provenance, giữ cá tính cá nhân; benchmark cùng dữ liệu/seed/holdout và không giả tăng samples. |
 | P2 | P2P và exemplar | Chỉ ghi heard-from-peer khi cuộc gặp/chia sẻ đã được xác nhận; không tăng trials/skill từ lời kể. Exemplar phải có context, validator và nguồn thật; điểm cấu trúc cao không bảo đảm chất lượng ngữ nghĩa. |
-| P2 | Memory/history/export đầy đủ | Backfill additive có checkpoint/CAS và đối chiếu từng ID; RAG cho daemon/NPC theo quyền người biết. Xuất SFT candidates cần validator thật; DPO chỉ ghép chosen/rejected cùng prompt/context và model metadata. Không ghép hai lượt độc lập. |
-| P2 | Bối cảnh ở 33 nơi | Mở 24 context cards hiện tại ra những nơi còn thiếu và lễ hội có nguồn; LocalSceneContext chỉ đưa vật/thú/cây/tàu thực sự có ở gần, không biến seed/projection thành sự kiện đã chứng kiến. |
+| P2 | Memory/history/export đầy đủ | RAG daemon đã dùng private top-K cho đúng hai actor, có bounds và provenance; còn backfill additive có checkpoint/CAS và đối chiếu từng ID. Xuất SFT candidates cần validator thật; DPO chỉ ghép chosen/rejected cùng prompt/context và model metadata. Không ghép hai lượt độc lập. |
+| P2 | Bối cảnh ở 33 nơi | 49 context cards đã phủ 33 nơi và lễ hội có điều kiện; còn LocalSceneContext chỉ đưa vật/thú/cây/tàu thực sự có ở gần, không biến seed/projection thành sự kiện đã chứng kiến. |
 | P2 | Mật độ và LOD | Ba tầng có budget skeleton/matrix/draw calls, giữ footprint và tính liên tục khi đổi LOD; kiểm tra 60/120/240 trên GPU thật trước tăng density live. Synthetic 240 không phải bằng chứng hiệu năng thiết bị. |
 | P2 | Giao thông và nội thất | Đồ thị nhiều làn, giao lộ/tín hiệu, parking, ray và vịnh dừng thật; walking→waiting→boarding→riding→alighting có cùng occupancy contract. Không bật bus/tram chỉ từ model đứng rời; indoor có đường vào/ra và collider. |
 | P2 | Habitat, flora, KayKit | Loài đúng asset và sinh cảnh; không fly kiwi/penguin hoặc dùng attack/dead làm loop. Cây có vòng đời/state, props và thay đổi cây dùng cùng footprint/nav. Các model hiện có trong gallery chưa đồng nghĩa đang sống trong city. |

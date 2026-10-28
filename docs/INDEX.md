@@ -4,7 +4,7 @@ Toàn bộ tài liệu của dự án **Xóm AI** được cơ cấu thành **6 
 
 ---
 
-> Hiện hành 28/10: [Review Gemini](GEMINI_REVIEW_2026-10-28.md), [Phase D](PHASE_D_LEARNING.md), [Cửa nhà](PHASE_C_HOMES.md), [Audio](PHASE_E_AMBIENCE.md), [Phần còn lại](NEXT_PHASES.md), [Candidate](releases/candidate.json). Các tài liệu cũ chỉ giữ lịch sử; không phục hồi renderer 2D.
+> Hiện hành 28/10: [Review Gemini](GEMINI_REVIEW_2026-10-28.md), [Phase D](PHASE_D_LEARNING.md), [Context/memory](CONTEXT_AND_MEMORY.md), [Cửa nhà](PHASE_C_HOMES.md), [Audio](PHASE_E_AMBIENCE.md), [Phần còn lại](NEXT_PHASES.md), [Candidate](releases/candidate.json). Các tài liệu cũ chỉ giữ lịch sử; không phục hồi renderer 2D.
 
 > Tiếp nối mới: [Xe đạp di chuyển và va chạm toàn xe](CYCLING.md).
 

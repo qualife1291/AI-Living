@@ -35,6 +35,7 @@ Planner/rules hoặc local LLM sinh kế hoạch và hội thoại có nguồn r
 | lib/living/social.ts, dialogue-grammar.ts | Lời thoại đến đúng nơi, nguồn AI/script, chống lặp và thời gian đọc; server pool cho lượt An + browser hash pool bền qua F5; reading/occupancy còn viewer-local |
 | lib/living/learning.ts, animal-learning.ts | Outcome learning theo luật; không phải fine-tune LLM hoặc AI động vật chuyên biệt |
 | lib/store.ts, apply-event.ts, living/service.ts | Snapshot+episode/living history, revision/idempotency, không reset DB |
+| living/context-cards.ts, prompt-memories.ts | Catalog gợi ý theo nơi/phase/weather/festival; private top-K đúng actor cho daemon, không ghi sự kiện hoặc trao ký ức cho peer |
 | lib/training.ts, living/director.ts | Context/data mẫu/reflection và guard; không coi điểm heuristic là chứng minh chất lượng model |
 
 ## Giới hạn và hướng tiếp

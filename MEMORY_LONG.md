@@ -249,3 +249,7 @@ Full46 suite (18,71s)/check/lint/build/API đạt; domain UI desktop/mobile/320p
 
 ## 28/10/2026 — context cards 33 nơi
 c6f1f69 WIP đã push. 49 thẻ/33places, strict schema/source editorial/phase/weather/location, weekend và festival/date/source gating; daemon nhận tối đa2thẻ đúng scene. Full47/check/lint/build/API đạt;40weather-phase cases + pure/deterministic/festival fresh date origin. Không coi gợi ý là observed event; không có scene props/occupancy context thật. Chi tiết CONTEXT_AND_MEMORY. Tiếp RAG private cho daemon, targeted tests đạt nhưng chưa full48 ở checkpoint.
+
+## 28/10/2026 — RAG daemon có quyền và provenance
+5d9f682 WIP đã push. Helper retrievePromptMemories chỉ loopback, tối đa2actor/3record mỗi người/400char, timeout2,5s song song. Kiểm lại owner/witness/kind/date và giữid/event/kind; denied không fallback, unavailable chỉ own summaries. System instructions phân biệt editorial/owned memory/simulation outcome và phần truncated; không tự tăng trial/skill hoặc ghi heard-from-peer.
+Full48unit (16,77s)/check/lint/build/API đạt. Integration helper gọi compiled Worker/D1: owner403 returns denied/empty, An record không vào Bình. Targeted tests scope/filter/bounds/invalidJSON/network/defaultfallback/requestpayload đều đạt. Chưa model inference thật hoặc semantic quality guarantee. DomainUI/social preview trước đó vẫn là evidence, UI không đổi trong context/RAG. Đang chốt fresh preview và main/candidate mới; không có native Sites.

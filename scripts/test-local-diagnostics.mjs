@@ -1,4 +1,5 @@
 import {rememberDialogue,hasDialogue} from "../lib/living/dialogue-pool.ts";
+import {retrievePromptMemories} from "../lib/living/prompt-memories.ts";
 import { seed } from "../lib/world.ts";
 import { initializeLiving, turnId, localDate, planLivingTurn } from "../lib/living/engine.ts";
 import { scheduleResidentSocial } from "../lib/living/social-scheduler.ts";
@@ -23,6 +24,8 @@ try{
  assert.equal((await mf.dispatchFetch('http://localhost/api/living/pets',{method:'POST',body:'{}'})).status,403,'Pet ownership mutations require the owner');
  assert.equal((await mf.dispatchFetch(url)).status,403,'non-owner GET denied');
  assert.equal((await mf.dispatchFetch('http://localhost/api/living/memories?actor=an')).status,403,'Structured memories require owner access');
+ const deniedContext=await retrievePromptMemories('http://localhost',['an'],'góc sách',(url,init)=>mf.dispatchFetch(String(url),init));
+ assert.equal(deniedContext.byActor.an.status,'denied');assert.deepEqual(deniedContext.byActor.an.records,[]);
  assert.equal((await mf.dispatchFetch(url,{method:'POST',body:'{}'})).status,403,'non-owner POST denied');
  await mf.setOptions({...options,bindings:{XOM_LOCAL_ADMIN:'true'}});
  const db=await mf.getD1Database('DB');
@@ -173,6 +176,9 @@ try{
  const ownRecords=await mf.dispatchFetch('http://localhost/api/living/memories?actor=an&topic='+encodeURIComponent('góc sách'));assert.equal(ownRecords.status,200);
  const own=(await ownRecords.json()).records;assert(own.some(r=>r.id==='event:event-memory-integration:an'&&r.kind==='event-report'));assert(own.every(r=>r.personId==='an'));
  const other=(await (await mf.dispatchFetch('http://localhost/api/living/memories?actor=binh')).json()).records;assert(!other.some(r=>r.eventId===memoryEvent.id),'A future dialogue speaker cannot receive another actor report');
+ const promptMemory=await retrievePromptMemories('http://localhost',['an','binh'],'góc sách',(url,init)=>mf.dispatchFetch(String(url),init));
+ assert.equal(promptMemory.byActor.an.status,'available');assert(promptMemory.byActor.an.records.some(r=>r.id==='event:event-memory-integration:an'&&r.ownerId==='an'));
+ assert(!promptMemory.byActor.binh.records.some(r=>r.eventId===memoryEvent.id),'Daemon retrieval preserves compiled API actor privacy');
  assert.equal((await mf.dispatchFetch('http://localhost/api/living/memories?actor=missing')).status,404);
  assert.equal((await memoryPost(memoryEvent)).status,200);
  assert.equal((await db.prepare('SELECT count(*) AS count FROM memories WHERE event_id=?').bind(memoryEvent.id).first()).count,1);

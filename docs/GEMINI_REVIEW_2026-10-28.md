@@ -44,3 +44,6 @@ Home anchors đã kiểm thử: 60 cửa/địa chỉ/Xem nhà, walking/full-bik
 Các đề xuất kiến trúc dài hạn không được tự gộp thành “đã triển khai”. [NEXT_PHASES](NEXT_PHASES.md) ghi riêng completion/playback, hierarchy/P2P/vector skill, context cards/LocalSceneContext, density/LOD, multimodal transit/indoor, habitat/flora, exporter curation, runtime/chunk refactor và model A/B.
 
 Không áp dụng trực tiếp: seed theo world.revision để hứa đồng bộ vật lý, hàng nghìn cặp DPO không cùng prompt, auto-LoRA/cron trùng, bật public, gán trẻ em/quan hệ gia đình theo model hoặc tăng mật độ từ số tam giác dự đoán. LLM schema constraining đã có trong daemon; server bổ sung cùng editorial guard. Tiêu chí JSON100%/<10s và model 4B “tốt hơn” cần thực nghiệm thật. Audio đã triển khai là synth trang trí, chưa là đánh giá âm thanh sinh học.
+
+## Tiếp nối sau phục hồi môi trường
+Main đã nhận source e90021b và ledger0992549, candidate e900 đóng gói nhưng chưa có native deploy. Domain skills, legacy gates, context49/33venues và RAG private cho daemon đã qua48suite/check/lint/build/API. Benchmarkv2 giữ cùng gates/profile cho baseline và LinUCB, tiếp tục báo cả kết quả bất lợi. Phần occupancy/playback chung, hierarchy/P2P, multimodal traffic/indoor, habitat/flora, SFT/DPO thật và hardware vẫn ở NEXT_PHASES.

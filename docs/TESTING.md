@@ -1,13 +1,13 @@
 # Kiểm thử và bằng chứng
 
-`npm run test:unit` chạy danh sách trong scripts/unit-suites.json bằng scripts/run-unit-tests.mjs. Có45suite ở mốc nguồn tích hợp hiện tại (38suite ở c83a5e3); `node scripts/run-unit-tests.mjs --list` là danh sách hiện hành. Mỗi process độc lập, mặc định tối đa4worker, chạy đủ các suite và trả mã lỗi nếu bất kỳ suite thất bại. `XOM_TEST_JOBS=1` dùng khi cần tuần tự hoặc máy ít tài nguyên. Không hứa tỷ lệ tăng tốc chưa đo.
+`npm run test:unit` chạy danh sách trong scripts/unit-suites.json bằng scripts/run-unit-tests.mjs. Có48suite ở mốc nguồn tích hợp hiện tại (38suite ở c83a5e3); `node scripts/run-unit-tests.mjs --list` là danh sách hiện hành. Mỗi process độc lập, mặc định tối đa4worker, chạy đủ các suite và trả mã lỗi nếu bất kỳ suite thất bại. `XOM_TEST_JOBS=1` dùng khi cần tuần tự hoặc máy ít tài nguyên. Không hứa tỷ lệ tăng tốc chưa đo.
 
 ## Các nhóm kiểm tra
 
 | Nhóm | Suite tiêu biểu |
 |---|---|
 | Core/schema/time | life, events, animation, training, continuity, daily-routines, living, festivals |
-| Learning/autonomy/social | learning, social, autonomy, phase-b, scenario-benchmarks, tag-game, pet-walk, identities, households, linucb, memory-records, role-expansion, dialogue-pool, policy-store, daemon-fallback |
+| Learning/autonomy/social | learning, social, autonomy, phase-b, scenario-benchmarks, tag-game, pet-walk, identities, households, linucb, memory-records, role-expansion, dialogue-pool, policy-store, daemon-fallback, domain-skills, context-cards, prompt-memories |
 | Ground/traffic/camera | city, three-city, walkability, personal-space, traffic, cinematography, cycle, home-anchors |
 | Geometry/assets/lifecycle | appearance, human-visuals, visual-upgrade, maintain-assets self-test, model-assets, resource-packs, city-rigs |
 | Security/operations | hardening, map-release, liveness, context-deadline, diagnostics-fixes, quality-budget, overlay-layout |
@@ -35,6 +35,7 @@ Sau build phải khởi động Worker mới từ dist/server/wrangler.json; tr�
 | qa-overlays-households.py | Pillcompact/click/occlusion layout, câu240ký tự/tên dài/320px, householdprofile |
 | qa-cycle.py | Fullbike9,2unit di chuyển, fullbodyportrait, pause, dismount/noTeleport |
 | qa-three-only-pets.py | Companion/caretaker UI, pause, hide/reveal, resize320, wardrobe3D/OSM, loss/retry/noWebGL, không2D |
+| qa-domain-skills.py | Tám nhóm, bốn gate, legacy compatibility và 320px |
 | qa-home-anchors.py | 60 cửa, đích nhà riêng, hồ sơ/địa chỉ, Xem nhà desktop/mobile |
 | qa-soundscape.py | Web Audio thật opt-in, pause/hidden/OSM/off/unmount, 320px và unsupported |
 | qa-resource-gallery.py | 19model mẫu/15packs, texture/clip, mobile, pause dừngdraw, clipchange, selectionrace, context/loadretry |

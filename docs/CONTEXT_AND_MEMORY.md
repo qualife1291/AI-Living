@@ -18,4 +18,4 @@ Daemon gọi owner-only /api/living/memories cho đúng An và người cùng c�
 
 System direction nhắc rõ ownerId, source, phần rút gọn và data/instruction boundary. Ký ức của một speaker không tự trở thành điều người nghe đã biết; không ghi heard-from-peer, tăng skills/trials, tạo event hoặc công nhận đã đến trên ground từ retrieval. Đây là lọc và cung cấp context; chưa chứng minh model luôn tuân thủ ngữ nghĩa hoặc cho kết quả tốt hơn. Chưa chạy model A/B thực hoặc tự tạo SFT/DPO.
 
-RAG helper/daemon có targeted tests cho filtering, bounds, denied/unavailable và payload. Full 48/build/API cần ghi sau khi kết thúc checkpoint; xem MEMORY_SHORT.
+RAG helper/daemon có targeted tests cho filtering, bounds, denied/unavailable và payload. Full 48/48 suite, check/lint/build và compiled Worker/D1 API đã đạt. Integration dùng retrievePromptMemories gọi trực tiếp Worker owner guard và D1 rows: 403 không có records, top-K của An không sang prompt của Bình. Chưa chạy lại model LLM thực; kiểm thử prompt không chứng minh chất lượng ngữ nghĩa.

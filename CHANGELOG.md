@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-10-28 — Thực hành theo nhóm và bối cảnh đầy đủ (source)
+- Tám nhóm điểm và bốn điều kiện ngành; giữ hoạt động đã mở của dữ liệu cũ, không tự tạo điểm chuyên môn từ scalar. Hồ sơ học hiển thị điểm và trạng thái mở khóa.
+- 49 thẻ biên tập phủ 33 địa điểm, lọc đúng nơi/pha ngày/thời tiết; lễ hội cần nguồn và ngày khớp.
+- Daemon lấy ký ức theo chủ đề của đúng hai actor, giữ nguồn/người sở hữu và giới hạn prompt; không chuyển ký ức hoặc ghi học P2P.
+- 48 suite/check/lint/build/API đạt; chưa deploy Sites, chưa benchmark LLM thực.
+
 ## 2026-10-28 — Âm thanh và bảo vệ hội thoại (source)
 - Nút âm thanh thiên nhiên mặc định tắt; gió/mưa/chim mô phỏng dừng khi pause, ẩn tab hoặc sang OSM, thu hồi khi tắt/rời trang.
 - Daemon bỏ proposal bị review bác trước khi fallback. Server kiểm lượt nói và chặn chèn hội thoại vào kế hoạch đang bận hoặc ngủ.
