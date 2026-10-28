@@ -12,7 +12,7 @@ report=[]
 with sync_playwright() as p:
  browser=p.chromium.launch(executable_path='/usr/bin/chromium',headless=True,args=['--no-sandbox','--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader'])
  try:
-  pages=[];errors=[]
+  pages=[];errors=[];telemetry=[]
   def serve(route):
    if route.request.method=='POST':
     patch=route.request.post_data_json;fixture['world']['paused']=patch.get('paused',False);fixture['sharedGround']['paused']=fixture['world']['paused'];route.fulfill(status=200,content_type='application/json',body='{"ok":true}')
@@ -23,6 +23,9 @@ with sync_playwright() as p:
    page=browser.new_page(viewport={'width':width,'height':height},device_scale_factor=1,is_mobile=name=='mobile',has_touch=name=='mobile')
    page.add_init_script(f'window.__sharedNow={fixed};Date.now=()=>window.__sharedNow;')
    page.on('pageerror',lambda e:errors.append(str(e)))
+   def diagnostic(route):
+    telemetry.extend(route.request.post_data_json.get('logs',[]));route.fulfill(status=200,content_type='application/json',body='{"ok":true}')
+   page.route('**/api/diagnostics',diagnostic)
    page.route('**/api/world*',serve);page.route('**/api/living/pulse',lambda r:r.fulfill(status=200,content_type='application/json',body='{"ok":true,"coalesced":true}'))
    page.route('**/api/visits',lambda r:r.fulfill(status=200,content_type='application/json',body='{"ok":true,"views":1}'))
    page.goto(base+'/?ground=shared',wait_until='domcontentloaded',timeout=60000)
@@ -54,4 +57,14 @@ with sync_playwright() as p:
   assert not errors,errors
   result={'production':False,'browser':'Chromium SwiftShader','source':'synthetic shared frames; D1 separate','cases':report,'lateOpenSameTimeSameRoots':True,'cameraIndependent':True,'reloadNoRespawn':True,'pauseStable':True,'noExtrapolation':True,'noHorizontalOverflow':True,'errors':errors}
   (out/'metrics.json').write_text(json.dumps(result,ensure_ascii=False,indent=2));print(json.dumps(result),flush=True)
+ except BaseException:
+  diagnostics=[]
+  for i,p in enumerate(browser.contexts):
+   for j,page in enumerate(p.pages):
+    try:
+     diagnostics.append({'context':i,'page':j,'state':page.evaluate("()=>({canvas:!!document.querySelector('.three-canvas'),retry:!![...document.querySelectorAll('button')].find(e=>e.textContent?.includes('Thử lại 3D')),text:document.body.innerText.slice(-600)})")})
+     page.screenshot(path=str(out/f'failure-{i}-{j}.png'))
+    except Exception as error:diagnostics.append({'context':i,'page':j,'diagnosticError':str(error)[:150]})
+  (out/'failure.json').write_text(json.dumps({'pages':diagnostics,'errors':errors,'telemetry':telemetry[-40:]},ensure_ascii=False,indent=2))
+  raise
  finally:browser.close()

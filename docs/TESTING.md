@@ -42,7 +42,7 @@ Restart Worker từ `dist/server/wrangler.json` sau build. `QA_BASE` bắt buộ
 | qa-social.py | Đủ 6 lượt, luân phiên/poll/F5/source badge/camera. |
 | qa-overlays-households.py | Tên dài/câu 240 ký tự, pill/occlusion/click, hồ sơ và 320px. |
 | qa-cycle.py, qa-tag.py | Full bike/ground/pause/dismount, đổi vai/no teleport/cancel. |
-| qa-three-only-pets.py | Follow/pause/assignment/wardrobe/OSM, hide/resize, WebGL loss/retry/no2D. |
+| qa-three-only-pets.py | Follow/pause/assignment/wardrobe/OSM, hide/resize, WebGL loss/retry/no2D; ≥80% sample có cả inFrame+sightline qua cây/building. Fixture bootstrap có thể chưa sát caretaker: giữ seed, gap<120 và đóng về<55 cuối cửa sổ12s; ghi initial/final gap, không teleport để ép đạt. |
 | qa-home-anchors.py | 60 cửa/đích riêng/địa chỉ/camera desktop/mobile. |
 | qa-gardens.py | 5 phase/care/pause/framing/CAS/errors/320px. |
 | qa-domain-skills.py | 8 domain/4 gate/legacy/no overflow. |

@@ -53,3 +53,10 @@ console.log('PASS three-dimensional foliage clearance for both tracked subjects,
 
 const raised=characterShot(actor,{id:'cun',position:[22,7]},0,[],.5,17.5,{boxes:[{...crown,minY:28,maxY:59}],peerHeight:5,elevation:()=>2});
 assert(!cameraRayBlocked({...crown,minY:28,maxY:59},[22,6,7],raised.position),'Raised terrain uses the same pet sight height as the renderer');
+
+for(const aspect of [.4,390/844,1.6])for(const span of [30,60,100]){
+ const dog={id:'cun',position:[span,0]},shot=characterShot(actor,dog,0,[],aspect,17.5);
+ const camera=new PerspectiveCamera(38,aspect,.1,10000);camera.position.set(...shot.position);camera.lookAt(...shot.target);camera.updateMatrixWorld();
+ for(const subject of [actor,dog])for(const y of [0,20]){const p=new Vector3(subject.position[0],y,subject.position[1]).project(camera);assert(Math.abs(p.x)<.95&&Math.abs(p.y)<.95,`Framing follows actual pair span ${span}/${aspect}`);}
+}
+console.log('PASS adaptive pair framing during bounded companion catch-up');
