@@ -16,7 +16,7 @@ Migration 0007 tạo learning_policies theo actor với exact revision. Snapshot
 
 Legacy inline được giữ trước migration, chuyển khi có learning write và bảng đã tồn tại. Inline khớp bản riêng được tiếp nhận; conflict, corrupt hoặc thiếu tham chiếu dừng để bảo toàn dữ liệu. Mixed revision được đọc lại một lần. Không xóa history hoặc policy của actor vắng trong snapshot. Binary cũ không hiểu policyRevision: rollback phải đối chiếu backup và các hàng policy trước khi bật writer, không tự hợp nhất/xóa chúng.
 
-D1 test 240 actor × 41 arm: inline 5.131.102 byte, snapshot 57.982 byte, 11 parameter chunks dưới 500KB. Đây là fixture, không cam kết world live dưới 50KB hoặc GET dưới 150ms. Stale CAS không ghi policy; lỗi cuối batch rollback cả world và ma trận.
+D1 test sau domain metadata, 240 actor × 41 arm: inline 5.135.422 byte, snapshot 62.302 byte, 11 parameter chunks dưới 500KB. Đây là fixture, không cam kết world live dưới 50KB hoặc GET dưới 150ms. Stale CAS không ghi policy; lỗi cuối batch rollback cả world và ma trận.
 
 ## Ký ức có provenance
 
