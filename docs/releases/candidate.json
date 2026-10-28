@@ -1,13 +1,13 @@
 {
   "project_id": "appgprj_6adc7dc364d48191a09202c5b43309e4",
-  "source_commit": "e1c130ab744381cca92518ca13cac1712d8f7bdc",
+  "source_commit": "b2abde289b6a5b16e93a8ea1236e39331343cd47",
   "status": "prepared-not-deployed",
-  "archive_sha256": "a5f3ab2eab956f860ae78c348fcc1ec6a124f113ea38885039e708428dd38278",
-  "archive_local_path": "work/production-e1c130a.tar.gz",
+  "archive_sha256": "1443fdcb3c380c21cdf118091fd8e699564f34ca6d0f7ed4f1ad6ec43764186f",
+  "archive_local_path": "work/production-b2abde2.tar.gz",
   "production_ledger_unchanged": true,
   "blocker": "Native Sites credential/deploy/status/database tools unavailable in this session; user has already authorized release.",
   "validation": {
-    "unit_suites_passed": 62,
+    "unit_suites_passed": 63,
     "local_api": true,
     "typecheck_lint_build_assets": true,
     "browser_desktop_mobile": true,
@@ -29,7 +29,7 @@
     "unchanged_plan_binding": true,
     "full_duration_encounter_reporting": true,
     "physical_arrival_authority": false,
-    "browser_source_note": "Latest browser desktop/mobile QA remains G0 source e5f5583. GND1 adds an isolated owner-local static-core server timeline and schema0009; renderer/playback/pulse/learning unchanged. Shared A-star source is identical apart from miss-logger injection;1089routes/5401frames regressions passed, no new browser run. Fresh62suite/check/lint/release-build/assets, existing API and dedicated ground compiled D1 tests passed. No production readback/GPU/soak.",
+    "browser_source_note": "Fresh GND2 desktop/mobile two-viewer QA on release build b2abde2 uses synthetic server frames; compiled D1 verifies actual persistence separately. Absolute-time XZ roots, camera independence, F5, pause and no extrapolation passed. Default UI historical G0 QA remains applicable; shared mode suppresses viewer-local dialogue. No production/hardware GPU/soak claim.",
     "garden_plots": 5,
     "garden_plants": 30,
     "garden_phases": 5,
@@ -81,7 +81,7 @@
       "experimental_code_in_worker": false
     },
     "packaged_source_verified": true,
-    "archive_entries": 834,
+    "archive_entries": 841,
     "learning_h3": {
       "evidence": "docs/validation/learning-h3-2026-10-28.json",
       "reward_version": "scenario-outcome-v1",
@@ -328,13 +328,39 @@
       "production_migration_applied": false,
       "history_policy_memory_world_unchanged": true,
       "zero_tick_operation_retry_durable": true
+    },
+    "source_schema_tables": 21,
+    "ground_shared": {
+      "contract": "docs/validation/ground-shared-contract-v2.json",
+      "evidence": "docs/validation/ground-shared-2026-10-28.json",
+      "scope": "server-shared-ground-v2",
+      "local_owner_only": true,
+      "atomic_immutable_world_source_journal": true,
+      "serialized_all_actor_traffic_replay": true,
+      "max_humans": 243,
+      "animals": 3,
+      "cars": 12,
+      "canonical_acceptance_clock": true,
+      "durable_plan_roster_lifecycle": true,
+      "state_source_receipt_CAS_postassert": true,
+      "zero_tick_idempotency_and_actual_D1_rollback": true,
+      "shared_renderer_absolute_time": true,
+      "two_viewer_browser_preview": true,
+      "rendered_actor_budget": 72,
+      "viewer_local_dialogue_enabled": false,
+      "reward_or_P2P_eligible": false,
+      "boarding_or_activity_fulfillment": false,
+      "migration": "0010_ground_shared",
+      "production_migrated_or_started": false,
+      "package_preview_cache_rejected": true
     }
   },
-  "prepared_at_utc": "2026-10-28T13:38:31.286Z",
+  "prepared_at_utc": "2026-10-28T14:39:03.125Z",
   "migrations_to_check": [
     "0006_client_logs",
     "0007_learning_policies",
     "0008_memory_backfill",
-    "0009_ground_timeline"
+    "0009_ground_timeline",
+    "0010_ground_shared"
   ]
 }

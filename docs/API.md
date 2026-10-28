@@ -16,6 +16,8 @@ JSON qua helper `json()` đặt `Cache-Control: private,no-store` và `X-Content
 | GET `/api/living/memories` | Owner-only actor/topic/top-K với provenance/witness filtering; [LEARNING](LEARNING.md). |
 | POST `/api/living/memories/backfill` | Local-admin+owner+loopback; preview mặc định, UUIDjob/actor/limit, apply bằng checkpoint+plan SHA; body≤2KiB. Additive memories/job/receipt, không đổi world/policy; [LEARNING](LEARNING.md). |
 | POST `/api/living/ground` | Owner+local-admin+loopback,≤2KiB strict; session UUID, default status/preview read-only, explicit start/advance cần operation UUID và checkpoint. Server time/plan/poses, state+receipt CAS0009; core/static scope không cấp reward/P2P. [ARCHITECTURE](ARCHITECTURE.md). |
+| POST `/api/living/ground/shared` | Owner+local-admin+loopback,≤2KiB; default status, explicit start/advance với session/operation UUID+checkpoint.0010 source journal/shared directors/frames+receipt CAS; CLI `ground:shared`, reward/P2P false. |
+| GET `/api/world?ground=shared` | Chỉ owner local; read-only committed source world và shared frame window, không bootstrap/fallback khi thiếu session/schema. Root revision cho controls, shared sourceRevision/cursor riêng; renderer không nhận quyền ghi pose. |
 | POST `/api/living/catalog` | Catalog roles/names theo schema/revision; backfill home/identity additive, giữ custom metadata/IDs/history. |
 | GET/POST `/api/living/appearance` | GET id, POST id/revision/appearance; actor phải tồn tại, giữ dữ liệu tạo hình khác. |
 | POST `/api/living/pets` | `{pet,owner,revision}`, body stream≤2KiB; owner có thể null để unassign, ID hợp lệ/CAS, chỉ metadata petOwners. |
@@ -32,3 +34,5 @@ POST `/api/living/pulse`: learning→resident social→narrative tick qua admiss
 Lease30s, thành công cooldown9s **từ lúc nhận**, giữ cadence một tab10s. Lượt khác200 `{ok:true,coalesced:true}` nghĩa đang chạy/gần đây, không xác nhận pipeline trước thành công. Pause409 cả trong cooldown; HTTPfailure/exception release để retry ngay. Expired owner không nhả được lease mới nhờ nonce. Storage lỗi không chạy pipeline không guard.
 
 Hạn khóa chỉ giảm tải; pipeline quá30s có thể chồng và vẫn phải dựa CAS/idempotency. Direct tick/learning/daemon không dùng gate. Thêm hai gate writes mỗi lượt được nhận nên không nhận là giảm mọi chi phí single viewer. Không có scheduler mới/guarantee24/7; giữ client fallback cho đến khi lịch production được xác minh.
+
+GND2 local active có thêm shared step sau base pulse, CAS/coalescing khoảng1s. Base gate9s không đổi; shared page dùng loop sẵn ở1s và GET chỉ đọc. Source capture tự đi cùng world transaction sau explicit shared start, không do GET/viewer receipt. Default page giữ cadence cũ; production không bật shared mode/local-admin.

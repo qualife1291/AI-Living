@@ -4,6 +4,8 @@ Chỉ ghi mốc sản phẩm. Chi tiết commit/review nằm trong Git; số ver
 
 ## 28/10/2026
 
+- GND2 thêm immutable world journal cùng transaction, server replay người/NPC/thú/12xe với serialized bike/tag/pet state, checkpoint/CAS/receipt và canonical clock. Local `?ground=shared` đọc frame server theo cùng absolute time, không vật lý riêng;63suite/compiled D1 và browser hai viewer desktop/mobile đạt. Migration0010 chưa prod, chưa reward/P2P/encounter; gói prod chặn preview/runtime caches.
+
 - Ground GND1 thêm server timeline local cho3core/static footprints:100ms fixed-step, bounded backlog/speed/swept collisions, plan SHA/observation và arrival scope riêng. Migration0009 giữ session+operation receipt cùng CAS/postassert rollback.62suite và compiled D1 đạt; renderer/traffic chưa chung, receipt không cấp reward/P2P, chưa migrate production.
 
 - H6b thêm curation few-shot/DPO offline: exact request/context/model/sampling/source SHA, review ngữ nghĩa riêng, validator thật, actor-owned memory và connected splits/train-only selector. CLI mặc định preview, export private600/atomic/exclusive;6 cặp mới là biên tập rõ, không nâng nhãn6partial cũ.61suite/check/lint/build/assets/API local đạt; chưa training, corpus model thật hay runtime importer.

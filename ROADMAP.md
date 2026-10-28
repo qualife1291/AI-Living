@@ -10,15 +10,15 @@
 | H3b / WP3 — chờ authority | Reward dài hạn sau nền evidence v1 | Social/travel/commitment chỉ từ effect hoàn tất có nguồn và authority thật; reward/features mới tách namespace, đo chống reward hacking/action dominance. Không thưởng từ ETA/thoại hoặc backfill giả. |
 | H4/H6: promotion còn chờ | Runtime priors sau kết quả offline và nguồn phù hợp | Global/role.kind priors H4 và warm24 H6 chưa đủ gates để thay cá nhân. Nếu nghiên cứu tiếp cần protocol/seed mới; dữ liệu thật cần role-at-choice có nguồn, artifact installation/version/rollback/CAS trong store0007, không copy donor samples/matrices hoặc tạo migration đè. |
 | H5 / WP5 — chờ authority | P2P sau xác nhận cuộc gặp/chia sẻ | Ground/encounter authority trước; tips không thành own samples/observed memory, decay on-read và actor isolation. |
-| Ground GND2 — bước code tiếp | Mở rộng nền GND1 core/static local thành timeline thế giới chung | GND1 đã có server fixed-step/pose/CAS/receipt và status reader nhất quán. Còn full actor/NPC/traffic occupancy, durable plan lifecycle/nguồn thế giới, bootstrap rõ và renderer tiêu thụ cùng timeline/clock; kiểm hai viewer mở lệch giờ. Giữ static-core receipt không eligible reward/P2P, không gọi nó là shared-world physical arrival. Sau gates mới xem H3b/H5. |
+| Ground GND3 — bước code tiếp | Outcome/encounter authority trên GND2 local shared timeline | GND2 đã journal accepted world/plan/roster/clock, all-actor+ambient traffic replay và shared renderer; còn receipt arrival/fulfillment gắn plan/window/cancel, encounter co-location+duration và source/recipient/heard/witnessed. Ground clock riêng cần map protocol trước reward/features namespace mới. Không nâng nhãn GND1/GND2 hoặc cấp reward/P2P từ render/ETA/tag/thoại; H3b/H5 chỉ mở sau gates. |
 | H10: nghiên cứu/promotion còn chờ | Candidate mới sau finite search v1 | Grid9 và validation đã kết thúc không selection; holdout12000–12019 vẫn chưa dùng. Nghiên cứu mới cần protocol/search/validation khác và candidate có effect thật, không retune dữ liệu đã xem. Runtime artifact review/installation/version/CAS/rollback còn riêng; không tự sửa code/deploy. |
 
 ## Các phụ thuộc và phần chưa xong
 
 | Mảng | Điều kiện cần hoàn thành |
 |---|---|
-| Ground/playback chung | Nền GND1 chỉ3core/static session local; cần authority chung NPC/xe/encounter, renderer và lifecycle plan đầy đủ. Client receipt/ETA không là authority. Không cấp skill/P2P từ static-core receipt hoặc chỉ vì hết giờ plan. |
-| Phát hành owner-private | Native Sites đúng project/credential mới; backup full DB/schema0006/0007/0008/0009 theo tình trạng thật; exact candidate/readback history/memory và ledger. Không tạo lịch trùng. |
+| Ground/playback chung | GND2 shared local có all-actor/NPC/ambient traffic, source journal và frame sampling; còn GND3 outcome/encounter, bus/metro boarding, liveness/catch-up/long-session budgets và production rollout. Bootstrap là simulation seed; client receipt/ETA/frame không cấp skill/P2P. |
+| Phát hành owner-private | Native Sites đúng project/credential mới; backup full DB/schema0006–0010 theo tình trạng thật; exact candidate/readback history/memory và ledger. Không tạo lịch trùng. |
 | H3: reward dài hạn | Commitment/social/travel reward chỉ từ outcome có nguồn và authority; kiểm reward hacking/action dominance. |
 | H4: hierarchy | Global/role priors có provenance, tách prior/personal, giữ cá tính; benchmark cùng dữ liệu/gates và không tăng samples giả. LinUCB6D/normalized policy hiện đã có. |
 | H5: P2P | Heard-from-peer chỉ khi sharing/cuộc gặp được xác nhận; lời kể không tăng trials/skill hoặc thành ký ức trực tiếp. Exemplar giữ context/validator/nguồn. |

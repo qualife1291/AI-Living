@@ -1,0 +1,210 @@
+{
+  "version": 2,
+  "date": "2026-10-28",
+  "phase": "GND2 local shared ground source/replay/renderer",
+  "status": "local-complete-prepared-not-deployed",
+  "sourceCommit": "b2abde289b6a5b16e93a8ea1236e39331343cd47",
+  "productCodeSource": "a34cad769c0fc20935d6e84fec19250eb2d20c5e",
+  "contract": "docs/validation/ground-shared-contract-v2.json",
+  "contractSha256": "94f8e5595f2d0a069686a13efbca86ec2f5a10b59216ee4e9309bdd273add678",
+  "files": {
+    "lib/living/shared-ground.ts": "55ac15c1445090cb1ee2383016f01d33ebc1f164a2916ff73283ea5dd0f4a200",
+    "lib/living/shared-ground-store.ts": "fb3078cd382408a0b500430d98928da3cff0d71bb08330483a6ad211f8daf9d6",
+    "lib/living/shared-ground-view.ts": "86fb5ba946fca0b57044472b6346f0e145b3c7aa296f739759816a4148f3fdab",
+    "lib/city/director-state.ts": "e611e6a21a16bfeb7acd5b5148ad559ad146ec7e52edb1514004885c6892c58c",
+    "drizzle/0010_ground_shared.sql": "f1f0b159beeca27191b50ea5e39f47e2cb72c3b2f173943628a026a22b8c04bc",
+    "scripts/package-production.py": "a01713bbc3c3c02602ccbc53359c7ca2220ddc7700eeb84b04179dcbed16056e"
+  },
+  "checks": {
+    "fullUnit": {
+      "suite": "unit-summary",
+      "total": 63,
+      "passed": 63,
+      "failed": [],
+      "workers": 4,
+      "seconds": 162.11
+    },
+    "fullUnitCodeSource": "a34cad769c0fc20935d6e84fec19250eb2d20c5e",
+    "target": {
+      "suite": "shared-ground",
+      "captureBoundaryChunkDeterminism": true,
+      "planReplacementRemovalJournal": true,
+      "canonicalPauseScale": true,
+      "lateViewerAbsoluteSampling": true,
+      "noExtrapolation": true,
+      "allActors": 246,
+      "cars": 12,
+      "bodyRadiusBicyclePetTagState": true,
+      "fixedPhysicsBudget": true,
+      "immutableSourcesAndAtomicWorldCapture": true,
+      "stateReceiptCASRollback": true,
+      "silentIgnoreRollback": true,
+      "zeroTickLostAck": true,
+      "concurrentOneCommit": true,
+      "readOnlyStatus": true,
+      "userMemoryHistoryPoliciesPreserved": true,
+      "localClient": true,
+      "eligibleForReward": false,
+      "eligibleForP2P": false,
+      "productionAccess": false
+    },
+    "typecheck": true,
+    "lintWarnings": 0,
+    "releaseBuild": true,
+    "assets": true,
+    "compiledSharedD1": {
+      "suite": "shared-ground-api",
+      "ownerLocalAndRemoteDenied": true,
+      "strictBodyOriginUtf8": true,
+      "missingSchemaNoBootstrap": true,
+      "worldAtomicImmutableJournal": true,
+      "allActorAndTrafficFrame": true,
+      "zeroStepDurableRetry": true,
+      "concurrentOneCommit": true,
+      "sourceTriggerAbortWorldRollback": true,
+      "silentReceiptD1Rollback": true,
+      "sharedWorldReadback": true,
+      "pulseReused": true,
+      "userHistoryMemoryPreserved": true,
+      "productionAccess": false,
+      "eligibleForReward": false,
+      "eligibleForP2P": false
+    },
+    "compiledExistingD1": {
+      "suite": "local-diagnostics-http",
+      "ownerReadGuard": true,
+      "ownerWriteGuard": true,
+      "streamByteLimit": true,
+      "schema": true,
+      "origin": true,
+      "ack": true,
+      "jsonlReadback": true,
+      "rateLimit": true,
+      "retention": true,
+      "diagnosticsReadOnly": true,
+      "pulsePersistence": true,
+      "pulseRetry": true,
+      "pulseConcurrentViewers": 12,
+      "pulseNoDuplicateAudit": true,
+      "pulsePause": true,
+      "healthSchemaBatch": true,
+      "bulkReplay": true,
+      "memoryBackfill": true,
+      "productionAccess": false
+    },
+    "compiledGND1D1": {
+      "suite": "ground-api-compiled-d1",
+      "localOwnerOnly": true,
+      "remoteVerifiedOwnerDenied": true,
+      "bodySchemaUtf8Bytes": true,
+      "missingMigrationNoBootstrap": true,
+      "previewZeroWrites": true,
+      "serverPlanOnlyNoClientPoseTime": true,
+      "fixed600StepMotion": true,
+      "arrivalReceipts": 1,
+      "concurrentSameOperationOneCommit": true,
+      "checkpointCAS": true,
+      "silentReceiptIgnoreD1Rollback": true,
+      "committedReadersAgree": true,
+      "pause": true,
+      "userWorldPoliciesHistoryMemoriesPreserved": true,
+      "eligibleForReward": false,
+      "eligibleForP2P": false,
+      "productionAccess": false
+    },
+    "browserSourceCommit": "b2abde289b6a5b16e93a8ea1236e39331343cd47",
+    "browser": {
+      "production": false,
+      "browser": "Chromium SwiftShader",
+      "source": "synthetic shared frames; D1 separate",
+      "cases": [
+        {
+          "viewport": "desktop",
+          "checkpoint": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "sampledRealMs": 1793197808788,
+          "actors": 30,
+          "cars": 12
+        },
+        {
+          "viewport": "mobile",
+          "checkpoint": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "sampledRealMs": 1793197808788,
+          "actors": 30,
+          "cars": 12
+        }
+      ],
+      "lateOpenSameTimeSameRoots": true,
+      "cameraIndependent": true,
+      "reloadNoRespawn": true,
+      "pauseStable": true,
+      "noExtrapolation": true,
+      "noHorizontalOverflow": true,
+      "errors": []
+    },
+    "schemaTables": 21,
+    "schemaGenerateNoChanges": true,
+    "journalAppendOnly": true,
+    "oldMigrationsUnchanged": true,
+    "packageGuard": {
+      "previewCacheRejected": true,
+      "verifiedArchivePreserved": true
+    },
+    "markdown": {
+      "files": 23,
+      "localLinks": 111,
+      "broken": 0
+    },
+    "finalArchiveBytesAndScopeAnd0010Verified": true,
+    "ownedPreviewServersStopped": true
+  },
+  "screenshots": [
+    {
+      "path": "docs/screenshots/gnd2/shared-desktop-preview.png",
+      "sha256": "34f79fe2ba07a25ed4de310684dc941d17ef3a09e5bfacf63c574aef68bde3bb"
+    },
+    {
+      "path": "docs/screenshots/gnd2/shared-mobile-preview.png",
+      "sha256": "0b03ff41fa2ced5f4d158e133aec049458d4d485441337dc56994b0cdcf40a44"
+    }
+  ],
+  "release": {
+    "sourceCommit": "b2abde289b6a5b16e93a8ea1236e39331343cd47",
+    "archiveLocalPath": "work/production-b2abde2.tar.gz",
+    "archiveSha256": "1443fdcb3c380c21cdf118091fd8e699564f34ca6d0f7ed4f1ad6ec43764186f",
+    "entries": 841,
+    "allDistBytesVerified": true,
+    "allMigrationBytesVerified": true,
+    "migration0009Included": true,
+    "gzipDerivativesLossless": 26,
+    "groundServerRuntimeIncluded": true,
+    "offlineCurationNativeSqlitePrivateDataExcluded": true,
+    "deployed": false,
+    "migration0010Included": true,
+    "sharedServerScopeIncluded": true,
+    "verifiedBeforePreview": true
+  },
+  "preservation": {
+    "userDatabaseMigrated": false,
+    "productionMigrated": false,
+    "productionBackfilled": false,
+    "productionSessionStarted": false,
+    "worldIdsBornHomePetsMemoriesPoliciesEditedByReplay": false,
+    "existingRewardOrPolicyChanged": false,
+    "defaultViewerPhysicsChanged": false,
+    "newCronOrDaemon": false,
+    "H10HoldoutObserved": false,
+    "productionAccess": false
+  },
+  "limitations": [
+    "Explicit local opt-in only; default viewer and production do not switch to shared mode.",
+    "Genesis/source-derived spawn is simulation initialization, not observed historical position.",
+    "Ground clock integrates committed pause/scale acceptance boundaries; it is separate from existing world/reward time.",
+    "All actors participate in server occupancy, renderer keeps72-actor budget; tests cover246actors and12cars without a throughput/FPS/liveness claim.",
+    "Bounded replay keeps backlog; high speeds or a long gap may need multiple pulses/advances.",
+    "Shared preview suppresses viewer-local conversations; GND3 needs activity fulfillment/encounter and recipient/heard/witnessed authority.",
+    "No bus/metro boarding, earned ground reward/P2P, model training/promotion, GPU/soak or live DB verification.",
+    "Browser fixtures are synthetic with fixed sampling time; compiled D1 independently verifies persistence/guards/transactions.",
+    "The initial archive contaminated by preview cache was rejected; verified candidate was rebuilt/packaged before preview, and package guard now rejects those caches."
+  ],
+  "next": "GND3 outcome and encounter receipts with clock namespace/provenance gates before H3b/H5."
+}

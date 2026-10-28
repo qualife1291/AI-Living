@@ -5,7 +5,7 @@ import {randomUUID} from 'node:crypto';
 import {seed} from '../lib/world.ts';
 import {initializeLiving} from '../lib/living/engine.ts';
 import {bootstrapShared,replayShared} from '../lib/living/shared-ground.ts';
-import {runSharedGround,readSharedGround,sharedRequestSchema,pulseSharedGround} from '../lib/living/shared-ground-store.ts';
+import {runSharedGround,readSharedGround,sharedRequestSchema,pulseSharedGround,preflightSharedGround} from '../lib/living/shared-ground-store.ts';
 import {sampleSharedGround,validateSharedView} from '../lib/living/shared-ground-view.ts';
 import {sharedGroundCommand} from './shared-ground.mjs';
 const base=Date.parse('2026-10-28T02:00:00Z');
@@ -60,6 +60,8 @@ const db=new Fixture();
 try{
  const now=Date.now(),id=randomUUID(),start={action:'start',sessionId:id,operationId:randomUUID(),expectedCheckpoint:'new'};
  const before=db.raw();assert.equal((await runSharedGround(db,{action:'status'},now)).exists,false);assert.equal(db.raw(),before);
+ const trigger=db.sql.prepare("SELECT sql FROM sqlite_master WHERE name='ground_shared_capture_world'").get().sql;
+ db.sql.exec('DROP TRIGGER ground_shared_capture_world');await assert.rejects(runSharedGround(db,start,now),/schema-incomplete/);assert.equal(db.raw(),before);db.sql.exec(trigger);
  const started=await runSharedGround(db,start,now);assert.equal((await runSharedGround(db,start,now+1000)).duplicate,true);
  assert.equal(db.sql.prepare('SELECT count(*) n FROM ground_shared_sources').get().n,1);
  const idle={action:'advance',sessionId:id,operationId:randomUUID(),expectedCheckpoint:started.checkpoint},idleAck=await runSharedGround(db,idle,now);
@@ -88,5 +90,7 @@ try{
  await assert.rejects(sharedGroundCommand({},async()=>new Response('<html>private</html>')));
  assert.equal(sharedRequestSchema.safeParse({action:'advance',position:[0,0],nowMs:1}).success,false);
  assert.equal((await pulseSharedGround(db,now+500)).coalesced,true);
+ db.sql.exec('DROP TRIGGER ground_shared_capture_world');db.update();db.sql.exec(trigger);
+ await assert.rejects(preflightSharedGround(db),/journal-world-gap/);await assert.rejects(runSharedGround(db,{action:'advance',sessionId:id,operationId:randomUUID(),expectedCheckpoint:one.checkpoint},now+3000),/journal-world-gap/);
  console.log(JSON.stringify({suite:'shared-ground',captureBoundaryChunkDeterminism:true,planReplacementRemovalJournal:true,canonicalPauseScale:true,lateViewerAbsoluteSampling:true,noExtrapolation:true,allActors:246,cars:12,bodyRadiusBicyclePetTagState:true,fixedPhysicsBudget:true,immutableSourcesAndAtomicWorldCapture:true,stateReceiptCASRollback:true,silentIgnoreRollback:true,zeroTickLostAck:true,concurrentOneCommit:true,readOnlyStatus:true,userMemoryHistoryPoliciesPreserved:true,localClient:true,eligibleForReward:false,eligibleForP2P:false,productionAccess:false}));
 }finally{db.close();}

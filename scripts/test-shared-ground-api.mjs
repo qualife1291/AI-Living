@@ -53,5 +53,8 @@ try{
  await db.prepare('DROP TRIGGER reject_shared_capture').run();
  assert.equal((await db.prepare("SELECT text FROM memories WHERE id='keep'").first()).text,'Giữ ký ức');
  await tick(Date.now()+10000);const pulse=await post({}, {},'http://localhost/api/living/pulse');assert.equal(pulse.status,200,await pulse.clone().text());assert((await pulse.json()).sharedGround,'existing pulse advances active shared timeline');
+ const beforePreflight=(await db.prepare('SELECT * FROM worlds').all()).results;
+ await db.prepare('DROP TRIGGER ground_shared_capture_world').run();
+ assert.equal((await post({}, {},'http://localhost/api/living/pulse')).status,503);assert.deepEqual((await db.prepare('SELECT * FROM worlds').all()).results,beforePreflight,'partial schema rejected before pulse writes');
  console.log(JSON.stringify({suite:'shared-ground-api',ownerLocalAndRemoteDenied:true,strictBodyOriginUtf8:true,missingSchemaNoBootstrap:true,worldAtomicImmutableJournal:true,allActorAndTrafficFrame:true,zeroStepDurableRetry:true,concurrentOneCommit:true,sourceTriggerAbortWorldRollback:true,silentReceiptD1Rollback:true,sharedWorldReadback:true,pulseReused:true,userHistoryMemoryPreserved:true,productionAccess:false,eligibleForReward:false,eligibleForP2P:false}));
 }finally{await mf.dispose();}

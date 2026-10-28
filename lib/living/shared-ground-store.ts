@@ -13,6 +13,7 @@ const fail=(code:string):never=>{throw new GroundTimelineError(code);};
 function bounded(raw:string|null,limit:number=SHARED_LIMITS.stateBytes){if(!raw||new TextEncoder().encode(raw).length>limit)fail('shared-byte-budget');return raw!;}
 const asSource=(r:SourceRow):SharedSource=>({seq:r.seq,revision:r.revision,capturedAt:r.captured_at,raw:bounded(r.data,SHARED_LIMITS.worldBytes)});
 const stateRow=(db:D1Database)=>db.prepare('SELECT session_id,CASE WHEN length(CAST(data AS BLOB))<=? THEN data ELSE NULL END data,checksum,updated_at FROM ground_shared_states WHERE id=\'home\'').bind(SHARED_LIMITS.stateBytes).first<StateRow>();
+async function requireSharedSchema(db:D1Database){const names=(await db.prepare("SELECT name FROM sqlite_master WHERE name IN ('ground_shared_states','ground_shared_sources','ground_shared_batches','idx_shared_source_revision','idx_shared_batch_sequence','idx_shared_batch_operation','ground_shared_capture_world','ground_shared_sources_immutable_update','ground_shared_sources_immutable_delete')").all<{name:string}>()).results;if(names.length!==9)throw new GroundTimelineError('shared-schema-incomplete',503);}
 async function sourceRow(db:D1Database,seq:number){const r=await db.prepare('SELECT seq,revision,captured_at,CASE WHEN length(CAST(data AS BLOB))<=? THEN data ELSE NULL END data FROM ground_shared_sources WHERE seq=? AND world_id=\'home\'').bind(SHARED_LIMITS.worldBytes,seq).first<SourceRow>();if(!r)fail('shared-source-missing');return asSource(r!);}
 async function worldRow(db:D1Database){const r=await db.prepare('SELECT revision,CASE WHEN length(CAST(data AS BLOB))<=? THEN data ELSE NULL END data FROM worlds WHERE id=\'home\'').bind(SHARED_LIMITS.worldBytes).first<{revision:number;data:string|null}>();if(!r||!Number.isSafeInteger(r.revision)||r.revision<0)fail('shared-world-unavailable');return {revision:r!.revision,raw:bounded(r!.data,SHARED_LIMITS.worldBytes)};}
 async function batchRow(db:D1Database,operation?:string,sequence?:number){return db.prepare(`SELECT CASE WHEN length(CAST(data AS BLOB))<=? THEN data ELSE NULL END data,checksum,sequence,created_at,operation_id FROM ground_shared_batches WHERE state_id='home' AND ${operation?'operation_id':'sequence'}=?`).bind(SHARED_LIMITS.stateBytes,operation??sequence!).first<BatchRow>();}
@@ -26,6 +27,7 @@ async function sourcePage(db:D1Database,after:number){
  return {sources,nextBoundary};
 }
 export async function readSharedGround(db:D1Database,nowMs=Date.now()){
+ await requireSharedSchema(db);
  const row=await stateRow(db);if(!row)return null;const s=await validated(db,row),source=await sourceRow(db,s.sourceSeq);
  if(await groundHash(source.raw)!==s.sourceSha256)fail('shared-source-sha');
  const world=projectionWorld(JSON.parse(source.raw) as World,s.simMs);
@@ -33,6 +35,7 @@ export async function readSharedGround(db:D1Database,nowMs=Date.now()){
  return {view,world};
 }
 export async function runSharedGround(db:D1Database,input:Request,nowMs=Date.now()){
+ await requireSharedSchema(db);
  const r=sharedRequestSchema.parse(input),row=await stateRow(db),head=row?.checksum??'new';
  const previous=row?await validated(db,row):null;
  if(r.action==='status')return {ok:true,mode:'status',exists:!!previous,checkpoint:head,...(previous?{view:(await readSharedGround(db,nowMs))!.view}:{scope:SHARED_SCOPE,eligibleForReward:false,eligibleForP2P:false})};
@@ -42,6 +45,7 @@ export async function runSharedGround(db:D1Database,input:Request,nowMs=Date.now
  const world=await worldRow(db);
  let state:SharedState,events:unknown[]=[],physicsSteps=0,outerTicks=0,guards:SharedSource[]=[],initialSource:SharedSource|undefined;
  const high=(await db.prepare('SELECT COALESCE(MAX(seq),0) n FROM ground_shared_sources').first<{n:number}>())!.n;
+ if(previous){const tail=await sourceRow(db,high);if(tail.revision!==world.revision||tail.raw!==world.raw)fail('shared-journal-world-gap');}
  if(!previous){if(high)fail('shared-orphan-journal');initialSource={seq:1,revision:world.revision,capturedAt:nowMs,raw:world.raw};state=await bootstrapShared(initialSource,r.sessionId!);}
  else {const current=await sourceRow(db,previous.sourceSeq),page=await sourcePage(db,current.seq);guards=[current,...page.sources];const out=await replayShared(previous,current,page.sources,nowMs,page.nextBoundary);state=out.state;events=out.events;physicsSteps=out.physicsSteps;outerTicks=out.outerTicks;}
  state.sequence=(previous?.sequence??0)+1;state.nonce=crypto.randomUUID();
@@ -63,4 +67,11 @@ export async function pulseSharedGround(db:D1Database,nowMs=Date.now()){
  const ready=await db.prepare("SELECT name FROM sqlite_master WHERE type='table' AND name='ground_shared_states'").first();if(!ready)return null;
  const row=await stateRow(db);if(!row)return null;if(nowMs-row.updated_at<900)return {coalesced:true};
  try{return await runSharedGround(db,{action:'advance',sessionId:row.session_id,operationId:crypto.randomUUID(),expectedCheckpoint:row.checksum},nowMs);}catch(error){if(error instanceof GroundTimelineError&&error.message==='shared-checkpoint-conflict')return {coalesced:true};throw error;}
+}
+/** Reject incomplete active journals before the existing pulse is allowed to mutate world. */
+export async function preflightSharedGround(db:D1Database){
+ const ready=await db.prepare("SELECT name FROM sqlite_master WHERE type='table' AND name='ground_shared_states'").first();if(!ready)return false;
+ const row=await stateRow(db);if(!row)return false;await requireSharedSchema(db);
+ const world=await worldRow(db),tail=(await db.prepare("SELECT seq FROM ground_shared_sources WHERE world_id='home' ORDER BY seq DESC LIMIT 1").first<{seq:number}>());
+ if(!tail)fail('shared-source-missing');const latest=await sourceRow(db,tail!.seq);if(latest.revision!==world.revision||latest.raw!==world.raw)fail('shared-journal-world-gap');return true;
 }
