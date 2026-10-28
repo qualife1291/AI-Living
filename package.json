@@ -40,7 +40,8 @@
     "simulate:hierarchy": "node scripts/sim-hierarchy.mjs",
     "replay:archive": "node scripts/replay-archive.mjs",
     "train:replay": "node scripts/train-replay.mjs",
-    "simulate:replay": "node scripts/sim-replay.mjs"
+    "simulate:replay": "node scripts/sim-replay.mjs",
+    "optimize:policy": "node scripts/optimize-policy.mjs"
   },
   "dependencies": {
     "@base-ui/react": "^1.7.0",

@@ -167,5 +167,8 @@
   ],
   [
     "scripts/test-outcome-replay.mjs"
+  ],
+  [
+    "scripts/test-bounded-search.mjs"
   ]
 ]
