@@ -34,7 +34,8 @@
     "test:api:local": "node scripts/test-local-diagnostics.mjs",
     "assets:import:resources": "python3 scripts/import-resource-packs.py",
     "simulate:learning": "node scripts/sim-learning.mjs",
-    "train:residual-prior": "node scripts/train-residual-prior.mjs"
+    "train:residual-prior": "node scripts/train-residual-prior.mjs",
+    "audit:learning-rewards": "node scripts/audit-learning-rewards.mjs"
   },
   "dependencies": {
     "@base-ui/react": "^1.7.0",

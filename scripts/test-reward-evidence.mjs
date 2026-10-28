@@ -1,0 +1,101 @@
+import assert from 'node:assert/strict';
+import {spawnSync} from 'node:child_process';
+import {mkdtempSync,writeFileSync,readFileSync,rmSync} from 'node:fs';
+import {tmpdir} from 'node:os';
+import {join} from 'node:path';
+import {seed} from '../lib/world.ts';
+import {initializeLiving} from '../lib/living/engine.ts';
+import {initializeAgent,prepareLearning,scenarios} from '../lib/living/learning.ts';
+import {decisionContext} from '../lib/living/linucb.ts';
+import {planKey} from '../lib/living/plan-identity.ts';
+import {auditExperience,auditExperiences} from '../lib/living/experience-audit.ts';
+import {fixtureContext} from './learning-fixtures.mjs';
+
+const now=Date.parse('2026-10-28T02:00:00Z');
+function fixture({scenarioId='learn-trade',key=true,context=true,simMs=180000,changes={}}={}) {
+ const world=structuredClone(seed),state=initializeLiving(now),scenario=scenarios.find(s=>s.id===scenarioId);
+ world.living=state;world.born='2026-10-27T17:00:00Z';world.paused=false;
+ world.clock={anchors:[{realMs:now,simMs,scale:1}],scale:1,pausedAt:null,pausedMs:0};
+ const agent={...initializeAgent('an'),energy:50,hunger:60,health:50,skill:97,citations:2,needsUpdatedSimMs:0,...changes};
+ const person=world.people.find(p=>p.id==='an');person.skill=agent.skill;
+ person.plan={createdAt:new Date(now).toISOString(),simStartedAt:0,pausedMs:0,from:'Khu dân cư',transport:'walk',
+  steps:[{location:scenario.place,activity:scenario.title,kind:scenario.kind,duration:180}]};
+ agent.pending={id:`private-fixture-${scenarioId}-${key?'fingerprint':'legacy'}-${context?'ctx':'tab'}`,scenarioId,startedSimMs:0,durationMs:180000,completed:false,
+  ...(context?{context:decisionContext(agent,fixtureContext().weather)}:{}),...(key?{planKey:planKey(person.plan)}:{})};
+ state.learning={an:agent};return world;
+}
+function settle(world) {const outcomes=[];prepareLearning(world,world.living,now,e=>outcomes.push(e));return outcomes.filter(e=>e.actorId==='an');}
+const world=fixture(),born=world.born,contextAtChoice=[...world.living.learning.an.pending.context];
+const evidenceFree=JSON.stringify(world),[record]=settle(world),e=record.rewardEvidence;
+assert.equal(auditExperience(record).status,'verified-contextual');
+assert.equal(e.rewardVersion,'scenario-outcome-v1');assert.equal(e.authority,'simulation-plan-time-v1');
+assert.equal(e.plan.binding,'fingerprint-v1');assert.equal(e.plan.declaredKey,e.plan.matchedKey);
+assert.equal(e.samples.after-e.samples.before,1);assert.deepEqual(e.decisionContext,contextAtChoice);
+assert.notEqual(e.before.energy,50,'Settlement state includes elapsed needs, not invented decision-time needs');
+assert.equal(e.total,record.reward);assert.equal(world.born,born);
+assert.deepEqual(settle(world),[],'Retry cannot create another evidence record or sample');
+assert.equal(world.living.learning.an.samples,1);
+const repeated=fixture();assert.deepEqual(settle(repeated),[record],'Fixed input gives byte-equivalent evidence');
+const early=fixture({simMs:179999});assert.deepEqual(settle(early),[]);assert.equal(early.living.learning.an.samples,0);
+const cancelled=fixture();cancelled.people[0].plan.steps[0].activity='Một việc đã thay';
+assert.deepEqual(settle(cancelled),[]);assert.equal(cancelled.living.learning.an.samples,0);
+const unknown=fixture();unknown.living.learning.an.pending.scenarioId='unknown';assert.deepEqual(settle(unknown),[]);
+const [legacyBinding]=settle(fixture({key:false}));
+assert.equal(legacyBinding.rewardEvidence.plan.binding,'legacy-start-time');
+assert.equal(legacyBinding.rewardEvidence.plan.declaredKey,null);assert.equal(auditExperience(legacyBinding).status,'verified-contextual');
+const [tabular]=settle(fixture({context:false}));assert.equal(auditExperience(tabular).status,'verified-tabular');
+assert.equal(tabular.rewardEvidence.featureVersion,null);assert.equal(tabular.rewardEvidence.decisionContext,null);
+const [saturated]=settle(fixture({changes:{skill:100,domainSkills:{learning:100}}}));
+assert.equal(saturated.rewardEvidence.components.skill,0);assert.equal(saturated.skillGain,undefined);
+const [healthy]=settle(fixture({scenarioId:'hospital-check',changes:{health:100}}));
+assert.equal(healthy.rewardEvidence.components.health,0);
+const [injury]=settle(fixture({scenarioId:'minor-injury',changes:{health:90}}));
+assert(injury.rewardEvidence.components.health<0,'Negative outcomes cannot be omitted from reward evidence');
+const original=JSON.stringify(record);
+const tamper=(change,reason)=>{const copy=structuredClone(record);change(copy);assert.equal(auditExperience(copy).reason,reason);};
+tamper(r=>r.actorId='other','identity-mismatch');tamper(r=>r.id='other','identity-mismatch');
+tamper(r=>r.scenarioId='lunch','identity-mismatch');tamper(r=>r.rewardEvidence.scenarioSignature=0,'scenario-version-mismatch');
+tamper(r=>r.rewardEvidence.rewardVersion='v2','invalid-evidence');
+tamper(r=>r.rewardEvidence.authority='physical-arrival','invalid-evidence');
+tamper(r=>r.rewardEvidence.components.social=1,'invalid-evidence');
+tamper(r=>r.rewardEvidence.before.energy=NaN,'invalid-evidence');
+tamper(r=>r.rewardEvidence.plan.settledSimMs=179999,'early-settlement');
+tamper(r=>r.rewardEvidence.plan.declaredKey='plan-v1:0000000000000000','plan-binding-mismatch');
+tamper(r=>r.rewardEvidence.samples.after+=1,'sample-sequence-mismatch');
+tamper(r=>r.rewardEvidence.after.energy+=1,'outcome-mismatch');
+tamper(r=>r.rewardEvidence.components.skill+=.1,'reward-mismatch');
+tamper(r=>r.reward+=.1,'reward-mismatch');
+tamper(r=>r.context[1]=.1,'decision-context-mismatch');
+tamper(r=>delete r.context,'decision-context-mismatch');
+tamper(r=>r.model='contextual-bandit-v1','decision-context-mismatch');
+tamper(r=>r.skillGain.domain='technical','domain-gain-mismatch');
+tamper(r=>r.source='model-proposal','invalid-record');
+const legacy=structuredClone(record);delete legacy.rewardEvidence;
+const oldBytes=JSON.stringify(legacy);assert.equal(auditExperience(legacy).status,'legacy-unverified');
+assert.equal(JSON.stringify(legacy),oldBytes,'No invented provenance backfill');
+assert.equal(JSON.stringify(record),original,'Audit is read-only');
+assert.notEqual(JSON.stringify(world),evidenceFree,'The fixture really settled a plan');
+const aggregate=auditExperiences([record,record,legacy,tabular]);
+assert.equal(aggregate.records,4);assert.equal(aggregate.counts.rejected,2,'Repeated IDs cannot be counted again, including legacy records');
+assert.equal(aggregate.counts['verified-tabular'],1);assert.equal(aggregate.trainsPolicy,false);
+const temp=mkdtempSync(join(tmpdir(),'h3-reward-'));
+try {
+ const input=join(temp,'fixture.jsonl'),out=join(temp,'report.json');
+ writeFileSync(input,JSON.stringify(record)+'\n');
+ const run=(args)=>spawnSync(process.execPath,['scripts/audit-learning-rewards.mjs',...args],{encoding:'utf8'});
+ const result=run([`--in=${input}`,`--out=${out}`]);assert.equal(result.status,0,result.stderr);
+ const report=JSON.parse(result.stdout);assert.equal(report.counts['verified-contextual'],1);
+ assert(!result.stdout.includes('private-fixture'),'Reports do not copy private record identifiers');
+ assert.equal(readFileSync(input,'utf8'),JSON.stringify(record)+'\n');
+ assert.equal(run([`--in=${input}`]).stdout,result.stdout,'Audit is deterministic');
+ const bytes=readFileSync(out);assert.notEqual(run([`--in=${input}`,`--out=${out}`]).status,0);
+ assert.deepEqual(readFileSync(out),bytes,'Existing reports cannot be overwritten');
+ writeFileSync(input,JSON.stringify({...record,actorId:'wrong'})+'\n');
+ assert.equal(run([`--in=${input}`]).status,2,'Inconsistent data fails the CLI without changing history');
+ writeFileSync(input,'{"private-fixture-secret": broken}\n');
+ const malformed=run([`--in=${input}`]);assert.notEqual(malformed.status,0);
+ assert(!malformed.stderr.includes('private-fixture-secret'),'Malformed input errors must not echo record content');
+} finally {rmSync(temp,{recursive:true,force:true});}
+console.log(JSON.stringify({suite:'reward-evidence',versionedComponents:true,settlementVersusDecision:true,
+ fullDurationPlanBinding:true,noEarlyCancelledDuplicateSamples:true,legacyNotBackfilled:true,domainAndActorIsolation:true,
+ auditReadOnly:true,noExternalAuthenticityOrGroundClaim:true,cliImmutableAndPrivate:true}));

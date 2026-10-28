@@ -4,6 +4,8 @@ import {GARDEN_PLOTS} from "../lib/city/garden-plots.ts";
 import { seed } from "../lib/world.ts";
 import { initializeLiving, turnId, localDate, planLivingTurn } from "../lib/living/engine.ts";
 import { scheduleResidentSocial } from "../lib/living/social-scheduler.ts";
+import {auditExperience} from "../lib/living/experience-audit.ts";
+import {planKey} from "../lib/living/plan-identity.ts";
 /** In-process local worker integration; no hosting, account or production DB access. */
 import assert from 'node:assert/strict';
 import {readMigrationFiles} from 'drizzle-orm/migrator';
@@ -138,6 +140,8 @@ try{
  console.log('PASS legacy household and identity backfill persisted through catalog CAS, repeatability and complete history preservation');
  // Settle one real compiled LinUCB outcome against isolated D1, then retry.
  await db.prepare('CREATE TABLE agent_experiences(seq INTEGER PRIMARY KEY AUTOINCREMENT,id TEXT NOT NULL UNIQUE,actor_id TEXT NOT NULL,created_at TEXT NOT NULL,data TEXT NOT NULL)').run();
+ const legacyRewardJSON=JSON.stringify({id:'legacy-reward-kept',actorId:'an',scenarioId:'lunch',at:new Date(fixedNow).toISOString(),reward:.2,source:'simulation',model:'contextual-bandit-v1'});
+ await db.prepare('INSERT INTO agent_experiences(id,actor_id,created_at,data) VALUES (?,?,?,?)').bind('legacy-reward-kept','an',new Date(fixedNow).toISOString(),legacyRewardJSON).run();
  const linearWorld=structuredClone(repeated),linearNow=Date.now();linearWorld.paused=false;
  linearWorld.clock={anchors:[{realMs:linearNow,simMs:200000,scale:1}],pausedAt:null,pausedMs:0,scale:1};
  for(const policy of Object.values(linearWorld.living.learning??{}))if(policy.pending)policy.pending.completed=true;
@@ -162,12 +166,36 @@ try{
  assert.deepEqual(learned.living.residents[0].memories.slice(0,oldMemories.length),oldMemories);
  const archive=JSON.parse((await db.prepare('SELECT data FROM agent_experiences WHERE id=?').bind('linucb-api-receipt').first()).data);
  assert.equal(archive.model,'disjoint-linucb-v1');assert.deepEqual(archive.context,contextAtChoice);
+ assert.equal(auditExperience(archive).status,'verified-contextual');
+ assert.equal(archive.rewardEvidence.plan.binding,'legacy-start-time','Legacy pending keeps the weaker start-time label');
+ assert.equal(archive.rewardEvidence.samples.before,oldSamples);assert.equal(archive.rewardEvidence.samples.after,oldSamples+1);
+ assert.deepEqual(archive.rewardEvidence.decisionContext,contextAtChoice);
+ const exportedRewards=await mf.dispatchFetch('http://localhost/api/living/learning?format=jsonl&limit=1000');
+ const exportedRecords=(await exportedRewards.text()).trim().split('\n').map(s=>JSON.parse(s));
+ assert.deepEqual(exportedRecords.find(e=>e.id===archive.id),archive,'JSONL exports the same durable evidence');
+ assert.equal((await db.prepare('SELECT data FROM agent_experiences WHERE id=?').bind('legacy-reward-kept').first()).data,legacyRewardJSON,'Old archives remain byte-identical');
  assert.equal(fitted.domainSkills.learning,(policy.domainSkills?.learning??0)+2);
  assert.deepEqual(archive.skillGain,{domain:'learning',before:policy.domainSkills?.learning??0,after:fitted.domainSkills.learning,amount:2});
  assert.deepEqual(learned.living.petOwners,linearWorld.living.petOwners);assert.deepEqual(learned.living.residents.map(r=>r.home),linearWorld.living.residents.map(r=>r.home));
  const retry=await settle();assert.equal(retry.status,200);assert.equal((await retry.json()).updated,0);
  assert.equal((await db.prepare('SELECT count(*) AS count FROM agent_experiences WHERE id=?').bind('linucb-api-receipt').first()).count,1);
- console.log('PASS compiled LinUCB context/posterior/archive persisted atomically and replay gives no duplicate credit');
+ console.log('PASS compiled LinUCB context/posterior/reward evidence archive persisted atomically; legacy bytes preserved and replay gives no duplicate credit');
+ // Competing compiled requests share the same original-plan receipt and CAS.
+ const rewardRaceRow=await db.prepare("SELECT data FROM worlds WHERE id='home'").first(),rewardRaceWorld=JSON.parse(rewardRaceRow.data);
+ const raceAgent=rewardRaceWorld.living.learning[learner.id],racePerson=rewardRaceWorld.living.residents.find(r=>r.id===learner.id);
+ raceAgent.pending={id:'reward-evidence-cas-race',scenarioId:'learn-trade',startedSimMs:0,durationMs:180000,completed:false,context:contextAtChoice,planKey:planKey(racePerson.plan)};
+ await db.prepare("UPDATE worlds SET data=? WHERE id='home'").bind(JSON.stringify(rewardRaceWorld)).run();
+ const rewardReplies=await Promise.all([settle(),settle()]);
+ let raceCredits=0;
+ for(const response of rewardReplies){assert([200,409].includes(response.status));const body=await response.json();raceCredits+=body.humanExperiences??0;}
+ assert.equal(raceCredits,1,'Only the winning CAS earns a sample/evidence record');
+ assert.equal((await db.prepare('SELECT count(*) AS count FROM agent_experiences WHERE id=?').bind('reward-evidence-cas-race').first()).count,1);
+ const raceArchive=JSON.parse((await db.prepare('SELECT data FROM agent_experiences WHERE id=?').bind('reward-evidence-cas-race').first()).data);
+ assert.equal(auditExperience(raceArchive).status,'verified-contextual');assert.equal(raceArchive.rewardEvidence.plan.binding,'fingerprint-v1');
+ const racePersisted=JSON.parse((await db.prepare("SELECT data FROM worlds WHERE id='home'").first()).data);
+ assert.equal(racePersisted.living.learning[learner.id].samples,oldSamples+2);
+ assert.equal(JSON.parse((await db.prepare('SELECT data FROM learning_policies WHERE actor_id=?').bind(learner.id).first()).data)['learn-trade'].samples,2);
+ console.log('PASS compiled original-plan reward evidence/one sample/one archive survive competing CAS writes');
  // Proposal validation must run on the actual server before dated-ID expansion.
  await db.prepare('CREATE TABLE IF NOT EXISTS context_cache(id TEXT PRIMARY KEY,data TEXT,expires_at INTEGER)').run();
  const proposalNow=Date.now(),date=localDate(proposalNow),vn=new Date(proposalNow+7*3600000);

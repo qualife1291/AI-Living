@@ -6,7 +6,8 @@ import type { World, PersonPlan } from "../world";
 import { computeSimMs, hashSeed, worldTime } from "../clock.ts";
 import { decisionContext, fitLinear, linearScore, validDecisionContext, type LinearArm } from "./linucb.ts";
 import {SKILL_DOMAINS,type SkillDomain,type DomainGain} from "./skills.ts";
-import {pendingPlanMatches} from "./plan-identity.ts";
+import {pendingPlanMatches,planKey} from "./plan-identity.ts";
+import {scenarioReward,rewardState,createRewardEvidence,type RewardEvidence,type RewardState} from "./reward-evidence.ts";
 export const scenarioSchema = z
   .object({
     id: z.string().regex(/^[a-z][a-z0-9-]{0,60}$/),
@@ -37,6 +38,7 @@ export const scenarios = z
   .max(100)
   .parse(scenariosData);
 export type Scenario = (typeof scenarios)[number];
+export const OUTCOME_SCENARIO_SIGNATURE = hashSeed(JSON.stringify(scenarios));
 const scenariosByTag = new Map<string, Scenario[]>();
 for (const scenario of scenarios) scenariosByTag.set(scenario.tag, [...(scenariosByTag.get(scenario.tag) ?? []), scenario]);
 export type LearnedAction = { trials: number; meanReward: number };
@@ -82,6 +84,8 @@ export type Experience = {
   model: "contextual-bandit-v1" | "disjoint-linucb-v1";
   context?: number[];
   skillGain?: DomainGain;
+  /** Optional for old archives. Never fabricate retrospective settlement facts. */
+  rewardEvidence?: RewardEvidence;
 };
 export type LearningPopulation = Record<string, AgentLearning>;
 export function meetsSkillGate(agent: Pick<AgentLearning,"skill"|"domainSkills"|"legacySkillGates">, scenario: Scenario) {
@@ -188,8 +192,7 @@ export function chooseScenario(
     })
     .sort((a, b) => b.score - a.score)[0].scenario;
 }
-export type OutcomeNeeds = Pick<AgentLearning,
-  "energy" | "hunger" | "health" | "skill" | "employment" | "citations">;
+export type OutcomeNeeds = RewardState;
 
 /** Pure existing simulation outcome, not a new reward or a learned prediction. */
 export function applyScenarioOutcome(state: OutcomeNeeds, scenario: Scenario) {
@@ -207,12 +210,7 @@ export function applyScenarioOutcome(state: OutcomeNeeds, scenario: Scenario) {
   if (scenario.id === "job-search") after.employment = "studying";
   if (scenario.id === "factory-shift" || scenario.id === "office-shift")
     after.employment = "employed";
-  const reward = Math.max(-1, Math.min(1,
-    (after.skill - state.skill) * .16 +
-    (after.energy - state.energy) * (.008 + (100 - state.energy) / 100 * .018) +
-    (state.hunger - after.hunger) * (.005 + state.hunger / 100 * .02) +
-    (after.health - state.health) * (.015 + (100 - state.health) / 100 * .04),
-  ));
+  const reward = scenarioReward(state,after).total;
   return { after, reward };
 }
 
@@ -310,6 +308,7 @@ export function prepareLearning(world: World, state: LivingState, now: number, c
     advanceNeeds(agent, person.id, simMs, hour < 6 || hour >= 22);
     const domain = scenarios.find(s=>s.id===agent.pending?.scenarioId)?.skillDomain;
     const beforeDomain = domain ? agent.domainSkills?.[domain]??0 : 0;
+    const beforeOutcome = rewardState(agent),sampleBefore = agent.samples;
     const trained = settleLearning(
       agent,
       simMs,
@@ -326,6 +325,14 @@ export function prepareLearning(world: World, state: LivingState, now: number, c
         reward: agent.lastReward ?? action.meanReward,
         source: "simulation",
         model: validDecisionContext(agent.pending.context) && agent.linear?.[agent.pending.scenarioId] ? "disjoint-linucb-v1" : "contextual-bandit-v1",
+        rewardEvidence:createRewardEvidence({scenarioSignature:OUTCOME_SCENARIO_SIGNATURE,
+          identity:{experienceId:agent.pending.id,actorId:person.id,scenarioId:agent.pending.scenarioId},
+          plan:{binding:agent.pending.planKey?"fingerprint-v1":"legacy-start-time",
+            declaredKey:agent.pending.planKey??null,matchedKey:planKey(person.plan)!,
+            startedSimMs:agent.pending.startedSimMs,durationMs:agent.pending.durationMs,settledSimMs:simMs},
+          samples:{before:sampleBefore,after:agent.samples},
+          decisionContext:validDecisionContext(agent.pending.context)?[...agent.pending.context]:null,
+          before:beforeOutcome,after:rewardState(agent)}),
         ...(validDecisionContext(agent.pending.context) ? { context: [...agent.pending.context] } : {}),
         ...(domain && (agent.domainSkills?.[domain]??0)>beforeDomain ? {skillGain:{domain,before:beforeDomain,after:agent.domainSkills![domain]!,amount:agent.domainSkills![domain]!-beforeDomain}} : {}),
       };
