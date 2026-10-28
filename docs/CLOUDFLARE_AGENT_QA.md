@@ -37,6 +37,25 @@
 - **Chưa kiểm được POST qua phiên người dùng trên version mới**; DB kiểm sau deploy vẫn `revision=0`, `living_turns=0`, `experiences=0`. Để đóng bug, mở URL QA dưới Access, refresh và đối chiếu status `POST /api/living/pulse` với DB revision/turn tăng. Nếu vẫn 403/503, xem Worker Logs `qa_access_gate_denied` hoặc lỗi JWKS fetch, không nới quyền.
 - Hạn chế vận hành: public JWKS endpoint phải truy cập được từ Worker để fallback hoạt động. Nếu fail closed, kiểm kết nối / cấu hình JWKS hoặc thay bằng Cloudflare-supported verifier; không bỏ bước signature verification.
 
+## QA auth diagnostic update — 29/10/2026
+
+- Reported error: `{"error":"Thao tác này cần quyền chủ sở hữu.","code":"QA_AUTH_GATE_DENIED"}`. This is the **Worker auth gate**, not `/api/living/pulse` validation.
+- Previous JWT verifier `7d9254dc` had **no authenticated POST E2E** proving the issue fixed. Logs from version `f43759da` show `ctx.access` absent (expected behind Static Assets router), hostname and configured audience valid; cannot conclude whether signed JWT header missing or JWKS fetch/claims failed without new logs.
+- New QA diagnostic commits `dd160c06` and `2455378e`: `lib/cloudflare-access-jwt.ts` logs safe error categories `signed_assertion_missing`, `jwks_unavailable`, `signature_or_claims_invalid`; supports a **signed** `CF_Authorization` cookie fallback when assertion header missing, always requires RSA signature + issuer + audience + time checks. Never log token, email, cookie or claims values. Never set Sites `XOM_OWNER_PRIVATE_ORIGIN` to the public QA URL.
+- Cloudflare Builds after commit `2455378e`: `success`, latest Worker version `440e6fb2-6569-4800-a99f-b60e93cde28a`, deployment `1af1b30d-16c9-4970-bec1-a9ac8511eeb1` at 100%. JWT unit/security tests passed. Cloudflare Access owner and machine policies remain; temp diagnostic credentials removed.
+- A browser-rendering GET successfully loaded real QA HTML via a temporary service token (not an Access login page), but **no pulse was triggered or confirmed by that test**. QA D1 still `revision=0`, `living_turns=0`, `agent_experiences=0`. Tool-side outbound fetch to `workers.dev` was restricted and an attempted scripted POST automation was blocked; **do not mark remote POST QA PASS**.
+- Next action: refresh `https://ai-living-qa.hoanglonglea1mtl.workers.dev/` as owner and perform one POST pulse. Then query Worker Logs `qa_jwt_diagnostic` and `qa_access_gate_denied` for the **latest version**; use exact reason to fix JWKS transport/claims or route context. On HTTP 200 confirm D1 revision/turns changed; on 403 do not bypass Access.
+
+## 29/10/2026 — Fix shared 403 for pulse, visits and diagnostics
+
+**Root cause verified against live QA Worker logs and Cloudflare Workers documentation:**
+- Actual QA request (version `440e6fb2`) returned `QA_AUTH_GATE_DENIED` after logging `qa_jwt_diagnostic.reason=jwks_unavailable`, `errorType=TypeError`.
+- `lib/cloudflare-access-jwt.ts` previously called `fetch(teamDomain + '/cdn-cgi/access/certs', {redirect:'error'})`. **Cloudflare Workers only supports `redirect:'follow'` or `'manual'`; `'error'` throws `TypeError` when the request is constructed**, before attempting JWKS retrieval. Official source: https://developers.cloudflare.com/workers/runtime-apis/request/
+- Commit `178e4f5aff7216d85037c4dfa5a6d1272e8b5d37` changes redirect to `'manual'`; still rejects any 3xx/non-2xx response, so does NOT follow redirects or weaken auth. Regression `scripts/test-cloudflare-access.mjs` now exercises a **signed JWT through the complete QA verifier and mocked JWKS endpoint**, asserting `redirect:'manual'`, issuer/audience/key/signature validity.
+- Cloudflare Build `0e78f0fb-92c8-466f-a17a-3ad04dcc7474` **success**, regression security tests **PASS**; deployed Worker version `770468e8-b23c-488e-ae4a-e0dadd76b199` on deployment `45983544-d519-471f-b66b-81751cbba81a` (100% traffic). D1 `DB` binding unchanged. Access owner + QA service token policies retained, no cron or production writes.
+- **Post-deployment E2E still unverified**: at readback `worlds.revision=0`, `living_turns=0`, `agent_experiences=0`. Refresh QA in an Access-authenticated browser and check `POST /api/living/pulse`; if error persists, query `qa_jwt_diagnostic` on *new version*, now that unsupported redirect is removed. Only record QA PASS after successful POST and D1 progress.
+- `GET /api/diagnostics` is intentionally **private** in `worker/index.ts`; other admin APIs share the same gate. Do **not** bypass it or set `XOM_OWNER_PRIVATE_ORIGIN` to a public workers.dev hostname. No need to add Sites-specific XOM_ADMIN_USER_ID.
+
 > Cập nhật 29/10/2026 (Asia/Ho_Chi_Minh). Tài liệu áp dụng cho **môi trường thử nghiệm QA**, không phải ChatGPT Sites production hoặc Cloudflare staging giữ trạng thái. Kiểm tra trạng thái Cloudflare thực tế trước khi thay đổi; các URL không có nghĩa ứng dụng đã được deploy.
 
 ## 1. Môi trường và phân quyền
