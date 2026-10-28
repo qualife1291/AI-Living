@@ -117,3 +117,13 @@ export const memoryBackfillBatches = sqliteTable('memory_backfill_batches', {
   data: text('data').notNull(),
   createdAt: text('created_at').notNull(),
 }, table => [uniqueIndex('idx_memory_backfill_job_sequence').on(table.jobId, table.sequence)]);
+
+/** Independent opt-in local static-core ground simulation, never world/policy authority. */
+export const groundSessions = sqliteTable('ground_sessions', {
+  id: text('id').primaryKey(), data: text('data').notNull(), checksum: text('checksum').notNull(), updatedAt: text('updated_at').notNull(),
+});
+export const groundBatches = sqliteTable('ground_batches', {
+  id: text('id').primaryKey(), sessionId: text('session_id').notNull().references(() => groundSessions.id),
+  operationId: text('operation_id').notNull(), sequence: integer('sequence').notNull(),
+  data: text('data').notNull(), checksum: text('checksum').notNull(), createdAt: text('created_at').notNull(),
+}, table => [uniqueIndex('idx_ground_session_sequence').on(table.sessionId, table.sequence), uniqueIndex('idx_ground_session_operation').on(table.sessionId, table.operationId)]);

@@ -53,6 +53,11 @@ if (backfillTables[0].results.length === 0) execute(["--file", "drizzle/0008_mem
 else if (backfillTables[0].results.length !== 2) throw new Error("Partial memory-backfill schema; inspect and back up before repair.");
 const backfillIndexes=JSON.parse(execute(["--json","--command","SELECT name FROM sqlite_master WHERE type='index' AND name IN ('idx_memory_backfill_job_sequence','idx_memories_actor_event','idx_experiences_actor_seq')"]));
 if(backfillIndexes[0].results.length!==3)throw new Error("Partial memory-backfill indexes; inspect and back up before repair.");
+const groundTables=JSON.parse(execute(["--json","--command","SELECT name FROM sqlite_master WHERE type='table' AND name IN ('ground_sessions','ground_batches')"]));
+if(groundTables[0].results.length===0)execute(["--file","drizzle/0009_ground_timeline.sql"]);
+else if(groundTables[0].results.length!==2)throw new Error("Partial ground timeline schema; inspect and back up before repair.");
+const groundIndexes=JSON.parse(execute(["--json","--command","SELECT name FROM sqlite_master WHERE type='index' AND name IN ('idx_ground_session_sequence','idx_ground_session_operation')"]));
+if(groundIndexes[0].results.length!==2)throw new Error("Partial ground timeline indexes; inspect and back up before repair.");
 console.log("Local D1 schema ready; existing snapshots and episodes preserved.");
 
 if (process.env.HTTPS_PROXY) {

@@ -182,5 +182,8 @@
   ],
   [
     "scripts/test-dataset-curation.mjs"
+  ],
+  [
+    "scripts/test-ground-timeline.mjs"
   ]
 ]

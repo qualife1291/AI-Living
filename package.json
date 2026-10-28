@@ -45,7 +45,9 @@
     "assets:compress": "node scripts/compress-city-assets.mjs --write",
     "replay:bulk": "node scripts/replay-bulk.mjs",
     "memories:backfill": "node scripts/memory-backfill.mjs",
-    "training:curate": "node scripts/curate-training.mjs"
+    "training:curate": "node scripts/curate-training.mjs",
+    "ground:timeline": "node scripts/ground-timeline.mjs",
+    "test:api:ground": "node scripts/test-ground-api.mjs"
   },
   "dependencies": {
     "@base-ui/react": "^1.7.0",
