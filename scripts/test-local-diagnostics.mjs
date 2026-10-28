@@ -195,6 +195,7 @@ try{
  const quietPolicies=await db.prepare('SELECT * FROM learning_policies ORDER BY actor_id').all();
  for(const advanced of [fixedNow+300000,fixedNow+13*3600000]){
   await mf.dispatchFetch('http://localhost/__fixture/time?now='+advanced);
+  for(const key of ['hcm-weather',`vn-holidays-${poolDate.slice(0,4)}`,`hcm-events-${poolDate.slice(0,7)}`])await db.prepare('INSERT OR REPLACE INTO context_cache(id,data,expires_at) VALUES (?,?,?)').bind(key,'null',advanced+3600000).run();
   const quiet=await mf.dispatchFetch('http://localhost/api/living/tick',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({proposal:novel,basis:{revision:quietRow.revision,turnId:turnId(advanced)}})});
   assert.equal(quiet.status,422);assert.match((await quiet.json()).error,/không có cuộc gặp/);
   assert.deepEqual(await db.prepare("SELECT revision,data FROM worlds WHERE id='home'").first(),quietRow,'Busy or sleeping actors cannot be forced into a model conversation');

@@ -10,3 +10,5 @@
 - Source mới audio opt-in đã qua check/lint/build/API và browser Web Audio thật desktop/mobile/320px/unsupported. Đang chốt final source có thêm fix daemon không gửi lại proposal đã bị review bác và server reviewNarrative. Còn full45/build/API/hồi quy browser trên compiled source cuối, log /tmp/final-next-*; chưa merge main hoặc tạo candidate mới cho các thay đổi sau f0d2312.
 
 - Guard mới sau browser build: server bác proposal nếu plan không có encounter (đang bận/ngủ); API fixture chuyển đồng hồ cố định trong entry in-memory riêng, kiểm cả ban ngày/busy/night. Còn build/API cuối cho guard này, không sửa UI sau browser. NEXT_PHASES.md ghi rõ phần chưa triển khai; không coi thiếu Sites là blocker của mọi backlog source.
+
+- Tiếp tục sau môi trường unavailable: checkout/node_modules/dist còn, /tmp logs cũ mất. Remote main vẫn sau work 7 commit; không có code agent khác mới khi fetch. Thay đổi chưa commit duy nhất là negative context-cache fixture để API test busy/night không gọi upstream sau clock advance. Đang chạy lại check/build/API và 45 suite để chốt main/candidate. Native Sites vẫn chưa có trong tool catalog.
