@@ -87,14 +87,46 @@ export async function verifiedQaAccessRequest(
   const url = new URL(request.url);
   if (url.protocol !== "https:" || url.hostname !== config.hostname || url.port) return false;
   if (!config.audience || !/^[a-z0-9-]+\.cloudflareaccess\.com$/.test(config.teamDomain)) return false;
-  const assertion = request.headers.get("cf-access-jwt-assertion");
-  if (!assertion) return false;
+  // Cloudflare Access can forward the signed assertion header or issue the
+  // same JWT as a CF_Authorization cookie. Either is UNTRUSTED until signature
+  // verification against the team's JWKS succeeds.
+  const fromHeader = request.headers.get("cf-access-jwt-assertion");
+  const cookie = request.headers.get("cookie") ?? "";
+  const cookieMatch = /(?:^|;\\s*)CF_Authorization=([^;]+)/.exec(cookie);
+  const assertion = fromHeader || cookieMatch?.[1];
+  if (!assertion) {
+    console.warn("qa_jwt_diagnostic", { reason: "signed_assertion_missing" });
+    return false;
+  }
   try {
     const keys = await loadAccessJwks(config.teamDomain);
     if (await verifyAccessJwtWithKeys(assertion, config, keys)) return true;
+    // Log booleans only. Never log claims, JWTs, cookies or identities.
+    const parts = assertion.split(".");
+    let diagnostic = { reason: "signature_or_claims_invalid", jwksLoaded: true, keyMatch: false,
+      audienceMatch: false, issuerMatch: false, expiryValid: false, algorithmRS256: false };
+    try {
+      const header = decodeJson(parts[0]), claims = decodeJson(parts[1]);
+      const aud = claims.aud;
+      diagnostic = {
+        reason: "signature_or_claims_invalid",
+        jwksLoaded: true,
+        keyMatch: keys.keys.some(k => k.kid === header.kid),
+        audienceMatch: aud === config.audience || (Array.isArray(aud) && aud.includes(config.audience)),
+        issuerMatch: claims.iss === `https://${config.teamDomain}`,
+        expiryValid: typeof claims.exp === "number" && claims.exp > Math.floor(Date.now() / 1000),
+        algorithmRS256: header.alg === "RS256",
+      };
+    } catch { /* Never disclose malformed token fields. */ }
     // Handles public-key rotations within the cache lifetime.
-    return await verifyAccessJwtWithKeys(assertion, config, await loadAccessJwks(config.teamDomain, true));
-  } catch {
+    if (await verifyAccessJwtWithKeys(assertion, config, await loadAccessJwks(config.teamDomain, true))) return true;
+    console.warn("qa_jwt_diagnostic", diagnostic);
+    return false;
+  } catch (e) {
+    console.warn("qa_jwt_diagnostic", {
+      reason: "jwks_unavailable",
+      errorType: e instanceof Error ? e.name : "unknown",
+    });
     return false;
   }
 }
