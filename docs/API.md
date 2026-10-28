@@ -15,6 +15,7 @@ JSON qua helper `json()` đặt `Cache-Control: private,no-store` và `X-Content
 | GET/POST `/api/living/learning` | GET models/animalModels/200 recent experiences, POST settle outcomes hợp lệ. `format=jsonl&after=0&limit=1000` owner-only, cursor `X-Next-Cursor`, toàn archive phân trang. |
 | GET `/api/living/memories` | Owner-only actor/topic/top-K với provenance/witness filtering; [LEARNING](LEARNING.md). |
 | POST `/api/living/memories/backfill` | Local-admin+owner+loopback; preview mặc định, UUIDjob/actor/limit, apply bằng checkpoint+plan SHA; body≤2KiB. Additive memories/job/receipt, không đổi world/policy; [LEARNING](LEARNING.md). |
+| POST `/api/living/ground` | Owner+local-admin+loopback,≤2KiB strict; session UUID, default status/preview read-only, explicit start/advance cần operation UUID và checkpoint. Server time/plan/poses, state+receipt CAS0009; core/static scope không cấp reward/P2P. [ARCHITECTURE](ARCHITECTURE.md). |
 | POST `/api/living/catalog` | Catalog roles/names theo schema/revision; backfill home/identity additive, giữ custom metadata/IDs/history. |
 | GET/POST `/api/living/appearance` | GET id, POST id/revision/appearance; actor phải tồn tại, giữ dữ liệu tạo hình khác. |
 | POST `/api/living/pets` | `{pet,owner,revision}`, body stream≤2KiB; owner có thể null để unassign, ID hợp lệ/CAS, chỉ metadata petOwners. |

@@ -49,6 +49,11 @@ try {
   const started = await post(startBody); assert.equal(started.status, 200); const initial = await started.json();
   assert.equal(initial.eligibleForReward, false); assert.equal(initial.eligibleForP2P, false); assert.equal(initial.sequence, 1);
   assert.equal((await (await post(startBody)).json()).duplicate, true); assert.equal(await snapshot(), before);
+  const idleId = randomUUID(), idleStart = await (await post({ sessionId: idleId, action: 'start', operationId: randomUUID() })).json();
+  const idleBody = { sessionId: idleId, action: 'advance', operationId: randomUUID(), expectedCheckpoint: idleStart.checkpoint };
+  const idleResult = await (await post(idleBody)).json(); assert.equal(idleResult.steps, 0); assert.equal(idleResult.sequence, 2);
+  await time(2000); const idleRetry = await (await post(idleBody)).json();
+  assert.equal(idleRetry.duplicate, true); assert.equal(idleRetry.cursorSimMs, 1000); assert.equal(idleRetry.checkpoint, idleResult.checkpoint); await time(1000);
   world.people[0].plan = { createdAt: born, pausedMs: 0, from: 'Sân chung', simStartedAt: 1000, steps: [{ location: 'Công viên', activity: 'Đi tới công viên', duration: 180, kind: 'rest' }] };
   await db.prepare("UPDATE worlds SET data=?,revision=5 WHERE id='home'").bind(JSON.stringify(world)).run();
   const adopted = await post({ sessionId, action: 'advance', operationId: randomUUID(), expectedCheckpoint: initial.checkpoint }); assert.equal(adopted.status, 200); const adoption = await adopted.json();

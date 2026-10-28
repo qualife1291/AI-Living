@@ -84,7 +84,6 @@ export async function runGroundAuthority(db: D1Database, input: GroundRequest, n
     : { state: await startGroundTimeline(source.world, source.revision, request.sessionId, nowMs), arrivals: [], steps: 0, backlogMs: 0, paused: source.world.paused };
   if (request.action === 'preview') return { ok: true as const, mode: 'preview' as const, checkpoint: head, exists: !!previous, worldBorn: transition.state.worldBorn, ...groundSummary(transition.state), steps: transition.steps, backlogMs: transition.backlogMs, paused: transition.paused, batchArrivals: transition.arrivals };
   if (transition.paused) fail('ground-world-paused');
-  if (previous && await groundHash(transition.state) === head) return { ok: true as const, mode: 'advanced' as const, duplicate: false, noop: true, checkpoint: head, worldBorn: previous.worldBorn, steps: 0, backlogMs: transition.backlogMs, ...groundSummary(previous), batchArrivals: [] };
   const state: GroundState = transition.state;
   state.sequence = (previous?.sequence ?? 0) + 1; state.nonce = crypto.randomUUID();
   const basis = basisSchema.parse({ version: 1, sessionId: request.sessionId, operationId: request.operationId, action: request.action, requestSha256, previousCheckpoint: head,

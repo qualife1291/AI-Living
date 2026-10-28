@@ -4,6 +4,7 @@ import { readFileSync } from 'node:fs';
 import { randomUUID } from 'node:crypto';
 import { seed } from '../lib/world.ts';
 import { distance } from '../lib/life.ts';
+import { updateClock } from '../lib/clock.ts';
 import { startGroundTimeline, advanceGroundTimeline, groundHash, validateGroundState, GROUND_SCOPE, GROUND_LIMITS } from '../lib/living/ground-timeline.ts';
 import { runGroundAuthority, groundRequestSchema } from '../lib/living/ground-store.ts';
 import { bodySegmentWalkable, WALK_RADIUS } from '../lib/city/walk-ground.ts';
@@ -43,6 +44,17 @@ const expiredResult = await advanceGroundTimeline(initial, expired, 5, now(20000
 const baselineWorld = world(); baselineWorld.people[0].plan = plan();
 const baseline = await startGroundTimeline(baselineWorld, 5, randomUUID(), now(1000));
 assert.equal((await advanceGroundTimeline(baseline, baselineWorld, 5, now(100000))).arrivals.length, 0, 'no baseline historical arrivals');
+const clockWorld = structuredClone(w); clockWorld.paused = false;
+clockWorld.clock = updateClock(clockWorld, now(2000), { speedScale: 2 });
+const faster = await advanceGroundTimeline(adopted.state, clockWorld, 6, now(3000));
+assert.equal(faster.state.cursorSimMs, 4000); assert.equal(faster.steps, 30);
+clockWorld.clock = updateClock(clockWorld, now(3000), { paused: true }); clockWorld.paused = true;
+const clockPause = await advanceGroundTimeline(faster.state, clockWorld, 7, now(9000)); assert.deepEqual(clockPause.state, faster.state);
+clockWorld.clock = updateClock(clockWorld, now(10000), { paused: false }); clockWorld.paused = false;
+const resumed = await advanceGroundTimeline(clockPause.state, clockWorld, 8, now(11000));
+assert.equal(resumed.state.cursorSimMs, 6000); assert.equal(resumed.steps, 20);
+const uninterrupted = await advanceGroundTimeline(adopted.state, w, 5, now(6000));
+assert.deepEqual(resumed.state.actors.map(a => a.position), uninterrupted.state.actors.map(a => a.position), 'pause wall-time and speed changes do not move actors outside simulation time');
 const corrupt = structuredClone(whole.state); corrupt.actors[0].path[0] = [NaN, 0]; await assert.rejects(validateGroundState(corrupt));
 const forgedGoal = structuredClone(whole.state); forgedGoal.actors[0].goal = [0, 0]; await assert.rejects(validateGroundState(forgedGoal), /route/);
 
@@ -92,6 +104,11 @@ try {
   const start = request(id, 'start', 'new', randomUUID()), started = await runGroundAuthority(db, start, now(1000));
   assert.equal(started.sequence, 1); assert.equal(started.batchArrivals.length, 0); assert.equal(db.userRows(), base);
   assert.equal((await runGroundAuthority(db, start, now(2000))).duplicate, true);
+  const idleId = randomUUID(), idleStart = await runGroundAuthority(db, request(idleId, 'start', 'new', randomUUID()), now(1000));
+  const idleCommand = request(idleId, 'advance', idleStart.checkpoint, randomUUID()), idleAdvance = await runGroundAuthority(db, idleCommand, now(1000));
+  assert.equal(idleAdvance.steps, 0); assert.equal(idleAdvance.sequence, 2);
+  const idleRetry = await runGroundAuthority(db, idleCommand, now(61000));
+  assert.equal(idleRetry.duplicate, true); assert.equal(idleRetry.checkpoint, idleAdvance.checkpoint); assert.equal(idleRetry.cursorSimMs, 1000, 'lost ACK of a zero-motion operation cannot advance on retry');
   db.source.people[0].plan = plan(); db.revision++; db.writeWorld();
   let head = started.checkpoint;
   const adopt = request(id, 'advance', head, randomUUID()), adoption = await runGroundAuthority(db, adopt, now(1000)); head = adoption.checkpoint;
@@ -143,4 +160,4 @@ try {
   for (const extra of [{ nowMs: 9999999 }, { position: [0, 0] }, { action: 'advance' }, { action: 'status', operationId: randomUUID() }]) assert.equal(groundRequestSchema.safeParse({ sessionId: id, ...extra }).success, false);
 } finally { db.close(); }
 assert.equal(GROUND_LIMITS.stepsPerBatch, 600);
-console.log(JSON.stringify({ suite: 'ground-timeline', fixedStepDeterminism: true, chunkedEqualsWhole: true, sweptPeerPairs: sweptPairs, staticCollisionAndSpeedCap: true, noBackdatedOrBaselineArrivals: true, backlogBoundedNotSkipped: true, planReplacementAndUnsupported: true, pauseRewindIdentityGuards: true, previewZeroWrites: true, worldPoliciesMemoriesHistoryPreserved: true, exactWorldAndCheckpointCAS: true, durableOperationIdempotency: true, concurrentSameOperationOneBatch: true, receiptTamperDetected: true, silentSessionAndReceiptIgnoreRollBack: true, committedReadersAgree: true, loopbackClientAndAckGuards: true, rewardAndP2PEligible: false, productionAccess: false }));
+console.log(JSON.stringify({ suite: 'ground-timeline', fixedStepDeterminism: true, chunkedEqualsWhole: true, sweptPeerPairs: sweptPairs, staticCollisionAndSpeedCap: true, noBackdatedOrBaselineArrivals: true, backlogBoundedNotSkipped: true, planReplacementAndUnsupported: true, pauseRewindIdentityGuards: true, segmentedSpeedAndPauseResume: true, previewZeroWrites: true, worldPoliciesMemoriesHistoryPreserved: true, exactWorldAndCheckpointCAS: true, durableOperationIdempotency: true, concurrentSameOperationOneBatch: true, receiptTamperDetected: true, silentSessionAndReceiptIgnoreRollBack: true, committedReadersAgree: true, loopbackClientAndAckGuards: true, rewardAndP2PEligible: false, productionAccess: false }));

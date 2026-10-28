@@ -1,6 +1,6 @@
 # Kiểm thử và bằng chứng
 
-`scripts/unit-suites.json` là danh sách suite hiện hành; `npm run test:unit` dùng process độc lập, tối đa 4 workers, thu đủ lỗi thay vì fail-fast. `XOM_TEST_JOBS=1` chạy tuần tự. Mốc dataset curation có61suite đã đạt; đây không phải kết quả chạy mới mỗi khi sửa tài liệu.
+`scripts/unit-suites.json` là danh sách suite hiện hành; `npm run test:unit` dùng process độc lập, tối đa 4 workers, thu đủ lỗi thay vì fail-fast. `XOM_TEST_JOBS=1` chạy tuần tự. Mốc ground GND1 có62suite đã đạt; đây không phải kết quả chạy mới mỗi khi sửa tài liệu.
 
 ## Chọn kiểm tra theo thay đổi
 
@@ -18,6 +18,7 @@ npm run lint
 npm run assets:check
 npm run build
 npm run test:api:local
+npm run test:api:ground
 ```
 
 Unit dùng memory/fixtures/D1 cô lập, không production. Có core/schema/time, learning/social/domain/plan-completion, ground/traffic/camera/household, geometry/assets/rigs, security/telemetry/pulse-gate. `node scripts/run-unit-tests.mjs --list` liệt kê đầy đủ, không cần chép danh sách tên vào docs.
@@ -69,3 +70,5 @@ H6b `test-bulk-replay.mjs` đối chiếu full artifact với H6 single-file tr�
 Memory backfill `test-memory-backfill.mjs` kiểm source recipient/evidence, ID+semantic reconciliation/legacy preservation, preview zero-write, source/memory/world/range phantom CAS, concurrent/lost-ACK retry, receipt integrity, budgets/client ACK/privacy. SQLite native trigger abort/ignore/edit-world/edit-existing chứng minh rollback thật;123source/18batch thêm40row, giữ16cũ và rescan thêm0. API Worker compiled lặp owner+local/remote/body/UTF8/schema guards, historical episode/outcome backfill, concurrent requests và silent-ignore D1 rollback; giữ world/revision/archive/policies/memory cũ. Migration0008 chỉ test trên DB cô lập; không browser mới vì UI không đổi. [Evidence](validation/memory-backfill-2026-10-28.json).
 
 Curation `test-dataset-curation.mjs` kiểm exact request/context/model/sampling/review SHA, explicit semantic checklist, actual proposal/narrative guards, actor filter trước audit và own-memory/fact scope. Có6fixture biên tập/6pair, loại không review/heuristic labels, source-kind/provenance mismatch, duplicates/ID conflict/contradictory review, connected groups và train-only selection;100scene test đủ ba partition và loại cả nhóm target. Artifact tự tính lại hash vẫn phải qua admission/rebuild exports. CLI process thật kiểm preview zero-write, export600/atomic/exclusive, source/hash/UTF8/BOM/record/byte caps, symlink parent trước mkdir, existing symlink/hardlink/output giữ nguyên và không echo private text/path. Fixture5train/0validation/1holdout đều đã review, không là blind model evaluation. Offline-only, không persistence/UI/schema đổi; build kiểm code/compiler/fixtures không vào Worker, không cần browser mới. [Evidence](validation/dataset-curation-2026-10-28.json).
+
+Ground `test-ground-timeline.mjs` kiểm600fixed ticks vs6chunk bằng nhau,423moving peer sweeps bằng oracle, static segment/speed cap, plan baseline/replacement/unsupported/late/expired không bịa arrival, backlog/pause/rewind/born và segmented speed/pause/resume. Native SQLite kiểm status/preview zero-write, exact world/session CAS, concurrent/lost-ACK operation, receipt tamper kể cả rehash, ignore session INSERT/UPDATE hoặc receipt INSERT rollback cả cursor/ledger, source race và giữ world/memory/history/policy. `test:api:ground` chạy Worker compiled+D1 cô lập: owner/local/remote/origin/UTF8/bytes/schema, thiếu0009 không bootstrap, server plan→600step→1arrival, concurrent one commit, status readers và silent receipt ignore D1 rollback thật. Migration0009 chỉ fixture; chưa prod/migrate DB người dùng. Shared A* normalized source giữ byte-identical ngoài logger callback;1089route/5401frame regression đạt, UI/renderbehavior không đổi nên không browser mới. [Evidence](validation/ground-timeline-2026-10-28.json).

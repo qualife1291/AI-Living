@@ -1,6 +1,6 @@
 # Mô hình dữ liệu hiện hành
 
-Nguồn: db/schema.ts, lib/world.ts, lib/event-schema.ts, lib/living/schema.ts. Source có16bảng; số bảng/migration production phải xác minh live, không suy ra từ schema local.
+Nguồn: db/schema.ts, lib/world.ts, lib/event-schema.ts, lib/living/schema.ts. Source có18bảng; số bảng/migration production phải xác minh live, không suy ra từ schema local.
 
 ## D1 và migration append-only
 
@@ -22,6 +22,8 @@ Nguồn: db/schema.ts, lib/world.ts, lib/event-schema.ts, lib/living/schema.ts. 
 | learning_policies | Ma trận LinUCB theo actor, exact revision tham chiếu trong snapshot | 0007 |
 | memory_backfill_jobs | Actor/config/upper bounds/cursor/counters và SHA CAS của bảo trì local | 0008 |
 | memory_backfill_batches | Receipt append-only theo job/sequence, plan/source/target digest và inserted IDs; không transcript | 0008 |
+| ground_sessions | Independent local core/static simulation checkpoint, born/geometry/plan/pose/nonce, không world authority | 0009 |
+| ground_batches | Append-only operation/sequence/source/arrival receipt, unique session+operation và session+sequence | 0009 |
 
 0004 là reconciliation schema cho lịch sử0000–0003; không đăng ký lại các SQL đã áp dụng hoặc sửa migration cũ. Dùng setup-local.mjs/Drizzle journal. Backup trước migration/repair production. memories/commitments có schema nhưng luồng sống vẫn giữ nhiều dữ liệu trong snapshot; không coi các bảng đó đã được khai thác đầy đủ.
 
@@ -54,3 +56,5 @@ LivingState.flora optional chứa record growth/anchor/moisture theo ID khóm, k
 Experience.rewardEvidence optional (H3) lưu version reward/features, identity/catalog signature, settlement before/after/components, decision context, sample delta và mức plan binding. New prepareLearning outcomes ghi evidence đầy đủ vào archive/JSONL cùng world/policy CAS; snapshot chỉ giữ summary200experience để tránh lặp payload evidence trong polling; legacy archive không backfill, không DDL mới. Authority simulation-plan-time không là ground/encounter receipt hoặc chữ ký của nguồn ngoài. Audit JSONL offline phân loại consistency; không có write/import/training API từ evidence. Chi tiết và giới hạn ở [LEARNING](LEARNING.md).
 
 Memory backfill0008 là bảo trì explicit local: preview không ghi; apply chỉ INSERT missing structured memories và CAS job/receipt cùng transaction, không UPDATE/DELETE memory hoặc world/policy/history. Giữ legacy/divergent rows và timestamp nguồn; high-water đóng theo job, không là full-content snapshot. Hai index actor/event và actor/seq hỗ trợ đối chiếu/paging. Xem [LEARNING](LEARNING.md) cho provenance/giới hạn và [runbook](PRODUCTION_RUNBOOK.md) trước migration production.
+
+Ground0009 là opt-in local session/ledger riêng, không thêm pose/receipt vào snapshot hoặc archive học. State pin exact world source, plan SHA/revision/observed time, fixed-step cursor và geometry scope; bootstrap positions không là observed history. Session/receipt+postassert cùng CAS batch, pause giữ nguyên; không sửa memories, policy, plans hoặc earned samples. Receipt namespace core/static luôn không eligible reward/P2P; không suy heard/witnessed từ arrival. [ARCHITECTURE](ARCHITECTURE.md) giữ contract/CLI/giới hạn; rollout production và shared renderer còn riêng.

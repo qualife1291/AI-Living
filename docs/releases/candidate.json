@@ -1,13 +1,13 @@
 {
   "project_id": "appgprj_6adc7dc364d48191a09202c5b43309e4",
-  "source_commit": "aae6fbc445e24ae9427f2c507715f155fb737b3b",
+  "source_commit": "9152c255ea9cfcde4fc6e781af8a3a5a2be1a457",
   "status": "prepared-not-deployed",
-  "archive_sha256": "a7790d81fccf4ba8d2af379d12c5107e8fedb9827ebe734b4513bdb0c2f08d1b",
-  "archive_local_path": "work/production-aae6fbc.tar.gz",
+  "archive_sha256": "d34e09d06385c3559e4a4e2fbad839beef5cffed817f78ab453d0def732de983",
+  "archive_local_path": "work/production-9152c25.tar.gz",
   "production_ledger_unchanged": true,
   "blocker": "Native Sites credential/deploy/status/database tools unavailable in this session; user has already authorized release.",
   "validation": {
-    "unit_suites_passed": 61,
+    "unit_suites_passed": 62,
     "local_api": true,
     "typecheck_lint_build_assets": true,
     "browser_desktop_mobile": true,
@@ -29,7 +29,7 @@
     "unchanged_plan_binding": true,
     "full_duration_encounter_reporting": true,
     "physical_arrival_authority": false,
-    "browser_source_note": "Latest browser desktop/mobile QA remains G0 source e5f5583. Dataset curation is offline CLI/library only; Worker/UI/renderer/schema unchanged from memory backfill, no new browser run. Fresh61suite/check/lint/release-build/assets and compiled local D1 regressions passed. New compiler/fixtures excluded from Worker/archive; no production access, hardware GPU or live readback.",
+    "browser_source_note": "Latest browser desktop/mobile QA remains G0 source e5f5583. GND1 adds an isolated owner-local static-core server timeline and schema0009; renderer/playback/pulse/learning unchanged. Shared A-star source is identical apart from miss-logger injection;1089routes/5401frames regressions passed, no new browser run. Fresh62suite/check/lint/release-build/assets, existing API and dedicated ground compiled D1 tests passed. No production readback/GPU/soak.",
     "garden_plots": 5,
     "garden_plants": 30,
     "garden_phases": 5,
@@ -81,7 +81,7 @@
       "experimental_code_in_worker": false
     },
     "packaged_source_verified": true,
-    "archive_entries": 829,
+    "archive_entries": 834,
     "learning_h3": {
       "evidence": "docs/validation/learning-h3-2026-10-28.json",
       "reward_version": "scenario-outcome-v1",
@@ -305,12 +305,35 @@
       "model_training_or_runtime_integration": false,
       "new_migrations": false,
       "code_or_private_artifacts_in_worker": false
+    },
+    "ground_timeline": {
+      "contract": "docs/validation/ground-timeline-contract-v1.json",
+      "evidence": "docs/validation/ground-timeline-2026-10-28.json",
+      "scope": "server-ground-core-static-v1",
+      "local_owner_only": true,
+      "server_plan_time_positions_only": true,
+      "fixed_step_ms": 100,
+      "maximum_steps_per_batch": 600,
+      "speed_limit_units_per_simsecond": 16,
+      "checkpoint_world_CAS_and_atomic_receipt": true,
+      "silent_receipt_ignore_actual_D1_rollback": true,
+      "committed_readers_agree": true,
+      "baseline_and_late_plan_no_backdating": true,
+      "core_actors": 3,
+      "full_world_authority": false,
+      "renderer_integrated": false,
+      "reward_or_P2P_eligible": false,
+      "migration": "0009_ground_timeline",
+      "schema_tables": 18,
+      "production_migration_applied": false,
+      "history_policy_memory_world_unchanged": true
     }
   },
-  "prepared_at_utc": "2026-10-28T12:36:16.860Z",
+  "prepared_at_utc": "2026-10-28T13:33:02.365Z",
   "migrations_to_check": [
     "0006_client_logs",
     "0007_learning_policies",
-    "0008_memory_backfill"
+    "0008_memory_backfill",
+    "0009_ground_timeline"
   ]
 }
