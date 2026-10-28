@@ -2,6 +2,10 @@
 
 Chỉ ghi mốc sản phẩm. Chi tiết commit/review nằm trong Git; số version/deployment và readback nằm ở [releases](docs/releases/).
 
+## 29/10/2026
+
+- Nghiệm thu lại chức năng local:63suite,4nhóm compiled API và20harness browser, gồm4timeline120s+studio desktop/mobile. Sửa camera tán cây/companion/catch-up và prompt ví dụ lệch cảnh; từ chối output model bị cắt. Giữ negative learning/model quality,27lượt lỗi+disposition, ảnh thật và blocker production tại [acceptance](docs/validation/acceptance-2026-10-28.json); chưa deploy/migrate prod.
+
 ## 28/10/2026
 
 - GND2 thêm immutable world journal cùng transaction, server replay người/NPC/thú/12xe với serialized bike/tag/pet state, checkpoint/CAS/receipt và canonical clock. Local `?ground=shared` đọc frame server theo cùng absolute time, không vật lý riêng;63suite/compiled D1 và browser hai viewer desktop/mobile đạt. Migration0010 chưa prod, chưa reward/P2P/encounter; gói prod chặn preview/runtime caches.
