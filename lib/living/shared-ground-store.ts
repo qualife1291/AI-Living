@@ -72,6 +72,9 @@ export async function pulseSharedGround(db:D1Database,nowMs=Date.now()){
 export async function preflightSharedGround(db:D1Database){
  const ready=await db.prepare("SELECT name FROM sqlite_master WHERE type='table' AND name='ground_shared_states'").first();if(!ready)return false;
  const row=await stateRow(db);if(!row)return false;await requireSharedSchema(db);
+ const state=await validated(db,row),current=await sourceRow(db,state.sourceSeq);if(await groundHash(current.raw)!==state.sourceSha256)fail('shared-source-sha');
+ const pending=(await db.prepare("SELECT seq,revision FROM ground_shared_sources WHERE world_id='home' AND seq>? ORDER BY seq LIMIT 9").bind(state.sourceSeq).all<{seq:number;revision:number}>()).results;
+ if(pending.some((r,i)=>r.seq<=(i?pending[i-1].seq:state.sourceSeq)||r.revision!==(i?pending[i-1].revision:state.sourceRevision)+1))fail('shared-source-order');
  const world=await worldRow(db),tail=(await db.prepare("SELECT seq FROM ground_shared_sources WHERE world_id='home' ORDER BY seq DESC LIMIT 1").first<{seq:number}>());
  if(!tail)fail('shared-source-missing');const latest=await sourceRow(db,tail!.seq);if(latest.revision!==world.revision||latest.raw!==world.raw)fail('shared-journal-world-gap');return true;
 }

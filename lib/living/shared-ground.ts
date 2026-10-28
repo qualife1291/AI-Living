@@ -76,7 +76,7 @@ async function lifecycle(a:World,b:World,source:SharedSource):Promise<Lifecycle[
 export async function replayShared(previous:SharedState,current:SharedSource,sources:SharedSource[],targetRealMs:number,nextBoundary:number|null=null){
  const s=await validateSharedState(previous);let world=sourceWorld(current);
  if(world.born!==s.worldBorn||current.seq!==s.sourceSeq||await groundHash(current.raw)!==s.sourceSha256||targetRealMs<s.cursorRealMs)fail('shared-source-or-clock-mismatch');
- if(sources.length>8||sources.some((r,i)=>r.seq<=(i?sources[i-1].seq:current.seq)||r.revision<=(i?sources[i-1].revision:current.revision)||r.capturedAt<(i?sources[i-1].capturedAt:s.cursorRealMs)))fail('shared-source-order');
+ if(sources.length>8||sources.some((r,i)=>r.seq<=(i?sources[i-1].seq:current.seq)||r.revision!==(i?sources[i-1].revision:current.revision)+1||r.capturedAt<(i?sources[i-1].capturedAt:s.cursorRealMs)))fail('shared-source-order');
  const walk=new WalkDirector(),traffic=new TrafficDirector();walk.restoreState(s.walk);traffic.restoreState(s.traffic);
  let index=0,physicsSteps=0,outerTicks=0;const events:Lifecycle[]=[];
  const adopt=async()=>{while(index<sources.length&&sources[index].capturedAt<=s.cursorRealMs+.0001){const source=sources[index++],next=sourceWorld(source);if(next.born!==s.worldBorn)fail('shared-world-identity');events.push(...await lifecycle(world,next,source));world=next;s.sourceSeq=source.seq;s.sourceRevision=source.revision;s.sourceSha256=await groundHash(source.raw);}};

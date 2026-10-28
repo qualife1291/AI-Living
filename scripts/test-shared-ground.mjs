@@ -92,5 +92,6 @@ try{
  assert.equal((await pulseSharedGround(db,now+500)).coalesced,true);
  db.sql.exec('DROP TRIGGER ground_shared_capture_world');db.update();db.sql.exec(trigger);
  await assert.rejects(preflightSharedGround(db),/journal-world-gap/);await assert.rejects(runSharedGround(db,{action:'advance',sessionId:id,operationId:randomUUID(),expectedCheckpoint:one.checkpoint},now+3000),/journal-world-gap/);
+ db.update();await assert.rejects(preflightSharedGround(db),/source-order/);await assert.rejects(runSharedGround(db,{action:'advance',sessionId:id,operationId:randomUUID(),expectedCheckpoint:one.checkpoint},now+3000),/source-order/,'later valid source cannot conceal a missing intermediate revision');
  console.log(JSON.stringify({suite:'shared-ground',captureBoundaryChunkDeterminism:true,planReplacementRemovalJournal:true,canonicalPauseScale:true,lateViewerAbsoluteSampling:true,noExtrapolation:true,allActors:246,cars:12,bodyRadiusBicyclePetTagState:true,fixedPhysicsBudget:true,immutableSourcesAndAtomicWorldCapture:true,stateReceiptCASRollback:true,silentIgnoreRollback:true,zeroTickLostAck:true,concurrentOneCommit:true,readOnlyStatus:true,userMemoryHistoryPoliciesPreserved:true,localClient:true,eligibleForReward:false,eligibleForP2P:false,productionAccess:false}));
 }finally{db.close();}
