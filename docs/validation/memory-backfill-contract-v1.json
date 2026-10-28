@@ -14,8 +14,10 @@
     "defaultSourceRows": 16,
     "maxSourceRows": 32,
     "maxSourceRowBytes": 65536,
-    "maxBatchBytes": 1048576,
-    "maxTargetRows": 256
+    "maxBatchBytes": 524288,
+    "maxTargetRows": 256,
+    "maxTargetRowBytes": 8192,
+    "maxTargetBytes": 262144
   },
   "cursor": "Per-job UUID/actor/limit/version compatibility and frozen episode-rowid/actor-experience-seq upper bounds. Bounded pages, then done; new archive appends require a new job. Historical archives are append-only. Each receipt attests the page as read/committed, not a frozen full database content snapshot.",
   "checkpoint": "New append-only migration0008 adds dedicated memory_backfill_jobs and memory_backfill_batches. Checkpoint SHA CAS, previous head/plan receipt, counters and phase cursor. Existing migrations/tables/data unchanged.",

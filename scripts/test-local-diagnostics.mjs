@@ -31,6 +31,7 @@ try{
  assert.equal((await mf.dispatchFetch('http://localhost/api/living/pets',{method:'POST',body:'{}'})).status,403,'Pet ownership mutations require the owner');
  assert.equal((await mf.dispatchFetch('http://localhost/api/living/flora',{method:'POST',body:'{}'})).status,403,'Garden care requires the owner');
  assert.equal((await mf.dispatchFetch('http://localhost/api/living/pulse',{method:'POST',body:'{}'})).status,403,'Pulse requires the owner');
+ assert.equal((await mf.dispatchFetch('http://localhost/api/living/memories/backfill',{method:'POST',body:'{}'})).status,403,'Backfill requires owner');
  assert.equal((await mf.dispatchFetch(url)).status,403,'non-owner GET denied');
  assert.equal((await mf.dispatchFetch('http://localhost/api/living/memories?actor=an')).status,403,'Structured memories require owner access');
  const deniedContext=await retrievePromptMemories('http://localhost',['an'],'góc sách',(url,init)=>mf.dispatchFetch(String(url),init));
@@ -365,9 +366,56 @@ try{
  console.log('PASS garden owner/origin/schema/UTF-8 limit, persisted care, no-op/stale/CAS race, pause/corrupt/retired preservation and no character rewards');
  const healthMissing=await mf.dispatchFetch('http://localhost/api/health');assert.equal(healthMissing.status,503);assert.equal((await healthMissing.json()).database,'schema_or_query_error');
  for(const migration of readMigrationFiles({migrationsFolder:'drizzle'}).filter(m=>m.sql.some(sql=>sql.includes('CREATE TABLE `site_metrics`'))))for(const sql of migration.sql)await db.prepare(sql).run();
+ const backfillUrl='http://localhost/api/living/memories/backfill';
+ const backfillPost=(body,headers={},url=backfillUrl)=>mf.dispatchFetch(url,{method:'POST',headers:{'content-type':'application/json',...headers},body:typeof body==='string'?body:JSON.stringify(body)});
+ const backfillRequest={jobId:crypto.randomUUID(),actorId:'an',limit:32,expectedCheckpoint:'new'};
+ const beforeBackfillSchema=await db.prepare("SELECT revision,data FROM worlds WHERE id='home'").first();
+ assert.equal((await backfillPost(backfillRequest)).status,503,'Missing maintenance migration does not bootstrap or write');
+ assert.deepEqual(await db.prepare("SELECT revision,data FROM worlds WHERE id='home'").first(),beforeBackfillSchema);
+ for(const migration of readMigrationFiles({migrationsFolder:'drizzle'}).filter(m=>m.sql.some(sql=>sql.includes('CREATE TABLE `memory_backfill_jobs`'))))for(const sql of migration.sql)await db.prepare(sql).run();
+ assert.equal((await backfillPost('{')).status,400);assert.equal((await backfillPost({...backfillRequest,records:[{text:'do not accept arbitrary memory'}]})).status,400);
+ assert.equal((await backfillPost('x'.repeat(2049))).status,413);assert.equal((await backfillPost(backfillRequest,{origin:'https://example.invalid'})).status,403);
+ assert.equal((await backfillPost(backfillRequest,{},'https://example.invalid/api/living/memories/backfill')).status,403,'Owner authorization never enables a remote backfill');
+ assert.equal((await backfillPost({...backfillRequest,action:'apply'})).status,400,'Apply requires reviewed plan hash');
+ // An immutable legacy episode explicitly assigns its report to An; a dialogue speaker learns nothing from it.
+ const legacyEpisode={title:'Bản ghi lịch sử',summary:'Giữ nguyên nguồn đã lưu',dialogue:[{speaker:'binh',text:'Một câu thoại không cấp quyền biết.'}],changes:[{id:'an',memory:'Ký ức nguồn lịch sử: mình phân loại góc sách.',skillDelta:0}]};
+ await db.prepare('INSERT INTO episodes(id,created_at,source,data) VALUES(?,?,?,?)').bind('backfill-historical-episode','2026-10-24T01:00:00.000Z','ai',JSON.stringify(legacyEpisode)).run();
+ // Isolated fixture only: emulate an old outcome archived before structured-memory writes existed.
+ await db.prepare('DELETE FROM memories WHERE id=?').bind('outcome:reward-evidence-cas-race').run();
+ const backfillWorld=await db.prepare("SELECT revision,data FROM worlds WHERE id='home'").first();
+ const backfillHistory=(await db.prepare('SELECT * FROM episodes ORDER BY id').all()).results;
+ const backfillExperiences=(await db.prepare('SELECT * FROM agent_experiences ORDER BY seq').all()).results;
+ const backfillPolicies=(await db.prepare('SELECT * FROM learning_policies ORDER BY actor_id').all()).results;
+ const backfillOldMemories=(await db.prepare('SELECT * FROM memories ORDER BY id').all()).results;
+ const checkpointBefore=await db.prepare('SELECT count(*) n FROM memory_backfill_jobs').first();
+ const firstPreview=await backfillPost(backfillRequest);assert.equal(firstPreview.status,200);const firstPlan=await firstPreview.json();assert.equal(firstPlan.mode,'dry-run');assert(firstPlan.records.some(r=>r.id==='event:backfill-historical-episode:an'));assert(firstPlan.records.every(r=>r.personId==='an'&&JSON.stringify(r.witnessedWith)==='["an"]'));
+ assert.deepEqual((await db.prepare('SELECT * FROM memories ORDER BY id').all()).results,backfillOldMemories);assert.deepEqual(await db.prepare('SELECT count(*) n FROM memory_backfill_jobs').first(),checkpointBefore,'Dry-run does not create a job');
+ const firstApplyBody={...backfillRequest,action:'apply',planSha256:firstPlan.planSha256};
+ const firstApplied=await backfillPost(firstApplyBody);assert.equal(firstApplied.status,200);const firstHead=await firstApplied.json();assert.equal(firstHead.duplicate,false);
+ const committedCount=await db.prepare('SELECT count(*) n FROM memories').first();assert.equal((await (await backfillPost(firstApplyBody)).json()).duplicate,true);assert.deepEqual(await db.prepare('SELECT count(*) n FROM memories').first(),committedCount,'Lost ACK retry is read-only');
+ const finishBackfill=async(body,head)=>{let steps=0;while(!head.complete){assert(++steps<100);const next={...body,expectedCheckpoint:head.checkpoint};const p=await backfillPost(next);assert.equal(p.status,200);const plan=await p.json();const response=await backfillPost({...next,action:'apply',planSha256:plan.planSha256});assert.equal(response.status,200);head=await response.json();}return head;};
+ await finishBackfill(backfillRequest,firstHead);
+ const outcomeJob={...backfillRequest,jobId:crypto.randomUUID(),actorId:learner.id,limit:1};const outcomePlan=await(await backfillPost(outcomeJob)).json();const outcomeFirst=await backfillPost({...outcomeJob,action:'apply',planSha256:outcomePlan.planSha256});assert.equal(outcomeFirst.status,200);await finishBackfill(outcomeJob,await outcomeFirst.json());
+ const restoredOutcome=await db.prepare('SELECT * FROM memories WHERE id=?').bind('outcome:reward-evidence-cas-race').first();assert.equal(restoredOutcome.person_id,learner.id);assert.equal(restoredOutcome.kind,'simulation-plan-outcome');assert.equal(restoredOutcome.created_at,raceArchive.at);
+ assert.equal((await db.prepare("SELECT count(*) n FROM memories WHERE person_id='binh' AND event_id='backfill-historical-episode'").first()).n,0);
+ for(const row of backfillOldMemories)assert.deepEqual(await db.prepare('SELECT * FROM memories WHERE id=?').bind(row.id).first(),row,'Every preexisting row/text/metadata is preserved');
+ assert.deepEqual(await db.prepare("SELECT revision,data FROM worlds WHERE id='home'").first(),backfillWorld);assert.deepEqual((await db.prepare('SELECT * FROM episodes ORDER BY id').all()).results,backfillHistory);assert.deepEqual((await db.prepare('SELECT * FROM agent_experiences ORDER BY seq').all()).results,backfillExperiences);assert.deepEqual((await db.prepare('SELECT * FROM learning_policies ORDER BY actor_id').all()).results,backfillPolicies);
+ // Actual compiled concurrent requests consume one plan/receipt, not two memories.
+ await db.prepare('INSERT INTO episodes(id,created_at,source,data) VALUES(?,?,?,?)').bind('backfill-race','2026-10-24T02:00:00.000Z','ai',JSON.stringify(legacyEpisode)).run();
+ const raceJob={...backfillRequest,jobId:crypto.randomUUID()},racePlan=await(await backfillPost(raceJob)).json();
+ const raceBody={...raceJob,action:'apply',planSha256:racePlan.planSha256};const replies=await Promise.all([backfillPost(raceBody),backfillPost(raceBody)]);assert(replies.every(r=>r.status===200));const heads=await Promise.all(replies.map(r=>r.json()));assert.equal(heads.filter(h=>!h.duplicate).length,1);assert.equal((await db.prepare("SELECT count(*) n FROM memories WHERE id='event:backfill-race:an'").first()).n,1);assert.equal((await db.prepare('SELECT count(*) n FROM memory_backfill_batches WHERE job_id=?').bind(raceJob.jobId).first()).n,1);
+ // A silent dropped INSERT must still abort the complete D1 transaction via receipt assertion.
+ await db.prepare('INSERT INTO episodes(id,created_at,source,data) VALUES(?,?,?,?)').bind('backfill-silent-skip','2026-10-24T03:00:00.000Z','ai',JSON.stringify(legacyEpisode)).run();
+ const badJob={...backfillRequest,jobId:crypto.randomUUID()},badPlan=await(await backfillPost(badJob)).json();
+ const beforeSilent=(await db.prepare('SELECT * FROM memories ORDER BY id').all()).results;
+ await db.prepare("CREATE TRIGGER backfill_ignore_fixture BEFORE INSERT ON memories BEGIN SELECT RAISE(IGNORE); END").run();
+ assert.equal((await backfillPost({...badJob,action:'apply',planSha256:badPlan.planSha256})).status,503);
+ assert.equal((await db.prepare('SELECT count(*) n FROM memory_backfill_jobs WHERE id=?').bind(badJob.jobId).first()).n,0);assert.equal((await db.prepare('SELECT count(*) n FROM memory_backfill_batches WHERE job_id=?').bind(badJob.jobId).first()).n,0);assert.deepEqual((await db.prepare('SELECT * FROM memories ORDER BY id').all()).results,beforeSilent);assert.deepEqual(await db.prepare("SELECT revision,data FROM worlds WHERE id='home'").first(),backfillWorld);
+ await db.prepare('DROP TRIGGER backfill_ignore_fixture').run();
+ console.log('PASS compiled local-only memory backfill dry-run/plan-CAS/atomic receipts/concurrency/silent-insert rollback; source/history/world/policies/existing memories preserved');
  const beforeHealth=await db.prepare("SELECT revision,data FROM worlds WHERE id='home'").first();
  const healthy=await mf.dispatchFetch('http://localhost/api/health');assert.equal(healthy.status,200);const healthBody=await healthy.json();assert.equal(healthBody.ok,true);assert.equal(healthBody.database,'ready');assert(healthBody.lastTick?.id);
  assert.deepEqual(await db.prepare("SELECT revision,data FROM worlds WHERE id='home'").first(),beforeHealth,'Health schema batch does not mutate a valid world');
  console.log('PASS health schema batch detects missing tables, reports ready after additive schema and preserves world');
- console.log(JSON.stringify({suite:'local-diagnostics-http',ownerReadGuard:true,ownerWriteGuard:true,streamByteLimit:true,schema:true,origin:true,ack:true,jsonlReadback:true,rateLimit:true,retention:true,diagnosticsReadOnly:true,pulsePersistence:true,pulseRetry:true,pulseConcurrentViewers:12,pulseNoDuplicateAudit:true,pulsePause:true,healthSchemaBatch:true,bulkReplay:true,productionAccess:false}));
+ console.log(JSON.stringify({suite:'local-diagnostics-http',ownerReadGuard:true,ownerWriteGuard:true,streamByteLimit:true,schema:true,origin:true,ack:true,jsonlReadback:true,rateLimit:true,retention:true,diagnosticsReadOnly:true,pulsePersistence:true,pulseRetry:true,pulseConcurrentViewers:12,pulseNoDuplicateAudit:true,pulsePause:true,healthSchemaBatch:true,bulkReplay:true,memoryBackfill:true,productionAccess:false}));
 }finally{await mf.dispose();globalThis.Date=NativeDate;}

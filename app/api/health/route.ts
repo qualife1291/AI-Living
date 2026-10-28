@@ -32,7 +32,7 @@ async function health() {
   try {
     const db = database();
     const checks = await db.batch([
-      ...['context_cache','living_turns','agent_experiences','site_metrics','visitor_exchanges','client_logs']
+      ...['context_cache','living_turns','agent_experiences','site_metrics','visitor_exchanges','client_logs','memory_backfill_jobs','memory_backfill_batches']
         .map(table => db.prepare(`SELECT id FROM ${table} LIMIT 1`)),
       db.prepare("SELECT id, started_at, finished_at, status, model, event_id, neurons_est FROM tick_runs ORDER BY started_at DESC LIMIT 1"),
     ]);

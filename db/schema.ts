@@ -1,4 +1,4 @@
-import { index, integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
+import { index, integer, sqliteTable, text, uniqueIndex } from "drizzle-orm/sqlite-core";
 
 export const worlds = sqliteTable("worlds", {
   id: text("id").primaryKey(),
@@ -22,7 +22,7 @@ export const memories = sqliteTable("memories", {
   importance: integer("importance").notNull().default(3),
   witnessedWith: text("witnessed_with"),
   createdAt: text("created_at").notNull(),
-});
+}, table => [index("idx_memories_actor_event").on(table.personId, table.eventId)]);
 
 export const tickRuns = sqliteTable("tick_runs", {
   id: text("id").primaryKey(),
@@ -70,7 +70,7 @@ export const agentExperiences = sqliteTable("agent_experiences", {
   actorId: text("actor_id").notNull(),
   createdAt: text("created_at").notNull(),
   data: text("data").notNull(),
-});
+}, table => [index("idx_experiences_actor_seq").on(table.actorId, table.seq)]);
 
 export const learningPolicies = sqliteTable("learning_policies", {
   actorId: text("actor_id").primaryKey(),
@@ -100,3 +100,20 @@ export const clientLogs = sqliteTable("client_logs", {
   createdAt: integer("created_at").notNull(),
   data: text("data").notNull(),
 }, table => [index("client_logs_created_at").on(table.createdAt)]);
+
+/** Manual historical-memory maintenance; never a live learning scheduler. */
+export const memoryBackfillJobs = sqliteTable('memory_backfill_jobs', {
+  id: text('id').primaryKey(),
+  actorId: text('actor_id').notNull(),
+  data: text('data').notNull(),
+  checksum: text('checksum').notNull(),
+  updatedAt: text('updated_at').notNull(),
+});
+export const memoryBackfillBatches = sqliteTable('memory_backfill_batches', {
+  id: text('id').primaryKey(),
+  jobId: text('job_id').notNull().references(() => memoryBackfillJobs.id),
+  sequence: integer('sequence').notNull(),
+  planSha256: text('plan_sha256').notNull(),
+  data: text('data').notNull(),
+  createdAt: text('created_at').notNull(),
+}, table => [uniqueIndex('idx_memory_backfill_job_sequence').on(table.jobId, table.sequence)]);

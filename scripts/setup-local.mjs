@@ -48,9 +48,12 @@ else if (visits[0].results.length !== 3) throw new Error("Partial interaction sc
 execute(["--file", "drizzle/0006_client_logs.sql"]);
 const policies = JSON.parse(execute(["--json", "--command", "SELECT name FROM sqlite_master WHERE type='table' AND name='learning_policies'"]));
 if (!policies[0].results.length) execute(["--file", "drizzle/0007_learning_policies.sql"]);
-console.log(
-  "Local D1 schema ready; existing snapshots and episodes preserved.",
-);
+const backfillTables = JSON.parse(execute(["--json", "--command", "SELECT name FROM sqlite_master WHERE type='table' AND name IN ('memory_backfill_jobs','memory_backfill_batches')"]));
+if (backfillTables[0].results.length === 0) execute(["--file", "drizzle/0008_memory_backfill.sql"]);
+else if (backfillTables[0].results.length !== 2) throw new Error("Partial memory-backfill schema; inspect and back up before repair.");
+const backfillIndexes=JSON.parse(execute(["--json","--command","SELECT name FROM sqlite_master WHERE type='index' AND name IN ('idx_memory_backfill_job_sequence','idx_memories_actor_event','idx_experiences_actor_seq')"]));
+if(backfillIndexes[0].results.length!==3)throw new Error("Partial memory-backfill indexes; inspect and back up before repair.");
+console.log("Local D1 schema ready; existing snapshots and episodes preserved.");
 
 if (process.env.HTTPS_PROXY) {
   const file = ".dev.vars";

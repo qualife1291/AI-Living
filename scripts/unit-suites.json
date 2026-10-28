@@ -176,5 +176,8 @@
   ],
   [
     "scripts/test-bulk-replay.mjs"
+  ],
+  [
+    "scripts/test-memory-backfill.mjs"
   ]
 ]
