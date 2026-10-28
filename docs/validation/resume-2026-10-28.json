@@ -1,0 +1,19 @@
+{
+  "source_commit": "9f60f5bd2dd99461488446e66d568b6aa5fefb5a",
+  "unit_suites": 45,
+  "unit_passed": 45,
+  "unit_seconds": 15.56,
+  "typecheck": true,
+  "lint": true,
+  "build": true,
+  "local_api": true,
+  "busy_night_guard": true,
+  "offline_context_fixture": true,
+  "assets_integrity": {
+    "packs": 15,
+    "canonical_models": 239,
+    "files": 386
+  },
+  "browser_evidence": "Seven desktop/mobile harnesses at the preceding UI milestone; no UI code changed since. Tracked screenshots/metrics remain evidence.",
+  "production_access": false
+}

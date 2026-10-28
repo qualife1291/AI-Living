@@ -1,5 +1,10 @@
 # Changelog
 
+## 2026-10-28 — Âm thanh và bảo vệ hội thoại (source)
+- Nút âm thanh thiên nhiên mặc định tắt; gió/mưa/chim mô phỏng dừng khi pause, ẩn tab hoặc sang OSM, thu hồi khi tắt/rời trang.
+- Daemon bỏ proposal bị review bác trước khi fallback. Server kiểm lượt nói và chặn chèn hội thoại vào kế hoạch đang bận hoặc ngủ.
+- 45 suite và API D1 local đạt; bảy nhóm browser có bằng chứng preview desktop/mobile. Chưa deploy Sites.
+
 ## 2026-10-28 — Policy learning riêng (source)
 - Tách ma trận LinUCB vào bảng D1 riêng bằng migration mới, giữ needs/tabular và history; ghi cùng transaction có CAS để tránh mất kết quả học.
 - World polling tải dữ liệu nhẹ hơn; learning API vẫn trả đầy đủ policy. Benchmark dùng runtime và cùng điều kiện, báo cả kết quả LinUCB chưa tốt hơn về thưởng tức thời.
