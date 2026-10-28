@@ -20,8 +20,8 @@ const compatibility={replayVersion:REPLAY_VERSION,rewardVersion:REWARD_VERSION,f
 const compatibilitySchema=z.object({replayVersion:z.literal(REPLAY_VERSION),rewardVersion:z.literal(REWARD_VERSION),featureVersion:z.literal(FEATURE_VERSION),scenarioSignature:z.literal(OUTCOME_SCENARIO_SIGNATURE)}).strict();
 const headSchema=z.object({compatibility:compatibilitySchema,version:z.literal(1),kind:z.literal('local-bulk-replay-checkpoint-v1'),manifestSha256:sha,logicalJsonlSha256:sha,sequence:integer,position:positionSchema,report:reportSchema,ledgerSha256:sha,previous:sha.nullable(),complete:z.boolean(),artifactSha256:sha.nullable()}).strict();
 const APP_ID=0x58364842,PRIVATE=resolve(replayRoot,'.sites-runtime/training');
-export class BulkReplayError extends Error {constructor(code){super(code);this.code=code;}}
-const fail=code=>{throw new BulkReplayError(code);};
+export class BulkReplayError extends Error {constructor(code,location){super(code);this.code=code;this.location=location;}}
+const fail=(code,location)=>{throw new BulkReplayError(code,location);};
 const emptyReport=()=>({input:0,foreign:0,legacy:0,weak:0,duplicates:0,invalid:0,conflicts:0,accepted:0,actors:0,stages:[0,0,0]});
 function regular(path){const s=lstatSync(path);if(!s.isFile()||s.isSymbolicLink())fail('nonregular-file');return s;}
 function privateDirectory(path,create){
@@ -145,11 +145,11 @@ function batchFrom(raw,start,index,manifest){
  let offset=start.offset,line=start.line,physical=0;const rows=[];
  while(offset<raw.length){
   const nl=raw.indexOf(10,offset),end=nl===-1?raw.length:nl+1;
-  if(end-offset>BULK_LIMITS.lineBytes)fail('line-budget');
+  if(end-offset>BULK_LIMITS.lineBytes)fail('line-budget',{source:index+1,line});
   if(physical&&end-start.offset>BULK_LIMITS.batchBytes)break;
-  let text;try{text=new TextDecoder('utf-8',{fatal:true,ignoreBOM:true}).decode(raw.subarray(offset,nl===-1?end:nl));}catch{fail('invalid-utf8');}
+  let text;try{text=new TextDecoder('utf-8',{fatal:true,ignoreBOM:true}).decode(raw.subarray(offset,nl===-1?end:nl));}catch{fail('invalid-utf8',{source:index+1,line});}
   if(text.trim()){
-   let value;try{value=JSON.parse(text);}catch{fail('invalid-jsonl');}rows.push(value);
+   let value;try{value=JSON.parse(text);}catch{fail('invalid-jsonl',{source:index+1,line});}rows.push({value,line});
   }
   offset=end;line++;physical++;
   if(rows.length>=manifest.batchRecords||offset-start.offset>=BULK_LIMITS.batchBytes||physical>=BULK_LIMITS.batchLines)break;
@@ -232,7 +232,10 @@ export function bulkReplay(options,hooks={}){
    const index=current.head.position.source;
    if(!cached||cached.index!==index)cached={index,raw:readPinned(set.sources[index])};
    const next=batchFrom(cached.raw,current.head.position,index,input.manifest),head=structuredClone(current.head);
-   for(const value of next.rows)admit(db,value,{kind:'actor',actorId:input.manifest.actorId},head.report);
+   for(const row of next.rows){
+    try{admit(db,row.value,{kind:'actor',actorId:input.manifest.actorId},head.report);}
+    catch(error){if(error instanceof BulkReplayError)error.location??={source:index+1,line:row.line};throw error;}
+   }
    head.sequence++;head.position=next.position;head.previous=current.sha256;head.complete=head.position.source===input.manifest.sources.length;
    if(head.complete)head.artifactSha256=fitFinal(db,input,head);
    head.ledgerSha256=ledgerDigest(db);const hash=saveHead(db,head);

@@ -8,6 +8,7 @@ try {
  const result=bulkReplay({manifestPath:values.manifest,expectedManifestSha256:values['expected-manifest-sha256'],job:values.job,action:values.action,expectedCheckpoint:values['expected-checkpoint'],maxBatches:Number(values['max-batches']),out:values.out},{onCommit:result=>console.log(JSON.stringify(result))});
  if(values.action!=='run')console.log(JSON.stringify(result));
 } catch(error) {
- console.error(`Local bulk replay rejected: ${error instanceof BulkReplayError?error.code:'arguments-or-local-io'}. Committed batches and source preserved; use status to inspect progress.`);
+ const location=error instanceof BulkReplayError&&Number.isSafeInteger(error.location?.source)&&Number.isSafeInteger(error.location?.line)?` (source ${error.location.source}, line ${error.location.line})`:'';
+ console.error(`Local bulk replay rejected: ${error instanceof BulkReplayError?error.code:'arguments-or-local-io'}${location}. Committed batches and source preserved; use status to inspect progress.`);
  process.exitCode=1;
 }
