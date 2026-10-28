@@ -1,13 +1,13 @@
 {
   "project_id": "appgprj_6adc7dc364d48191a09202c5b43309e4",
-  "source_commit": "5bcb99a7278bf79b6d110222acbcdb0447e85dca",
+  "source_commit": "aae6fbc445e24ae9427f2c507715f155fb737b3b",
   "status": "prepared-not-deployed",
-  "archive_sha256": "ba1b2a121e7664d69de4c34f6301c4119bbcc24b39b6ee6c0a52c5bac2770644",
-  "archive_local_path": "work/production-5bcb99a.tar.gz",
+  "archive_sha256": "a7790d81fccf4ba8d2af379d12c5107e8fedb9827ebe734b4513bdb0c2f08d1b",
+  "archive_local_path": "work/production-aae6fbc.tar.gz",
   "production_ledger_unchanged": true,
   "blocker": "Native Sites credential/deploy/status/database tools unavailable in this session; user has already authorized release.",
   "validation": {
-    "unit_suites_passed": 60,
+    "unit_suites_passed": 61,
     "local_api": true,
     "typecheck_lint_build_assets": true,
     "browser_desktop_mobile": true,
@@ -29,7 +29,7 @@
     "unchanged_plan_binding": true,
     "full_duration_encounter_reporting": true,
     "physical_arrival_authority": false,
-    "browser_source_note": "Latest browser desktop/mobile QA remains G0 source e5f5583. Memory backfill changes only backend maintenance/health/schema and CLI; UI/renderer unchanged, no new browser run. Fresh60suite and compiled D1 tests verify owner-local/remote/UTF8/schema/preview/plan-CAS/receipts/concurrency/silent-ignore rollback and world/history/policy/existing-memory preservation. No production access, hardware GPU or readback.",
+    "browser_source_note": "Latest browser desktop/mobile QA remains G0 source e5f5583. Dataset curation is offline CLI/library only; Worker/UI/renderer/schema unchanged from memory backfill, no new browser run. Fresh61suite/check/lint/release-build/assets and compiled local D1 regressions passed. New compiler/fixtures excluded from Worker/archive; no production access, hardware GPU or live readback.",
     "garden_plots": 5,
     "garden_plants": 30,
     "garden_phases": 5,
@@ -256,7 +256,7 @@
       "new_migrations": false,
       "offline_code_and_node_sqlite_excluded_from_worker": true,
       "memory_backfill_local_implemented": true,
-      "dataset_curation_implemented": false
+      "dataset_curation_implemented": true
     },
     "memory_backfill": {
       "contract": "docs/validation/memory-backfill-contract-v1.json",
@@ -282,11 +282,32 @@
       "production_migration_applied": false,
       "production_backfilled": false,
       "world_history_and_personal_policy_changed": false,
-      "private_review_or_database_in_archive": false,
-      "dataset_curation_implemented": false
+      "private_review_or_database_in_archive": false
+    },
+    "dataset_curation": {
+      "contract": "docs/validation/dataset-curation-contract-v1.json",
+      "evidence": "docs/validation/dataset-curation-2026-10-28.json",
+      "offline_only": true,
+      "matched_request_context_model_sampling_and_source_hashes": true,
+      "explicit_semantic_review_and_actual_validators": true,
+      "own_actor_memory_and_fact_scope": true,
+      "connected_split_groups_and_train_only_selector": true,
+      "cross_capture_contradictory_review_guard": true,
+      "artifact_readmission_and_private_atomic_exclusive_export": true,
+      "synthetic_editorial_pairs": 6,
+      "fixture_splits": {
+        "train": 5,
+        "validation": 0,
+        "holdout": 1
+      },
+      "blind_holdout": false,
+      "real_model_captures": 0,
+      "model_training_or_runtime_integration": false,
+      "new_migrations": false,
+      "code_or_private_artifacts_in_worker": false
     }
   },
-  "prepared_at_utc": "2026-10-28T11:58:31.229211Z",
+  "prepared_at_utc": "2026-10-28T12:36:16.860Z",
   "migrations_to_check": [
     "0006_client_logs",
     "0007_learning_policies",

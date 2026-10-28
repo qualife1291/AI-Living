@@ -2,7 +2,7 @@
   "version": 1,
   "date": "2026-10-28",
   "phase": "H6b offline dataset curation",
-  "status": "unit-validated-release-checks-pending",
+  "status": "local-complete-prepared-not-deployed",
   "contract": "docs/validation/dataset-curation-contract-v1.json",
   "contractSha256": "4fe4fcb9bec176c72805bd420ca4b496ea3a6bb45a059265b6f0324b2df36493",
   "fixture": {
@@ -39,8 +39,8 @@
       "simulation-capture": 0
     },
     "inputSha256": "daad4c22194b09ae87aced843f3b64e88362754512a0e4ff9a2bad87a54971ae",
-    "validatorSha256": "882969085b0026ed54882b9d0bbdd58d181106d861a5aea1ccc556dff162e3ac",
-    "datasetSha256": "734a86e612a9ab91b3591c24f3817cac6cdc97aa025628efe7e769c24e4d8eac",
+    "validatorSha256": "9666f70303ba29aadd4d79dc49e0ad346f0f524e353a560be42ff0c178950c6a",
+    "datasetSha256": "10de9800d622f7b76fa073ea78c4bd25d8fc2aec4e2f1a44e3fae95e48c58a99",
     "productionAccess": false,
     "trainsModel": false,
     "changesRuntime": false,
@@ -54,14 +54,40 @@
     "fullUnit": {
       "total": 61,
       "passed": 61,
+      "failed": [],
       "workers": 4,
-      "seconds": 59.48
+      "seconds": 71.52
     },
     "typecheck": true,
     "lintWarnings": 0,
-    "releaseBuild": "pending",
-    "compiledLocalApi": "pending",
-    "assets": "pending",
+    "releaseBuild": true,
+    "compiledLocalApi": {
+      "suite": "local-diagnostics-http",
+      "ownerReadGuard": true,
+      "ownerWriteGuard": true,
+      "streamByteLimit": true,
+      "schema": true,
+      "origin": true,
+      "ack": true,
+      "jsonlReadback": true,
+      "rateLimit": true,
+      "retention": true,
+      "diagnosticsReadOnly": true,
+      "pulsePersistence": true,
+      "pulseRetry": true,
+      "pulseConcurrentViewers": 12,
+      "pulseNoDuplicateAudit": true,
+      "pulsePause": true,
+      "healthSchemaBatch": true,
+      "bulkReplay": true,
+      "memoryBackfill": true,
+      "productionAccess": false
+    },
+    "assets": {
+      "passed": true,
+      "losslessDerivatives": 26,
+      "canonicalAssetsUnchanged": true
+    },
     "actorFilterBeforeAudit": true,
     "ownMemoryAndFactScope": true,
     "explicitSemanticReview": true,
@@ -75,7 +101,17 @@
     "previewZeroWrites": true,
     "privateAtomicExclusiveOutput": true,
     "utf8AndByteBudgets": true,
-    "inputPreserved": true
+    "inputPreserved": true,
+    "samePromptContradictionsAcrossDifferentCaptureIds": true,
+    "markdown": {
+      "files": 23,
+      "localLinks": 99,
+      "broken": 0
+    },
+    "offlineCompilerAndFixturesExcludedFromRuntime": {
+      "verified": true,
+      "compiledFilesChecked": 168
+    }
   },
   "preservation": {
     "runtimeImporter": false,
@@ -98,5 +134,24 @@
     "Connected groups/splits can change when connected data is added; freeze a new dataset/protocol before evaluation.",
     "No training, promotion, model calls, paid API/GPU, live DB access or runtime integration."
   ],
-  "next": "Server-owned ground/timeline/encounter authority foundation; actual model corpus/evaluation needs a separate frozen protocol."
+  "next": "Server-owned ground/timeline/encounter authority foundation; actual model corpus/evaluation needs a separate frozen protocol.",
+  "sourceCommit": "aae6fbc445e24ae9427f2c507715f155fb737b3b",
+  "codeFiles": {
+    "lib/dataset-curation.ts": "977a0dac276ab6afc3557666fbfca1d69a6d9470616dd2ed3a76dfa6cc50ec1d",
+    "scripts/curate-training.mjs": "a7306d3c807cadb1540219df7e7868dc6953cf9b1e9437d3ee76fa0f7419cc34",
+    "scripts/test-dataset-curation.mjs": "8d67a10ce220da01c571edbf502b3ae2f4859508e1b4a56c13cdbaf761d75845"
+  },
+  "release": {
+    "sourceCommit": "aae6fbc445e24ae9427f2c507715f155fb737b3b",
+    "archiveLocalPath": "work/production-aae6fbc.tar.gz",
+    "archiveSha256": "a7790d81fccf4ba8d2af379d12c5107e8fedb9827ebe734b4513bdb0c2f08d1b",
+    "entries": 829,
+    "allDistFileBytesVerified": true,
+    "allMigrationBytesVerified": true,
+    "migration0008Included": true,
+    "gzipDerivativesLossless": 26,
+    "offlineCompilerAndFixturesExcluded": true,
+    "privateDataExcluded": true,
+    "deployed": false
+  }
 }
