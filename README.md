@@ -1,12 +1,12 @@
 # Xóm AI
 
-Thành phố3D mô phỏng đời sống của An, Bình, Chi và các cư dân, với ký ức, nhu cầu, quan hệ và học lựa chọn hoạt động. Three.js/React/Vinext chạy trên Cloudflare Worker + D1. Tiếng Việt, owner-private, không dùng API tính phí.
+Thành phố 3D mô phỏng đời sống của An, Bình, Chi và các cư dân, với ký ức, nhu cầu, quan hệ và học lựa chọn hoạt động. Three.js/React/Vinext chạy trên Cloudflare Worker + D1. Tiếng Việt, owner-private, không dùng API tính phí.
 
 **Agent bắt đầu:** [AGENTS](AGENTS.md) → [CODEX_HANDOFF](CODEX_HANDOFF.md). Không cần đọc toàn bộ tài liệu. Việc tiếp theo chỉ ghi tại [ROADMAP](ROADMAP.md).
 
 ## Chạy local
 
-Node≥22.18, pnpm11.25.0; môi trường đã kiểm dùng Node24.19. Chạy từ thư mục repo:
+Node ≥22.18, pnpm 11.25.0; môi trường đã kiểm dùng Node 24.19. Chạy từ thư mục repo:
 
 ```bash
 bash scripts/sites-env.sh -- corepack pnpm install --frozen-lockfile --prefer-offline --store-dir .sites-runtime/pnpm-store
