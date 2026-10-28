@@ -28,7 +28,7 @@ API dùng Worker mới build và D1 riêng: owner/origin/schema/bytes, pet/flora
 
 ## Browser
 
-Restart Worker từ `dist/server/wrangler.json` sau build. `QA_BASE` bắt buộc loopback; không gửi localhost làm link preview cho người dùng. Ví dụ lệnh nội bộ: `QA_BASE=http://127.0.0.1:5320 python3 scripts/qa-social.py`.
+Restart Worker từ `dist/server/wrangler.json` sau build. `QA_BASE` bắt buộc loopback; đặt `QA_OUT` để lưu ảnh/metrics một lượt nghiệm thu riêng và giữ bằng chứng cũ; không gửi localhost làm link preview cho người dùng. Ví dụ lệnh nội bộ: `QA_BASE=http://127.0.0.1:5320 python3 scripts/qa-social.py`.
 
 | Harness trong scripts/ | Điều phải giữ |
 |---|---|

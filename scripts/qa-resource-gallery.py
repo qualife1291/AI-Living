@@ -9,7 +9,7 @@ for pack in catalog['packs']:
  sample=next(a for a in catalog['assets'] if a['pack']==pack['id'] and a['kind']!='animation-library');samples.append(sample['id'])
 for id in ['gobkit-human002/it-engineer','gobkit-human002/receptionist','gobkit-animal/corgi','gobkit-birds/eagle','kaykit-adventurers/knight']:
  if id not in samples:samples.append(id)
-out=Path('docs/screenshots/resources');out.mkdir(parents=True,exist_ok=True);report=[]
+out=Path(os.environ.get('QA_OUT',str(Path('docs/screenshots/resources'))));out.mkdir(parents=True,exist_ok=True);report=[]
 with sync_playwright() as p:
  b=p.chromium.launch(executable_path='/usr/bin/chromium',headless=True,args=['--no-sandbox','--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader']);page=b.new_page(viewport={'width':1360,'height':900},device_scale_factor=1.25);errors=[];warnings=[];page.on('pageerror',lambda e:errors.append(str(e)));page.on('console',lambda m:warnings.append(m.text) if 'No target node' in m.text else None)
  try:

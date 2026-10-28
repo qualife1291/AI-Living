@@ -5,7 +5,7 @@ from urllib.parse import urlparse
 from playwright.sync_api import sync_playwright
 root=Path(__file__).resolve().parent.parent
 base=os.environ.get('QA_BASE','http://127.0.0.1:5332');assert urlparse(base).hostname in ['127.0.0.1','localhost']
-out=root/'docs/screenshots/gnd2';out.mkdir(parents=True,exist_ok=True)
+out=Path(os.environ.get('QA_OUT',str(root/'docs/screenshots/gnd2')));out.mkdir(parents=True,exist_ok=True)
 fixture=json.loads(subprocess.check_output(['node','scripts/shared-preview-fixture.mjs'],cwd=root,text=True))
 fixed=int(fixture['sharedGround']['cursorRealMs'])
 report=[]

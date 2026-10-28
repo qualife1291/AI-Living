@@ -1,8 +1,10 @@
 """Render phase B actions against local synthetic plans; never writes world history."""
-import json,subprocess,datetime
+import json,subprocess,datetime,os
+from urllib.parse import urlparse
 from pathlib import Path
 from playwright.sync_api import sync_playwright
-out=Path('docs/screenshots/actions');out.mkdir(parents=True,exist_ok=True)
+base=os.environ.get('QA_BASE','http://127.0.0.1:5177');assert urlparse(base).hostname in ('localhost','127.0.0.1')
+out=Path(os.environ.get('QA_OUT',str(Path('docs/screenshots/actions'))));out.mkdir(parents=True,exist_ok=True)
 expected={'drink':'holding-right','run':'sprint','jump':'idle','tag':'sprint','cycle':'drive','exercise':'idle','walk-pet':'idle','shop':'holding-right','study':'holding-both'}
 report=[]
 with sync_playwright() as p:
@@ -15,7 +17,7 @@ with sync_playwright() as p:
   page.route('**/api/world*',respond);page.route('**/api/living/pulse',lambda r:r.fulfill(status=200,content_type='application/json',body='{"ok":true,"duplicate":true}'))
   for kind,clip in expected.items():
    fixture=json.loads(subprocess.check_output(['node','scripts/social-preview-fixture.mjs',f'--detail={kind}'],text=True))
-   page.goto('http://127.0.0.1:5177',wait_until='domcontentloaded',timeout=60000);host=page.locator('.three-canvas[data-ready="true"]');host.wait_for(timeout=90000)
+   page.goto(base,wait_until='domcontentloaded',timeout=60000);host=page.locator('.three-canvas[data-ready="true"]');host.wait_for(timeout=90000)
    frame=int(host.get_attribute('data-frame'));page.wait_for_function('(f)=>Number(document.querySelector(".three-canvas")?.dataset.frame)>f+5',arg=frame,timeout=30000)
    if kind=='tag':clip='sprint' if host.get_attribute('data-walking')=='true' else 'idle'
    assert json.loads(host.get_attribute('data-model-actors'))['an']['clip']==clip,(kind,host.get_attribute('data-model-actors'))

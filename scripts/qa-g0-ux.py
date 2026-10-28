@@ -6,7 +6,7 @@ from playwright.sync_api import sync_playwright
 root=Path(__file__).resolve().parent.parent
 base=os.environ.get('QA_BASE','http://127.0.0.1:5320')
 assert urlparse(base).hostname in ('127.0.0.1','localhost')
-out=root/'docs/screenshots/g0';out.mkdir(parents=True,exist_ok=True)
+out=Path(os.environ.get('QA_OUT',str(root/'docs/screenshots/g0')));out.mkdir(parents=True,exist_ok=True)
 report=[]
 flags=['--no-sandbox','--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader']
 def setup(browser,width=1440,height=900,dpr=2,motion='no-preference',fallback=None):
