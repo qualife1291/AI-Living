@@ -1,13 +1,13 @@
 {
   "project_id": "appgprj_6adc7dc364d48191a09202c5b43309e4",
-  "source_commit": "da1bfd6c6be80324a29b43a28497837a40ddcfed",
+  "source_commit": "c77c21cdaf4d0a893976443b479919b8e3186f0a",
   "status": "prepared-not-deployed",
-  "archive_sha256": "84f983e2de2c112d7fff9a1deeb92c3228447a8b4d9190ed9ab9abefaa73021d",
-  "archive_local_path": "work/production-da1bfd6.tar.gz",
+  "archive_sha256": "34cbc9d713f9876926f8403e45d255e032a1d3b182f954c8f4f4854309b19a60",
+  "archive_local_path": "work/production-c77c21c.tar.gz",
   "production_ledger_unchanged": true,
   "blocker": "Native Sites credential/deploy/status/database tools unavailable in this session; user has already authorized release.",
   "validation": {
-    "unit_suites_passed": 49,
+    "unit_suites_passed": 50,
     "local_api": true,
     "typecheck_lint_build_assets": true,
     "browser_desktop_mobile": true,
@@ -29,9 +29,14 @@
     "unchanged_plan_binding": true,
     "full_duration_encounter_reporting": true,
     "physical_arrival_authority": false,
-    "browser_source_note": "Fresh domain/social desktop/mobile/F5/320px on source48 UI; source49 only changes backend plan identity/reporting and is covered by unit/API."
+    "browser_source_note": "Fresh garden/social/home/cycle/pet desktop/mobile QA on final flora UI source; mutations mocked in browser, persistence verified in compiled local D1.",
+    "garden_plots": 5,
+    "garden_plants": 30,
+    "garden_phases": 5,
+    "flora_care_api": true,
+    "flora_browser_desktop_mobile": true
   },
-  "prepared_at_utc": "2026-10-28T01:17:25.917Z",
+  "prepared_at_utc": "2026-10-28T02:41:46.130Z",
   "migrations_to_check": [
     "0006_client_logs",
     "0007_learning_policies"
