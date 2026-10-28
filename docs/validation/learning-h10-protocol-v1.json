@@ -1,0 +1,127 @@
+{
+  "phase": "H10",
+  "version": "bounded-warm-search-v1",
+  "registered_before_results": true,
+  "reference_source": "598d0b340142abc16d061994357f45752ee4e6bd",
+  "profiles": [
+    "ordinary-v1",
+    "cold-stress-v1"
+  ],
+  "fit": {
+    "seedIndices": [
+      9000,
+      9001,
+      9002,
+      9003,
+      9004,
+      9005,
+      9006,
+      9007
+    ],
+    "pointValidationIndices": [
+      9500,
+      9501,
+      9502,
+      9503,
+      9504,
+      9505,
+      9506,
+      9507
+    ],
+    "agents": 12,
+    "days": 15,
+    "shiftDay": 7
+  },
+  "search": {
+    "seedIndices": [
+      10000,
+      10001,
+      10002,
+      10003
+    ],
+    "agents": 12,
+    "days": 30,
+    "shiftDay": 15
+  },
+  "validation": {
+    "seedIndices": [
+      11000,
+      11001,
+      11002,
+      11003,
+      11004,
+      11005,
+      11006,
+      11007
+    ],
+    "agents": 24,
+    "days": 60,
+    "shiftDay": 30
+  },
+  "holdout": {
+    "seedIndices": [
+      12000,
+      12001,
+      12002,
+      12003,
+      12004,
+      12005,
+      12006,
+      12007,
+      12008,
+      12009,
+      12010,
+      12011,
+      12012,
+      12013,
+      12014,
+      12015,
+      12016,
+      12017,
+      12018,
+      12019
+    ],
+    "agents": 24,
+    "days": 60,
+    "shiftDay": 30
+  },
+  "grid": {
+    "warmPlans": [
+      6,
+      12,
+      24
+    ],
+    "priorK": [
+      0.5,
+      2,
+      5
+    ]
+  },
+  "budget": {
+    "candidates": 9,
+    "shortlist": 2,
+    "holdoutCandidates": 1,
+    "maxFitOutcomes": 69120,
+    "maxPredictionValidationOutcomes": 69120,
+    "maxSearchPlans": 691200,
+    "maxValidationPlans": 1658880,
+    "maxHoldoutPlans": 2764800
+  },
+  "shortlist_rule": "Rank candidates by worst-profile mean relative return delta, then mean relative return delta, then lexical candidate ID. Require mean entropy >=.8 baseline on both profiles. Take up to2 with different warmPlans; baseline is never a candidate. All9 results remain in report.",
+  "validation_rule": "Evaluate only frozen shortlist and baseline on8 new full-horizon seeds per profile. Require paired CI95 return lower>=0, needs lower>=0, opportunity cost upper<=0, entropy margin(candidate-.8baseline) lower>=0 on BOTH profiles. enoughSeeds20 is a holdout gate, not a validation claim. Among eligible candidates use same deterministic ranking, freeze at most1.",
+  "holdout_rule": "If validation has no eligible candidate, leave12000–12019 completely untouched and do not produce holdout outcome files. If selected, checkpoint selection/model/protocol hashes before running one candidate versus baseline on20 new seeds/profile. No retry with runner-up, no post-holdout parameter changes.",
+  "policy": "Prediction-only replay mean, immutable H6-compatible synthetic model, k/(own-action samples+k) only while own total samples<warmPlans. Then exact personal function on current state. No change to rewards/features/uncertainty/emergency/skill guards or own posterior updates. No candidate code generation or donor sample credit.",
+  "seed_mapping": "hashSeed(H1-seed:<index>); five disjoint new cohorts, separate from H1/H2/H4/H6 study seeds",
+  "gates": {
+    "return": "paired CI95 lower>=0",
+    "needs": "paired CI95 lower>=0",
+    "opportunity_cost": "paired CI95 upper<=0",
+    "entropy": "paired CI95 lower(candidate-.8baseline)>=0"
+  },
+  "promotion": "Config artifact is offline evidence only. No auto runtime import, code patch, DB write, deployment, scheduler, paid API or GPU. Runtime artifact installation/CAS/rollback remains separate even if holdout passes.",
+  "limits": [
+    "Existing role-independent reward, synthetic role/place fixture, hourly plans, transient stress and own-state depth1 oracle limitations remain.",
+    "Search/validation can overfit; only one fixed held-out candidate is admissible. A no-selection result is valid and preserves holdout.",
+    "This is finite deterministic parameter search, not LLM fine-tuning, learned occupational expertise, or self-modifying code."
+  ]
+}
