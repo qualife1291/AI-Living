@@ -14,13 +14,14 @@ JSON qua helper `json()` đặt `Cache-Control: private,no-store` và `X-Content
 | POST `/api/living/tick` | Narrative tick theo slot, proposal/basis guard, review trước write và audit. Model chỉ bounded narrative; bận/ngủ không chèn thoại. |
 | GET/POST `/api/living/learning` | GET models/animalModels/200 recent experiences, POST settle outcomes hợp lệ. `format=jsonl&after=0&limit=1000` owner-only, cursor `X-Next-Cursor`, toàn archive phân trang. |
 | GET `/api/living/memories` | Owner-only actor/topic/top-K với provenance/witness filtering; [LEARNING](LEARNING.md). |
+| POST `/api/living/memories/backfill` | Local-admin+owner+loopback; preview mặc định, UUIDjob/actor/limit, apply bằng checkpoint+plan SHA; body≤2KiB. Additive memories/job/receipt, không đổi world/policy; [LEARNING](LEARNING.md). |
 | POST `/api/living/catalog` | Catalog roles/names theo schema/revision; backfill home/identity additive, giữ custom metadata/IDs/history. |
 | GET/POST `/api/living/appearance` | GET id, POST id/revision/appearance; actor phải tồn tại, giữ dữ liệu tạo hình khác. |
 | POST `/api/living/pets` | `{pet,owner,revision}`, body stream≤2KiB; owner có thể null để unassign, ID hợp lệ/CAS, chỉ metadata petOwners. |
 | POST `/api/living/flora` | `{id,revision}`, stream≤2KiB; paused/stale/invalid data từ chối. Đủ nước là no-op, chỉ flora thay đổi, không actor reward. |
 | POST `/api/living/interact` | UUIDid/actorId/message≤280 ký tự, body≤2000B; resolve actor404, pause409, lưu exchange idempotent. Reply rules có nhãn, chưa freeformLLM production. |
 | POST `/api/visits` | Sessionnonce/30 phút, aggregate lượt mở, không phải uniquehumans hoặc online users. |
-| GET `/api/health` |200ready;503unavailable khi worldDB lỗi hoặc schema_or_query_error khi probes lỗi; lastTick=null khi chưa có tick. Schema6 table+latest tick một D1 batch, world read riêng. |
+| GET `/api/health` |200ready;503unavailable khi worldDB lỗi hoặc schema_or_query_error khi probes lỗi; lastTick=null khi chưa có tick. Schema8 table+latest tick một D1 batch, world read riêng. |
 | GET/POST `/api/diagnostics` | Owner-only; GET JSONL chỉSELECT trong7 ngày, tối đa500 client+500 tick rows. POST≤16KiB/32 logs, admission20 batch/phút toànSite, allowlist fields; POST giữ telemetry retention7 ngày. Không xóa chat/tick/history theo retention đó. |
 
 ## Nhịp pulse

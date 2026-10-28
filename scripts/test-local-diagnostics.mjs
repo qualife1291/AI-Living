@@ -38,7 +38,7 @@ try{
  assert.equal(deniedContext.byActor.an.status,'denied');assert.deepEqual(deniedContext.byActor.an.records,[]);
  assert.equal((await mf.dispatchFetch(url,{method:'POST',body:'{}'})).status,403,'non-owner POST denied');
  await mf.setOptions({...options,bindings:{XOM_LOCAL_ADMIN:'true'}});
- const db=await mf.getD1Database('DB');
+ let db=await mf.getD1Database('DB');
  await db.prepare('CREATE TABLE memories(id TEXT PRIMARY KEY,person_id TEXT,event_id TEXT,text TEXT,kind TEXT,importance INTEGER,witnessed_with TEXT,created_at TEXT)').run();
  const migrations=readMigrationFiles({migrationsFolder:'drizzle'}).filter(m=>m.sql.some(sql=>sql.includes('client_logs')||sql.includes('learning_policies')));
  for(const migration of migrations)for(const sql of migration.sql)await db.prepare(sql).run();
@@ -412,6 +412,14 @@ try{
  assert.equal((await backfillPost({...badJob,action:'apply',planSha256:badPlan.planSha256})).status,503);
  assert.equal((await db.prepare('SELECT count(*) n FROM memory_backfill_jobs WHERE id=?').bind(badJob.jobId).first()).n,0);assert.equal((await db.prepare('SELECT count(*) n FROM memory_backfill_batches WHERE job_id=?').bind(badJob.jobId).first()).n,0);assert.deepEqual((await db.prepare('SELECT * FROM memories ORDER BY id').all()).results,beforeSilent);assert.deepEqual(await db.prepare("SELECT revision,data FROM worlds WHERE id='home'").first(),backfillWorld);
  await db.prepare('DROP TRIGGER backfill_ignore_fixture').run();
+ const invalidUtf8=await mf.dispatchFetch(backfillUrl,{method:'POST',headers:{'content-type':'application/json'},body:new Uint8Array([0xc0,0xaf])});assert.equal(invalidUtf8.status,400);
+ // Verified owner identity alone must not enable the maintenance endpoint.
+ await mf.setOptions({...options,bindings:{XOM_LOCAL_ADMIN:'false',XOM_ADMIN_USER_ID:'fixture-owner'}});
+ assert.equal((await backfillPost(backfillRequest,{'oai-authenticated-user-id':'fixture-owner'})).status,403);
+ assert.equal((await backfillPost(backfillRequest,{'oai-authenticated-user-id':'fixture-owner'},'https://owner-private.example/api/living/memories/backfill')).status,403);
+ await mf.setOptions({...options,bindings:{XOM_LOCAL_ADMIN:'true'}});
+ db=await mf.getD1Database('DB'); // setOptions invalidates host-side proxy stubs, not persisted D1 rows.
+ assert.deepEqual(await db.prepare("SELECT revision,data FROM worlds WHERE id='home'").first(),backfillWorld);
  console.log('PASS compiled local-only memory backfill dry-run/plan-CAS/atomic receipts/concurrency/silent-insert rollback; source/history/world/policies/existing memories preserved');
  const beforeHealth=await db.prepare("SELECT revision,data FROM worlds WHERE id='home'").first();
  const healthy=await mf.dispatchFetch('http://localhost/api/health');assert.equal(healthy.status,200);const healthBody=await healthy.json();assert.equal(healthBody.ok,true);assert.equal(healthBody.database,'ready');assert(healthBody.lastTick?.id);

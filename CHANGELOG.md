@@ -4,6 +4,8 @@ Chỉ ghi mốc sản phẩm. Chi tiết commit/review nằm trong Git; số ver
 
 ## 28/10/2026
 
+- Memory backfill local có preview/plan-SHA/checkpoint-CAS, nguồn episode đúng recipient/outcome có evidence, stable-ID/legacy reconciliation. Migration0008 thêm job/receipt/index; batch lỗi rollback cả cursor/memory, không rewrite world/policy/history.60suite/API đạt; chưa backfill production, còn dataset curation.
+
 - H6b thêm replay nhiều file local có manifest/source SHA, checkpoint SQLite/CAS và cursor byte+line. Batch lỗi/crash không cộng dở; chỉ fit một lượt khi hoàn tất, export private không ghi đè.59suite và API JSONL→bulk/resume đạt; giữ nguyên own samples/history/runtime, chưa memory backfill hoặc promote policy.
 
 - G0/UX thêm26 transport gzip lossless/hash-pinned, fallback canonical và tải avatar dự phòng khi cần; render pixel budget theo màn hình/DPR. Pause phân biệt lỗi/ACK, chat giữ focus/draft, camera keyboard/reduced-motion và metadata hiện hành.58suite/API và browser desktop/mobile đạt; canonical/license/dữ liệu học giữ nguyên.

@@ -1,6 +1,6 @@
 # Kiểm thử và bằng chứng
 
-`scripts/unit-suites.json` là danh sách suite hiện hành; `npm run test:unit` dùng process độc lập, tối đa 4 workers, thu đủ lỗi thay vì fail-fast. `XOM_TEST_JOBS=1` chạy tuần tự. Mốc H6b bulk/cursor có59suite đã đạt; đây không phải kết quả chạy mới mỗi khi sửa tài liệu.
+`scripts/unit-suites.json` là danh sách suite hiện hành; `npm run test:unit` dùng process độc lập, tối đa 4 workers, thu đủ lỗi thay vì fail-fast. `XOM_TEST_JOBS=1` chạy tuần tự. Mốc memory backfill có60suite đã đạt; đây không phải kết quả chạy mới mỗi khi sửa tài liệu.
 
 ## Chọn kiểm tra theo thay đổi
 
@@ -22,7 +22,7 @@ npm run test:api:local
 
 Unit dùng memory/fixtures/D1 cô lập, không production. Có core/schema/time, learning/social/domain/plan-completion, ground/traffic/camera/household, geometry/assets/rigs, security/telemetry/pulse-gate. `node scripts/run-unit-tests.mjs --list` liệt kê đầy đủ, không cần chép danh sách tên vào docs.
 
-API dùng Worker mới build và D1 riêng: owner/origin/schema/bytes, pet/flora/CAS/history, policy/memories/actor privacy, proposal guards, pulse 12 viewer không audit trùng, diagnostics GET chỉ đọc/POST retention và health schema. D1 gate suite riêng kiểm 20 request→1 pipeline, pause/failure/expiry/nonce/cadence. Không gọi đây là production load/billing benchmark.
+API dùng Worker mới build và D1 riêng: owner/origin/schema/bytes, pet/flora/CAS/history, policy/memories/actor privacy, proposal guards, pulse 12 viewer không audit trùng, diagnostics GET chỉ đọc/POST retention và health schema. Health có8table probes+latest tick trong một batch; backfill schema0008 được kiểm thiếu→503/đủ→ready, world giữ nguyên. D1 gate suite riêng kiểm 20 request→1 pipeline, pause/failure/expiry/nonce/cadence. Không gọi đây là production load/billing benchmark.
 
 ## Browser
 
@@ -65,3 +65,5 @@ Sau commit/push: `python3 scripts/package-handoff.py /tmp/xom-ai-source.zip`. Sc
 G0 `test-g0-ux.mjs` kiểm giải nén byte-identical cho26model, corruption/missing/abort canonical fallback và disposed không retry, pixel budget đến8K, pause HTTP/ACK/network, deadline signal và không tự gửi lại write. Mocks cũ pause phải trả `{ok:true}` như endpoint thật. Browser/metrics và so sánh tải ở [g0 evidence](validation/g0-ux-2026-10-28.json); không dùng timings local hay SwiftShader để kết luận hardware FPS.
 
 H6b `test-bulk-replay.mjs` đối chiếu full artifact với H6 single-file trên virtual concatenation; cross-file duplicates/legacy conflicts/sample/time neighbors, Unicode/CRLF/empty file, malformed UTF8 và record/byte/line budgets thật. Có1440accepted/49batch/mid-file resume/oracle,100k scanned-record limit, SQL rollback sau final-artifact writes, SIGKILL thật trước COMMIT rồi recover/CAS, writer cạnh tranh, source/manifest/checkpoint tamper, symlink/hardlink/unrelated DB guard, export exclusive và lỗi không echo private text. API compiled đọc JSONL phân trang thật→bulk/resume/export, so oracle và kiểm world/history/memories/earned policy giữ nguyên. [Evidence H6b](validation/learning-h6b-2026-10-28.json) là kiểm đúng dữ liệu/transaction, không là rollout policy, throughput SLA, power-loss hoặc production QA. App/renderer/runtime/schema không đổi nên không có browser run mới.
+
+Memory backfill `test-memory-backfill.mjs` kiểm source recipient/evidence, ID+semantic reconciliation/legacy preservation, preview zero-write, source/memory/world/range phantom CAS, concurrent/lost-ACK retry, receipt integrity, budgets/client ACK/privacy. SQLite native trigger abort/ignore/edit-world/edit-existing chứng minh rollback thật;123source/18batch thêm40row, giữ16cũ và rescan thêm0. API Worker compiled lặp owner+local/remote/body/UTF8/schema guards, historical episode/outcome backfill, concurrent requests và silent-ignore D1 rollback; giữ world/revision/archive/policies/memory cũ. Migration0008 chỉ test trên DB cô lập; không browser mới vì UI không đổi. [Evidence](validation/memory-backfill-2026-10-28.json).

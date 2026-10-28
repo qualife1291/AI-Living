@@ -1,6 +1,6 @@
 # Mô hình dữ liệu hiện hành
 
-Nguồn: db/schema.ts, lib/world.ts, lib/event-schema.ts, lib/living/schema.ts. Source có14bảng; số bảng/migration production phải xác minh live, không suy ra từ schema local.
+Nguồn: db/schema.ts, lib/world.ts, lib/event-schema.ts, lib/living/schema.ts. Source có16bảng; số bảng/migration production phải xác minh live, không suy ra từ schema local.
 
 ## D1 và migration append-only
 
@@ -20,6 +20,8 @@ Nguồn: db/schema.ts, lib/world.ts, lib/event-schema.ts, lib/living/schema.ts. 
 | visitor_exchanges | Trao đổi visitor có ID/actor/time/data | 0005 |
 | client_logs | Telemetry giới hạn/rate/retention, indexcreated_at | 0006 |
 | learning_policies | Ma trận LinUCB theo actor, exact revision tham chiếu trong snapshot | 0007 |
+| memory_backfill_jobs | Actor/config/upper bounds/cursor/counters và SHA CAS của bảo trì local | 0008 |
+| memory_backfill_batches | Receipt append-only theo job/sequence, plan/source/target digest và inserted IDs; không transcript | 0008 |
 
 0004 là reconciliation schema cho lịch sử0000–0003; không đăng ký lại các SQL đã áp dụng hoặc sửa migration cũ. Dùng setup-local.mjs/Drizzle journal. Backup trước migration/repair production. memories/commitments có schema nhưng luồng sống vẫn giữ nhiều dữ liệu trong snapshot; không coi các bảng đó đã được khai thác đầy đủ.
 
@@ -36,7 +38,7 @@ LivingState còn có catalog/needs/skills/learning/experiences/appearances/anima
 ## Bất biến
 
 - Mọi write kiểm tra owner/origin/schema và revision; retry không cộng lại tác động; pause chặn outcome/event mới theo contract endpoint.
-- ID/history/memory và world.born không bị reset để sửa lỗi. Ký ức chỉ thuộc người chứng kiến hoặc có provenance nghe kể.
+- ID/history/memory và world.born không bị reset để sửa lỗi. Structured memory gắn recipient/actor có nguồn; witness metadata không tự chứng minh hiện diện vật lý. Heard-from-peer cần provenance/authority riêng.
 - Tiền không âm; needs/skill/trust trong0..100. Event change mỗi coreID tối đa một lần; moneyDelta±30000, needs±20, skillDelta0..3.
 - POST telemetry tính byte UTF-8 của cả JSON envelope, tối đa16KiB; ACK chỉ sau JSON ok:true, retry không làm mấtqueue.
 - Đọc snapshot legacy không tự ghi hàng loạt metadata; persistence bổ sung qua mutation/planner đã được CAS bảo vệ.
@@ -50,3 +52,5 @@ LivingState.flora optional chứa record growth/anchor/moisture theo ID khóm, k
 
 
 Experience.rewardEvidence optional (H3) lưu version reward/features, identity/catalog signature, settlement before/after/components, decision context, sample delta và mức plan binding. New prepareLearning outcomes ghi evidence đầy đủ vào archive/JSONL cùng world/policy CAS; snapshot chỉ giữ summary200experience để tránh lặp payload evidence trong polling; legacy archive không backfill, không DDL mới. Authority simulation-plan-time không là ground/encounter receipt hoặc chữ ký của nguồn ngoài. Audit JSONL offline phân loại consistency; không có write/import/training API từ evidence. Chi tiết và giới hạn ở [LEARNING](LEARNING.md).
+
+Memory backfill0008 là bảo trì explicit local: preview không ghi; apply chỉ INSERT missing structured memories và CAS job/receipt cùng transaction, không UPDATE/DELETE memory hoặc world/policy/history. Giữ legacy/divergent rows và timestamp nguồn; high-water đóng theo job, không là full-content snapshot. Hai index actor/event và actor/seq hỗ trợ đối chiếu/paging. Xem [LEARNING](LEARNING.md) cho provenance/giới hạn và [runbook](PRODUCTION_RUNBOOK.md) trước migration production.

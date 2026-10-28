@@ -1,6 +1,6 @@
 # Learning, context và hội thoại
 
-Học policy trong mô phỏng, không fine-tune trọng số Qwen. Modules chính: `lib/living/{learning,linucb,policy-store,skills,memory-records,prompt-memories,context-cards,dialogue-pool,director,service}.ts`; schema/code là nguồn contract chi tiết.
+Học policy trong mô phỏng, không fine-tune trọng số Qwen. Modules chính: `lib/living/{learning,linucb,policy-store,skills,prompt-memories,context-cards,dialogue-pool,director,service}.ts` và `lib/{memory-records,memory-backfill,memory-backfill-store}.ts`; schema/code là nguồn contract chi tiết.
 
 ## Outcome và policy
 
@@ -16,7 +16,7 @@ Animal policy có4 action rest/forage/play/shelter, giữ lịch sử riêng; kh
 
 ## Memory và bối cảnh
 
-Structured memories ghi event-report đúng recipient hoặc simulation-plan-outcome đúng actor, stableID/INSERTORIGNORE/revision+nonce cùng batch. Future dialogue không cấp witness. Legacy record đọc có nhãn; còn backfill history đầy đủ trong [ROADMAP](../ROADMAP.md). Archive dùng INSERTSELECTjson_each, không xóa history đã lưu.
+Structured memories ghi event-report đúng recipient hoặc simulation-plan-outcome đúng actor, stableID/INSERTORIGNORE/revision+nonce cùng batch. Future dialogue không cấp witness. Legacy record đọc có nhãn; memory backfill local additive có ở phần bên dưới, nguồn thiếu chứng cứ vẫn giữ nguyên/bỏ qua. Curation còn trong [ROADMAP](../ROADMAP.md). Archive dùng INSERTSELECTjson_each, không xóa history đã lưu.
 
 Owner-only memory API lấy top-K theo topic/importance/time từ100 row gần nhất, lọc actor/witness. Daemon chỉ đúng hai actor,3 record/người,400 ký tự/record, deadline2,5s song song; kiểm owner/kind/ID/date và giữ provenance/truncation trong prompt. Denied401/403 không fallback; unavailable chỉ own summaries. Helper chỉ loopback, không ghi memory/skill/P2P. Context là dữ liệu, không là chỉ thị thực thi; kiểm prompt không chứng minh LLM luôn giữ đúng ngữ nghĩa.
 
@@ -38,7 +38,7 @@ Model local opt-in qua `npm run living:up` (llama.cpp/Qwen đã được thử �
 
 `npm run benchmark:policies` dùng chooseScenario/settleLearning/linearScore runtime,8 seed×820 training chung×160 frozen holdout. V2 explicit single-domain history: tabular reward0,561797/MSE0,003588; LinUCB0,559612/0,002683. Dự đoán tốt hơn nhưng thưởng tức thời chưa thắng. [policy-holdout.json](validation/policy-holdout.json) là số liệu; v1 giữ riêng. Không nhận claim 3,71×/score 98/LLMlatency/FPS hoặc chỉnh để ép thắng holdout.
 
-Suite/unit/API kiểm ridge oracle, gates/context/plan/cancel/retry, transaction rollback/legacy/corruption và actor privacy; xem [TESTING](TESTING.md). H1 rollout và các nghiên cứu H4/H6/H10 được mô tả bên dưới, chưa promote; peer/exemplar, memory backfill/curation và model A/B còn ở ROADMAP.
+Suite/unit/API kiểm ridge oracle, gates/context/plan/cancel/retry, transaction rollback/legacy/corruption và actor privacy; xem [TESTING](TESTING.md). H1 rollout và các nghiên cứu H4/H6/H10 được mô tả bên dưới, chưa promote; peer/exemplar, dataset curation và model A/B còn ở ROADMAP.
 
 ## H1 — Rollout theo thời gian (28/10)
 
@@ -168,7 +168,7 @@ Numeric curriculum có3stage từ context tại quyết định: needs(energy<0,
 
 Thử nghiệm warm-only là giả thuyết mới sau H4: prior k5 chỉ blend khi **tổng samples tự đạt<24**, sau đó dùng chính hàm personal trên state hiện tại, không reset hậu nghiệm hay ép trajectory trùng baseline. Không đụng personal uncertainty/guards. Train8seed6000–6007,12agent×15ngày; validation prediction8seed7000–7007 cùng kích thước; policy holdout20seed8000–8019,24agent×60ngày/shift30. Dùng2profile và cùng role/place fixture H4; không so số tuyệt đối với H1/H2. Tham số cố định trước kết quả, không tự promote/runtime activation. Actor archive artifacts không dùng làm cohort prior cho holdout.
 
-H6 này cung cấp replay numeric/CLI private và curriculum traversal; chưa SFT/DPO training, memory backfill/CAS, role-history inference hoặc cài artifact lên production. H6b đã thêm multi-file/cursor local ở phần dưới; memory backfill và curation cùng prompt/context/model vẫn là việc riêng trong ROADMAP. Không thêm migration/policy format0007 hoặc thuê GPU/API.
+H6 này cung cấp replay numeric/CLI private và curriculum traversal; chưa SFT/DPO training, memory backfill/CAS, role-history inference hoặc cài artifact lên production. H6b đã thêm multi-file/cursor và memory backfill local ở phần dưới; curation cùng prompt/context/model vẫn là việc riêng trong ROADMAP. Không thêm migration/policy format0007 hoặc thuê GPU/API.
 
 [Evidence H6](validation/learning-h6-2026-10-28.json) và [artifacts synthetic](validation/h6-v1/) ghi69.120train+69.120prediction validation+2.764.800policy holdout plans.56suite/check/lint/build/assets/API compiled đạt; API JSONL→actor replay giữ history/snapshot/earned samples. Full replay train+validation, full warm24stress và H1 repeat cùng byte/hash. Không replay archive production hoặc tạo artifact private trong Git.
 
@@ -237,4 +237,26 @@ Actor được lọc **trước audit/storage**; foreign raw fields không vào 
 
 Chỉ fit **một lượt sau khi hết source set**, global chronological/curriculum như H6 một file; không fit lại posterior từng batch. Artifact và final cursor commit cùng nhau trong job; export là bước riêng, stage+fsync rồi publish exclusive nên không có JSON nửa chừng/ghi đè. Artifact H6 vẫn thuộc actor, source SHA là **JSONL ảo**: nối file theo manifest, thêm LF cho mỗi file không rỗng thiếu LF cuối. Envelope `bulkSource` giữ riêng manifest SHA và hashes/bytes từng file; không gọi manifest SHA là checksum raw JSONL. Model/report/acceptedDigest khớp replay một file trên đúng chuỗi ảo ấy.
 
-Mỗi run/export kiểm lại hash toàn bộ nguồn và ledger; cursor giảm audit phần đã nhận, **không bỏ chi phí checksum**. Job giữ canonical numeric evidence và ID ledger cần dedup, không chép trường thoại/ký ức tự do. Checksum là integrity, không chứng thực file ngoài hay physical authority. Report/model.samples chỉ là replayed records; không import vào own samples/skills/matrices/memories/runtime. Chưa có memory backfill/CAS, DPO/SFT/few-shot curation, prior activation hoặc bằng chứng policy tốt hơn; H10 holdout vẫn chưa mở.
+Mỗi run/export kiểm lại hash toàn bộ nguồn và ledger; cursor giảm audit phần đã nhận, **không bỏ chi phí checksum**. Job giữ canonical numeric evidence và ID ledger cần dedup, không chép trường thoại/ký ức tự do. Checksum là integrity, không chứng thực file ngoài hay physical authority. Report/model.samples chỉ là replayed records; không import vào own samples/skills/matrices/memories/runtime. Memory backfill/CAS local đã có ở phần tiếp; DPO/SFT/few-shot curation, prior activation và bằng chứng policy tốt hơn còn chờ. H10 holdout vẫn chưa mở.
+
+## H6b — Memory backfill additive, local (28/10)
+
+[Contract](validation/memory-backfill-contract-v1.json), [evidence](validation/memory-backfill-2026-10-28.json). POST `/api/living/memories/backfill` cần **owner + XOM_LOCAL_ADMIN=true + URL loopback**, Origin nếu có phải khớp. Owner trên Site từ xa vẫn bị từ chối. Endpoint không gọi `readWorld()` để tránh bootstrap/epoch repair trong dry-run; không tự chạy từ pulse/scheduler. Migration0008 chỉ thêm job/receipt và index, không tự bổ sung dữ liệu.
+
+Một job UUID giữ actor, limit, version/signature, `world.born`, high-water episode-rowid/actor-experience-seq và cursor episodes→outcomes→done. Actor lịch sử không cần còn trong roster hiện tại. Preview mặc định chỉ SELECT; apply cần cả **checkpoint SHA và plan SHA** vừa review. CLI chỉ loopback, không tự retry/apply; stdout hash/count/cursor, review JSON optional private/exclusive. Ví dụ thay JOB_UUID/hash bằng giá trị thật, giữ cùng actor/limit khi resume:
+
+```bash
+npm run memories:backfill -- --origin=http://127.0.0.1:5173 --job=JOB_UUID --actor=an --review-out=.sites-runtime/training/review-an.json
+npm run memories:backfill -- --job=JOB_UUID --actor=an --action=apply --expected-checkpoint=new --plan-sha256=SHA_PLAN
+npm run memories:backfill -- --job=JOB_UUID --actor=an --action=status
+# Trang sau: preview bằng checkpoint mới; sau đó apply đúng plan/checkpoint mới.
+npm run memories:backfill -- --job=JOB_UUID --actor=an --expected-checkpoint=SHA_CHECKPOINT
+```
+
+Nguồn episode chỉ `changes[].memory` gán rõ cho actor, thời gian/source/ID lấy từ archive; dialogue/speaker/plan tương lai không cấp witness. Outcome chỉ từ `actor_id` đã chọn, identity/time khớp và evidence H3 verified fingerprint-v1. Text mới chỉ tóm tắt **scenarioId/reward đã lưu** với nhãn mô phỏng; không khôi phục suy nghĩ/tên nghề/title lịch sử bằng state hiện tại. Nguồn thiếu/không tương thích được đếm unverified, không bịa evidence. Timestamp ký ức lấy nguyên nguồn, không dùng giờ bảo trì để làm ký ức cũ thành mới.
+
+Stable ID trùng live writer (`event:...:actor`, `outcome:...`); đối chiếu cả liên kết actor/source dưới ID khác. Tất cả memory cũ/text/kind/witness/custom metadata giữ nguyên. Legacy không được relabel; khác nội dung/metadata chỉ đếm divergent, không sửa. Hai kind nguồn đã biết độc lập dù event_id cùng tên. StableID sai owner/source hoặc source recipient mơ hồ làm bác batch. Backfill không sửa snapshot rings, earned samples/skills/matrices/history; RAG vẫn dùng bộ lọc/top100 hiện hành.
+
+Một D1 batch CAS checkpoint/raw world revision+JSON/source page/target scope, rồi INSERT missing memories và receipt có nonce. Receipt cuối assert postconditions bằng NOT NULL để lỗi constraint/trigger, kể cả INSERT bị bỏ qua im lặng, **rollback cả memory/cursor/receipt**. Receipt digest được checkpoint pin. Retry đúng last-plan/previous-head chỉ ACK duplicate; point/plan khác bị409, không tự ghi lại. Có thể bảo trì khi paused vì không tạo outcome/event mới hoặc đổi clock.
+
+Body≤2KiB, mặc định16/max32source rows/trang, source row≤64KiB, tổng source≤512KiB; target≤256row/8KiB mỗi row/tổng256KiB. New appends sau high-water cần job mới; quét lại không thêm trùng. Job/receipt lưu hash/counters/IDs, không chép toàn transcript. Mỗi receipt chứng minh page tại lúc commit; đây **không phải frozen content snapshot toàn DB**. Archives vẫn append-only; source sửa/xóa sau các batch cũ cần review/repair riêng, không tự xóa ký ức. Production chưa được backfill, không bật local-admin để vượt guard Site. Dataset curation là bước tiếp theo.

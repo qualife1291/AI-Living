@@ -14,7 +14,7 @@ User đã cho phép merge/push và một bản prod; không hỏi lại. Khi thi
 2. Helper Sites ưu tiên; fallback `python3 scripts/site-source-sync.py fetch` nhận credentialJSON qua hiddenstdin, đối chiếu refs/remotes/sites/main. Không lưu extraHeader trong Git config.
 3. Hoàn tất code và kiểm local theo [TESTING](TESTING.md), cập nhật handoff/ROADMAP/changelog, commit/push checkpoint trước bước dài. Không test fixture lên production.
 4. Backup **full DB** world/events/memories/turns/experiences/policies/chat; kiểm số dòng và ID với native DB. Cell projection có thể bị cắt, không coi đó là full backup. Giữ backup trong `backups/` gitignored, chỉ ghi hash/thời điểm/đối chiếu vào ledger.
-5. Kiểm schema/migration thật rồi chỉ apply entry còn thiếu.0001–0003 là SQL standalone lịch sử;0004 reconciliation nối journal0000 (idx4), sau đó0005–0007. Không rewrite SQL/journal cũ, đăng ký lại standalone hoặc resetDB. Thiếu partial schema phải inspect/repair có backup.
+5. Kiểm schema/migration thật rồi chỉ apply entry còn thiếu.0001–0003 là SQL standalone lịch sử;0004 reconciliation nối journal0000 (idx4), sau đó0005–0008. Không rewrite SQL/journal cũ, đăng ký lại standalone hoặc resetDB. Thiếu partial schema phải inspect/repair có backup.
 6. Runtime: `XOM_OWNER_PRIVATE_ORIGIN` chỉ khi đã xác minh đúng Site owner-private/origin, dựa trên Sites dispatch auth. Phải gỡ trước khi đổi audience và cấu hình ownerID thật. Không đưa `XOM_LOCAL_ADMIN`/`XOM_CONTEXT_RELAY` lên prod.
 7. Từ source sạch chạy `npm run release:build` rồi `npm run release:package`. Kiểm source stamp/manifest/migrations và loại secrets/DB/test-entry; gói ở `work/production.tar.gz`, giữ bản có SHA source trong tên.
 8. Push Site source bằng native credential/helper hoặc `site-source-sync.py push`, không force. Dùng native `save_version_and_deploy_private` cho đúng archive/SHA, giữ owner-private. Lưu returned version/deploymentID; pending thì poll đúng deployment, lỗi có saved_version_id thì tái sử dụng, không tạo version trùng.
@@ -38,3 +38,5 @@ Clientpulse10s còn fallback. H0 gate D1 lease30s/cooldown9s giảm trùng; khô
 - Local backup: `python3 scripts/backup-local.py`; chỉ local. UIexport chỉ snapshot + recent events, không full history. Không xóa episode/visitor/tick/memory thật theo hướng dẫn repair/retention lịch sử. Clienttelemetry giữ chính sách7 ngày trong POST như contract hiện có.
 
 Không chạy `test-world.mjs`/`verify-live.py` hoặc fixtures lên live mặc định; không mở audience để vượt lỗi403. Kiểm thử local và release audit giữ riêng.
+
+Memory backfill0008 thêm job/receipt và index, **không tự backfill**. Endpoint chỉ owner+local-admin+loopback; không đặt XOM_LOCAL_ADMIN=true trên production để mở nó. Công cụ local mặc định preview, apply cần plan/head SHA; giữ review/source/DB private ngoài Git. Native backup/schema/readback vẫn cần trước migration/deploy; không gọi maintenance lên production trong phase này.
