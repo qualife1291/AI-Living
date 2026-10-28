@@ -1,13 +1,13 @@
 # Kiểm thử và bằng chứng
 
-`npm run test:unit` chạy danh sách trong scripts/unit-suites.json bằng scripts/run-unit-tests.mjs. Có48suite ở mốc nguồn tích hợp hiện tại (38suite ở c83a5e3); `node scripts/run-unit-tests.mjs --list` là danh sách hiện hành. Mỗi process độc lập, mặc định tối đa4worker, chạy đủ các suite và trả mã lỗi nếu bất kỳ suite thất bại. `XOM_TEST_JOBS=1` dùng khi cần tuần tự hoặc máy ít tài nguyên. Không hứa tỷ lệ tăng tốc chưa đo.
+`npm run test:unit` chạy danh sách trong scripts/unit-suites.json bằng scripts/run-unit-tests.mjs. Có49suite ở mốc nguồn tích hợp hiện tại (38suite ở c83a5e3); `node scripts/run-unit-tests.mjs --list` là danh sách hiện hành. Mỗi process độc lập, mặc định tối đa4worker, chạy đủ các suite và trả mã lỗi nếu bất kỳ suite thất bại. `XOM_TEST_JOBS=1` dùng khi cần tuần tự hoặc máy ít tài nguyên. Không hứa tỷ lệ tăng tốc chưa đo.
 
 ## Các nhóm kiểm tra
 
 | Nhóm | Suite tiêu biểu |
 |---|---|
 | Core/schema/time | life, events, animation, training, continuity, daily-routines, living, festivals |
-| Learning/autonomy/social | learning, social, autonomy, phase-b, scenario-benchmarks, tag-game, pet-walk, identities, households, linucb, memory-records, role-expansion, dialogue-pool, policy-store, daemon-fallback, domain-skills, context-cards, prompt-memories |
+| Learning/autonomy/social | learning, social, autonomy, phase-b, scenario-benchmarks, tag-game, pet-walk, identities, households, linucb, memory-records, role-expansion, dialogue-pool, policy-store, daemon-fallback, domain-skills, context-cards, prompt-memories, plan-completion |
 | Ground/traffic/camera | city, three-city, walkability, personal-space, traffic, cinematography, cycle, home-anchors |
 | Geometry/assets/lifecycle | appearance, human-visuals, visual-upgrade, maintain-assets self-test, model-assets, resource-packs, city-rigs |
 | Security/operations | hardening, map-release, liveness, context-deadline, diagnostics-fixes, quality-budget, overlay-layout |

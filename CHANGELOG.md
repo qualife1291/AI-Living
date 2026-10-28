@@ -1,5 +1,10 @@
 # Changelog
 
+## 2026-10-28 — Giữ kết quả đúng kế hoạch (source)
+- Không cộng outcome cho kế hoạch mới bị thay nội dung nhưng giữ timestamp; giữ khả năng đọc pending cũ.
+- Chờ đủ toàn bộ thời lượng hai kế hoạch trước khi ghi ngữ cảnh gặp; qua slot đang bận vẫn giữ đúng liên kết gốc, retry không cộng lại. Giữ lịch sử cũ, ghi rõ đây là kế hoạch mô phỏng.
+- 49 suite và API D1 đạt; chưa phải xác nhận đến nơi bằng ground hoặc deploy production.
+
 ## 2026-10-28 — Thực hành theo nhóm và bối cảnh đầy đủ (source)
 - Tám nhóm điểm và bốn điều kiện ngành; giữ hoạt động đã mở của dữ liệu cũ, không tự tạo điểm chuyên môn từ scalar. Hồ sơ học hiển thị điểm và trạng thái mở khóa.
 - 49 thẻ biên tập phủ 33 địa điểm, lọc đúng nơi/pha ngày/thời tiết; lễ hội cần nguồn và ngày khớp.

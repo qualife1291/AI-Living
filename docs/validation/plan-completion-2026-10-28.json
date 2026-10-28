@@ -1,0 +1,21 @@
+{
+  "source_commit": "b8957f6148200a3248a22b22e0bb889d7f653d75",
+  "unit_suites": 49,
+  "unit_passed": 49,
+  "unit_seconds": 16.55,
+  "typecheck": true,
+  "lint": true,
+  "build": true,
+  "local_api": true,
+  "regression_before_fix": "Same-start replacement incorrectly earned one sample; assertion expected zero.",
+  "plan_binding": true,
+  "pause_and_generator_compatible": true,
+  "legacy_pending_read": true,
+  "quiet_slot_survival": true,
+  "full_two_plan_duration": true,
+  "requires_owned_outcomes": true,
+  "learning_first_and_direct_tick": true,
+  "retry_no_duplicate": true,
+  "physical_arrival_authority": false,
+  "production_access": false
+}

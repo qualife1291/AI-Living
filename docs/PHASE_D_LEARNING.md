@@ -8,7 +8,7 @@ Disjoint LinUCB dùng 6 features `[1, energy/100, hunger/100, socialNeed/100, is
 
 Pending mới lưu context lúc chọn. Pending cũ thiếu context tiếp tục tabular, không gán context giả; trials, meanReward, memories và archive cũ được giữ. Chỉ hoàn tất đúng kế hoạch một lần mới học. MinSkill mở dạy lớp ở 8, sửa xe ở 4, văn phòng ở 3 và dự án học ở 2; hoạt động học cơ bản vẫn mở. Không hủy hồi tố kế hoạch cũ. Tám nhóm điểm thực hành và bốn domain gates đã bổ sung trong source tiếp nối; chưa phân cấp global/role/P2P.
 
-Pending NPC đã dùng tổng thời lượng mọi bước thay 180 giây cố định. Completion vẫn theo simulation time và plan matching, **chưa phải bằng chứng vị trí ground**. Không dùng nó để công nhận đã trực tiếp gặp, nghe kể hoặc boarding thật.
+Pending NPC đã dùng tổng thời lượng mọi bước thay 180 giây cố định. Pending mới còn có planKey change-detection, không nhận outcome nếu kế hoạch bị thay mà giữ cùng timestamp. Completion vẫn theo simulation time và plan matching, **chưa phải bằng chứng vị trí ground**. Không dùng nó để công nhận đã trực tiếp gặp, nghe kể hoặc boarding thật.
 
 ## Policy tách khỏi snapshot
 
@@ -54,3 +54,11 @@ New models phải đủ minSkill và minDomainSkill cho bốn hoạt động nâ
 46/46 suite, check/lint/build, API D1 archive/persistence đạt. Browser desktop/mobile/320px xác minh hai gate mở/hai khóa theo fixture, legacy giữ bốn gate, không NaN/overflow/JS error; social6/poll/F5 đạt. Ảnh ở screenshots/domain-skills là preview fixture, không phải production.
 
 Benchmark v1 ở bảng phía trên được giữ riêng tại validation/policy-holdout-v1.json. V2 trong policy-holdout.json dùng explicit single-domain synthetic history và meetsSkillGate runtime cho cả baseline/oracle. V2 reward/MSE: tabular 0,561797/0,003588; LinUCB 0,559612/0,002683. Tiếp tục không tuyên bố thuật toán luôn thắng; đây không phải model A/B ngôn ngữ hoặc hoàn thành ground.
+
+## Ràng outcome và ngữ cảnh với kế hoạch gốc
+
+Regression tái hiện trước fix: plan bị đổi activity/duration/location/transport nhưng giữ simStartedAt vẫn được cộng sample. New pending giữ planKey từ các trường thực thi; prepareLearning/hasUnfinishedLearning so cả key và timestamp. Clone/poll/object property order, bookkeeping pause và generator không làm đổi key; pending cũ thiếu key dùng đường đọc cũ. Key là change detector, không phải chữ ký bảo mật hoặc bằng chứng đến nơi.
+
+Contextual narrative memory/familiarity trước đây dùng 180s và lastTurnId: có thể ghi sớm trong encounter 360s hoặc mất link qua quiet slot. Nay theo pending.id gốc, kiểm hai plan vẫn khớp, chờ thời lượng dài nhất và yêu cầu owned outcome của cả hai (từ batch mới hoặc archive). reportedEncounters giữ 64 ID gần nhất; retry không cộng lại. Legacy text đã có được giữ và không thưởng lại; text mới ghi rõ kết quả kế hoạch mô phỏng. Không suy đã nghe/chứng kiến thật và không dùng để cấp P2P.
+
+49/49 suite/check/lint/build/API D1 đạt: same-start replacement, valid completion/noDuplicate, legacy/pause/generator; 300s không report encounter360s; qua quiet slot vẫn tìm đúng origin; cả learning-first và direct tick chỉ report sau outcome hợp lệ, retry giữ nguyên revision/world. Ground/playback nhiều viewer còn ở NEXT_PHASES.
