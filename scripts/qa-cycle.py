@@ -38,7 +38,7 @@ with sync_playwright() as p:
    page.screenshot(path=str(out/f'ride-{name}-preview.png'))
    page.get_by_role('button',name='Tạm nghỉ',exact=True).click();page.wait_for_function('document.querySelector(".three-canvas")?.dataset.paused==="true"')
    frozen=host.get_attribute('data-cyclists');rig=host.get_attribute('data-model-actors');page.wait_for_timeout(1200)
-   assert host.get_attribute('data-cyclists')==frozen;assert host.get_attribute('data-model-actors')==rig
+   assert host.get_attribute('data-cyclists')==frozen, {'before':frozen,'after':host.get_attribute('data-cyclists')};assert host.get_attribute('data-model-actors')==rig, {'beforeRig':rig,'afterRig':host.get_attribute('data-model-actors')}
    page.get_by_role('button',name='Tiếp tục',exact=True).click();page.wait_for_function('document.querySelector(".three-canvas")?.dataset.paused==="false"')
    fixture['world']['people'][0]['plan']['transport']='walk';fixture['world']['people'][0]['plan']['steps'][0]['kind']='read'
    page.wait_for_function('!JSON.parse(document.querySelector(".three-canvas")?.dataset.cyclists??"[]").some(a=>a.id==="an")',timeout=30000)

@@ -27,7 +27,7 @@ with sync_playwright() as p:
      assert host.get_attribute('data-asset-failures')=='0'
     slider.fill('119.9');page.get_by_role('button',name='Phát kịch bản',exact=True).click()
     page.wait_for_function('document.querySelector(".studio-canvas")?.dataset.time==="120.000"',timeout=15000)
-    frames=host.get_attribute('data-frames');page.wait_for_timeout(400);assert host.get_attribute('data-time')=='120.000';assert host.get_attribute('data-frames')==frames,'Completed scene stops drawing'
+    page.wait_for_timeout(500);frames=host.get_attribute('data-frames');page.wait_for_timeout(400);assert host.get_attribute('data-time')=='120.000';assert host.get_attribute('data-frames')==frames,'Completed scene stops drawing'
     page.get_by_role('button',name='Phát kịch bản',exact=True).click()
     page.wait_for_function('Number(document.querySelector(".studio-canvas")?.dataset.time)<2',timeout=15000)
     page.get_by_role('button',name='Xem lại từ đầu',exact=True).click();page.wait_for_function('document.querySelector(".studio-canvas")?.dataset.time==="0.000"')

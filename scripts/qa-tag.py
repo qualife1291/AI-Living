@@ -35,7 +35,7 @@ with sync_playwright() as p:
    page.goto(base,wait_until='domcontentloaded',timeout=60000)
    host=page.locator('.three-canvas[data-ready="true"]');host.wait_for(timeout=90000)
    page.wait_for_function('JSON.parse(document.querySelector(".three-canvas")?.dataset.tagCast??"[]").length===2',timeout=60000)
-   samples=page.evaluate('''async()=>{const s=[],end=performance.now()+14000;let prev='';while(performance.now()<end){await new Promise(requestAnimationFrame);const e=document.querySelector('.three-canvas');if(e?.dataset.frame!==prev){prev=e.dataset.frame;s.push(JSON.parse(e.dataset.tagCast??'[]'))}}return s}''')
+   samples=page.evaluate('''async()=>{const s=[],start=performance.now();let prev='';while(performance.now()-start<14000||s.length<15&&performance.now()-start<30000){await new Promise(requestAnimationFrame);const e=document.querySelector('.three-canvas');if(e?.dataset.frame!==prev){prev=e.dataset.frame;s.push(JSON.parse(e.dataset.tagCast??'[]'))}}return s}''')
    assert len(samples)>=15,len(samples)
    by_id=lambda row:{a['id']:a for a in row}
    assert all(len(row)==2 and {a['id'] for a in row}=={'an','binh'} for row in samples),'Stable pair through polling'

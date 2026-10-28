@@ -19,13 +19,13 @@ with sync_playwright() as p:
    page.route('**/api/world*',respond);page.route('**/api/living/pulse',lambda r:r.fulfill(status=200,content_type='application/json',body='{"ok":true,"duplicate":true}'))
    page.goto(base,wait_until='domcontentloaded',timeout=60000);host=page.locator('.three-canvas[data-ready="true"]');host.wait_for(timeout=90000)
    bubble=page.locator('.three-speech');bubble.wait_for(timeout=30000)
-   page.wait_for_timeout(800)
-   labels=page.locator('.actor-name');assert 0<labels.count()<=16,labels.count()
-   label_rects=[]
-   for label in labels.all():
-    rect=label.bounding_box();assert rect['width']<=116.1 and rect['height']<=26.1
+   # Names are camera/occlusion driven; read count and geometry in the same frame.
+   label_rects=page.wait_for_function('''()=>{const labels=[...document.querySelectorAll('.actor-name')];if(!labels.length)return false;return labels.map(e=>{const r=e.getBoundingClientRect();return{x:r.x,y:r.y,width:r.width,height:r.height}})}''',timeout=30000).json_value()
+   assert 0<len(label_rects)<=16,len(label_rects)
+   labels=page.locator('.actor-name')
+   for rect in label_rects:
+    assert rect['width']<=116.1 and rect['height']<=26.1
     assert rect['x']>=0 and rect['x']+rect['width']<=width
-    label_rects.append(rect)
    bounds=bubble.bounding_box();assert bounds['x']>=10 and bounds['x']+bounds['width']<=width-10
    assert bounds['y']>=80 and bounds['y']+bounds['height']<=height-100
    assert 'Kịch bản' in bubble.inner_text()

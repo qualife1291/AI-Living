@@ -20,9 +20,13 @@ npm run build
 npm run test:api:local
 npm run test:api:ground
 npm run test:api:shared-ground
+npm run test:api:legacy
+npm run audit:learning-evidence
 ```
 
 Unit dùng memory/fixtures/D1 cô lập, không production. Có core/schema/time, learning/social/domain/plan-completion, ground/traffic/camera/household, geometry/assets/rigs, security/telemetry/pulse-gate. `node scripts/run-unit-tests.mjs --list` liệt kê đầy đủ, không cần chép danh sách tên vào docs.
+
+`test:api:legacy` chạy thêm các hợp đồng HTTP world/living/learning/liveness/appearance/proposal, mỗi script có D1 mới đủ migration và clock fixture riêng; không dùng DB của preview/người dùng. `audit:learning-evidence` kiểm checksum và tính lại các comparison H2/H4/H6/H10 từ report đã đóng băng; không sinh rollout mới hoặc mở outcome holdout12000–12019.
 
 API dùng Worker mới build và D1 riêng: owner/origin/schema/bytes, pet/flora/CAS/history, policy/memories/actor privacy, proposal guards, pulse 12 viewer không audit trùng, diagnostics GET chỉ đọc/POST retention và health schema. Health có8table probes+latest tick trong một batch; backfill schema0008 được kiểm thiếu→503/đủ→ready, world giữ nguyên. D1 gate suite riêng kiểm 20 request→1 pipeline, pause/failure/expiry/nonce/cadence. Không gọi đây là production load/billing benchmark.
 
