@@ -1,5 +1,6 @@
 import { boulevards } from "./world.ts";
 import { VEHICLES } from "./scale.ts";
+import {trafficStateSchema,type TrafficDirectorState} from './director-state.ts';
 
 export type TrafficPoint = [number, number];
 export type TrafficVehicle = {
@@ -112,6 +113,13 @@ export class TrafficDirector {
   private readonly frontClearance = 10;
   // Extra arc-length reserve covers the long body cutting across a tight bend.
   private readonly headway = VEHICLES.car.length + VEHICLES.car.width + 10;
+  exportState():TrafficDirectorState {return {version:1,previousTime:this.previousTime??null,positions:[...this.positions],speeds:[...this.speeds]};}
+  restoreState(value:unknown) {
+    const s=trafficStateSchema.parse(value);
+    if(s.positions.length!==s.speeds.length||s.previousTime!==null&&s.positions.length!==TRAFFIC_COUNT||s.previousTime===null&&s.positions.length)throw Error('Invalid traffic checkpoint');
+    this.previousTime=s.previousTime??undefined;this.positions=s.positions;this.speeds=s.speeds;
+  }
+  holdAt(seconds:number) {this.previousTime=seconds;this.speeds=this.speeds.map(()=>0);}
 
   frame(simSeconds: number, pedestrianPoints: TrafficPoint[] = [], bodyRadii: number[] = []): TrafficVehicle[] {
     const now = Number.isFinite(simSeconds) ? simSeconds : this.previousTime ?? 0;

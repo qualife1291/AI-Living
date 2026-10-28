@@ -5,6 +5,8 @@ import { z } from "zod";
 import { readWorld, database, json, validOrigin } from "@/lib/store";
 import { selectActiveContexts } from "@/lib/training";
 import { worldTime, weatherAt, updateClock } from "@/lib/clock";
+import {env} from 'cloudflare:workers';
+import {readSharedGround} from '@/lib/living/shared-ground-store';
 
 export const dynamic = "force-dynamic";
 
@@ -22,6 +24,15 @@ const controlsSchema = z
   .strict();
 
 export async function GET(req: Request) {
+  if(new URL(req.url).searchParams.get('ground')==='shared'){
+    if((env as unknown as Record<string,string>).XOM_LOCAL_ADMIN!=='true'||!['localhost','127.0.0.1','[::1]'].includes(new URL(req.url).hostname)||!validOrigin(req))return json({error:'Timeline chung chỉ dành cho owner local.'},403);
+    try{
+      const shared=await readSharedGround(database());if(!shared)return json({error:'Chưa khởi tạo timeline chung.'},409);
+      const revision=await database().prepare("SELECT revision FROM worlds WHERE id='home'").first<{revision:number}>();
+      const wt=worldTime(shared.world,0);
+      return json({revision:revision?.revision??shared.view.sourceRevision,serverNow:new Date().toISOString(),world:shared.world,events:[],worldTime:wt,weatherState:weatherAt(shared.world.born,wt,shared.world.clock?.weatherOverride),sharedGround:shared.view});
+    }catch{return json({error:'Timeline chung chưa sẵn sàng.'},503);}
+  }
   const data = await readWorld({eventLimit: new URL(req.url).searchParams.get("compact") === "1" ? 8 : 80});
   const nowMs = Date.parse(data.serverNow);
   const wt = worldTime(data.world, nowMs);

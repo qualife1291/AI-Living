@@ -1,5 +1,6 @@
 import { distance, places, type Actor, type Point } from "../life.ts";
 import { nearestWalkable, segmentWalkable, walkable, WALK_RADIUS } from "./walk-ground.ts";
+import {tagStateSchema} from './director-state.ts';
 
 export type TagRole = { peerId: string; role: "chaser" | "runner"; swaps: number };
 type Directive = TagRole & { goal: Point; speed: number };
@@ -11,6 +12,12 @@ export const TAG_REACH = WALK_RADIUS * 2 + 4;
 export class TagDirector {
   private pairs = new Map<string, Pair>();
   reset() { this.pairs.clear(); }
+  exportState() { return structuredClone([...this.pairs]); }
+  restoreState(value:unknown) {
+    const entries=tagStateSchema.parse(value);
+    if(new Set(entries.map(([key])=>key)).size!==entries.length||entries.some(([key,p])=>key!==JSON.stringify([p.a,p.b])||p.a===p.b||![p.a,p.b].includes(p.chaser)||![p.a,p.b].includes(p.runner)))throw Error('Invalid tag checkpoint');
+    this.pairs=new Map(entries);
+  }
 
   frame(actors: Actor[], dt: number): Map<string, Directive> {
     const active = new Map(actors.filter(a => a.kind === "tag" &&

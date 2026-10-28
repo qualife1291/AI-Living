@@ -58,6 +58,11 @@ if(groundTables[0].results.length===0)execute(["--file","drizzle/0009_ground_tim
 else if(groundTables[0].results.length!==2)throw new Error("Partial ground timeline schema; inspect and back up before repair.");
 const groundIndexes=JSON.parse(execute(["--json","--command","SELECT name FROM sqlite_master WHERE type='index' AND name IN ('idx_ground_session_sequence','idx_ground_session_operation')"]));
 if(groundIndexes[0].results.length!==2)throw new Error("Partial ground timeline indexes; inspect and back up before repair.");
+const sharedTables=JSON.parse(execute(["--json","--command","SELECT name FROM sqlite_master WHERE type='table' AND name IN ('ground_shared_states','ground_shared_sources','ground_shared_batches')"]));
+if(sharedTables[0].results.length===0)execute(["--file","drizzle/0010_ground_shared.sql"]);
+else if(sharedTables[0].results.length!==3)throw new Error("Partial shared ground schema; inspect and back up before repair.");
+const sharedObjects=JSON.parse(execute(["--json","--command","SELECT name FROM sqlite_master WHERE name IN ('idx_shared_source_revision','idx_shared_batch_sequence','idx_shared_batch_operation','ground_shared_capture_world','ground_shared_sources_immutable_update','ground_shared_sources_immutable_delete')"]));
+if(sharedObjects[0].results.length!==6)throw new Error("Partial shared ground indexes/triggers; inspect before repair.");
 console.log("Local D1 schema ready; existing snapshots and episodes preserved.");
 
 if (process.env.HTTPS_PROXY) {

@@ -36,6 +36,7 @@ import {
   pedestrianSegments,
 } from "@/lib/city/three-layout";
 import type { World, EpisodeEvent } from "@/lib/world";
+import {sampleSharedGround,type SharedGroundView} from '@/lib/living/shared-ground-view';
 
 export type SceneInput = {
   world: World;
@@ -43,6 +44,8 @@ export type SceneInput = {
   events?: EpisodeEvent[];
   selected: string;
   clockOffsetMs?: number;
+  sharedGroundRequested?:boolean;
+  sharedGround?:SharedGroundView;
   target?: { x: number; y: number; key: number; homeId?:string;gardenId?:string } | null;
 };
 export type SceneStatus = {
@@ -800,8 +803,21 @@ export function createCity(
       sceneDetail.apply(scene, activeQuality);
     }
     lastTime = now; // simulationTime/worldTime apply the persisted pause anchor.
-    const seconds = simulationTime(world, lastTime) / 1000;
-    {
+    let seconds = simulationTime(world, lastTime) / 1000;
+    if(state.sharedGroundRequested){
+      const shared=state.sharedGround;
+      if(shared&&shared.worldBorn===world.born){
+        const sampled=sampleSharedGround(shared,shared.paused?shared.cursorRealMs:now-1500);
+        const animals=new Set(['muop','cun','se']),allHumans=sampled.actors.filter(a=>!animals.has(a.id));
+        const preferred=new Set([selected,world.livingTurn?.residentId]);
+        actors=[...allHumans.slice(0,capacity-2),...allHumans.filter(a=>preferred.has(a.id)&&!allHumans.slice(0,capacity-2).some(p=>p.id===a.id))].slice(0,capacity);
+        groundAnimals=animalsAt(world,0).flatMap(base=>{const actor=sampled.actors.find(a=>a.id===base.id);return actor?[{...base,...actor}]:[];});cars=sampled.cars;seconds=sampled.simMs/1000;
+        socialPoses=new Map();exchanges=[];
+        host.dataset.sharedGround=JSON.stringify({checkpoint:shared.checkpoint,sequence:shared.sequence,realMs:sampled.realMs,simMs:sampled.simMs,positions:sampled.actors.map(a=>({id:a.id,position:a.position})),cars:cars.map(c=>({id:c.id,position:c.position})),backlogMs:shared.backlogMs});
+      }else{actors=[];groundAnimals=[];cars=[];socialPoses=new Map();exchanges=[];host.dataset.sharedGround='waiting';}
+      current=actors.find(a=>a.id===selected)??actors[0];
+    }else{
+      delete host.dataset.sharedGround;
       const rawActors = [
         ...actorsAt(world, lastTime),
         ...(world.living
@@ -819,6 +835,8 @@ export function createCity(
       socialPoses = social.poses;
       exchanges = social.exchanges;
       current = actors.find((a) => a.id === selected) ?? actors[0];
+    }
+    {
       if (lastSelected !== selected) {
         following = !motionPreference.matches;
         if (current) {

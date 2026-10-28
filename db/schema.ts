@@ -127,3 +127,13 @@ export const groundBatches = sqliteTable('ground_batches', {
   operationId: text('operation_id').notNull(), sequence: integer('sequence').notNull(),
   data: text('data').notNull(), checksum: text('checksum').notNull(), createdAt: text('created_at').notNull(),
 }, table => [uniqueIndex('idx_ground_session_sequence').on(table.sessionId, table.sequence), uniqueIndex('idx_ground_session_operation').on(table.sessionId, table.operationId)]);
+
+export const groundSharedStates = sqliteTable('ground_shared_states', {
+  id:text('id').primaryKey(),sessionId:text('session_id').notNull(),data:text('data').notNull(),checksum:text('checksum').notNull(),updatedAt:integer('updated_at').notNull(),
+});
+export const groundSharedSources = sqliteTable('ground_shared_sources', {
+  seq:integer('seq').primaryKey({autoIncrement:true}),worldId:text('world_id').notNull(),revision:integer('revision').notNull(),capturedAt:integer('captured_at').notNull(),data:text('data').notNull(),
+},t=>[uniqueIndex('idx_shared_source_revision').on(t.worldId,t.revision)]);
+export const groundSharedBatches = sqliteTable('ground_shared_batches', {
+ id:text('id').primaryKey(),stateId:text('state_id').notNull().references(()=>groundSharedStates.id),operationId:text('operation_id').notNull(),sequence:integer('sequence').notNull(),data:text('data').notNull(),checksum:text('checksum').notNull(),createdAt:integer('created_at').notNull(),
+},t=>[uniqueIndex('idx_shared_batch_sequence').on(t.stateId,t.sequence),uniqueIndex('idx_shared_batch_operation').on(t.stateId,t.operationId)]);

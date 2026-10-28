@@ -13,6 +13,7 @@ import { TagDirector } from "./tag-game.ts";
 import { BICYCLE_RADIUS, BICYCLE_SPEED, BICYCLE_ACCELERATION } from "./bicycle.ts";
 import { bodyWalkable, bodySegmentWalkable, nearestBodyPoint } from "./walk-ground.ts";
 import { PetWalkDirector } from "./pet-walk.ts";
+import {walkStateSchema,type WalkDirectorState} from './director-state.ts';
 /** Bounded A* with corner clearance, followed by exact swept-circle shortcuts. */
 export function safeWalkPath(startPoint: Point, endPoint: Point, radius = WALK_RADIUS): Point[] {
   const began = performance.now();
@@ -60,6 +61,14 @@ export class WalkDirector {
   private walkers = new Map<string, Walker>();
   private lastTime: number | null = null;
   private born = "";
+  exportState():WalkDirectorState {return structuredClone({version:1,born:this.born,lastTime:this.lastTime,walkers:[...this.walkers].sort(([a],[b])=>a<b?-1:a>b?1:0),tag:this.tag.exportState(),pets:this.pets.exportState()}) as WalkDirectorState;}
+  restoreState(value:unknown) {
+    const s=walkStateSchema.parse(value);
+    if(new Set(s.walkers.map(([id])=>id)).size!==s.walkers.length||s.walkers.some(([,w])=>w.next>w.path.length||!bodyWalkable(w.position,w.radius)||!w.path.every((p,i)=>bodyWalkable(p,w.radius)&&(!i||bodySegmentWalkable(w.path[i-1],p,w.radius)))))throw Error('Invalid walker checkpoint');
+    this.walkers=new Map(s.walkers);this.lastTime=s.lastTime;this.born=s.born;this.tag.restoreState(s.tag);this.pets.restoreState(s.pets);
+  }
+  holdAt(seconds:number) {this.lastTime=seconds;for(const w of this.walkers.values()){w.velocity=[0,0];w.speed=0;}}
+  retain(ids:Set<string>) {for(const id of this.walkers.keys())if(!ids.has(id))this.walkers.delete(id);}
   frame(world: World, input: Actor[], seconds: number, cars: TrafficVehicle[] = [], companions: Actor[] = []): Actor[] {
     if (!Number.isFinite(seconds)) seconds = this.lastTime ?? 0;
     if (this.born !== world.born || (this.lastTime !== null && seconds < this.lastTime - 1)) { this.walkers.clear(); this.tag.reset(); this.pets.reset(); this.lastTime = null; this.born = world.born; }

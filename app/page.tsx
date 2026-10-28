@@ -42,6 +42,7 @@ import type { World, EpisodeEvent } from "@/lib/world";
 import type { WeatherState } from "@/lib/clock";
 import {worldTime} from "@/lib/clock";
 import {PauseRequestError, requestPause} from "@/lib/city/pause-request";
+import {validateSharedView,type SharedGroundView} from '@/lib/living/shared-ground-view';
 
 type Snapshot = {
   revision: number;
@@ -49,6 +50,7 @@ type Snapshot = {
   world: World;
   events: EpisodeEvent[];
   weatherState: WeatherState;
+  sharedGround?:SharedGroundView;
 };
 type Panel = "people" | "context" | "places" | "learning" | "sources" | null;
 export default function Page() {
@@ -59,6 +61,7 @@ export default function Page() {
     [panel, setPanel] = useState<Panel>(null),
     [mode, setMode] = useState<"city" | "osm">("city"),
     [hidden, setHidden] = useState(false),
+    [sharedRequested,setSharedRequested]=useState(false),
     [venue, setVenue] = useState<Venue | null>(null),
     [busy, setBusy] = useState(false),
     [clockOffset, setClockOffset] = useState(0),
@@ -78,14 +81,18 @@ export default function Page() {
   const loading = useRef(0);
   const controlling = useRef(false);
   const newest = useRef({revision:-1,serverMs:0});
+  const newestShared=useRef(0);
+  useEffect(()=>{const timer=setTimeout(()=>setSharedRequested(new URL(window.location.href).searchParams.get('ground')==='shared'),0);return()=>clearTimeout(timer);},[]);
   const load = useCallback(async (force = false) => {
     if (loading.current > 0 && !force) return;
     loading.current++;
     try {
       const sentAt = Date.now();
-      const response = await fetch("/api/world?compact=1", { signal: AbortSignal.timeout(10000) });
+      const shared=new URL(window.location.href).searchParams.get('ground')==='shared';
+      const response = await fetch(shared?"/api/world?compact=1&ground=shared":"/api/world?compact=1", { signal: AbortSignal.timeout(10000) });
       if (!response.ok) throw Error("Chưa kết nối được với thành phố.");
       const snapshot = (await response.json()) as Snapshot;
+      if(shared){snapshot.sharedGround=validateSharedView(snapshot.sharedGround);if(snapshot.sharedGround.sequence<newestShared.current)return;newestShared.current=snapshot.sharedGround.sequence;}
       const serverMs=Date.parse(snapshot.serverNow);
       if(snapshot.revision < newest.current.revision || (snapshot.revision === newest.current.revision && serverMs < newest.current.serverMs))return;
       newest.current={revision:snapshot.revision,serverMs};
@@ -112,12 +119,12 @@ export default function Page() {
       try{const old=JSON.parse(sessionStorage.getItem('xom-view')??'null');if(old&&Date.now()-old.at<1800000)session=old.id;else sessionStorage.setItem('xom-view',JSON.stringify({id:session,at:Date.now()}));}catch{/* storage is optional */}
       try{const r=await fetch('/api/visits',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({session})});if(r.ok&&!cancelled)setViews(((await r.json()) as {views:number}).views);}catch{/* counter does not block viewing */}
     }
-    const initial=setTimeout(()=>{void pulse();void visit();},0),timer=setInterval(()=>void pulse(),10000);
+    const initial=setTimeout(()=>{void pulse();void visit();},0),timer=setInterval(()=>void pulse(),new URL(window.location.href).searchParams.get('ground')==='shared'?1000:10000);
     return()=>{cancelled=true;clearTimeout(initial);clearInterval(timer);};
   },[load]);
   useEffect(() => {
     const initial = setTimeout(() => void load(), 0),
-      timer = setInterval(() => { if(!document.hidden) void load(); }, 15000);
+      timer = setInterval(() => { if(!document.hidden) void load(); }, new URL(window.location.href).searchParams.get('ground')==='shared'?1000:15000);
     return () => {
       clearTimeout(initial);
       clearInterval(timer);
@@ -210,6 +217,8 @@ export default function Page() {
           onInspect={() => setPanel("people")}
           target={navigation}
           clockOffsetMs={clockOffset}
+          sharedGroundRequested={sharedRequested}
+          sharedGround={data?.sharedGround}
         />
       ) : (
         <div className="live-loading">

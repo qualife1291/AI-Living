@@ -2,12 +2,15 @@ import { distance, type Actor, type Point } from "../life.ts";
 import { petOwners } from "../living/pets.ts";
 import { nearestWalkable } from "./walk-ground.ts";
 import type { World } from "../world";
+import {petStateSchema} from './director-state.ts';
 type GroundPose = { position: Point; heading: number };
 
 /** Requests ground goals; never replaces an animal's actual position or policy. */
 export class PetWalkDirector {
   private waiting = new Set<string>();
   reset() { this.waiting.clear(); }
+  exportState() { return [...this.waiting].sort(); }
+  restoreState(value:unknown) {const rows=petStateSchema.parse(value);if(new Set(rows).size!==rows.length)throw Error('Invalid pet checkpoint');this.waiting=new Set(rows);}
   frame(world: World, actors: Actor[], pets: Actor[], ground: Map<string, GroundPose>) {
     const goals = new Map<string, Point>(), links = new Map<string, string>(), holds = new Set<string>();
     const owners = petOwners(world), groups = new Map<string, Actor[]>();

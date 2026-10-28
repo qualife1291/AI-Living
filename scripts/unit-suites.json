@@ -185,5 +185,8 @@
   ],
   [
     "scripts/test-ground-timeline.mjs"
+  ],
+  [
+    "scripts/test-shared-ground.mjs"
   ]
 ]
