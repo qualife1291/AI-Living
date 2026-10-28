@@ -4,9 +4,11 @@ import {performance} from 'node:perf_hooks';
 import {learningFingerprint,outcomeFixtures,fixtureContext} from './learning-fixtures.mjs';
 import {applyScenarioOutcome,expectedReward,availableScenarios,advanceNeeds,
  initializeAgent,scenarios,settleLearning,chooseScenario} from '../lib/living/learning.ts';
-import {runLearningRollout,oracleReward,competenceDay,normalizedEntropy,summarize} from '../lib/living/sim-harness.ts';
+import {runLearningRollout,compareLearningRollouts,oracleReward,competenceDay,normalizedEntropy,summarize} from '../lib/living/sim-harness.ts';
 const begin=performance.now();
 const {reference_source,fixture,...golden}=JSON.parse(readFileSync('docs/validation/learning-golden.json'));
+assert.equal(reference_source,'1fd62b7f1ac13cbf7594377ea2c65a509ccd4e56');
+assert.equal(fixture,'boundary-grid-v1');
 assert.deepEqual(learningFingerprint(),golden,'The runtime must match fingerprints captured BEFORE the refactor');
 for(const {agent,scenario} of outcomeFixtures()) {
  const before=JSON.stringify(agent),outcome=applyScenarioOutcome(agent,scenario);
@@ -51,6 +53,17 @@ for(const run of first.runs) {
 }
 const alternate=runLearningRollout({...config,policy:'tabular'});
 assert.deepEqual(alternate.config.seeds,first.config.seeds);
+const identical=compareLearningRollouts(first,first);
+assert.equal(identical.differences.returnPerAgentDay.mean,0);
+assert.deepEqual(identical.differences.returnPerAgentDay.ci95,[0,0]);
+assert.equal(identical.passesProposedOfflineGates,false,'Small fixtures cannot qualify a policy');
+assert.equal(identical.activatesRuntimePolicy,false);
+const mislabeled=structuredClone(first);mislabeled.acceptanceProfile=true;
+assert.equal(compareLearningRollouts(mislabeled,mislabeled).gates.fullProfile,false,'A label cannot turn a small fixture into full evidence');
+const mismatch=structuredClone(first);mismatch.config.shiftDay=1;
+assert.throws(()=>compareLearningRollouts(first,mismatch),/profile/);
+const missing=structuredClone(first);missing.runs.pop();
+assert.throws(()=>compareLearningRollouts(first,missing),/seed/);
 assert.throws(()=>runLearningRollout({...config,seeds:[1,1]}),/configuration/);
 assert.throws(()=>runLearningRollout({...config,agents:0}),/configuration/);
 assert.throws(()=>runLearningRollout({...config,shiftDay:4}),/configuration/);

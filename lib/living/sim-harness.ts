@@ -204,3 +204,36 @@ export function runLearningRollout(options: RolloutOptions, selector: Selector =
     socialDensity:null,diffusionDays:null,
     productionAccess:false,runs,summary};
 }
+
+/** Matched seeds, not overlap tests on two independent confidence intervals. */
+export function compareLearningRollouts(
+  baseline: ReturnType<typeof runLearningRollout>,
+  candidate: ReturnType<typeof runLearningRollout>,
+) {
+  validate(baseline.config); validate(candidate.config);
+  const comparable = (r: typeof baseline) => JSON.stringify({ ...r.config, policy:undefined });
+  if (baseline.kind!=="synthetic-hourly-ordinary-rollout-v1" || baseline.kind!==candidate.kind || comparable(baseline)!==comparable(candidate) ||
+      baseline.sampling!==candidate.sampling || baseline.oracle!==candidate.oracle)
+    throw Error("Rollouts must share profile, seeds, horizon and oracle");
+  for (const report of [baseline,candidate])
+    if (report.runs.length!==report.config.seeds.length || report.runs.some((r,i)=>r.seed!==report.config.seeds[i]))
+      throw Error("Missing or misaligned seed results");
+  const delta = (key: "returnPerAgentDay"|"immediateRegretPerAgentDay"|"needOkRatio"|"actionEntropy"|"repeatRate", multiplier=1) =>
+    summarize(candidate.runs.map((r,i)=>r[key]-multiplier*baseline.runs[i][key]))!;
+  const differences = {returnPerAgentDay:delta("returnPerAgentDay"),
+    immediateRegretPerAgentDay:delta("immediateRegretPerAgentDay"),
+    needOkRatio:delta("needOkRatio"),actionEntropy:delta("actionEntropy"),repeatRate:delta("repeatRate")};
+  const entropyMargin=delta("actionEntropy",.8);
+  const fullProfile=(r:typeof baseline)=>r.config.agents===24&&r.config.days===60&&r.config.shiftDay===30;
+  const gates={enoughSeeds:baseline.config.seeds.length>=20,
+    fullProfile:fullProfile(baseline)&&fullProfile(candidate),
+    returnNonDecrease:differences.returnPerAgentDay.ci95!==null&&differences.returnPerAgentDay.ci95[0]>=0,
+    regretNonIncrease:differences.immediateRegretPerAgentDay.ci95!==null&&differences.immediateRegretPerAgentDay.ci95[1]<=0,
+    needsNonDecrease:differences.needOkRatio.ci95!==null&&differences.needOkRatio.ci95[0]>=0,
+    entropyFloor:entropyMargin.ci95!==null&&entropyMargin.ci95[0]>=0};
+  return {kind:"paired-rollout-comparison-v1",baseline:baseline.config.policy,
+    candidate:candidate.config.policy,differences,entropyMargin,gates,
+    passesProposedOfflineGates:Object.values(gates).every(Boolean),
+    activatesRuntimePolicy:false,
+    limits:"Same-state one-step opportunity cost is not long-horizon counterfactual regret. Needs/competence can have no headroom in this profile."};
+}

@@ -7,7 +7,22 @@ const require=createRequire(realpathSync(resolve('node_modules/wrangler/package.
 const mf=new Miniflare({modules:true,script:'export default {fetch(){return new Response("test")}}',d1Databases:['DB'],compatibilityDate:'2026-05-15',inspectorPort:0});
 const deferred=()=>{let resolve;const promise=new Promise(r=>{resolve=r});return {promise,resolve}};
 try {
- const db=await mf.getD1Database('DB'),t=1_800_000_000_000;
+ const rawDb=await mf.getD1Database('DB'),t=1_800_000_000_000;
+ // Miniflare's host-side synchronous proxy can mix response IDs when multiple
+ // prepared-statement proxy chains overlap. Queue complete host RPC operations,
+ // keeping the pulse callers/pipelines concurrent and all CAS assertions intact.
+ // The compiled HTTP suite separately exercises 12 actual Worker requests.
+ let transport=Promise.resolve();
+ const prepare=(sql,parameters=[])=>({
+  bind:(...args)=>prepare(sql,args),
+  ...Object.fromEntries(['first','run'].map(method=>[method,(...args)=>{
+   const request=transport.then(async()=>JSON.parse(JSON.stringify(
+    await rawDb.prepare(sql).bind(...parameters)[method](...args))));
+   transport=request.catch(()=>{});
+   return request;
+  }])),
+ });
+ const db={prepare};
  await db.prepare('CREATE TABLE worlds(id TEXT PRIMARY KEY,revision INTEGER,data TEXT)').run();
  await db.prepare('CREATE TABLE context_cache(id TEXT PRIMARY KEY,data TEXT,expires_at INTEGER)').run();
  const history=JSON.stringify({paused:false,people:[{id:'an',memories:['Giữ ký ức này']}],living:{petOwners:{cun:'an'},flora:{version:1,plots:{}},learning:{an:{samples:12}}}});
