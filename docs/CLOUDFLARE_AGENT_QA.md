@@ -37,6 +37,15 @@
 - **Chưa kiểm được POST qua phiên người dùng trên version mới**; DB kiểm sau deploy vẫn `revision=0`, `living_turns=0`, `experiences=0`. Để đóng bug, mở URL QA dưới Access, refresh và đối chiếu status `POST /api/living/pulse` với DB revision/turn tăng. Nếu vẫn 403/503, xem Worker Logs `qa_access_gate_denied` hoặc lỗi JWKS fetch, không nới quyền.
 - Hạn chế vận hành: public JWKS endpoint phải truy cập được từ Worker để fallback hoạt động. Nếu fail closed, kiểm kết nối / cấu hình JWKS hoặc thay bằng Cloudflare-supported verifier; không bỏ bước signature verification.
 
+## QA auth diagnostic update — 29/10/2026
+
+- Reported error: `{"error":"Thao tác này cần quyền chủ sở hữu.","code":"QA_AUTH_GATE_DENIED"}`. This is the **Worker auth gate**, not `/api/living/pulse` validation.
+- Previous JWT verifier `7d9254dc` had **no authenticated POST E2E** proving the issue fixed. Logs from version `f43759da` show `ctx.access` absent (expected behind Static Assets router), hostname and configured audience valid; cannot conclude whether signed JWT header missing or JWKS fetch/claims failed without new logs.
+- New QA diagnostic commits `dd160c06` and `2455378e`: `lib/cloudflare-access-jwt.ts` logs safe error categories `signed_assertion_missing`, `jwks_unavailable`, `signature_or_claims_invalid`; supports a **signed** `CF_Authorization` cookie fallback when assertion header missing, always requires RSA signature + issuer + audience + time checks. Never log token, email, cookie or claims values. Never set Sites `XOM_OWNER_PRIVATE_ORIGIN` to the public QA URL.
+- Cloudflare Builds after commit `2455378e`: `success`, latest Worker version `440e6fb2-6569-4800-a99f-b60e93cde28a`, deployment `1af1b30d-16c9-4970-bec1-a9ac8511eeb1` at 100%. JWT unit/security tests passed. Cloudflare Access owner and machine policies remain; temp diagnostic credentials removed.
+- A browser-rendering GET successfully loaded real QA HTML via a temporary service token (not an Access login page), but **no pulse was triggered or confirmed by that test**. QA D1 still `revision=0`, `living_turns=0`, `agent_experiences=0`. Tool-side outbound fetch to `workers.dev` was restricted and an attempted scripted POST automation was blocked; **do not mark remote POST QA PASS**.
+- Next action: refresh `https://ai-living-qa.hoanglonglea1mtl.workers.dev/` as owner and perform one POST pulse. Then query Worker Logs `qa_jwt_diagnostic` and `qa_access_gate_denied` for the **latest version**; use exact reason to fix JWKS transport/claims or route context. On HTTP 200 confirm D1 revision/turns changed; on 403 do not bypass Access.
+
 > Cập nhật 29/10/2026 (Asia/Ho_Chi_Minh). Tài liệu áp dụng cho **môi trường thử nghiệm QA**, không phải ChatGPT Sites production hoặc Cloudflare staging giữ trạng thái. Kiểm tra trạng thái Cloudflare thực tế trước khi thay đổi; các URL không có nghĩa ứng dụng đã được deploy.
 
 ## 1. Môi trường và phân quyền
