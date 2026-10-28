@@ -27,6 +27,16 @@
 - **Chưa có browser-authenticated POST sau bản vá**, không gán nhãn bug PASS cho tới khi `/api/living/pulse` thực sự trả 200 (hoặc 409 khi pause/conflict) và D1 `worlds.revision`, `tick_runs`, `living_turns` tăng theo nhịp. Có regression assertions trong `scripts/test-hardening.mjs` nhưng chưa chạy độc lập trong CI.
 - Nếu vẫn 403, cần đọc Worker Logs theo *new version* và kiểm sự tồn tại của `ctx.access` trong runtime, AUD matching, hostname, không mở quyền bằng Origin. Nếu 503 thì xem `living_pulse_failed` và resource limits khác biệt.
 
+## 29/10/2026 — Sửa lỗi QA mutations vẫn 403 dù đã đăng nhập Access
+
+- **Nguyên nhân được xác minh trong Cloudflare docs:** Vinext Worker có Static Assets; router Worker nội bộ không forward `ctx.access` tới app Worker. Vì vậy, phiên bản `2d8a42ee` dù build/deploy thành công vẫn trả 403 tại auth gate. Log request 17:55 UTC xác nhận 403 trên version `61812b25`. Không phải do `Origin`/body `{}`/D1.
+- **Không** set `XOM_OWNER_PRIVATE_ORIGIN` bằng hostname QA, không bypass POST, không tin header `oai-*` hoặc chỉ `cf-access-jwt-assertion` chưa kiểm chứng.
+- Commit code QA **`7d9254dc00877f9bfb27376776c782681611d064`**: `lib/cloudflare-access-jwt.ts` xác minh JWT bằng public JWKS `https://<team>.cloudflareaccess.com/cdn-cgi/access/certs`, RSA/RS256, key ID, chữ ký, issuer, audience, expiry, nbf/iat; dùng fail-closed. Worker auth gate chấp nhận `ctx.access` hợp lệ khi có, hoặc JWT đã xác minh chữ ký cho QA. Chỉ QA, Sites A không đổi. QA config có `XOM_QA_ACCESS_AUD`, `XOM_QA_ACCESS_TEAM_DOMAIN`, `XOM_QA_HOSTNAME` (các giá trị công khai, không phải secret).
+- Regression `scripts/test-cloudflare-access.mjs` đã **PASS** trên Cloudflare build `d2694d01-785d-49b4-8915-d5d27d256716`. QA Builds command hiện chạy test security trước `npm run build`.
+- Build + deploy QA đã **SUCCESS**, Worker version `f43759da-a896-4ef5-958b-4bd98cb900fb`, deployment `c1c69d3a-81c0-4420-9abb-4d5b0e7f8145`, 100% traffic. D1 QA và Access owner/service-token policies còn nguyên; cron off.
+- **Chưa kiểm được POST qua phiên người dùng trên version mới**; DB kiểm sau deploy vẫn `revision=0`, `living_turns=0`, `experiences=0`. Để đóng bug, mở URL QA dưới Access, refresh và đối chiếu status `POST /api/living/pulse` với DB revision/turn tăng. Nếu vẫn 403/503, xem Worker Logs `qa_access_gate_denied` hoặc lỗi JWKS fetch, không nới quyền.
+- Hạn chế vận hành: public JWKS endpoint phải truy cập được từ Worker để fallback hoạt động. Nếu fail closed, kiểm kết nối / cấu hình JWKS hoặc thay bằng Cloudflare-supported verifier; không bỏ bước signature verification.
+
 > Cập nhật 29/10/2026 (Asia/Ho_Chi_Minh). Tài liệu áp dụng cho **môi trường thử nghiệm QA**, không phải ChatGPT Sites production hoặc Cloudflare staging giữ trạng thái. Kiểm tra trạng thái Cloudflare thực tế trước khi thay đổi; các URL không có nghĩa ứng dụng đã được deploy.
 
 ## 1. Môi trường và phân quyền
