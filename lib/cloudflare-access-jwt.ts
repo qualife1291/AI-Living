@@ -66,7 +66,7 @@ async function loadAccessJwks(domain: string, refresh = false): Promise<AccessJw
   if (!refresh && cached && cached.url === url && cached.until > Date.now()) return cached.keys;
   const response = await fetch(url, {
     headers: { Accept: "application/json" },
-    redirect: "error",
+    redirect: "manual", // Workers supports manual/follow only; reject all non-2xx responses below.
     signal: AbortSignal.timeout(5000),
   });
   if (!response.ok) throw new Error("Cloudflare Access public certificates unavailable");

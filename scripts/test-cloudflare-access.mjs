@@ -33,4 +33,32 @@ assert.equal(await verifyAccessJwtWithKeys("invalid.payload.sig", config, keys, 
 const forged = new Request("https://ai-living-qa.example/api/living/pulse", { method: "POST", headers: { origin: "https://ai-living-qa.example", "cf-access-jwt-assertion": "forged" } });
 assert.equal(await verifiedQaAccessRequest(forged, { ...config, hostname: "some-other.example" }), false);
 assert.equal(await verifiedQaAccessRequest(new Request("https://ai-living-qa.example/api/living/pulse", { method: "POST" }), { ...config, hostname: "ai-living-qa.example" }), false);
+// Regression: the actual QA authorizer must fetch JWKS using a
+// Cloudflare-Workers-supported redirect mode and verify the signed JWT.
+// A redirect is deliberately NOT followed; the verifier must fail closed.
+const originalFetch = globalThis.fetch;
+let jwksFetchCount = 0;
+try {
+  globalThis.fetch = async (url, options) => {
+    assert.equal(url, "https://test.cloudflareaccess.com/cdn-cgi/access/certs");
+    assert.equal(options?.redirect, "manual", "Workers does not support redirect:error");
+    jwksFetchCount++;
+    return new Response(JSON.stringify(keys), {
+      status: 200,
+      headers: { "content-type": "application/json" },
+    });
+  };
+  const authorizedRequest = new Request("https://ai-living-qa.example/api/living/pulse", {
+    method: "POST",
+    headers: { "cf-access-jwt-assertion": good },
+  });
+  assert.equal(await verifiedQaAccessRequest(authorizedRequest, {
+    ...config,
+    hostname: "ai-living-qa.example",
+  }), true, "valid Access assertion should authorize");
+  assert.equal(jwksFetchCount, 1, "first authorized request should fetch JWKS once");
+} finally {
+  globalThis.fetch = originalFetch;
+}
+
 console.log("PASS: signed QA Access JWT verified; forged, expired, wrong audience/issuer/kid/hostname rejected.");
