@@ -3,13 +3,13 @@
   "date": "2026-10-28",
   "phase": "GND2 local shared ground source/replay/renderer",
   "status": "local-complete-prepared-not-deployed",
-  "sourceCommit": "b2abde289b6a5b16e93a8ea1236e39331343cd47",
-  "productCodeSource": "a34cad769c0fc20935d6e84fec19250eb2d20c5e",
+  "sourceCommit": "33cd6aebd155cefb26e4ebb1c9ba36db3a897151",
+  "productCodeSource": "33cd6aebd155cefb26e4ebb1c9ba36db3a897151",
   "contract": "docs/validation/ground-shared-contract-v2.json",
   "contractSha256": "94f8e5595f2d0a069686a13efbca86ec2f5a10b59216ee4e9309bdd273add678",
   "files": {
-    "lib/living/shared-ground.ts": "55ac15c1445090cb1ee2383016f01d33ebc1f164a2916ff73283ea5dd0f4a200",
-    "lib/living/shared-ground-store.ts": "fb3078cd382408a0b500430d98928da3cff0d71bb08330483a6ad211f8daf9d6",
+    "lib/living/shared-ground.ts": "4b4108b6de8d27f282a0e5eef75379f08d24d3508169e989d87c14639378c6f8",
+    "lib/living/shared-ground-store.ts": "2b713e7c9b651ef5ddedd55ea3db9876788ebf7976782087d51653fc0f93fafc",
     "lib/living/shared-ground-view.ts": "86fb5ba946fca0b57044472b6346f0e145b3c7aa296f739759816a4148f3fdab",
     "lib/city/director-state.ts": "e611e6a21a16bfeb7acd5b5148ad559ad146ec7e52edb1514004885c6892c58c",
     "drizzle/0010_ground_shared.sql": "f1f0b159beeca27191b50ea5e39f47e2cb72c3b2f173943628a026a22b8c04bc",
@@ -22,9 +22,9 @@
       "passed": 63,
       "failed": [],
       "workers": 4,
-      "seconds": 162.11
+      "seconds": 66.62
     },
-    "fullUnitCodeSource": "a34cad769c0fc20935d6e84fec19250eb2d20c5e",
+    "fullUnitCodeSource": "33cd6aebd155cefb26e4ebb1c9ba36db3a897151",
     "target": {
       "suite": "shared-ground",
       "captureBoundaryChunkDeterminism": true,
@@ -155,7 +155,13 @@
       "broken": 0
     },
     "finalArchiveBytesAndScopeAnd0010Verified": true,
-    "ownedPreviewServersStopped": true
+    "ownedPreviewServersStopped": true,
+    "partialSchemaRejectedBeforePulseWrites": true,
+    "hiddenIntermediateRevisionGapRejected": true,
+    "clientSourcesAfterBrowser": {
+      "browser_source": "b2abde289b6a5b16e93a8ea1236e39331343cd47",
+      "client_sources_unchanged_after_backend_guards": true
+    }
   },
   "screenshots": [
     {
@@ -168,9 +174,9 @@
     }
   ],
   "release": {
-    "sourceCommit": "b2abde289b6a5b16e93a8ea1236e39331343cd47",
-    "archiveLocalPath": "work/production-b2abde2.tar.gz",
-    "archiveSha256": "1443fdcb3c380c21cdf118091fd8e699564f34ca6d0f7ed4f1ad6ec43764186f",
+    "sourceCommit": "33cd6aebd155cefb26e4ebb1c9ba36db3a897151",
+    "archiveLocalPath": "work/production-33cd6ae.tar.gz",
+    "archiveSha256": "e57ba0090eb5d7d4bb22b1aebe9592bd9da0127322c5b266113e0953fdc4ca2b",
     "entries": 841,
     "allDistBytesVerified": true,
     "allMigrationBytesVerified": true,
@@ -181,7 +187,7 @@
     "deployed": false,
     "migration0010Included": true,
     "sharedServerScopeIncluded": true,
-    "verifiedBeforePreview": true
+    "verifiedCacheFree": true
   },
   "preservation": {
     "userDatabaseMigrated": false,

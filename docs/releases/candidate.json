@@ -1,9 +1,9 @@
 {
   "project_id": "appgprj_6adc7dc364d48191a09202c5b43309e4",
-  "source_commit": "b2abde289b6a5b16e93a8ea1236e39331343cd47",
+  "source_commit": "33cd6aebd155cefb26e4ebb1c9ba36db3a897151",
   "status": "prepared-not-deployed",
-  "archive_sha256": "1443fdcb3c380c21cdf118091fd8e699564f34ca6d0f7ed4f1ad6ec43764186f",
-  "archive_local_path": "work/production-b2abde2.tar.gz",
+  "archive_sha256": "e57ba0090eb5d7d4bb22b1aebe9592bd9da0127322c5b266113e0953fdc4ca2b",
+  "archive_local_path": "work/production-33cd6ae.tar.gz",
   "production_ledger_unchanged": true,
   "blocker": "Native Sites credential/deploy/status/database tools unavailable in this session; user has already authorized release.",
   "validation": {
@@ -29,7 +29,7 @@
     "unchanged_plan_binding": true,
     "full_duration_encounter_reporting": true,
     "physical_arrival_authority": false,
-    "browser_source_note": "Fresh GND2 desktop/mobile two-viewer QA on release build b2abde2 uses synthetic server frames; compiled D1 verifies actual persistence separately. Absolute-time XZ roots, camera independence, F5, pause and no extrapolation passed. Default UI historical G0 QA remains applicable; shared mode suppresses viewer-local dialogue. No production/hardware GPU/soak claim.",
+    "browser_source_note": "Fresh GND2 desktop/mobile two-viewer QA on build b2abde2 uses synthetic frames; client sources are unchanged by later backend schema/revision guards. Release33cd6ae has fresh63suite/check/lint/build/assets and three compiled D1 API gates. Absolute-time XZ roots/camera/F5/pause/no-extrapolation passed; shared preview suppresses viewer-local dialogue. No production/hardware GPU/soak claim.",
     "garden_plots": 5,
     "garden_plants": 30,
     "garden_phases": 5,
@@ -352,10 +352,12 @@
       "boarding_or_activity_fulfillment": false,
       "migration": "0010_ground_shared",
       "production_migrated_or_started": false,
-      "package_preview_cache_rejected": true
+      "package_preview_cache_rejected": true,
+      "schema_preflight_before_world_writes": true,
+      "missing_intermediate_revision_rejected": true
     }
   },
-  "prepared_at_utc": "2026-10-28T14:39:03.125Z",
+  "prepared_at_utc": "2026-10-28T14:55:13.601Z",
   "migrations_to_check": [
     "0006_client_logs",
     "0007_learning_policies",
