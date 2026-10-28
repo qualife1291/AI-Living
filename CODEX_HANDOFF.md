@@ -2,6 +2,8 @@
 
 Chỉ đọc [AGENTS](AGENTS.md) và file này khi bắt đầu. [ROADMAP](ROADMAP.md) là backlog duy nhất; [README](README.md) chỉ mục theo công việc.
 
+**WIP GND2:** triển khai theo [contract v2](docs/validation/ground-shared-contract-v2.json): journal world commit/clock, serialized all-actor+traffic physics, shared frame renderer opt-in local và reuse pulse. Chưa code/kiểm hoàn tất; GND1/prod candidate bên dưới là mốc trước phase này.
+
 | Phần | Context hiện tại |
 |---|---|
 | Source | GND1 local ground foundation hoàn tất; `main`/`work` đồng bộ, xem Git cho HEAD. Implementation/release source`e1c130a`; sau đó chỉ docs/evidence/ledger. Learning/world/clock/pulse/renderer/assets giữ nguyên. |
