@@ -149,3 +149,23 @@ Reward v1 hiện không có payoff phụ thuộc role; cải thiện nếu có c
 Cả hai candidate giảm reward60ngày với paired CI95 dưới0 ở cả hai profile: global Δ−0,001425 ordinary /−0,007397 stress; role Δ−0,001854/−0,007434. Opportunity-cost và entropy gates đạt. Stress needs đạt; ordinary needs có mean tăng nhẹ nhưng CI chưa chứng minh không giảm — không diễn giải thành needs trung bình bị giảm. Role-vs-global CI reward/opportunity-cost chứa0, chưa có bằng chứng lợi ích riêng của nhóm role.kind.
 
 Warm-start có lợi ở ngày1: global Δreward+0,646 ordinary/+0,602stress; role+0,623/+0,584, tất cả paired CI95 trên0. Cùng-decision MSE giảm khoảng60,62%/59,06% ở global,59,98%/58,74% ở role, không đồng nghĩa policy tốt hơn cả60ngày. Giữ default LinUCB cá nhân và **không promote v1**. Warm-only/cutoff là giả thuyết nghiên cứu cho protocol/seed mới, chưa triển khai và không thử lại để ép các seed này thắng. H6 replay/curriculum là bước độc lập tiếp; H3b/H5 còn chờ authority.
+
+## H6 — Replay/curriculum có nguồn, offline (28/10)
+
+[Protocol](validation/learning-h6-protocol-v1.json) đăng ký trước kết quả. `outcome-replay.ts` nhận H3 verified-contextual với fingerprint-v1 và reward/features/scenario signature hiện hành; record không có evidence, thiếu context hoặc binding legacy chỉ đếm bỏ qua, không đoán bổ sung. Dữ liệu sai version/context/reward hoặc ID/sample ledger xung đột làm **hủy artifact**, không lấy bản đầu/cuối làm đúng. Duplicate canonical được đếm một lần; hai ID dùng cùng actor+earned sample bị bác. Cho phép khoảng trống lịch sử, nhưng chỉ fit số record thực có; không biến sample1001 thành1001mẫu replay. Kiểm thời gian theo sample ledger, không reset/xóa archive.
+
+Local archive được lọc actor **trước audit/fit**; artifact chỉ thuộc actor ấy và predictor từ chối actor khác. CLI yêu cầu SHA256 của input local,≤32MiB/100krow, chỉ ghi JSON bằng exclusive-create dưới `.sites-runtime/training` (Gitignored); stdout chỉ aggregate/hash. JSONL lỗi không echo nội dung. SHA là integrity do operator pin, không chứng minh file bên ngoài đã được server xác thực. Không tự fetch/export liveDB, import runtime hay trao đổi ký ức/role. Source private và synthetic-cohort có schema riêng, không đổi nhãn để gộp dữ liệu thật vào global model.
+
+```bash
+# Dùng một JSONL export local đã có; lấy SHA256 của chính file đó trước khi chạy.
+npm run replay:archive -- --in=.sites-runtime/training/experiences-....jsonl --actor=an --expected-sha256=<sha256> --out=.sites-runtime/training/replay-an.json
+npm run train:replay -- --profile=cold-stress-v1 --out=/tmp/h6-models.json
+npm run simulate:replay -- --variant=personal-v1 --profile=cold-stress-v1 --out=/tmp/h6-baseline.json
+npm run simulate:replay -- --variant=replay-coldstart-v1 --profile=cold-stress-v1 --prior=/tmp/h6-models.json --baseline=/tmp/h6-baseline.json --out=/tmp/h6-candidate.json
+```
+
+Numeric curriculum có3stage từ context tại quyết định: needs(energy<0,2/hunger>0,72), foundation(skill<0,2), routine. Giữ riêng8stage hội thoại `self-play-curriculum.json`; không gọi heuristic/DPO/curated scene là observed experience. Chronological/curriculum fit **cùng unique corpus đúng một lượt**, ridgeI/6D/rewardv1. Ridge về lý thuyết không phụ thuộc thứ tự; validation chỉ kiểm prediction agreement≤1e−8 và báo coverage/MSE, không nhận gain từ roundoff. Các bộ đếm/model.samples trong artifact là replayed records, không được chép vào actor trials/skills/matrices/memories. Compiler tách model khỏi input, chỉ cung cấp prediction; schema kiểm SPD/finite/count/source và chống epochs giả.
+
+Thử nghiệm warm-only là giả thuyết mới sau H4: prior k5 chỉ blend khi **tổng samples tự đạt<24**, sau đó dùng chính hàm personal trên state hiện tại, không reset hậu nghiệm hay ép trajectory trùng baseline. Không đụng personal uncertainty/guards. Train8seed6000–6007,12agent×15ngày; validation prediction8seed7000–7007 cùng kích thước; policy holdout20seed8000–8019,24agent×60ngày/shift30. Dùng2profile và cùng role/place fixture H4; không so số tuyệt đối với H1/H2. Tham số cố định trước kết quả, không tự promote/runtime activation. Actor archive artifacts không dùng làm cohort prior cho holdout.
+
+H6 này cung cấp replay numeric/CLI private và curriculum traversal; chưa SFT/DPO training, memory backfill/CAS, role-history inference hoặc cài artifact lên production. Multi-file/cursor/backfill đầy đủ và curation cùng prompt/context/model vẫn là việc riêng trong ROADMAP. Không thêm migration/policy format0007 hoặc thuê GPU/API.

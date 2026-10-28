@@ -6,6 +6,8 @@ import { initializeLiving, turnId, localDate, planLivingTurn } from "../lib/livi
 import { scheduleResidentSocial } from "../lib/living/social-scheduler.ts";
 import {auditExperience} from "../lib/living/experience-audit.ts";
 import {planKey} from "../lib/living/plan-identity.ts";
+import {ReplayCorpus,fitReplay} from "../lib/living/outcome-replay.ts";
+import {createHash} from "node:crypto";
 /** In-process local worker integration; no hosting, account or production DB access. */
 import assert from 'node:assert/strict';
 import {readMigrationFiles} from 'drizzle-orm/migrator';
@@ -197,6 +199,21 @@ try{
  assert.equal(racePersisted.living.learning[learner.id].samples,oldSamples+2);
  assert.equal(JSON.parse((await db.prepare('SELECT data FROM learning_policies WHERE actor_id=?').bind(learner.id).first()).data)['learn-trade'].samples,2);
  console.log('PASS compiled original-plan reward evidence/one sample/one archive survive competing CAS writes');
+ // The real compiled JSONL contract feeds an isolated owner-scoped replay.
+ const replayBefore=await db.prepare("SELECT data FROM worlds WHERE id='home'").first();
+ const replayExport=await mf.dispatchFetch('http://localhost/api/living/learning?format=jsonl&limit=1000');
+ assert.equal(replayExport.status,200);const replayRaw=await replayExport.text();
+ const replayBuilder=new ReplayCorpus({kind:'actor',actorId:learner.id});
+ for(const line of replayRaw.trim().split('\n'))replayBuilder.add(JSON.parse(line));
+ const replayCorpus=replayBuilder.finish(),replayDigest=createHash('sha256');
+ for(const record of replayCorpus.examples)replayDigest.update(record.canonical+'\n');
+ const offlineReplay=fitReplay(replayCorpus,'curriculum',{kind:'local-owner-jsonl',sha256:createHash('sha256').update(replayRaw).digest('hex'),acceptedDigest:replayDigest.digest('hex')},null);
+ assert(offlineReplay.report.accepted>=1&&offlineReplay.report.weak>=1,'Full fingerprints replay while legacy binding stays unverified');
+ assert.equal(offlineReplay.scope.actorId,learner.id);
+ assert.equal(offlineReplay.rows.reduce((n,r)=>n+r.replayedRecords,0),offlineReplay.report.accepted);
+ assert.deepEqual(await db.prepare("SELECT data FROM worlds WHERE id='home'").first(),replayBefore,'Offline fit cannot change snapshots, personal credit or source history');
+ assert.equal(JSON.parse((await db.prepare('SELECT data FROM learning_policies WHERE actor_id=?').bind(learner.id).first()).data)['learn-trade'].samples,2);
+ console.log('PASS compiled JSONL -> actor-filtered audited replay keeps legacy binding, source history and earned personal samples unchanged');
  // Proposal validation must run on the actual server before dated-ID expansion.
  await db.prepare('CREATE TABLE IF NOT EXISTS context_cache(id TEXT PRIMARY KEY,data TEXT,expires_at INTEGER)').run();
  const proposalNow=Date.now(),date=localDate(proposalNow),vn=new Date(proposalNow+7*3600000);
