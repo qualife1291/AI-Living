@@ -24,6 +24,7 @@ try{
  const url='http://localhost/api/diagnostics';
  assert.equal((await mf.dispatchFetch('http://localhost/api/living/pets',{method:'POST',body:'{}'})).status,403,'Pet ownership mutations require the owner');
  assert.equal((await mf.dispatchFetch('http://localhost/api/living/flora',{method:'POST',body:'{}'})).status,403,'Garden care requires the owner');
+ assert.equal((await mf.dispatchFetch('http://localhost/api/living/pulse',{method:'POST',body:'{}'})).status,403,'Pulse requires the owner');
  assert.equal((await mf.dispatchFetch(url)).status,403,'non-owner GET denied');
  assert.equal((await mf.dispatchFetch('http://localhost/api/living/memories?actor=an')).status,403,'Structured memories require owner access');
  const deniedContext=await retrievePromptMemories('http://localhost',['an'],'góc sách',(url,init)=>mf.dispatchFetch(String(url),init));
@@ -46,13 +47,19 @@ try{
  const exported=await mf.dispatchFetch(url);assert.equal(exported.status,200);assert.match(await exported.text(),/integration-event/);
  for(let i=1;i<20;i++)assert.equal((await post(valid)).status,200);
  assert.equal((await post(valid)).status,429);
- await db.prepare('INSERT INTO client_logs(id,created_at,data) VALUES (?,?,?)').bind('expired',Date.now()-8*86400000,'[]').run();
- await mf.dispatchFetch(url);
- assert.equal(await db.prepare("SELECT id FROM client_logs WHERE id='expired'").first(),null);
+ await db.prepare('INSERT INTO client_logs(id,created_at,data) VALUES (?,?,?)').bind('expired',Date.now()-8*86400000,JSON.stringify([{kind:'frame_slow',id:'expired'}])).run();
+ const retained=await mf.dispatchFetch(url);
+ assert(!((await retained.text()).includes('expired')),'GET filters expired diagnostics');
+ assert(await db.prepare("SELECT id FROM client_logs WHERE id='expired'").first(),'GET diagnostics is read-only; existing POST retention owns cleanup');
+ await mf.dispatchFetch(`http://localhost/__fixture/time?now=${fixedNow+61000}`);
+ assert.equal((await post(valid)).status,200);
+ assert.equal(await db.prepare("SELECT id FROM client_logs WHERE id='expired'").first(),null,'An accepted POST still cleans expired client telemetry');
+ await mf.dispatchFetch(`http://localhost/__fixture/time?now=${fixedNow}`);
  // Test real compiled pulse persistence using an isolated synthetic world.
  await db.prepare('CREATE TABLE worlds(id TEXT PRIMARY KEY,revision INTEGER,data TEXT)').run();
  await db.prepare('CREATE TABLE episodes(id TEXT PRIMARY KEY,created_at TEXT,source TEXT,data TEXT)').run();
  await db.prepare('CREATE TABLE living_turns(id TEXT PRIMARY KEY,created_at TEXT,data TEXT)').run();
+ await db.prepare('CREATE TABLE context_cache(id TEXT PRIMARY KEY,data TEXT,expires_at INTEGER)').run();
  const realNow=Date.now(),fixture={...structuredClone(seed),born:'2026-10-25T17:00:00Z',living:initializeLiving(realNow)};
  for(const role of fixture.living.catalog.roles){role.place='Công viên';role.kind='social';role.activity='Giao lưu tại công viên';}
  let selectedSim;
@@ -63,10 +70,19 @@ try{
  // Suppress model/context retrieval for this test; a saved narrative slot is retried.
  await db.prepare('INSERT INTO living_turns(id,created_at,data) VALUES (?,?,?)').bind(turnId(Date.now()),new Date().toISOString(),'{}').run();
  const pulse=()=>mf.dispatchFetch('http://localhost/api/living/pulse',{method:'POST',headers:{'content-type':'application/json'},body:'{}'});
- const persisted=await pulse();assert.equal(persisted.status,200,await persisted.text());
+ const badOrigin=await mf.dispatchFetch('http://localhost/api/living/pulse',{method:'POST',headers:{origin:'https://example.invalid'},body:'{}'});
+ assert.equal(badOrigin.status,403);
+ assert.equal((await db.prepare('SELECT count(*) AS n FROM context_cache').first()).n,0,'Origin rejection precedes admission');
+ const firstWave=await Promise.all(Array.from({length:12},()=>pulse()));
+ const firstBodies=[];for(const response of firstWave){assert.equal(response.status,200);firstBodies.push(await response.json());}
+ assert.equal(firstBodies.filter(b=>!b.coalesced).length,1,'Compiled HTTP route admits one pipeline across simultaneous viewers');
  const snapshot=await db.prepare("SELECT revision,data FROM worlds WHERE id='home'").first();
  assert(JSON.parse(snapshot.data).living.socialSchedule.pending.length>0,'pulse persists independent NPC meetings');
- const again=await pulse();assert.equal(again.status,200,await again.text());
+ const audits=await db.prepare('SELECT count(*) AS n FROM tick_runs').first();
+ const again=await pulse();assert.equal(again.status,200);assert.equal((await again.json()).coalesced,true);
+ const wave=await Promise.all(Array.from({length:12},()=>pulse()));
+ for(const response of wave){assert.equal(response.status,200);assert.equal((await response.json()).coalesced,true);}
+ assert.equal((await db.prepare('SELECT count(*) AS n FROM tick_runs').first()).n,audits.n,'Coalesced viewer pulses append no duplicate diagnostic');
  assert.equal((await db.prepare("SELECT revision FROM worlds WHERE id='home'").first()).revision,snapshot.revision,'retry within same simulation window makes no duplicate state write');
  const paused=JSON.parse(snapshot.data);paused.paused=true;
  await db.prepare("UPDATE worlds SET data=? WHERE id='home'").bind(JSON.stringify(paused)).run();
@@ -269,5 +285,11 @@ try{
  const keptGarden=JSON.parse((await db.prepare("SELECT data FROM worlds WHERE id='home'").first()).data);
  assert.deepEqual(keptGarden.living.flora.plots.retired,extendedGarden.living.flora.plots.retired);assert.equal(keptGarden.living.flora.plots[gardenBody.id].note,'Giữ ghi chú');
  console.log('PASS garden owner/origin/schema/UTF-8 limit, persisted care, no-op/stale/CAS race, pause/corrupt/retired preservation and no character rewards');
- console.log(JSON.stringify({suite:'local-diagnostics-http',ownerReadGuard:true,ownerWriteGuard:true,streamByteLimit:true,schema:true,origin:true,ack:true,jsonlReadback:true,rateLimit:true,retention:true,pulsePersistence:true,pulseRetry:true,pulsePause:true,productionAccess:false}));
+ const healthMissing=await mf.dispatchFetch('http://localhost/api/health');assert.equal(healthMissing.status,503);assert.equal((await healthMissing.json()).database,'schema_or_query_error');
+ for(const migration of readMigrationFiles({migrationsFolder:'drizzle'}).filter(m=>m.sql.some(sql=>sql.includes('CREATE TABLE `site_metrics`'))))for(const sql of migration.sql)await db.prepare(sql).run();
+ const beforeHealth=await db.prepare("SELECT revision,data FROM worlds WHERE id='home'").first();
+ const healthy=await mf.dispatchFetch('http://localhost/api/health');assert.equal(healthy.status,200);const healthBody=await healthy.json();assert.equal(healthBody.ok,true);assert.equal(healthBody.database,'ready');assert(healthBody.lastTick?.id);
+ assert.deepEqual(await db.prepare("SELECT revision,data FROM worlds WHERE id='home'").first(),beforeHealth,'Health schema batch does not mutate a valid world');
+ console.log('PASS health schema batch detects missing tables, reports ready after additive schema and preserves world');
+ console.log(JSON.stringify({suite:'local-diagnostics-http',ownerReadGuard:true,ownerWriteGuard:true,streamByteLimit:true,schema:true,origin:true,ack:true,jsonlReadback:true,rateLimit:true,retention:true,diagnosticsReadOnly:true,pulsePersistence:true,pulseRetry:true,pulseConcurrentViewers:12,pulseNoDuplicateAudit:true,pulsePause:true,healthSchemaBatch:true,productionAccess:false}));
 }finally{await mf.dispose();globalThis.Date=NativeDate;}

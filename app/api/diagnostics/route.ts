@@ -19,7 +19,6 @@ export async function POST(req: Request) {
 }
 export async function GET() {
   const db = database(), cutoff = Date.now()-7*86400000;
-  await db.prepare("DELETE FROM client_logs WHERE created_at < ?").bind(cutoff).run();
   const result = await db.prepare("SELECT data FROM client_logs WHERE created_at >= ? ORDER BY created_at DESC LIMIT 500").bind(cutoff).all<{ data: string }>();
   const ticks = await db.prepare("SELECT id,started_at,status,error FROM tick_runs WHERE error IS NOT NULL AND started_at >= ? ORDER BY started_at DESC LIMIT 500").bind(new Date(cutoff).toISOString()).all<{ id: string; started_at: string; status: string; error: string }>();
   const rows = [...result.results.flatMap(r => JSON.parse(r.data)), ...ticks.results.map(t => ({ kind: "server_tick", id: t.id, at: t.started_at, status: t.status, detail: t.error }))];

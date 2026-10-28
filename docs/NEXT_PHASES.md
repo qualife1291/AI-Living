@@ -1,4 +1,14 @@
-# Các phần chưa hoàn tất sau review Gemini
+# Các phần chưa hoàn tất sau review Gemini / Claude
+
+Đối chiếu Claude: [CLAUDE_REVIEW_2026-10-28](CLAUDE_REVIEW_2026-10-28.md). H0 pulse admission/read-only diagnostics/health đang triển khai; chưa thay scheduler production.
+
+| Phase bổ sung | Điều kiện nghiệm thu |
+|---|---|
+| H1 — đo rollout | ≥20seed cùng runtime/input, oracle chỉ chọn action hợp lệ; regret/entropy/repeat/needs stability và variance. Không coi holdout8seed là rollout dài hạn. |
+| G0 — tải và resolution | Đo baseline network/first frame; tiến độ tải thật, resolution từng bước/lifecycle. Compression derivative giữ canonical license/hash. |
+| UX1/UX2 | Pause phân biệt403/409/5xx/network; Trò chuyện focus input, metadata đúng; mobile target/keyboard/reduced-motion có QA desktop/mobile. |
+| H2 — prior/residual/nonstationary | Version mới không lẫn reward cũ/residual hoặc giả trial; thử cùng H1 và chỉ bật khi đạt ngưỡng định trước. |
+| H3–H6 / G1–G4 | Reward có authority, hierarchy/P2P có provenance, replay/DPO synthetic gắn nguồn; trời/đêm/hậu kỳ/IK/bản sắc phố theo budget và ground. Phụ thuộc và giới hạn cụ thể ở bảng review Claude. |
 
 Danh sách này là backlog thực, không phải tuyên bố các phase đã hoàn thành. Source có LinUCB, skill gates và tám nhóm điểm thực hành, normalized policy, structured memory/top-K, dialogue hashes/xưng hô, 49 context cards/33 nơi, RAG theo chủ đề cho daemon, 60 cửa nhà và audio opt-in. Candidate và production được ghi riêng trong releases; không suy từ push GitHub.
 

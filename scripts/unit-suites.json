@@ -149,5 +149,8 @@
   ],
   [
     "scripts/test-flora.mjs"
+  ],
+  [
+    "scripts/test-pulse-gate.mjs"
   ]
 ]

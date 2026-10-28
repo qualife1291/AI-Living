@@ -30,17 +30,13 @@ async function health() {
   let lastTick: TickRunRow | null = null;
   let databaseReady = true;
   try {
-    await database().prepare("SELECT id FROM context_cache LIMIT 1").all();
-    await database().prepare("SELECT id FROM living_turns LIMIT 1").all();
-    await database().prepare("SELECT id FROM agent_experiences LIMIT 1").all();
-    await database().prepare("SELECT id FROM site_metrics LIMIT 1").all();
-    await database().prepare("SELECT id FROM visitor_exchanges LIMIT 1").all();
-    await database().prepare("SELECT id FROM client_logs LIMIT 1").all();
-    lastTick = await database()
-      .prepare(
-        "SELECT id, started_at, finished_at, status, model, event_id, neurons_est FROM tick_runs ORDER BY started_at DESC LIMIT 1",
-      )
-      .first<TickRunRow>();
+    const db = database();
+    const checks = await db.batch([
+      ...['context_cache','living_turns','agent_experiences','site_metrics','visitor_exchanges','client_logs']
+        .map(table => db.prepare(`SELECT id FROM ${table} LIMIT 1`)),
+      db.prepare("SELECT id, started_at, finished_at, status, model, event_id, neurons_est FROM tick_runs ORDER BY started_at DESC LIMIT 1"),
+    ]);
+    lastTick = (checks.at(-1)?.results[0] as TickRunRow | undefined) ?? null;
   } catch {
     // Table tick_runs may not be migrated yet on older local databases
     databaseReady = false;
