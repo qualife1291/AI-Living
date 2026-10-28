@@ -7,8 +7,7 @@ root=Path(__file__).resolve().parent.parent
 base=os.environ.get('QA_BASE','http://127.0.0.1:5332');assert urlparse(base).hostname in ['127.0.0.1','localhost']
 out=root/'docs/screenshots/gnd2';out.mkdir(parents=True,exist_ok=True)
 fixture=json.loads(subprocess.check_output(['node','scripts/shared-preview-fixture.mjs'],cwd=root,text=True))
-from datetime import datetime
-fixed=int(datetime.fromisoformat(fixture['serverNow'].replace('Z','+00:00')).timestamp()*1000)
+fixed=int(fixture['sharedGround']['cursorRealMs'])
 report=[]
 with sync_playwright() as p:
  browser=p.chromium.launch(executable_path='/usr/bin/chromium',headless=True,args=['--no-sandbox','--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader'])

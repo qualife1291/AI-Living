@@ -12,7 +12,7 @@ if not manifest.get('project_id') or not (root/'dist/server/index.js').is_file()
 if (root/'dist/.openai/hosting.json').read_bytes() != (root/'.openai/hosting.json').read_bytes():
     raise SystemExit('Rebuild after manifest change')
 for path in (root/'dist').rglob('*'):
-    if path.is_symlink() or path.name.startswith('.env') or path.name.startswith('.dev.vars') or path.suffix in ('.sqlite','.sqlite3','.pem'):
+    if path.is_symlink() or any(part in ('.wrangler','.sites-runtime','node_modules') for part in path.relative_to(root/'dist').parts) or path.name.startswith('.env') or path.name.startswith('.dev.vars') or path.suffix in ('.sqlite','.sqlite3','.pem'):
         raise SystemExit('Disallowed deployment artifact')
 out=root/'work/production.tar.gz';out.parent.mkdir(exist_ok=True)
 with tarfile.open(out,'w:gz') as archive:

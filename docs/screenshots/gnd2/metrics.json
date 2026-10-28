@@ -1,0 +1,28 @@
+{
+  "production": false,
+  "browser": "Chromium SwiftShader",
+  "source": "synthetic shared frames; D1 separate",
+  "cases": [
+    {
+      "viewport": "desktop",
+      "checkpoint": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "sampledRealMs": 1793197199511,
+      "actors": 30,
+      "cars": 12
+    },
+    {
+      "viewport": "mobile",
+      "checkpoint": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "sampledRealMs": 1793197199511,
+      "actors": 30,
+      "cars": 12
+    }
+  ],
+  "lateOpenSameTimeSameRoots": true,
+  "cameraIndependent": true,
+  "reloadNoRespawn": true,
+  "pauseStable": true,
+  "noExtrapolation": true,
+  "noHorizontalOverflow": true,
+  "errors": []
+}
