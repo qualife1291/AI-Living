@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "phase": "H6b dataset curation, offline only",
+  "input": "SHA-pinned local JSONL, actor filter before record validation; no network or database reads",
+  "sourceKinds": ["synthetic-editorial", "simulation-capture"],
+  "captureMeaning": "A declared exact request/output capture, not an authenticated observed event or proof of physical completion. Existing episodes/reward exports lack this contract and cannot be upgraded by inference.",
+  "request": "Versioned canonical system/task/context renderer, model artifact or explicit editorial identity, sampling, source version and actor-owned memory provenance; each candidate and review pins the same request SHA",
+  "admission": "Strict schemas; existing proposalSchema and reviewNarrative; exactly two participants; no newRole; chosen needs explicit human/agent semantic review of relevance, knowledge, causality and Vietnamese. Heuristic scores cannot approve records.",
+  "dpo": "Explicit reviewed chosen/rejected references and completion hashes, distinct outputs, exactly the same rendered prompt/context/model/sampling/source snapshot; rejected need not pass validators but its actual validator result is retained",
+  "splits": "Deterministic 80/10/10 SHA partitions of connected source/scene/prompt/context groups, never separate a pair; no quality evaluation or claimed statistical independence",
+  "exports": "Versioned private actor-scoped artifact with source/validator/dataset hashes, approved few-shot and DPO arrays per split; offline few-shot selector uses train only, compatible actor/model/prompt/participants/location and excludes the target scene/source",
+  "limits": {"inputBytes": 8388608, "records": 2000, "recordBytes": 65536, "requestBytes": 32768, "completionBytes": 8192, "outputBytes": 33554432},
+  "writes": "Default preview writes nothing; explicit export atomically creates a mode600 file exclusively under .sites-runtime/training, rejects symlink parents, never overwrites input/output",
+  "preservation": "No runtime importer, training, promotion, paid API/GPU, world/memory/history/policy/schema/scheduler or renderer changes; H10 holdout remains unopened",
+  "fixtures": "New explicitly reviewed synthetic fixtures only. Legacy 6 SFT/6 partial DPO examples remain editorial references, not retroactively matched model captures."
+}
