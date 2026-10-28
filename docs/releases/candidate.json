@@ -1,13 +1,13 @@
 {
   "project_id": "appgprj_6adc7dc364d48191a09202c5b43309e4",
-  "source_commit": "6473e988b99f5209c0c9782ac1563c5c89631f59",
+  "source_commit": "50c79afa0eea7c4db11c821ef8b90d098f310ab9",
   "status": "prepared-not-deployed",
-  "archive_sha256": "19f38a6303ce0d2981d41d70d1de5c4852597dfa8b54310f301b933e11c6e269",
-  "archive_local_path": "work/production-6473e98.tar.gz",
+  "archive_sha256": "b4677d9e6f456a40f68a1bf63c42fdaabe6097150275a2ecd3ca3222290cbb6d",
+  "archive_local_path": "work/production-50c79af.tar.gz",
   "production_ledger_unchanged": true,
   "blocker": "Native Sites credential/deploy/status/database tools unavailable in this session; user has already authorized release.",
   "validation": {
-    "unit_suites_passed": 57,
+    "unit_suites_passed": 58,
     "local_api": true,
     "typecheck_lint_build_assets": true,
     "browser_desktop_mobile": true,
@@ -29,7 +29,7 @@
     "unchanged_plan_binding": true,
     "full_duration_encounter_reporting": true,
     "physical_arrival_authority": false,
-    "browser_source_note": "Garden/social/home/cycle/pet desktop/mobile evidence from c77c21c UI. H10 adds only offline bounded search; no runtime/renderer/persistence changes or production activation. Fresh compiled local API JSONL -> actor replay preserves snapshots/history/earned samples. No new browser, hardware GPU QA or production readback.",
+    "browser_source_note": "Fresh G0 desktop/mobile UI QA on e5f5583; release50c79af changes only docs/evidence/harness. Pause HTTP/ACK/network, chat focus/draft, keyboard/reduced-motion,320px, dynamic DPR/presets/resize, poll canvas continuity, hidden/resume, OSM remount, WebGL retry and transport/core fallbacks passed. Prior six-turn/garden/social/home/cycle/pet evidence retains its c77c21c UI source. Fresh compiled local API/CAS/JSONL replay passes; no new hardware GPU or production readback.",
     "garden_plots": 5,
     "garden_plants": 30,
     "garden_phases": 5,
@@ -81,7 +81,7 @@
       "experimental_code_in_worker": false
     },
     "packaged_source_verified": true,
-    "archive_entries": 796,
+    "archive_entries": 823,
     "learning_h3": {
       "evidence": "docs/validation/learning-h3-2026-10-28.json",
       "reward_version": "scenario-outcome-v1",
@@ -176,9 +176,66 @@
       "offline_code_excluded_from_worker": true,
       "runtime_policy_changed": false,
       "new_migrations": false
+    },
+    "g0_ux": {
+      "evidence": "docs/validation/g0-ux-2026-10-28.json",
+      "browser_metrics": "docs/screenshots/g0/metrics.json",
+      "lossless_gzip_derivatives": 26,
+      "canonical_assets_catalogs_and_licenses_unchanged": true,
+      "source_bytes": 3700500,
+      "gzip_bytes": 899690,
+      "model_resource_encoded_bytes": {
+        "before": 4325825,
+        "after": 1022010
+      },
+      "first_ready_cold_page_samples_per_viewport_build": 3,
+      "network_profile": {
+        "latencyMs": 30,
+        "downloadBytesPerSecond": 2000000,
+        "uploadBytesPerSecond": 1000000,
+        "cacheDisabled": true
+      },
+      "median_first_ready_ms": [
+        {
+          "version": "before",
+          "viewport": "desktop",
+          "medianFirstReadyMs": 4409.300000000745
+        },
+        {
+          "version": "after",
+          "viewport": "desktop",
+          "medianFirstReadyMs": 2765.7000000011176
+        },
+        {
+          "version": "before",
+          "viewport": "mobile",
+          "medianFirstReadyMs": 4207.799999998882
+        },
+        {
+          "version": "after",
+          "viewport": "mobile",
+          "medianFirstReadyMs": 2629.7999999988824
+        }
+      ],
+      "city_render_pixel_budget": {
+        "eco": 1000000,
+        "balanced": 2000000,
+        "sharp": 6000000
+      },
+      "checksums_before_and_after_decode": true,
+      "canonical_fallback_and_dispose_guard": true,
+      "pause_status_ack_and_no_write_retry": true,
+      "chat_focus_draft_and_no_steal": true,
+      "keyboard_and_reduced_motion": true,
+      "dynamic_DPR_and_poll_continuity": true,
+      "OSM_remount_and_context_loss_retry": true,
+      "production_latency_or_hardware_FPS_claim": false,
+      "runtime_learning_policy_changed": false,
+      "persistence_schema_changed": false,
+      "exact_archive_source_and_all_derivative_bytes_verified": true
     }
   },
-  "prepared_at_utc": "2026-10-28T08:25:35.641247Z",
+  "prepared_at_utc": "2026-10-28T09:01:47.140733Z",
   "migrations_to_check": [
     "0006_client_logs",
     "0007_learning_policies"
