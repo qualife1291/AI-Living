@@ -33,7 +33,8 @@
     "test:phase-b": "node scripts/test-phase-b.mjs",
     "test:api:local": "node scripts/test-local-diagnostics.mjs",
     "assets:import:resources": "python3 scripts/import-resource-packs.py",
-    "simulate:learning": "node scripts/sim-learning.mjs"
+    "simulate:learning": "node scripts/sim-learning.mjs",
+    "train:residual-prior": "node scripts/train-residual-prior.mjs"
   },
   "dependencies": {
     "@base-ui/react": "^1.7.0",

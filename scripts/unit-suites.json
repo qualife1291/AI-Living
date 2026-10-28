@@ -155,5 +155,8 @@
   ],
   [
     "scripts/test-learning-policy.mjs"
+  ],
+  [
+    "scripts/test-residual-policy.mjs"
   ]
 ]

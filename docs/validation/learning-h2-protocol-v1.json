@@ -54,7 +54,20 @@
     "progressCoefficient": 0.3,
     "progressWindow": 20,
     "warmK": 5,
-    "voluntaryShareCap": 0.35
+    "voluntaryShareCap": 0.35,
+    "initialEnergy": "12+U*40",
+    "initialHunger": "55+U*40",
+    "initialHealth": "50+U*40",
+    "daytimeEnergyLoad": "3+U*2",
+    "daytimeHungerLoad": "2+U*2",
+    "postShiftLoadMultiplier": 1.75,
+    "shiftAtHour": 6,
+    "shiftEnergy": -35,
+    "shiftHunger": 30,
+    "shiftHealth": -18,
+    "shiftHealthFloor": 45,
+    "priorMinimumSupport": 5,
+    "voluntaryCapRounding": "max(1,ceil((voluntaryTotal+1)*0.35)); forced actions exempt"
   },
   "gates": {
     "return": "paired CI95 lower bound >= 0",
