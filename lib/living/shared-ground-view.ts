@@ -29,10 +29,14 @@ export function decodeSharedFrame(view:SharedGroundView,frame:SharedFrame){
 }
 /** Same absolute target time yields the same poses regardless of viewer arrival or selection. */
 export function sampleSharedGround(view:SharedGroundView,realMs:number){
+ if(!Number.isFinite(realMs)){const f=view.frames.at(-1)!;return {...decodeSharedFrame(view,f),realMs:f.realMs,simMs:f.simMs,sourceSeq:f.sourceSeq};}
  const frames=view.frames;let index=0;while(index+1<frames.length&&frames[index+1].realMs<=realMs)index++;
  const a=frames[index],b=frames[index+1];const first=decodeSharedFrame(view,a);
  if(!b||realMs<=a.realMs)return {...first,realMs:a.realMs,simMs:a.simMs,sourceSeq:a.sourceSeq};
  const t=Math.max(0,Math.min(1,(realMs-a.realMs)/(b.realMs-a.realMs))),second=decodeSharedFrame(view,b),other=new Map(second.actors.map(p=>[p.id,p]));
+ // Birth/removal or a different body envelope is a discontinuity, not a swept
+ // interval. Hold the entire old frame until the next committed frame exists.
+ if(first.actors.length!==second.actors.length||first.actors.some(p=>!other.has(p.id)||(p.bicycle?.radius??4.8)!==(other.get(p.id)!.bicycle?.radius??4.8)))return {...first,realMs:a.realMs,simMs:a.simMs,sourceSeq:a.sourceSeq};
  const blend=(p:readonly number[],q:readonly number[]):[number,number]=>[p[0]+(q[0]-p[0])*t,p[1]+(q[1]-p[1])*t];
  const actors=first.actors.map(p=>{const q=other.get(p.id);if(!q)return p;return {...p,position:blend(p.position,q.position),walking:q.walking,bicycle:p.bicycle&&q.bicycle?{...p.bicycle,yaw:p.bicycle.yaw+Math.atan2(Math.sin(q.bicycle.yaw-p.bicycle.yaw),Math.cos(q.bicycle.yaw-p.bicycle.yaw))*t,distance:p.bicycle.distance+(q.bicycle.distance-p.bicycle.distance)*t}:p.bicycle};});
  const cars=first.cars.map((p,i)=>{const q=second.cars[i];return {...p,position:blend(p.position,q.position),yaw:p.yaw+Math.atan2(Math.sin(q.yaw-p.yaw),Math.cos(q.yaw-p.yaw))*t,speed:p.speed+(q.speed-p.speed)*t};});

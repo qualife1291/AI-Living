@@ -28,6 +28,8 @@ const viewOf=s=>validateSharedView({version:2,scope:s.scope,worldBorn:s.worldBor
 const view=viewOf(complete.state),sampleAt=view.frames[4].realMs+1;
 assert.deepEqual(sampleSharedGround(view,sampleAt),sampleSharedGround(structuredClone(view),sampleAt),'late viewer has identical absolute-time roots');
 assert.deepEqual(sampleSharedGround(view,view.cursorRealMs+9999).actors,sampleSharedGround(view,view.cursorRealMs).actors,'no extrapolation');
+const discontinuity=structuredClone(view);discontinuity.frames=discontinuity.frames.slice(-2);discontinuity.frames[1].poses.pop();
+assert.deepEqual(sampleSharedGround(discontinuity,(discontinuity.frames[0].realMs+discontinuity.frames[1].realMs)/2).actors,sampleSharedGround(discontinuity,discontinuity.frames[0].realMs).actors,'roster changes hold a whole safe frame');
 const all=world();const template=all.living.residents[0];all.living.residents=Array.from({length:240},(_,i)=>({...structuredClone(template),id:`neighbor-full-${i}`,name:`Người ${i}`}));
 const fullSource=source(1,base,all),full=await bootstrapShared(fullSource,randomUUID());
 assert.equal(full.frames[0].poses.length,246);assert.equal(full.traffic.positions.length,12);
