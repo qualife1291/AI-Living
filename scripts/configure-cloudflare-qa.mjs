@@ -51,6 +51,7 @@ cfg.vars = {
   ...cfg.vars,
   XOM_QA_ACCESS_AUD: "b8469783daed50bde5fa858047ce0c78643c8aa97b3edbc9d4dc8e7941a732f9",
   XOM_QA_HOSTNAME: "ai-living-qa.hoanglonglea1mtl.workers.dev",
+  XOM_QA_ACCESS_TEAM_DOMAIN: "super-snow-e21e.cloudflareaccess.com",
 };
 if (cfg.vars.XOM_OWNER_PRIVATE_ORIGIN || cfg.vars.XOM_ADMIN_USER_ID || cfg.vars.XOM_LOCAL_ADMIN === "true")
   throw Error("Unsafe Sites authorization variables must not be used in QA");
