@@ -1,0 +1,1220 @@
+{
+  "phase": "H6 audited numeric replay/curriculum foundation",
+  "date": "2026-10-28",
+  "timezone": "Asia/Ho_Chi_Minh",
+  "implementationSource": "c6c31235f072bc7ce5efa6e58247786cc2517d3d",
+  "compiledIntegrationTestSource": "786ad0d71119ade46164cf0372997082cd76e7d9",
+  "protocol": "learning-h6-protocol-v1.json",
+  "trainingOutcomes": 69120,
+  "predictionValidationOutcomes": 69120,
+  "policyHoldoutPlans": 2764800,
+  "profiles": [
+    {
+      "profile": "ordinary-v1",
+      "artifact": {
+        "path": "docs/validation/h6-v1/ordinary-v1/replay.json",
+        "sha256": "3110f0a09ffb45ed999ee959dce2ff9f7ccfaf5307c50b0435a2426840177d09",
+        "sourceSha256": "5c4672ae999be839275c7517dec19f877177876f88a8804c4f1e75ed64086bf5",
+        "acceptedDigest": "08c2a2c40f50d68665fc5b975140f4d33065734c829ec39f984036fabdda6b39",
+        "report": {
+          "input": 34560,
+          "foreign": 0,
+          "legacy": 0,
+          "weak": 0,
+          "duplicates": 0,
+          "invalid": 0,
+          "conflicts": 0,
+          "accepted": 34560,
+          "actors": 96,
+          "stages": [
+            28,
+            4082,
+            30450
+          ]
+        },
+        "chronologicalAndCurriculumSameUniqueCorpus": true,
+        "epochsEach": 1,
+        "arms": 38
+      },
+      "validation": {
+        "seeds": [
+          688241821,
+          671464202,
+          654686583,
+          637908964,
+          621131345,
+          604353726,
+          587576107,
+          570798488
+        ],
+        "n": 34560,
+        "runs": [
+          {
+            "seed": 688241821,
+            "n": 4320,
+            "covered": 4320,
+            "chronologicalMSE": 0.0017428216539222162,
+            "curriculumMSE": 0.0017428216539222136,
+            "maxPredictionDifference": 3.216871213851391e-13
+          },
+          {
+            "seed": 671464202,
+            "n": 4320,
+            "covered": 4320,
+            "chronologicalMSE": 0.0017517257978991972,
+            "curriculumMSE": 0.001751725797899223,
+            "maxPredictionDifference": 3.151368055398507e-13
+          },
+          {
+            "seed": 654686583,
+            "n": 4320,
+            "covered": 4320,
+            "chronologicalMSE": 0.0015839098433866137,
+            "curriculumMSE": 0.0015839098433866458,
+            "maxPredictionDifference": 3.1741276274033225e-13
+          },
+          {
+            "seed": 637908964,
+            "n": 4320,
+            "covered": 4320,
+            "chronologicalMSE": 0.0018161124296168017,
+            "curriculumMSE": 0.0018161124296167859,
+            "maxPredictionDifference": 3.0159208463942377e-13
+          },
+          {
+            "seed": 621131345,
+            "n": 4320,
+            "covered": 4320,
+            "chronologicalMSE": 0.0016581370092155173,
+            "curriculumMSE": 0.0016581370092155474,
+            "maxPredictionDifference": 3.197442310920451e-13
+          },
+          {
+            "seed": 604353726,
+            "n": 4320,
+            "covered": 4320,
+            "chronologicalMSE": 0.001656131362181349,
+            "curriculumMSE": 0.0016561313621813833,
+            "maxPredictionDifference": 3.1846747461372615e-13
+          },
+          {
+            "seed": 587576107,
+            "n": 4320,
+            "covered": 4320,
+            "chronologicalMSE": 0.0017660154877532654,
+            "curriculumMSE": 0.0017660154877532721,
+            "maxPredictionDifference": 3.164135620181696e-13
+          },
+          {
+            "seed": 570798488,
+            "n": 4320,
+            "covered": 4320,
+            "chronologicalMSE": 0.0016491013670070485,
+            "curriculumMSE": 0.0016491013670070884,
+            "maxPredictionDifference": 3.1807889655510735e-13
+          }
+        ],
+        "maxPredictionDifference": 3.216871213851391e-13,
+        "tolerance": 1e-08,
+        "passes": true
+      },
+      "policies": [
+        {
+          "variant": "personal-v1",
+          "path": "docs/validation/h6-v1/ordinary-v1/holdout-personal-v1.json",
+          "sha256": "6617d8a6bc86e264deafbd9790a67005c4f3122cf40ba57a3526508b93493015",
+          "summary": {
+            "returnPerAgentDay": {
+              "mean": 1.2015306374912318,
+              "ci95": [
+                1.1974838766670826,
+                1.205577398315381
+              ],
+              "n": 20,
+              "min": 1.1813767817738559,
+              "max": 1.2158911949210127
+            },
+            "immediateRegretPerAgentDay": {
+              "mean": 3.4789119875820234,
+              "ci95": [
+                3.4392177623868716,
+                3.518606212777175
+              ],
+              "n": 20,
+              "min": 3.2750246319148575,
+              "max": 3.6015095841170606
+            },
+            "needOkRatio": {
+              "mean": 0.9999421296296298,
+              "ci95": [
+                0.9999018617893732,
+                0.9999823974698864
+              ],
+              "n": 20,
+              "min": 0.9996527777777777,
+              "max": 1
+            },
+            "timeToCompetenceDays": {
+              "mean": 3,
+              "ci95": [
+                3,
+                3
+              ],
+              "n": 20,
+              "min": 3,
+              "max": 3
+            },
+            "competentFraction": {
+              "mean": 1,
+              "ci95": [
+                1,
+                1
+              ],
+              "n": 20,
+              "min": 1,
+              "max": 1
+            },
+            "daysToRecover": {
+              "mean": 3,
+              "ci95": [
+                3,
+                3
+              ],
+              "n": 20,
+              "min": 3,
+              "max": 3
+            },
+            "recoveredFraction": {
+              "mean": 1,
+              "ci95": [
+                1,
+                1
+              ],
+              "n": 20,
+              "min": 1,
+              "max": 1
+            },
+            "actionEntropy": {
+              "mean": 0.5907392080788825,
+              "ci95": [
+                0.5897808592902378,
+                0.5916975568675271
+              ],
+              "n": 20,
+              "min": 0.5872055121340358,
+              "max": 0.5958188076437936
+            },
+            "voluntaryActionEntropy": {
+              "mean": 0.6291428445155198,
+              "ci95": [
+                0.6277194753077833,
+                0.6305662137232564
+              ],
+              "n": 20,
+              "min": 0.6239333182638515,
+              "max": 0.636700373537501
+            },
+            "repeatRate": {
+              "mean": 0.2912931433866111,
+              "ci95": [
+                0.29125031285169134,
+                0.2913359739215309
+              ],
+              "n": 20,
+              "min": 0.29117442668519805,
+              "max": 0.2914639796154737
+            },
+            "meanMaxActionShare": {
+              "mean": 0.33343315972221543,
+              "ci95": [
+                0.333398432357635,
+                0.33346788708679587
+              ],
+              "n": 20,
+              "min": 0.3333333333333265,
+              "max": 0.33353587962962283
+            },
+            "worstAgentDayActionShare": {
+              "mean": 0.36458333333333337,
+              "ci95": [
+                0.3559200638854048,
+                0.3732466027812619
+              ],
+              "n": 20,
+              "min": 0.3333333333333333,
+              "max": 0.375
+            },
+            "forcedFraction": {
+              "mean": 0.33340277777777777,
+              "ci95": [
+                0.3333810750857685,
+                0.33342448046978707
+              ],
+              "n": 20,
+              "min": 0.3333333333333333,
+              "max": 0.33350694444444445
+            }
+          },
+          "secondary": {
+            "firstDayReturn": {
+              "mean": 2.5337580585722512,
+              "ci95": [
+                2.5166542159633476,
+                2.550861901181155
+              ],
+              "n": 20,
+              "min": 2.4454761488851666,
+              "max": 2.600585323314634
+            },
+            "personalMSE": {
+              "mean": 0.002932583606825339,
+              "ci95": [
+                0.002912113296451783,
+                0.002953053917198895
+              ],
+              "n": 20,
+              "min": 0.0028485336463972975,
+              "max": 0.003007489250746313
+            },
+            "blendedMSE": {
+              "mean": 0.002932583606825339,
+              "ci95": [
+                0.002912113296451783,
+                0.002953053917198895
+              ],
+              "n": 20,
+              "min": 0.0028485336463972975,
+              "max": 0.003007489250746313
+            }
+          },
+          "sameDecisionMSEDelta": {
+            "mean": 0,
+            "ci95": [
+              0,
+              0
+            ],
+            "n": 20,
+            "min": 0,
+            "max": 0
+          },
+          "latePriorPredictions": 0
+        },
+        {
+          "variant": "replay-coldstart-v1",
+          "path": "docs/validation/h6-v1/ordinary-v1/holdout-replay-coldstart-v1.json",
+          "sha256": "b6da12658db1803bc269045771893c38213fe41af1e289e4146258a811453704",
+          "summary": {
+            "returnPerAgentDay": {
+              "mean": 1.2013216066873396,
+              "ci95": [
+                1.1973075522328578,
+                1.2053356611418213
+              ],
+              "n": 20,
+              "min": 1.1828797163814837,
+              "max": 1.2159725711881628
+            },
+            "immediateRegretPerAgentDay": {
+              "mean": 3.4765098735284434,
+              "ci95": [
+                3.435668841709567,
+                3.5173509053473198
+              ],
+              "n": 20,
+              "min": 3.2672694119045995,
+              "max": 3.6047458320862984
+            },
+            "needOkRatio": {
+              "mean": 0.9999146412037037,
+              "ci95": [
+                0.9998670209811337,
+                0.9999622614262736
+              ],
+              "n": 20,
+              "min": 0.9996527777777777,
+              "max": 1
+            },
+            "timeToCompetenceDays": {
+              "mean": 3,
+              "ci95": [
+                3,
+                3
+              ],
+              "n": 20,
+              "min": 3,
+              "max": 3
+            },
+            "competentFraction": {
+              "mean": 1,
+              "ci95": [
+                1,
+                1
+              ],
+              "n": 20,
+              "min": 1,
+              "max": 1
+            },
+            "daysToRecover": {
+              "mean": 3,
+              "ci95": [
+                3,
+                3
+              ],
+              "n": 20,
+              "min": 3,
+              "max": 3
+            },
+            "recoveredFraction": {
+              "mean": 1,
+              "ci95": [
+                1,
+                1
+              ],
+              "n": 20,
+              "min": 1,
+              "max": 1
+            },
+            "actionEntropy": {
+              "mean": 0.5906378631365812,
+              "ci95": [
+                0.5897179848253962,
+                0.5915577414477662
+              ],
+              "n": 20,
+              "min": 0.587037113873914,
+              "max": 0.5948579781679569
+            },
+            "voluntaryActionEntropy": {
+              "mean": 0.6289865083534145,
+              "ci95": [
+                0.6276324045959608,
+                0.6303406121108682
+              ],
+              "n": 20,
+              "min": 0.6238927907394901,
+              "max": 0.6352938491200244
+            },
+            "repeatRate": {
+              "mean": 0.2912902478573084,
+              "ci95": [
+                0.2912451957570673,
+                0.2913352999575495
+              ],
+              "n": 20,
+              "min": 0.29117442668519805,
+              "max": 0.29152189020152885
+            },
+            "meanMaxActionShare": {
+              "mean": 0.3334288194444377,
+              "ci95": [
+                0.33338107271342904,
+                0.33347656617544635
+              ],
+              "n": 20,
+              "min": 0.3333333333333265,
+              "max": 0.3336805555555488
+            },
+            "worstAgentDayActionShare": {
+              "mean": 0.3645833333333333,
+              "ci95": [
+                0.35592006388540476,
+                0.37324660278126187
+              ],
+              "n": 20,
+              "min": 0.3333333333333333,
+              "max": 0.375
+            },
+            "forcedFraction": {
+              "mean": 0.3334100115740741,
+              "ci95": [
+                0.3333807769186757,
+                0.3334392462294726
+              ],
+              "n": 20,
+              "min": 0.3333333333333333,
+              "max": 0.3335358796296296
+            }
+          },
+          "secondary": {
+            "firstDayReturn": {
+              "mean": 3.1455841498239083,
+              "ci95": [
+                3.124663034769128,
+                3.1665052648786887
+              ],
+              "n": 20,
+              "min": 3.0809141990338325,
+              "max": 3.223534791498796
+            },
+            "personalMSE": {
+              "mean": 0.0029347682689310687,
+              "ci95": [
+                0.0029163291124335703,
+                0.002953207425428567
+              ],
+              "n": 20,
+              "min": 0.002865379307780381,
+              "max": 0.003003372701141724
+            },
+            "blendedMSE": {
+              "mean": 0.002390557216580325,
+              "ci95": [
+                0.002371967781078141,
+                0.002409146652082509
+              ],
+              "n": 20,
+              "min": 0.002323369285843607,
+              "max": 0.002462366730492158
+            }
+          },
+          "sameDecisionMSEDelta": {
+            "mean": -0.0005442110523507444,
+            "ci95": [
+              -0.0005480957198797662,
+              -0.0005403263848217225
+            ],
+            "n": 20,
+            "min": -0.000557592735360336,
+            "max": -0.0005263036722805057
+          },
+          "latePriorPredictions": 0
+        }
+      ],
+      "comparison": {
+        "kind": "paired-rollout-comparison-v1",
+        "baseline": "personal-v1",
+        "candidate": "replay-coldstart-v1",
+        "differences": {
+          "returnPerAgentDay": {
+            "mean": -0.00020903080389234052,
+            "ci95": [
+              -0.0005867460799509023,
+              0.00016868447216622127
+            ],
+            "n": 20,
+            "min": -0.002081145293307163,
+            "max": 0.0015029346076278483
+          },
+          "immediateRegretPerAgentDay": {
+            "mean": -0.002402114053579485,
+            "ci95": [
+              -0.006381054570423282,
+              0.0015768264632643123
+            ],
+            "n": 20,
+            "min": -0.016467873528162258,
+            "max": 0.016075935865268676
+          },
+          "needOkRatio": {
+            "mean": -2.7488425925920047e-05,
+            "ci95": [
+              -7.387661670122963e-05,
+              1.8899764849389535e-05
+            ],
+            "n": 20,
+            "min": -0.00026041666666665186,
+            "max": 0.00014467592592581902
+          },
+          "actionEntropy": {
+            "mean": -0.0001013449423014512,
+            "ci95": [
+              -0.0003179235653519054,
+              0.00011523368074900301
+            ],
+            "n": 20,
+            "min": -0.0009608294758366442,
+            "max": 0.0007469608042219855
+          },
+          "repeatRate": {
+            "mean": -2.8955293027654872e-06,
+            "ci95": [
+              -2.960305010252023e-05,
+              2.3811991496989254e-05
+            ],
+            "n": 20,
+            "min": -0.00014477646513777476,
+            "max": 8.686587908268706e-05
+          }
+        },
+        "entropyMargin": {
+          "mean": 0.11804649667347503,
+          "ci95": [
+            0.11780193364001289,
+            0.11829105970693717
+          ],
+          "n": 20,
+          "min": 0.11707923937894615,
+          "max": 0.11894092503800313
+        },
+        "gates": {
+          "enoughSeeds": true,
+          "fullProfile": true,
+          "returnNonDecrease": false,
+          "regretNonIncrease": false,
+          "needsNonDecrease": false,
+          "entropyFloor": true
+        },
+        "passesProposedOfflineGates": false,
+        "activatesRuntimePolicy": false,
+        "limits": "Same-state one-step opportunity cost is not long-horizon counterfactual regret. Needs/competence can have no headroom in this profile.",
+        "firstDayReturnDelta": {
+          "mean": 0.6118260912516569,
+          "ci95": [
+            0.593998771547631,
+            0.6296534109556827
+          ],
+          "n": 20,
+          "min": 0.5294499659930869,
+          "max": 0.6613080354791685
+        }
+      }
+    },
+    {
+      "profile": "cold-stress-v1",
+      "artifact": {
+        "path": "docs/validation/h6-v1/cold-stress-v1/replay.json",
+        "sha256": "89b8f2eca5d184904d59355fc783b5042769aaad018a01b63678f90e89b9acfd",
+        "sourceSha256": "6e080194f80e49b3584b34851efde9ea3cec3b5201584d0dca658dfe54e41eae",
+        "acceptedDigest": "2a1f6a3e281ba182f36ff7c0489e9225f97d90f53b6ffe547c314e67e46a714e",
+        "report": {
+          "input": 34560,
+          "foreign": 0,
+          "legacy": 0,
+          "weak": 0,
+          "duplicates": 0,
+          "invalid": 0,
+          "conflicts": 0,
+          "accepted": 34560,
+          "actors": 96,
+          "stages": [
+            712,
+            4876,
+            28972
+          ]
+        },
+        "chronologicalAndCurriculumSameUniqueCorpus": true,
+        "epochsEach": 1,
+        "arms": 38
+      },
+      "validation": {
+        "seeds": [
+          688241821,
+          671464202,
+          654686583,
+          637908964,
+          621131345,
+          604353726,
+          587576107,
+          570798488
+        ],
+        "n": 34560,
+        "runs": [
+          {
+            "seed": 688241821,
+            "n": 4320,
+            "covered": 4320,
+            "chronologicalMSE": 0.0022567879165164527,
+            "curriculumMSE": 0.00225678791651647,
+            "maxPredictionDifference": 2.134958876354176e-13
+          },
+          {
+            "seed": 671464202,
+            "n": 4320,
+            "covered": 4320,
+            "chronologicalMSE": 0.002331186735838274,
+            "curriculumMSE": 0.00233118673583831,
+            "maxPredictionDifference": 2.1338486533295509e-13
+          },
+          {
+            "seed": 654686583,
+            "n": 4320,
+            "covered": 4320,
+            "chronologicalMSE": 0.0021524554762000917,
+            "curriculumMSE": 0.0021524554762000904,
+            "maxPredictionDifference": 2.1305179842556754e-13
+          },
+          {
+            "seed": 637908964,
+            "n": 4320,
+            "covered": 4320,
+            "chronologicalMSE": 0.002360726295699979,
+            "curriculumMSE": 0.002360726295699967,
+            "maxPredictionDifference": 2.170486013142181e-13
+          },
+          {
+            "seed": 621131345,
+            "n": 4320,
+            "covered": 4320,
+            "chronologicalMSE": 0.0021838779613586675,
+            "curriculumMSE": 0.002183877961358637,
+            "maxPredictionDifference": 2.1316282072803006e-13
+          },
+          {
+            "seed": 604353726,
+            "n": 4320,
+            "covered": 4320,
+            "chronologicalMSE": 0.002247705489919973,
+            "curriculumMSE": 0.002247705489919967,
+            "maxPredictionDifference": 2.1338486533295509e-13
+          },
+          {
+            "seed": 587576107,
+            "n": 4320,
+            "covered": 4320,
+            "chronologicalMSE": 0.0022741826009913878,
+            "curriculumMSE": 0.002274182600991413,
+            "maxPredictionDifference": 2.134958876354176e-13
+          },
+          {
+            "seed": 570798488,
+            "n": 4320,
+            "covered": 4320,
+            "chronologicalMSE": 0.002310862270870683,
+            "curriculumMSE": 0.002310862270870706,
+            "maxPredictionDifference": 2.1338486533295509e-13
+          }
+        ],
+        "maxPredictionDifference": 2.170486013142181e-13,
+        "tolerance": 1e-08,
+        "passes": true
+      },
+      "policies": [
+        {
+          "variant": "personal-v1",
+          "path": "docs/validation/h6-v1/cold-stress-v1/holdout-personal-v1.json",
+          "sha256": "ccd8ab2db571db93b43430c764dfe45344d647f531b012490fcb2c3d599147d6",
+          "summary": {
+            "returnPerAgentDay": {
+              "mean": 3.3640772192159956,
+              "ci95": [
+                3.3566212077036988,
+                3.3715332307282924
+              ],
+              "n": 20,
+              "min": 3.330513875770063,
+              "max": 3.389693452343823
+            },
+            "immediateRegretPerAgentDay": {
+              "mean": 3.3546620432610497,
+              "ci95": [
+                3.337087682364091,
+                3.3722364041580084
+              ],
+              "n": 20,
+              "min": 3.253309196596109,
+              "max": 3.404845465295694
+            },
+            "needOkRatio": {
+              "mean": 0.9947149884259259,
+              "ci95": [
+                0.9944966634485739,
+                0.9949333134032778
+              ],
+              "n": 20,
+              "min": 0.9935763888888889,
+              "max": 0.9955150462962963
+            },
+            "timeToCompetenceDays": {
+              "mean": 3.6645833333333337,
+              "ci95": [
+                3.6107222234806806,
+                3.718444443185987
+              ],
+              "n": 20,
+              "min": 3.4166666666666665,
+              "max": 3.9166666666666665
+            },
+            "competentFraction": {
+              "mean": 1,
+              "ci95": [
+                1,
+                1
+              ],
+              "n": 20,
+              "min": 1,
+              "max": 1
+            },
+            "daysToRecover": {
+              "mean": 3,
+              "ci95": [
+                3,
+                3
+              ],
+              "n": 20,
+              "min": 3,
+              "max": 3
+            },
+            "recoveredFraction": {
+              "mean": 1,
+              "ci95": [
+                1,
+                1
+              ],
+              "n": 20,
+              "min": 1,
+              "max": 1
+            },
+            "actionEntropy": {
+              "mean": 0.5264961854352451,
+              "ci95": [
+                0.5254966266510674,
+                0.5274957442194228
+              ],
+              "n": 20,
+              "min": 0.5229704640395977,
+              "max": 0.5311413699351745
+            },
+            "voluntaryActionEntropy": {
+              "mean": 0.5859759030023695,
+              "ci95": [
+                0.5849964164447548,
+                0.5869553895599842
+              ],
+              "n": 20,
+              "min": 0.5827705282011805,
+              "max": 0.5899101178325268
+            },
+            "repeatRate": {
+              "mean": 0.2979528607829511,
+              "ci95": [
+                0.297721968376776,
+                0.29818375318912616
+              ],
+              "n": 20,
+              "min": 0.2971102617558489,
+              "max": 0.2988765346305305
+            },
+            "meanMaxActionShare": {
+              "mean": 0.3836154513888914,
+              "ci95": [
+                0.38238617566903876,
+                0.38484472710874407
+              ],
+              "n": 20,
+              "min": 0.37957175925926245,
+              "max": 0.38877314814814984
+            },
+            "worstAgentDayActionShare": {
+              "mean": 0.5020833333333333,
+              "ci95": [
+                0.4977229166666667,
+                0.50644375
+              ],
+              "n": 20,
+              "min": 0.5,
+              "max": 0.5416666666666666
+            },
+            "forcedFraction": {
+              "mean": 0.335279224537037,
+              "ci95": [
+                0.3351970428315466,
+                0.3353614062425274
+              ],
+              "n": 20,
+              "min": 0.33489583333333334,
+              "max": 0.33556134259259257
+            }
+          },
+          "secondary": {
+            "firstDayReturn": {
+              "mean": 5.817523923278917,
+              "ci95": [
+                5.7705322019788445,
+                5.864515644578989
+              ],
+              "n": 20,
+              "min": 5.648399986815925,
+              "max": 5.996755115818036
+            },
+            "personalMSE": {
+              "mean": 0.0040921104084449406,
+              "ci95": [
+                0.004069484019719732,
+                0.004114736797170149
+              ],
+              "n": 20,
+              "min": 0.00398592729085163,
+              "max": 0.004150208939580819
+            },
+            "blendedMSE": {
+              "mean": 0.0040921104084449406,
+              "ci95": [
+                0.004069484019719732,
+                0.004114736797170149
+              ],
+              "n": 20,
+              "min": 0.00398592729085163,
+              "max": 0.004150208939580819
+            }
+          },
+          "sameDecisionMSEDelta": {
+            "mean": 0,
+            "ci95": [
+              0,
+              0
+            ],
+            "n": 20,
+            "min": 0,
+            "max": 0
+          },
+          "latePriorPredictions": 0
+        },
+        {
+          "variant": "replay-coldstart-v1",
+          "path": "docs/validation/h6-v1/cold-stress-v1/holdout-replay-coldstart-v1.json",
+          "sha256": "5cd4db51c3b108b46387cb3ebdff3bec7c760205991d63bb811dd57753733541",
+          "summary": {
+            "returnPerAgentDay": {
+              "mean": 3.3626930791434946,
+              "ci95": [
+                3.3553314646979095,
+                3.3700546935890796
+              ],
+              "n": 20,
+              "min": 3.3302858144768384,
+              "max": 3.386120236402609
+            },
+            "immediateRegretPerAgentDay": {
+              "mean": 3.3469104056744903,
+              "ci95": [
+                3.330378759523291,
+                3.3634420518256896
+              ],
+              "n": 20,
+              "min": 3.2571202611767647,
+              "max": 3.394538952430954
+            },
+            "needOkRatio": {
+              "mean": 0.9946903935185185,
+              "ci95": [
+                0.9944961544747256,
+                0.9948846325623114
+              ],
+              "n": 20,
+              "min": 0.9939236111111112,
+              "max": 0.9953993055555556
+            },
+            "timeToCompetenceDays": {
+              "mean": 3.6541666666666663,
+              "ci95": [
+                3.6015746033204707,
+                3.706758730012862
+              ],
+              "n": 20,
+              "min": 3.4166666666666665,
+              "max": 3.8333333333333335
+            },
+            "competentFraction": {
+              "mean": 1,
+              "ci95": [
+                1,
+                1
+              ],
+              "n": 20,
+              "min": 1,
+              "max": 1
+            },
+            "daysToRecover": {
+              "mean": 3,
+              "ci95": [
+                3,
+                3
+              ],
+              "n": 20,
+              "min": 3,
+              "max": 3
+            },
+            "recoveredFraction": {
+              "mean": 1,
+              "ci95": [
+                1,
+                1
+              ],
+              "n": 20,
+              "min": 1,
+              "max": 1
+            },
+            "actionEntropy": {
+              "mean": 0.5263504908744522,
+              "ci95": [
+                0.5253716266766312,
+                0.5273293550722732
+              ],
+              "n": 20,
+              "min": 0.5224611190200182,
+              "max": 0.5309199822508698
+            },
+            "voluntaryActionEntropy": {
+              "mean": 0.5858340161136052,
+              "ci95": [
+                0.5847592000283868,
+                0.5869088321988236
+              ],
+              "n": 20,
+              "min": 0.5827559145262624,
+              "max": 0.5908310140154198
+            },
+            "repeatRate": {
+              "mean": 0.2977965022006023,
+              "ci95": [
+                0.29753896671408137,
+                0.2980540376871232
+              ],
+              "n": 20,
+              "min": 0.296907574704656,
+              "max": 0.2987317581653927
+            },
+            "meanMaxActionShare": {
+              "mean": 0.3838006365740764,
+              "ci95": [
+                0.3825402660775269,
+                0.38506100707062596
+              ],
+              "n": 20,
+              "min": 0.37960069444444794,
+              "max": 0.38940972222222414
+            },
+            "worstAgentDayActionShare": {
+              "mean": 0.5,
+              "ci95": [
+                0.49367324253549894,
+                0.5063267574645011
+              ],
+              "n": 20,
+              "min": 0.4583333333333333,
+              "max": 0.5416666666666666
+            },
+            "forcedFraction": {
+              "mean": 0.3352893518518519,
+              "ci95": [
+                0.33521021858103045,
+                0.3353684851226733
+              ],
+              "n": 20,
+              "min": 0.33504050925925927,
+              "max": 0.335619212962963
+            }
+          },
+          "secondary": {
+            "firstDayReturn": {
+              "mean": 6.32031219211993,
+              "ci95": [
+                6.276491684466405,
+                6.364132699773455
+              ],
+              "n": 20,
+              "min": 6.188319810043265,
+              "max": 6.511166542670542
+            },
+            "personalMSE": {
+              "mean": 0.004077286601629646,
+              "ci95": [
+                0.00405556554730046,
+                0.0040990076559588315
+              ],
+              "n": 20,
+              "min": 0.003969321788240053,
+              "max": 0.004150400127920752
+            },
+            "blendedMSE": {
+              "mean": 0.0028194939627457895,
+              "ci95": [
+                0.0028020736700741914,
+                0.0028369142554173876
+              ],
+              "n": 20,
+              "min": 0.0027695547929658705,
+              "max": 0.002902138864540325
+            }
+          },
+          "sameDecisionMSEDelta": {
+            "mean": -0.0012577926388838566,
+            "ci95": [
+              -0.0012755039288839607,
+              -0.0012400813488837525
+            ],
+            "n": 20,
+            "min": -0.0013382398441818205,
+            "max": -0.0011927945555291206
+          },
+          "latePriorPredictions": 0
+        }
+      ],
+      "comparison": {
+        "kind": "paired-rollout-comparison-v1",
+        "baseline": "personal-v1",
+        "candidate": "replay-coldstart-v1",
+        "differences": {
+          "returnPerAgentDay": {
+            "mean": -0.0013841400725007169,
+            "ci95": [
+              -0.002436964263659633,
+              -0.00033131588134180053
+            ],
+            "n": 20,
+            "min": -0.007195444555061936,
+            "max": 0.0023174487777515296
+          },
+          "immediateRegretPerAgentDay": {
+            "mean": -0.007751637586559346,
+            "ci95": [
+              -0.010801349001366293,
+              -0.004701926171752399
+            ],
+            "n": 20,
+            "min": -0.023662022954270334,
+            "max": 0.003811064580655721
+          },
+          "needOkRatio": {
+            "mean": -2.4594907407393672e-05,
+            "ci95": [
+              -0.000109933938541248,
+              6.074412372646064e-05
+            ],
+            "n": 20,
+            "min": -0.0004050925925926929,
+            "max": 0.0003472222222222765
+          },
+          "actionEntropy": {
+            "mean": -0.00014569456079303045,
+            "ci95": [
+              -0.0003739834904280439,
+              8.259436884198304e-05
+            ],
+            "n": 20,
+            "min": -0.0009639076257116352,
+            "max": 0.0008985469290222481
+          },
+          "repeatRate": {
+            "mean": -0.0001563585823488506,
+            "ci95": [
+              -0.0003931001175168996,
+              8.038295281919842e-05
+            ],
+            "n": 20,
+            "min": -0.0013029881862403614,
+            "max": 0.0006080611535788649
+          }
+        },
+        "entropyMargin": {
+          "mean": 0.10515354252625597,
+          "ci95": [
+            0.10488249114775734,
+            0.1054245939047546
+          ],
+          "n": 20,
+          "min": 0.10408474778834009,
+          "max": 0.10613651006384422
+        },
+        "gates": {
+          "enoughSeeds": true,
+          "fullProfile": true,
+          "returnNonDecrease": false,
+          "regretNonIncrease": true,
+          "needsNonDecrease": false,
+          "entropyFloor": true
+        },
+        "passesProposedOfflineGates": false,
+        "activatesRuntimePolicy": false,
+        "limits": "Same-state one-step opportunity cost is not long-horizon counterfactual regret. Needs/competence can have no headroom in this profile.",
+        "firstDayReturnDelta": {
+          "mean": 0.502788268841013,
+          "ci95": [
+            0.46631142980130047,
+            0.5392651078807256
+          ],
+          "n": 20,
+          "min": 0.36375815944636436,
+          "max": 0.6377761156089727
+        }
+      }
+    }
+  ],
+  "decision": "Warm24 replay candidate fails pre-registered full-horizon gates. Preserve personal LinUCB; no retuning on these seeds.",
+  "verification": {
+    "unit": {
+      "suite": "unit-summary",
+      "total": 56,
+      "passed": 56,
+      "failed": [],
+      "workers": 4,
+      "seconds": 76.06
+    },
+    "typecheck": true,
+    "lint": true,
+    "build": true,
+    "assets": true,
+    "compiledLocalAPI": {
+      "suite": "local-diagnostics-http",
+      "ownerReadGuard": true,
+      "ownerWriteGuard": true,
+      "streamByteLimit": true,
+      "schema": true,
+      "origin": true,
+      "ack": true,
+      "jsonlReadback": true,
+      "rateLimit": true,
+      "retention": true,
+      "diagnosticsReadOnly": true,
+      "pulsePersistence": true,
+      "pulseRetry": true,
+      "pulseConcurrentViewers": 12,
+      "pulseNoDuplicateAudit": true,
+      "pulsePause": true,
+      "healthSchemaBatch": true,
+      "productionAccess": false
+    },
+    "compiledJSONLToActorReplay": true,
+    "compiledHistorySnapshotAndEarnedSamplePreservation": true,
+    "localCLIHashPinnedActorScopeAndIgnoredOutputTested": true,
+    "exactDedupConflictingIdentityAndSampleLedgerTested": true,
+    "legacyWeakUnsupportedNotBackfilled": true,
+    "inputBytesAndExistingOutputsPreserved": true,
+    "malformedInputErrorsDoNotEchoRawData": true,
+    "onePassNoEarnedSampleSkillMatrixTransfer": true,
+    "chronologicalVsCurriculumNumericalAgreement": true,
+    "seedSetsDisjointFromH1H2H4": true,
+    "repeats": [
+      {
+        "path": "docs/validation/h6-v1/cold-stress-v1/replay.json",
+        "sha256": "89b8f2eca5d184904d59355fc783b5042769aaad018a01b63678f90e89b9acfd",
+        "identicalBytes": true
+      },
+      {
+        "path": "docs/validation/h6-v1/cold-stress-v1/holdout-replay-coldstart-v1.json",
+        "sha256": "5cd4db51c3b108b46387cb3ebdff3bec7c760205991d63bb811dd57753733541",
+        "identicalBytes": true
+      },
+      {
+        "path": "docs/validation/learning-linucb-full-v1.json",
+        "sha256": "9b19e73634f67b029dbdfbdf7cd2b3e5309a7786435cea01f3c6b0ca02c2add9",
+        "identicalBytes": true
+      }
+    ],
+    "goldenOutcomes": 15375,
+    "goldenChoices": 1500,
+    "goldenUnchanged": true,
+    "runtimeCoreAndPersistenceUnchanged": true,
+    "offlineReplayAbsentFromWorker": true,
+    "documentation": {
+      "markdownFiles": 23,
+      "localLinksChecked": 92
+    }
+  },
+  "noAutomaticProductionReadOrWrite": true,
+  "productionAccess": false,
+  "defaultPolicyChanged": false,
+  "newMigrations": false,
+  "newBrowserRun": false,
+  "UIChanged": false,
+  "productionDeployed": false,
+  "limits": [
+    "Local actor archive scope is an explicit operator input with SHA pinning and H3 consistency, not authenticated physical or social authority.",
+    "Synthetic artifact bundles alone are committed. Private archive/model outputs stay under Gitignored .sites-runtime/training; no production archive was processed in this study.",
+    "Chronological and curriculum have identical information; one-pass ridge is order invariant up to floating point. No curriculum gain is claimed.",
+    "Personal function resumes after24earned plans on each candidate own state, not the baseline counterfactual state. Prior counts remain offline metadata.",
+    "H1/H2/H4 hourly ordinary-plan, transient stress, role-place fixture and own-state one-step opportunity-cost limitations remain.",
+    "No historical role inference, peer memory sharing, SFT/DPO/LLM training, migration, memory backfill or runtime artifact import.",
+    "Multi-file/cursor/archive replay and additive memory backfill/curation remain follow-up work; native production access is still unavailable."
+  ]
+}

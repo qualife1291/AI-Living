@@ -1,6 +1,6 @@
 # Kiểm thử và bằng chứng
 
-`scripts/unit-suites.json` là danh sách suite hiện hành; `npm run test:unit` dùng process độc lập, tối đa 4 workers, thu đủ lỗi thay vì fail-fast. `XOM_TEST_JOBS=1` chạy tuần tự. Mốc H4 có55suite đã đạt; đây không phải kết quả chạy mới mỗi khi sửa tài liệu.
+`scripts/unit-suites.json` là danh sách suite hiện hành; `npm run test:unit` dùng process độc lập, tối đa 4 workers, thu đủ lỗi thay vì fail-fast. `XOM_TEST_JOBS=1` chạy tuần tự. Mốc H6 có56suite đã đạt; đây không phải kết quả chạy mới mỗi khi sửa tài liệu.
 
 ## Chọn kiểm tra theo thay đổi
 
@@ -51,6 +51,8 @@ Restart Worker từ `dist/server/wrangler.json` sau build. `QA_BASE` bắt buộ
 H3 `test-reward-evidence.mjs` kiểm settlement khác decision state, đầy đủ duration/key/legacy, saturation và negative outcome, actor/context/version/domain tamper, replay và inspector không backfill/ghi đè/lộ raw record kể cả JSONL lỗi. Compiled API kiểm evidence trong archive/JSONL, legacy bytes giữ nguyên và hai request học cạnh tranh chỉ tạo một sample/receipt/archive. Golden và full H1 hash phải giữ nguyên. Kết quả thực tế từng mốc nằm trong validation JSON, không suy từ tên suite.
 
 H4 `test-hierarchical-prior.mjs` kiểm source/version/catalog/signature/support/SPD, ownership/monotonic samples/dedup, compiler không bị input sửa, bounded confidence/fallback, giữ raw personal models/skills và emergency/gates. CLI kiểm seed/profile/checksum/immutable output; wrapper giữ H1/H2 default reports. [Protocol](validation/learning-h4-protocol-v1.json) cố định trước kết quả; artifact/reports/same-decision MSE/paired gates/repeats ở [evidence](validation/learning-h4-2026-10-28.json). Không gọi donor support là earned samples hoặc tắt guard để cải thiện benchmark.
+
+H6 `test-outcome-replay.mjs` kiểm actor filter trước audit, exact duplicates/conflicting IDs hoặc actor+sample, ledger thời gian/gaps, legacy/weak/version/context, one-pass/SPD/counts, compiler isolation và fallback personal sau24plan. CLI hash-pinned/ignored-output/exclusive-create/source preservation/JSONL error privacy và synthetic deterministic replay được kiểm trực tiếp. Compiled local API kiểm JSONL thật→replay đúng actor, không ghi DB/tăng own samples. [Protocol](validation/learning-h6-protocol-v1.json) cố định trước đo; full repeats, ridge order agreement và holdout gates ở [evidence](validation/learning-h6-2026-10-28.json). Không suy curriculum làm ridge tốt hơn từ roundoff.
 
 ## ZIP source
 

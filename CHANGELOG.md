@@ -4,6 +4,8 @@ Chỉ ghi mốc sản phẩm. Chi tiết commit/review nằm trong Git; số ver
 
 ## 28/10/2026
 
+- H6 thêm actor-scoped local archive replay có SHA/dedup/conflict guard, one-pass numeric curriculum và warm24 study trên seed mới.56suite/API JSONL integration đạt; ridge order chỉ khác số học, warm24 chưa đủ gates nên giữ LinUCB. Không sửa history, own samples hoặc bật runtime importer.
+
 - H4 thêm global/role.kind priors có H3 provenance, strict artifact/seed split và bounded prediction blend;55suite/API local đạt. Warm-start ngày đầu và MSE tốt hơn trong mô phỏng, nhưng reward60ngày giảm nên chưa promote; default LinUCB cá nhân giữ nguyên.
 
 - Review Society/NIM, đưa phần phù hợp vào backlog có phụ thuộc và sửa accounting/knowledge/retention assumptions. H3 thêm evidence/version/breakdown cho reward simulation hiện hành và audit JSONL offline; giữ raw reward/LinUCB/legacy, chưa có reward dài hạn hoặc tích hợp NIM.

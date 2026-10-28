@@ -169,3 +169,16 @@ Numeric curriculum có3stage từ context tại quyết định: needs(energy<0,
 Thử nghiệm warm-only là giả thuyết mới sau H4: prior k5 chỉ blend khi **tổng samples tự đạt<24**, sau đó dùng chính hàm personal trên state hiện tại, không reset hậu nghiệm hay ép trajectory trùng baseline. Không đụng personal uncertainty/guards. Train8seed6000–6007,12agent×15ngày; validation prediction8seed7000–7007 cùng kích thước; policy holdout20seed8000–8019,24agent×60ngày/shift30. Dùng2profile và cùng role/place fixture H4; không so số tuyệt đối với H1/H2. Tham số cố định trước kết quả, không tự promote/runtime activation. Actor archive artifacts không dùng làm cohort prior cho holdout.
 
 H6 này cung cấp replay numeric/CLI private và curriculum traversal; chưa SFT/DPO training, memory backfill/CAS, role-history inference hoặc cài artifact lên production. Multi-file/cursor/backfill đầy đủ và curation cùng prompt/context/model vẫn là việc riêng trong ROADMAP. Không thêm migration/policy format0007 hoặc thuê GPU/API.
+
+[Evidence H6](validation/learning-h6-2026-10-28.json) và [artifacts synthetic](validation/h6-v1/) ghi69.120train+69.120prediction validation+2.764.800policy holdout plans.56suite/check/lint/build/assets/API compiled đạt; API JSONL→actor replay giữ history/snapshot/earned samples. Full replay train+validation, full warm24stress và H1 repeat cùng byte/hash. Không replay archive production hoặc tạo artifact private trong Git.
+
+| Holdout profile / variant | Reward/agent/ngày (60ngày) | Reward ngày1/agent | Đủ gates |
+|---|---:|---:|---|
+|ordinary-v1 / Cá nhân|1,201531|2,533758|Baseline|
+|ordinary-v1 / Replay warm24|1,201322|3,145584|Không|
+|cold-stress-v1 / Cá nhân|3,364077|5,817524|Baseline|
+|cold-stress-v1 / Replay warm24|3,362693|6,320312|Không|
+
+Ngày1 có Δreward+0,611826 ordinary (CI95[0,593999;0,629653]) và+0,502788stress ([0,466311;0,539265]). Nhưng60ngày ordinary Δ−0,000209 với CI chứa0, chưa chứng minh không giảm; stress Δ−0,001384 với CI dưới0. Needs gates chưa đạt ở cả hai; opportunity-cost đạt ở stress, chưa chứng minh không tăng ở ordinary; entropy floor đạt. Không đổi tham số theo holdout và **không promote**.
+
+Chronological/curriculum validation có max prediction difference3,22e−13 ordinary/2,17e−13stress, dưới ngưỡng1e−8; đây là khác biệt số học, không là cải thiện từ curriculum. Prior predictions sau plan tự đạt thứ24 bằng0. Giữ LinUCB cá nhân; H10 tối ưu offline có budget/seed mới là bước nghiên cứu tiếp, không tự sửa code hoặc deploy.
