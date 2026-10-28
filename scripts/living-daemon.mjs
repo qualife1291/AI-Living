@@ -2,6 +2,8 @@ import { PLACES, STEP_KINDS } from "../lib/event-schema.ts";
 import { planLivingTurn } from "../lib/living/engine.ts";
 import { proposalSchema } from "../lib/living/schema.ts";
 import { reviewNarrative, socialDirectionInstructions } from "../lib/living/director.ts";
+import {selectContextCards} from "../lib/living/context-cards.ts";
+import {observedWeather} from "../lib/living/realtime.ts";
 
 const origin = process.env.XOM_ORIGIN ?? "http://127.0.0.1:5173";
 const modelOrigin = process.env.XOM_LOCAL_AI_ORIGIN ?? "http://127.0.0.1:8090";
@@ -90,6 +92,8 @@ export async function cycle() {
                     "BẮT BUỘC tiếng Việt có dấu, 4–6 lượt luân phiên, dùng scene.addressing khi có",
                   scene: {
                     ...result.turn,
+                    contextCards:selectContextCards(view.world,Date.parse(view.serverNow),2,{location:result.turn.location,weather:view.world.clock?.weatherOverride??observedWeather(view.context)?.kind,context:view.context}),
+                    contextCardScope:"Đây là gợi ý biên tập cho kế hoạch tương lai, không phải quan sát, ký ức hoặc sự kiện đã xảy ra. Không tự gán đồ vật, giao dịch, người chứng kiến hay lịch chuyến thực.",
                     context: {
                       ...result.turn.context,
                       festivals: {

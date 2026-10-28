@@ -37,7 +37,7 @@ export async function GET(req: Request) {
     );
   if (data.world.clock?.weatherOverride) weather.label += " · thử nghiệm";
   else if (context.weather.status !== "fresh") weather.label += " · mô phỏng";
-  const activeContexts = selectActiveContexts(data.world, nowMs, 2);
+  const activeContexts = selectActiveContexts(data.world, nowMs, 2,{weather:weather.kind,context});
 
   return json({
     ...data,

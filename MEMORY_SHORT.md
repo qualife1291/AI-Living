@@ -8,3 +8,5 @@
 - Hardware GPU, soak dài, real model A/B/LoRA và ops cần bằng chứng riêng. Browser SwiftShader dùng fixture; API persistence bằng D1 cô lập. Sau build phải khởi động fresh Worker, không rebuild giữa browser QA.
 
 - Domain skills source đã qua46/check/lint/build/API/browser desktop/mobile/320px/social6/F5. Kết quả chuyển MEMORY_LONG/PHASE_D; candidate e900 chưa chứa domain. WIP tiếp theo: context cards49/33places + strict selection/source/season activation và daemon grounding; còn unit context/full47/check/lint/build/API. Không gọi card biên tập là thực tế đã quan sát.
+
+- Context cards WIP: schema strict/source editorial, 49 thẻ phủ33địađiểm; chọn exact location/phase/weather, không fallback sai thời tiết; weekend/Tet/Trungthu/20-11 có điều kiện nguồn/date. Daemon nhận cards đúng scene và scope không coi là fact; world API dùng effective weather. Unit mới40weather-phase +date/source/privacy/purity và daemon mock đạt, còn full47/build/API. Không đồng nghĩa đã có LocalSceneContext occupancy/props thật.

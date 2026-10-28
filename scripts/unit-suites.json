@@ -137,5 +137,8 @@
   ],
   [
     "scripts/test-domain-skills.mjs"
+  ],
+  [
+    "scripts/test-context-cards.mjs"
   ]
 ]

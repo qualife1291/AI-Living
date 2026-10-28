@@ -16,7 +16,12 @@ globalThis.fetch=async(input,init)=>{
  const path=new URL(input).pathname;
  if(path==='/api/living')return Response.json(view);
  if(path==='/api/living/learning')return Response.json({updated:0});
- if(path==='/v1/chat/completions'){modelCalls++;return Response.json({choices:[{message:{content:JSON.stringify(proposal)}}]});}
+ if(path==='/v1/chat/completions'){
+  const prompt=JSON.parse(JSON.parse(init.body).messages.find(m=>m.role==='user').content);
+  assert(prompt.scene.contextCards.every(c=>c.source==='editorial-suggestion'&&c.locations.includes(preview.turn.location)));
+  assert.match(prompt.scene.contextCardScope,/không phải quan sát/);
+  modelCalls++;return Response.json({choices:[{message:{content:JSON.stringify(proposal)}}]});
+ }
  if(path==='/api/living/tick'){tickBody=JSON.parse(init.body);return Response.json({id:'fixture',generator:tickBody.proposal?'local-llm':'rules'});}
  throw Error(`Unexpected fixture route ${path}`);
 };

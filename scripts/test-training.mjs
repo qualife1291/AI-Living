@@ -36,9 +36,9 @@ const curriculum = JSON.parse(
 
 assert.equal(scenes.length, 16, 'Expected 16 daily scenes in data/scenes.json');
 assert.equal(
-  contexts.length,
-  24,
-  'Expected 24 multi-dimensional contexts in neighborhood-contexts.json',
+  contexts.length >= 24,
+  true,
+  'Keep the original context catalog when expanding city coverage',
 );
 assert.ok(
   goldenEpisodes.length >= 6,
@@ -51,20 +51,7 @@ assert.equal(
   'Expected 8 progressive self-play curriculum stages',
 );
 
-const validPlaces = new Set([
-  'Sân chung',
-  'Phòng An',
-  'Phòng Bình',
-  'Phòng Chi',
-  'Bếp chung',
-  'Vườn nhỏ',
-  'Công viên',
-  'Quán cà phê',
-  'Thư viện',
-  'Xưởng sáng tạo',
-  'Quảng trường',
-  'Phố đi bộ',
-]);
+const validPlaces = new Set(JSON.parse(fs.readFileSync(path.join(root, 'data/city/venues.json'), 'utf8')).map(v=>v.name));
 const validSpeakers = new Set(['an', 'binh', 'chi']);
 
 for (const ep of goldenEpisodes) {

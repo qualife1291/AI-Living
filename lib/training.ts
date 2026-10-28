@@ -1,28 +1,12 @@
 import type { World } from './world';
-import { worldTime, weatherAt, mulberry32, hashSeed, type DayPhase, type WeatherKind } from './clock';
+import { worldTime, weatherAt } from './clock';
 import { eventSchema, type EventInput } from './event-schema';
-import contextsData from '../data/contexts/neighborhood-contexts.json';
+import {selectContextCards,type ContextCard,type ContextOptions} from './living/context-cards';
+export {neighborhoodContexts} from './living/context-cards';
+export type {ContextCard} from './living/context-cards';
 import goldenEpisodesData from '../data/training/sft-golden-episodes.json';
 import dpoPairsData from '../data/training/dpo-preference-pairs.json';
 import curriculumData from '../data/training/self-play-curriculum.json';
-
-export type ContextCard = {
-  id: string;
-  category:
-    | 'weather_season'
-    | 'micro_economy'
-    | 'commitments_social'
-    | 'ecology_animals'
-    | 'vietnamese_culture'
-    | 'empathy_resolution';
-  title: string;
-  phase: DayPhase[];
-  weather: WeatherKind[];
-  locations: string[];
-  promptHint: string;
-  suggestedActivities: string[];
-  tags: string[];
-};
 
 export type DpoPreferencePair = {
   id: string;
@@ -56,7 +40,6 @@ export type EvaluationReport = {
   reflexionPrompt: string;
 };
 
-export const neighborhoodContexts: ContextCard[] = contextsData as ContextCard[];
 export const goldenEpisodes: EventInput[] = goldenEpisodesData as EventInput[];
 export const dpoPreferencePairs: DpoPreferencePair[] = dpoPairsData as DpoPreferencePair[];
 export const selfPlayCurriculum: CurriculumStage[] = curriculumData as CurriculumStage[];
@@ -69,23 +52,9 @@ export function selectActiveContexts(
   world: World,
   nowMs: number,
   count = 2,
+  options:ContextOptions={},
 ): ContextCard[] {
-  const wt = worldTime(world, nowMs);
-  const weather = weatherAt(world.born || 'xom-ai', wt, world.clock?.weatherOverride);
-  const lowEnergy = world.people.some((p) => p.energy < 40);
-  const rng = mulberry32(hashSeed(`${world.born}-${wt.dayIndex}-${wt.phase}`));
-
-  const scored = neighborhoodContexts.map((card) => {
-    let score = rng() * 1.5;
-    if (card.phase.includes(wt.phase)) score += 4;
-    if (card.weather.includes(weather.kind)) score += 3;
-    if (weather.kind === 'rain' && card.tags.includes('rain')) score += 5;
-    if (lowEnergy && card.category === 'empathy_resolution') score += 4;
-    return { card, score };
-  });
-
-  scored.sort((a, b) => b.score - a.score);
-  return scored.slice(0, count).map((s) => s.card);
+  return selectContextCards(world,nowMs,count,options);
 }
 
 /**
@@ -124,7 +93,7 @@ export function synthesizeContextPrompt(
     'TRẠNG THÁI CƯ DÂN:',
     residentSummary,
     '',
-    'BỐI CẢNH ĐA CHIỀU ĐƯỢC KÍCH HOẠT:',
+    'BỐI CẢNH BIÊN TẬP GỢI Ý (không phải sự kiện đã diễn ra hoặc ký ức đã chứng kiến):',
     contextSection,
     '',
     'MẪU GOLDEN EPISODE THAM KHẢO (FEW-SHOT):',

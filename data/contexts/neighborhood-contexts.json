@@ -182,7 +182,7 @@
     "phase": ["dusk", "evening"],
     "weather": ["clear", "windy"],
     "locations": ["Sân chung", "Quảng trường", "Phố đi bộ"],
-    "promptHint": "Nhân dịp tối rằm, An mắc dây đèn vàng nhỏ và đèn lồng giấy quanh Sân chung. Bình và Chi mang đĩa bánh và trà nóng ra ngồi thưởng trăng, ôn lại những kỷ niệm từ ngày về xóm.",
+    "promptHint": "Có thể đề xuất làm đèn giấy hoặc ngắm ánh đèn trong mô phỏng khi hai người có kế hoạch cùng gặp. Không tự coi hôm nay là rằm, bịa vật phẩm hoặc ký ức chưa được lưu.",
     "suggestedActivities": ["Treo đèn lồng giấy ở sân chung", "Thưởng trà và ngắm ánh đèn tối", "Kể chuyện kỷ niệm của xóm"],
     "tags": ["culture", "lantern", "festival"]
   },
@@ -206,7 +206,8 @@
     "locations": ["Phố đi bộ", "Quảng trường"],
     "promptHint": "Cuối tuần, An dựng thử chiếc bàn gấp nhỏ trên Phố đi bộ để trưng bày mẫu quầy nước, Chi đặt mấy chậu húng quế nhỏ xinh, còn Bình phụ ghi nhận ý kiến.",
     "suggestedActivities": ["Bày bàn thử nghiệm ở phố đi bộ", "Giới thiệu chậu rau húng quế", "Lắng nghe phản hồi để cải tiến"],
-    "tags": ["culture", "weekend", "an_goal"]
+    "tags": ["culture", "weekend", "an_goal"],
+    "activation": "weekend"
   },
   {
     "id": "ctx-culture-power-saving-hour",
@@ -262,5 +263,283 @@
     "promptHint": "Khi cả ba đã tích lũy thêm kỹ năng làm việc, tính toán và nấu nướng qua nhiều ngày, Chi nấu một nồi chè đậu xanh nha đam mát lành để cả xóm chúc mừng những bước tiến nhỏ.",
     "suggestedActivities": ["Nấu nồi chè mừng cột mốc nhỏ", "Ôn lại những kỹ năng đã học được", "Đặt mục tiêu tiếp theo cho tuần mới"],
     "tags": ["milestone", "celebration", "continuity"]
+  },
+  {
+    "id": "ctx-city-chi-room",
+    "category": "empathy_resolution",
+    "title": "Một khoảng yên để sắp xếp ngày mới",
+    "phase": ["dawn", "morning", "noon", "afternoon", "dusk", "evening", "night"],
+    "weather": ["clear", "cloudy", "rain", "fog", "windy"],
+    "locations": ["Phòng Chi"],
+    "promptHint": "Có thể đề xuất sắp xếp ghi chú hoặc nghỉ trong phòng riêng. Nếu Chi đang ngủ hoặc bận, không tự tạo cuộc gặp hay cho người khác biết đồ đạc trong phòng.",
+    "suggestedActivities": ["Sắp xếp ghi chú riêng", "Nghỉ yên tĩnh"],
+    "tags": ["city", "editorial"]
+  },
+  {
+    "id": "ctx-city-community-class",
+    "category": "commitments_social",
+    "title": "Cùng đặt một câu hỏi dễ hiểu",
+    "phase": ["morning", "noon", "afternoon", "dusk", "evening"],
+    "weather": ["clear", "cloudy", "rain", "fog", "windy"],
+    "locations": ["Lớp học cộng đồng"],
+    "promptHint": "Hai người có thể chuẩn bị câu hỏi và chia bài học thành từng bước khi cùng có kế hoạch tới lớp; chưa coi việc dự định là đã hoàn thành bài học.",
+    "suggestedActivities": ["Ghi lại một câu hỏi", "Trao đổi một bước học cơ bản"],
+    "tags": ["city", "editorial"]
+  },
+  {
+    "id": "ctx-city-clinic",
+    "category": "empathy_resolution",
+    "title": "Hỏi thăm nhẹ nhàng ở phòng khám",
+    "phase": ["morning", "noon", "afternoon", "dusk", "evening"],
+    "weather": ["clear", "cloudy", "rain", "fog", "windy"],
+    "locations": ["Phòng khám"],
+    "promptHint": "Có thể hỏi thăm và tìm khu vực chờ trong mô phỏng. Không suy tình trạng sức khỏe, chẩn đoán, thuốc hoặc kết quả khám từ việc tới địa điểm.",
+    "suggestedActivities": ["Nghỉ ở khu chờ", "Hỏi đường trong mô phỏng"],
+    "tags": ["city", "editorial"]
+  },
+  {
+    "id": "ctx-city-market",
+    "category": "micro_economy",
+    "title": "Chuẩn bị danh sách đi chợ",
+    "phase": ["morning", "noon", "afternoon", "dusk", "evening"],
+    "weather": ["clear", "cloudy", "rain", "fog", "windy"],
+    "locations": ["Chợ nhỏ"],
+    "promptHint": "Có thể bàn danh sách món cần tìm và cách so sánh lựa chọn. Không tự tạo giá bán, hàng tồn, thanh toán hay đồ vật đã mua.",
+    "suggestedActivities": ["Lập danh sách món cần tìm", "Bàn kế hoạch bữa ăn"],
+    "tags": ["city", "editorial"]
+  },
+  {
+    "id": "ctx-city-vocational-school",
+    "category": "commitments_social",
+    "title": "Tập một kỹ năng theo từng bước",
+    "phase": ["morning", "noon", "afternoon", "dusk", "evening"],
+    "weather": ["clear", "cloudy", "rain", "fog", "windy"],
+    "locations": ["Trường nghề"],
+    "promptHint": "Có thể trao đổi mục tiêu học nghề và xin giải thích một bước cơ bản. Không tự nhận chứng chỉ, tay nghề đã đạt hoặc dụng cụ chưa có trong scene.",
+    "suggestedActivities": ["Đặt mục tiêu học một bước", "Ghi điều cần hỏi thêm"],
+    "tags": ["city", "editorial"]
+  },
+  {
+    "id": "ctx-city-hospital",
+    "category": "empathy_resolution",
+    "title": "Giữ nhịp yên tĩnh quanh bệnh viện",
+    "phase": ["morning", "noon", "afternoon", "dusk", "evening"],
+    "weather": ["clear", "cloudy", "rain", "fog", "windy"],
+    "locations": ["Bệnh viện"],
+    "promptHint": "Có thể nói nhỏ, nghỉ và tìm hướng dẫn trong thế giới mô phỏng. Không bịa bệnh nhân, bệnh án, chẩn đoán hoặc kết quả điều trị.",
+    "suggestedActivities": ["Nghỉ nhẹ tại nơi chờ", "Tìm biển hướng dẫn mô phỏng"],
+    "tags": ["city", "editorial"]
+  },
+  {
+    "id": "ctx-city-cinema",
+    "category": "vietnamese_culture",
+    "title": "Bàn một câu chuyện muốn xem",
+    "phase": ["morning", "noon", "afternoon", "dusk", "evening"],
+    "weather": ["clear", "cloudy", "rain", "fog", "windy"],
+    "locations": ["Rạp phim"],
+    "promptHint": "Có thể trao đổi thể loại câu chuyện và dự định ghé rạp. Không tự tạo lịch chiếu, vé đã mua hoặc nội dung phim như tin thực tế.",
+    "suggestedActivities": ["Chọn thể loại muốn tìm hiểu", "Chia sẻ một ý tưởng câu chuyện"],
+    "tags": ["city", "editorial"]
+  },
+  {
+    "id": "ctx-city-civic-office",
+    "category": "commitments_social",
+    "title": "Tìm hiểu một quy tắc nơi công cộng",
+    "phase": ["morning", "noon", "afternoon", "dusk", "evening"],
+    "weather": ["clear", "cloudy", "rain", "fog", "windy"],
+    "locations": ["Trụ sở công an"],
+    "promptHint": "Có thể hỏi về trật tự và ứng xử trong mô phỏng. Không tự tạo vi phạm, biên bản, mức phạt hay thông tin về một người khác.",
+    "suggestedActivities": ["Đọc quy tắc ứng xử mô phỏng", "Hỏi cách giữ lối đi chung"],
+    "tags": ["city", "editorial"]
+  },
+  {
+    "id": "ctx-city-factory",
+    "category": "micro_economy",
+    "title": "Chuẩn bị một công việc gọn gàng",
+    "phase": ["morning", "noon", "afternoon", "dusk", "evening"],
+    "weather": ["clear", "cloudy", "rain", "fog", "windy"],
+    "locations": ["Nhà máy"],
+    "promptHint": "Có thể trao đổi trình tự một ca làm và cách ghi chú. Không tự xác nhận sản phẩm, số lượng đã làm, thu nhập hoặc thao tác máy chưa có trạng thái.",
+    "suggestedActivities": ["Lập thứ tự việc nhỏ", "Ghi một câu hỏi về quy trình"],
+    "tags": ["city", "editorial"]
+  },
+  {
+    "id": "ctx-city-office",
+    "category": "commitments_social",
+    "title": "Chia công việc thành những bước nhỏ",
+    "phase": ["morning", "noon", "afternoon", "dusk", "evening"],
+    "weather": ["clear", "cloudy", "rain", "fog", "windy"],
+    "locations": ["Văn phòng"],
+    "promptHint": "Có thể cùng lập kế hoạch và xác định điều cần hỏi lại. Chưa ghi công việc đã hoàn thành, dữ liệu riêng của đồng nghiệp hoặc tiền công.",
+    "suggestedActivities": ["Sắp xếp việc ưu tiên", "Chuẩn bị một ghi chú công việc"],
+    "tags": ["city", "editorial"]
+  },
+  {
+    "id": "ctx-city-employment",
+    "category": "empathy_resolution",
+    "title": "Chuẩn bị câu hỏi về công việc",
+    "phase": ["morning", "noon", "afternoon", "dusk", "evening"],
+    "weather": ["clear", "cloudy", "rain", "fog", "windy"],
+    "locations": ["Trung tâm việc làm"],
+    "promptHint": "Có thể nói về mục tiêu và kỹ năng muốn luyện trong mô phỏng. Không tự khẳng định có tuyển dụng thực tế, trúng tuyển, mức lương hoặc hợp đồng.",
+    "suggestedActivities": ["Ghi mong muốn học nghề", "Chuẩn bị câu hỏi tìm việc"],
+    "tags": ["city", "editorial"]
+  },
+  {
+    "id": "ctx-city-bus-stop",
+    "category": "commitments_social",
+    "title": "Tìm hiểu đường đi trong mô phỏng",
+    "phase": ["morning", "noon", "afternoon", "dusk", "evening"],
+    "weather": ["clear", "cloudy", "rain", "fog", "windy"],
+    "locations": ["Bến xe buýt"],
+    "promptHint": "Có thể tìm đường tới trạm và bàn điểm muốn đến. Chưa có boarding authoritative; không nói đã lên xe, biết giờ xe thực tế hoặc mua vé khi không có dữ liệu.",
+    "suggestedActivities": ["Xem sơ đồ đường mô phỏng", "Bàn điểm muốn ghé thăm"],
+    "tags": ["city", "editorial"]
+  },
+  {
+    "id": "ctx-city-metro",
+    "category": "vietnamese_culture",
+    "title": "Bàn một chặng đi lại",
+    "phase": ["morning", "noon", "afternoon", "dusk", "evening"],
+    "weather": ["clear", "cloudy", "rain", "fog", "windy"],
+    "locations": ["Ga metro"],
+    "promptHint": "Có thể tìm hiểu khu vực ga và dự định đường đi trong mô phỏng. Không tạo giờ tàu thật, vé hoặc việc đã lên tàu từ một transport tag.",
+    "suggestedActivities": ["Tìm hiểu sơ đồ mô phỏng", "Chọn điểm muốn tới"],
+    "tags": ["city", "editorial"]
+  },
+  {
+    "id": "ctx-city-airport",
+    "category": "vietnamese_culture",
+    "title": "Một góc nhìn về việc đi xa",
+    "phase": ["morning", "noon", "afternoon", "dusk", "evening"],
+    "weather": ["clear", "cloudy", "rain", "fog", "windy"],
+    "locations": ["Sân bay"],
+    "promptHint": "Có thể hỏi thăm mục tiêu chuyến tham quan trong mô phỏng. Không tự gán lịch bay, vé, hành lý hoặc việc đã qua cửa kiểm soát.",
+    "suggestedActivities": ["Kể một dự định đi xa", "Tìm hướng dẫn mô phỏng"],
+    "tags": ["city", "editorial"]
+  },
+  {
+    "id": "ctx-city-restaurant",
+    "category": "micro_economy",
+    "title": "Bàn một bữa ăn vừa sức",
+    "phase": ["morning", "noon", "afternoon", "dusk", "evening"],
+    "weather": ["clear", "cloudy", "rain", "fog", "windy"],
+    "locations": ["Nhà hàng"],
+    "promptHint": "Có thể trao đổi món muốn tìm hiểu và ngân sách dự định. Không tự tạo món đã phục vụ, giá, hóa đơn hoặc thanh toán.",
+    "suggestedActivities": ["Bàn lựa chọn bữa ăn", "Lập ngân sách dự định"],
+    "tags": ["city", "editorial"]
+  },
+  {
+    "id": "ctx-city-supermarket",
+    "category": "micro_economy",
+    "title": "Lựa chọn vừa đủ cho sinh hoạt",
+    "phase": ["morning", "noon", "afternoon", "dusk", "evening"],
+    "weather": ["clear", "cloudy", "rain", "fog", "windy"],
+    "locations": ["Siêu thị"],
+    "promptHint": "Có thể bàn danh sách cần mua và ý tưởng tái sử dụng. Không tự tạo hàng tồn, giá bán hay vật phẩm đã thuộc sở hữu.",
+    "suggestedActivities": ["Chuẩn bị danh sách mua sắm", "So sánh nhu cầu thiết yếu"],
+    "tags": ["city", "editorial"]
+  },
+  {
+    "id": "ctx-city-sport",
+    "category": "empathy_resolution",
+    "title": "Luyện vận động vừa sức",
+    "phase": ["morning", "noon", "afternoon", "dusk", "evening"],
+    "weather": ["clear", "cloudy", "windy"],
+    "locations": ["Sân thể thao"],
+    "promptHint": "Có thể đề xuất khởi động và chọn hoạt động theo nhu cầu hiện có. Không khẳng định đã chạy đủ quãng đường hoặc hoàn thành vận động chỉ từ projection.",
+    "suggestedActivities": ["Khởi động nhẹ", "Bàn mục tiêu vận động nhỏ"],
+    "tags": ["city", "editorial"]
+  },
+  {
+    "id": "ctx-city-repair",
+    "category": "commitments_social",
+    "title": "Hỏi cách học một bước kỹ thuật",
+    "phase": ["morning", "noon", "afternoon", "dusk", "evening"],
+    "weather": ["clear", "cloudy", "rain", "fog", "windy"],
+    "locations": ["Xưởng xe máy"],
+    "promptHint": "Có thể hỏi về mục tiêu học và cách ghi chú từng bước trong mô phỏng. Không khẳng định xe đã sửa, có phụ tùng hay kỹ thuật chuyên môn chưa tích lũy.",
+    "suggestedActivities": ["Ghi một câu hỏi kỹ thuật", "Chuẩn bị mục tiêu học cơ bản"],
+    "tags": ["city", "editorial"]
+  },
+  {
+    "id": "ctx-city-culture",
+    "category": "vietnamese_culture",
+    "title": "Chia sẻ một ý tưởng sinh hoạt chung",
+    "phase": ["morning", "noon", "afternoon", "dusk", "evening"],
+    "weather": ["clear", "cloudy", "rain", "fog", "windy"],
+    "locations": ["Nhà văn hóa"],
+    "promptHint": "Có thể bàn ý tưởng kể chuyện hoặc hoạt động văn hóa trong mô phỏng. Không tự tạo sự kiện thật, giấy mời, khán giả hoặc người đã tham dự.",
+    "suggestedActivities": ["Gợi ý một chủ đề kể chuyện", "Bàn ý tưởng sinh hoạt chung"],
+    "tags": ["city", "editorial"]
+  },
+  {
+    "id": "ctx-city-post",
+    "category": "commitments_social",
+    "title": "Nói về một lời nhắn muốn gửi",
+    "phase": ["morning", "noon", "afternoon", "dusk", "evening"],
+    "weather": ["clear", "cloudy", "rain", "fog", "windy"],
+    "locations": ["Bưu điện"],
+    "promptHint": "Có thể chuẩn bị nội dung một lời nhắn trong mô phỏng. Không gửi ra ngoài, tự tạo bưu phẩm, địa chỉ cá nhân hoặc khẳng định người khác đã nhận.",
+    "suggestedActivities": ["Soạn ý chính của lời nhắn", "Kiểm tra cách viết dễ hiểu"],
+    "tags": ["city", "editorial"]
+  },
+  {
+    "id": "ctx-city-fire-station",
+    "category": "commitments_social",
+    "title": "Tìm hiểu cách giữ lối thoát thông thoáng",
+    "phase": ["morning", "noon", "afternoon", "dusk", "evening"],
+    "weather": ["clear", "cloudy", "rain", "fog", "windy"],
+    "locations": ["Trạm cứu hỏa"],
+    "promptHint": "Có thể hỏi về lối đi chung và cách quan sát biển hướng dẫn mô phỏng. Không tự tạo hỏa hoạn, báo động hoặc ca cứu nạn thật.",
+    "suggestedActivities": ["Quan sát lối đi mô phỏng", "Ghi câu hỏi về sinh hoạt an toàn"],
+    "tags": ["city", "editorial"]
+  },
+  {
+    "id": "ctx-city-homes",
+    "category": "empathy_resolution",
+    "title": "Giữ một khoảng nghỉ ở khu nhà",
+    "phase": ["dawn", "morning", "noon", "afternoon", "dusk", "evening", "night"],
+    "weather": ["clear", "cloudy", "rain", "fog", "windy"],
+    "locations": ["Khu dân cư"],
+    "promptHint": "Có thể về đúng cửa nhà của nhóm và nghỉ nhẹ. Nhóm ở không đồng nghĩa quan hệ huyết thống; không biết nội thất hay chuyện riêng của nhóm khác khi chưa có provenance.",
+    "suggestedActivities": ["Nghỉ theo nhu cầu", "Bàn cách giữ yên tĩnh nơi ở"],
+    "tags": ["city", "editorial"]
+  },
+  {
+    "id": "ctx-culture-tet",
+    "category": "vietnamese_culture",
+    "title": "Gợi ý chuyện Tết Nguyên đán",
+    "phase": ["morning", "noon", "afternoon", "dusk", "evening"],
+    "weather": ["clear", "cloudy", "rain", "fog", "windy"],
+    "locations": ["Nhà văn hóa", "Lớp học cộng đồng", "Quảng trường"],
+    "promptHint": "Chỉ khi nguồn lễ hội đang fresh và khoảng ngày khớp, có thể bàn một ý tưởng sinh hoạt Tết trong mô phỏng. Không nói đã có hội chợ, mua quà hoặc gặp người khác nếu chưa có record.",
+    "suggestedActivities": ["Hỏi về một phong tục Tết", "Bàn ý tưởng trang trí mô phỏng"],
+    "tags": ["culture", "festival"],
+    "activation": "tet"
+  },
+  {
+    "id": "ctx-culture-mid-autumn",
+    "category": "vietnamese_culture",
+    "title": "Gợi ý chuyện Trung thu",
+    "phase": ["morning", "noon", "afternoon", "dusk", "evening"],
+    "weather": ["clear", "cloudy", "rain", "fog", "windy"],
+    "locations": ["Nhà văn hóa", "Lớp học cộng đồng", "Quảng trường"],
+    "promptHint": "Chỉ khi nguồn lễ hội đang fresh và khoảng ngày khớp, có thể bàn chuyện đèn giấy hoặc kể chuyện Trung thu. Không suy ngày âm lịch hay sự kiện thật từ mùa hoặc tháng dương lịch.",
+    "suggestedActivities": ["Chia sẻ ý tưởng đèn giấy", "Bàn một câu chuyện muốn kể"],
+    "tags": ["culture", "festival"],
+    "activation": "mid-autumn"
+  },
+  {
+    "id": "ctx-culture-teachers-day",
+    "category": "vietnamese_culture",
+    "title": "Một lời cảm ơn dịp 20/11",
+    "phase": ["morning", "noon", "afternoon", "dusk", "evening"],
+    "weather": ["clear", "cloudy", "rain", "fog", "windy"],
+    "locations": ["Nhà văn hóa", "Lớp học cộng đồng", "Quảng trường"],
+    "promptHint": "Vào ngày 20/11 được calendar context xác nhận, có thể chuẩn bị một lời cảm ơn người hướng dẫn. Không tự tạo buổi lễ, quà, quan hệ thầy trò hoặc việc đã chuyển lời.",
+    "suggestedActivities": ["Chuẩn bị lời cảm ơn", "Chia sẻ điều muốn học tiếp"],
+    "tags": ["culture", "festival"],
+    "activation": "teachers-day"
   }
 ]

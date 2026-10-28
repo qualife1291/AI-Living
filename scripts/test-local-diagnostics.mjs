@@ -135,7 +135,9 @@ try{
  assert.equal((await policyResponse.json()).models[learner.id].linear['learn-trade'].samples,1,'Learning API hydrates the exact posterior');
  await db.prepare('CREATE TABLE IF NOT EXISTS context_cache(id TEXT PRIMARY KEY,data TEXT,expires_at INTEGER)').run();
  const lightResponse=await mf.dispatchFetch('http://localhost/api/world?compact=1');assert.equal(lightResponse.status,200);
- assert.equal((await lightResponse.json()).world.living.learning[learner.id].linear,undefined,'Polling world excludes normalized matrices');
+ const light=await lightResponse.json();
+ assert.equal(light.world.living.learning[learner.id].linear,undefined,'Polling world excludes normalized matrices');
+ assert(light.activeContexts.length>0&&light.activeContexts.every(c=>c.source==='editorial-suggestion'&&c.phase.includes(light.worldTime.phase)&&c.weather.includes(light.weatherState.kind)),'API suggestions match the effective weather/phase and retain editorial provenance');
  assert.deepEqual(learned.living.residents[0].memories.slice(0,oldMemories.length),oldMemories);
  const archive=JSON.parse((await db.prepare('SELECT data FROM agent_experiences WHERE id=?').bind('linucb-api-receipt').first()).data);
  assert.equal(archive.model,'disjoint-linucb-v1');assert.deepEqual(archive.context,contextAtChoice);
