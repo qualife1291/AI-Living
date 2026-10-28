@@ -637,6 +637,7 @@ export function createCity(
   const cameraBuildings = [...venues.filter(v => !openVenue(v)).map(venueGeometry), ...buildings.map(b => ({ x:b.x,z:b.z,width:b.width,depth:b.depth }))];
   function focus(x: number, z: number, offset = viewOffset,targetY=15) {
     scene.fog = fog;
+    controls.minPolarAngle=Math.hypot(offset.x,offset.z)<.1?0:.22;
     controls.target.set(x, targetY, z);
     camera.position.copy(controls.target).add(offset);
     controls.update();
@@ -841,13 +842,17 @@ export function createCity(
       targetKey = state.target.key;
       const home=homeAnchor(state.target.homeId);
       const plot=gardenPlot(state.target.gardenId),clear=(from:[number,number],to:[number,number])=>!cameraBuildings.some(rect=>segmentHits(rect,from,to,2));
-      const offset=plot?gardenCameraOffset(plot,clear):home?homeCameraOffset(home,clear):undefined;
+      const offset=plot?gardenCameraOffset(plot,clear,camera.aspect):home?homeCameraOffset(home,clear):undefined;
       focus(state.target.x,state.target.y,offset?new THREE.Vector3(...offset):undefined,plot?plot.floor+5:15);
       if(home)host.dataset.homeFocus=home.id;
       if(plot)host.dataset.gardenFocus=plot.id;
     }
     gardens.draw(world,seconds*1000);
-    if(stamp-lastStatus>180){const stats=gardens.stats();host.dataset.gardenStates=JSON.stringify(stats.views);host.dataset.gardenUpdates=String(stats.updates);host.dataset.gardenStateError=String(stats.failed);}
+    if(stamp-lastStatus>180){
+      const stats=gardens.stats();host.dataset.gardenStates=JSON.stringify(stats.views);host.dataset.gardenUpdates=String(stats.updates);host.dataset.gardenStateError=String(stats.failed);
+      const plot=gardenPlot(state.target?.gardenId);
+      if(plot){let framed=true;for(const dx of [-plot.width/2,plot.width/2])for(const dz of [-plot.depth/2,plot.depth/2])for(const y of [plot.floor,plot.floor+11]){const p=new THREE.Vector3(plot.x+dx,y,plot.z+dz).project(camera);if(Math.abs(p.x)>1||Math.abs(p.y)>1||Math.abs(p.z)>1)framed=false;}host.dataset.gardenFramed=String(framed);}
+    }
     const currentWeather = weatherAt(world.born, worldTime(world, lastTime), world.clock?.weatherOverride);
     ambience.update(seconds, currentWeather.kind, currentWeather.intensity);
     if (ambience.flash > 0) {

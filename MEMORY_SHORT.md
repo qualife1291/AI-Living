@@ -7,3 +7,5 @@
 - Giữ3D/tag/pet/bike/overlays, IDs/history/memory/home/petOwners. Không reset DB, sửa migration cũ, paidAPI/public/video/cron trùng. Native production cần backup/schemacheck/migration0006/0007/readback; thiếu Sites không chặn source độc lập.
 
 - WIP Phase E flora mới sau candidate da1: năm cụm hoa/30cây cùng footprint streetProps, catalog JSON sinh offline; pure growth/moisture5phase, tưới owner-only2KiB/origin/CAS/paused/noop, metadata optional không migration. GardenCare ở Địa điểm, Xem cây camera tránh nhà, renderer2batches/không upload khi trạng thái không đổi. Check/lint ban đầu đạt; còn pure/geometry/API tests, full50/build/browser và chưa được coi hoàn tất. Candidate da1 không chứa flora WIP.
+
+- Flora targeted pure/geometry suite đã đạt:25phase-moisture cases/2.200matrix,3.240triangles max/2batches, analytic growth/pause/noPastGrowth/legacy/retired/corrupt/dispose. Test bắt và sửa cache mượn cây khi world.born rỗng→đổi world. HTTP flora tests owner/origin/schema/UTF8/CAS/preserve đã thêm nhưng chưa chạy compiled. Camera portrait có clearance sau aspect scaling, tránh OrbitControls clamp làm sai ray. Còn full50/build/API và browser.

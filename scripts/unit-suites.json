@@ -146,5 +146,8 @@
   ],
   [
     "scripts/test-plan-completion.mjs"
+  ],
+  [
+    "scripts/test-flora.mjs"
   ]
 ]

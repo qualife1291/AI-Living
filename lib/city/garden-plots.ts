@@ -4,10 +4,11 @@ export type GardenPlot=typeof data.plots[number];
 export const GARDEN_PLOTS:readonly GardenPlot[]=data.plots;
 const byId=new Map(GARDEN_PLOTS.map(plot=>[plot.id,plot]));
 export const gardenPlot=(id:string|undefined)=>id?byId.get(id):undefined;
-export function gardenCameraOffset(plot:GardenPlot,clear:(from:[number,number],to:[number,number])=>boolean):[number,number,number] {
-  for(const radius of [48,36,24])for(let step=0;step<8;step++){
-    const angle=(plot.seed%8+step)/8*Math.PI*2,x=Math.sin(angle)*radius,z=Math.cos(angle)*radius;
-    if(clear([plot.x,plot.z],[plot.x+x,plot.z+z]))return [x,Math.max(22,radius*.55),z];
+export function gardenCameraOffset(plot:GardenPlot,clear:(from:[number,number],to:[number,number])=>boolean,aspect=1):[number,number,number] {
+  const scale=Math.max(1,.72/(Number.isFinite(aspect)&&aspect>0?Math.max(.25,aspect):1));
+  for(const radius of [48,40,36])for(let step=0;step<8;step++){
+    const angle=(plot.seed%8+step)/8*Math.PI*2,x=Math.sin(angle)*radius*scale,z=Math.cos(angle)*radius*scale;
+    if(clear([plot.x,plot.z],[plot.x+x,plot.z+z]))return [x,Math.max(22,radius*.55)*scale,z];
   }
   return [0,65,.01];
 }

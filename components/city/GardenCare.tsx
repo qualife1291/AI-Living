@@ -14,8 +14,8 @@ export function GardenCare({world,revision,now,venue,refresh,onView}:{world:Worl
     setBusy(true);setMessage("");
     try{
       const response=await fetch("/api/living/flora",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({id,revision})});
-      const result=await response.json() as {error?:string;changed?:boolean};
-      if(!response.ok){if(response.status===409)await refresh();throw Error(result.error??"Chưa tưới được cây. Hãy thử lại.");}
+      const result=await response.json().catch(()=>({})) as {ok?:boolean;error?:string;changed?:boolean};
+      if(!response.ok||result.ok!==true){if(response.status===409||response.ok)await refresh();throw Error(typeof result.error==="string"?result.error:"Chưa xác nhận được lần tưới. Hãy thử lại.");}
       await refresh();setMessage(result.changed?"Đã bổ sung nước cho khóm hoa.":"Đất vẫn đủ ẩm.");
     }catch(error){setMessage(error instanceof Error?error.message:"Chưa tưới được cây. Hãy thử lại.");}
     finally{setBusy(false);}

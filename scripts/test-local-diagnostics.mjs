@@ -1,5 +1,6 @@
 import {rememberDialogue,hasDialogue} from "../lib/living/dialogue-pool.ts";
 import {retrievePromptMemories} from "../lib/living/prompt-memories.ts";
+import {GARDEN_PLOTS} from "../lib/city/garden-plots.ts";
 import { seed } from "../lib/world.ts";
 import { initializeLiving, turnId, localDate, planLivingTurn } from "../lib/living/engine.ts";
 import { scheduleResidentSocial } from "../lib/living/social-scheduler.ts";
@@ -22,6 +23,7 @@ const mf=new Miniflare(options);
 try{
  const url='http://localhost/api/diagnostics';
  assert.equal((await mf.dispatchFetch('http://localhost/api/living/pets',{method:'POST',body:'{}'})).status,403,'Pet ownership mutations require the owner');
+ assert.equal((await mf.dispatchFetch('http://localhost/api/living/flora',{method:'POST',body:'{}'})).status,403,'Garden care requires the owner');
  assert.equal((await mf.dispatchFetch(url)).status,403,'non-owner GET denied');
  assert.equal((await mf.dispatchFetch('http://localhost/api/living/memories?actor=an')).status,403,'Structured memories require owner access');
  const deniedContext=await retrievePromptMemories('http://localhost',['an'],'góc sách',(url,init)=>mf.dispatchFetch(String(url),init));
@@ -239,5 +241,33 @@ try{
  const directWorld=JSON.parse((await db.prepare("SELECT data FROM worlds WHERE id='home'").first()).data);
  assert(directWorld.living.reportedEncounters.includes(secondOrigin));assert.equal(directWorld.living.residents.find(r=>r.id===secondPeer).familiarity,Math.min(100,secondFamiliarity+1));
  console.log('PASS full-plan encounter reporting survives quiet slots, consumes owned outcomes and remains idempotent for learning-first and direct ticks');
+ // Garden care owns no character reward/memory effects and shares world CAS.
+ const gardenPost=(body,headers={})=>mf.dispatchFetch('http://localhost/api/living/flora',{method:'POST',headers:{'content-type':'application/json',...headers},body:typeof body==='string'?body:JSON.stringify(body)});
+ assert.equal((await gardenPost('{')).status,400);assert.equal((await gardenPost('💧'.repeat(513))).status,413);
+ assert.equal((await gardenPost({id:GARDEN_PLOTS[0].id,revision:0,actor:'an'})).status,400);
+ assert.equal((await gardenPost({id:'__proto__',revision:0})).status,404);
+ assert.equal((await gardenPost({}, {origin:'https://example.invalid'})).status,403);
+ const gardenBefore=await db.prepare("SELECT revision,data FROM worlds WHERE id='home'").first(),gardenWorld=JSON.parse(gardenBefore.data);
+ const policyBeforeGarden=(await db.prepare('SELECT * FROM learning_policies ORDER BY actor_id').all()).results;
+ const gardenBody={id:GARDEN_PLOTS[0].id,revision:gardenBefore.revision},waterResponse=await gardenPost(gardenBody);assert.equal(waterResponse.status,200,await waterResponse.text());
+ const gardenAfter=await db.prepare("SELECT revision,data FROM worlds WHERE id='home'").first(),wateredWorld=JSON.parse(gardenAfter.data);
+ assert.equal(wateredWorld.living.flora.plots[gardenBody.id].moisture,100);const floraOnly=structuredClone(wateredWorld);delete floraOnly.living.flora;
+ assert.deepEqual(floraOnly,gardenWorld,'Care changes flora only, preserving every character, plan, home, memory, experience and policy reference');
+ assert.deepEqual((await db.prepare('SELECT * FROM learning_policies ORDER BY actor_id').all()).results,policyBeforeGarden);
+ assert.equal((await gardenPost(gardenBody)).status,409,'A stale watering request cannot overwrite the snapshot');
+ const alreadyWet=await gardenPost({...gardenBody,revision:gardenAfter.revision});assert.equal(alreadyWet.status,200);assert.equal((await alreadyWet.json()).changed,false);
+ assert.deepEqual(await db.prepare("SELECT revision,data FROM worlds WHERE id='home'").first(),gardenAfter,'Fresh retry at the same time is a no-op');
+ const raced=await Promise.all([gardenPost({id:GARDEN_PLOTS[1].id,revision:gardenAfter.revision}),gardenPost({id:GARDEN_PLOTS[2].id,revision:gardenAfter.revision})]);assert.deepEqual(raced.map(r=>r.status).sort(),[200,409]);
+ const raceRow=await db.prepare("SELECT revision,data FROM worlds WHERE id='home'").first(),raceWorld=JSON.parse(raceRow.data);assert.equal(Object.keys(raceWorld.living.flora.plots).length,2);
+ const pausedGarden={...raceWorld,paused:true};await db.prepare("UPDATE worlds SET data=? WHERE id='home'").bind(JSON.stringify(pausedGarden)).run();
+ assert.equal((await gardenPost({id:GARDEN_PLOTS[3].id,revision:raceRow.revision})).status,409);assert.equal((await db.prepare("SELECT data FROM worlds WHERE id='home'").first()).data,JSON.stringify(pausedGarden));
+ const corruptGarden=structuredClone(raceWorld);corruptGarden.living.flora.version=2;await db.prepare("UPDATE worlds SET data=? WHERE id='home'").bind(JSON.stringify(corruptGarden)).run();
+ assert.equal((await gardenPost({id:GARDEN_PLOTS[3].id,revision:raceRow.revision})).status,409);assert.equal((await db.prepare("SELECT data FROM worlds WHERE id='home'").first()).data,JSON.stringify(corruptGarden),'Unsupported garden data is preserved');
+ const extendedGarden=structuredClone(raceWorld);extendedGarden.living.flora.plots.retired={growthSimMs:12345,anchoredSimMs:0,moisture:32,note:'Giữ khóm cây cũ'};extendedGarden.living.flora.plots[gardenBody.id].note='Giữ ghi chú';
+ await db.prepare("UPDATE worlds SET data=? WHERE id='home'").bind(JSON.stringify(extendedGarden)).run();await setFixtureTime(fixedNow+1200000+86400000);
+ const rewater=await gardenPost({id:gardenBody.id,revision:raceRow.revision});assert.equal(rewater.status,200,await rewater.text());
+ const keptGarden=JSON.parse((await db.prepare("SELECT data FROM worlds WHERE id='home'").first()).data);
+ assert.deepEqual(keptGarden.living.flora.plots.retired,extendedGarden.living.flora.plots.retired);assert.equal(keptGarden.living.flora.plots[gardenBody.id].note,'Giữ ghi chú');
+ console.log('PASS garden owner/origin/schema/UTF-8 limit, persisted care, no-op/stale/CAS race, pause/corrupt/retired preservation and no character rewards');
  console.log(JSON.stringify({suite:'local-diagnostics-http',ownerReadGuard:true,ownerWriteGuard:true,streamByteLimit:true,schema:true,origin:true,ack:true,jsonlReadback:true,rateLimit:true,retention:true,pulsePersistence:true,pulseRetry:true,pulsePause:true,productionAccess:false}));
 }finally{await mf.dispose();globalThis.Date=NativeDate;}
