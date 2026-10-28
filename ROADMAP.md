@@ -7,8 +7,8 @@
 | Phase | Việc làm | Nghiệm thu |
 |---|---|---|
 | H2: promotion còn chờ | V1 đã đo và không promote; chỉ nghiên cứu v2 khi có protocol mới | Cả3 candidate trượt return, stress còn trượt needs; warm chưa chứng minh lợi ích. Không retune20seed đã xem. Nếu thử tiếp, tách train/validation/holdout mới, giữ raw reward/context/emergency guards, durable receipt/CAS trước runtime; return/needs không giảm, opportunity-cost không tăng, entropy≥80% baseline bằng paired CI. |
-| H3 / WP3 — đang triển khai | Evidence cho reward hiện hành, rồi reward dài hạn có authority | Trước mắt version/breakdown/before-after/actor/plan/time/sample trong archive CAS; không đổi raw reward hoặc backfill giả. Social/travel/commitment reward chờ authority thật; reward/features mới phải tách namespace. |
-| H4 / WP4 | Shared-role priors sau provenance | Role/personal tách nguồn/confidence, giữ cá tính và earned samples; tái sử dụng policy store0007, không tạo migration đè. Benchmark seed mới và CAS/retry. |
+| H3b / WP3 — chờ authority | Reward dài hạn sau nền evidence v1 | Social/travel/commitment chỉ từ effect hoàn tất có nguồn và authority thật; reward/features mới tách namespace, đo chống reward hacking/action dominance. Không thưởng từ ETA/thoại hoặc backfill giả. |
+| H4 / WP4 — bước code tiếp | Shared-role priors sau provenance | Role/personal tách nguồn/confidence, giữ cá tính và earned samples; tái sử dụng policy store0007, không tạo migration đè. Benchmark seed mới và CAS/retry. |
 | H5 / WP5 | P2P sau xác nhận cuộc gặp/chia sẻ | Ground/encounter authority trước; tips không thành own samples/observed memory, decay on-read và actor isolation. |
 | H6 / WP6 | Prior/replay offline, ưu tiên học trước feature khác | Chỉ synthetic/compatible archived context; artifact hash/schema/provenance, confidence bounded, không tăng earned samples. Đo cold-start trên seed giữ lại, không ghi live DB. |
 | H10 / WP10 | Tối ưu tham số offline có giới hạn | Sau harness/prior hợp lệ; train/validation seeds tách, budget cố định, diversity và paired CI. Runtime chỉ đọc artifact đã review, không tự sửa code/đổi policy/deploy. |
@@ -39,7 +39,7 @@
 
 | Gói tương lai | Phạm vi được nhận và điều kiện |
 |---|---|
-| WP20 kinh tế | Sau business/employment: journal chuyển tiền có receipt/CAS, cùng currency/units, không âm. Tổng gồm cash+savings+business+quỹ; thuế là chuyển nội bộ. Reconcile moneyDelta cũ, guard stock0 và budget. Bounded snapshot, giữ journal; chưa áp thuế hoặc claim lạm phát5%. |
+| WP20 kinh tế | Sau business/employment: journal chuyển tiền có receipt/CAS, cùng currency/units, không âm. Tổng gồm cash+savings+business+quỹ; thuế là chuyển nội bộ, tiền khởi tạo/tân cư cần nguồn rõ. Reconcile moneyDelta cũ, guard stock0 và budget. Bounded snapshot, giữ journal; chưa áp thuế hoặc claim lạm phát5%. |
 | WP21 nhà/tân cư | Mở rộng60 cửa/home/identity và population loop hiện có; capacity/ownership/rent đồng bộ kinh tế, không tạo vòng nhập cư thứ hai. Chuyển nhà/đi giữ IDs/memory/home/pet/history; lifecycle/family cần thiết kế riêng. |
 | WP22 học nghề | Mastery theo domain đã có; mentor/apprentice hai phía và completed session có authority, giới hạn practice/ngày. Contract/shift trước wage; pension phải có quỹ, chưa thêm retirement tự động. |
 | WP24 nhóm/dự án | Sau bonds/kinh tế/nhà: nhóm thành viên riêng biệt, lịch/nơi hợp lệ, họp có authority, dự án reserve/spend/complete cùng CAS. Giải thể giữ lịch sử; chưa đổi hợp đồng thoại hai speaker. |
@@ -53,7 +53,7 @@ Retention chỉ giới hạn working set/cache; giữ durable journal/history. D
 
 ## Đề xuất ngoài và ranh giới
 
-Ưu tiên mới của chủ dự án: học policy từ outcome và huấn luyện/tối ưu offline trước; hệ thống thế giới phát triển cùng các mốc học, không hứa online fine-tune LLM. Hai file Claude/Deepseek28/10 đã đối chiếu trong [intelligence-review](docs/validation/intelligence-review-2026-10-28.json). Không chép lại spec vào gốc hoặc phục hồi memory/review MD dài. H1/H2 đã có baseline/gates tại LEARNING và validation; H2 v1 kết thúc bằng không promote, default giữ LinUCB. Tiếp H3 theo thứ tự với reward/outcome provenance trước hierarchy; không cần bật residual thất bại để làm provenance. Các tính năng phụ thuộc authority vẫn phải chờ bằng chứng tương ứng.
+Ưu tiên mới của chủ dự án: học policy từ outcome và huấn luyện/tối ưu offline trước; hệ thống thế giới phát triển cùng các mốc học, không hứa online fine-tune LLM. Hai file Claude/Deepseek28/10 đã đối chiếu trong [intelligence-review](docs/validation/intelligence-review-2026-10-28.json). Không chép lại spec vào gốc hoặc phục hồi memory/review MD dài. H1/H2 đã có baseline/gates tại LEARNING và validation; H2 v1 kết thúc bằng không promote, default giữ LinUCB. H3 foundation đã có versioned reward evidence/archive audit, giữ v1 reward; tiếp H4 hierarchy trên nguồn tương thích, H3b chờ authority; không cần bật residual thất bại để làm provenance. Các tính năng phụ thuộc authority vẫn phải chờ bằng chứng tương ứng.
 
 WP7 còn curation/few-shot theo context; WP8A–C goals/business/bonds và WP11 triggers cần whitelist/authority/giới hạn. WP12–19 mở rộng weather/calendar/laws/content/security/education/health/environment trên các schema hiện có; giữ nguồn TP.HCM và không giả dữ kiện y tế/pháp luật. Family/lifecycle không thuộc đợt này. Các mục đã có (LinUCB, policy store, RAG, dialogue pool, health error,3D/docs) không triển khai trùng.
 

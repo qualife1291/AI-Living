@@ -71,13 +71,13 @@
     {
       "proposal": "WP20 economy",
       "decision": "accept later with corrected accounting",
-      "analysis": "Use append-only journal and idempotent completed-transfer receipts. Include cash+savings+business+community fund in conserved stock; tax is an internal transfer, not destruction. Declare wage/boost external sources and costs/sinks. Guard stock=0, bound demand/time windows; set inflation metrics on prices, not total cash/basePrice. No5% annual claim from60days.",
+      "analysis": "Use append-only journal and idempotent completed-transfer receipts. Include cash+savings+business+community fund in conserved stock; tax is an internal transfer, not destruction. Declare wage/boost external sources and costs/sinks. Guard stock=0, bound demand/time windows; set inflation metrics on prices, not total cash/basePrice. No5% annual claim from60days. Initialization/immigration cash must be an explicit issuance/funded transfer. Demand/stock formula with nonnegative demand cannot reach the proposed lower0.8 multiplier; define shortage/surplus and stock flow before claiming market pricing.",
       "code_or_source": "lib/world.ts Person.money; lib/living/learning.ts; lib/living/service.ts"
     },
     {
       "proposal": "WP20 current-money claim",
       "decision": "correct stale premise",
-      "analysis": "No scenario drink-stall in current41-action catalog; planner learning does not pay wages. Existing bounded core moneyDelta event path must be reconciled, not silently replaced by NPC wallet defaults. No automatic taxes or wallet migration.",
+      "analysis": "No scenario drink-stall in current41-action catalog; planner learning does not pay wages. Existing bounded core moneyDelta event path must be reconciled, not silently replaced by NPC wallet defaults. No automatic taxes or wallet migration. Any proposed2%tax/30%pension are fictional simulation parameters, not Vietnamese tax/pension facts.",
       "code_or_source": "lib/world.ts; data/city/scenarios.json; lib/event-schema.ts"
     },
     {
@@ -95,7 +95,7 @@
     {
       "proposal": "WP23 culture and news",
       "decision": "accept later with provenance",
-      "analysis": "Template/curated fiction is editorial-authored, never invented human authorship. Separate public availability, reading, hearing and witnessing. Every hop needs confirmed sharing, source chain, dedup and bounded decay. Bulletin read must not restore confidence to1 or convert gossip into observed truth. No blanket LLM ban needed for separately labeled reviewed narrative.",
+      "analysis": "Template/curated fiction is editorial-authored, never invented human authorship. Separate public availability, reading, hearing and witnessing. Every hop needs confirmed sharing, source chain, dedup and bounded decay. Bulletin read must not restore confidence to1 or convert gossip into observed truth. No blanket LLM ban needed for separately labeled reviewed narrative. Confidence is a propagation heuristic, not a calibrated probability of truth; indirect hearing never becomes direct witness.",
       "code_or_source": "lib/memory-records.ts; lib/living/prompt-memories.ts; lib/living/dialogue-pool.ts"
     },
     {

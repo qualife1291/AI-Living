@@ -66,6 +66,7 @@ const tamper=(change,reason)=>{const copy=structuredClone(record);change(copy);a
 tamper(r=>r.actorId='other','identity-mismatch');tamper(r=>r.id='other','identity-mismatch');
 tamper(r=>r.scenarioId='lunch','identity-mismatch');tamper(r=>r.rewardEvidence.scenarioSignature=0,'scenario-version-mismatch');
 tamper(r=>r.rewardEvidence.rewardVersion='v2','invalid-evidence');
+tamper(r=>r.rewardEvidence.featureVersion='future-7d','invalid-evidence');
 tamper(r=>r.rewardEvidence.authority='physical-arrival','invalid-evidence');
 tamper(r=>r.rewardEvidence.components.social=1,'invalid-evidence');
 tamper(r=>r.rewardEvidence.before.energy=NaN,'invalid-evidence');

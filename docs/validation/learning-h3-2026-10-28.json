@@ -1,0 +1,128 @@
+{
+  "phase": "H3 foundation: attributable existing simulation reward, not long-term reward rollout",
+  "date": "2026-10-28",
+  "timezone": "Asia/Ho_Chi_Minh",
+  "tested_source_before_docs": "a477b5a80b586805fedaf89679f69a97a49bd91c",
+  "review": "society-nim-review-2026-10-28.json",
+  "reward_version": "scenario-outcome-v1",
+  "feature_version": "needs-6d-v1",
+  "authority": "simulation-plan-time-v1",
+  "unit": {
+    "suite": "unit-summary",
+    "total": 54,
+    "passed": 54,
+    "failed": [],
+    "workers": 4,
+    "seconds": 49.57
+  },
+  "typecheck": true,
+  "lint": true,
+  "build": true,
+  "asset_integrity": true,
+  "compiled_local_API": {
+    "suite": "local-diagnostics-http",
+    "ownerReadGuard": true,
+    "ownerWriteGuard": true,
+    "streamByteLimit": true,
+    "schema": true,
+    "origin": true,
+    "ack": true,
+    "jsonlReadback": true,
+    "rateLimit": true,
+    "retention": true,
+    "diagnosticsReadOnly": true,
+    "pulsePersistence": true,
+    "pulseRetry": true,
+    "pulseConcurrentViewers": 12,
+    "pulseNoDuplicateAudit": true,
+    "pulsePause": true,
+    "healthSchemaBatch": true,
+    "productionAccess": false
+  },
+  "new_API_assertions": {
+    "reward_breakdown_context_identity_samples_validated": true,
+    "legacy_start_time_binding_preserved": true,
+    "original_plan_fingerprint_binding": true,
+    "world_policy_evidence_archive_atomic": true,
+    "competing_requests_one_credit_one_archive": true,
+    "JSONL_contains_full_evidence": true,
+    "snapshot_omits_detailed_evidence": true,
+    "legacy_archive_bytes_preserved": true,
+    "retry_no_duplicate_credit": true
+  },
+  "unit_assertions": [
+    "decision context versus settlement state separated",
+    "full duration and plan key changes",
+    "saturated skill/health zero credit; negative health component retained",
+    "actor/experience/scenario identity mismatch rejected",
+    "unsupported reward/feature/source/scenario signature rejected",
+    "reward component/total/domain/context tamper rejected",
+    "duplicate IDs rejected by audit; no early/cancelled/replayed sample",
+    "legacy missing evidence remains unverified; anchor-only plans kept with null key/duration",
+    "read-only audit; deterministic aggregate/hash; output exclusive create; malformed JSONL does not echo private data",
+    "snapshot projection does not mutate archive input, IDs or model"
+  ],
+  "regression_fixed": "Legacy plans with only simStartedAt previously settled under existing compatibility contract. H3 now preserves them and explicitly records unknown matched plan key/duration; audit never upgrades them to complete evidence.",
+  "baseline_regression": {
+    "golden_outcomes": 15375,
+    "golden_choices": 1500,
+    "golden_unchanged": true,
+    "H1_full_repeat_identical_bytes": true,
+    "H1_full_report_sha256": "9b19e73634f67b029dbdfbdf7cd2b3e5309a7786435cea01f3c6b0ca02c2add9",
+    "plans": 691200,
+    "report": "learning-linucb-full-v1.json"
+  },
+  "payload_fixture": {
+    "fixture": "240 synthetic completed full-plan outcomes, not production sizing/SLA",
+    "collected": 240,
+    "retained": 200,
+    "evidenceSnapshotBytes": 212079,
+    "sameSnapshotWithoutEvidenceBytes": 43166,
+    "archiveParameterBytes": 308877,
+    "maxRecordBytes": 1085,
+    "audit": {
+      "kind": "simulation-reward-audit-v1",
+      "records": 240,
+      "counts": {
+        "verified-contextual": 240,
+        "verified-tabular": 0,
+        "legacy-unverified": 0,
+        "rejected": 0
+      },
+      "reasons": {
+        "consistent-simulation-evidence": 240
+      },
+      "bindings": {
+        "fingerprint-v1": 240
+      },
+      "writesProduction": false,
+      "trainsPolicy": false,
+      "scope": "Self-consistency of server simulation records, not external authenticity, physical arrival or witnessed social effects. Legacy evidence is not backfilled."
+    },
+    "serializedSnapshotBytes": 43166,
+    "serializedProjectionPreservesArchiveInput": true
+  },
+  "documentation": {
+    "markdownFiles": 23,
+    "localLinksChecked": 76
+  },
+  "migrations_added_or_rewritten": false,
+  "default_runtime_policy_changed": false,
+  "reward_formula_changed": false,
+  "policy_matrices_changed": false,
+  "production_access": false,
+  "new_browser_run": false,
+  "renderer_UI_changed": false,
+  "hosted_inference_or_NIM_key_used": false,
+  "production_deployed": false,
+  "limits": [
+    "Evidence describes simulation elapsed-time/plan matching, not physical arrival, social witnessing, hearsay, commitment fulfillment or clinical facts.",
+    "Offline inspector verifies self-consistency only; a fabricated external file is not authenticated or permitted to train/import into runtime.",
+    "The original v1 raw reward is preserved. No new social/travel/commitment reward, role hierarchy or H6 replay importer is enabled.",
+    "Missing/weak legacy evidence is not reconstructed from ETA, text, current state or inferred decision context.",
+    "Working snapshot retains200 summaries; durable archive retains all outcomes and full evidence. Future archive replay still needs an explicit source/version/authority policy.",
+    "Synthetic size fixture is not a D1 cost, production payload budget, hardware performance or uptime guarantee.",
+    "Society WP20–27 and NIM pilots are conditional future backlog. No new paid API, scheduler, public audience, vector DB, family/lifecycle or hosted production dependency.",
+    "Native Sites credential/deploy/status/database tools remain unavailable; candidate preparation does not deploy or verify live production."
+  ]
+}
