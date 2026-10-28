@@ -42,6 +42,8 @@ cfg.d1_databases = [{
 // No unauthenticated access is allowed; never remove its Access policy.
 cfg.workers_dev = true;
 cfg.preview_urls = false;
+// QA only: capture HTTP statuses and uncaught errors. Do not enable on Sites A.
+cfg.observability = { enabled: true, logs: { invocation_logs: true, head_sampling_rate: 1 } };
 writeFileSync(location, JSON.stringify(cfg, null, 2) + "\n");
 console.log(JSON.stringify({
   worker: cfg.name,
