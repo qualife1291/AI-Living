@@ -57,6 +57,7 @@ export type LivingState = {
   experiences?: import("./learning").Experience[];
   learningCommit?: string;
   dialoguePool?: import("./dialogue-pool").DialoguePool;
+  reportedEncounters?: string[];
   socialSchedule?: {
     checkedSimMs: number;
     cooldowns: Record<string, number>;

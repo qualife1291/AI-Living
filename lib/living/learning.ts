@@ -6,6 +6,7 @@ import type { World, PersonPlan } from "../world";
 import { computeSimMs, hashSeed, worldTime } from "../clock.ts";
 import { decisionContext, fitLinear, linearScore, validDecisionContext, type LinearArm } from "./linucb.ts";
 import {SKILL_DOMAINS,type SkillDomain,type DomainGain} from "./skills.ts";
+import {pendingPlanMatches} from "./plan-identity.ts";
 export const scenarioSchema = z
   .object({
     id: z.string().regex(/^[a-z][a-z0-9-]{0,60}$/),
@@ -68,6 +69,7 @@ export type AgentLearning = {
     durationMs: number;
     completed: boolean;
     context?: number[];
+    planKey?: string;
   };
 };
 export type Experience = {
@@ -247,7 +249,7 @@ export function settleLearning(
 export function hasUnfinishedLearning(agent: AgentLearning | undefined, plan: PersonPlan | undefined, simMs: number) {
   const pending = agent?.pending;
   const planActive = plan?.simStartedAt !== undefined && simMs < plan.simStartedAt + plan.steps.reduce((s,step)=>s+step.duration,0)*1000;
-  return !!planActive || !!pending && !pending.completed && plan?.simStartedAt === pending.startedSimMs && simMs < pending.startedSimMs + pending.durationMs;
+  return !!planActive || !!pending && !pending.completed && pendingPlanMatches(pending,plan) && simMs < pending.startedSimMs + pending.durationMs;
 }
 
 /** Needs drift in simulation time; legacy agents start at the current anchor.
@@ -293,7 +295,7 @@ export function prepareLearning(world: World, state: LivingState, now: number, c
       agent,
       simMs,
       new Date(now).toISOString(),
-      person.plan?.simStartedAt === agent.pending?.startedSimMs,
+      pendingPlanMatches(agent.pending,person.plan),
     );
     if (trained && agent.pending) {
       const action = agent.actions[agent.pending.scenarioId];

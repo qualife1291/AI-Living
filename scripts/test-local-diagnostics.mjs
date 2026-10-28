@@ -212,5 +212,32 @@ try{
   assert.deepEqual((await db.prepare('SELECT * FROM learning_policies ORDER BY actor_id').all()).results,quietPolicies.results,'Rejected scene cannot train policies');
  }
  console.log('PASS busy and night plans reject model dialogue without world/policy writes');
+ // A saved quiet slot must neither report an unfinished encounter nor lose the
+ // original pending/turn link when it is eventually settled by learning first.
+ const initialEncounter=JSON.parse(quietRow.data),originId=initialEncounter.living.learning.an.pending.id;
+ const originPeer=initialEncounter.livingTurn.residentId,beforeFamiliarity=initialEncounter.living.residents.find(r=>r.id===originPeer).familiarity;
+ const beforeAnMemory=[...initialEncounter.people.find(p=>p.id==='an').memories];
+ const setFixtureTime=async time=>{
+  await mf.dispatchFetch('http://localhost/__fixture/time?now='+time);
+  for(const key of ['hcm-weather',`vn-holidays-${poolDate.slice(0,4)}`,`hcm-events-${poolDate.slice(0,7)}`])await db.prepare('INSERT OR REPLACE INTO context_cache(id,data,expires_at) VALUES (?,?,?)').bind(key,'null',time+3600000).run();
+ };
+ const rulesTick=()=>mf.dispatchFetch('http://localhost/api/living/tick',{method:'POST',headers:{'content-type':'application/json'},body:'{}'});
+ await setFixtureTime(fixedNow+300000);const stillBusy=await rulesTick();assert.equal(stillBusy.status,200,await stillBusy.text());
+ const busyWorld=JSON.parse((await db.prepare("SELECT data FROM worlds WHERE id='home'").first()).data);
+ assert.equal(busyWorld.living.learning.an.pending.id,originId);assert.notEqual(busyWorld.living.lastTurnId,originId);
+ assert.deepEqual(busyWorld.people.find(p=>p.id==='an').memories,beforeAnMemory,'A 360-second encounter cannot be reported after 300 seconds');
+ assert.equal(busyWorld.living.residents.find(r=>r.id===originPeer).familiarity,beforeFamiliarity);
+ await setFixtureTime(fixedNow+600000);const learnedEncounter=await settle();assert.equal(learnedEncounter.status,200,await learnedEncounter.text());
+ const reported=await rulesTick();assert.equal(reported.status,200,await reported.text());
+ const reportedRow=await db.prepare("SELECT revision,data FROM worlds WHERE id='home'").first(),reportedWorld=JSON.parse(reportedRow.data);
+ assert(reportedWorld.living.reportedEncounters.includes(originId));assert.equal(reportedWorld.living.residents.find(r=>r.id===originPeer).familiarity,Math.min(100,beforeFamiliarity+1));
+ assert(reportedWorld.people.find(p=>p.id==='an').memories.some(m=>m.includes('Kế hoạch mô phỏng hoàn tất:')));
+ const duplicateReport=await rulesTick();assert.equal(duplicateReport.status,200);assert.deepEqual(await db.prepare("SELECT revision,data FROM worlds WHERE id='home'").first(),reportedRow,'A repeated tick cannot duplicate encounter credit');
+ const secondOrigin=reportedWorld.living.learning.an.pending.id,secondPeer=reportedWorld.livingTurn.residentId;
+ const secondFamiliarity=reportedWorld.living.residents.find(r=>r.id===secondPeer).familiarity;
+ await setFixtureTime(fixedNow+1200000);const directReport=await rulesTick();assert.equal(directReport.status,200,await directReport.text());
+ const directWorld=JSON.parse((await db.prepare("SELECT data FROM worlds WHERE id='home'").first()).data);
+ assert(directWorld.living.reportedEncounters.includes(secondOrigin));assert.equal(directWorld.living.residents.find(r=>r.id===secondPeer).familiarity,Math.min(100,secondFamiliarity+1));
+ console.log('PASS full-plan encounter reporting survives quiet slots, consumes owned outcomes and remains idempotent for learning-first and direct ticks');
  console.log(JSON.stringify({suite:'local-diagnostics-http',ownerReadGuard:true,ownerWriteGuard:true,streamByteLimit:true,schema:true,origin:true,ack:true,jsonlReadback:true,rateLimit:true,retention:true,pulsePersistence:true,pulseRetry:true,pulsePause:true,productionAccess:false}));
 }finally{await mf.dispose();globalThis.Date=NativeDate;}

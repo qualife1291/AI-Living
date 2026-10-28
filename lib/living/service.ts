@@ -13,6 +13,7 @@ import { memoryInsert, outcomeMemory } from "../memory-records";
 import {hasDialogue,rememberDialogue} from "./dialogue-pool";
 import {preparePolicyWrite} from "./policy-store";
 import {reviewNarrative} from "./director";
+import {pendingPlanMatches} from "./plan-identity";
 
 export function fetchContext(input: RequestInfo | URL, init?: RequestInit) {
   const relay = env.XOM_CONTEXT_RELAY;
@@ -149,35 +150,45 @@ async function tickLivingInternal(proposal?: unknown, basis?: { revision: number
     }
   }
   result.world.livingTurn = result.turn;
-  const previousId = current.world.living?.lastTurnId;
-  if (previousId) {
+  const previousPending=current.world.living?.learning?.an?.pending;
+  const previousId = previousPending?.id ?? current.world.living?.lastTurnId;
+  if (previousId && !current.world.living?.reportedEncounters?.includes(previousId)) {
     const row = await db
       .prepare("SELECT data FROM living_turns WHERE id=?")
       .bind(previousId)
       .first<{ data: string }>();
     const previous = row ? (JSON.parse(row.data) as LivingTurn) : null;
     const plan = current.world.people.find((p) => p.id === "an")?.plan;
+    const peer=current.world.living?.residents.find(r=>r.id===previous?.residentId);
+    const peerPending=peer?current.world.living?.learning?.[peer.id]?.pending:undefined;
+    const fullDurationMs=plan&&peer?.plan?Math.max(plan.steps.reduce((sum,s)=>sum+s.duration,0),peer.plan.steps.reduce((sum,s)=>sum+s.duration,0))*1000:Infinity;
     const elapsed =
       (result.turn.simStartedAt ?? 0) - (previous?.simStartedAt ?? Infinity);
     if (
-      previous &&
-      elapsed >= 180000 &&
-      plan?.simStartedAt === previous.simStartedAt
+      previous && typeof previous.simStartedAt==="number" && (previous.dialogue?.length??0)>=4 &&
+      previousPending?.id===previous.id && peerPending?.id===`${previous.id}-${previous.residentId}` &&
+      pendingPlanMatches(previousPending,plan) && pendingPlanMatches(peerPending,peer?.plan) &&
+      plan?.simStartedAt === previous.simStartedAt && peer?.plan?.simStartedAt===previous.simStartedAt &&
+      fullDurationMs>0 && elapsed >= fullDurationMs
     ) {
-      const state = result.state;
-      const person = state.residents.find((r) => r.id === previous.residentId);
-      const memory = `${previous.date}: Dành thời gian ${previous.activity.toLowerCase()} tại ${previous.location}.`;
-      if (
-        person &&
-        current.world.living?.residents.find((r) => r.id === person.id)?.plan
-          ?.simStartedAt === previous.simStartedAt
-      ) {
-        person.familiarity = Math.min(100, person.familiarity + 1);
-        person.memories = [...person.memories, memory].slice(-20);
+      const earned=new Map(result.newExperiences.map(e=>[e.id,e.actorId]));
+      const missing=[previousPending.id,peerPending.id].filter(id=>!earned.has(id));
+      if(missing.length){
+        const rows=await db.prepare("SELECT id,actor_id FROM agent_experiences WHERE id IN (SELECT value FROM json_each(?))").bind(JSON.stringify(missing)).all<{id:string;actor_id:string}>();
+        for(const row of rows.results)earned.set(row.id,row.actor_id);
       }
+      const state=result.state,person=state.residents.find(r=>r.id===previous.residentId);
       const an = result.world.people.find((p) => p.id === "an");
-      if (an) an.memories = [...an.memories, memory].slice(-60);
-      result.world.living = state;
+      if(person&&an&&earned.get(previousPending.id)==="an"&&earned.get(peerPending.id)===person.id){
+        state.reportedEncounters=[...(state.reportedEncounters??[]),previous.id].slice(-64);
+        const legacyMemory=`${previous.date}: Dành thời gian ${previous.activity.toLowerCase()} tại ${previous.location}.`;
+        if(!an.memories.includes(legacyMemory)){
+          const memory=`${previous.date}: Kế hoạch mô phỏng hoàn tất: ${previous.activity.toLowerCase()} tại ${previous.location}.`;
+          person.familiarity=Math.min(100,person.familiarity+1);
+          if(!person.memories.includes(memory))person.memories=[...person.memories,memory].slice(-20);
+          if(!an.memories.includes(memory))an.memories=[...an.memories,memory].slice(-60);
+        }
+      }
     }
   }
   const learned = result.state.learning?.an;

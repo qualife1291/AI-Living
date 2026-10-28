@@ -1,6 +1,7 @@
 import { meetingSteps, microActivity, actionSteps } from "./activities.ts";
 import { assignIdentities, nextResidentName, defaultIdentity } from "./identity.ts";
 import { decisionContext } from "./linucb.ts";
+import {planKey} from "./plan-identity.ts";
 import {DialogueGrammar} from "./dialogue-grammar.ts";
 import {addressTemplate,pronounsFor} from "./identity.ts";
 import {hasDialogue,rememberDialogue} from "./dialogue-pool.ts";
@@ -309,6 +310,7 @@ export function planLivingTurn(
       durationMs: (an?.plan?.steps.reduce((sum,step)=>sum+step.duration,0) ?? 180) * 1000,
       completed: false,
       context: decisionContext(learning.an, context.weather),
+      planKey:planKey(an?.plan),
     };
   const slot = Math.floor(now / 300000);
   for (const id of ["binh", "chi", ...cohortIds(state, slot)]) {
@@ -365,6 +367,7 @@ export function planLivingTurn(
       durationMs: plan.steps.reduce((sum, step) => sum + step.duration, 0) * 1000,
       completed: false,
       context: decisionContext(agent, context.weather),
+      planKey:planKey(plan),
     };
   }
   // Keep each partner's learning tied to an activity that actually has a plan.
@@ -377,6 +380,7 @@ export function planLivingTurn(
       durationMs: resident.plan.steps.reduce((sum,step)=>sum+step.duration,0)*1000,
       completed: false,
       context: decisionContext(learning[resident.id], context.weather),
+      planKey:planKey(resident.plan),
     };
   }
   updateAnimalLearning({ ...next, living: state }, state, context, now);

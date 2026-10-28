@@ -143,5 +143,8 @@
   ],
   [
     "scripts/test-prompt-memories.mjs"
+  ],
+  [
+    "scripts/test-plan-completion.mjs"
   ]
 ]
