@@ -1,13 +1,13 @@
 {
   "project_id": "appgprj_6adc7dc364d48191a09202c5b43309e4",
-  "source_commit": "383ec115a883d7d1c2caee6c23cd2fe194c28aa2",
+  "source_commit": "e6fe88804f262bc7f7cacfa2813128454eceada4",
   "status": "prepared-not-deployed",
-  "archive_sha256": "6506f9a641ab0a3358ec1149d617691dd81f8b127107ad46e941437a3220d19b",
-  "archive_local_path": "work/production-383ec11.tar.gz",
+  "archive_sha256": "9b1fcc5c0f8b92a8f95b6da387e5e845726be0bc7bbc0c8bbec01b69f5e034ea",
+  "archive_local_path": "work/production-e6fe888.tar.gz",
   "production_ledger_unchanged": true,
   "blocker": "Native Sites credential/deploy/status/database tools unavailable in this session; user has already authorized release.",
   "validation": {
-    "unit_suites_passed": 51,
+    "unit_suites_passed": 52,
     "local_api": true,
     "typecheck_lint_build_assets": true,
     "browser_desktop_mobile": true,
@@ -29,7 +29,7 @@
     "unchanged_plan_binding": true,
     "full_duration_encounter_reporting": true,
     "physical_arrival_authority": false,
-    "browser_source_note": "Fresh flora garden/social/home/cycle/pet desktop/mobile QA on c77c21c UI. H0 changes backend only; app/lib match the tested H0 trees, no new browser run claimed. Browser mutations mocked; persistence verified in compiled local D1.",
+    "browser_source_note": "Garden/social/home/cycle/pet desktop/mobile evidence from c77c21c UI. H0/H1 change backend or offline tools only; no new browser run. H1 compiled local API uses the same learning source blob; no production readback.",
     "garden_plots": 5,
     "garden_plants": 30,
     "garden_phases": 5,
@@ -42,9 +42,28 @@
     "diagnostics_read_only_get": true,
     "health_schema_batch": true,
     "claude_review_triaged": true,
-    "local_persisted_database_health": true
+    "local_persisted_database_health": true,
+    "learning_rollout_full": {
+      "seeds": 20,
+      "days": 60,
+      "agents": 24,
+      "plans_per_policy": 691200,
+      "policies": [
+        "tabular",
+        "linucb"
+      ],
+      "full_repeat_hash_identical": true,
+      "paired_seed_intervals": true
+    },
+    "pre_refactor_golden": {
+      "outcomes": 15375,
+      "decisions": 1500,
+      "unchanged": true
+    },
+    "intelligence_reviews_triaged": true,
+    "default_runtime_policy_changed": false
   },
-  "prepared_at_utc": "2026-10-28T03:00:15.028Z",
+  "prepared_at_utc": "2026-10-28T04:01:10.795Z",
   "migrations_to_check": [
     "0006_client_logs",
     "0007_learning_policies"

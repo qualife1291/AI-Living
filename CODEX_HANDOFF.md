@@ -12,7 +12,7 @@ Chỉ cần đọc [AGENTS](AGENTS.md) và file này để bắt đầu. [README
 
 **Bước code tiếp — H2:** đã review Claude/Deepseek và hoàn tất H1, không thêm spec/memory MD. Đọc ROADMAP + LEARNING phần H1. Trước residual/EMA/prior cần stress/cold-start profile (baseline needs gần1, competence/recovery đều3ngày); dùng raw reward/version/context-at-choice, không giả samples. Ngưỡng candidate tương lai: return/needs không giảm, feasible opportunity cost không tăng, entropy≥80% bằng paired CI. Giữ default LinUCB khi chưa đạt; offline prior/tuning ưu tiên trước G0/UX, P2P chờ encounter authority.
 
-**Blocker:** phiên gần nhất thiếu native Sites credential/deploy/status/DB tools. User đã cho phép merge/push/prod; thiếu capability không phải thiếu quyền. Khi công cụ có lại, xác minh project/audience, backup/schema 0006/0007, deploy đúng candidate và readback theo [runbook](docs/PRODUCTION_RUNBOOK.md). Không tạo cron/Site khác, bỏ client pulse hoặc tìm credential cũ.
+**Blocker:** phiên gần nhất thiếu native Sites credential/deploy/status/DB tools. User đã cho phép merge/push/prod; thiếu capability không phải thiếu quyền. Candidate H1 đã đóng gói đúng source trong candidate.json. Khi công cụ có lại, xác minh project/audience, backup/schema 0006/0007, deploy đúng candidate và readback theo [runbook](docs/PRODUCTION_RUNBOOK.md). Không tạo cron/Site khác, bỏ client pulse hoặc tìm credential cũ.
 
 **Giới hạn cần nhớ:** ground/playback/tag/pet/bike còn theo viewer; backend completion theo simtime+plan matching, chưa authoritative arrival. Không cấp skill/P2P từ ETA, lời kể hoặc render. Gallery không đồng nghĩa mọi loài đã sống trong phố. Chưa GPU điện thoại/soak/model A/B thực.
 

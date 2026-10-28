@@ -1,6 +1,6 @@
 # Candidate chuẩn bị — chưa deploy
 
-Candidate hiện hành là source383ec11 bên dưới và candidate.json. Các mốc e90021b/da1bfd6/c77c21c là lịch sử trước H0.
+Candidate hiện hành là sourcee6fe888 bên dưới và candidate.json. Các mốc trước giữ làm lịch sử; không dùng mặc định.
 
 - Source `e90021b72806c780d385111b846f30bb1de6460e` đã push work và main. Gói `work/production-e90021b.tar.gz` có SHA256 `2f2461830b98887f7512cee8c46e640cb18b781077e68104c8099cf6edf6e5da`, được release:build/package từ checkout sạch.
 - 45/45 unit, check/lint/build/assets và API compiled D1 đạt. Bảy browser harness ở mốc UI cuối trước đó đã đạt desktop/mobile; renderer/UI không đổi sau đó, ảnh/metrics đã tracked. Guard busy/night và fixture cache vừa kiểm tra lại sau môi trường restart.
@@ -27,3 +27,10 @@ Candidate hiện hành là source383ec11 bên dưới và candidate.json. Các m
 - 51/51unit/check/lint/build/assets/API đạt; D1 admission20request→1pipeline/19coalesced, compiledHTTP12viewer→1pipeline, retry không audit trùng, pause/error/expiry/nonce đạt. GETdiagnostics chỉđọc, healthschema batch503/200 và preservation đạt. Fresh localWorker health200/ready/revision0; khôngproduction.
 - Bao gồm toàn bộ flora và nội dung candidate trước. UI/renderer không đổi trong H0; browser flora sourcec77 vẫn là evidence trước đó, không claim browser H0 mới. ReviewClaude đã đưa H1/G0/UX và các phase có điều kiện vào NEXT_PHASES.
 - H0 khôngmigration mới, không thay scheduler/audience hoặc xóa lịch sử. Chưa nativeSites/backup/liveSchema/deploy/readback; latest.json giữ nguyên. Giữclientfallback đến khi xác minh lịchproduction, không tạocron trùng.
+
+## Candidate H1 — e6fe888
+
+- Source `e6fe88804f262bc7f7cacfa2813128454eceada4` đã push main/work; exact-SHA release build/package từ checkout sạch. Gói `work/production-e6fe888.tar.gz`, SHA256 `9b1fcc5c0f8b92a8f95b6da387e5e845726be0bc7bbc0c8bbec01b69f5e034ea`, stamp `2026-10-28T04:01:10.795Z`; kiểm source/migration0007, không secrets/DB/test-entry theo tên.
+- 52/52suite/check/lint/build/assets/API đạt;15.375outcomes/1.500choices golden giữ nguyên. Full20seed×60ngày×24agent/policy và repeat cùng hash; paired CI giữ cả kết quả LinUCB chưa thắng tổng reward. Không đổi default policy hoặc thêm migration.
+- Review Claude/Deepseek đã đưa vào ROADMAP, tiếpH2 stress/cold-start rồi residual/prior theo cổng đo. UI không đổi; không claim browser mới hoặc training LLM.
+- Native Sites credential/deploy/status/DB tools vẫn không có khi discovery lượt này. Chưa backup/schema live/deploy/readback; latest.json giữ nguyên, owner-private.
