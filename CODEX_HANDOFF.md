@@ -4,7 +4,7 @@ Chỉ cần đọc [AGENTS](AGENTS.md) và file này để bắt đầu. [README
 
 | Phần | Context hiện tại |
 |---|---|
-| Source | `work` và `main` đồng bộ sau H3 foundation; xem Git cho HEAD. Xem `git status/log` cho HEAD. Default policy giữ LinUCB. H3 thêm evidence archive/audit; H1/H2 experimental policies vẫn offline. |
+| Source | `work` đang triển khai H4; `main` còn H3 foundation. Xem `git status/log` cho HEAD. Default policy giữ LinUCB. H3 thêm evidence archive/audit; H1/H2 experimental policies vẫn offline. |
 | Sản phẩm | Thành phố Three.js, An/Bình/Chi + NPC, tag/pet/bike, nhãn/thoại DOM, 60 cửa nhà, audio opt-in, 5 khóm hoa/30 cây có growth/moisture/care. Không còn renderer 2D. |
 | AI/dữ liệu | LinUCB 6D, 8 domain skills/gates, policy table 0007/CAS, memories top-K/RAG, dialogue hashes, 49 context cards/33 nơi. Đây là học policy mô phỏng, chưa fine-tune LLM. |
 | Đã kiểm | H3 source:54suite + TypeScript/lint/build/assets/API local/CAS đạt; full H1 byte-identical. H2 warm stress/prior repeat ở evidence cũ. D1: 20 pulse→1 pipeline; compiled HTTP: 12 viewer→1 pipeline. Browser flora/social/home/cycle/pet desktop/mobile đã đạt ở UI trước H0; H0 không đổi renderer. |
@@ -12,7 +12,7 @@ Chỉ cần đọc [AGENTS](AGENTS.md) và file này để bắt đầu. [README
 
 **H3 foundation đã có:** [LEARNING](docs/LEARNING.md) và [evidence H3](docs/validation/learning-h3-2026-10-28.json) mô tả version/breakdown reward hiện hành, settlement before/after/context/sample/plan-binding, audit JSONL offline. Full evidence ở archive, snapshot chỉ summary200record; cùng CAS/policy transaction. Legacy giữ bytes và mức binding yếu/unknown, không backfill. Không đổi raw reward/LinUCB, không physical arrival/social/commitment authority.54suite/check/lint/build/assets/API compiled/CAS đạt; H1 full repeat giữ byte/hash.
 
-**Bước code tiếp:** H4 hierarchy/role priors từ source/version tương thích, confidence tách earned samples. H3b reward dài hạn chờ authority; không thưởng từ ETA/thoại. H6 archive replay/curriculum chưa xong. H2 v1 đã đánh giá và **không promote**; không retune20seed2000–2019 đã xem hoặc bật residual thất bại. Nếu nghiên cứu policy mới phải có protocol/train-validation-holdout mới.
+**Đang H4 (WIP):** protocol đã đăng ký tại validation/learning-h4-protocol-v1.json trước kết quả: global/role.kind priors từ completed synthetic H3 evidence, bounded prediction blend, personal uncertainty/samples/matrices không đổi. Train3000–3007, validation4000–4007, holdout5000–5019; chưa đo. Không bật production hoặc nhận private archived records. Phải push checkpoint trước bước dài. H3b reward dài hạn chờ authority; không thưởng từ ETA/thoại. H6 archive replay/curriculum chưa xong. H2 v1 đã đánh giá và **không promote**; không retune20seed2000–2019 đã xem hoặc bật residual thất bại. Nếu nghiên cứu policy mới phải có protocol/train-validation-holdout mới.
 
 **Đề xuất Society/NIM:** đã gộp vào [ROADMAP](ROADMAP.md), đối chiếu chi tiết ở [review](docs/validation/society-nim-review-2026-10-28.json). WP20–27 là tương lai có phụ thuộc; sửa accounting/knowledge/retention assumptions, không tạo root spec/MEMORY. NVIDIA trial API và output không dùng production; mới kiểm tài liệu chính thức, chưa key/inference/account/quota hay benchmark. Không chặn thứ tự học hiện tại để làm NIM.
 

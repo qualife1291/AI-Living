@@ -1,0 +1,97 @@
+{
+  "phase": "H4",
+  "version": "hierarchy-study-v1",
+  "registered_before_results": true,
+  "reference_source": "a918d32c6968d77ef62cf78c886e589c0d4c0710",
+  "variants": [
+    "personal-v1",
+    "global-prior-v1",
+    "role-prior-v1"
+  ],
+  "profiles": [
+    "ordinary-v1",
+    "cold-stress-v1"
+  ],
+  "training_seed_indices": [
+    3000,
+    3001,
+    3002,
+    3003,
+    3004,
+    3005,
+    3006,
+    3007
+  ],
+  "validation_seed_indices": [
+    4000,
+    4001,
+    4002,
+    4003,
+    4004,
+    4005,
+    4006,
+    4007
+  ],
+  "holdout_seed_indices": [
+    5000,
+    5001,
+    5002,
+    5003,
+    5004,
+    5005,
+    5006,
+    5007,
+    5008,
+    5009,
+    5010,
+    5011,
+    5012,
+    5013,
+    5014,
+    5015,
+    5016,
+    5017,
+    5018,
+    5019
+  ],
+  "seed_mapping": "hashSeed(H1-seed:<index>); disjoint from previously evaluated H1/H2 seeds",
+  "dimensions": {
+    "agents": 24,
+    "days": 60,
+    "shiftDay": 30
+  },
+  "parameters": {
+    "personalPriorK": 5,
+    "roleGlobalShrinkageK": 20,
+    "minimumSupport": 5,
+    "minimumDonorActors": 2,
+    "minimumDonorSeeds": 2,
+    "maximumRoleMix": 0.8,
+    "ridge": 1,
+    "contextDimensions": 6,
+    "uncertainty": "unchanged personal LinUCB/tabular exploration"
+  },
+  "grouping": "Actual default catalog role.kind. Assign roles by hashSeed(actorId) modulo catalog roles; rotate catalog index by one from day30. Same assignment and actual role place for all variants.",
+  "training": "Generate completed LinUCB synthetic ordinary plans using the same rollout. Require H3 verified-contextual, fingerprint-v1 binding, exact reward/features/catalog signatures, unique experience IDs and donor ownership. Fit global and role-kind ridge models on the SAME accepted raw outcomes. No residual/H2 fallback, private memories or live DB.",
+  "policy": "Blend original .7*personal prediction with .7*prior mean by weight5/(own samples+5); unknown group/action uses supported global fallback, no prior leaves original prediction bit-identical. Role mean shrinks toward global by min(.8, role support/(role support+20)). All other scores/affinity/taste/novelty/gates/emergencies and personal uncertainty unchanged. No prior matrices/samples copied into personal state.",
+  "evaluation": "Freeze artifact before validation/holdout. Report both candidates on both sets, no parameter selection or retuning from these seeds. Evaluate paired holdout gates against personal baseline per profile; role-vs-global ablation reported separately.",
+  "gates": {
+    "return": "paired CI95 lower bound >=0",
+    "needs": "paired CI95 lower bound >=0",
+    "opportunity_cost": "paired CI95 upper bound <=0",
+    "entropy": "paired CI95 lower bound of candidate - .8*baseline >=0"
+  },
+  "secondary_metrics": [
+    "first-day reward/needs",
+    "same-decision personal prediction MSE versus blended prediction MSE",
+    "prior weight by earned samples",
+    "role/global fallback support"
+  ],
+  "promotion": "No automatic installation or policy activation. Failed candidates remain offline; successful offline gates still need explicit runtime artifact/CAS/rollback design and review.",
+  "limits": [
+    "H1/H2 hourly/one-step oracle/stress limitations still apply. No social/P2P/physical authority.",
+    "Existing outcome formula has no role-dependent payoff; different role-kind models can only reflect context/action distributions, not establish role specialization.",
+    "Catalog grouping is a simulation role-kind grouping, not real occupational expertise.",
+    "SHA256 ensures integrity, not external source authenticity; this trainer accepts generated synthetic outcomes only."
+  ]
+}
