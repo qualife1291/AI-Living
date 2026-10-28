@@ -152,5 +152,8 @@
   ],
   [
     "scripts/test-pulse-gate.mjs"
+  ],
+  [
+    "scripts/test-learning-policy.mjs"
   ]
 ]

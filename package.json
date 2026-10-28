@@ -32,7 +32,8 @@
     "test:diagnostics": "node scripts/test-diagnostics-fixes.mjs",
     "test:phase-b": "node scripts/test-phase-b.mjs",
     "test:api:local": "node scripts/test-local-diagnostics.mjs",
-    "assets:import:resources": "python3 scripts/import-resource-packs.py"
+    "assets:import:resources": "python3 scripts/import-resource-packs.py",
+    "simulate:learning": "node scripts/sim-learning.mjs"
   },
   "dependencies": {
     "@base-ui/react": "^1.7.0",

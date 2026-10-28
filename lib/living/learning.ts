@@ -124,6 +124,27 @@ export function fitAction(
   agent.lastTrainedAt = at;
   agent.lastReward = bounded;
 }
+/** Feasible actions include hard need/sleep priorities; oracle and chooser agree. */
+export function availableScenarios(
+  agent: AgentLearning,
+  context: RealContext,
+): Scenario[] {
+  if (context.hour < 6 || context.hour >= 22 || agent.energy < 20)
+    return [scenarios.find((s) => s.id === "rest-home")!];
+  if (agent.health < 65) return [scenarios.find((s) => s.id === "rehabilitate")!];
+  if (agent.hunger > 72) return [scenarios.find((s) => s.id === "lunch")!];
+  if (agent.employment === "seeking")
+    return [scenarios.find((s) => s.id === "job-search")!];
+  const rainy =
+    context.weather.status === "fresh" &&
+    (context.weather.precipitation ?? 0) > 0;
+  return scenarios
+    .filter(s=>meetsSkillGate(agent,s))
+    .filter((s) => !s.adultOnly || agent.adult)
+    // Accidents and violations are reactive events, never purposeful errands.
+    .filter((s) => !["minor-injury", "traffic-check", "job-change"].includes(s.id))
+    .filter((s) => !rainy || !["sport", "ecology"].includes(s.tag));
+}
 export function chooseScenario(
   agent: AgentLearning,
   id: string,
@@ -131,21 +152,8 @@ export function chooseScenario(
   rolePlace?: string,
   policy: "tabular" | "linucb" = "linucb",
 ): Scenario {
-  if (context.hour < 6 || context.hour >= 22 || agent.energy < 20)
-    return scenarios.find((s) => s.id === "rest-home")!;
-  if (agent.health < 65) return scenarios.find((s) => s.id === "rehabilitate")!;
-  if (agent.hunger > 72) return scenarios.find((s) => s.id === "lunch")!;
-  if (agent.employment === "seeking")
-    return scenarios.find((s) => s.id === "job-search")!;
-  const rainy =
-    context.weather.status === "fresh" &&
-    (context.weather.precipitation ?? 0) > 0;
-  const candidates = scenarios
-    .filter(s=>meetsSkillGate(agent,s))
-    .filter((s) => !s.adultOnly || agent.adult)
-    // Accidents and violations are reactive events, never purposeful errands.
-    .filter((s) => !["minor-injury", "traffic-check", "job-change"].includes(s.id))
-    .filter((s) => !rainy || !["sport", "ecology"].includes(s.tag));
+  const candidates = availableScenarios(agent, context);
+  if (candidates.length === 1) return candidates[0];
   return candidates
     .map((s) => {
       const model = agent.actions[s.id] ?? { trials: 0, meanReward: 0 };
@@ -180,6 +188,38 @@ export function chooseScenario(
     })
     .sort((a, b) => b.score - a.score)[0].scenario;
 }
+export type OutcomeNeeds = Pick<AgentLearning,
+  "energy" | "hunger" | "health" | "skill" | "employment" | "citations">;
+
+/** Pure existing simulation outcome, not a new reward or a learned prediction. */
+export function applyScenarioOutcome(state: OutcomeNeeds, scenario: Scenario) {
+  const after: OutcomeNeeds = { energy:state.energy,hunger:state.hunger,
+    health:state.health,skill:state.skill,employment:state.employment,
+    ...("citations" in state ? {citations:state.citations} : {}) };
+  after.energy = Math.max(0, Math.min(100, state.energy + scenario.energy));
+  after.hunger = Math.max(0, Math.min(100, state.hunger + scenario.hunger));
+  after.skill = Math.min(100, state.skill + scenario.skill);
+  if (scenario.id === "minor-injury") after.health = Math.max(45, state.health - 8);
+  if (scenario.id === "rehabilitate" || scenario.id === "hospital-check")
+    after.health = Math.min(100, state.health + 18);
+  if (scenario.id === "traffic-check") after.citations = (state.citations ?? 0) + 1;
+  if (scenario.id === "job-change") after.employment = "seeking";
+  if (scenario.id === "job-search") after.employment = "studying";
+  if (scenario.id === "factory-shift" || scenario.id === "office-shift")
+    after.employment = "employed";
+  const reward = Math.max(-1, Math.min(1,
+    (after.skill - state.skill) * .16 +
+    (after.energy - state.energy) * (.008 + (100 - state.energy) / 100 * .018) +
+    (state.hunger - after.hunger) * (.005 + state.hunger / 100 * .02) +
+    (after.health - state.health) * (.015 + (100 - state.health) / 100 * .04),
+  ));
+  return { after, reward };
+}
+
+export function expectedReward(state: OutcomeNeeds, scenario: Scenario): number {
+  return applyScenarioOutcome(state, scenario).reward;
+}
+
 export function settleLearning(
   agent: AgentLearning,
   simMs: number,
@@ -197,43 +237,22 @@ export function settleLearning(
   if (!planMatches) return false;
   const scenario = scenarios.find((s) => s.id === pending.scenarioId);
   if (!scenario) return false;
-  const before = {
-    energy: agent.energy,
-    hunger: agent.hunger,
-    health: agent.health,
-    skill: agent.skill,
-  };
   if (!agent.domainSkills) {
     // Keep previously unlocked activities; never turn historical scalar skill
     // into invented proficiency in every domain. New gains start at zero.
     agent.legacySkillGates = scenarios.filter(s=>s.minDomainSkill!==undefined && agent.skill >= (s.minSkill??0)).map(s=>s.id);
     agent.domainSkills = {};
   }
-  agent.energy = Math.max(0, Math.min(100, agent.energy + scenario.energy));
-  agent.hunger = Math.max(0, Math.min(100, agent.hunger + scenario.hunger));
-  agent.skill = Math.min(100, agent.skill + scenario.skill);
+  const { after, reward } = applyScenarioOutcome(agent, scenario);
+  agent.energy = after.energy;
+  agent.hunger = after.hunger;
+  agent.health = after.health;
+  agent.skill = after.skill;
   if (scenario.skillDomain && scenario.skill > 0)
     agent.domainSkills[scenario.skillDomain] = Math.min(100,(agent.domainSkills[scenario.skillDomain]??0)+scenario.skill);
-  if (scenario.id === "minor-injury")
-    agent.health = Math.max(45, agent.health - 8);
-  if (scenario.id === "rehabilitate" || scenario.id === "hospital-check")
-    agent.health = Math.min(100, agent.health + 18);
   if (scenario.id === "traffic-check")
-    agent.citations = (agent.citations ?? 0) + 1;
-  if (scenario.id === "job-change") agent.employment = "seeking";
-  if (scenario.id === "job-search") agent.employment = "studying";
-  if (scenario.id === "factory-shift" || scenario.id === "office-shift")
-    agent.employment = "employed";
-  const reward = Math.max(
-    -1,
-    Math.min(
-      1,
-      (agent.skill - before.skill) * .16 +
-        (agent.energy - before.energy) * (.008 + (100 - before.energy) / 100 * .018) +
-        (before.hunger - agent.hunger) * (.005 + before.hunger / 100 * .02) +
-        (agent.health - before.health) * (.015 + (100 - before.health) / 100 * .04),
-    ),
-  );
+    agent.citations = after.citations;
+  agent.employment = after.employment;
   fitAction(agent, scenario.id, reward, now);
   if (validDecisionContext(pending.context)) {
     agent.linear ??= {};
@@ -254,7 +273,7 @@ export function hasUnfinishedLearning(agent: AgentLearning | undefined, plan: Pe
 
 /** Needs drift in simulation time; legacy agents start at the current anchor.
  * This never awards a completed meal, skill or income just for elapsed time. */
-function advanceNeeds(agent: AgentLearning, id: string, simMs: number, sleeping: boolean) {
+export function advanceNeeds(agent: AgentLearning, id: string, simMs: number, sleeping: boolean) {
   const elapsed = Math.min(360, Math.max(0, (simMs - (agent.needsUpdatedSimMs ?? simMs)) / 60000));
   const metabolism = .9 + hashSeed(id) % 21 / 100;
   agent.energy = Math.max(0, Math.min(100, agent.energy + (sleeping ? .12 : -.035) * elapsed * metabolism));
