@@ -37,8 +37,10 @@ with sync_playwright() as p:
     for pet in s['animals']:assert sum((a['position'][i]-pet['position'][i])**2 for i in [0,1])**.5>=14.34,'Bicycle envelope overlaps an animal'
    page.screenshot(path=str(out/f'ride-{name}-preview.png'))
    page.get_by_role('button',name='Tạm nghỉ',exact=True).click();page.wait_for_function('document.querySelector(".three-canvas")?.dataset.paused==="true"')
-   frozen=host.get_attribute('data-cyclists');rig=host.get_attribute('data-model-actors');page.wait_for_timeout(1200)
-   assert host.get_attribute('data-cyclists')==frozen, {'before':frozen,'after':host.get_attribute('data-cyclists')};assert host.get_attribute('data-model-actors')==rig, {'beforeRig':rig,'afterRig':host.get_attribute('data-model-actors')}
+   # Camera damping can change inFrame after pause; physical roots/rig must freeze.
+   physical=lambda:[{k:v for k,v in a.items() if k!='inFrame'} for a in json.loads(host.get_attribute('data-cyclists'))]
+   frozen=physical();rig=host.get_attribute('data-model-actors');page.wait_for_timeout(1200)
+   assert physical()==frozen, {'before':frozen,'after':physical()};assert host.get_attribute('data-model-actors')==rig, {'beforeRig':rig,'afterRig':host.get_attribute('data-model-actors')}
    page.get_by_role('button',name='Tiếp tục',exact=True).click();page.wait_for_function('document.querySelector(".three-canvas")?.dataset.paused==="false"')
    fixture['world']['people'][0]['plan']['transport']='walk';fixture['world']['people'][0]['plan']['steps'][0]['kind']='read'
    page.wait_for_function('!JSON.parse(document.querySelector(".three-canvas")?.dataset.cyclists??"[]").some(a=>a.id==="an")',timeout=30000)

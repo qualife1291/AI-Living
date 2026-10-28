@@ -11,19 +11,22 @@ const preview=planLivingTurn(world,context,now);assert(preview.turn.dialogue.len
 const peer=preview.turn.residentId,valid={title:'Sắp xếp góc sách',summary:'An và bạn cùng trao đổi cách sắp xếp sách.',dialogue:[{speaker:'an',text:'Mình muốn phân loại mấy quyển sách này trước nhé?'},{speaker:peer,text:'Được, mình xếp theo chủ đề để dễ tìm hơn.'},{speaker:'an',text:'Vậy mình làm nhãn nhỏ cho từng ngăn nhé.'},{speaker:peer,text:'Mình giúp viết nhãn rồi cùng kiểm tra lại nhé.'}]};
 const originalFetch=globalThis.fetch,oldOrigin=process.env.XOM_ORIGIN,oldAI=process.env.XOM_LOCAL_AI_ORIGIN;
 process.env.XOM_ORIGIN='http://127.0.0.1:5173';process.env.XOM_LOCAL_AI_ORIGIN='http://127.0.0.1:8090';
-let proposal=valid,tickBody,modelCalls=0;
+let proposal=valid,tickBody,modelCalls=0,finishReason='stop';
 globalThis.fetch=async(input,init)=>{
  const path=new URL(input).pathname;
  if(path==='/api/living')return Response.json(view);
  if(path==='/api/living/learning')return Response.json({updated:0});
  if(path==='/api/living/memories')return Response.json({records:[{id:'owned-an-record',personId:'an',eventId:'fixture-event',kind:'event-report',text:'Một ghi chú của An về góc sách.',createdAt:'2026-10-25T01:00:00Z',witnessedWith:['an']}]});
  if(path==='/v1/chat/completions'){
-  const prompt=JSON.parse(JSON.parse(init.body).messages.find(m=>m.role==='user').content);
+  const messages=JSON.parse(init.body).messages,prompt=JSON.parse(messages.find(m=>m.role==='user').content);
+  const example=JSON.parse(messages.find(m=>m.role==='assistant').content);
+  assert.equal(example.title,preview.turn.title);
+  assert.deepEqual(example.dialogue,preview.turn.dialogue.map(({speaker,text})=>({speaker,text})), 'The example must use this activity and its participants, not an unrelated reading scene');
   assert(prompt.scene.contextCards.every(c=>c.source==='editorial-suggestion'&&c.locations.includes(preview.turn.location)));
   assert.match(prompt.scene.contextCardScope,/không phải quan sát/);
   assert.equal(prompt.scene.memoryContext.byActor.an.records[0].ownerId,'an');
   assert.deepEqual(prompt.scene.memoryContext.byActor[peer].records,[],'A peer cannot receive a record owned by An');
-  modelCalls++;return Response.json({choices:[{message:{content:JSON.stringify(proposal)}}]});
+  modelCalls++;return Response.json({choices:[{finish_reason:finishReason,message:{content:JSON.stringify(proposal)}}]});
  }
  if(path==='/api/living/tick'){tickBody=JSON.parse(init.body);return Response.json({id:'fixture',generator:tickBody.proposal?'local-llm':'rules'});}
  throw Error(`Unexpected fixture route ${path}`);
@@ -34,6 +37,7 @@ try {
   proposal=invalid;tickBody=undefined;await cycle();assert.deepEqual(tickBody,{},'Rejected JSON-valid narrative must use rules without retaining proposal/basis');
  }
  proposal=valid;await cycle();assert.deepEqual(tickBody.proposal,valid);assert.equal(tickBody.basis.revision,1);assert.equal(modelCalls,4);
+ finishReason='length';await cycle();assert.deepEqual(tickBody,{},'Even JSON-valid token-limited output must fall back without a proposal');assert.equal(modelCalls,5);
  console.log('PASS daemon discards rejected model values before fallback; accepted values retain the CAS basis; no external calls');
 } finally {
  globalThis.fetch=originalFetch;
