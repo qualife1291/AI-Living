@@ -1,9 +1,9 @@
 {
   "project_id": "appgprj_6adc7dc364d48191a09202c5b43309e4",
-  "source_commit": "9152c255ea9cfcde4fc6e781af8a3a5a2be1a457",
+  "source_commit": "e1c130ab744381cca92518ca13cac1712d8f7bdc",
   "status": "prepared-not-deployed",
-  "archive_sha256": "d34e09d06385c3559e4a4e2fbad839beef5cffed817f78ab453d0def732de983",
-  "archive_local_path": "work/production-9152c25.tar.gz",
+  "archive_sha256": "a5f3ab2eab956f860ae78c348fcc1ec6a124f113ea38885039e708428dd38278",
+  "archive_local_path": "work/production-e1c130a.tar.gz",
   "production_ledger_unchanged": true,
   "blocker": "Native Sites credential/deploy/status/database tools unavailable in this session; user has already authorized release.",
   "validation": {
@@ -326,10 +326,11 @@
       "migration": "0009_ground_timeline",
       "schema_tables": 18,
       "production_migration_applied": false,
-      "history_policy_memory_world_unchanged": true
+      "history_policy_memory_world_unchanged": true,
+      "zero_tick_operation_retry_durable": true
     }
   },
-  "prepared_at_utc": "2026-10-28T13:33:02.365Z",
+  "prepared_at_utc": "2026-10-28T13:38:31.286Z",
   "migrations_to_check": [
     "0006_client_logs",
     "0007_learning_policies",
