@@ -807,7 +807,7 @@ export function createCity(
     if(state.sharedGroundRequested){
       const shared=state.sharedGround;
       if(shared&&shared.worldBorn===world.born){
-        const sampled=sampleSharedGround(shared,shared.paused?shared.cursorRealMs:now-1500);
+        const sampled=sampleSharedGround(shared,now-1500);
         const animals=new Set(['muop','cun','se']),allHumans=sampled.actors.filter(a=>!animals.has(a.id));
         const preferred=new Set([selected,world.livingTurn?.residentId]);
         actors=[...allHumans.slice(0,capacity-2),...allHumans.filter(a=>preferred.has(a.id)&&!allHumans.slice(0,capacity-2).some(p=>p.id===a.id))].slice(0,capacity);

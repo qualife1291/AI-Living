@@ -32,6 +32,17 @@ const all=world();const template=all.living.residents[0];all.living.residents=Ar
 const fullSource=source(1,base,all),full=await bootstrapShared(fullSource,randomUUID());
 assert.equal(full.frames[0].poses.length,246);assert.equal(full.traffic.positions.length,12);
 const fullNext=await replayShared(full,fullSource,[],base+100);assert.equal(fullNext.state.frames.at(-1).poses.length,246);
+const featured=world();
+const featurePlan=(kind,transport='walk')=>({createdAt:new Date(base).toISOString(),pausedMs:0,from:'Công viên',simStartedAt:9*3600000,transport,steps:[{location:'Công viên',activity:'Hoạt động mô phỏng có nguồn',duration:180,kind}]});
+featured.people[0].plan=featurePlan('cycle','bicycle');featured.people[1].plan=featurePlan('tag');featured.people[2].plan=featurePlan('tag');featured.living.residents[0].plan=featurePlan('walk-pet');featured.living.petOwners={cun:featured.living.residents[0].id};
+const featureSource=source(1,base,featured),featureStart=await bootstrapShared(featureSource,randomUUID()),featureResult=await replayShared(featureStart,featureSource,[],base+1000);
+assert.equal(featureResult.state.walk.walkers.find(([id])=>id==='an')[1].radius,9.2);assert.ok(featureResult.state.walk.tag.length>0,'tag pairing state is durable');
+let featurePartial=(await replayShared(featureStart,featureSource,[],base+500)).state;featurePartial=(await replayShared(featurePartial,featureSource,[],base+1000)).state;
+assert.deepEqual(featurePartial.walk,featureResult.state.walk);assert.deepEqual(featurePartial.traffic,featureResult.state.traffic);
+const changedRoster=structuredClone(w),removed=changedRoster.living.residents.shift();changedRoster.living.residents.push({...structuredClone(removed),id:'neighbor-new-arrival',name:'Người mới'});
+const rosterSource=source(2,base+300,changedRoster),rosterResult=await replayShared(genesis,first,[rosterSource],base+1000);
+assert.ok(rosterResult.events.some(e=>e.kind==='leave'&&e.actorId===removed.id));assert.ok(rosterResult.events.some(e=>e.kind==='enter'&&e.actorId==='neighbor-new-arrival'));
+assert.ok(!rosterResult.state.walk.walkers.some(([id])=>id===removed.id));
 const fast=world();fast.clock={pausedAt:null,pausedMs:0,scale:60};const fastSource=source(1,base,fast),fastState=await bootstrapShared(fastSource,randomUUID()),limited=await replayShared(fastState,fastSource,[],base+5000);
 assert.ok(limited.physicsSteps<=120);assert.ok(limited.backlogMs>0);
 

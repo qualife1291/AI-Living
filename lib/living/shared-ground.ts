@@ -95,7 +95,7 @@ export async function replayShared(previous:SharedState,current:SharedSource,sou
    let actors=walk.frame(p.view,p.humans,newSim/1000,cars,p.animals);
    if(!safe(before,actors,oldCars,cars,realStep*rate/1000)){
     traffic.restoreState(oldTraffic);traffic.holdAt(newSim/1000);cars=oldCars.map(c=>({...c,speed:0}));walk.restoreState(oldWalk);actors=walk.frame(p.view,p.humans,newSim/1000,cars,p.animals);s.holds++;
-    if(!safe(before,actors,oldCars,cars,realStep*rate/1000)){walk.restoreState(oldWalk);walk.holdAt(newSim/1000);actors=before.map(a=>({...a,walking:false}));}
+    if(!safe(before,actors,oldCars,cars,realStep*rate/1000)){walk.restoreState(oldWalk);walk.holdAt(newSim/1000);const active=new Set([...p.humans,...p.animals].map(a=>a.id));actors=before.filter(a=>active.has(a.id)).map(a=>({...a,walking:false}));}
    }
    walk.retain(new Set(actors.map(a=>a.id)));s.cursorRealMs=newReal;s.simMs=newSim;appendFrame(s,actors,cars,newReal,newSim,s.sourceSeq);physicsSteps++;
   }
