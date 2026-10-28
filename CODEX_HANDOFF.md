@@ -10,7 +10,7 @@ Chỉ cần đọc [AGENTS](AGENTS.md) và file này để bắt đầu. [README
 | Đã kiểm | H0 source: 51 suite + TypeScript/lint/build/assets/API local đạt. D1: 20 pulse→1 pipeline; compiled HTTP: 12 viewer→1 pipeline. Browser flora/social/home/cycle/pet desktop/mobile đã đạt ở UI trước H0; H0 không đổi renderer. |
 | Production | [latest.json](docs/releases/latest.json) là lần deploy đã xác minh cuối, chưa readback lại. [candidate.json](docs/releases/candidate.json) ghi source/gói đã chuẩn bị, **chưa deploy**. Không suy trạng thái live từ Git. |
 
-**Bước code tiếp:** H1 benchmark rollout runtime≥20 seed, regret/entropy/repeat/needs stability/variance; sau đó G0 tải/resolution và UX. Đọc [ROADMAP](ROADMAP.md), rồi chỉ [LEARNING](docs/LEARNING.md) và script benchmark nếu làm H1.
+**Đang làm H1:** review hai spec Claude/Deepseek đã tích hợp ROADMAP/validation JSON, ưu tiên học policy + prior/tuning offline. Golden trước refactor:15.375 outcomes/1.500 choices. Đang tách outcome/feasible actions và làm rollout20seed×60ngày×24agent; chưa full test/build/API hoặc nhận cải thiện policy. Không thêm spec/memory MD mới. Sau H1 mới H2 residual experiment theo ngưỡng đã ghi. API/default policy vẫn giữ LinUCB6D hiện hành.
 
 **Blocker:** phiên gần nhất thiếu native Sites credential/deploy/status/DB tools. User đã cho phép merge/push/prod; thiếu capability không phải thiếu quyền. Khi công cụ có lại, xác minh project/audience, backup/schema 0006/0007, deploy đúng candidate và readback theo [runbook](docs/PRODUCTION_RUNBOOK.md). Không tạo cron/Site khác, bỏ client pulse hoặc tìm credential cũ.
 

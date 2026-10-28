@@ -6,11 +6,13 @@
 
 | Phase | Việc làm | Nghiệm thu |
 |---|---|---|
-| H1 | Benchmark rollout bằng runtime thật | ≥20 seed, cùng input/seed; oracle chỉ chọn action hợp lệ. Báo regret, entropy, tỷ lệ lặp, thời gian needs ổn định và variance. Holdout8 seed hiện tại không phải rollout dài hạn. |
-| G0 | Tải asset và adaptive resolution | Đo baseline bytes/first frame; progress phản ánh tải thật; hạ resolution từng bước trước đổi preset. Compression tạo derivative có license/hash, giữ canonical. QA lifecycle và đo trước/sau. |
-| UX1 | Thao tác rõ ràng | Pause phân biệt403/409/5xx/network; Trò chuyện mở/focus input; metadata đúng. Test keyboard/desktop/mobile/320px. Không mở quyền public để chữa403. |
-| UX2 | Accessibility | Tap targets, keyboard camera, focus/dialog/hide và reduced-motion có hành vi rõ; giữ pause/movement contract. QA thật, không chỉ grep CSS. |
-| H2 | Thử prior-residual/nonstationary policy | Version mới không lẫn meanReward cũ/residual, không giả samples. Chọn ngưỡng trước; chỉ bật khi thắng H1 baseline và giữ đa dạng. Không chỉnh để ép thắng holdout. |
+| H1 / WP0 | Rollout runtime + oracle khả thi; chụp golden và tách outcome thuần trước | ≥20 seed×60 ngày×24agent, cùng population/context; tabular và LinUCB hiện hành tách rõ. Regret tức thời, return, needs, competence có null, entropy/repeat/share per-agent và CI95 theo seed. Không giả social metrics. |
+| H2 / WP1–2 | Thử policy prior-residual/EMA/progress, rồi warm start | Version mới, giữ raw reward/context-at-choice và emergency guards; không giả trials. Ngưỡng định trước: regret không tăng, entropy≥80% baseline, needs không giảm; paired CI. Không đạt thì giữ policy hiện hành. |
+| H3/H4 / WP3–4 | Reward có nguồn rồi shared-role priors | Chỉ completed outcomes có authority; role/personal tách provenance, matrices/reward/features version mới. Tái sử dụng policy store0007, không tạo migration đè. Durable receipts/CAS giữ retry. |
+| H5 / WP5 | P2P sau xác nhận cuộc gặp/chia sẻ | Ground/encounter authority trước; tips không thành own samples/observed memory, decay on-read và actor isolation. |
+| H6 / WP6 | Prior/replay offline, ưu tiên học trước feature khác | Chỉ synthetic/compatible archived context; artifact hash/schema/provenance, confidence bounded, không tăng earned samples. Đo cold-start trên seed giữ lại, không ghi live DB. |
+| H10 / WP10 | Tối ưu tham số offline có giới hạn | Sau harness/prior hợp lệ; train/validation seeds tách, budget cố định, diversity và paired CI. Runtime chỉ đọc artifact đã review, không tự sửa code/đổi policy/deploy. |
+| G0/UX | Tải/resolution và UX tiếp tục sau các mốc học đủ điều kiện | Đo bytes/first-frame, derivative giữ canonical/license/hash; pause403/409/5xx/network, chat focus, metadata, mobile/keyboard/reduced-motion có QA. Không mở public để sửa403. |
 
 ## Các phụ thuộc và phần chưa xong
 
@@ -32,6 +34,10 @@
 | Ops/refactor | GPU/soak/telemetry phiên dài; chat rate/body admission, tăng trưởng audit/history, GET living/context cost cần đo. Refactor runtime/supervisor loopback giữ regression, không sửa credential helper hay workflow read-only để autopush/deploy. |
 
 ## Đề xuất ngoài và ranh giới
+
+Ưu tiên mới của chủ dự án: học policy từ outcome và huấn luyện/tối ưu offline trước; hệ thống thế giới phát triển cùng các mốc học, không hứa online fine-tune LLM. Hai file Claude/Deepseek28/10 đã đối chiếu trong [intelligence-review](docs/validation/intelligence-review-2026-10-28.json). Không chép lại spec vào gốc hoặc phục hồi memory/review MD dài. H1 đang triển khai, các bước sau chỉ mở khi phụ thuộc và đo lường đạt.
+
+WP7 còn curation/few-shot theo context; WP8A–C goals/business/bonds và WP11 triggers cần whitelist/authority/giới hạn. WP12–19 mở rộng weather/calendar/laws/content/security/education/health/environment trên các schema hiện có; giữ nguồn TP.HCM và không giả dữ kiện y tế/pháp luật. Family/lifecycle không thuộc đợt này. Các mục đã có (LinUCB, policy store, RAG, dialogue pool, health error,3D/docs) không triển khai trùng.
 
 Đã đối chiếu Gemini và `AI-Living-review-va-de-xuat.md` của Claude sau source H0. Claude đọc ZIP38 suite; các nhận xét thiếu LinUCB/runner/memory/mobile đã cũ. Phần còn phù hợp được đưa vào các hàng trên; review đầy đủ còn trong Git tại mốc `2ef7e3f`. H0 đã coalesce pulse D1, nhưng chưa bỏ client fallback vì scheduler production chưa xác minh.
 

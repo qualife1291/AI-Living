@@ -1,0 +1,113 @@
+{
+  "reviewed_against": "1fd62b7f1ac13cbf7594377ea2c65a509ccd4e56",
+  "sources": [
+    {
+      "author": "claude",
+      "filename": "AGENT_SPEC_INTELLIGENCE.md",
+      "sha256": "ccef8d12b2812fe058b65e8d47c8efa70f4228a42df45fda5269f088cd3ba3d6"
+    },
+    {
+      "author": "deepseek",
+      "filename": "Deepseek review.rtf",
+      "sha256": "8111c69aaf3c2acbc4f806f49221da9fccd266821991ac06cb6a8497ba87a134"
+    }
+  ],
+  "documents_are_proposals_not_runtime_authority": true,
+  "findings": [
+    {
+      "proposal": "WP0 harness/ledger",
+      "decision": "implement H1 first",
+      "adaptation": "Existing tabular and default disjoint LinUCB are separate baselines; finite one-step feasible oracle, seed-level paired statistics; no invented social density."
+    },
+    {
+      "proposal": "WP1 expectedReward",
+      "decision": "accept pure outcome extraction as H1 prerequisite",
+      "adaptation": "Capture 15375 outcome and 1500 chooser boundary fingerprints before refactor. Preserve default runtime behavior; no policy switch."
+    },
+    {
+      "proposal": "WP2 residual/EMA/progress/warm start",
+      "decision": "H2 experiment after baseline",
+      "adaptation": "Version residual semantics, decision-time expected/context; raw reward remains intact. Emergency actions override share caps. No assumed benefit from EMA or priors."
+    },
+    {
+      "proposal": "WP3 rich reward",
+      "decision": "H3 conditional",
+      "adaptation": "Completed, attributable effects only; goals/commitments/travel authority required. Do not infer reward from dialogue or ETA."
+    },
+    {
+      "proposal": "WP4 LinUCB/group models",
+      "decision": "partly already implemented",
+      "adaptation": "6D matrices and 0007 learning_policies already exist. Group priors/new features require versioned semantics; do not rewrite 0007. Durable transactional receipts/checkpoints, not a 64-ID window for permanent idempotency."
+    },
+    {
+      "proposal": "WP5 peer sharing",
+      "decision": "H5 after shared encounter authority",
+      "adaptation": "Plan time matching alone does not prove heard-from-peer; separate tips/prior from own trials and memories, provenance and bounded on-read decay."
+    },
+    {
+      "proposal": "WP6 offline priors/replay",
+      "decision": "prioritize after H2/H4 evidence",
+      "adaptation": "No production DB writes. Import priors separately from earned samples, bound confidence, keep source/hash; old context can be replayed only with the exact compatible feature/reward version."
+    },
+    {
+      "proposal": "WP7 LLM curation/few-shot",
+      "decision": "partly already implemented; remaining H7",
+      "adaptation": "reviewNarrative, scoped RAG and dialogue hashes already exist; same prompt/context candidates only. Heuristic score is not semantic truth, no automatic model fine-tuning."
+    },
+    {
+      "proposal": "WP8 goals/business/bonds/family",
+      "decision": "goals/business/bonds later; family not part of this implementation",
+      "adaptation": "Finite goal grammar with unknown fallback; engine-only bounded economy. Household membership is not kinship. New population/age/lifecycle behavior needs a separate concrete product design."
+    },
+    {
+      "proposal": "WP9 observability",
+      "decision": "partly already implemented",
+      "adaptation": "Health already distinguishes schema errors from no tick; docs already consolidated and 3D-only. Extend only metrics that are actually measured; keep existing two-file onboarding."
+    },
+    {
+      "proposal": "WP10 offline evolution",
+      "decision": "prioritize experimental offline after valid harness/prior",
+      "adaptation": "Separate training and untouched validation seeds, bounded search budget and paired CI; no runtime evolution/parameter autopromotion. Shrinking Ainv does not increase uncertainty."
+    },
+    {
+      "proposal": "WP11 triggers",
+      "decision": "later conditional module",
+      "adaptation": "Finite metric/effect whitelist, bounded depth/size/cohort, off/dry-run/on, hysteresis/cooldown/CAS receipts. No direct money/history mutation or fabricated observed events."
+    },
+    {
+      "proposal": "WP12 weather",
+      "decision": "adapt existing context, not replace schema",
+      "adaptation": "RealContext.weather has status and precipitation, not rain:boolean. HCMC wet/dry seasons and stale/observed distinction, not invented four-season live weather."
+    },
+    {
+      "proposal": "WP13 calendar",
+      "decision": "extend existing cards/festival adapter later",
+      "adaptation": "Tết/Trung thu require sourced date ranges, not fixed Gregorian month/day. Effects must preserve actual placement/occupancy and economic caps."
+    },
+    {
+      "proposal": "WP14/WP15 laws/content",
+      "decision": "future bounded rule/content checks",
+      "adaptation": "Rules of this fictional simulation, not claims about real law. Deterministic text filters cannot guarantee zero semantic false positives/negatives."
+    },
+    {
+      "proposal": "WP16/WP17/WP18/WP19 security/education/health/environment",
+      "decision": "future world features alongside learning",
+      "adaptation": "Do not replace numeric health incompatibly, invent epidemic/medical evidence, reverse litter effects or use rendered props as economic outcomes. Domain skills/gates/flora are already present."
+    },
+    {
+      "proposal": "retention 90 days/5000 experiences; recreate MEMORY docs; root spec instructions",
+      "decision": "not adopted",
+      "adaptation": "Preserve history and applied migrations. Keep ROADMAP plus existing subject docs; no new root spec or mandatory long reading chain. No unverified quota/timing/quality claims."
+    }
+  ],
+  "preflight": {
+    "hashSeed_mulberry32": "exported lib/clock.ts",
+    "RealContext": "lib/living/schema.ts weather.status/precipitation, calendar, festivals",
+    "STEP_KINDS": "16 existing values",
+    "advanceNeeds": "internal, export without behavior change",
+    "agent_experiences": "seq unique ID, no revision column needed for H1",
+    "latest_migration": "0007_learning_policies already exists",
+    "adults": "adult literal true; only adult population currently",
+    "golden_reference": "docs/validation/learning-golden.json"
+  }
+}

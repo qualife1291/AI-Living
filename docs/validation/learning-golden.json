@@ -1,0 +1,8 @@
+{
+  "reference_source": "1fd62b7f1ac13cbf7594377ea2c65a509ccd4e56",
+  "fixture": "boundary-grid-v1",
+  "cases": 15375,
+  "decisions": 1500,
+  "outcomes": "dfcf4093a794bb6cb48b47ab843cc9a28d9899d8aabbaff49824ee7f2f106d93",
+  "choices": "cc0087edaf2b001adf81dec9759ff79b4449881da7dace30c1cdd12646890051"
+}
