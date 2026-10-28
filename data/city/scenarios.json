@@ -9,7 +9,8 @@
     "energy": -7,
     "hunger": 5,
     "skill": 1,
-    "adultOnly": false
+    "adultOnly": false,
+    "skillDomain": "technical"
   },
   {
     "id": "teach-class",
@@ -22,7 +23,9 @@
     "hunger": 3,
     "skill": 2,
     "adultOnly": false,
-    "minSkill": 8
+    "minSkill": 8,
+    "skillDomain": "learning",
+    "minDomainSkill": 8
   },
   {
     "id": "learn-trade",
@@ -34,7 +37,8 @@
     "energy": -3,
     "hunger": 4,
     "skill": 2,
-    "adultOnly": false
+    "adultOnly": false,
+    "skillDomain": "learning"
   },
   {
     "id": "hospital-check",
@@ -95,7 +99,9 @@
     "hunger": 4,
     "skill": 2,
     "adultOnly": false,
-    "minSkill": 4
+    "minSkill": 4,
+    "skillDomain": "technical",
+    "minDomainSkill": 4
   },
   {
     "id": "ride-bus",
@@ -107,7 +113,8 @@
     "energy": 1,
     "hunger": 2,
     "skill": 1,
-    "adultOnly": false
+    "adultOnly": false,
+    "skillDomain": "mobility"
   },
   {
     "id": "ride-metro",
@@ -119,7 +126,8 @@
     "energy": 1,
     "hunger": 2,
     "skill": 1,
-    "adultOnly": false
+    "adultOnly": false,
+    "skillDomain": "mobility"
   },
   {
     "id": "airport-visit",
@@ -131,7 +139,8 @@
     "energy": -3,
     "hunger": 4,
     "skill": 1,
-    "adultOnly": false
+    "adultOnly": false,
+    "skillDomain": "mobility"
   },
   {
     "id": "office-shift",
@@ -144,7 +153,9 @@
     "hunger": 5,
     "skill": 2,
     "adultOnly": false,
-    "minSkill": 3
+    "minSkill": 3,
+    "skillDomain": "commerce",
+    "minDomainSkill": 3
   },
   {
     "id": "job-search",
@@ -156,7 +167,8 @@
     "energy": -3,
     "hunger": 3,
     "skill": 1,
-    "adultOnly": false
+    "adultOnly": false,
+    "skillDomain": "commerce"
   },
   {
     "id": "job-change",
@@ -228,7 +240,8 @@
     "energy": -5,
     "hunger": 6,
     "skill": 1,
-    "adultOnly": false
+    "adultOnly": false,
+    "skillDomain": "fitness"
   },
   {
     "id": "minor-injury",
@@ -252,7 +265,8 @@
     "energy": 3,
     "hunger": 2,
     "skill": 1,
-    "adultOnly": false
+    "adultOnly": false,
+    "skillDomain": "community"
   },
   {
     "id": "post-office",
@@ -276,7 +290,8 @@
     "energy": -2,
     "hunger": 4,
     "skill": 1,
-    "adultOnly": false
+    "adultOnly": false,
+    "skillDomain": "community"
   },
   {
     "id": "garden-care",
@@ -288,7 +303,8 @@
     "energy": -2,
     "hunger": 3,
     "skill": 1,
-    "adultOnly": false
+    "adultOnly": false,
+    "skillDomain": "ecology"
   },
   {
     "id": "shared-meal",
@@ -300,7 +316,8 @@
     "energy": 6,
     "hunger": -22,
     "skill": 1,
-    "adultOnly": false
+    "adultOnly": false,
+    "skillDomain": "service"
   },
   {
     "id": "rest-home",
@@ -324,7 +341,8 @@
     "energy": 2,
     "hunger": 3,
     "skill": 1,
-    "adultOnly": false
+    "adultOnly": false,
+    "skillDomain": "community"
   },
   {
     "id": "market-chat",
@@ -348,7 +366,8 @@
     "energy": 2,
     "hunger": 2,
     "skill": 1,
-    "adultOnly": false
+    "adultOnly": false,
+    "skillDomain": "learning"
   },
   {
     "id": "cafe-shift",
@@ -360,7 +379,8 @@
     "energy": -4,
     "hunger": 4,
     "skill": 1,
-    "adultOnly": false
+    "adultOnly": false,
+    "skillDomain": "service"
   },
   {
     "id": "school-project",
@@ -373,7 +393,9 @@
     "hunger": 4,
     "skill": 2,
     "adultOnly": false,
-    "minSkill": 2
+    "minSkill": 2,
+    "skillDomain": "learning",
+    "minDomainSkill": 2
   },
   {
     "id": "quiet-walk",
@@ -397,7 +419,8 @@
     "energy": 2,
     "hunger": -2,
     "skill": 1,
-    "adultOnly": false
+    "adultOnly": false,
+    "skillDomain": "service"
   },
   {
     "id": "practice-run",
@@ -409,7 +432,8 @@
     "energy": -2,
     "hunger": 1,
     "skill": 1,
-    "adultOnly": false
+    "adultOnly": false,
+    "skillDomain": "fitness"
   },
   {
     "id": "practice-jump",
@@ -421,7 +445,8 @@
     "energy": -2,
     "hunger": 1,
     "skill": 1,
-    "adultOnly": false
+    "adultOnly": false,
+    "skillDomain": "fitness"
   },
   {
     "id": "practice-tag",
@@ -433,7 +458,8 @@
     "energy": -2,
     "hunger": 1,
     "skill": 1,
-    "adultOnly": false
+    "adultOnly": false,
+    "skillDomain": "fitness"
   },
   {
     "id": "practice-cycle",
@@ -445,7 +471,8 @@
     "energy": -2,
     "hunger": 1,
     "skill": 1,
-    "adultOnly": false
+    "adultOnly": false,
+    "skillDomain": "fitness"
   },
   {
     "id": "practice-exercise",
@@ -457,7 +484,8 @@
     "energy": -2,
     "hunger": 1,
     "skill": 1,
-    "adultOnly": false
+    "adultOnly": false,
+    "skillDomain": "fitness"
   },
   {
     "id": "practice-walk-pet",
@@ -469,7 +497,8 @@
     "energy": -2,
     "hunger": 1,
     "skill": 1,
-    "adultOnly": false
+    "adultOnly": false,
+    "skillDomain": "ecology"
   },
   {
     "id": "practice-shop",
@@ -481,7 +510,8 @@
     "energy": -2,
     "hunger": 1,
     "skill": 1,
-    "adultOnly": false
+    "adultOnly": false,
+    "skillDomain": "commerce"
   },
   {
     "id": "practice-study",
@@ -493,6 +523,7 @@
     "energy": -2,
     "hunger": 1,
     "skill": 1,
-    "adultOnly": false
+    "adultOnly": false,
+    "skillDomain": "learning"
   }
 ]

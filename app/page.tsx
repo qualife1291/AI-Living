@@ -35,7 +35,8 @@ import {useSoundscape} from "@/components/city/useSoundscape";
 import { LivingPanel } from "@/components/living/LivingPanel";
 import { venues, type Venue } from "@/lib/city/world";
 import sources from "@/data/city/sources.json";
-import { scenarios } from "@/lib/living/learning";
+import { scenarios,meetsSkillGate } from "@/lib/living/learning";
+import {SKILL_DOMAINS,SKILL_LABELS} from "@/lib/living/skills";
 import type { World, EpisodeEvent } from "@/lib/world";
 import type { WeatherState } from "@/lib/clock";
 import {worldTime} from "@/lib/clock";
@@ -478,6 +479,13 @@ export default function Page() {
                         ? "Đang học thêm"
                         : "Có nhịp công việc"}
                   </p>
+                  <details className="domain-skills">
+                    <summary>Điểm thực hành theo nhóm</summary>
+                    <p>Chỉ cộng khi hoàn tất kế hoạch trong mô phỏng. Mỗi nhóm tích lũy riêng.</p>
+                    {agent.domainSkills ? <ul>{SKILL_DOMAINS.map(domain=><li key={domain}><span>{SKILL_LABELS[domain]}</span><b>{agent.domainSkills?.[domain]??0}/100</b></li>)}</ul> : <p>Chưa có điểm theo nhóm được lưu. Các hoạt động đã mở vẫn được giữ.</p>}
+                    <small>Các hoạt động nâng cao cần đủ điểm ở nhóm tương ứng.</small>
+                    <ul className="domain-skill-gates">{scenarios.filter(s=>s.minDomainSkill!==undefined).map(s=><li key={s.id}><span>{s.title}<small>{SKILL_LABELS[s.skillDomain!]} · {s.minDomainSkill} điểm</small></span><b>{meetsSkillGate(agent,s)?"Đã mở":"Đang học"}</b></li>)}</ul>
+                  </details>
                   <ul>
                     {agent.memories
                       .slice(-8)

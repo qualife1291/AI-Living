@@ -5,6 +5,7 @@ import type { LivingState, RealContext } from "./schema.ts";
 import type { World, PersonPlan } from "../world";
 import { computeSimMs, hashSeed, worldTime } from "../clock.ts";
 import { decisionContext, fitLinear, linearScore, validDecisionContext, type LinearArm } from "./linucb.ts";
+import {SKILL_DOMAINS,type SkillDomain,type DomainGain} from "./skills.ts";
 export const scenarioSchema = z
   .object({
     id: z.string().regex(/^[a-z][a-z0-9-]{0,60}$/),
@@ -25,8 +26,10 @@ export const scenarioSchema = z
     skill: z.number().int().min(0).max(3),
     adultOnly: z.boolean(),
     minSkill: z.number().int().min(0).max(100).optional(),
+    skillDomain: z.enum(SKILL_DOMAINS).optional(),
+    minDomainSkill: z.number().int().min(0).max(100).optional(),
   })
-  .strict();
+  .strict().refine(s=>s.minDomainSkill===undefined || s.skillDomain!==undefined,{message:"Domain gate requires a skill domain"});
 export const scenarios = z
   .array(scenarioSchema)
   .min(1)
@@ -43,6 +46,9 @@ export type AgentLearning = {
   hunger: number;
   health: number;
   skill: number;
+  domainSkills?: Partial<Record<SkillDomain,number>>;
+  /** Compatibility only: old scalar gates that were already open, not earned points. */
+  legacySkillGates?: string[];
   employment: "employed" | "seeking" | "studying";
   samples: number;
   actions: Record<string, LearnedAction>;
@@ -73,8 +79,13 @@ export type Experience = {
   source: "simulation";
   model: "contextual-bandit-v1" | "disjoint-linucb-v1";
   context?: number[];
+  skillGain?: DomainGain;
 };
 export type LearningPopulation = Record<string, AgentLearning>;
+export function meetsSkillGate(agent: Pick<AgentLearning,"skill"|"domainSkills"|"legacySkillGates">, scenario: Scenario) {
+  return agent.skill >= (scenario.minSkill??0) && (scenario.minDomainSkill===undefined || !agent.domainSkills ||
+    agent.legacySkillGates?.includes(scenario.id) || (agent.domainSkills[scenario.skillDomain!]??0)>=scenario.minDomainSkill);
+}
 export function initializeAgent(id: string): AgentLearning {
   return {
     adult: true,
@@ -83,6 +94,7 @@ export function initializeAgent(id: string): AgentLearning {
     hunger: 20,
     health: 100,
     skill: 0,
+    domainSkills: {},
     employment: "employed",
     samples: 0,
     actions: {},
@@ -127,7 +139,7 @@ export function chooseScenario(
     context.weather.status === "fresh" &&
     (context.weather.precipitation ?? 0) > 0;
   const candidates = scenarios
-    .filter((s) => agent.skill >= (s.minSkill ?? 0))
+    .filter(s=>meetsSkillGate(agent,s))
     .filter((s) => !s.adultOnly || agent.adult)
     // Accidents and violations are reactive events, never purposeful errands.
     .filter((s) => !["minor-injury", "traffic-check", "job-change"].includes(s.id))
@@ -189,9 +201,17 @@ export function settleLearning(
     health: agent.health,
     skill: agent.skill,
   };
+  if (!agent.domainSkills) {
+    // Keep previously unlocked activities; never turn historical scalar skill
+    // into invented proficiency in every domain. New gains start at zero.
+    agent.legacySkillGates = scenarios.filter(s=>s.minDomainSkill!==undefined && agent.skill >= (s.minSkill??0)).map(s=>s.id);
+    agent.domainSkills = {};
+  }
   agent.energy = Math.max(0, Math.min(100, agent.energy + scenario.energy));
   agent.hunger = Math.max(0, Math.min(100, agent.hunger + scenario.hunger));
   agent.skill = Math.min(100, agent.skill + scenario.skill);
+  if (scenario.skillDomain && scenario.skill > 0)
+    agent.domainSkills[scenario.skillDomain] = Math.min(100,(agent.domainSkills[scenario.skillDomain]??0)+scenario.skill);
   if (scenario.id === "minor-injury")
     agent.health = Math.max(45, agent.health - 8);
   if (scenario.id === "rehabilitate" || scenario.id === "hospital-check")
@@ -256,6 +276,7 @@ export function prepareLearning(world: World, state: LivingState, now: number, c
       if (core) {
         agent.energy = core.energy;
         agent.hunger = core.hunger;
+        agent.legacySkillGates = scenarios.filter(s=>s.minDomainSkill!==undefined && core.skill >= (s.minSkill??0)).map(s=>s.id);
       }
       if (person.id === "an") {
         agent.energy = state.energy;
@@ -266,6 +287,8 @@ export function prepareLearning(world: World, state: LivingState, now: number, c
     if (existingCore)
       agent.skill = Math.max(agent.skill, Math.min(100, existingCore.skill));
     advanceNeeds(agent, person.id, simMs, hour < 6 || hour >= 22);
+    const domain = scenarios.find(s=>s.id===agent.pending?.scenarioId)?.skillDomain;
+    const beforeDomain = domain ? agent.domainSkills?.[domain]??0 : 0;
     const trained = settleLearning(
       agent,
       simMs,
@@ -283,6 +306,7 @@ export function prepareLearning(world: World, state: LivingState, now: number, c
         source: "simulation",
         model: validDecisionContext(agent.pending.context) && agent.linear?.[agent.pending.scenarioId] ? "disjoint-linucb-v1" : "contextual-bandit-v1",
         ...(validDecisionContext(agent.pending.context) ? { context: [...agent.pending.context] } : {}),
+        ...(domain && (agent.domainSkills?.[domain]??0)>beforeDomain ? {skillGain:{domain,before:beforeDomain,after:agent.domainSkills![domain]!,amount:agent.domainSkills![domain]!-beforeDomain}} : {}),
       };
       experiences.push(experience);
       collect?.(experience);

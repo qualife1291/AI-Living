@@ -6,3 +6,5 @@
 - Tiếp theo theo docs/NEXT_PHASES.md: completion/playback theo ground, vector kỹ năng/hierarchy/P2P có provenance, RAG/export/context cards 33 nơi, density/LOD/traffic/indoor, habitat/flora. Thiếu Sites chỉ chặn production, không chặn các việc source độc lập.
 - Giữ only3D/tag/pet/bike/overlays, IDs/history/memory/home/petOwners. Không reset DB, sửa migration đã áp dụng, paid API/public/video/cron trùng. Production migration 0006/0007 cần backup và readback đúng project.
 - Hardware GPU, soak dài, real model A/B/LoRA và ops cần bằng chứng riêng. Browser SwiftShader dùng fixture; API persistence bằng D1 cô lập. Sau build phải khởi động fresh Worker, không rebuild giữa browser QA.
+
+- WIP domain skills sau candidate e90021b: tám nhóm điểm thực hành, bốn domain gates; outcome ghi skillGain thực vào archive. Legacy scalar giữ danh sách gate đã mở (kể cả core chưa có policy), không tạo điểm ngành từ lịch sử tổng. UI Học hỏi có điểm/tình trạng mở khóa. Targeted domain/learning/LinUCB đạt; còn full46/check/lint/build/API/browser drawer và benchmarkv2. Candidate e900 vẫn không chứa domain WIP.

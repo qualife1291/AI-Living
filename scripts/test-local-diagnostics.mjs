@@ -139,6 +139,8 @@ try{
  assert.deepEqual(learned.living.residents[0].memories.slice(0,oldMemories.length),oldMemories);
  const archive=JSON.parse((await db.prepare('SELECT data FROM agent_experiences WHERE id=?').bind('linucb-api-receipt').first()).data);
  assert.equal(archive.model,'disjoint-linucb-v1');assert.deepEqual(archive.context,contextAtChoice);
+ assert.equal(fitted.domainSkills.learning,(policy.domainSkills?.learning??0)+2);
+ assert.deepEqual(archive.skillGain,{domain:'learning',before:policy.domainSkills?.learning??0,after:fitted.domainSkills.learning,amount:2});
  assert.deepEqual(learned.living.petOwners,linearWorld.living.petOwners);assert.deepEqual(learned.living.residents.map(r=>r.home),linearWorld.living.residents.map(r=>r.home));
  const retry=await settle();assert.equal(retry.status,200);assert.equal((await retry.json()).updated,0);
  assert.equal((await db.prepare('SELECT count(*) AS count FROM agent_experiences WHERE id=?').bind('linucb-api-receipt').first()).count,1);

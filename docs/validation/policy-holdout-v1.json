@@ -1,0 +1,151 @@
+{
+  "kind": "synthetic-runtime-policy-holdout-v1",
+  "runtime": [
+    "chooseScenario",
+    "settleLearning",
+    "decisionContext",
+    "linearScore"
+  ],
+  "training": "shared uniform logged actions; no peer transfers or model-specific skill bonuses",
+  "holdout": "frozen models, independent seeded observations, same runtime rules/gates/priorities",
+  "limits": [
+    "Reward is the existing simulation formula, not observed physical completion or language quality.",
+    "No GPU, LLM calls, real-world claims, SFT scores or assertion that LinUCB must win.",
+    "One-step regret does not measure long-horizon welfare; uncertainty and needs heuristics can lower immediate reward."
+  ],
+  "seeds": 8,
+  "runs": [
+    {
+      "seed": 11,
+      "training": 820,
+      "holdout": 160,
+      "tabular": {
+        "meanReward": 0.5264293121104858,
+        "predictionMSE": 0.0047934169509903386,
+        "immediateRegret": 0.1261111670806046
+      },
+      "linucb": {
+        "meanReward": 0.5378309260017878,
+        "predictionMSE": 0.003746681003528459,
+        "immediateRegret": 0.11470955318930258
+      }
+    },
+    {
+      "seed": 37,
+      "training": 820,
+      "holdout": 160,
+      "tabular": {
+        "meanReward": 0.5714952442728259,
+        "predictionMSE": 0.0038839316919667783,
+        "immediateRegret": 0.09970965057654821
+      },
+      "linucb": {
+        "meanReward": 0.5459255363842489,
+        "predictionMSE": 0.003150601755770746,
+        "immediateRegret": 0.1252793584651249
+      }
+    },
+    {
+      "seed": 83,
+      "training": 820,
+      "holdout": 160,
+      "tabular": {
+        "meanReward": 0.566640864915172,
+        "predictionMSE": 0.004939784787955155,
+        "immediateRegret": 0.1019572200613676
+      },
+      "linucb": {
+        "meanReward": 0.5717723041431237,
+        "predictionMSE": 0.004227406914251381,
+        "immediateRegret": 0.09682578083341578
+      }
+    },
+    {
+      "seed": 149,
+      "training": 820,
+      "holdout": 160,
+      "tabular": {
+        "meanReward": 0.5266509323358808,
+        "predictionMSE": 0.004988613047396625,
+        "immediateRegret": 0.11008676446170156
+      },
+      "linucb": {
+        "meanReward": 0.5172266945458808,
+        "predictionMSE": 0.004561227003208014,
+        "immediateRegret": 0.11951100225170146
+      }
+    },
+    {
+      "seed": 233,
+      "training": 820,
+      "holdout": 160,
+      "tabular": {
+        "meanReward": 0.5696598545119489,
+        "predictionMSE": 0.003456079195223869,
+        "immediateRegret": 0.09433948328127809
+      },
+      "linucb": {
+        "meanReward": 0.5506155109290928,
+        "predictionMSE": 0.002166241529737884,
+        "immediateRegret": 0.11338382686413402
+      }
+    },
+    {
+      "seed": 401,
+      "training": 820,
+      "holdout": 160,
+      "tabular": {
+        "meanReward": 0.6002347954208063,
+        "predictionMSE": 0.002818062110088457,
+        "immediateRegret": 0.07393246600448597
+      },
+      "linucb": {
+        "meanReward": 0.5929148421932144,
+        "predictionMSE": 0.001988775696899443,
+        "immediateRegret": 0.08125241923207793
+      }
+    },
+    {
+      "seed": 617,
+      "training": 820,
+      "holdout": 160,
+      "tabular": {
+        "meanReward": 0.5882487016013005,
+        "predictionMSE": 0.0038459632671991213,
+        "immediateRegret": 0.07592406462613711
+      },
+      "linucb": {
+        "meanReward": 0.5536753604117935,
+        "predictionMSE": 0.003168381427091912,
+        "immediateRegret": 0.11049740581564402
+      }
+    },
+    {
+      "seed": 997,
+      "training": 820,
+      "holdout": 160,
+      "tabular": {
+        "meanReward": 0.5363452340031075,
+        "predictionMSE": 0.002079413013820935,
+        "immediateRegret": 0.12680713062471055
+      },
+      "linucb": {
+        "meanReward": 0.5328967188639785,
+        "predictionMSE": 0.001489381321282818,
+        "immediateRegret": 0.13025564576383952
+      }
+    }
+  ],
+  "average": {
+    "tabular": {
+      "meanReward": 0.5607131173964409,
+      "predictionMSE": 0.0038506580080801597,
+      "immediateRegret": 0.10110849333960423
+    },
+    "linucb": {
+      "meanReward": 0.55035723668414,
+      "predictionMSE": 0.0030623370814713323,
+      "immediateRegret": 0.11146437405190503
+    }
+  }
+}

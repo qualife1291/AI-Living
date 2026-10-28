@@ -32,7 +32,7 @@ assert(linearScore(high,[1,.9,.4,.5,0,.1]).mean>linearScore(low,[1,.9,.4,.5,0,.1
 assert(linearScore(high,[1,.1,.4,.5,0,.1]).mean<linearScore(low,[1,.1,.4,.5,0,.1]).mean);
 const now=Date.parse('2026-10-27T05:00:00Z'),context={date:'2026-10-27',hour:12,weekday:2,timezone:'Asia/Ho_Chi_Minh',fetchedAt:new Date(now).toISOString(),weather:{status:'fresh',precipitation:0},calendar:{weekend:false,holidays:[]},festivals:{status:'unavailable',label:'fixture'},traffic:{status:'unavailable',label:'fixture'}};
 const novice=initializeAgent('novice');novice.actions['teach-class']={trials:999,meanReward:999};
-assert.notEqual(chooseScenario(novice,'novice',context).id,'teach-class');novice.skill=8;assert.equal(chooseScenario(novice,'novice',context).id,'teach-class');
+assert.notEqual(chooseScenario(novice,'novice',context).id,'teach-class');novice.skill=8;novice.domainSkills.learning=8;assert.equal(chooseScenario(novice,'novice',context).id,'teach-class');
 novice.energy=10;assert.equal(chooseScenario(novice,'novice',context).id,'rest-home','Physiological gates stay ahead of any fitted policy');
 const agent=initializeAgent('actual-outcome'),atChoice=decisionContext(agent,context.weather);
 agent.pending={id:'outcome1',scenarioId:'learn-trade',startedSimMs:0,durationMs:180000,completed:false,context:[...atChoice]};

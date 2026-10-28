@@ -1,0 +1,41 @@
+import assert from 'node:assert/strict';
+import {initializeAgent,settleLearning,chooseScenario,prepareLearning,scenarios,meetsSkillGate} from '../lib/living/learning.ts';
+import {initializeLiving} from '../lib/living/engine.ts';
+import {seed} from '../lib/world.ts';
+const context={date:'2026-10-28',hour:9,weather:{status:'fresh',precipitation:0}};
+let serial=0;
+function finish(agent,id,match=true,elapsed=1000){
+ agent.pending={id:`domain-${serial++}`,scenarioId:id,startedSimMs:0,durationMs:1000,completed:false};
+ return settleLearning(agent,elapsed,'2026-10-28T02:00:00.000Z',match);
+}
+function forced(agent,id){const a=structuredClone(agent);a.energy=80;a.hunger=20;a.health=100;a.actions[id]={trials:99,meanReward:999};return chooseScenario(a,'domain-test',context,undefined,'tabular').id;}
+const learner=initializeAgent('learner');learner.skill=99;
+assert.notEqual(forced(learner,'teach-class'),'teach-class','Aggregate skill alone cannot unlock an unpractised domain for new models');
+for(let i=0;i<8;i++)finish(learner,'library');
+assert.equal(learner.domainSkills.learning,8);assert.equal(forced(learner,'teach-class'),'teach-class');
+assert.notEqual(forced(learner,'motorbike-repair'),'motorbike-repair','Learning does not confer technical proficiency');
+for(let i=0;i<4;i++)finish(learner,'factory-shift');
+assert.equal(learner.domainSkills.technical,4);assert.equal(forced(learner,'motorbike-repair'),'motorbike-repair');
+const novice=initializeAgent('novice');finish(novice,'library',true,999);assert.deepEqual(novice.domainSkills,{});assert.equal(novice.samples,0);
+finish(novice,'factory-shift',false);assert.deepEqual(novice.domainSkills,{});assert.equal(novice.samples,0);
+finish(novice,'hospital-check');assert.deepEqual(novice.domainSkills,{},'A check-up confers no medical or technical expertise');
+finish(novice,'learn-trade');const saved=JSON.stringify(novice);assert.equal(settleLearning(novice,2000,'2026-10-28T02:00:00.000Z',true),false);assert.equal(JSON.stringify(novice),saved);
+novice.domainSkills.learning=99;finish(novice,'learn-trade');assert.equal(novice.domainSkills.learning,100);
+const legacy=initializeAgent('legacy');delete legacy.domainSkills;legacy.skill=3;legacy.memories=['Ký ức cũ'];legacy.actions.office={trials:4,meanReward:.3};
+assert.equal(forced(legacy,'office-shift'),'office-shift');finish(legacy,'learn-trade');
+assert.deepEqual(legacy.legacySkillGates.sort(),['office-shift','school-project']);assert.equal(legacy.domainSkills.learning,2);assert.equal(legacy.domainSkills.commerce,undefined,'Grandfathered gate is not invented domain credit');
+assert.equal(forced(legacy,'office-shift'),'office-shift');assert.notEqual(forced(legacy,'motorbike-repair'),'motorbike-repair','Migration cannot grandfather a gate that was still locked');
+assert.equal(legacy.memories[0],'Ký ức cũ');assert.deepEqual(legacy.actions.office,{trials:4,meanReward:.3});
+const now=Date.parse('2026-10-28T02:00:00Z'),world={...structuredClone(seed),living:initializeLiving(now),clock:{anchors:[{realMs:now,simMs:200000,scale:1}],scale:1,pausedAt:null,pausedMs:0}};
+world.living.learning={an:initializeAgent('an')};
+const agent=world.living.learning.an;agent.pending={id:'domain-archive',scenarioId:'learn-trade',startedSimMs:0,durationMs:180000,completed:false};
+world.people[0].plan={createdAt:new Date(now).toISOString(),simStartedAt:0,pausedMs:0,from:'Thư viện',steps:[{location:'Trường nghề',kind:'study',activity:'Học nghề',duration:180}]};
+const original=JSON.stringify(world),state=structuredClone(world.living),outcomes=[];prepareLearning(world,state,now,e=>outcomes.push(e));assert.equal(JSON.stringify(world),original);
+assert.deepEqual(outcomes.find(e=>e.id==='domain-archive').skillGain,{domain:'learning',before:0,after:2,amount:2});
+const oldCore=structuredClone(world);delete oldCore.living.learning;oldCore.people[0].skill=8;delete oldCore.people[0].plan;
+const migrated=structuredClone(oldCore.living);prepareLearning(oldCore,migrated,now);
+assert.equal(migrated.learning.an.samples,0);assert.deepEqual(migrated.learning.an.domainSkills,{});
+assert.equal(migrated.learning.an.legacySkillGates.length,4,'Core scalar progress predating a policy retains its already-open gates without inventing domain experience');
+for(const scenario of scenarios)if(scenario.minDomainSkill!==undefined)assert(scenario.skillDomain);
+assert(meetsSkillGate({skill:99},scenarios.find(s=>s.id==='teach-class')),'Unmigrated legacy decisions retain old scalar gates');
+console.log('PASS domain isolation, earned unlock paths, no premature/cancelled/duplicate credit, cap, additive legacy compatibility and archived actual gains');

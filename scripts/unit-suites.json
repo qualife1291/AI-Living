@@ -134,5 +134,8 @@
   ],
   [
     "scripts/test-daemon-fallback.mjs"
+  ],
+  [
+    "scripts/test-domain-skills.mjs"
   ]
 ]
