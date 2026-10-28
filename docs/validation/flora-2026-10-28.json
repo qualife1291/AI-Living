@@ -1,0 +1,34 @@
+{
+  "validated_source_commit": "5527098e6cee6d55b794f6fb48c0c6d61839bcb3",
+  "unit_suites": 50,
+  "unit_passed": 50,
+  "unit_seconds": 24.54,
+  "typecheck": true,
+  "lint": true,
+  "build": true,
+  "compiled_local_api": true,
+  "garden_plots": 5,
+  "plants": 30,
+  "growth_phases": 5,
+  "visual_cases": 25,
+  "geometry_matrices": 2200,
+  "max_garden_triangles": 3240,
+  "garden_batches": 2,
+  "existing_footprints_unchanged": true,
+  "actor_history_policy_preserved": true,
+  "browser": [
+    "gardens",
+    "social",
+    "homes",
+    "cycle",
+    "pets"
+  ],
+  "viewports": [
+    "desktop",
+    "mobile",
+    "320px"
+  ],
+  "preview": "Chromium SwiftShader; synthetic world, care mock uses pure model; persistence tested separately in real local D1",
+  "hardware_gpu": false,
+  "production_access": false
+}

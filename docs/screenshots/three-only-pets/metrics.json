@@ -4,7 +4,7 @@
   "cases": [
     {
       "viewport": "desktop",
-      "frames": 90,
+      "frames": 78,
       "petFollow": true,
       "pause": true,
       "persistedAssignmentMock": true,
@@ -18,7 +18,7 @@
     },
     {
       "viewport": "mobile",
-      "frames": 162,
+      "frames": 133,
       "petFollow": true,
       "pause": true,
       "persistedAssignmentMock": true,

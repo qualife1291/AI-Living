@@ -45,3 +45,5 @@ LivingState còn có catalog/needs/skills/learning/experiences/appearances/anima
 Domain skills là metadata additive của AgentLearning: domainSkills và legacySkillGates, không phải backfill earned points. Experience mới có skillGain optional domain/before/after/amount, vẫn source simulation. Context cards49/33nơi là catalog source editorial, không ghi thành event/memory; RAG daemon đọc memories hiện có và không ghi knowledge transfer.
 
 Pending mới có planKey để phát hiện plan bị thay dù giữ timestamp, không là proof arrival/security. reportedEncounters giữ64 ID đã report contextual simulation result để tránh cộng lại. Các field optional, legacy đọc được, không sửa migration hoặc xóa history.
+
+LivingState.flora optional chứa record growth/anchor/moisture theo ID khóm, không migration. Default cho legacy chỉ là tuổi biên tập; care ghi bằng CAS, không tạo nhân vật/ký ức/reward hoặc sửa namespace học. Catalog garden-plots JSON sinh từ footprint hiện có; không dùng projection làm receipt.

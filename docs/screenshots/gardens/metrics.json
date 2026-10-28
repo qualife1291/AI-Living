@@ -1,0 +1,47 @@
+{
+  "production": false,
+  "renderer": "Chromium SwiftShader",
+  "fixture": "Synthetic world; watering model reused in mock; persistence separately tested in real local D1",
+  "cases": [
+    {
+      "viewport": "desktop",
+      "plots": 5,
+      "plants": 30,
+      "batches": 2,
+      "phases": [
+        "sprout",
+        "young",
+        "bud",
+        "bloom",
+        "rest"
+      ],
+      "careMutationMock": true,
+      "pause": true,
+      "cameraFramed": true,
+      "conflictAndBadContract": true,
+      "responsive320": true,
+      "drawCalls": "39",
+      "errors": []
+    },
+    {
+      "viewport": "mobile",
+      "plots": 5,
+      "plants": 30,
+      "batches": 2,
+      "phases": [
+        "sprout",
+        "young",
+        "bud",
+        "bloom",
+        "rest"
+      ],
+      "careMutationMock": true,
+      "pause": true,
+      "cameraFramed": true,
+      "conflictAndBadContract": true,
+      "responsive320": true,
+      "drawCalls": "35",
+      "errors": []
+    }
+  ]
+}

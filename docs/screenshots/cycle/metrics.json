@@ -4,8 +4,8 @@
   "cases": [
     {
       "viewport": "desktop",
-      "frames": 91,
-      "travel": 221.98916464709632,
+      "frames": 55,
+      "travel": 159.17457729945286,
       "polls": 8,
       "bodyRadius": 9.2,
       "driveClip": true,
@@ -17,8 +17,8 @@
     },
     {
       "viewport": "mobile",
-      "frames": 164,
-      "travel": 243.5506301384319,
+      "frames": 127,
+      "travel": 231.95838403785473,
       "polls": 8,
       "bodyRadius": 9.2,
       "driveClip": true,

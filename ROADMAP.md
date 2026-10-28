@@ -97,3 +97,6 @@ DisjointLinUCB/4skillgates/context-at-choice, roleexpansionguard, structuredmemo
 
 ## Phase C — cửa nhà đã kiểm thử trong source
 60 cửa riêng, địa chỉ và Xem nhà, additive backfill, walking/full-bike ground routing đã qua 43 suite/API/browser desktop/mobile. Xem PHASE_C_HOMES. Chưa density live, indoor hoặc boarding/transit.
+
+## Phase E — vườn có trạng thái (source)
+Năm khóm/30cây,5phase/độẩm/tưới ownerCAS,2batch trong footprint cũ, camera vàUI desktop/mobile. Pure/geometry/full50/API đạt; chi tiết PHASE_E_GARDENS. Không nhận toàn bộ habitat/flora/ground/NPC gardening đã hoàn tất; production theo ledger riêng.

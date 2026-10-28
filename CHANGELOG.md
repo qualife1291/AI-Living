@@ -1,5 +1,10 @@
 # Changelog
 
+## 2026-10-28 — Vườn cây có nhịp phát triển (source)
+- 5 khóm hoa/30 cây có năm giai đoạn và độ ẩm theo đồng hồ xóm. Tưới được lưu, giữ dữ liệu cũ và không cộng điểm/ký ức cho cư dân.
+- Địa điểm có bảng Vườn cây và Xem cây; camera vừa màn hình dọc, mọi giai đoạn giữ footprint cũ trong hai batch3D.
+- 50 suite/check/lint/build/API đạt; preview desktop/mobile đạt. Chưa deploy Sites hoặc mở loài/habitat mới.
+
 ## 2026-10-28 — Giữ kết quả đúng kế hoạch (source)
 - Không cộng outcome cho kế hoạch mới bị thay nội dung nhưng giữ timestamp; giữ khả năng đọc pending cũ.
 - Chờ đủ toàn bộ thời lượng hai kế hoạch trước khi ghi ngữ cảnh gặp; qua slot đang bận vẫn giữ đúng liên kết gốc, retry không cộng lại. Giữ lịch sử cũ, ghi rõ đây là kế hoạch mô phỏng.
