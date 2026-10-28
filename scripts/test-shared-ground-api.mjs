@@ -1,6 +1,6 @@
 /** Compiled Worker + isolated D1, never user DB or Sites. */
 import assert from 'node:assert/strict';
-import {readFileSync,readdirSync,realpathSync} from 'node:fs';
+import {readdirSync,realpathSync} from 'node:fs';
 import {createRequire} from 'node:module';
 import {resolve} from 'node:path';
 import {randomUUID} from 'node:crypto';
@@ -43,13 +43,13 @@ try{
  const [a,b]=await Promise.all([post(command),post(command)]);assert.equal(a.status,200);assert.equal(b.status,200);const [one,two]=await Promise.all([a.json(),b.json()]);assert.equal([one,two].filter(r=>!r.duplicate).length,1);assert.equal(one.checkpoint,two.checkpoint);
  const viewResponse=await mf.dispatchFetch('http://localhost/api/world?ground=shared');assert.equal(viewResponse.status,200);const view=await viewResponse.json();assert.equal(view.sharedGround.frames.at(-1).cars.length,12);assert.equal(view.sharedGround.eligibleForReward,false);
  assert.deepEqual((await db.prepare('SELECT * FROM worlds').all()).results,before.map(r=>({...r,revision:2,data:JSON.stringify(world)})));
- const saved=await db.prepare('SELECT * FROM ground_shared_states').all();
+ const saved=(await db.prepare('SELECT * FROM ground_shared_states').all()).results;
  await db.prepare('CREATE TRIGGER ignore_shared_receipt BEFORE INSERT ON ground_shared_batches BEGIN SELECT RAISE(IGNORE); END').run();
- assert.equal((await post({...command,operationId:randomUUID(),expectedCheckpoint:one.checkpoint})).status,503);assert.deepEqual(await db.prepare('SELECT * FROM ground_shared_states').all(),saved);
+ assert.equal((await post({...command,operationId:randomUUID(),expectedCheckpoint:one.checkpoint})).status,503);assert.deepEqual((await db.prepare('SELECT * FROM ground_shared_states').all()).results,saved);
  await db.prepare('DROP TRIGGER ignore_shared_receipt').run();
- const userWorld=await db.prepare('SELECT * FROM worlds').all(),sourceCount=(await db.prepare('SELECT count(*) n FROM ground_shared_sources').first()).n;
+ const userWorld=(await db.prepare('SELECT * FROM worlds').all()).results,sourceCount=(await db.prepare('SELECT count(*) n FROM ground_shared_sources').first()).n;
  await db.prepare("CREATE TRIGGER reject_shared_capture BEFORE INSERT ON ground_shared_sources BEGIN SELECT RAISE(ABORT,'reject-capture'); END").run();
- await assert.rejects(db.prepare("UPDATE worlds SET revision=revision+1 WHERE id='home'").run());assert.deepEqual(await db.prepare('SELECT * FROM worlds').all(),userWorld);assert.equal((await db.prepare('SELECT count(*) n FROM ground_shared_sources').first()).n,sourceCount);
+ await assert.rejects(db.prepare("UPDATE worlds SET revision=revision+1 WHERE id='home'").run());assert.deepEqual((await db.prepare('SELECT * FROM worlds').all()).results,userWorld);assert.equal((await db.prepare('SELECT count(*) n FROM ground_shared_sources').first()).n,sourceCount);
  await db.prepare('DROP TRIGGER reject_shared_capture').run();
  assert.equal((await db.prepare("SELECT text FROM memories WHERE id='keep'").first()).text,'Giữ ký ức');
  await tick(Date.now()+10000);const pulse=await post({}, {},'http://localhost/api/living/pulse');assert.equal(pulse.status,200,await pulse.clone().text());assert((await pulse.json()).sharedGround,'existing pulse advances active shared timeline');
