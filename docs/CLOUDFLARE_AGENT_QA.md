@@ -2,6 +2,8 @@
 
 ## Trạng thái thực tế đã kiểm — 29/10/2026 (cập nhật sau thiết lập)
 
+- **Xác minh cuối (29/10):** hai lượt build trùng commit `00e3027c` đều `success`; deployment mới nhất `e5f5fc2d-fa35-421c-b5eb-88ab4c1bc6d5`, version `39bc5651-7fef-487f-af30-7c761387015e` (100%). Worker QA URL enabled, version URLs disabled, token QA only, cron không có. Cloudflare API chỉ chứng thực deploy và policy, không thay thế HTTP/browser smoke với credential.
+
 **Cloudflare Builds QA hiện ĐÃ CONNECT và ĐÃ DEPLOY**. Các dòng trong phần hướng dẫn tạo Builds ở dưới chỉ còn là hướng dẫn khôi phục nếu config bị xóa, không còn là blocker hiện tại.
 
 - Repo: `qualife1291/AI-Living` → `cloudflare-qa`; `auto_build_enabled=true`, previews disabled. Build: `corepack pnpm install --frozen-lockfile && npm run build`. Deploy: `node scripts/configure-cloudflare-qa.mjs && npx wrangler deploy --config dist/server/wrangler.json`.
