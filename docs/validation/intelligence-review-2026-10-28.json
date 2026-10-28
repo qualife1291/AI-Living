@@ -108,6 +108,10 @@
     "agent_experiences": "seq unique ID, no revision column needed for H1",
     "latest_migration": "0007_learning_policies already exists",
     "adults": "adult literal true; only adult population currently",
-    "golden_reference": "docs/validation/learning-golden.json"
+    "golden_reference": "docs/validation/learning-golden.json",
+    "adultOnly_scenarios": [
+      "date-invitation",
+      "friendship"
+    ]
   }
 }

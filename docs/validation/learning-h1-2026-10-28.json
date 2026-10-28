@@ -1,0 +1,69 @@
+{
+  "phase": "H1 / WP0 + pure outcome prerequisite",
+  "tested_source_before_docs": "273c9e7a41606490b6ab764e2055a10181b0d0ec",
+  "unit": {
+    "suite": "unit-summary",
+    "total": 52,
+    "passed": 52,
+    "failed": [],
+    "workers": 4,
+    "seconds": 15.34
+  },
+  "typecheck": true,
+  "lint": true,
+  "build": true,
+  "compiled_local_api": {
+    "suite": "local-diagnostics-http",
+    "ownerReadGuard": true,
+    "ownerWriteGuard": true,
+    "streamByteLimit": true,
+    "schema": true,
+    "origin": true,
+    "ack": true,
+    "jsonlReadback": true,
+    "rateLimit": true,
+    "retention": true,
+    "diagnosticsReadOnly": true,
+    "pulsePersistence": true,
+    "pulseRetry": true,
+    "pulseConcurrentViewers": 12,
+    "pulseNoDuplicateAudit": true,
+    "pulsePause": true,
+    "healthSchemaBatch": true,
+    "productionAccess": false
+  },
+  "api_learning_blob": "2f927d18870f4a6f733f64205f59d45d420eb56c",
+  "final_learning_blob": "2f927d18870f4a6f733f64205f59d45d420eb56c",
+  "golden": "learning-golden.json",
+  "reports": [
+    "learning-tabular-full-v1.json",
+    "learning-linucb-full-v1.json",
+    "learning-paired-v1.json"
+  ],
+  "full_profile": {
+    "seeds": 20,
+    "days": 60,
+    "agents": 24,
+    "completed_plans_per_policy": 691200
+  },
+  "repeat_full_sha_identical": true,
+  "full_repeat_seconds_sample": 16.983,
+  "timing_is_not_a_production_sla": true,
+  "cli": {
+    "same_input_same_bytes": true,
+    "different_baseline_preserved": true,
+    "tampered_comparison_rejected": true
+  },
+  "test_infrastructure_fix": "Miniflare host synchronous prepared-statement proxy overlapped response IDs under concurrency. Serialized complete host RPC chains in the direct D1 gate fixture, retaining 20 competing pulse callers and all CAS/nonce assertions. Real compiled HTTP 12-viewer concurrency still tested separately. No production gate change.",
+  "default_runtime_policy_changed": false,
+  "browser_ui_changed": false,
+  "production_access": false,
+  "limits": [
+    "Hourly ordinary-plan projection, not full city social/ground/traffic scheduling.",
+    "Needs are near ceiling and competence/recovery floor is three days; cannot demonstrate a cold-start/adaptation improvement in this profile.",
+    "Oracle is feasible same-state one-step opportunity cost, not a counterfactual trajectory return.",
+    "No peer sharing or physical arrival receipts simulated; social metrics null."
+  ],
+  "asset_integrity": true,
+  "markdown_local_links_checked": 65
+}

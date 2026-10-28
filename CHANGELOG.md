@@ -4,6 +4,9 @@ Chỉ ghi mốc sản phẩm. Chi tiết commit/review nằm trong Git; số ver
 
 ## 28/10/2026
 
+- Review hai spec Claude/Deepseek và ưu tiên lộ trình học hành vi/offline prior trước các mở rộng đồ họa. H1 thêm rollout runtime20seed×60ngày×24agent và paired confidence intervals; expected outcome/gates tách thuần,15375golden outcomes/1500choices giữ nguyên.52suite/check/lint/build/API local đạt; chưa bật policy mới hoặc deploy.
+
+
 - Dọn tài liệu: hai file để tiếp nhận, một backlog, tài liệu theo chủ đề; bỏ bản sao/review/WIP cũ và bộ nhớ lặp. Giữ license, đặc tả gốc, release ledger và bằng chứng QA. Không đổi hành vi ứng dụng.
 - H0: pulse dùng admission chung D1, expiry/nonce/retry; diagnosticsGET chỉđọc và healthschema batch.51 suite/check/lint/build/assets/API đạt; chưa deploy Sites.
 - Flora:5 khóm/30 cây,5 phase/moisture theo simclock, care owner/CAS và camera; hai batch giữ footprint cũ. Browser desktop/mobile đạt.

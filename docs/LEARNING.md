@@ -38,4 +38,34 @@ Model local opt-in qua `npm run living:up` (llama.cpp/Qwen đã được thử �
 
 `npm run benchmark:policies` dùng chooseScenario/settleLearning/linearScore runtime,8 seed×820 training chung×160 frozen holdout. V2 explicit single-domain history: tabular reward0,561797/MSE0,003588; LinUCB0,559612/0,002683. Dự đoán tốt hơn nhưng thưởng tức thời chưa thắng. [policy-holdout.json](validation/policy-holdout.json) là số liệu; v1 giữ riêng. Không nhận claim 3,71×/score 98/LLMlatency/FPS hoặc chỉnh để ép thắng holdout.
 
-Suite/unit/API kiểm ridge oracle, gates/context/plan/cancel/retry, transaction rollback/legacy/corruption và actor privacy; xem [TESTING](TESTING.md). H1≥20 seed rollout, hierarchy/peer/exemplar/replay/modelAB là việc chưa xong, không nhầm với holdout này.
+Suite/unit/API kiểm ridge oracle, gates/context/plan/cancel/retry, transaction rollback/legacy/corruption và actor privacy; xem [TESTING](TESTING.md). H1 rollout mới được mô tả bên dưới; hierarchy/peer/exemplar/replay/model A/B vẫn chưa hoàn tất.
+
+## H1 — Rollout theo thời gian (28/10)
+
+Hai spec Claude/Deepseek đã đối chiếu với code, quyết định theo từng nhóm ở [intelligence-review](validation/intelligence-review-2026-10-28.json), backlog chỉ giữ tại [ROADMAP](../ROADMAP.md). LinUCB6D/policy store0007, dialogue pool, RAG và health errors đã có; không tạo bảng/migration trùng, phục hồi memory MD, xóa experience history hoặc nhận chỉ thị trong attachment thành quyền chạy. Ưu tiên tiếp là residual/prior và offline learning có đo; LLM fine-tune/self-modifying code không nằm trong implementation này.
+
+`applyScenarioOutcome`/`expectedReward` thuần và `availableScenarios` dùng cùng outcome/feasible actions với chooser thật. Trước tách đã chụp15.375outcomes/1.500choices; sau tách hash giữ nguyên, gồm legacy/domain/citations/employment/health/early/cancel. Default vẫn LinUCB, không đổi cơ chế thưởng/ưu tiên.
+
+```bash
+npm run simulate:learning -- --policy=tabular --mode=full --out=docs/validation/learning-tabular-full-v1.json
+npm run simulate:learning -- --policy=linucb --mode=full --out=docs/validation/learning-linucb-full-v1.json
+node scripts/compare-learning.mjs --baseline=docs/validation/learning-tabular-full-v1.json --candidate=docs/validation/learning-linucb-full-v1.json
+```
+
+Full là20seed×60ngày×24agent,691.200plan/policy; proxy mặc định12×30×5, overrides không được gắn nhãn full acceptance nếu thiếu kích thước. Mỗi giờ chọn một ordinary plan từ actionSteps(180s), chờ đủ duration+plan matching, advanceNeeds và settleLearning thật, một sample/plan. Context synthetic cùng seed/population, mưa xác suất0,2→0,8 và role-place đổi ở ngày30. Không bù mọi lượt cohort/thành phố, không tái tạo travel/ground/social encounters hoặc đọc production.
+
+Oracle depth1 chỉ chọn feasible actions với cùng hard priorities/gates/mưa và cùng drift đến thời điểm settlement; không train trên bản probe. Regret trong báo cáo là **opportunity cost một bước trên state của chính policy**, không phải return của một xã hội phản thực tế. Giảm chỉ số này có thể đi cùng tổng reward thấp hơn. Entropy chuẩn hóa log2(41), repeat theo từng agent kể cả qua ngày, share tính từng agent/ngày và có worst-case. Forced actions báo riêng, không lấy trần35% để chặn ngủ/ăn/rehabilitate khẩn cấp.
+
+CI95 Student-t trên20seed means; so sánh dùng paired deltas cùng seed. Competence/recovery là cửa sổ3ngày needs≥0,9; không đạt trả null, mean chỉ trên người đạt và luôn kèm fraction. Social density/diffusion là null vì chưa mô phỏng sharing. Hash artifact không gồm timing; CLI không ghi đè baseline khác hash, comparison kiểm checksum/profile/seed alignment.
+
+| Chỉ số trung bình | Tabular | LinUCB hiện hành |
+|---|---:|---:|
+| Reward/agent/ngày |1,224431|1,196251|
+| Opportunity cost/agent/ngày |3,938199|3,382465|
+| Need-ok ratio |1,000000|0,999964|
+| Entropy chuẩn hóa |0,623983|0,592385|
+| Repeat rate |0,291199|0,291266|
+
+Paired Δreward=-0,028180, CI95[-0,029533;-0,026827]; Δopportunity-cost=-0,555734, CI95[-0,571922;-0,539546]. Không có kết luận policy thắng toàn diện, không tự chuyển mặc định. Cả hai đạt competence ngày3 và recovery3ngày, metrics đã sát trần/sàn: phải có stress/cold-start profile trước khi nhận cải thiện thích ứng/prior. Ngưỡng candidate H2 tương lai yêu cầu return/needs không giảm, opportunity cost không tăng, entropy≥80% baseline bằng paired CI; không điều chỉnh trên chính holdout để ép thắng.
+
+[H1 gates](validation/learning-h1-2026-10-28.json):52/52suite/check/lint/build/API local đạt; full LinUCB chạy lại cùng hash, mẫu16,98s một run ở môi trường này, không là SLA. Không UI/browser mới hoặc production deploy. Historical holdout8seed phía trên vẫn giữ riêng; hai protocol không thay thế lẫn nhau.

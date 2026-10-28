@@ -6,8 +6,7 @@
 
 | Phase | Việc làm | Nghiệm thu |
 |---|---|---|
-| H1 / WP0 | Rollout runtime + oracle khả thi; chụp golden và tách outcome thuần trước | ≥20 seed×60 ngày×24agent, cùng population/context; tabular và LinUCB hiện hành tách rõ. Regret tức thời, return, needs, competence có null, entropy/repeat/share per-agent và CI95 theo seed. Không giả social metrics. |
-| H2 / WP1–2 | Thử policy prior-residual/EMA/progress, rồi warm start | Version mới, giữ raw reward/context-at-choice và emergency guards; không giả trials. Ngưỡng định trước: regret không tăng, entropy≥80% baseline, needs không giảm; paired CI. Không đạt thì giữ policy hiện hành. |
+| H2 / WP1–2 | Thử policy prior-residual/EMA/progress, rồi warm start | Trước hết thêm stress/cold-start profile vì H1 needs gần trần/competence ngày3. Version mới giữ raw reward/context-at-choice/emergency guards, không giả trials. Ngưỡng candidate tương lai: return/needs không giảm, opportunity-cost không tăng, entropy≥80% baseline bằng paired CI. Không đạt thì giữ policy hiện hành. |
 | H3/H4 / WP3–4 | Reward có nguồn rồi shared-role priors | Chỉ completed outcomes có authority; role/personal tách provenance, matrices/reward/features version mới. Tái sử dụng policy store0007, không tạo migration đè. Durable receipts/CAS giữ retry. |
 | H5 / WP5 | P2P sau xác nhận cuộc gặp/chia sẻ | Ground/encounter authority trước; tips không thành own samples/observed memory, decay on-read và actor isolation. |
 | H6 / WP6 | Prior/replay offline, ưu tiên học trước feature khác | Chỉ synthetic/compatible archived context; artifact hash/schema/provenance, confidence bounded, không tăng earned samples. Đo cold-start trên seed giữ lại, không ghi live DB. |
@@ -35,7 +34,7 @@
 
 ## Đề xuất ngoài và ranh giới
 
-Ưu tiên mới của chủ dự án: học policy từ outcome và huấn luyện/tối ưu offline trước; hệ thống thế giới phát triển cùng các mốc học, không hứa online fine-tune LLM. Hai file Claude/Deepseek28/10 đã đối chiếu trong [intelligence-review](docs/validation/intelligence-review-2026-10-28.json). Không chép lại spec vào gốc hoặc phục hồi memory/review MD dài. H1 đang triển khai, các bước sau chỉ mở khi phụ thuộc và đo lường đạt.
+Ưu tiên mới của chủ dự án: học policy từ outcome và huấn luyện/tối ưu offline trước; hệ thống thế giới phát triển cùng các mốc học, không hứa online fine-tune LLM. Hai file Claude/Deepseek28/10 đã đối chiếu trong [intelligence-review](docs/validation/intelligence-review-2026-10-28.json). Không chép lại spec vào gốc hoặc phục hồi memory/review MD dài. H1 đã có baseline/gates tại LEARNING và validation; tiếp H2 theo thứ tự, các bước sau chỉ mở khi phụ thuộc và đo lường đạt.
 
 WP7 còn curation/few-shot theo context; WP8A–C goals/business/bonds và WP11 triggers cần whitelist/authority/giới hạn. WP12–19 mở rộng weather/calendar/laws/content/security/education/health/environment trên các schema hiện có; giữ nguồn TP.HCM và không giả dữ kiện y tế/pháp luật. Family/lifecycle không thuộc đợt này. Các mục đã có (LinUCB, policy store, RAG, dialogue pool, health error,3D/docs) không triển khai trùng.
 
