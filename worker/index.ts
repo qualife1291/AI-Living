@@ -1,20 +1,45 @@
 import { adminAllowed, cloudflareQaAccessAllowed } from "../lib/admin";
 import { verifiedQaAccessRequest } from "../lib/cloudflare-access-jwt";
 import { tickLiving, learnCompleted, advanceResidentSocial } from "../lib/living/service";
+import { runCoalescedPulse } from "../lib/living/pulse-gate";
+import { qaLivingCronEnabled } from "../lib/living/qa-scheduler";
 import handler from "vinext/server/fetch-handler";
 import { runWithConnectorBinding } from "../lib/connector-context";
 import type { ConnectorBinding } from "../lib/connector-contract.mjs";
 
 const worker = {
-  async scheduled(_event: ScheduledController, env: Cloudflare.Env, ctx: ExecutionContext) {
-    // Opt-in rules only. Deployment must explicitly attach a supported schedule.
+  async scheduled(event: ScheduledController, env: Cloudflare.Env, ctx: ExecutionContext) {
+    // Scheduled events bypass HTTP Access. Restrict to explicit QA configuration.
     const settings = env as unknown as Record<string, string | undefined>;
-    if (settings.XOM_RULE_SCHEDULER !== "true") return;
+    if (!qaLivingCronEnabled(settings, event.cron)) {
+      console.warn("qa_cron_disabled_or_mismatched", { cron: event.cron });
+      return;
+    }
+    // Use exactly the browser pulse D1 lease so cron and open tabs never
+    // double-run learning/ticks; CAS and five-minute turn IDs stay authoritative.
     ctx.waitUntil((async () => {
-      await learnCompleted();
-      await advanceResidentSocial();
-      const result = await tickLiving();
-      if (result.status >= 400 && result.status !== 409) throw new Error("Scheduled tick failed");
+      try {
+        const result = await runCoalescedPulse(env.DB, async () => {
+          const learned = await learnCompleted();
+          if (learned.status !== 200) return learned;
+          const social = await advanceResidentSocial();
+          if (social.status !== 200) return social;
+          const tick = await tickLiving();
+          return { status: tick.status, data: { ...tick.data, learning: learned.data } };
+        });
+        const learning = result.data.learning as { updated?: number } | undefined;
+        console.info("qa_cron_pulse", {
+          status: result.status,
+          duplicate: result.data.duplicate === true,
+          coalesced: result.data.coalesced === true,
+          updated: learning?.updated ?? 0,
+        });
+        if (result.status !== 200 && result.status !== 409)
+          throw new Error("QA Cron pulse rejected: " + result.status);
+      } catch (error) {
+        console.error("qa_cron_failed", { name: error instanceof Error ? error.name : "unknown" });
+        throw error;
+      }
     })());
   },
   async fetch(request: Request, env: Cloudflare.Env, ctx: ExecutionContext<{ CONNECTORS?: ConnectorBinding }>) {

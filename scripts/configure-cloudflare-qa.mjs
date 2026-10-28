@@ -6,6 +6,7 @@
  */
 import { readFileSync, writeFileSync, existsSync } from "node:fs";
 import { resolve, dirname } from "node:path";
+import { QA_LIVING_CRON } from "../lib/living/qa-scheduler.ts";
 
 const location = resolve("dist/server/wrangler.json");
 if (!existsSync(location)) throw Error("Vinext build not found; run npm run build first.");
@@ -27,7 +28,7 @@ if (!Array.isArray(cfg.d1_databases) || cfg.d1_databases.length !== 1 ||
   throw Error("Unexpected D1 binding layout. Refusing to deploy.");
 }
 if (cfg.route || cfg.routes || cfg.triggers?.crons?.length) {
-  throw Error("Unexpected route or cron; QA must be isolated.");
+  throw Error("Unexpected existing route or cron; refusing to overwrite.");
 }
 
 // Public identifiers (not credentials). This DB was created for QA and contains
@@ -42,6 +43,8 @@ cfg.d1_databases = [{
 // No unauthenticated access is allowed; never remove its Access policy.
 cfg.workers_dev = true;
 cfg.preview_urls = false;
+// ONE Cron trigger, UTC; app computes its own Asia/Ho_Chi_Minh world time.
+cfg.triggers = { crons: [QA_LIVING_CRON] };
 /**
  * Public Access application audience tag (not a secret). Only the QA Worker
  * may recognize this value, and only from trusted ctx.access rather than
@@ -52,6 +55,7 @@ cfg.vars = {
   XOM_QA_ACCESS_AUD: "b8469783daed50bde5fa858047ce0c78643c8aa97b3edbc9d4dc8e7941a732f9",
   XOM_QA_HOSTNAME: "ai-living-qa.hoanglonglea1mtl.workers.dev",
   XOM_QA_ACCESS_TEAM_DOMAIN: "super-snow-e21e.cloudflareaccess.com",
+  XOM_RULE_SCHEDULER: "true",
 };
 if (cfg.vars.XOM_OWNER_PRIVATE_ORIGIN || cfg.vars.XOM_ADMIN_USER_ID || cfg.vars.XOM_LOCAL_ADMIN === "true")
   throw Error("Unsafe Sites authorization variables must not be used in QA");
@@ -65,5 +69,7 @@ console.log(JSON.stringify({
   d1_database: cfg.d1_databases[0].database_name,
   workersDevViaAccess: cfg.workers_dev,
   versionUrls: cfg.preview_urls,
+  cron: cfg.triggers.crons[0],
+  schedulerEnabled: cfg.vars.XOM_RULE_SCHEDULER,
   mode: "access-protected-qa-deploy",
 }));
