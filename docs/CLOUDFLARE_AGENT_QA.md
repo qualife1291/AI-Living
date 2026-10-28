@@ -1,5 +1,20 @@
 # AI–Living — Quy trình remote QA cho AI coding agents
 
+## Trạng thái thực tế đã kiểm — 29/10/2026 (cập nhật sau thiết lập)
+
+**Cloudflare Builds QA hiện ĐÃ CONNECT và ĐÃ DEPLOY**. Các dòng trong phần hướng dẫn tạo Builds ở dưới chỉ còn là hướng dẫn khôi phục nếu config bị xóa, không còn là blocker hiện tại.
+
+- Repo: `qualife1291/AI-Living` → `cloudflare-qa`; `auto_build_enabled=true`, previews disabled. Build: `corepack pnpm install --frozen-lockfile && npm run build`. Deploy: `node scripts/configure-cloudflare-qa.mjs && npx wrangler deploy --config dist/server/wrangler.json`.
+- Cloudflare Builds trigger: `24a32899-c5bf-474f-b31e-29ba7581ba24`.
+- Lượt build đầu trên source `6f23658d` build PASS nhưng **deploy FAIL** vì guard yêu cầu `ai-living-staging` trong khi generated Worker name là `ai-living-qa`.
+- Đã sửa guard chỉ chấp nhận hai giá trị `ai-living-staging` hoặc `ai-living-qa`; commit `00e3027cfbda72bb85139e6d6e925b89f36617aa` trên `cloudflare-qa`.
+- Build `becbb0f3-abfa-49ad-bdc0-42f6baaae6b0` outcome `success`, Wrangler deploy QA version `d391f791-7826-4f15-8163-c9fff29396d1`, deployment `2096c482-6ef5-4178-8ac1-c2db7085919d`, 100% traffic (tại thời điểm xác minh). Host: `https://ai-living-qa.hoanglonglea1mtl.workers.dev/` (**enabled**, Access protected). Có một lượt auto-build trùng commit đang xử lý, cần kiểm deployment mới nhất trước mỗi lần test.
+- Access đã kiểm qua API: worker-level `AI-Living QA — owner and agent service token` gồm allow owner và non_identity một service token QA; policy staging chính vẫn owner-only. QA D1 binding `DB` → `ai_living_qa` đúng UUID, schema 21 bảng/12 index/3 trigger. QA cron chưa bật. DB trước lần browser smoke: 0 world/episodes/policies/experiences.
+- **Chưa QA HTTP E2E bằng credential**: công cụ chạy từ phiên ChatGPT này không resolve được `workers.dev` nên chưa xác minh Access redirect/cookie, UI 3D, `/api/world` hay `/api/living/learning` từ mạng bên ngoài. Bản deploy PASS không thay thế được remote QA. Chạy smoke script từ agent có secret qua kênh kín rồi upload bằng chứng.
+- **Chưa tự động hóa bước post-deploy QA độc lập**: hiện push vào `cloudflare-qa` tự build/deploy, nhưng không tự gọi Codex/Claude chạy browser test. Cần cung cấp Access service-token secrets cho runner/agent, chọn cách kích hoạt QA sau deploy thành công, lưu report/screenshot và đặt gate PASS trước khi merge lên staging/main.
+- QA token hết hạn 04/11/2026 17:10:19 UTC; cần rotate/cấp mới trước đó, không ghi secret trong Git.
+- Không thay đổi dữ liệu hay automation của ChatGPT Sites A/Cloudflare staging. Không gọi khả năng tự học chạy 24/7 khi chưa có cron đã kiểm.
+
 > Cập nhật 29/10/2026 (Asia/Ho_Chi_Minh). Tài liệu áp dụng cho **môi trường thử nghiệm QA**, không phải ChatGPT Sites production hoặc Cloudflare staging giữ trạng thái. Kiểm tra trạng thái Cloudflare thực tế trước khi thay đổi; các URL không có nghĩa ứng dụng đã được deploy.
 
 ## 1. Môi trường và phân quyền
