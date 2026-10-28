@@ -11,7 +11,7 @@ const location = resolve("dist/server/wrangler.json");
 if (!existsSync(location)) throw Error("Vinext build not found; run npm run build first.");
 const cfg = JSON.parse(readFileSync(location, "utf8"));
 
-if (cfg.name !== "ai-living-staging") throw Error(`Unexpected Vinext source Worker name: ${cfg.name}`);
+if (!["ai-living-staging", "ai-living-qa"].includes(cfg.name)) throw Error(`Unexpected Vinext source Worker name: ${cfg.name}`);
 cfg.name = "ai-living-qa";
 if (cfg.main !== "index.js" || !existsSync(resolve(dirname(location), cfg.main))) {
   throw Error("Unexpected/missing Vinext Worker entrypoint.");
