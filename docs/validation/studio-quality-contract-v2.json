@@ -1,0 +1,15 @@
+{
+  "version": 2,
+  "registeredBeforeImplementation": true,
+  "baseline": "46cd562",
+  "scope": "four fictional Studio timelines; no live world/training writes",
+  "requirements": [
+    "Skinned modern CC0 humans; remove obsolete Studio human/feline renderer paths. Retain city fallback assets that still have consumers.",
+    "Absolute timeline animation blending: seek/replay pose equivalence, finite geometry, continuous joints and props at pickup/handoff/carry.",
+    "Articulated feline with breathing, ears, eyes and tail; no substituted species.",
+    "Enabled contact shadows, bounded rendering; desktop/mobile screenshots of all four scenarios.",
+    "Opt-in Vietnamese pre-rendered synthetic speech with permissive provenance, synced captions plus footsteps/action/ambient sound. No autoplay, stale audio after seek/pause/hidden/switch/unmount.",
+    "120s logic safety/conservation/navigation checks, browser controls and audio output/decode checks; report failures honestly."
+  ],
+  "gnd3Gate": "Studio quality regressions fixed and local tests pass before implementing frozen GND3. Remote/private production QA remains separate."
+}

@@ -24,6 +24,7 @@ export class RiggedAvatar {
  private current='';private requested='';private previous='';private changedAt=0;private lastTime=NaN;
  private feet:THREE.Object3D[]=[];private footOffset=0;private tintKey='';
  private attachments=new Map<string,{mesh:THREE.SkinnedMesh;indices:number[]}[]>();
+ private rest:{bone:THREE.Bone;position:THREE.Vector3;quaternion:THREE.Quaternion;scale:THREE.Vector3}[]=[];
  private colors={shirt:new THREE.Color('white'),trousers:new THREE.Color('white')};
  private wardrobeEnabled={value:0};
  constructor(source:GLTF,height=17.5,radius=4.4,dailyHuman=false) {
@@ -31,6 +32,7 @@ export class RiggedAvatar {
   this.model.traverse(o=>{const mesh=o as THREE.Mesh;if(mesh.isMesh)mesh.geometry=dailyHuman?dailyHumanGeometry(mesh.geometry):mesh.geometry.clone();});
   const bones:THREE.Bone[]=[];
   this.model.traverse(object=>{if((object as THREE.Bone).isBone)bones.push(object as THREE.Bone);});
+  this.rest=bones.map(bone=>({bone,position:bone.position.clone(),quaternion:bone.quaternion.clone(),scale:bone.scale.clone()}));
   const roots=new Set(bones.filter(b=>!(b.parent as THREE.Bone)?.isBone).map(b=>b.name));
   this.mixer=new THREE.AnimationMixer(this.model);
   for(const original of source.animations) {
@@ -135,6 +137,35 @@ export class RiggedAvatar {
   const contacts=['foot-left','foot-right'].map(key=>this.surface(key,'min')?.y).filter((y):y is number=>y!==undefined);
   const bottom=contacts.length?Math.min(...contacts):this.feet.length?Math.min(...this.feet.map(b=>b.getWorldPosition(scratch).y))-this.footOffset:0;
   this.group.position.y=floor-bottom;this.group.updateMatrixWorld(true);return true;
+ }
+ /** Absolute, seekable mixing for the editorial Studio. No accumulated pose/clock. */
+ poseTimeline(layers:{clip:string;time:number;weight:number}[],position:readonly number[],yaw:number,bend=0) {
+  for(const rest of this.rest){rest.bone.position.copy(rest.position);rest.bone.quaternion.copy(rest.quaternion);rest.bone.scale.copy(rest.scale);}
+  const weights=new Map<string,{weight:number;time:number}>();
+  for(const layer of layers){const name=this.findClip(layer.clip);if(!name||layer.weight<=0)continue;const v=weights.get(name)??{weight:0,time:layer.time};v.weight+=layer.weight;weights.set(name,v);}
+  const total=[...weights.values()].reduce((s,v)=>s+v.weight,0)||1;
+  for(const [name,action] of this.actions){const v=weights.get(name);action.enabled=!!v;action.setEffectiveWeight((v?.weight??0)/total);if(v){action.play();const duration=Math.max(.001,action.getClip().duration);action.time=((v.time%duration)+duration)%duration;}}
+  this.mixer.update(0);
+  for(const side of ['left','right']){const hand=this.joint(`hand-${side}`);if(hand)hand.position.multiplyScalar(2.1);}
+  this.group.position.set(position[0],0,position[2]);this.group.rotation.set(0,yaw,0);
+  // A squat precedes low reaches; keep both feet grounded after bending knees.
+  for(const side of ['left','right']){const leg=this.joint(`leg-${side}`);if(!leg)continue;leg.rotateX(-.65*bend);const knee=leg.children.find(o=>(o as THREE.Bone).isBone);knee?.rotateX(1.3*bend);}
+  this.joint('torso')?.rotateX(.45*bend);
+  this.group.updateMatrixWorld(true);
+  const feet=['foot-left','foot-right'].map(k=>this.surface(k,'min')?.y).filter((y):y is number=>y!==undefined);
+  this.group.position.y=position[1]-(feet.length?Math.min(...feet):0);this.group.updateMatrixWorld(true);
+ }
+ /** Bounded CCD uses visible hand samples, rather than pointing a straight arm. */
+ reachTimeline(targets:{right?:readonly number[];left?:readonly number[]},strength=1) {
+  for(const side of ['left','right'] as const){const goal=targets[side],upper=this.joint(`arm-${side}`),hand=this.joint(`hand-${side}`);if(!goal||!upper||!hand)continue;
+   const chain:THREE.Object3D[]=[];let bone:THREE.Object3D|null=hand;while(bone&&bone!==upper.parent){chain.push(bone);if(bone===upper)break;bone=bone.parent;}
+   const original=chain.map(b=>b.quaternion.clone()),target=new THREE.Vector3(...goal);
+   for(let iteration=0;iteration<8;iteration++)for(const joint of chain){if(!joint.parent)continue;const origin=joint.getWorldPosition(new THREE.Vector3()),from=this.hand(side).sub(origin),to=target.clone().sub(origin);if(from.lengthSq()<1e-8||to.lengthSq()<1e-8)continue;
+    const turn=new THREE.Quaternion().setFromUnitVectors(from.normalize(),to.normalize());if(turn.angleTo(new THREE.Quaternion())>.5)turn.slerp(new THREE.Quaternion(),1-.5/turn.angleTo(new THREE.Quaternion()));
+    const parent=joint.parent.getWorldQuaternion(new THREE.Quaternion());joint.quaternion.premultiply(parent.clone().invert().multiply(turn).multiply(parent));this.group.updateMatrixWorld(true);
+   }
+   chain.forEach((b,i)=>b.quaternion.copy(original[i].slerp(b.quaternion,strength)));this.group.updateMatrixWorld(true);
+  }
  }
  tint(colors:Colors) {
   const key=colors.shirt+'/'+colors.trousers;if(key===this.tintKey)return;this.tintKey=key;
