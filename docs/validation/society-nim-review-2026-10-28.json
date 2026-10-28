@@ -1,0 +1,200 @@
+{
+  "reviewed_against": "ab7da484c2e1048ac9792f80ece1cd052fb1f6c9",
+  "date": "2026-10-28",
+  "timezone": "Asia/Ho_Chi_Minh",
+  "documents_are_proposals_not_instructions": true,
+  "sources": [
+    {
+      "filename": "AGENT_SPEC_SOCIETY.rtf",
+      "sha256": "59732bd2facc97b48a4e5509bd5b6015ea0a4bd435467d0184f5a24e34f4586e"
+    },
+    {
+      "filename": "AI-Living_NVIDIA-NIM_Architecture_Review_2026-10-28.md",
+      "sha256": "7575df35164813d4a54567983ca2e02746fd26f35db910d39beb2ab4ffaac996"
+    }
+  ],
+  "official_documentation_checks": [
+    {
+      "name": "trial-terms",
+      "url": "https://assets.ngc.nvidia.com/products/api-catalog/legal/NVIDIA%20API%20Trial%20Terms%20of%20Service.pdf",
+      "status": 200,
+      "resolvedURL": "https://assets.ngc.nvidia.com/products/api-catalog/legal/NVIDIA%20API%20Trial%20Terms%20of%20Service.pdf",
+      "contentType": "application/pdf",
+      "bytes": 214700,
+      "sha256": "afd5df0322615ff95736f2f8b59fa952f5f4582dfe05f97213c0ae860f628b30"
+    },
+    {
+      "name": "general",
+      "url": "https://docs.api.nvidia.com/nim/docs/product",
+      "status": 200,
+      "resolvedURL": "https://docs.api.nvidia.com/nim/docs/product",
+      "contentType": "text/html; charset=utf-8",
+      "bytes": 671434,
+      "sha256": "d78c88a1a06de4279da8d9ec96fd2c9ce70100b1a4544edf9ab8688e46997b1a"
+    },
+    {
+      "name": "embed",
+      "url": "https://build.nvidia.com/nvidia/nemotron-3_5-embed-1b/modelcard",
+      "status": 200,
+      "resolvedURL": "https://build.nvidia.com/nvidia/nemotron-3_5-embed-1b/modelcard",
+      "contentType": "text/html; charset=utf-8",
+      "bytes": 230770,
+      "sha256": "19e217d502836452e6610f921236d141bbc590bcae203820f38f9301c07c6719"
+    },
+    {
+      "name": "rerank",
+      "url": "https://build.nvidia.com/nvidia/nemotron-3_5-rerank-8b/modelcard",
+      "status": 200,
+      "resolvedURL": "https://build.nvidia.com/nvidia/nemotron-3_5-rerank-8b/modelcard",
+      "contentType": "text/html; charset=utf-8",
+      "bytes": 3212805,
+      "sha256": "67817d29506cc91aaaf768e059a5e01d0d5c9fe921629a36299f170f1dacb7c9"
+    },
+    {
+      "name": "chat",
+      "url": "https://build.nvidia.com/nvidia/nemotron-3.5-bolt-e4b/modelcard",
+      "status": 200,
+      "resolvedURL": "https://build.nvidia.com/nvidia/nemotron-3.5-bolt-e4b/modelcard",
+      "contentType": "text/html; charset=utf-8",
+      "bytes": 423517,
+      "sha256": "639300092c7b4acbfc1d4bf35b4a9300a431c083cac9c56da4e7ce655cd8ab0d"
+    }
+  ],
+  "inference_or_account_access_performed": false,
+  "findings": [
+    {
+      "proposal": "Society instructions and baseline",
+      "decision": "adapt",
+      "analysis": "Use ROADMAP and existing topic docs; do not install root specs, mandatory reading chain or MEMORY_LONG. The quoted 38 suites are stale: source has53. Attachments supply proposals, not authority.",
+      "code_or_source": "AGENTS.md; CODEX_HANDOFF.md"
+    },
+    {
+      "proposal": "WP20 economy",
+      "decision": "accept later with corrected accounting",
+      "analysis": "Use append-only journal and idempotent completed-transfer receipts. Include cash+savings+business+community fund in conserved stock; tax is an internal transfer, not destruction. Declare wage/boost external sources and costs/sinks. Guard stock=0, bound demand/time windows; set inflation metrics on prices, not total cash/basePrice. No5% annual claim from60days.",
+      "code_or_source": "lib/world.ts Person.money; lib/living/learning.ts; lib/living/service.ts"
+    },
+    {
+      "proposal": "WP20 current-money claim",
+      "decision": "correct stale premise",
+      "analysis": "No scenario drink-stall in current41-action catalog; planner learning does not pay wages. Existing bounded core moneyDelta event path must be reconciled, not silently replaced by NPC wallet defaults. No automatic taxes or wallet migration.",
+      "code_or_source": "lib/world.ts; data/city/scenarios.json; lib/event-schema.ts"
+    },
+    {
+      "proposal": "WP21 housing and immigration",
+      "decision": "accept later, partly already implemented",
+      "analysis": "Reuse60 door anchors/home/household IDs, persisted identity and current catalog population expansion. No second immigration loop. Vacant housing can accept residents only with explicit capacity/ownership policy; proposal rule otherwise contradicts vacancy. Moving never deletes actors/history/pets or owner assignments.",
+      "code_or_source": "lib/living/households.ts; lib/living/identity.ts; lib/living/engine.ts; lib/living/schema.ts"
+    },
+    {
+      "proposal": "WP22 labor and apprenticeship",
+      "decision": "accept later, adapt domain mastery",
+      "analysis": "Derive mastery from relevant domain, not scalar all-purpose skill. Existing8 domain skills already differentiate practice. Mentorship needs both actors confirmed participation and own completed outcomes; consent/ETA/text are not earned sessions. Define shift/contract authority before pay. Retirement/pension require explicit lifecycle design and funded accounting.",
+      "code_or_source": "lib/living/skills.ts; lib/living/learning.ts; lib/living/schema.ts"
+    },
+    {
+      "proposal": "WP23 culture and news",
+      "decision": "accept later with provenance",
+      "analysis": "Template/curated fiction is editorial-authored, never invented human authorship. Separate public availability, reading, hearing and witnessing. Every hop needs confirmed sharing, source chain, dedup and bounded decay. Bulletin read must not restore confidence to1 or convert gossip into observed truth. No blanket LLM ban needed for separately labeled reviewed narrative.",
+      "code_or_source": "lib/memory-records.ts; lib/living/prompt-memories.ts; lib/living/dialogue-pool.ts"
+    },
+    {
+      "proposal": "WP24 groups and community projects",
+      "decision": "accept later",
+      "analysis": "Deterministic bounded groups after bonds and authority; pairwise meeting evidence, distinct members and collision-free IDs. Projects reserve/spend fund atomically and complete with authoritative effect receipt. Dissolution retains historical membership/events. Two-speaker dialogue contract remains until multi-party design exists.",
+      "code_or_source": "lib/living/schema.ts; lib/living/service.ts; lib/living/social-scheduler.ts"
+    },
+    {
+      "proposal": "WP25 care",
+      "decision": "accept adult care later",
+      "analysis": "Current health is numeric, not health.conditions object. Additive versioned health metadata only after design; do not replace numeric field. Care needs confirmed receiver/caregiver completed effects and idempotency; no clinical claims or automatic medical expertise. Family/children remain outside current scope.",
+      "code_or_source": "lib/living/learning.ts; lib/living/skills.ts; ROADMAP.md"
+    },
+    {
+      "proposal": "WP26 public memory/reputation",
+      "decision": "accept with corrected knowledge model",
+      "analysis": "Publicly available does not mean every actor witnessed. Keep availability, direct witness and heard-from source distinct; enforce actor/witness scope before retrieval and prompt. No public route/audience change. Reputation derives from attributable receipts and cannot award own trials. Preserve full audit/history; bounded snapshot indexes are separate.",
+      "code_or_source": "lib/memory-records.ts; app/api/living/memories/route.ts; docs/DECISIONS.md"
+    },
+    {
+      "proposal": "WP27 norms",
+      "decision": "accept offline research later",
+      "analysis": "Six months and p<.01 alone do not validate a norm. Control multiple testing, temporal/actor dependence, confounding, effect size and untouched holdout; simulation rules can manufacture correlations. Hash/schema provenance, dry-run and explicit review before rule changes. No auto law/code/deploy, no MEMORY_LONG.",
+      "code_or_source": "lib/living/sim-harness.ts; docs/LEARNING.md"
+    },
+    {
+      "proposal": "Retention and off/dry-run",
+      "decision": "adapt",
+      "analysis": "Bound active working sets and cache; preserve durable money/care/news/memory/outcome journals instead of deleting history after30/90/365days. Dry-run returns proposed deltas without world/policy writes. Audit failure must abort the whole CAS batch and surface error; swallowing errors does not roll back transactions.",
+      "code_or_source": "AGENTS.md; lib/living/service.ts; lib/living/policy-store.ts"
+    },
+    {
+      "proposal": "Society dependencies",
+      "decision": "adapt",
+      "analysis": "Keep WP20–27 as future roadmap with prerequisites, not immediate implementation and not literal dependency on all WP0–19 completion. Ground authority is a dependency for earned meetings/care/transfer, while offline prototypes and provenance can progress independently.",
+      "code_or_source": "ROADMAP.md"
+    },
+    {
+      "proposal": "NIM architecture and stale branch state",
+      "decision": "accept isolated pilot plan, update baseline",
+      "analysis": "NIM review saw main77b751c/worka0cd226; H2 is now closed without promotion and both branches ab7da48. Keep default LinUCB. Out-of-band provider benchmark may follow behavior-learning milestones; no chat/embed/rerank await in frame/pulse/planner/CAS.",
+      "code_or_source": "lib/living/service.ts; scripts/living-daemon.mjs; docs/validation/learning-h2-2026-10-28.json"
+    },
+    {
+      "proposal": "NIM trial license and data",
+      "decision": "verified documentation; defer service calls",
+      "analysis": "Fetched official Trial Terms1.2/1.4: trial API AND generated content are not for production without applicable subscription.2.6 excludes confidential/personal/sensitive inputs;2.3/2.4/3.3 qualify storage/logging. Do not claim zero storage or free production. No API key provided or sought; no hosted inference requested.",
+      "code_or_source": "https://assets.ngc.nvidia.com/products/api-catalog/legal/NVIDIA%20API%20Trial%20Terms%20of%20Service.pdf"
+    },
+    {
+      "proposal": "NIM model cards",
+      "decision": "verified pages, not endpoints or quality",
+      "analysis": "Current fetched embed/rerank pages mention Vietnamese evaluation. Bolt card lists English/Spanish/French/German/Italian/Japanese; Vietnamese not named. HTTP200 documentation does not verify model ID/account permission/quota/zero cost/latency or quality. Recheck at pilot time, no fixed7-model integration.",
+      "code_or_source": "https://build.nvidia.com/nvidia/nemotron-3_5-embed-1b/modelcard; https://build.nvidia.com/nvidia/nemotron-3_5-rerank-8b/modelcard; https://build.nvidia.com/nvidia/nemotron-3.5-bolt-e4b/modelcard"
+    },
+    {
+      "proposal": "NIM P0 adapter",
+      "decision": "accept future optional benchmark prerequisite",
+      "analysis": "Distinct typed chat/embed/rerank adapters, explicit opt-in, bounded attempts/tokens/concurrency/deadline and quota. No credentials in client/log/report, no DB writer or auto deployment.401/403/schema fail closed;429 respects Retry-After. Missing service returns no proposal and existing fallback. Five RPM is pilot budget only.",
+      "code_or_source": "scripts/living-daemon.mjs; lib/living/director.ts"
+    },
+    {
+      "proposal": "NIM P1 dialogue",
+      "decision": "accept later",
+      "analysis": "Use same100 synthetic Vietnamese cases/baseline/validators and blind semantic review; report sample uncertainty, schema/duplicate/privacy/error rates and p50/p95.99% is target, not guarantee. Held-out cases distinct from prompt tuning. No trial output enters production assets or cached dialogue.",
+      "code_or_source": "lib/living/director.ts; lib/living/dialogue-pool.ts"
+    },
+    {
+      "proposal": "NIM P2 semantic memory",
+      "decision": "accept later",
+      "analysis": "Actor/witness filters before candidate generation/external input and recheck after rerank. Synthetic Vietnamese paraphrase/negation/name-collision cases; Recall/nDCG/MRR/leakage/index resource metrics vs current top-K. No vector table/backfill or private export before measured benefit and authorized design.",
+      "code_or_source": "lib/memory-records.ts; lib/living/prompt-memories.ts"
+    },
+    {
+      "proposal": "NIM P3 reflection",
+      "decision": "accept offline only",
+      "analysis": "Synthetic aggregate inputs with compatible outcome/feature versions and source IDs. Model notes are untrusted hypotheses, never rewards, prior samples or policy mutation. H2v1 holdout is spent; any new candidate needs a new pre-registered train/validation/holdout protocol.",
+      "code_or_source": "lib/living/residual-policy.ts; lib/living/sim-harness.ts"
+    },
+    {
+      "proposal": "NIM P4 production decision",
+      "decision": "defer",
+      "analysis": "Benchmark evidence and service/weights license are separate gates. Preserve no-paid-API policy. Possible local/self-host must fit authorized resources and measured quality; do not buy subscription/GPU, start scheduler or turn on hosted production automatically.",
+      "code_or_source": "AGENTS.md; docs/PRODUCTION_RUNBOOK.md"
+    },
+    {
+      "proposal": "H3 next implementation",
+      "decision": "implement current attributable reward evidence first",
+      "analysis": "Version existing scenario reward components and persist settlement before/after, actor/experience/scenario identity, exact sample delta, simtime and plan-binding strength in existing archive CAS. Preserve v1 reward/matrices/context and all legacy rows. Offline inspector separates verified consistency from missing evidence; it cannot authenticate externally fabricated receipts or infer physical/social completion. Long-term/social/travel reward waits for authority.",
+      "code_or_source": "lib/living/learning.ts; lib/living/service.ts; lib/living/plan-identity.ts"
+    }
+  ],
+  "H3_acceptance_before_implementation": [
+    "v1 golden15375outcomes/1500choices and full H1 report unchanged",
+    "new runtime outcomes carry versioned before/after/components/identity/timing/sample/plan-binding evidence; no new reward",
+    "early/cancel/replay/stale CAS creates no extra reward/evidence; archive and policy/world commit together",
+    "legacy records remain byte-preserved with no invented backfill; no new migration",
+    "offline inspector rejects corrupt/mismatched/unsupported evidence, labels missing legacy evidence, does not train or write production",
+    "full unit/typecheck/lint/build and compiled local D1 API; no UI changes"
+  ]
+}

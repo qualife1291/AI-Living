@@ -7,7 +7,8 @@
 | Phase | Việc làm | Nghiệm thu |
 |---|---|---|
 | H2: promotion còn chờ | V1 đã đo và không promote; chỉ nghiên cứu v2 khi có protocol mới | Cả3 candidate trượt return, stress còn trượt needs; warm chưa chứng minh lợi ích. Không retune20seed đã xem. Nếu thử tiếp, tách train/validation/holdout mới, giữ raw reward/context/emergency guards, durable receipt/CAS trước runtime; return/needs không giảm, opportunity-cost không tăng, entropy≥80% baseline bằng paired CI. |
-| H3/H4 / WP3–4 — bước triển khai tiếp | Reward có nguồn rồi shared-role priors | Chỉ completed outcomes có authority; role/personal tách provenance, matrices/reward/features version mới. Tái sử dụng policy store0007, không tạo migration đè. Durable receipts/CAS giữ retry. |
+| H3 / WP3 — đang triển khai | Evidence cho reward hiện hành, rồi reward dài hạn có authority | Trước mắt version/breakdown/before-after/actor/plan/time/sample trong archive CAS; không đổi raw reward hoặc backfill giả. Social/travel/commitment reward chờ authority thật; reward/features mới phải tách namespace. |
+| H4 / WP4 | Shared-role priors sau provenance | Role/personal tách nguồn/confidence, giữ cá tính và earned samples; tái sử dụng policy store0007, không tạo migration đè. Benchmark seed mới và CAS/retry. |
 | H5 / WP5 | P2P sau xác nhận cuộc gặp/chia sẻ | Ground/encounter authority trước; tips không thành own samples/observed memory, decay on-read và actor isolation. |
 | H6 / WP6 | Prior/replay offline, ưu tiên học trước feature khác | Chỉ synthetic/compatible archived context; artifact hash/schema/provenance, confidence bounded, không tăng earned samples. Đo cold-start trên seed giữ lại, không ghi live DB. |
 | H10 / WP10 | Tối ưu tham số offline có giới hạn | Sau harness/prior hợp lệ; train/validation seeds tách, budget cố định, diversity và paired CI. Runtime chỉ đọc artifact đã review, không tự sửa code/đổi policy/deploy. |
@@ -31,6 +32,24 @@
 | G3/G4 | IK/look-at/LOD/interior, rồi bản sắc phố/xe máy/nước; giữ rig proportions/nav/footprints và routing/occupancy. |
 | Model A/B | Artifact/license/checksum, cùng prompt/context/schema; đo latency/tokens/acceptance và review ngữ nghĩa. Không hứa JSON 100%/<10s hoặc model lớn luôn tốt hơn. |
 | Ops/refactor | GPU/soak/telemetry phiên dài; chat rate/body admission, tăng trưởng audit/history, GET living/context cost cần đo. Refactor runtime/supervisor loopback giữ regression, không sửa credential helper hay workflow read-only để autopush/deploy. |
+
+## Xã hội và model — phần bổ sung để làm sau
+
+Đã đối chiếu hai attachment28/10 với source và điều khoản/model card NVIDIA tại [review máy đọc](docs/validation/society-nim-review-2026-10-28.json). Đây là backlog có điều kiện, không thêm root spec hay chuỗi đọc bắt buộc. Ưu tiên H3→H4→H5/H6/H10; không tạo module/cờ placeholder hoặc mua dịch vụ chỉ từ tài liệu.
+
+| Gói tương lai | Phạm vi được nhận và điều kiện |
+|---|---|
+| WP20 kinh tế | Sau business/employment: journal chuyển tiền có receipt/CAS, cùng currency/units, không âm. Tổng gồm cash+savings+business+quỹ; thuế là chuyển nội bộ. Reconcile moneyDelta cũ, guard stock0 và budget. Bounded snapshot, giữ journal; chưa áp thuế hoặc claim lạm phát5%. |
+| WP21 nhà/tân cư | Mở rộng60 cửa/home/identity và population loop hiện có; capacity/ownership/rent đồng bộ kinh tế, không tạo vòng nhập cư thứ hai. Chuyển nhà/đi giữ IDs/memory/home/pet/history; lifecycle/family cần thiết kế riêng. |
+| WP22 học nghề | Mastery theo domain đã có; mentor/apprentice hai phía và completed session có authority, giới hạn practice/ngày. Contract/shift trước wage; pension phải có quỹ, chưa thêm retirement tự động. |
+| WP24 nhóm/dự án | Sau bonds/kinh tế/nhà: nhóm thành viên riêng biệt, lịch/nơi hợp lệ, họp có authority, dự án reserve/spend/complete cùng CAS. Giải thể giữ lịch sử; chưa đổi hợp đồng thoại hai speaker. |
+| WP23 văn hoá/tin | Sau calendar/nhóm và sharing authority: template/curated source rõ, public availability tách heard/witnessed; hop có source/dedup/decay, bảng tin không phục hồi độ tin cậy của gossip. Không biến tác giả biên tập thành cư dân đã sáng tác. |
+| WP25 care | Adult care sau health/bonds/outcome authority, numeric health giữ tương thích. Hai phía phải có effects xác nhận, không tạo tiền/chuyên môn y tế; child/family ngoài đợt này. |
+| WP26 ký ức chung | Sau nhóm/care/news: public availability ≠ witnessed. Actor/witness/heard-source lọc trước retrieval/prompt; reputation từ receipt có nguồn. Không mở public API/audience, giữ audit và knowledge isolation. |
+| WP27 norms offline | Sau versioned dataset đủ chất lượng: effect size, temporal dependence, multiple-testing và holdout mới;6tháng/p<.01 riêng lẻ không đủ. Artifact/schema/hash và review trước promote, không tự áp luật/code/deploy. |
+| NIM P0→P4 (tuỳ chọn) | Sau các mốc học ưu tiên: adapter chat/embed/rerank cô lập→100fixture thoại Việt→memory retrieval→reflection→review giữ/loại/local. Chỉ synthetic, disabled mặc định, quota/deadline/fallback và metric có uncertainty; không network trong pulse/planner/CAS. Trial API **và output** không dùng production; không key/account/quota/inference nào đã được kiểm. Chưa thêm vector DB/backfill hay7model runtime. |
+
+Retention chỉ giới hạn working set/cache; giữ durable journal/history. Dry-run không ghi world/policy; lỗi invariant phải hủy batch thực sự và báo lỗi. Bảng phụ thuộc trong spec là gợi ý, không thay authority/gates hay chứng minh đã triển khai. Không nhận quota D1/API cố định, số suite38 cũ, tốc độ/FPS/miễn phí production làm bằng chứng.
 
 ## Đề xuất ngoài và ranh giới
 
