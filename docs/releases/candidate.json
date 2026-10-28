@@ -1,13 +1,13 @@
 {
   "project_id": "appgprj_6adc7dc364d48191a09202c5b43309e4",
-  "source_commit": "a974743ae535d3c4a2ca23fff818a6bdf0ea5bca",
+  "source_commit": "5bcb99a7278bf79b6d110222acbcdb0447e85dca",
   "status": "prepared-not-deployed",
-  "archive_sha256": "058796f0220a649408ad9c05efde321e2bad9577f6a3685225759a198348227c",
-  "archive_local_path": "work/production-a974743.tar.gz",
+  "archive_sha256": "ba1b2a121e7664d69de4c34f6301c4119bbcc24b39b6ee6c0a52c5bac2770644",
+  "archive_local_path": "work/production-5bcb99a.tar.gz",
   "production_ledger_unchanged": true,
   "blocker": "Native Sites credential/deploy/status/database tools unavailable in this session; user has already authorized release.",
   "validation": {
-    "unit_suites_passed": 59,
+    "unit_suites_passed": 60,
     "local_api": true,
     "typecheck_lint_build_assets": true,
     "browser_desktop_mobile": true,
@@ -29,7 +29,7 @@
     "unchanged_plan_binding": true,
     "full_duration_encounter_reporting": true,
     "physical_arrival_authority": false,
-    "browser_source_note": "Latest desktop/mobile browser QA is G0 source e5f5583 (transport/pause/chat/keyboard/DPR/poll/OSM/reduced-motion/context retry). H6b changes only offline CLI/host tests/docs; app/renderer/runtime/persistence source remains G0, so no new browser run. Prior six-turn/garden/social/home/cycle/pet evidence retains c77c21c UI source. Fresh59suite and compiled paginated JSONL -> bulk/resume/private export preserve world/history/memories/earned policies. No hardware GPU or production readback.",
+    "browser_source_note": "Latest browser desktop/mobile QA remains G0 source e5f5583. Memory backfill changes only backend maintenance/health/schema and CLI; UI/renderer unchanged, no new browser run. Fresh60suite and compiled D1 tests verify owner-local/remote/UTF8/schema/preview/plan-CAS/receipts/concurrency/silent-ignore rollback and world/history/policy/existing-memory preservation. No production access, hardware GPU or readback.",
     "garden_plots": 5,
     "garden_plants": 30,
     "garden_phases": 5,
@@ -81,7 +81,7 @@
       "experimental_code_in_worker": false
     },
     "packaged_source_verified": true,
-    "archive_entries": 823,
+    "archive_entries": 829,
     "learning_h3": {
       "evidence": "docs/validation/learning-h3-2026-10-28.json",
       "reward_version": "scenario-outcome-v1",
@@ -255,12 +255,41 @@
       "runtime_policy_changed": false,
       "new_migrations": false,
       "offline_code_and_node_sqlite_excluded_from_worker": true,
-      "memory_backfill_and_dataset_curation_implemented": false
+      "memory_backfill_local_implemented": true,
+      "dataset_curation_implemented": false
+    },
+    "memory_backfill": {
+      "contract": "docs/validation/memory-backfill-contract-v1.json",
+      "evidence": "docs/validation/memory-backfill-2026-10-28.json",
+      "local_admin_owner_loopback_only": true,
+      "default_preview_zero_writes": true,
+      "explicit_recipient_and_verified_outcome_sources": true,
+      "legacy_divergent_and_existing_rows_preserved": true,
+      "source_timestamps_preserved": true,
+      "checkpoint_plan_world_source_and_target_CAS": true,
+      "atomic_memory_cursor_receipt_with_postassert": true,
+      "receipt_digest_integrity_and_lost_ack_idempotency": true,
+      "actual_D1_silent_ignore_full_rollback": true,
+      "scale_sources": 123,
+      "scale_batches": 18,
+      "scale_inserted": 40,
+      "scale_preserved": 16,
+      "rescan_inserted": 0,
+      "migration": "0008_memory_backfill",
+      "migration_archive_bytes_verified": true,
+      "schema_tables": 16,
+      "health_table_probes": 8,
+      "production_migration_applied": false,
+      "production_backfilled": false,
+      "world_history_and_personal_policy_changed": false,
+      "private_review_or_database_in_archive": false,
+      "dataset_curation_implemented": false
     }
   },
-  "prepared_at_utc": "2026-10-28T09:52:07.287018Z",
+  "prepared_at_utc": "2026-10-28T11:58:31.229211Z",
   "migrations_to_check": [
     "0006_client_logs",
-    "0007_learning_policies"
+    "0007_learning_policies",
+    "0008_memory_backfill"
   ]
 }
