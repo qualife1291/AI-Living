@@ -1,4 +1,4 @@
-import { adminAllowed } from "../lib/admin";
+import { adminAllowed, cloudflareQaAccessAllowed } from "../lib/admin";
 import { tickLiving, learnCompleted, advanceResidentSocial } from "../lib/living/service";
 import handler from "vinext/server/fetch-handler";
 import { runWithConnectorBinding } from "../lib/connector-context";
@@ -23,7 +23,17 @@ const worker = {
     const diagnostic = url.pathname === "/api/diagnostics";
     const privateMemories = url.pathname === "/api/living/memories";
     const archive = url.pathname === "/api/living/learning" && url.searchParams.get("format") === "jsonl";
-    if ((mutation || archive || diagnostic || privateMemories) && !adminAllowed(request, { ownerId: settings.XOM_ADMIN_USER_ID, localAdmin: settings.XOM_LOCAL_ADMIN, privateOrigin: settings.XOM_OWNER_PRIVATE_ORIGIN }))
+    // Worker-level Cloudflare Access is the only QA authorization source.
+    // ctx.access is provided by Cloudflare after Access verification; request
+    // headers like Origin, cf-access-jwt-assertion, and oai-* are NOT evidence.
+    const qaAccess = (ctx as typeof ctx & { access?: { aud?: string } }).access;
+    const qaAuthorized = cloudflareQaAccessAllowed(request, qaAccess, {
+      expectedAud: settings.XOM_QA_ACCESS_AUD,
+      hostname: settings.XOM_QA_HOSTNAME,
+    });
+    if ((mutation || archive || diagnostic || privateMemories) &&
+        !qaAuthorized &&
+        !adminAllowed(request, { ownerId: settings.XOM_ADMIN_USER_ID, localAdmin: settings.XOM_LOCAL_ADMIN, privateOrigin: settings.XOM_OWNER_PRIVATE_ORIGIN }))
       return Response.json({ error: "Thao tác này cần quyền chủ sở hữu." }, { status: 403 });
     let binding = ctx.props?.CONNECTORS;
     // Local preview emulates the same request-scoped capability. This branch and

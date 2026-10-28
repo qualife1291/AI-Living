@@ -42,6 +42,19 @@ cfg.d1_databases = [{
 // No unauthenticated access is allowed; never remove its Access policy.
 cfg.workers_dev = true;
 cfg.preview_urls = false;
+/**
+ * Public Access application audience tag (not a secret). Only the QA Worker
+ * may recognize this value, and only from trusted ctx.access rather than
+ * user-supplied headers. The Access policy must stay attached to the Worker.
+ */
+cfg.vars = {
+  ...cfg.vars,
+  XOM_QA_ACCESS_AUD: "b8469783daed50bde5fa858047ce0c78643c8aa97b3edbc9d4dc8e7941a732f9",
+  XOM_QA_HOSTNAME: "ai-living-qa.hoanglonglea1mtl.workers.dev",
+};
+if (cfg.vars.XOM_OWNER_PRIVATE_ORIGIN || cfg.vars.XOM_ADMIN_USER_ID || cfg.vars.XOM_LOCAL_ADMIN === "true")
+  throw Error("Unsafe Sites authorization variables must not be used in QA");
+
 // QA only: capture HTTP statuses and uncaught errors. Do not enable on Sites A.
 cfg.observability = { enabled: true, logs: { invocation_logs: true, head_sampling_rate: 1 } };
 writeFileSync(location, JSON.stringify(cfg, null, 2) + "\n");

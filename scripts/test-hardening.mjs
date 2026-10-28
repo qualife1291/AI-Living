@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { adminAllowed } from '../lib/admin.ts';
+import { adminAllowed, cloudflareQaAccessAllowed } from '../lib/admin.ts';
 import { lifeStory, interiorPhase } from '../lib/city/lifestory.ts';
 import { seed } from '../lib/world.ts';
 import { initializeLiving } from '../lib/living/engine.ts';
@@ -10,6 +10,18 @@ assert.equal(adminAllowed(req('https://city.example/api/world', 'viewer'), {owne
 assert.equal(adminAllowed(req('https://city.example/api/world', 'owner'), {ownerId:'owner'}), true);
 assert.equal(adminAllowed(req('https://city.example/api/world'), {localAdmin:'true'}), false);
 assert.equal(adminAllowed(req('http://127.0.0.1:5174/api/world'), {localAdmin:'true'}), true);
+// Cloudflare QA Access is verified by the platform context, never by a client
+// header or a spoofed Origin. Keep Sites production's auth unchanged.
+const qaRequest=new Request('https://ai-living-qa.example/api/living/pulse',{method:'POST'});
+const qaCfg={expectedAud:'qa-access-aud',hostname:'ai-living-qa.example'};
+assert.equal(cloudflareQaAccessAllowed(qaRequest,{aud:'qa-access-aud'},qaCfg),true);
+assert.equal(cloudflareQaAccessAllowed(qaRequest,undefined,qaCfg),false);
+assert.equal(cloudflareQaAccessAllowed(qaRequest,{aud:'other-aud'},qaCfg),false);
+assert.equal(cloudflareQaAccessAllowed(qaRequest,{aud:'qa-access-aud'},{...qaCfg,expectedAud:undefined}),false);
+assert.equal(cloudflareQaAccessAllowed(qaRequest,{aud:'qa-access-aud'},{...qaCfg,hostname:undefined}),false);
+assert.equal(cloudflareQaAccessAllowed(new Request('http://ai-living-qa.example/api/living/pulse'),{aud:'qa-access-aud'},qaCfg),false);
+assert.equal(cloudflareQaAccessAllowed(new Request('https://unrelated.example/api/living/pulse',{headers:{origin:qaRequest.url,'cf-access-jwt-assertion':'forged','oai-authenticated-user-id':'owner'}}),{aud:'qa-access-aud'},qaCfg),false);
+assert.equal(cloudflareQaAccessAllowed(new Request(qaRequest.url,{headers:{origin:qaRequest.url,'cf-access-jwt-assertion':'forged'}}),undefined,qaCfg),false);
 const now = Date.parse('2026-10-25T05:00:00Z'), world=structuredClone(seed);
 world.born = new Date(now-600000).toISOString(); world.clock=undefined;
 world.living=initializeLiving(now);
