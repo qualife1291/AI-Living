@@ -1,0 +1,52 @@
+#!/usr/bin/env node
+/**
+ * Configure the compiled Vinext Worker for an isolated isolated Cloudflare QA deploy.
+ * Run AFTER npm run build, BEFORE wrangler versions upload.
+ * Never use this for the ChatGPT Sites or staging deployment.
+ */
+import { readFileSync, writeFileSync, existsSync } from "node:fs";
+import { resolve, dirname } from "node:path";
+
+const location = resolve("dist/server/wrangler.json");
+if (!existsSync(location)) throw Error("Vinext build not found; run npm run build first.");
+const cfg = JSON.parse(readFileSync(location, "utf8"));
+
+if (cfg.name !== "ai-living-qa") throw Error(`Wrong Worker name: ${cfg.name}`);
+if (cfg.main !== "index.js" || !existsSync(resolve(dirname(location), cfg.main))) {
+  throw Error("Unexpected/missing Vinext Worker entrypoint.");
+}
+if (!cfg.assets?.directory || !existsSync(resolve(dirname(location), cfg.assets.directory))) {
+  throw Error("Compiled client assets are missing.");
+}
+if (!cfg.compatibility_flags?.includes("nodejs_compat")) {
+  throw Error("Cloudflare nodejs_compat is required.");
+}
+if (!Array.isArray(cfg.d1_databases) || cfg.d1_databases.length !== 1 ||
+    cfg.d1_databases[0]?.binding !== "DB") {
+  throw Error("Unexpected D1 binding layout. Refusing to deploy.");
+}
+if (cfg.route || cfg.routes || cfg.triggers?.crons?.length) {
+  throw Error("Unexpected production route or cron; staging must be isolated.");
+}
+
+// Public identifiers (not credentials). This DB was created for staging and contains
+// NO imported ChatGPT Sites production history.
+cfg.d1_databases = [{
+  binding: "DB",
+  database_name: "ai_living_qa",
+  database_id: "21347bba-caaf-4ba5-9d80-d849958192d1",
+}];
+
+// Only enable workers.dev behind verified Cloudflare Access. Disable Version URLs. Cloudflare Access is enabled for this QA Worker: owner or scoped service token.
+// No unauthenticated access is allowed; never remove its Access policy.
+cfg.workers_dev = true;
+cfg.preview_urls = false;
+writeFileSync(location, JSON.stringify(cfg, null, 2) + "\n");
+console.log(JSON.stringify({
+  worker: cfg.name,
+  d1_binding: cfg.d1_databases[0].binding,
+  d1_database: cfg.d1_databases[0].database_name,
+  workersDevViaAccess: cfg.workers_dev,
+  versionUrls: cfg.preview_urls,
+  mode: "access-protected-qa-deploy",
+}));
