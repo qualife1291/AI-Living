@@ -1,5 +1,7 @@
 # Tiếp tục từ đây — 28/10/2026
 
+**WIP nghiệm thu toàn bộ:** đang thực hiện theo [contract](docs/validation/acceptance-contract-2026-10-28.json), trước GND3. Chạy mới core/API/scenarios/browser trên fixture local cô lập, audit negative learning; chưa có kết luận cuối. Không migrate/reset DB thật; native Sites vẫn thiếu.
+
 Chỉ đọc [AGENTS](AGENTS.md) và file này khi bắt đầu. [ROADMAP](ROADMAP.md) là backlog duy nhất; [README](README.md) chỉ mục theo công việc.
 
 | Phần | Context hiện tại |

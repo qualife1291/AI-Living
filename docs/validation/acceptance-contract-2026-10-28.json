@@ -1,0 +1,51 @@
+{
+  "kind": "implemented-phases-acceptance-v1",
+  "date": "2026-10-28",
+  "timezone": "Asia/Ho_Chi_Minh",
+  "baselineSource": "f4a22787ad6d1678d182d728112e32cffa5686ff",
+  "scope": "Re-accept implemented features before further phases; local isolated fixtures, no production writes.",
+  "gates": {
+    "core": [
+      "63 independent unit suites",
+      "TypeScript",
+      "ESLint",
+      "asset provenance/compression",
+      "fresh compiled build"
+    ],
+    "persistence": [
+      "compiled D1 diagnostics/current API",
+      "GND1 API",
+      "GND2 shared API"
+    ],
+    "scenarios": [
+      "all four 120-second scenario timelines, 7201 samples each",
+      "desktop/mobile all four studio scenarios and five shots",
+      "social dialogue six turns, reload and camera",
+      "city tag, bike, pets, homes, gardens and domain skills"
+    ],
+    "browser": [
+      "current G0 pixel budget, transport, pause/network failures and recovery",
+      "overlays/households, interiors, action clips, resource gallery, sound lifecycle",
+      "shared ground two viewers and clock sampling"
+    ],
+    "learning": [
+      "fresh frozen synthetic runtime policy benchmark",
+      "fresh preregistered H1 rollout/comparison where inputs available",
+      "audit H2/H4/H6/H10 negative decisions and frozen evidence without tuning or opening reserved H10 holdout"
+    ],
+    "operations": [
+      "local loopback only, all mutations isolated",
+      "artifact/source provenance and production ledger reconciliation"
+    ]
+  },
+  "rules": [
+    "Record command, source, exit status, elapsed time and log hashes; preserve failures and reruns.",
+    "Fix actual defects, do not weaken assertions just to pass. Superseded expectations require documented current contract and equivalent assertions.",
+    "No live DB reset/migration, no paid inference/GPU, no duplicate automation, no candidate promotion.",
+    "Historical evidence audits are not fresh inference or a fresh controlled study.",
+    "Browser synthetic/SwiftShader results are not production, hardware FPS, 24-hour liveness, semantic quality or model training.",
+    "Holdout 12000-12019 remains unopened.",
+    "Production acceptance requires native deployment/database/scheduler tools; absence is a blocker, never a pass."
+  ],
+  "status": "in-progress"
+}
