@@ -33,8 +33,22 @@ const worker = {
     });
     if ((mutation || archive || diagnostic || privateMemories) &&
         !qaAuthorized &&
-        !adminAllowed(request, { ownerId: settings.XOM_ADMIN_USER_ID, localAdmin: settings.XOM_LOCAL_ADMIN, privateOrigin: settings.XOM_OWNER_PRIVATE_ORIGIN }))
-      return Response.json({ error: "Thao tác này cần quyền chủ sở hữu." }, { status: 403 });
+        !adminAllowed(request, { ownerId: settings.XOM_ADMIN_USER_ID, localAdmin: settings.XOM_LOCAL_ADMIN, privateOrigin: settings.XOM_OWNER_PRIVATE_ORIGIN })) {
+      if (url.hostname === "ai-living-qa.hoanglonglea1mtl.workers.dev") {
+        console.warn("qa_access_gate_denied", {
+          accessContextPresent: Boolean(qaAccess),
+          accessAudiencePresent: Boolean(qaAccess?.aud),
+          accessAudienceMatches: Boolean(qaAccess?.aud && qaAccess.aud === settings.XOM_QA_ACCESS_AUD),
+          configuredAudiencePresent: Boolean(settings.XOM_QA_ACCESS_AUD),
+          expectedHostnameMatches: url.hostname === settings.XOM_QA_HOSTNAME,
+          https: url.protocol === "https:",
+          method: request.method,
+          path: url.pathname,
+          // Never log JWT, user identity, email, cookies or credentials.
+        });
+      }
+      return Response.json({ error: "Thao tác này cần quyền chủ sở hữu.", code: "QA_AUTH_GATE_DENIED" }, { status: 403 });
+    }
     let binding = ctx.props?.CONNECTORS;
     // Local preview emulates the same request-scoped capability. This branch and
     // the auxiliary service binding are absent from production builds.
