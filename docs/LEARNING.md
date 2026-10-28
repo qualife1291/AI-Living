@@ -69,3 +69,31 @@ CI95 Student-t trên20seed means; so sánh dùng paired deltas cùng seed. Compe
 Paired Δreward=-0,028180, CI95[-0,029533;-0,026827]; Δopportunity-cost=-0,555734, CI95[-0,571922;-0,539546]. Không có kết luận policy thắng toàn diện, không tự chuyển mặc định. Cả hai đạt competence ngày3 và recovery3ngày, metrics đã sát trần/sàn: phải có stress/cold-start profile trước khi nhận cải thiện thích ứng/prior. Ngưỡng candidate H2 tương lai yêu cầu return/needs không giảm, opportunity cost không tăng, entropy≥80% baseline bằng paired CI; không điều chỉnh trên chính holdout để ép thắng.
 
 [H1 gates](validation/learning-h1-2026-10-28.json):52/52suite/check/lint/build/API local đạt; full LinUCB chạy lại cùng hash, mẫu16,98s một run ở môi trường này, không là SLA. Không UI/browser mới hoặc production deploy. Historical holdout8seed phía trên vẫn giữ riêng; hai protocol không thay thế lẫn nhau.
+
+## H2 — Prior, residual và cold-start (28/10)
+
+[Protocol v1](validation/learning-h2-protocol-v1.json) cố định trước kết quả: hai profile,4 policy; train8seed1000–1007 riêng từng profile, đánh giá20seed2000–2019,24agent×60ngày, shift ngày30. [Evidence](validation/learning-h2-2026-10-28.json) và [raw reports/prior/paired comparisons](validation/h2-v1/) giữ cả kết quả không đạt. Không chỉnh tham số trên holdout đã xem.
+
+`residual-policy.ts` chỉ dùng offline. Model-prior lấy expectedReward thuần; residual-EMA học `reward thực − expected tại quyết định`, giữ raw reward/context/trials riêng, EMA floor0,08, progress window20, bonus giảm theo n. Warm thêm prior bounded k=5 từ **role-place synthetic**, chưa phải hierarchy role.kind. Priors không tạo earned samples/domain/skill. Observer kiểm actor, matching completed plan/context, version và checkpoint chống replay; dùng shared runtime còn cần durable receipt/CAS. Hard emergencies/gates luôn ưu tiên, cap35% chỉ voluntary với làm tròn nguyên và fallback nếu không còn action hợp lệ.
+
+Cold-stress tạo needs ban đầu thấp, tải ban ngày và shock/tải mạnh hơn từ ngày30, cùng seed giữa policy; không đổi metabolism production. Đã làm rõ cold-start: need-ok ngày1 khoảng0,736. Sau đó needs lại gần trần, recovery khoảng3ngày nên bằng chứng thích ứng dài hạn còn hạn chế. Reward cao hơn profile thường do needs đầu vào khác, không là mức cải thiện giữa hai profile.
+
+| Profile/policy | Reward/agent/ngày | Need-ok | Opportunity cost | Đủ gates so LinUCB |
+|---|---:|---:|---:|---|
+| Ordinary / LinUCB |1,195450|0,999949|3,405998|Baseline|
+| Ordinary / model-prior |1,192831|1,000000|3,259559|Không: return|
+| Ordinary / residual-EMA |1,194159|1,000000|3,282242|Không: return|
+| Ordinary / warm-residual |1,194181|1,000000|3,281513|Không: return|
+| Stress / LinUCB |3,344596|0,994698|3,326017|Baseline|
+| Stress / model-prior |3,261682|0,993955|3,217882|Không: return/needs|
+| Stress / residual-EMA |3,269031|0,993594|3,246656|Không: return/needs|
+| Stress / warm-residual |3,268971|0,993633|3,246264|Không: return/needs|
+
+Mỗi cặp dùng CI95 trên20 seed deltas; tất cả candidate đạt opportunity-cost và entropy floor nhưng trượt return, stress còn trượt needs. Residual-EMA giảm MSE so expected-only **trên cùng các quyết định của chính nó** khoảng64,33% ordinary và27,72% stress; warm khoảng68,16%/28,89%. Đây là residual rất nhỏ của drift deterministic, không chứng minh học xã hội/LLM. Residual tăng reward so model-prior nhưng opportunity-cost tăng; warm-vs-EMA CI reward chứa0 ở cả hai profile, chưa chứng minh lợi ích warm start. Không dùng MSE giữa hai trajectory khác nhau để nhận thắng.
+
+```bash
+npm run train:residual-prior -- --profile=cold-stress-v1 --out=/tmp/h2-prior.json
+npm run simulate:learning -- --policy=residual-warm-v1 --profile=cold-stress-v1 --seed-start=2000 --prior=/tmp/h2-prior.json --out=/tmp/h2-warm.json
+```
+
+CLI kiểm SHA256/schema/version/profile/seed separation và không ghi đè artifact khác; SHA là integrity, không là chữ ký/nguồn tin cậy. Kết thúc thí nghiệm v1 với quyết định **không promote**, runtime giữ LinUCB. Full repeats/hash,53suite và compiled local API ở evidence; không liveDB, browser/UI mới hoặc Sites deploy. H3 reward provenance vẫn là bước tiếp trong backlog; policy v2 phải có protocol/train-validation-holdout mới trước khi đo, không ép v1 thắng.

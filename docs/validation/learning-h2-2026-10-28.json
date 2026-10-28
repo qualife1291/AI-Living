@@ -1,0 +1,2447 @@
+{
+  "phase": "H2 / WP1–2 experimental prior/residual/warm-start",
+  "date": "2026-10-28",
+  "timezone": "Asia/Ho_Chi_Minh",
+  "tested_source_before_reports_and_docs": "a0cd226ba91a9809496e189f60ca03460f7ddc02",
+  "protocol": "learning-h2-protocol-v1.json",
+  "decision": "Close v1 offline study without promotion: all three candidates fail return; stress also fails needs. Preserve default LinUCB. Warm start has no demonstrated return benefit over EMA. Do not retune on these evaluation seeds.",
+  "evaluationPlans": 5529600,
+  "trainingPlans": 552960,
+  "profiles": [
+    {
+      "profile": "ordinary-v1",
+      "prior": {
+        "path": "docs/validation/h2-v1/ordinary-v1/prior.json",
+        "sha256": "4f1319ba90a58f2c32c5b06ed1cbbc4601cfa6468229268500a06d48a277d34d",
+        "rows": 1012,
+        "trainingSeeds": [
+          4015017979,
+          3998240360,
+          4048573217,
+          4031795598,
+          4082128455,
+          4065350836,
+          4115683693,
+          4098906074
+        ],
+        "earnedTrainingOutcomes": 276480,
+        "supportedOutcomes": 276406,
+        "minimumSupport": 5,
+        "grouping": "Synthetic role-place fixture; not role.kind hierarchy. Prior never grants earned samples or skills."
+      },
+      "policies": [
+        {
+          "policy": "linucb",
+          "path": "docs/validation/h2-v1/ordinary-v1/linucb.json",
+          "sha256": "5455e9b8b99c6f3382520563ca861fe8cd22f722d20e96c072baa5327bfe0476",
+          "summary": {
+            "returnPerAgentDay": {
+              "mean": 1.1954495120463764,
+              "ci95": [
+                1.1906135686169086,
+                1.2002854554758442
+              ],
+              "n": 20,
+              "min": 1.1778785240511098,
+              "max": 1.2196323920642165
+            },
+            "immediateRegretPerAgentDay": {
+              "mean": 3.4059983469109105,
+              "ci95": [
+                3.366058635541533,
+                3.445938058280288
+              ],
+              "n": 20,
+              "min": 3.263582214814365,
+              "max": 3.6090978494063672
+            },
+            "needOkRatio": {
+              "mean": 0.999949363425926,
+              "ci95": [
+                0.9999165215873497,
+                0.9999822052645023
+              ],
+              "n": 20,
+              "min": 0.9997685185185186,
+              "max": 1
+            },
+            "timeToCompetenceDays": {
+              "mean": 3,
+              "ci95": [
+                3,
+                3
+              ],
+              "n": 20,
+              "min": 3,
+              "max": 3
+            },
+            "competentFraction": {
+              "mean": 1,
+              "ci95": [
+                1,
+                1
+              ],
+              "n": 20,
+              "min": 1,
+              "max": 1
+            },
+            "daysToRecover": {
+              "mean": 3,
+              "ci95": [
+                3,
+                3
+              ],
+              "n": 20,
+              "min": 3,
+              "max": 3
+            },
+            "recoveredFraction": {
+              "mean": 1,
+              "ci95": [
+                1,
+                1
+              ],
+              "n": 20,
+              "min": 1,
+              "max": 1
+            },
+            "actionEntropy": {
+              "mean": 0.5920604700435279,
+              "ci95": [
+                0.5902974752130291,
+                0.5938234648740267
+              ],
+              "n": 20,
+              "min": 0.5845603829085169,
+              "max": 0.5986801397337285
+            },
+            "voluntaryActionEntropy": {
+              "mean": 0.631134372586102,
+              "ci95": [
+                0.6284820878763849,
+                0.6337866572958192
+              ],
+              "n": 20,
+              "min": 0.6199942287022081,
+              "max": 0.6410519634370804
+            },
+            "repeatRate": {
+              "mean": 0.2912815612694001,
+              "ci95": [
+                0.29123779321722776,
+                0.2913253293215724
+              ],
+              "n": 20,
+              "min": 0.29117442668519805,
+              "max": 0.2914929349085013
+            },
+            "meanMaxActionShare": {
+              "mean": 0.3334418402777709,
+              "ci95": [
+                0.333401363252521,
+                0.3334823173030208
+              ],
+              "n": 20,
+              "min": 0.3333333333333265,
+              "max": 0.33365162037036356
+            },
+            "worstAgentDayActionShare": {
+              "mean": 0.3729166666666667,
+              "ci95": [
+                0.36855625000000003,
+                0.3772770833333333
+              ],
+              "n": 20,
+              "min": 0.3333333333333333,
+              "max": 0.375
+            },
+            "forcedFraction": {
+              "mean": 0.3333955439814814,
+              "ci95": [
+                0.33336598102095133,
+                0.3334251069420115
+              ],
+              "n": 20,
+              "min": 0.3333333333333333,
+              "max": 0.3335648148148148
+            }
+          },
+          "firstDayNeedOk": {
+            "mean": 1,
+            "ci95": [
+              1,
+              1
+            ],
+            "n": 20,
+            "min": 1,
+            "max": 1
+          },
+          "postShiftNeedOk": {
+            "mean": 1,
+            "ci95": [
+              1,
+              1
+            ],
+            "n": 20,
+            "min": 1,
+            "max": 1
+          },
+          "sameDecisionPrediction": {
+            "modelOnlyMSE": {
+              "mean": 6.160632953039415e-07,
+              "ci95": [
+                6.03533062892302e-07,
+                6.285935277155811e-07
+              ],
+              "n": 20,
+              "min": 5.543537661375608e-07,
+              "max": 6.63216723109144e-07
+            },
+            "residualMSE": {
+              "mean": 6.160632953039415e-07,
+              "ci95": [
+                6.03533062892302e-07,
+                6.285935277155811e-07
+              ],
+              "n": 20,
+              "min": 5.543537661375608e-07,
+              "max": 6.63216723109144e-07
+            },
+            "pairedMSEDelta": {
+              "mean": 0,
+              "ci95": [
+                0,
+                0
+              ],
+              "n": 20,
+              "min": 0,
+              "max": 0
+            },
+            "relativeReduction": 0,
+            "learnedResidual": false
+          },
+          "residualSamples": 0
+        },
+        {
+          "policy": "model-prior-v1",
+          "path": "docs/validation/h2-v1/ordinary-v1/model-prior-v1.json",
+          "sha256": "252a23d075c2295e0cf2eeacf51760f31a33ab4b341848e91fc88471542edfc1",
+          "summary": {
+            "returnPerAgentDay": {
+              "mean": 1.1928311640547484,
+              "ci95": [
+                1.1876060790633733,
+                1.1980562490461235
+              ],
+              "n": 20,
+              "min": 1.1745139197328827,
+              "max": 1.2192688651952608
+            },
+            "immediateRegretPerAgentDay": {
+              "mean": 3.2595587380060103,
+              "ci95": [
+                3.2208416178585484,
+                3.298275858153472
+              ],
+              "n": 20,
+              "min": 3.103653943936842,
+              "max": 3.4379644122726933
+            },
+            "needOkRatio": {
+              "mean": 1,
+              "ci95": [
+                1,
+                1
+              ],
+              "n": 20,
+              "min": 1,
+              "max": 1
+            },
+            "timeToCompetenceDays": {
+              "mean": 3,
+              "ci95": [
+                3,
+                3
+              ],
+              "n": 20,
+              "min": 3,
+              "max": 3
+            },
+            "competentFraction": {
+              "mean": 1,
+              "ci95": [
+                1,
+                1
+              ],
+              "n": 20,
+              "min": 1,
+              "max": 1
+            },
+            "daysToRecover": {
+              "mean": 3,
+              "ci95": [
+                3,
+                3
+              ],
+              "n": 20,
+              "min": 3,
+              "max": 3
+            },
+            "recoveredFraction": {
+              "mean": 1,
+              "ci95": [
+                1,
+                1
+              ],
+              "n": 20,
+              "min": 1,
+              "max": 1
+            },
+            "actionEntropy": {
+              "mean": 0.5511541508869604,
+              "ci95": [
+                0.5489965997484864,
+                0.5533117020254344
+              ],
+              "n": 20,
+              "min": 0.5412132805305542,
+              "max": 0.5609653066030779
+            },
+            "voluntaryActionEntropy": {
+              "mean": 0.5702668336354991,
+              "ci95": [
+                0.5670252565781913,
+                0.573508410692807
+              ],
+              "n": 20,
+              "min": 0.5552671200779585,
+              "max": 0.5845282280083798
+            },
+            "repeatRate": {
+              "mean": 0.2916044127866574,
+              "ci95": [
+                0.2915277201749184,
+                0.29168110539839637
+              ],
+              "n": 20,
+              "min": 0.291377113736391,
+              "max": 0.2921299513551077
+            },
+            "meanMaxActionShare": {
+              "mean": 0.33383825231480807,
+              "ci95": [
+                0.3336425787939714,
+                0.33403392583564473
+              ],
+              "n": 20,
+              "min": 0.3333622685185117,
+              "max": 0.33480902777777105
+            },
+            "worstAgentDayActionShare": {
+              "mean": 0.3791666666666667,
+              "ci95": [
+                0.3731645775292781,
+                0.3851687558040553
+              ],
+              "n": 20,
+              "min": 0.375,
+              "max": 0.4166666666666667
+            },
+            "forcedFraction": {
+              "mean": 0.3333333333333332,
+              "ci95": [
+                0.33333333333333315,
+                0.33333333333333326
+              ],
+              "n": 20,
+              "min": 0.3333333333333333,
+              "max": 0.3333333333333333
+            }
+          },
+          "firstDayNeedOk": {
+            "mean": 1,
+            "ci95": [
+              1,
+              1
+            ],
+            "n": 20,
+            "min": 1,
+            "max": 1
+          },
+          "postShiftNeedOk": {
+            "mean": 1,
+            "ci95": [
+              1,
+              1
+            ],
+            "n": 20,
+            "min": 1,
+            "max": 1
+          },
+          "sameDecisionPrediction": {
+            "modelOnlyMSE": {
+              "mean": 5.283441975888068e-07,
+              "ci95": [
+                5.207465014521157e-07,
+                5.35941893725498e-07
+              ],
+              "n": 20,
+              "min": 4.895594519569253e-07,
+              "max": 5.607258796820037e-07
+            },
+            "residualMSE": {
+              "mean": 5.283441975888068e-07,
+              "ci95": [
+                5.207465014521157e-07,
+                5.35941893725498e-07
+              ],
+              "n": 20,
+              "min": 4.895594519569253e-07,
+              "max": 5.607258796820037e-07
+            },
+            "pairedMSEDelta": {
+              "mean": 0,
+              "ci95": [
+                0,
+                0
+              ],
+              "n": 20,
+              "min": 0,
+              "max": 0
+            },
+            "relativeReduction": 0,
+            "learnedResidual": false
+          },
+          "residualSamples": 0
+        },
+        {
+          "policy": "residual-ema-v1",
+          "path": "docs/validation/h2-v1/ordinary-v1/residual-ema-v1.json",
+          "sha256": "255fe63939ca794333a5c1c7d163a954df10a45236dabd117b7fd4eb524e78dc",
+          "summary": {
+            "returnPerAgentDay": {
+              "mean": 1.194159021372595,
+              "ci95": [
+                1.1889959498997003,
+                1.1993220928454897
+              ],
+              "n": 20,
+              "min": 1.1766558375869005,
+              "max": 1.2197894444078292
+            },
+            "immediateRegretPerAgentDay": {
+              "mean": 3.2822416225578257,
+              "ci95": [
+                3.2435598927083764,
+                3.320923352407275
+              ],
+              "n": 20,
+              "min": 3.123675222350763,
+              "max": 3.4485952378461584
+            },
+            "needOkRatio": {
+              "mean": 1,
+              "ci95": [
+                1,
+                1
+              ],
+              "n": 20,
+              "min": 1,
+              "max": 1
+            },
+            "timeToCompetenceDays": {
+              "mean": 3,
+              "ci95": [
+                3,
+                3
+              ],
+              "n": 20,
+              "min": 3,
+              "max": 3
+            },
+            "competentFraction": {
+              "mean": 1,
+              "ci95": [
+                1,
+                1
+              ],
+              "n": 20,
+              "min": 1,
+              "max": 1
+            },
+            "daysToRecover": {
+              "mean": 3,
+              "ci95": [
+                3,
+                3
+              ],
+              "n": 20,
+              "min": 3,
+              "max": 3
+            },
+            "recoveredFraction": {
+              "mean": 1,
+              "ci95": [
+                1,
+                1
+              ],
+              "n": 20,
+              "min": 1,
+              "max": 1
+            },
+            "actionEntropy": {
+              "mean": 0.5549358537340782,
+              "ci95": [
+                0.5528656501520821,
+                0.5570060573160742
+              ],
+              "n": 20,
+              "min": 0.5457358128402813,
+              "max": 0.5641306678182428
+            },
+            "voluntaryActionEntropy": {
+              "mean": 0.5758407723106802,
+              "ci95": [
+                0.5727272519554548,
+                0.5789542926659056
+              ],
+              "n": 20,
+              "min": 0.56183075983553,
+              "max": 0.5893496560667996
+            },
+            "repeatRate": {
+              "mean": 0.29156532314107025,
+              "ci95": [
+                0.2914932800170038,
+                0.2916373662651367
+              ],
+              "n": 20,
+              "min": 0.2913481584433634,
+              "max": 0.29192726430391475
+            },
+            "meanMaxActionShare": {
+              "mean": 0.33376012731480803,
+              "ci95": [
+                0.33357013983508826,
+                0.3339501147945278
+              ],
+              "n": 20,
+              "min": 0.3333912037036969,
+              "max": 0.33480902777777144
+            },
+            "worstAgentDayActionShare": {
+              "mean": 0.3770833333333333,
+              "ci95": [
+                0.3727229166666667,
+                0.38144374999999997
+              ],
+              "n": 20,
+              "min": 0.375,
+              "max": 0.4166666666666667
+            },
+            "forcedFraction": {
+              "mean": 0.3333347800925925,
+              "ci95": [
+                0.33333175202546284,
+                0.33333780815972214
+              ],
+              "n": 20,
+              "min": 0.3333333333333333,
+              "max": 0.3333622685185185
+            }
+          },
+          "firstDayNeedOk": {
+            "mean": 1,
+            "ci95": [
+              1,
+              1
+            ],
+            "n": 20,
+            "min": 1,
+            "max": 1
+          },
+          "postShiftNeedOk": {
+            "mean": 1,
+            "ci95": [
+              1,
+              1
+            ],
+            "n": 20,
+            "min": 1,
+            "max": 1
+          },
+          "sameDecisionPrediction": {
+            "modelOnlyMSE": {
+              "mean": 5.281668809934754e-07,
+              "ci95": [
+                5.206622615476772e-07,
+                5.356715004392737e-07
+              ],
+              "n": 20,
+              "min": 4.895070451130787e-07,
+              "max": 5.535922450791264e-07
+            },
+            "residualMSE": {
+              "mean": 1.8837644431824186e-07,
+              "ci95": [
+                1.8231464123823148e-07,
+                1.9443824739825224e-07
+              ],
+              "n": 20,
+              "min": 1.5548744643018138e-07,
+              "max": 2.1032002951873517e-07
+            },
+            "pairedMSEDelta": {
+              "mean": -3.3979043667523354e-07,
+              "ci95": [
+                -3.4925736187335513e-07,
+                -3.3032351147711194e-07
+              ],
+              "n": 20,
+              "min": -3.809876923146988e-07,
+              "max": -2.8775827919401055e-07
+            },
+            "relativeReduction": 0.6433391583283146,
+            "learnedResidual": true
+          },
+          "residualSamples": 691200
+        },
+        {
+          "policy": "residual-warm-v1",
+          "path": "docs/validation/h2-v1/ordinary-v1/residual-warm-v1.json",
+          "sha256": "d7df4d9bb9b408f54df0e833094c3e4fe943aa0da139fc7e3e419eee22501c9d",
+          "summary": {
+            "returnPerAgentDay": {
+              "mean": 1.1941806696460848,
+              "ci95": [
+                1.1890329835897435,
+                1.1993283557024261
+              ],
+              "n": 20,
+              "min": 1.1766365653486472,
+              "max": 1.2190888482413897
+            },
+            "immediateRegretPerAgentDay": {
+              "mean": 3.281513173097431,
+              "ci95": [
+                3.242706346939737,
+                3.320319999255125
+              ],
+              "n": 20,
+              "min": 3.115867566156799,
+              "max": 3.4469359571134097
+            },
+            "needOkRatio": {
+              "mean": 1,
+              "ci95": [
+                1,
+                1
+              ],
+              "n": 20,
+              "min": 1,
+              "max": 1
+            },
+            "timeToCompetenceDays": {
+              "mean": 3,
+              "ci95": [
+                3,
+                3
+              ],
+              "n": 20,
+              "min": 3,
+              "max": 3
+            },
+            "competentFraction": {
+              "mean": 1,
+              "ci95": [
+                1,
+                1
+              ],
+              "n": 20,
+              "min": 1,
+              "max": 1
+            },
+            "daysToRecover": {
+              "mean": 3,
+              "ci95": [
+                3,
+                3
+              ],
+              "n": 20,
+              "min": 3,
+              "max": 3
+            },
+            "recoveredFraction": {
+              "mean": 1,
+              "ci95": [
+                1,
+                1
+              ],
+              "n": 20,
+              "min": 1,
+              "max": 1
+            },
+            "actionEntropy": {
+              "mean": 0.554929097444649,
+              "ci95": [
+                0.552804242065132,
+                0.557053952824166
+              ],
+              "n": 20,
+              "min": 0.5454245339101288,
+              "max": 0.5646273360874494
+            },
+            "voluntaryActionEntropy": {
+              "mean": 0.5758288032206448,
+              "ci95": [
+                0.5726328379879013,
+                0.5790247684533882
+              ],
+              "n": 20,
+              "min": 0.561363841440301,
+              "max": 0.5900579653527727
+            },
+            "repeatRate": {
+              "mean": 0.29156966643502435,
+              "ci95": [
+                0.29149159985403283,
+                0.2916477330160159
+              ],
+              "n": 20,
+              "min": 0.2913481584433634,
+              "max": 0.29204308547602503
+            },
+            "meanMaxActionShare": {
+              "mean": 0.33375868055554875,
+              "ci95": [
+                0.3335674158836229,
+                0.3339499452274746
+              ],
+              "n": 20,
+              "min": 0.3333912037036969,
+              "max": 0.33480902777777144
+            },
+            "worstAgentDayActionShare": {
+              "mean": 0.3770833333333333,
+              "ci95": [
+                0.3727229166666667,
+                0.38144374999999997
+              ],
+              "n": 20,
+              "min": 0.375,
+              "max": 0.4166666666666667
+            },
+            "forcedFraction": {
+              "mean": 0.3333347800925925,
+              "ci95": [
+                0.33333175202546284,
+                0.33333780815972214
+              ],
+              "n": 20,
+              "min": 0.3333333333333333,
+              "max": 0.3333622685185185
+            }
+          },
+          "firstDayNeedOk": {
+            "mean": 1,
+            "ci95": [
+              1,
+              1
+            ],
+            "n": 20,
+            "min": 1,
+            "max": 1
+          },
+          "postShiftNeedOk": {
+            "mean": 1,
+            "ci95": [
+              1,
+              1
+            ],
+            "n": 20,
+            "min": 1,
+            "max": 1
+          },
+          "sameDecisionPrediction": {
+            "modelOnlyMSE": {
+              "mean": 5.287569918750722e-07,
+              "ci95": [
+                5.212632169671079e-07,
+                5.362507667830366e-07
+              ],
+              "n": 20,
+              "min": 4.923609965980811e-07,
+              "max": 5.556843218000825e-07
+            },
+            "residualMSE": {
+              "mean": 1.6837234949412995e-07,
+              "ci95": [
+                1.6182206178755902e-07,
+                1.7492263720070087e-07
+              ],
+              "n": 20,
+              "min": 1.3470762697106937e-07,
+              "max": 1.9205158932738278e-07
+            },
+            "pairedMSEDelta": {
+              "mean": -3.6038464238094233e-07,
+              "ci95": [
+                -3.706412243831275e-07,
+                -3.5012806037875716e-07
+              ],
+              "n": 20,
+              "min": -4.0336510173519824e-07,
+              "max": -3.0306433552447054e-07
+            },
+            "relativeReduction": 0.6815695072001795,
+            "learnedResidual": true
+          },
+          "residualSamples": 691200
+        }
+      ],
+      "comparisons": [
+        {
+          "path": "docs/validation/h2-v1/ordinary-v1/linucb--model-prior-v1.json",
+          "baseline": "linucb",
+          "candidate": "model-prior-v1",
+          "gates": {
+            "enoughSeeds": true,
+            "fullProfile": true,
+            "returnNonDecrease": false,
+            "regretNonIncrease": true,
+            "needsNonDecrease": true,
+            "entropyFloor": true
+          },
+          "passes": false,
+          "pairedDeltas": {
+            "returnPerAgentDay": {
+              "mean": -0.0026183479916280783,
+              "ci95": [
+                -0.003852577514004813,
+                -0.0013841184692513437
+              ],
+              "n": 20,
+              "min": -0.007315423679228772,
+              "max": 0.0023346977320293227
+            },
+            "immediateRegretPerAgentDay": {
+              "mean": -0.14643960890490115,
+              "ci95": [
+                -0.15834175069135908,
+                -0.13453746711844322
+              ],
+              "n": 20,
+              "min": -0.20195971949290126,
+              "max": -0.09095133121386478
+            },
+            "needOkRatio": {
+              "mean": 5.0636574074081066e-05,
+              "ci95": [
+                1.779473549779123e-05,
+                8.347841265037091e-05
+              ],
+              "n": 20,
+              "min": 0,
+              "max": 0.00023148148148144365
+            },
+            "actionEntropy": {
+              "mean": -0.04090631915656755,
+              "ci95": [
+                -0.04151440813479228,
+                -0.04029823017834282
+              ],
+              "n": 20,
+              "min": -0.04334710237796269,
+              "max": -0.037714833130650605
+            },
+            "repeatRate": {
+              "mean": 0.0003228515172573304,
+              "ci95": [
+                0.000242107106847583,
+                0.00040359592766707784
+              ],
+              "n": 20,
+              "min": 5.791058605514321e-05,
+              "max": 0.0008107482047718384
+            }
+          },
+          "entropyMargin": {
+            "mean": 0.07750577485213803,
+            "ci95": [
+              0.07665165599401678,
+              0.07835989371025927
+            ],
+            "n": 20,
+            "min": 0.07356497420374064,
+            "max": 0.08202119481609504
+          }
+        },
+        {
+          "path": "docs/validation/h2-v1/ordinary-v1/linucb--residual-ema-v1.json",
+          "baseline": "linucb",
+          "candidate": "residual-ema-v1",
+          "gates": {
+            "enoughSeeds": true,
+            "fullProfile": true,
+            "returnNonDecrease": false,
+            "regretNonIncrease": true,
+            "needsNonDecrease": true,
+            "entropyFloor": true
+          },
+          "passes": false,
+          "pairedDeltas": {
+            "returnPerAgentDay": {
+              "mean": -0.001290490673781397,
+              "ci95": [
+                -0.0025333884250336976,
+                -4.759292252909668e-05
+              ],
+              "n": 20,
+              "min": -0.006472169991071475,
+              "max": 0.002798423409835271
+            },
+            "immediateRegretPerAgentDay": {
+              "mean": -0.12375672435308478,
+              "ci95": [
+                -0.13534553881256256,
+                -0.112167909893607
+              ],
+              "n": 20,
+              "min": -0.160516895669935,
+              "max": -0.06162392129917915
+            },
+            "needOkRatio": {
+              "mean": 5.0636574074081066e-05,
+              "ci95": [
+                1.779473549779123e-05,
+                8.347841265037091e-05
+              ],
+              "n": 20,
+              "min": 0,
+              "max": 0.00023148148148144365
+            },
+            "actionEntropy": {
+              "mean": -0.03712461630944971,
+              "ci95": [
+                -0.037668279591605264,
+                -0.03658095302729415
+              ],
+              "n": 20,
+              "min": -0.039056176361718764,
+              "max": -0.03454947191548563
+            },
+            "repeatRate": {
+              "mean": 0.0002837618716701212,
+              "ci95": [
+                0.0002105080776224188,
+                0.00035701566571782366
+              ],
+              "n": 20,
+              "min": -2.895529302759936e-05,
+              "max": 0.0006080611535788649
+            }
+          },
+          "entropyMargin": {
+            "mean": 0.08128747769925584,
+            "ci95": [
+              0.08051527289345971,
+              0.08205968250505198
+            ],
+            "n": 20,
+            "min": 0.07808750651346774,
+            "max": 0.08518655603126002
+          }
+        },
+        {
+          "path": "docs/validation/h2-v1/ordinary-v1/linucb--residual-warm-v1.json",
+          "baseline": "linucb",
+          "candidate": "residual-warm-v1",
+          "gates": {
+            "enoughSeeds": true,
+            "fullProfile": true,
+            "returnNonDecrease": false,
+            "regretNonIncrease": true,
+            "needsNonDecrease": true,
+            "entropyFloor": true
+          },
+          "passes": false,
+          "pairedDeltas": {
+            "returnPerAgentDay": {
+              "mean": -0.0012688424002916699,
+              "ci95": [
+                -0.002514677424710992,
+                -2.3007375872348022e-05
+              ],
+              "n": 20,
+              "min": -0.006051861815975945,
+              "max": 0.003205953725612165
+            },
+            "immediateRegretPerAgentDay": {
+              "mean": -0.12448517381348034,
+              "ci95": [
+                -0.13585761573682642,
+                -0.11311273189013427
+              ],
+              "n": 20,
+              "min": -0.16216189229295752,
+              "max": -0.06773101022001615
+            },
+            "needOkRatio": {
+              "mean": 5.0636574074081066e-05,
+              "ci95": [
+                1.779473549779123e-05,
+                8.347841265037091e-05
+              ],
+              "n": 20,
+              "min": 0,
+              "max": 0.00023148148148144365
+            },
+            "actionEntropy": {
+              "mean": -0.03713137259887881,
+              "ci95": [
+                -0.037749257827808386,
+                -0.036513487369949235
+              ],
+              "n": 20,
+              "min": -0.03913584899838807,
+              "max": -0.03405280364627905
+            },
+            "repeatRate": {
+              "mean": 0.00028810516562426114,
+              "ci95": [
+                0.00020927471762271702,
+                0.00036693561362580526
+              ],
+              "n": 20,
+              "min": -2.895529302759936e-05,
+              "max": 0.0007238823256891513
+            }
+          },
+          "entropyMargin": {
+            "mean": 0.08128072140982678,
+            "ci95": [
+              0.08043743991584185,
+              0.08212400290381172
+            ],
+            "n": 20,
+            "min": 0.07777622758331526,
+            "max": 0.0856832243004666
+          }
+        },
+        {
+          "path": "docs/validation/h2-v1/ordinary-v1/model-prior-v1--residual-ema-v1.json",
+          "baseline": "model-prior-v1",
+          "candidate": "residual-ema-v1",
+          "gates": {
+            "enoughSeeds": true,
+            "fullProfile": true,
+            "returnNonDecrease": true,
+            "regretNonIncrease": false,
+            "needsNonDecrease": true,
+            "entropyFloor": true
+          },
+          "passes": false,
+          "pairedDeltas": {
+            "returnPerAgentDay": {
+              "mean": 0.0013278573178466813,
+              "ci95": [
+                0.0009002677441215428,
+                0.0017554468915718198
+              ],
+              "n": 20,
+              "min": 8.771806906193724e-05,
+              "max": 0.003247433938794897
+            },
+            "immediateRegretPerAgentDay": {
+              "mean": 0.022682884551816374,
+              "ci95": [
+                0.019500732588884035,
+                0.025865036514748713
+              ],
+              "n": 20,
+              "min": 0.010630825573465064,
+              "max": 0.04144282382296627
+            },
+            "needOkRatio": {
+              "mean": 0,
+              "ci95": [
+                0,
+                0
+              ],
+              "n": 20,
+              "min": 0,
+              "max": 0
+            },
+            "actionEntropy": {
+              "mean": 0.0037817028471178404,
+              "ci95": [
+                0.0035284478251171036,
+                0.004034957869118577
+              ],
+              "n": 20,
+              "min": 0.0026194890663410186,
+              "max": 0.0047622355525880344
+            },
+            "repeatRate": {
+              "mean": -3.908964558720918e-05,
+              "ci95": [
+                -8.907901580856652e-05,
+                1.089972463414817e-05
+              ],
+              "n": 20,
+              "min": -0.00023164234422046182,
+              "max": 0.00017373175816537412
+            }
+          },
+          "entropyMargin": {
+            "mean": 0.11401253302450991,
+            "ci95": [
+              0.11360799037818471,
+              0.1144170756708351
+            ],
+            "n": 20,
+            "min": 0.11225910858148108,
+            "max": 0.11567299962765998
+          }
+        },
+        {
+          "path": "docs/validation/h2-v1/ordinary-v1/residual-ema-v1--residual-warm-v1.json",
+          "baseline": "residual-ema-v1",
+          "candidate": "residual-warm-v1",
+          "gates": {
+            "enoughSeeds": true,
+            "fullProfile": true,
+            "returnNonDecrease": false,
+            "regretNonIncrease": false,
+            "needsNonDecrease": true,
+            "entropyFloor": true
+          },
+          "passes": false,
+          "pairedDeltas": {
+            "returnPerAgentDay": {
+              "mean": 2.16482734897272e-05,
+              "ci95": [
+                -0.00021826267289143898,
+                0.0002615592198708934
+              ],
+              "n": 20,
+              "min": -0.0010206553028480059,
+              "max": 0.000882533860516288
+            },
+            "immediateRegretPerAgentDay": {
+              "mean": -0.0007284494603955638,
+              "ci95": [
+                -0.0029466814602511337,
+                0.0014897825394600062
+              ],
+              "n": 20,
+              "min": -0.007807656193964174,
+              "max": 0.009955640790199283
+            },
+            "needOkRatio": {
+              "mean": 0,
+              "ci95": [
+                0,
+                0
+              ],
+              "n": 20,
+              "min": 0,
+              "max": 0
+            },
+            "actionEntropy": {
+              "mean": -6.75628942909956e-06,
+              "ci95": [
+                -0.00014301889476051226,
+                0.00012950631590231311
+              ],
+              "n": 20,
+              "min": -0.0006387752116253642,
+              "max": 0.0004966682692065794
+            },
+            "repeatRate": {
+              "mean": 4.343293954139904e-06,
+              "ci95": [
+                -1.9848187685439564e-05,
+                2.8534775593719374e-05
+              ],
+              "n": 20,
+              "min": -8.686587908268706e-05,
+              "max": 0.00011582117211028642
+            }
+          },
+          "entropyMargin": {
+            "mean": 0.11098041445738653,
+            "ci95": [
+              0.11049860825618485,
+              0.11146222065858821
+            ],
+            "n": 20,
+            "min": 0.10883588363790375,
+            "max": 0.11332280183285515
+          }
+        }
+      ]
+    },
+    {
+      "profile": "cold-stress-v1",
+      "prior": {
+        "path": "docs/validation/h2-v1/cold-stress-v1/prior.json",
+        "sha256": "fa5373c2f3d82a3a47444128d483eaf7f086e494943e95b7ded9c46e4b585742",
+        "rows": 968,
+        "trainingSeeds": [
+          4015017979,
+          3998240360,
+          4048573217,
+          4031795598,
+          4082128455,
+          4065350836,
+          4115683693,
+          4098906074
+        ],
+        "earnedTrainingOutcomes": 276480,
+        "supportedOutcomes": 276294,
+        "minimumSupport": 5,
+        "grouping": "Synthetic role-place fixture; not role.kind hierarchy. Prior never grants earned samples or skills."
+      },
+      "policies": [
+        {
+          "policy": "linucb",
+          "path": "docs/validation/h2-v1/cold-stress-v1/linucb.json",
+          "sha256": "e031529d238786436a01a9d891da63e06bab87955b6c968a5dfdef4f98c039ec",
+          "summary": {
+            "returnPerAgentDay": {
+              "mean": 3.344596007653851,
+              "ci95": [
+                3.3351341642919077,
+                3.3540578510157943
+              ],
+              "n": 20,
+              "min": 3.311632735172038,
+              "max": 3.3918164304208585
+            },
+            "immediateRegretPerAgentDay": {
+              "mean": 3.326016652688234,
+              "ci95": [
+                3.3056437288953857,
+                3.3463895764810827
+              ],
+              "n": 20,
+              "min": 3.250136920841567,
+              "max": 3.3884398867486274
+            },
+            "needOkRatio": {
+              "mean": 0.994697627314815,
+              "ci95": [
+                0.9945011956433215,
+                0.9948940589863086
+              ],
+              "n": 20,
+              "min": 0.9940104166666667,
+              "max": 0.9958043981481481
+            },
+            "timeToCompetenceDays": {
+              "mean": 3.645833333333333,
+              "ci95": [
+                3.5974429436794435,
+                3.6942237229872226
+              ],
+              "n": 20,
+              "min": 3.4166666666666665,
+              "max": 3.7916666666666665
+            },
+            "competentFraction": {
+              "mean": 1,
+              "ci95": [
+                1,
+                1
+              ],
+              "n": 20,
+              "min": 1,
+              "max": 1
+            },
+            "daysToRecover": {
+              "mean": 3,
+              "ci95": [
+                3,
+                3
+              ],
+              "n": 20,
+              "min": 3,
+              "max": 3
+            },
+            "recoveredFraction": {
+              "mean": 1,
+              "ci95": [
+                1,
+                1
+              ],
+              "n": 20,
+              "min": 1,
+              "max": 1
+            },
+            "actionEntropy": {
+              "mean": 0.5268116811317839,
+              "ci95": [
+                0.5257853035738982,
+                0.5278380586896696
+              ],
+              "n": 20,
+              "min": 0.5219135574963858,
+              "max": 0.5306035756429047
+            },
+            "voluntaryActionEntropy": {
+              "mean": 0.5855639812416673,
+              "ci95": [
+                0.5840774890111484,
+                0.5870504734721862
+              ],
+              "n": 20,
+              "min": 0.5798265332078819,
+              "max": 0.5915507596681102
+            },
+            "repeatRate": {
+              "mean": 0.297906532314107,
+              "ci95": [
+                0.29770292966822337,
+                0.29811013495999067
+              ],
+              "n": 20,
+              "min": 0.2971392170488765,
+              "max": 0.29884757933750294
+            },
+            "meanMaxActionShare": {
+              "mean": 0.38296440972222456,
+              "ci95": [
+                0.38175419630232527,
+                0.38417462314212386
+              ],
+              "n": 20,
+              "min": 0.3788194444444472,
+              "max": 0.3867476851851874
+            },
+            "worstAgentDayActionShare": {
+              "mean": 0.51875,
+              "ci95": [
+                0.5069560687830222,
+                0.5305439312169778
+              ],
+              "n": 20,
+              "min": 0.5,
+              "max": 0.5833333333333334
+            },
+            "forcedFraction": {
+              "mean": 0.33532986111111107,
+              "ci95": [
+                0.33524122393760486,
+                0.3354184982846173
+              ],
+              "n": 20,
+              "min": 0.33501157407407406,
+              "max": 0.33567708333333335
+            }
+          },
+          "firstDayNeedOk": {
+            "mean": 0.7368055555555555,
+            "ci95": [
+              0.7257827957641341,
+              0.7478283153469769
+            ],
+            "n": 20,
+            "min": 0.6996527777777778,
+            "max": 0.7777777777777778
+          },
+          "postShiftNeedOk": {
+            "mean": 0.9993315972222223,
+            "ci95": [
+              0.9992392379090076,
+              0.999423956535437
+            ],
+            "n": 20,
+            "min": 0.998900462962963,
+            "max": 0.9996527777777777
+          },
+          "sameDecisionPrediction": {
+            "modelOnlyMSE": {
+              "mean": 7.908691611834038e-07,
+              "ci95": [
+                7.837532837391985e-07,
+                7.97985038627609e-07
+              ],
+              "n": 20,
+              "min": 7.620348704498949e-07,
+              "max": 8.178145731206268e-07
+            },
+            "residualMSE": {
+              "mean": 7.908691611834038e-07,
+              "ci95": [
+                7.837532837391985e-07,
+                7.97985038627609e-07
+              ],
+              "n": 20,
+              "min": 7.620348704498949e-07,
+              "max": 8.178145731206268e-07
+            },
+            "pairedMSEDelta": {
+              "mean": 0,
+              "ci95": [
+                0,
+                0
+              ],
+              "n": 20,
+              "min": 0,
+              "max": 0
+            },
+            "relativeReduction": 0,
+            "learnedResidual": false
+          },
+          "residualSamples": 0
+        },
+        {
+          "policy": "model-prior-v1",
+          "path": "docs/validation/h2-v1/cold-stress-v1/model-prior-v1.json",
+          "sha256": "73d4c8924e8743652bb9ea0a2bc1f1cf546ec7d97b8c0e44eb062ccc240c2e63",
+          "summary": {
+            "returnPerAgentDay": {
+              "mean": 3.2616823768313834,
+              "ci95": [
+                3.2502017760019446,
+                3.273162977660822
+              ],
+              "n": 20,
+              "min": 3.220225843748647,
+              "max": 3.314968032112314
+            },
+            "immediateRegretPerAgentDay": {
+              "mean": 3.2178823525162406,
+              "ci95": [
+                3.189764035241523,
+                3.2460006697909582
+              ],
+              "n": 20,
+              "min": 3.1065916347080664,
+              "max": 3.3225022627693876
+            },
+            "needOkRatio": {
+              "mean": 0.9939554398148145,
+              "ci95": [
+                0.9935500167335455,
+                0.9943608628960835
+              ],
+              "n": 20,
+              "min": 0.9916087962962962,
+              "max": 0.9951967592592591
+            },
+            "timeToCompetenceDays": {
+              "mean": 3.5791666666666666,
+              "ci95": [
+                3.5289894567510127,
+                3.6293438765823205
+              ],
+              "n": 20,
+              "min": 3.4166666666666665,
+              "max": 3.8333333333333335
+            },
+            "competentFraction": {
+              "mean": 1,
+              "ci95": [
+                1,
+                1
+              ],
+              "n": 20,
+              "min": 1,
+              "max": 1
+            },
+            "daysToRecover": {
+              "mean": 3.01875,
+              "ci95": [
+                2.9923021862197365,
+                3.045197813780263
+              ],
+              "n": 20,
+              "min": 3,
+              "max": 3.25
+            },
+            "recoveredFraction": {
+              "mean": 1,
+              "ci95": [
+                1,
+                1
+              ],
+              "n": 20,
+              "min": 1,
+              "max": 1
+            },
+            "actionEntropy": {
+              "mean": 0.5011860445550405,
+              "ci95": [
+                0.4995947788317831,
+                0.5027773102782979
+              ],
+              "n": 20,
+              "min": 0.4925302783795963,
+              "max": 0.5061762473237761
+            },
+            "voluntaryActionEntropy": {
+              "mean": 0.5375641524761138,
+              "ci95": [
+                0.5353091067838057,
+                0.5398191981684218
+              ],
+              "n": 20,
+              "min": 0.5286975532398357,
+              "max": 0.5458396546061738
+            },
+            "repeatRate": {
+              "mean": 0.29659920083391245,
+              "ci95": [
+                0.29635305701094816,
+                0.29684534465687673
+              ],
+              "n": 20,
+              "min": 0.29517025712300193,
+              "max": 0.29737085939309704
+            },
+            "meanMaxActionShare": {
+              "mean": 0.372737268518521,
+              "ci95": [
+                0.3715438339462037,
+                0.3739307030908383
+              ],
+              "n": 20,
+              "min": 0.36782407407407663,
+              "max": 0.3771122685185211
+            },
+            "worstAgentDayActionShare": {
+              "mean": 0.5083333333333334,
+              "ci95": [
+                0.4947639502940331,
+                0.5219027163726337
+              ],
+              "n": 20,
+              "min": 0.4583333333333333,
+              "max": 0.5833333333333334
+            },
+            "forcedFraction": {
+              "mean": 0.33549189814814817,
+              "ci95": [
+                0.3353162977347027,
+                0.33566749856159367
+              ],
+              "n": 20,
+              "min": 0.3350694444444444,
+              "max": 0.33674768518518516
+            }
+          },
+          "firstDayNeedOk": {
+            "mean": 0.7368055555555555,
+            "ci95": [
+              0.7258555373486623,
+              0.7477555737624487
+            ],
+            "n": 20,
+            "min": 0.6979166666666666,
+            "max": 0.7760416666666666
+          },
+          "postShiftNeedOk": {
+            "mean": 0.9973032407407411,
+            "ci95": [
+              0.9965336537886148,
+              0.9980728276928673
+            ],
+            "n": 20,
+            "min": 0.992013888888889,
+            "max": 0.998900462962963
+          },
+          "sameDecisionPrediction": {
+            "modelOnlyMSE": {
+              "mean": 7.770595692865546e-07,
+              "ci95": [
+                7.693412284457981e-07,
+                7.84777910127311e-07
+              ],
+              "n": 20,
+              "min": 7.411078927379795e-07,
+              "max": 8.094618218213532e-07
+            },
+            "residualMSE": {
+              "mean": 7.770595692865546e-07,
+              "ci95": [
+                7.693412284457981e-07,
+                7.84777910127311e-07
+              ],
+              "n": 20,
+              "min": 7.411078927379795e-07,
+              "max": 8.094618218213532e-07
+            },
+            "pairedMSEDelta": {
+              "mean": 0,
+              "ci95": [
+                0,
+                0
+              ],
+              "n": 20,
+              "min": 0,
+              "max": 0
+            },
+            "relativeReduction": 0,
+            "learnedResidual": false
+          },
+          "residualSamples": 0
+        },
+        {
+          "policy": "residual-ema-v1",
+          "path": "docs/validation/h2-v1/cold-stress-v1/residual-ema-v1.json",
+          "sha256": "8341e2ae2584eefb0ad0ae7db61e1b851271ae1ff1423579a8ecd99b5fe63734",
+          "summary": {
+            "returnPerAgentDay": {
+              "mean": 3.269031122293447,
+              "ci95": [
+                3.2573577820465993,
+                3.2807044625402946
+              ],
+              "n": 20,
+              "min": 3.226558549221198,
+              "max": 3.327257161564995
+            },
+            "immediateRegretPerAgentDay": {
+              "mean": 3.2466558604845766,
+              "ci95": [
+                3.2194878287156454,
+                3.2738238922535077
+              ],
+              "n": 20,
+              "min": 3.1423421012048163,
+              "max": 3.347645306817966
+            },
+            "needOkRatio": {
+              "mean": 0.9935937499999998,
+              "ci95": [
+                0.9931645845561732,
+                0.9940229154438265
+              ],
+              "n": 20,
+              "min": 0.9911747685185186,
+              "max": 0.9950520833333332
+            },
+            "timeToCompetenceDays": {
+              "mean": 3.60625,
+              "ci95": [
+                3.5640571205752654,
+                3.648442879424735
+              ],
+              "n": 20,
+              "min": 3.4583333333333335,
+              "max": 3.8333333333333335
+            },
+            "competentFraction": {
+              "mean": 1,
+              "ci95": [
+                1,
+                1
+              ],
+              "n": 20,
+              "min": 1,
+              "max": 1
+            },
+            "daysToRecover": {
+              "mean": 3.020833333333333,
+              "ci95": [
+                3.0047032034487033,
+                3.0369634632179627
+              ],
+              "n": 20,
+              "min": 3,
+              "max": 3.125
+            },
+            "recoveredFraction": {
+              "mean": 1,
+              "ci95": [
+                1,
+                1
+              ],
+              "n": 20,
+              "min": 1,
+              "max": 1
+            },
+            "actionEntropy": {
+              "mean": 0.5046044303983444,
+              "ci95": [
+                0.5031913730340914,
+                0.5060174877625973
+              ],
+              "n": 20,
+              "min": 0.4971432673116118,
+              "max": 0.5093576079500397
+            },
+            "voluntaryActionEntropy": {
+              "mean": 0.5425081970103134,
+              "ci95": [
+                0.5403789476019536,
+                0.5446374464186732
+              ],
+              "n": 20,
+              "min": 0.5341423508314195,
+              "max": 0.5507548615905377
+            },
+            "repeatRate": {
+              "mean": 0.29658617095205003,
+              "ci95": [
+                0.2964088333540299,
+                0.29676350855007017
+              ],
+              "n": 20,
+              "min": 0.29577831827658096,
+              "max": 0.2973708593930971
+            },
+            "meanMaxActionShare": {
+              "mean": 0.3725549768518543,
+              "ci95": [
+                0.3713369440177483,
+                0.3737730096859603
+              ],
+              "n": 20,
+              "min": 0.36701388888889125,
+              "max": 0.37806712962963207
+            },
+            "worstAgentDayActionShare": {
+              "mean": 0.50625,
+              "ci95": [
+                0.49316875,
+                0.51933125
+              ],
+              "n": 20,
+              "min": 0.4583333333333333,
+              "max": 0.5833333333333334
+            },
+            "forcedFraction": {
+              "mean": 0.3356365740740741,
+              "ci95": [
+                0.3354770441012429,
+                0.3357961040469053
+              ],
+              "n": 20,
+              "min": 0.3353009259259259,
+              "max": 0.33666087962962965
+            }
+          },
+          "firstDayNeedOk": {
+            "mean": 0.736111111111111,
+            "ci95": [
+              0.7251243456473092,
+              0.7470978765749129
+            ],
+            "n": 20,
+            "min": 0.6961805555555555,
+            "max": 0.7760416666666666
+          },
+          "postShiftNeedOk": {
+            "mean": 0.9971180555555559,
+            "ci95": [
+              0.9963238690476577,
+              0.9979122420634541
+            ],
+            "n": 20,
+            "min": 0.9918402777777778,
+            "max": 0.9988425925925927
+          },
+          "sameDecisionPrediction": {
+            "modelOnlyMSE": {
+              "mean": 7.786778112553541e-07,
+              "ci95": [
+                7.72137429021969e-07,
+                7.852181934887392e-07
+              ],
+              "n": 20,
+              "min": 7.499479891643145e-07,
+              "max": 7.964526634598517e-07
+            },
+            "residualMSE": {
+              "mean": 5.628670858062922e-07,
+              "ci95": [
+                5.563973804644313e-07,
+                5.693367911481531e-07
+              ],
+              "n": 20,
+              "min": 5.33994040729356e-07,
+              "max": 5.853180509822049e-07
+            },
+            "pairedMSEDelta": {
+              "mean": -2.1581072544906196e-07,
+              "ci95": [
+                -2.1978004522939042e-07,
+                -2.118414056687335e-07
+              ],
+              "n": 20,
+              "min": -2.317119361519369e-07,
+              "max": -1.9969397057700277e-07
+            },
+            "relativeReduction": 0.2771502183953851,
+            "learnedResidual": true
+          },
+          "residualSamples": 691200
+        },
+        {
+          "policy": "residual-warm-v1",
+          "path": "docs/validation/h2-v1/cold-stress-v1/residual-warm-v1.json",
+          "sha256": "4bb6fbf2f468669d882c0ea5e98fa3d98923411659a561d1defb881707327ba5",
+          "summary": {
+            "returnPerAgentDay": {
+              "mean": 3.2689707120008444,
+              "ci95": [
+                3.2572185993088905,
+                3.2807228246927984
+              ],
+              "n": 20,
+              "min": 3.226022611662206,
+              "max": 3.326512627759182
+            },
+            "immediateRegretPerAgentDay": {
+              "mean": 3.246263581495809,
+              "ci95": [
+                3.218714841629731,
+                3.2738123213618873
+              ],
+              "n": 20,
+              "min": 3.1379765737416867,
+              "max": 3.3462463344585354
+            },
+            "needOkRatio": {
+              "mean": 0.9936328124999998,
+              "ci95": [
+                0.993225049427668,
+                0.9940405755723316
+              ],
+              "n": 20,
+              "min": 0.9913194444444444,
+              "max": 0.9950520833333332
+            },
+            "timeToCompetenceDays": {
+              "mean": 3.60625,
+              "ci95": [
+                3.5640571205752654,
+                3.648442879424735
+              ],
+              "n": 20,
+              "min": 3.4583333333333335,
+              "max": 3.8333333333333335
+            },
+            "competentFraction": {
+              "mean": 1,
+              "ci95": [
+                1,
+                1
+              ],
+              "n": 20,
+              "min": 1,
+              "max": 1
+            },
+            "daysToRecover": {
+              "mean": 3.027083333333333,
+              "ci95": [
+                3.000036907658816,
+                3.0541297590078504
+              ],
+              "n": 20,
+              "min": 3,
+              "max": 3.25
+            },
+            "recoveredFraction": {
+              "mean": 1,
+              "ci95": [
+                1,
+                1
+              ],
+              "n": 20,
+              "min": 1,
+              "max": 1
+            },
+            "actionEntropy": {
+              "mean": 0.5045148018685743,
+              "ci95": [
+                0.5030636813535178,
+                0.5059659223836309
+              ],
+              "n": 20,
+              "min": 0.49655904971675996,
+              "max": 0.5092718849230572
+            },
+            "voluntaryActionEntropy": {
+              "mean": 0.5424041927850363,
+              "ci95": [
+                0.540258579522371,
+                0.5445498060477015
+              ],
+              "n": 20,
+              "min": 0.5341942460357129,
+              "max": 0.5505861919808299
+            },
+            "repeatRate": {
+              "mean": 0.2965876187167014,
+              "ci95": [
+                0.2963823624913076,
+                0.2967928749420952
+              ],
+              "n": 20,
+              "min": 0.2957493629835534,
+              "max": 0.2973998146861247
+            },
+            "meanMaxActionShare": {
+              "mean": 0.37257957175926165,
+              "ci95": [
+                0.37134042382283716,
+                0.37381871969568614
+              ],
+              "n": 20,
+              "min": 0.36701388888889136,
+              "max": 0.3780092592592617
+            },
+            "worstAgentDayActionShare": {
+              "mean": 0.5083333333333334,
+              "ci95": [
+                0.4963291550585563,
+                0.5203375116081106
+              ],
+              "n": 20,
+              "min": 0.4583333333333333,
+              "max": 0.5833333333333334
+            },
+            "forcedFraction": {
+              "mean": 0.3356206597222222,
+              "ci95": [
+                0.3354585445994331,
+                0.33578277484501134
+              ],
+              "n": 20,
+              "min": 0.33524305555555556,
+              "max": 0.33674768518518516
+            }
+          },
+          "firstDayNeedOk": {
+            "mean": 0.7361979166666666,
+            "ci95": [
+              0.7251686179126492,
+              0.7472272154206839
+            ],
+            "n": 20,
+            "min": 0.6961805555555555,
+            "max": 0.7760416666666666
+          },
+          "postShiftNeedOk": {
+            "mean": 0.9971730324074077,
+            "ci95": [
+              0.9964191125004306,
+              0.9979269523143849
+            ],
+            "n": 20,
+            "min": 0.9921875,
+            "max": 0.9988425925925927
+          },
+          "sameDecisionPrediction": {
+            "modelOnlyMSE": {
+              "mean": 7.768788499716284e-07,
+              "ci95": [
+                7.700565348796732e-07,
+                7.837011650635836e-07
+              ],
+              "n": 20,
+              "min": 7.463518955400156e-07,
+              "max": 8.018478466779477e-07
+            },
+            "residualMSE": {
+              "mean": 5.524035986951018e-07,
+              "ci95": [
+                5.458693693007512e-07,
+                5.589378280894525e-07
+              ],
+              "n": 20,
+              "min": 5.235863263086276e-07,
+              "max": 5.757326165249384e-07
+            },
+            "pairedMSEDelta": {
+              "mean": -2.2447525127652639e-07,
+              "ci95": [
+                -2.287359776908718e-07,
+                -2.2021452486218098e-07
+              ],
+              "n": 20,
+              "min": -2.4068893780341306e-07,
+              "max": -2.0717630413422605e-07
+            },
+            "relativeReduction": 0.28894498966566584,
+            "learnedResidual": true
+          },
+          "residualSamples": 691200
+        }
+      ],
+      "comparisons": [
+        {
+          "path": "docs/validation/h2-v1/cold-stress-v1/linucb--model-prior-v1.json",
+          "baseline": "linucb",
+          "candidate": "model-prior-v1",
+          "gates": {
+            "enoughSeeds": true,
+            "fullProfile": true,
+            "returnNonDecrease": false,
+            "regretNonIncrease": true,
+            "needsNonDecrease": false,
+            "entropyFloor": true
+          },
+          "passes": false,
+          "pairedDeltas": {
+            "returnPerAgentDay": {
+              "mean": -0.08291363082246725,
+              "ci95": [
+                -0.08641854735028731,
+                -0.07940871429464719
+              ],
+              "n": 20,
+              "min": -0.09602705604562578,
+              "max": -0.06730411927125379
+            },
+            "immediateRegretPerAgentDay": {
+              "mean": -0.1081343001719935,
+              "ci95": [
+                -0.11953984310084294,
+                -0.09672875724314407
+              ],
+              "n": 20,
+              "min": -0.14354528613350048,
+              "max": -0.06513558741816361
+            },
+            "needOkRatio": {
+              "mean": -0.0007421875000002964,
+              "ci95": [
+                -0.0011506789598569166,
+                -0.00033369604014367633
+              ],
+              "n": 20,
+              "min": -0.0033854166666668073,
+              "max": 0.0001157407407406108
+            },
+            "actionEntropy": {
+              "mean": -0.025625636576743455,
+              "ci95": [
+                -0.026471281354665276,
+                -0.024779991798821635
+              ],
+              "n": 20,
+              "min": -0.030773770439224468,
+              "max": -0.023088457476579727
+            },
+            "repeatRate": {
+              "mean": -0.0013073314801946095,
+              "ci95": [
+                -0.001580109807388453,
+                -0.0010345531530007658
+              ],
+              "n": 20,
+              "min": -0.0026928422515637984,
+              "max": -0.0005791058605513211
+            }
+          },
+          "entropyMargin": {
+            "mean": 0.07973669964961332,
+            "ci95": [
+              0.07878277866225068,
+              0.08069062063697595
+            ],
+            "n": 20,
+            "min": 0.07388703932453966,
+            "max": 0.08276448348349141
+          }
+        },
+        {
+          "path": "docs/validation/h2-v1/cold-stress-v1/linucb--residual-ema-v1.json",
+          "baseline": "linucb",
+          "candidate": "residual-ema-v1",
+          "gates": {
+            "enoughSeeds": true,
+            "fullProfile": true,
+            "returnNonDecrease": false,
+            "regretNonIncrease": true,
+            "needsNonDecrease": false,
+            "entropyFloor": true
+          },
+          "passes": false,
+          "pairedDeltas": {
+            "returnPerAgentDay": {
+              "mean": -0.075564885360404,
+              "ci95": [
+                -0.07913606396016866,
+                -0.07199370676063933
+              ],
+              "n": 20,
+              "min": -0.08773132247440518,
+              "max": -0.060032173209325634
+            },
+            "immediateRegretPerAgentDay": {
+              "mean": -0.07936079220365821,
+              "ci95": [
+                -0.08974659277704097,
+                -0.06897499163027546
+              ],
+              "n": 20,
+              "min": -0.10907722401127051,
+              "max": -0.03975673085191156
+            },
+            "needOkRatio": {
+              "mean": -0.0011038773148151048,
+              "ci95": [
+                -0.0015370023489324849,
+                -0.0006707522806977248
+              ],
+              "n": 20,
+              "min": -0.0038194444444443754,
+              "max": -8.680555555562464e-05
+            },
+            "actionEntropy": {
+              "mean": -0.02220725073343948,
+              "ci95": [
+                -0.022955091677093767,
+                -0.021459409789785194
+              ],
+              "n": 20,
+              "min": -0.026160781507208963,
+              "max": -0.01990709685031611
+            },
+            "repeatRate": {
+              "mean": -0.0013203613620570015,
+              "ci95": [
+                -0.001553441067517149,
+                -0.001087281656596854
+              ],
+              "n": 20,
+              "min": -0.0023164234422052843,
+              "max": -0.000694927032661552
+            }
+          },
+          "entropyMargin": {
+            "mean": 0.08315508549291725,
+            "ci95": [
+              0.08233155228658891,
+              0.0839786186992456
+            ],
+            "n": 20,
+            "min": 0.07850002825655517,
+            "max": 0.08594584410975503
+          }
+        },
+        {
+          "path": "docs/validation/h2-v1/cold-stress-v1/linucb--residual-warm-v1.json",
+          "baseline": "linucb",
+          "candidate": "residual-warm-v1",
+          "gates": {
+            "enoughSeeds": true,
+            "fullProfile": true,
+            "returnNonDecrease": false,
+            "regretNonIncrease": true,
+            "needsNonDecrease": false,
+            "entropyFloor": true
+          },
+          "passes": false,
+          "pairedDeltas": {
+            "returnPerAgentDay": {
+              "mean": -0.07562529565300699,
+              "ci95": [
+                -0.07928123384533445,
+                -0.07196935746067953
+              ],
+              "n": 20,
+              "min": -0.0877728351315028,
+              "max": -0.0588094404760775
+            },
+            "immediateRegretPerAgentDay": {
+              "mean": -0.07975307119242443,
+              "ci95": [
+                -0.09067910798472853,
+                -0.06882703440012033
+              ],
+              "n": 20,
+              "min": -0.11266960041762619,
+              "max": -0.03881968383739576
+            },
+            "needOkRatio": {
+              "mean": -0.001064814814815135,
+              "ci95": [
+                -0.0014689431255904075,
+                -0.0006606865040398623
+              ],
+              "n": 20,
+              "min": -0.0036747685185185563,
+              "max": -8.680555555562464e-05
+            },
+            "actionEntropy": {
+              "mean": -0.022296879263209533,
+              "ci95": [
+                -0.02307932195882239,
+                -0.021514436567596676
+              ],
+              "n": 20,
+              "min": -0.026744999102060796,
+              "max": -0.019992819877298618
+            },
+            "repeatRate": {
+              "mean": -0.0013189135974056188,
+              "ci95": [
+                -0.0015377527541258853,
+                -0.0011000744406853523
+              ],
+              "n": 20,
+              "min": -0.0022295575631225972,
+              "max": -0.0007528376187166952
+            }
+          },
+          "entropyMargin": {
+            "mean": 0.08306545696314722,
+            "ci95": [
+              0.08220384726916455,
+              0.0839270666571299
+            ],
+            "n": 20,
+            "min": 0.07791581066170333,
+            "max": 0.08586012108277252
+          }
+        },
+        {
+          "path": "docs/validation/h2-v1/cold-stress-v1/model-prior-v1--residual-ema-v1.json",
+          "baseline": "model-prior-v1",
+          "candidate": "residual-ema-v1",
+          "gates": {
+            "enoughSeeds": true,
+            "fullProfile": true,
+            "returnNonDecrease": true,
+            "regretNonIncrease": false,
+            "needsNonDecrease": false,
+            "entropyFloor": true
+          },
+          "passes": false,
+          "pairedDeltas": {
+            "returnPerAgentDay": {
+              "mean": 0.007348745462063255,
+              "ci95": [
+                0.006401694745328681,
+                0.00829579617879783
+              ],
+              "n": 20,
+              "min": 0.002904102052465607,
+              "max": 0.012289129452681014
+            },
+            "immediateRegretPerAgentDay": {
+              "mean": 0.028773507968335287,
+              "ci95": [
+                0.02615368098954851,
+                0.03139333494712206
+              ],
+              "n": 20,
+              "min": 0.017976606282441576,
+              "max": 0.03738513599440774
+            },
+            "needOkRatio": {
+              "mean": -0.00036168981481480845,
+              "ci95": [
+                -0.0004937533055606217,
+                -0.0002296263240689952
+              ],
+              "n": 20,
+              "min": -0.0009548611111110938,
+              "max": 0.00014467592592604106
+            },
+            "actionEntropy": {
+              "mean": 0.0034183858433039726,
+              "ci95": [
+                0.003162554877778808,
+                0.003674216808829137
+              ],
+              "n": 20,
+              "min": 0.0025055348351079587,
+              "max": 0.004612988932015505
+            },
+            "repeatRate": {
+              "mean": -1.3029881862391957e-05,
+              "ci95": [
+                -0.00013258884506332018,
+                0.00010652908133853627
+              ],
+              "n": 20,
+              "min": -0.0003764188093583476,
+              "max": 0.0006080611535790315
+            }
+          },
+          "entropyMargin": {
+            "mean": 0.10365559475431203,
+            "ci95": [
+              0.10343980422405431,
+              0.10387138528456975
+            ],
+            "n": 20,
+            "min": 0.10254158762060245,
+            "max": 0.10444426898796044
+          }
+        },
+        {
+          "path": "docs/validation/h2-v1/cold-stress-v1/residual-ema-v1--residual-warm-v1.json",
+          "baseline": "residual-ema-v1",
+          "candidate": "residual-warm-v1",
+          "gates": {
+            "enoughSeeds": true,
+            "fullProfile": true,
+            "returnNonDecrease": false,
+            "regretNonIncrease": false,
+            "needsNonDecrease": false,
+            "entropyFloor": true
+          },
+          "passes": false,
+          "pairedDeltas": {
+            "returnPerAgentDay": {
+              "mean": -6.041029260299702e-05,
+              "ci95": [
+                -0.0003721255989551767,
+                0.0002513050137491827
+              ],
+              "n": 20,
+              "min": -0.001607227245778553,
+              "max": 0.001222732733248133
+            },
+            "immediateRegretPerAgentDay": {
+              "mean": -0.0003922789887662148,
+              "ci95": [
+                -0.001842560917757453,
+                0.0010580029402250234
+              ],
+              "n": 20,
+              "min": -0.006905888103150737,
+              "max": 0.005391872211733428
+            },
+            "needOkRatio": {
+              "mean": 3.906249999997002e-05,
+              "ci95": [
+                -1.5861663062996337e-05,
+                9.398666306293638e-05
+              ],
+              "n": 20,
+              "min": -0.00014467592592604106,
+              "max": 0.00034722222222194343
+            },
+            "actionEntropy": {
+              "mean": -8.962852977004998e-05,
+              "ci95": [
+                -0.00019492129784260884,
+                1.5664238302508888e-05
+              ],
+              "n": 20,
+              "min": -0.0005842175948518324,
+              "max": 0.00016459266870905154
+            },
+            "repeatRate": {
+              "mean": 1.4477646513827436e-06,
+              "ci95": [
+                -7.322710672483234e-05,
+                7.612263602759782e-05
+              ],
+              "n": 20,
+              "min": -0.000289552930275605,
+              "max": 0.00040537410238589144
+            }
+          },
+          "entropyMargin": {
+            "mean": 0.10083125754989883,
+            "ci95": [
+              0.10049877833986726,
+              0.1011637367599304
+            ],
+            "n": 20,
+            "min": 0.09884443586747049,
+            "max": 0.10190544052668288
+          }
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "unit": {
+      "suite": "unit-summary",
+      "total": 53,
+      "passed": 53,
+      "failed": [],
+      "workers": 4,
+      "seconds": 56.49
+    },
+    "typecheck": true,
+    "lint": true,
+    "build": true,
+    "assets": true,
+    "compiledLocalAPI": {
+      "suite": "local-diagnostics-http",
+      "ownerReadGuard": true,
+      "ownerWriteGuard": true,
+      "streamByteLimit": true,
+      "schema": true,
+      "origin": true,
+      "ack": true,
+      "jsonlReadback": true,
+      "rateLimit": true,
+      "retention": true,
+      "diagnosticsReadOnly": true,
+      "pulsePersistence": true,
+      "pulseRetry": true,
+      "pulseConcurrentViewers": 12,
+      "pulseNoDuplicateAudit": true,
+      "pulsePause": true,
+      "healthSchemaBatch": true,
+      "productionAccess": false
+    },
+    "repeats": [
+      {
+        "artifact": "docs/validation/h2-v1/cold-stress-v1/residual-warm-v1.json",
+        "identical_bytes": true,
+        "sha256": "4bb6fbf2f468669d882c0ea5e98fa3d98923411659a561d1defb881707327ba5"
+      },
+      {
+        "artifact": "docs/validation/h2-v1/cold-stress-v1/prior.json",
+        "identical_bytes": true,
+        "sha256": "fa5373c2f3d82a3a47444128d483eaf7f086e494943e95b7ded9c46e4b585742"
+      },
+      {
+        "artifact": "docs/validation/learning-linucb-full-v1.json",
+        "identical_bytes": true,
+        "sha256": "9b19e73634f67b029dbdfbdf7cd2b3e5309a7786435cea01f3c6b0ca02c2add9"
+      }
+    ],
+    "cli": {
+      "tampered_prior_rejected": true,
+      "missing_prior_rejected": true,
+      "prior_not_for_baseline_rejected": true,
+      "profile_mismatch_rejected": true,
+      "training_evaluation_overlap_rejected": true,
+      "different_rollout_preserved": true,
+      "different_prior_preserved": true
+    },
+    "golden": {
+      "outcomes": 15375,
+      "choices": 1500,
+      "unchanged": true
+    },
+    "protocolAndReportsChecksumsChecked": true,
+    "trainingEvaluationSeedsDisjoint": true,
+    "priorSamplesNotEarned": true,
+    "productionWorkerContainsExperimentalCode": false,
+    "runtimeRewardAndPersistenceFilesChanged": false,
+    "markdownFiles": 23,
+    "markdownLocalLinksChecked": 71
+  },
+  "defaultRuntimePolicyChanged": false,
+  "productionAccess": false,
+  "browserUIChanged": false,
+  "newBrowserRun": false,
+  "productionDeployed": false,
+  "limits": [
+    "Synthetic hourly completed ordinary plans; no city scheduler, travel, physical arrival, social density or peer diffusion.",
+    "Stress has initial headroom but later needs approach ceiling and recovery stays near the three-day floor. It does not establish sustained adaptation.",
+    "Residual learns tiny deterministic state drift between choice and settlement; lower MSE does not imply better long-term behavior or LLM training.",
+    "The residual observer uses sequential per-actor checkpoints; shared runtime still requires durable receipt and CAS persistence.",
+    "Opportunity cost is feasible depth-1 on each policy own state, not counterfactual trajectory return.",
+    "Role-place prior is a synthetic fixture. Archived real-outcome replay, role.kind hierarchy and production artifact installation remain pending.",
+    "Timing samples include concurrent jobs and are not production SLAs. No fresh browser, hardware GPU, live DB or Sites deployment evidence.",
+    "H3 reward provenance is next; it can proceed with current LinUCB, without installing failed H2 candidates."
+  ]
+}

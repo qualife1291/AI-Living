@@ -1,6 +1,6 @@
 # Kiểm thử và bằng chứng
 
-`scripts/unit-suites.json` là danh sách suite hiện hành; `npm run test:unit` dùng process độc lập, tối đa 4 workers, thu đủ lỗi thay vì fail-fast. `XOM_TEST_JOBS=1` chạy tuần tự. Mốc H1 có 52 suite đã đạt; đây không phải kết quả chạy mới mỗi khi sửa tài liệu.
+`scripts/unit-suites.json` là danh sách suite hiện hành; `npm run test:unit` dùng process độc lập, tối đa 4 workers, thu đủ lỗi thay vì fail-fast. `XOM_TEST_JOBS=1` chạy tuần tự. Mốc H2 có 53 suite đã đạt; đây không phải kết quả chạy mới mỗi khi sửa tài liệu.
 
 ## Chọn kiểm tra theo thay đổi
 
@@ -20,7 +20,7 @@ npm run build
 npm run test:api:local
 ```
 
-Unit dùng memory/fixtures/D1 cô lập, không production. Có core/schema/time, learning/social/domain/plan-completion, ground/traffic/camera/household, geometry/assets/rigs, security/telemetry/pulse-gate. `node scripts/run-unit-tests.mjs --list` liệt kê đầy đủ, không cần chép 52 tên vào docs.
+Unit dùng memory/fixtures/D1 cô lập, không production. Có core/schema/time, learning/social/domain/plan-completion, ground/traffic/camera/household, geometry/assets/rigs, security/telemetry/pulse-gate. `node scripts/run-unit-tests.mjs --list` liệt kê đầy đủ, không cần chép danh sách tên vào docs.
 
 API dùng Worker mới build và D1 riêng: owner/origin/schema/bytes, pet/flora/CAS/history, policy/memories/actor privacy, proposal guards, pulse 12 viewer không audit trùng, diagnostics GET chỉ đọc/POST retention và health schema. D1 gate suite riêng kiểm 20 request→1 pipeline, pause/failure/expiry/nonce/cadence. Không gọi đây là production load/billing benchmark.
 
@@ -46,7 +46,7 @@ Restart Worker từ `dist/server/wrangler.json` sau build. `QA_BASE` bắt buộ
 
 ## Learning rollout
 
-`node scripts/test-learning-policy.mjs` kiểm golden trước refactor, outcome/purity/gates, oracle/drift, determinism/censoring/CI/seed alignment. `npm run simulate:learning` và `scripts/compare-learning.mjs` chạy offline; profile/limits/hash và kết quả ở [LEARNING](LEARNING.md). CLI từ chối ghi đè baseline khác và so sánh report sai checksum. Không đưa rollout/synthetic outcomes vào DB thật.
+`node scripts/test-learning-policy.mjs` kiểm golden trước refactor, outcome/purity/gates, oracle/drift, determinism/censoring/CI/seed alignment. `npm run simulate:learning` và `scripts/compare-learning.mjs` chạy offline; profile/limits/hash và kết quả ở [LEARNING](LEARNING.md). CLI từ chối ghi đè baseline khác và so sánh report sai checksum. Không đưa rollout/synthetic outcomes vào DB thật. H2 thêm `test-residual-policy.mjs`: ownership/completion/replay/checkpoint, raw models/skills không đổi, EMA shift, prior không tạo samples, cap không chặn emergency, cold-stress và H1 row giữ nguyên. Evidence H2 ghi full repeat byte/hash, prior checksum/profile/seed-overlap và immutable-output CLI guards; negative result không cho phép tự bật policy.
 
 ## ZIP source
 

@@ -6,8 +6,8 @@
 
 | Phase | Việc làm | Nghiệm thu |
 |---|---|---|
-| H2 / WP1–2 | Thử policy prior-residual/EMA/progress, rồi warm start | Trước hết thêm stress/cold-start profile vì H1 needs gần trần/competence ngày3. Version mới giữ raw reward/context-at-choice/emergency guards, không giả trials. Ngưỡng candidate tương lai: return/needs không giảm, opportunity-cost không tăng, entropy≥80% baseline bằng paired CI. Không đạt thì giữ policy hiện hành. |
-| H3/H4 / WP3–4 | Reward có nguồn rồi shared-role priors | Chỉ completed outcomes có authority; role/personal tách provenance, matrices/reward/features version mới. Tái sử dụng policy store0007, không tạo migration đè. Durable receipts/CAS giữ retry. |
+| H2: promotion còn chờ | V1 đã đo và không promote; chỉ nghiên cứu v2 khi có protocol mới | Cả3 candidate trượt return, stress còn trượt needs; warm chưa chứng minh lợi ích. Không retune20seed đã xem. Nếu thử tiếp, tách train/validation/holdout mới, giữ raw reward/context/emergency guards, durable receipt/CAS trước runtime; return/needs không giảm, opportunity-cost không tăng, entropy≥80% baseline bằng paired CI. |
+| H3/H4 / WP3–4 — bước triển khai tiếp | Reward có nguồn rồi shared-role priors | Chỉ completed outcomes có authority; role/personal tách provenance, matrices/reward/features version mới. Tái sử dụng policy store0007, không tạo migration đè. Durable receipts/CAS giữ retry. |
 | H5 / WP5 | P2P sau xác nhận cuộc gặp/chia sẻ | Ground/encounter authority trước; tips không thành own samples/observed memory, decay on-read và actor isolation. |
 | H6 / WP6 | Prior/replay offline, ưu tiên học trước feature khác | Chỉ synthetic/compatible archived context; artifact hash/schema/provenance, confidence bounded, không tăng earned samples. Đo cold-start trên seed giữ lại, không ghi live DB. |
 | H10 / WP10 | Tối ưu tham số offline có giới hạn | Sau harness/prior hợp lệ; train/validation seeds tách, budget cố định, diversity và paired CI. Runtime chỉ đọc artifact đã review, không tự sửa code/đổi policy/deploy. |
@@ -22,7 +22,7 @@
 | H3: reward dài hạn | Commitment/social/travel reward chỉ từ outcome có nguồn và authority; kiểm reward hacking/action dominance. |
 | H4: hierarchy | Global/role priors có provenance, tách prior/personal, giữ cá tính; benchmark cùng dữ liệu/gates và không tăng samples giả. LinUCB6D/normalized policy hiện đã có. |
 | H5: P2P | Heard-from-peer chỉ khi sharing/cuộc gặp được xác nhận; lời kể không tăng trials/skill hoặc thành ký ức trực tiếp. Exemplar giữ context/validator/nguồn. |
-| H6: replay/curriculum/export | Synthetic prior/replay gắn nguồn, không thành trải nghiệm thật. Memory backfill additive có checkpoint/CAS/đối chiếu ID. DPO chỉ chosen/rejected cùng prompt/context/model; validator thật, không gán score 98 tự động. Không tự thuê GPU/fine-tune. |
+| H6: replay/curriculum/export | H2 đã có synthetic residual-prior CLI/hash/seed split; còn compatible archive replay/curriculum, không coi phần synthetic này hoàn tất H6. Prior/replay gắn nguồn, không thành trải nghiệm thật. Memory backfill additive có checkpoint/CAS/đối chiếu ID. DPO chỉ chosen/rejected cùng prompt/context/model; validator thật, không gán score 98 tự động. Không tự thuê GPU/fine-tune. |
 | Bối cảnh tại chỗ | LocalSceneContext chỉ gồm vật/thú/cây/tàu thực có gần actor;49 thẻ biên tập hiện tại không phải observed event/occupancy. |
 | Density/LOD | Giữ footprint, skeleton/matrix/drawcall budget và chuyển LOD liên tục; đo60/120/240 trên GPU thật trước tăng density live. |
 | Traffic/indoor | Nhiều làn/giao lộ/tín hiệu/parking/ray/điểm dừng; walking→waiting→boarding→riding→alighting dùng occupancy chung; indoor có vào/ra/collider. Model tĩnh không phải tuyến chạy. |
@@ -34,7 +34,7 @@
 
 ## Đề xuất ngoài và ranh giới
 
-Ưu tiên mới của chủ dự án: học policy từ outcome và huấn luyện/tối ưu offline trước; hệ thống thế giới phát triển cùng các mốc học, không hứa online fine-tune LLM. Hai file Claude/Deepseek28/10 đã đối chiếu trong [intelligence-review](docs/validation/intelligence-review-2026-10-28.json). Không chép lại spec vào gốc hoặc phục hồi memory/review MD dài. H1 đã có baseline/gates tại LEARNING và validation; tiếp H2 theo thứ tự, các bước sau chỉ mở khi phụ thuộc và đo lường đạt.
+Ưu tiên mới của chủ dự án: học policy từ outcome và huấn luyện/tối ưu offline trước; hệ thống thế giới phát triển cùng các mốc học, không hứa online fine-tune LLM. Hai file Claude/Deepseek28/10 đã đối chiếu trong [intelligence-review](docs/validation/intelligence-review-2026-10-28.json). Không chép lại spec vào gốc hoặc phục hồi memory/review MD dài. H1/H2 đã có baseline/gates tại LEARNING và validation; H2 v1 kết thúc bằng không promote, default giữ LinUCB. Tiếp H3 theo thứ tự với reward/outcome provenance trước hierarchy; không cần bật residual thất bại để làm provenance. Các tính năng phụ thuộc authority vẫn phải chờ bằng chứng tương ứng.
 
 WP7 còn curation/few-shot theo context; WP8A–C goals/business/bonds và WP11 triggers cần whitelist/authority/giới hạn. WP12–19 mở rộng weather/calendar/laws/content/security/education/health/environment trên các schema hiện có; giữ nguồn TP.HCM và không giả dữ kiện y tế/pháp luật. Family/lifecycle không thuộc đợt này. Các mục đã có (LinUCB, policy store, RAG, dialogue pool, health error,3D/docs) không triển khai trùng.
 
