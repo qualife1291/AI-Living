@@ -1,3 +1,4 @@
+import {residentIdentity,displayIdentity} from "../living/identities.ts";
 import { hashSeed, computeSimMs } from "../clock.ts";
 import type { World } from "../world";
 /** Fictional adult baseline; age advances with the same simulation clock as movement. */
@@ -7,9 +8,10 @@ export function lifeStory(world: World, id: string, now: number) {
   const startSim = resident ? computeSimMs(world.born, world.clock, Math.max(since, Date.parse(world.born))) : 0;
   const days = Math.max(0, Math.floor((computeSimMs(world.born, world.clock, now) - startSim) / 86400000));
   const baseline = 20 + hashSeed(id) % 25;
-  const age = baseline + Math.floor(days / 365.25);
+  const identity = resident ? displayIdentity(residentIdentity(resident),computeSimMs(world.born,world.clock,now)) : undefined;
+  const age = identity?.age ?? baseline + Math.floor(days / 365.25);
   const agent = world.living?.learning?.[id];
-  return { age, baseline, days, arrivedOn: resident?.arrivedOn ?? world.born.slice(0, 10), samples: agent?.samples ?? 0,
+  return { age, baseline: identity?.baselineAge ?? baseline, identity, days, arrivedOn: resident?.arrivedOn ?? world.born.slice(0, 10), samples: agent?.samples ?? 0,
     chapter: !agent?.samples ? "Những ngày đầu" : agent.samples < 20 ? "Làm quen nhịp sống" : agent.samples < 100 ? "Tích lũy trải nghiệm" : "Xây dựng thói quen",
     memories: agent?.memories ?? resident?.memories ?? world.people.find((p) => p.id === id)?.memories ?? [] };
 }

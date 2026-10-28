@@ -1,3 +1,4 @@
+import { assignIdentities } from './living/identities';
 import { env } from 'cloudflare:workers';
 import { seed, type World, type EpisodeEvent } from './world';
 
@@ -50,6 +51,8 @@ export async function readWorld(options: {eventLimit?: number} = {}): Promise<{
       .bind(nowIso, 'home')
       .run();
   }
+
+  if(world.living) world={...world,living:{...world.living,residents:assignIdentities(world.living.residents)}};
 
   const eventsQuery = await db
     .prepare(

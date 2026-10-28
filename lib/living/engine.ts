@@ -1,4 +1,5 @@
 import { meetingSteps, microActivity, actionSteps } from "./activities.ts";
+import { assignIdentities, residentIdentity, displayIdentity } from "./identities.ts";
 import { assignHomes } from "./households.ts";
 import { DEFAULT_PET_OWNERS } from "./pets.ts";
 import { updateAnimalLearning } from "./animal-learning.ts";
@@ -53,7 +54,7 @@ export function population(state: LivingState, date: string): Resident[] {
     const i = residents.length;
     residents.push({
       id: `neighbor-${i + 1}`,
-      name: `${state.catalog.names[i % state.catalog.names.length]} ${Math.floor(i / state.catalog.names.length) + 1}`,
+      name: `${state.catalog.names[i % state.catalog.names.length]} ${i + 1}`,
       roleId: role.id,
       color: ["#8f9bc4", "#98b789", "#d69b79", "#83aeb5", "#b49bc4"][i % 5],
       arrivedOn: date,
@@ -69,7 +70,7 @@ export function population(state: LivingState, date: string): Resident[] {
       add(role);
   while (residents.length < count)
     add(state.catalog.roles[residents.length % state.catalog.roles.length]);
-  return assignHomes(residents);
+  return assignHomes(assignIdentities(residents));
 }
 export function initializeLiving(
   now: number,
@@ -449,6 +450,7 @@ export function crowdAt(
     if (preferred && !visible.some((r) => r.id === preferred.id))
       visible[visible.length - 1 - replaced++] = preferred;
   return visible.map((r) => {
+    const identity=displayIdentity(residentIdentity(r),seconds*1000);
     const list = residentRoutine(state, r);
     const elapsed =
       r.plan?.simStartedAt !== undefined
@@ -460,7 +462,7 @@ export function crowdAt(
       r.plan && elapsed < total
         ? project(
             r.id,
-            r.name,
+            identity.name,
             r.plan.steps,
             elapsed,
             "plan",
@@ -470,7 +472,7 @@ export function crowdAt(
           )
         : project(
             r.id,
-            r.name,
+            identity.name,
             r.plan ? routineFrom(list, worldTime(world, now).hour * 3600 - (elapsed - total)) : list,
             r.plan ? elapsed - total : worldTime(world, now).hour * 3600,
             "routine",

@@ -213,6 +213,62 @@
       "activity": "Khám phá triển lãm",
       "kind": "read",
       "greeting": "Mình cùng làm từng bước nhé, nếu bạn cần nghỉ thì cứ nói mình biết."
+    },
+    {
+      "id": "family-preschool",
+      "label": "Em nhỏ mầm non",
+      "place": "Lớp học cộng đồng",
+      "activity": "Chơi và nghe kể chuyện cùng người lớn",
+      "kind": "play",
+      "greeting": "Mình cùng làm từng việc nhỏ, vừa sức nhé."
+    },
+    {
+      "id": "family-primary",
+      "label": "Học sinh tiểu học",
+      "place": "Lớp học cộng đồng",
+      "activity": "Đọc bài cùng giáo viên",
+      "kind": "study",
+      "greeting": "Mình cùng làm từng việc nhỏ, vừa sức nhé."
+    },
+    {
+      "id": "family-primary-girl",
+      "label": "Học sinh tiểu học",
+      "place": "Lớp học cộng đồng",
+      "activity": "Cùng bạn học và vẽ tranh",
+      "kind": "study",
+      "greeting": "Mình cùng làm từng việc nhỏ, vừa sức nhé."
+    },
+    {
+      "id": "family-middle",
+      "label": "Học sinh trung học",
+      "place": "Thư viện",
+      "activity": "Đọc và ghi chú bài học",
+      "kind": "study",
+      "greeting": "Mình cùng làm từng việc nhỏ, vừa sức nhé."
+    },
+    {
+      "id": "family-teen",
+      "label": "Nữ sinh",
+      "place": "Lớp học cộng đồng",
+      "activity": "Cùng nhóm thảo luận bài học",
+      "kind": "study",
+      "greeting": "Mình cùng làm từng việc nhỏ, vừa sức nhé."
+    },
+    {
+      "id": "family-grandmother",
+      "label": "Người lớn tuổi",
+      "place": "Công viên",
+      "activity": "Đi dạo nhẹ, nghỉ chân và trò chuyện",
+      "kind": "rest",
+      "greeting": "Mình cùng làm từng việc nhỏ, vừa sức nhé."
+    },
+    {
+      "id": "family-grandfather",
+      "label": "Người lớn tuổi",
+      "place": "Thư viện",
+      "activity": "Đọc báo và kể chuyện trong xóm",
+      "kind": "read",
+      "greeting": "Mình cùng làm từng việc nhỏ, vừa sức nhé."
     }
   ]
 }
