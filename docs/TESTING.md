@@ -1,6 +1,6 @@
 # Kiểm thử và bằng chứng
 
-`scripts/unit-suites.json` là danh sách suite hiện hành; `npm run test:unit` dùng process độc lập, tối đa 4 workers, thu đủ lỗi thay vì fail-fast. `XOM_TEST_JOBS=1` chạy tuần tự. Mốc G0/UX có58suite đã đạt; đây không phải kết quả chạy mới mỗi khi sửa tài liệu.
+`scripts/unit-suites.json` là danh sách suite hiện hành; `npm run test:unit` dùng process độc lập, tối đa 4 workers, thu đủ lỗi thay vì fail-fast. `XOM_TEST_JOBS=1` chạy tuần tự. Mốc H6b bulk/cursor có59suite đã đạt; đây không phải kết quả chạy mới mỗi khi sửa tài liệu.
 
 ## Chọn kiểm tra theo thay đổi
 
@@ -63,3 +63,5 @@ H10 `test-bounded-search.mjs` kiểm miền tham số, grid/budget/seed isolatio
 Sau commit/push: `python3 scripts/package-handoff.py /tmp/xom-ai-source.zip`. Script quét credential patterns/exclusions, kiểm required files, manifest/hash từng file và đọc lại ZIP. Gói này khác production archive. `TRANSFER_MANIFEST.json` được sinh ở repo để đóng gói; không commit file sinh ra hoặc ZIP/DB/cache.
 
 G0 `test-g0-ux.mjs` kiểm giải nén byte-identical cho26model, corruption/missing/abort canonical fallback và disposed không retry, pixel budget đến8K, pause HTTP/ACK/network, deadline signal và không tự gửi lại write. Mocks cũ pause phải trả `{ok:true}` như endpoint thật. Browser/metrics và so sánh tải ở [g0 evidence](validation/g0-ux-2026-10-28.json); không dùng timings local hay SwiftShader để kết luận hardware FPS.
+
+H6b `test-bulk-replay.mjs` đối chiếu full artifact với H6 single-file trên virtual concatenation; cross-file duplicates/legacy conflicts/sample/time neighbors, Unicode/CRLF/empty file, malformed UTF8 và record/byte/line budgets thật. Có1440accepted/49batch/mid-file resume/oracle,100k scanned-record limit, SQL rollback sau final-artifact writes, SIGKILL thật trước COMMIT rồi recover/CAS, writer cạnh tranh, source/manifest/checkpoint tamper, symlink/hardlink/unrelated DB guard, export exclusive và lỗi không echo private text. API compiled đọc JSONL phân trang thật→bulk/resume/export, so oracle và kiểm world/history/memories/earned policy giữ nguyên. [Evidence H6b](validation/learning-h6b-2026-10-28.json) là kiểm đúng dữ liệu/transaction, không là rollout policy, throughput SLA, power-loss hoặc production QA. App/renderer/runtime/schema không đổi nên không có browser run mới.

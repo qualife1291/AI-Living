@@ -4,6 +4,8 @@ Chỉ ghi mốc sản phẩm. Chi tiết commit/review nằm trong Git; số ver
 
 ## 28/10/2026
 
+- H6b thêm replay nhiều file local có manifest/source SHA, checkpoint SQLite/CAS và cursor byte+line. Batch lỗi/crash không cộng dở; chỉ fit một lượt khi hoàn tất, export private không ghi đè.59suite và API JSONL→bulk/resume đạt; giữ nguyên own samples/history/runtime, chưa memory backfill hoặc promote policy.
+
 - G0/UX thêm26 transport gzip lossless/hash-pinned, fallback canonical và tải avatar dự phòng khi cần; render pixel budget theo màn hình/DPR. Pause phân biệt lỗi/ACK, chat giữ focus/draft, camera keyboard/reduced-motion và metadata hiện hành.58suite/API và browser desktop/mobile đạt; canonical/license/dữ liệu học giữ nguyên.
 
 - H10 thêm optimizer offline có grid/budget/seed cohorts cố định, effect/diversity gate và stage hashes.9candidate→2validation, không selection nên giữ holdout chưa dùng và LinUCB hiện hành.57suite/API đạt; không cài config, sửa code tự động hoặc deploy.

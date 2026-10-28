@@ -38,7 +38,7 @@ Model local opt-in qua `npm run living:up` (llama.cpp/Qwen đã được thử �
 
 `npm run benchmark:policies` dùng chooseScenario/settleLearning/linearScore runtime,8 seed×820 training chung×160 frozen holdout. V2 explicit single-domain history: tabular reward0,561797/MSE0,003588; LinUCB0,559612/0,002683. Dự đoán tốt hơn nhưng thưởng tức thời chưa thắng. [policy-holdout.json](validation/policy-holdout.json) là số liệu; v1 giữ riêng. Không nhận claim 3,71×/score 98/LLMlatency/FPS hoặc chỉnh để ép thắng holdout.
 
-Suite/unit/API kiểm ridge oracle, gates/context/plan/cancel/retry, transaction rollback/legacy/corruption và actor privacy; xem [TESTING](TESTING.md). H1 rollout mới được mô tả bên dưới; hierarchy/peer/exemplar/replay/model A/B vẫn chưa hoàn tất.
+Suite/unit/API kiểm ridge oracle, gates/context/plan/cancel/retry, transaction rollback/legacy/corruption và actor privacy; xem [TESTING](TESTING.md). H1 rollout và các nghiên cứu H4/H6/H10 được mô tả bên dưới, chưa promote; peer/exemplar, memory backfill/curation và model A/B còn ở ROADMAP.
 
 ## H1 — Rollout theo thời gian (28/10)
 
@@ -168,7 +168,7 @@ Numeric curriculum có3stage từ context tại quyết định: needs(energy<0,
 
 Thử nghiệm warm-only là giả thuyết mới sau H4: prior k5 chỉ blend khi **tổng samples tự đạt<24**, sau đó dùng chính hàm personal trên state hiện tại, không reset hậu nghiệm hay ép trajectory trùng baseline. Không đụng personal uncertainty/guards. Train8seed6000–6007,12agent×15ngày; validation prediction8seed7000–7007 cùng kích thước; policy holdout20seed8000–8019,24agent×60ngày/shift30. Dùng2profile và cùng role/place fixture H4; không so số tuyệt đối với H1/H2. Tham số cố định trước kết quả, không tự promote/runtime activation. Actor archive artifacts không dùng làm cohort prior cho holdout.
 
-H6 này cung cấp replay numeric/CLI private và curriculum traversal; chưa SFT/DPO training, memory backfill/CAS, role-history inference hoặc cài artifact lên production. Multi-file/cursor/backfill đầy đủ và curation cùng prompt/context/model vẫn là việc riêng trong ROADMAP. Không thêm migration/policy format0007 hoặc thuê GPU/API.
+H6 này cung cấp replay numeric/CLI private và curriculum traversal; chưa SFT/DPO training, memory backfill/CAS, role-history inference hoặc cài artifact lên production. H6b đã thêm multi-file/cursor local ở phần dưới; memory backfill và curation cùng prompt/context/model vẫn là việc riêng trong ROADMAP. Không thêm migration/policy format0007 hoặc thuê GPU/API.
 
 [Evidence H6](validation/learning-h6-2026-10-28.json) và [artifacts synthetic](validation/h6-v1/) ghi69.120train+69.120prediction validation+2.764.800policy holdout plans.56suite/check/lint/build/assets/API compiled đạt; API JSONL→actor replay giữ history/snapshot/earned samples. Full replay train+validation, full warm24stress và H1 repeat cùng byte/hash. Không replay archive production hoặc tạo artifact private trong Git.
 
@@ -215,3 +215,26 @@ Search giữ9candidate: warm6/k0,5/2/5 có0voluntary choice changes và raw traj
 |w24-k2 / stress|−0,000517|[−0,001582;0,000548]|Không|
 
 Không candidate nào chứng minh được không giảm return/needs trên cả2profile; entropy gate đạt, opportunity-cost có cải thiện rõ ở w24-k2stress nhưng chưa đủ toàn bộ tiêu chí. Đây là thiếu bằng chứng theo gate định trước, không kết luận mọi tham số đều kém trong mọi môi trường. Validation chọn **null**; command holdout ghi reserved/0plan và không sinh outcome directory. Seed12000–12019 vẫn chưa được quan sát; không đưa runner-up hoặc sửa ngưỡng để mở holdout. Giữ LinUCB cá nhân; optimizer chỉ tạo artifact offline, không cài config vào runtime. G0/UX tiếp theo trong backlog, các nghiên cứu học sau cần protocol mới.
+
+## H6b — Bulk/cursor replay local (28/10)
+
+[Contract](validation/learning-h6b-contract-v1.json) và [evidence](validation/learning-h6b-2026-10-28.json). `replay:bulk` đọc một bộ JSONL local đã được owner chọn, **một actor**, không gọi API/network hoặc mở DB thế giới. Manifest strict gồm `version:1`, `kind:"local-owner-replay-set-v1"`, `actorId`, `order:"chronological"|"curriculum"`, `batchRecords:1..5000`, `sources:[{file,sha256,bytes}]`. File là đường dẫn JSONL tương đối dưới thư mục manifest; không URL/traversal/symlink/file đặc biệt. Lấy SHA256/bytes thật của mỗi file, rồi SHA256 của nguyên manifest; không sửa manifest giữa các lần resume.
+
+Tối đa64file×32MiB/file, tổng256MiB,100.000nonblank record **kể cả foreign/legacy/duplicate**, dòng≤64KiB. Một batch không vượt8MiB/10.000physical lines hoặc `batchRecords`; empty file/blank lines vẫn tiến cursor với budget riêng. Mỗi lệnh mặc định1batch, `--max-batches=20` là trần. Các giá trị SHA trong ví dụ phải được thay bằng hash64hex thật:
+
+```bash
+npm run replay:bulk -- --manifest=.sites-runtime/training/source.json --expected-manifest-sha256=SHA_MANIFEST --job=.sites-runtime/training/job-an --expected-checkpoint=new
+# Resume bằng checkpointSha256 vừa in ra, không dùng artifactSha256:
+npm run replay:bulk -- --manifest=.sites-runtime/training/source.json --expected-manifest-sha256=SHA_MANIFEST --job=.sites-runtime/training/job-an --expected-checkpoint=SHA_CHECKPOINT
+npm run replay:bulk -- --manifest=.sites-runtime/training/source.json --expected-manifest-sha256=SHA_MANIFEST --job=.sites-runtime/training/job-an --action=status
+# Chỉ export khi complete=true; output mới, private, không ghi đè:
+npm run replay:bulk -- --manifest=.sites-runtime/training/source.json --expected-manifest-sha256=SHA_MANIFEST --job=.sites-runtime/training/job-an --expected-checkpoint=SHA_CHECKPOINT --action=export --out=.sites-runtime/training/replay-an.json
+```
+
+Job dùng SQLite native của Node≥22.18 trong `.sites-runtime/training/<job>/state.sqlite`, file mới600/thư mục mới700, Gitignored. Application/schema identity và replay/reward/feature/scenario signature tách khỏi mọi DB khác. `BEGIN IMMEDIATE`/FULL sync giữ cùng transaction: canonical records được chấp nhận, strong/unverified-ID ledger, counters, cursor **byte+line** và model khi hoàn tất. CLI yêu cầu SHA checkpoint trước đó để CAS; writer cạnh tranh/cursor cũ bị từ chối. Không xóa lock/DB để retry. Status chỉ đọc, `sourcesVerified:false`; sau SIGKILL giữa transaction, chạy lại run với checkpoint trước để SQLite khôi phục journal nếu status readonly chưa mở được.
+
+Actor được lọc **trước audit/storage**; foreign raw fields không vào job. Exact canonical duplicate không tạo mẫu mới; ID đổi nội dung, strong↔legacy/weak, hai ID dùng cùng earned sample hoặc ledger thời gian fork làm rollback **toàn batch hiện tại**. JSONL/UTF8 lỗi, vượt budget hoặc nguồn đổi cũng không tăng cursor. Batch trước đã commit được giữ. CLI in một dòng hash/count/cursor sau mỗi commit (retry đã complete chỉ in status); nếu batch sau lỗi, lấy checkpoint từ dòng thành công cuối. Lỗi record chỉ nêu ordinal source/line, không echo actor/path/text.
+
+Chỉ fit **một lượt sau khi hết source set**, global chronological/curriculum như H6 một file; không fit lại posterior từng batch. Artifact và final cursor commit cùng nhau trong job; export là bước riêng, stage+fsync rồi publish exclusive nên không có JSON nửa chừng/ghi đè. Artifact H6 vẫn thuộc actor, source SHA là **JSONL ảo**: nối file theo manifest, thêm LF cho mỗi file không rỗng thiếu LF cuối. Envelope `bulkSource` giữ riêng manifest SHA và hashes/bytes từng file; không gọi manifest SHA là checksum raw JSONL. Model/report/acceptedDigest khớp replay một file trên đúng chuỗi ảo ấy.
+
+Mỗi run/export kiểm lại hash toàn bộ nguồn và ledger; cursor giảm audit phần đã nhận, **không bỏ chi phí checksum**. Job giữ canonical numeric evidence và ID ledger cần dedup, không chép trường thoại/ký ức tự do. Checksum là integrity, không chứng thực file ngoài hay physical authority. Report/model.samples chỉ là replayed records; không import vào own samples/skills/matrices/memories/runtime. Chưa có memory backfill/CAS, DPO/SFT/few-shot curation, prior activation hoặc bằng chứng policy tốt hơn; H10 holdout vẫn chưa mở.
