@@ -1,0 +1,36 @@
+{
+  "version": 1,
+  "phase": "H6b additive historical memory backfill",
+  "kind": "memory-backfill-contract-v1",
+  "scope": "Owner-authenticated loopback maintenance only. Preview/dry-run by default; explicit plan/checkpoint hashes to apply. No production invocation, learning updates or snapshot rewrite.",
+  "sources": {
+    "episodes": "Only explicit changes[].memory assigned to selected actor; archived row id/source/time. Dialogue/speaker/location/current roles do not confer knowledge.",
+    "outcomes": "Selected actor_id archive rows only; identity/time match and H3 verified fingerprint-v1 evidence. A numeric simulation-outcome summary is derived from archived scenarioId/reward, never a reconstructed historical thought or current scenario title.",
+    "legacy": "Missing/unsupported evidence or absent explicit recipient is skipped and counted; no reward evidence/witness/role is invented. Ambiguous recipient/source identity collision rejects the batch."
+  },
+  "reconciliation": "Same stable event/outcome IDs as live memory writers. Preserve all existing rows/text/metadata, including different IDs linked to the same actor/source and legacy rows. Known different source kinds remain separate. Divergent existing content is counted, never rewritten; wrong-owner stable-ID collisions reject.",
+  "budgets": {
+    "requestBytes": 2048,
+    "defaultSourceRows": 16,
+    "maxSourceRows": 32,
+    "maxSourceRowBytes": 65536,
+    "maxBatchBytes": 1048576,
+    "maxTargetRows": 256
+  },
+  "cursor": "Per-job UUID/actor/limit/version compatibility and frozen episode-rowid/actor-experience-seq upper bounds. Bounded pages, then done; new archive appends require a new job. Historical archives are append-only. Each receipt attests the page as read/committed, not a frozen full database content snapshot.",
+  "checkpoint": "New append-only migration0008 adds dedicated memory_backfill_jobs and memory_backfill_batches. Checkpoint SHA CAS, previous head/plan receipt, counters and phase cursor. Existing migrations/tables/data unchanged.",
+  "transaction": "One D1 batch conditionally claims checkpoint using previous raw state, exact world revision+JSON, source page/range and memory-scope snapshots. New memories and receipt require that exact nonce. Final receipt NOT NULL assertion rechecks inserted+preserved rows/world/sources, forcing true rollback on invariant failure. No INSERT OR IGNORE hiding lost inserts.",
+  "retry": "Current committed last-plan+previous-head retry returns duplicate without writes; stale other heads reject. No in-memory lease, scheduler or background backfill.",
+  "privacy": "Endpoint only owner+local-admin+loopback and same Origin when present, bounded strict body. Preview may return only selected-actor candidate memories for review; CLI stdout/errors are aggregates/hashes/cursor. Optional review JSON is private/exclusive.",
+  "verification": [
+    "Pure source/recipient/evidence and ID reconciliation fixtures.",
+    "Actual D1 dry-run has zero writes; apply only inserts missing structured memories plus job/receipts.",
+    "World JSON/revision, episodes, experiences, existing memories, policies, home/pets/IDs preserved.",
+    "Conflicting plans/checkpoints, source/memory/world changes between preview/apply, concurrency and lost-ACK retries.",
+    "Constraint/trigger failure proves full rollback of memory/cursor/receipt, including silently ignored inserts.",
+    "Current-range phantom source/memory inserts invalidate CAS; append after frozen bounds excluded.",
+    "Fresh build/full unit/type/lint/assets and compiled API; no browser changes."
+  ],
+  "remaining": "Dataset curation/few-shot/DPO with matched prompt/context/model and real validators. Runtime priors and authority-dependent H3b/H5 remain separate.",
+  "productionAccess": false
+}
