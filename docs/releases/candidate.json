@@ -1,13 +1,13 @@
 {
   "project_id": "appgprj_6adc7dc364d48191a09202c5b43309e4",
-  "source_commit": "c77c21cdaf4d0a893976443b479919b8e3186f0a",
+  "source_commit": "383ec115a883d7d1c2caee6c23cd2fe194c28aa2",
   "status": "prepared-not-deployed",
-  "archive_sha256": "34cbc9d713f9876926f8403e45d255e032a1d3b182f954c8f4f4854309b19a60",
-  "archive_local_path": "work/production-c77c21c.tar.gz",
+  "archive_sha256": "6506f9a641ab0a3358ec1149d617691dd81f8b127107ad46e941437a3220d19b",
+  "archive_local_path": "work/production-383ec11.tar.gz",
   "production_ledger_unchanged": true,
   "blocker": "Native Sites credential/deploy/status/database tools unavailable in this session; user has already authorized release.",
   "validation": {
-    "unit_suites_passed": 50,
+    "unit_suites_passed": 51,
     "local_api": true,
     "typecheck_lint_build_assets": true,
     "browser_desktop_mobile": true,
@@ -29,14 +29,22 @@
     "unchanged_plan_binding": true,
     "full_duration_encounter_reporting": true,
     "physical_arrival_authority": false,
-    "browser_source_note": "Fresh garden/social/home/cycle/pet desktop/mobile QA on final flora UI source; mutations mocked in browser, persistence verified in compiled local D1.",
+    "browser_source_note": "Fresh flora garden/social/home/cycle/pet desktop/mobile QA on c77c21c UI. H0 changes backend only; app/lib match the tested H0 trees, no new browser run claimed. Browser mutations mocked; persistence verified in compiled local D1.",
     "garden_plots": 5,
     "garden_plants": 30,
     "garden_phases": 5,
     "flora_care_api": true,
-    "flora_browser_desktop_mobile": true
+    "flora_browser_desktop_mobile": true,
+    "pulse_gate_concurrent_requests": 20,
+    "pulse_gate_admitted_pipelines": 1,
+    "pulse_http_concurrent_viewers": 12,
+    "pulse_no_duplicate_audit": true,
+    "diagnostics_read_only_get": true,
+    "health_schema_batch": true,
+    "claude_review_triaged": true,
+    "local_persisted_database_health": true
   },
-  "prepared_at_utc": "2026-10-28T02:41:46.130Z",
+  "prepared_at_utc": "2026-10-28T03:00:15.028Z",
   "migrations_to_check": [
     "0006_client_logs",
     "0007_learning_policies"

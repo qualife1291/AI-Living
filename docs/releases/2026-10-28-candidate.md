@@ -1,6 +1,6 @@
 # Candidate chuẩn bị — chưa deploy
 
-Candidate hiện hành là source c77c21c bên dưới và candidate.json. Các mốc e90021b/da1bfd6 là lịch sử trước flora.
+Candidate hiện hành là source383ec11 bên dưới và candidate.json. Các mốc e90021b/da1bfd6/c77c21c là lịch sử trước H0.
 
 - Source `e90021b72806c780d385111b846f30bb1de6460e` đã push work và main. Gói `work/production-e90021b.tar.gz` có SHA256 `2f2461830b98887f7512cee8c46e640cb18b781077e68104c8099cf6edf6e5da`, được release:build/package từ checkout sạch.
 - 45/45 unit, check/lint/build/assets và API compiled D1 đạt. Bảy browser harness ở mốc UI cuối trước đó đã đạt desktop/mobile; renderer/UI không đổi sau đó, ảnh/metrics đã tracked. Guard busy/night và fixture cache vừa kiểm tra lại sau môi trường restart.
@@ -20,3 +20,10 @@ Candidate hiện hành là source c77c21c bên dưới và candidate.json. Các 
 - Source `c77c21cdaf4d0a893976443b479919b8e3186f0a` đã push main/work. Gói `work/production-c77c21c.tar.gz`, SHA256 `34cbc9d713f9876926f8403e45d255e032a1d3b182f954c8f4f4854309b19a60`, exact-SHA build/package từ checkout sạch; source stamp/0007/không secrets hoặc DB/test-entry đã kiểm tra.
 - 50unit/check/lint/build/API D1 đạt. 5plots/30plants/5phases, persisted owner care/CAS và2batches trong footprint cũ. Fresh browser gardens/social/home/cycle/pet đạt desktop/mobile, ảnh preview đã gửi; care mock trong browser và persistence kiểm bằng D1 riêng.
 - Flora metadata optional không migration mới. Vẫn cần backup/schema live cho0006/0007 và native deploy/readback; không deploy hoặc thay latest.json trong phiên vì không có Sites tools.
+
+## Candidate H0 — 383ec11
+
+- Source `383ec115a883d7d1c2caee6c23cd2fe194c28aa2` đã push main/work. Gói `work/production-383ec11.tar.gz`, SHA256 `6506f9a641ab0a3358ec1149d617691dd81f8b127107ad46e941437a3220d19b`, exact-SHA release build/package từ checkout sạch, source stamp `2026-10-28T03:00:15.028Z`. App/lib tree trùng nguồn51suite/API đã kiểm; archive796entries có0007 và không có secrets/DB/test-entry theo tên.
+- 51/51unit/check/lint/build/assets/API đạt; D1 admission20request→1pipeline/19coalesced, compiledHTTP12viewer→1pipeline, retry không audit trùng, pause/error/expiry/nonce đạt. GETdiagnostics chỉđọc, healthschema batch503/200 và preservation đạt. Fresh localWorker health200/ready/revision0; khôngproduction.
+- Bao gồm toàn bộ flora và nội dung candidate trước. UI/renderer không đổi trong H0; browser flora sourcec77 vẫn là evidence trước đó, không claim browser H0 mới. ReviewClaude đã đưa H1/G0/UX và các phase có điều kiện vào NEXT_PHASES.
+- H0 khôngmigration mới, không thay scheduler/audience hoặc xóa lịch sử. Chưa nativeSites/backup/liveSchema/deploy/readback; latest.json giữ nguyên. Giữclientfallback đến khi xác minh lịchproduction, không tạocron trùng.

@@ -1,0 +1,9 @@
+{
+  "source_commit": "383ec115a883d7d1c2caee6c23cd2fe194c28aa2",
+  "scope": "fresh local Worker, persisted local DB; read-only health",
+  "http_status": 200,
+  "ok": true,
+  "database": "ready",
+  "revision": 0,
+  "production": false
+}
