@@ -200,9 +200,12 @@ export function curateDataset(values: unknown[], actorId: string, pins: Pin): Cu
       if (candidates.has(c.id) && candidates.get(c.id) !== signature) bad('conflicting-candidate-id');
       candidates.set(c.id, signature);
     }
+    // Different capture/source IDs cannot hide opposite labels for the same visible
+    // prompt, model and sampling. Keep provenance in request pins, not in this key.
+    const generationKey = curationHash({ messages: renderCurationMessages(r.request), model: r.request.model, sampling: r.request.sampling, sourceKind: r.request.source.kind, sourceVersion: r.request.source.version });
     for (const [c, decision] of [[admitted.chosen, 'chosen'], [admitted.rejected, 'rejected']] as const) {
       if (!c) continue;
-      const key = admitted.requestSha256 + ':' + c.completionSha256;
+      const key = generationKey + ':' + c.completionSha256;
       if (decisions.has(key) && decisions.get(key) !== decision) bad('contradictory-review');
       decisions.set(key, decision);
     }

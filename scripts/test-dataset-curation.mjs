@@ -105,6 +105,8 @@ assert.throws(() => compile([records[0], repin(edited(r => { r.id = 'other'; r.r
 const reverse = variant('reverse'); reverse.request = clone(records[0].request);
 [reverse.review.chosen, reverse.review.rejected] = [reverse.review.rejected, reverse.review.chosen]; repin(reverse);
 assert.throws(() => compile([records[0], reverse]), /contradictory-review/);
+const differentSourceReverse = clone(reverse); differentSourceReverse.request.source.id = 'other-capture-same-prompt'; repin(differentSourceReverse);
+assert.throws(() => compile([records[0], differentSourceReverse]), /contradictory-review/, 'source ID cannot hide contrary labels for identical model input');
 
 // Actual group leakage checks, including transitive links, exact prompt/context and same event captures.
 const a = variant('a'), b = variant('b'), c = variant('c');
