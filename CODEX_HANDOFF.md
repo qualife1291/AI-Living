@@ -1,6 +1,6 @@
 # Tiếp tục từ đây — 28/10/2026
 
-Chỉ đọc [AGENTS](AGENTS.md) và file này khi bắt đầu. [ROADMAP](ROADMAP.md) là backlog duy nhất; [README](README.md) chỉ mục theo công việc.
+Chỉ đọc [AGENTS](AGENTS.md) và file này khi bắt đầu. Khi làm hosting Cloudflare, đọc [CLOUDFLARE_STAGING](docs/CLOUDFLARE_STAGING.md). [ROADMAP](ROADMAP.md) là backlog duy nhất; [README](README.md) chỉ mục theo công việc.
 
 | Phần | Context hiện tại |
 |---|---|
