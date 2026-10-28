@@ -1,0 +1,102 @@
+{
+  "phase": "H6",
+  "version": "audited-replay-study-v1",
+  "registered_before_results": true,
+  "reference_source": "f426e92a42df98a3e02a03622ca3bb4ee1139db8",
+  "profiles": [
+    "ordinary-v1",
+    "cold-stress-v1"
+  ],
+  "variants": [
+    "personal-v1",
+    "replay-coldstart-v1"
+  ],
+  "seed_mapping": "hashSeed(H1-seed:<index>)",
+  "training_seed_indices": [
+    6000,
+    6001,
+    6002,
+    6003,
+    6004,
+    6005,
+    6006,
+    6007
+  ],
+  "validation_seed_indices": [
+    7000,
+    7001,
+    7002,
+    7003,
+    7004,
+    7005,
+    7006,
+    7007
+  ],
+  "holdout_seed_indices": [
+    8000,
+    8001,
+    8002,
+    8003,
+    8004,
+    8005,
+    8006,
+    8007,
+    8008,
+    8009,
+    8010,
+    8011,
+    8012,
+    8013,
+    8014,
+    8015,
+    8016,
+    8017,
+    8018,
+    8019
+  ],
+  "dimensions": {
+    "training": {
+      "agents": 12,
+      "days": 15,
+      "shiftDay": 7
+    },
+    "validation_prediction": {
+      "agents": 12,
+      "days": 15,
+      "shiftDay": 7
+    },
+    "holdout_policy": {
+      "agents": 24,
+      "days": 60,
+      "shiftDay": 30
+    }
+  },
+  "corpus": "Only H3 verified-contextual/fingerprint-v1, current reward/features/scenario signature. Deduplicate exact IDs/earned samples; conflicting ID or same actor+sample with different identity/data is fatal. Gaps allowed, never backfill legacy. Local archive path is actor-scoped, hash pinned and offline only; no automatic DB read or remote input.",
+  "curriculum": [
+    "needs: decision energy<.2 or hunger>.72",
+    "foundation: otherwise decision skill<.2",
+    "routine: all other compatible examples"
+  ],
+  "fit": "Chronological and curriculum use the SAME unique examples exactly once, ridge I and unchanged6D/reward. Expect near order-invariance; no claims of curriculum improvement from floating point. Report validation prediction agreement and MSE per seed; tolerance max prediction difference1e-8.",
+  "policy": "Frozen curriculum-fitted synthetic replay prior, k5 prediction blend with personal per-action sample count; only while total earned personal samples<24. Thereafter exact personal baseline. No prior matrices/counts/skills/memory installed into actors. Hard guards and personal uncertainty unchanged. Warm-only cutoff is a new pre-registered hypothesis motivated by H4, not a retune on old seeds.",
+  "gates": {
+    "return": "paired holdout CI95 lower bound >=0",
+    "needs": "paired holdout CI95 lower bound >=0",
+    "opportunity_cost": "paired holdout CI95 upper bound <=0",
+    "entropy": "paired holdout CI95 lower bound of candidate - .8*baseline >=0"
+  },
+  "primary": "20 untouched holdout seeds per profile, candidate versus personal. No adaptive tuning or promotion. Validation is prediction-only and does not select parameters.",
+  "acceptance": [
+    "actor filtering before replay, strict schema/signature/context, corruption/conflict rejection, duplicate replay no additional confidence",
+    "input/archive preservation, no DB/network/runtime policy writes, private model outputs only ignored directory",
+    "deterministic corpus order/digest/model/artifact, input SHA and source labels; SHA is integrity not external authentication",
+    "one pass replay counts are not earned samples, source role history is not inferred, frozen prediction after warm cutoff matches baseline",
+    "full units/typecheck/lint/build/API local, H1 golden/full report unchanged, deterministic full replay/candidate repeats"
+  ],
+  "limits": [
+    "Existing8-level dialogue curriculum is separate; no SFT/DPO/LLM fine-tune or generated experience credit.",
+    "Ridge order-invariance means a sorted curriculum alone should not improve the final model.",
+    "Archive actor provenance is an operator-supplied local source with H3 consistency checks, not authenticated physical/social evidence.",
+    "No archive/history deletion, memory backfill, role-at-choice reconstruction, production installation or policy namespace migration in this phase."
+  ]
+}
