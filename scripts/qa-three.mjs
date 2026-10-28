@@ -1,12 +1,15 @@
 import { fileURLToPath } from "node:url";
 import { mkdir } from "node:fs/promises";
+import { execFileSync } from "node:child_process";
 const { chromium } = await import(
   process.env.PLAYWRIGHT_MODULE ?? "playwright-core"
 );
-const shots = fileURLToPath(new URL("../docs/screenshots/", import.meta.url));
+const shots = process.env.QA_OUT ?? fileURLToPath(new URL("../docs/screenshots/", import.meta.url));
 await mkdir(shots, { recursive: true });
 import assert from "node:assert/strict";
 const base = process.env.QA_BASE ?? "http://127.0.0.1:5173";
+assert.ok(["127.0.0.1", "localhost"].includes(new URL(base).hostname), "Local fixture only");
+const fixture = JSON.parse(execFileSync(process.execPath, ["scripts/social-preview-fixture.mjs"], {encoding:"utf8"}));
 const b = await chromium.launch({
   executablePath: process.env.CHROMIUM_BIN ?? "/usr/bin/chromium",
   headless: true,
@@ -29,6 +32,8 @@ try {
       }),
       errors = [];
     p.on("pageerror", (e) => errors.push(e.message));
+    await p.route("**/api/**", route => route.fulfill({status:200, contentType:"application/json", body:JSON.stringify({ok:true,views:1})}));
+    await p.route("**/api/world*", route => { fixture.serverNow = new Date().toISOString(); return route.fulfill({status:200,contentType:"application/json",body:JSON.stringify(fixture)}); });
     await p.goto(base, { waitUntil: "domcontentloaded" });
     const host = p.locator('.three-canvas[data-ready="true"]');
     await host.waitFor({ timeout: 90000 });
