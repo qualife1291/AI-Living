@@ -4,7 +4,7 @@ Chỉ đọc [AGENTS](AGENTS.md) và file này khi bắt đầu. [ROADMAP](ROADM
 
 | Phần | Context hiện tại |
 |---|---|
-| Source | `main`/`work` chốt H6b bulk/cursor; xem Git cho HEAD. Implementation source`fa6a5b1`; sau đó chỉ docs/evidence/ledger. LinUCB/runtime/renderer/persistence giữ G0. |
+| Source | `main`/`work` đã đồng bộ H6b bulk/cursor; xem Git cho HEAD. Implementation source`fa6a5b1`; sau đó chỉ docs/evidence/tests/ledger. LinUCB/runtime/renderer/persistence giữ G0. |
 | Sản phẩm | Thành phố Three.js, An/Bình/Chi+NPC,60cửa, tag/pet/bike, DOM tên/thoại, audio opt-in,5khóm/30cây. G0 gzip lossless/pixel budget/pause/chat/keyboard/reduced-motion đã có. Không2D. |
 | AI/dữ liệu | LinUCB6D,8domain/gates, policy store0007/CAS, memories top-K/RAG, dialogue hashes,49context cards/33nơi; H3 full archived reward evidence. Không fine-tune LLM. |
 | Đã kiểm | H6b59suite/check/lint/build/assets/API local đạt. Paginated JSONL→bulk/resume/export khớp oracle, giữ world/history/memories/own policies. SIGKILL/CAS/concurrent writer/100k limit/paths/export đạt. App không đổi nên không browser mới; G0 QA SwiftShader source`e5f5583` còn hợp lệ. |
@@ -16,6 +16,6 @@ Chỉ đọc [AGENTS](AGENTS.md) và file này khi bắt đầu. [ROADMAP](ROADM
 
 **Nền học:** H2/H4/H6/H10 chưa promote, default giữ cá nhân; H10 không candidate đủ validation và holdout12000–12019 **chưa quan sát**. Không retune source/seed đã xem. Private replay không tăng earned samples/skills/memories hoặc chép donor posterior; chỉ prediction artifact. Runtime importer/version/rollback/CAS chưa có. Seed ranges và nghiên cứu cũ ở LEARNING/protocols, không cần đọc toàn bộ mặc định.
 
-**Blocker prod:** thiếu native Sites credential/deploy/status/DB tools; user đã cho phép merge/push/prod, không hỏi lại. Candidate G0 source`50c79af` còn tới khi chốt gói H6b. Khi tool có lại: đúng project/audience, backup/schema0006/0007, exact-SHA deploy/readback theo [runbook](docs/PRODUCTION_RUNBOOK.md). Không tạo Site/cron khác, tìm credential cũ hoặc mở public để sửa403.
+**Blocker prod:** thiếu native Sites credential/deploy/status/DB tools; user đã cho phép merge/push/prod, không hỏi lại. Gói H6b source`a974743` đã build/package, SHA256/823entries và offline-code exclusion đã kiểm trong candidate.json; local `work/production-a974743.tar.gz` **chưa deploy**. Commit sau gói chỉ ledger/handoff. Khi tool có lại: đúng project/audience, backup/schema0006/0007, exact-SHA deploy/readback theo [runbook](docs/PRODUCTION_RUNBOOK.md). Không tạo Site/cron khác, tìm credential cũ hoặc mở public để sửa403.
 
 **Giới hạn:** ground/playback/tag/pet/bike theo viewer, completion backend simtime+plan match chưa physical arrival. Không cấp skill/P2P từ ETA/thoại/render. Gallery chưa placement mọi loài; Society/NIM còn backlog có điều kiện, không hosted trial output vào production. Không GPU/soak/live QA mới.
