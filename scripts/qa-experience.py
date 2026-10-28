@@ -55,6 +55,6 @@ with sync_playwright() as p:
    canvas.evaluate('(c)=>c.getContext("webgl2").getExtension("WEBGL_lose_context").loseContext()');page.get_by_role('button',name='Thử lại 3D',exact=True).wait_for(timeout=20000)
    assert page.locator('.three-canvas canvas').count()==0
    print(name,'PASS movement, proportions, DPR presets, conversation, pause/resume, layout, context-loss fallback',flush=True);page.close()
-  page=b.new_page(viewport={'width':1024,'height':768},reduced_motion='reduce');page.add_init_script('''const orig=HTMLCanvasElement.prototype.getContext;HTMLCanvasElement.prototype.getContext=function(t,...args){if(t.startsWith('webgl'))return null;return orig.call(this,t,...args)}''');page.goto(base);page.get_by_role('button',name='Thử lại 3D',exact=True).wait_for(timeout=60000);page.close();print('PASS unavailable WebGL/reduced motion fallback',flush=True)
+  page=b.new_page(viewport={'width':1024,'height':768},reduced_motion='reduce');page.add_init_script('''const orig=HTMLCanvasElement.prototype.getContext;HTMLCanvasElement.prototype.getContext=function(t,...args){if(t.startsWith('webgl'))return null;return orig.call(this,t,...args)}''');page.route('**/api/world*',respond);page.route('**/api/living/pulse',lambda r:r.fulfill(status=200,content_type='application/json',body='{"ok":true}'));page.goto(base);page.get_by_role('button',name='Thử lại 3D',exact=True).wait_for(timeout=60000);page.close();print('PASS unavailable WebGL/reduced motion fallback',flush=True)
   (out/'metrics.json').write_text(json.dumps(report,indent=2))
  finally:b.close()

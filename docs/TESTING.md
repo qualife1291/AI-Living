@@ -38,7 +38,7 @@ Restart Worker từ `dist/server/wrangler.json` sau build. `QA_BASE` bắt buộ
 |---|---|
 | qa-g0-ux.py | Gzip/canonical fallback, pause403/409/5xx/network/ACK, chat focus/draft, keyboard,320px, presets/resize/hidden/context loss/retry và reduced-motion. |
 | qa-shared-ground.py | Hai shared viewer desktop/mobile mở lệch giờ, cùng absolute sample roots, camera/F5/pause, no extrapolation, ảnh thật; synthetic source và D1 riêng. |
-| qa-loading.py | Hai compiled loopback builds,3 cold-page repeat/viewport, network profile cố định, bytes/first-frame và asset completeness; không SLA thiết bị thật. |
+| qa-loading.py | Compiled loopback build,3 cold-page repeat/viewport, network profile cố định, bytes/first-frame và asset completeness; `QA_BEFORE` tùy chọn phải là build khác nếu so sánh. Một build không chứng minh cải thiện/SLA thiết bị thật. |
 | qa-social.py | Đủ 6 lượt, luân phiên/poll/F5/source badge/camera. |
 | qa-overlays-households.py | Tên dài/câu 240 ký tự, pill/occlusion/click, hồ sơ và 320px. |
 | qa-cycle.py, qa-tag.py | Full bike/ground/pause/dismount, đổi vai/no teleport/cancel. |

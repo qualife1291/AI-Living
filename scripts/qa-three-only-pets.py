@@ -43,7 +43,7 @@ with sync_playwright() as p:
    (out/f'pet-samples-{name}.json').write_text(json.dumps(samples,indent=2))
    page.screenshot(path=str(out/f'pet-framing-{name}-preview.png'))
    assert len(samples)>=10;assert any(a['walking'] for s in samples for a in s['pets'])
-   assert sum(all(a['onScreen'] for a in s['pets']) for s in samples)/len(samples)>.8,('Camera must keep the companion in view',sum(all(a['onScreen'] for a in s['pets']) for s in samples),len(samples))
+   assert sum(all(a['onScreen'] and a['clearSightline'] for a in s['pets']) for s in samples)/len(samples)>.8,('Camera must keep the companion in view',sum(all(a['onScreen'] and a['clearSightline'] for a in s['pets']) for s in samples),len(samples))
    for row in samples:
     dog=next(a for a in row['pets'] if a['id']=='cun');gap=sum((dog['position'][i]-row['owner'][i])**2 for i in [0,1])**.5
     assert gap>=9.9,'Pet overlaps its caretaker';assert gap<55,('Companion stays with caretaker',gap)

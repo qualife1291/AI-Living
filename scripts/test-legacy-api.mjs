@@ -11,7 +11,8 @@ const {Miniflare,Log,LogLevel}=require('miniflare');
 const fixed=Date.parse('2026-10-25T02:00:00Z');
 const files=readdirSync('dist/server',{recursive:true}).filter(p=>p.endsWith('.js')&&!p.split('/').includes('.wrangler'));
 const modules=[{type:'ESModule',path:resolve('dist/server/__acceptance_fixture.mjs'),contents:`import worker from './index.js';const NativeDate=Date;let now=${fixed};globalThis.Date=class extends NativeDate{constructor(...a){super(...(a.length?a:[now]))}static now(){return now}};export default {fetch(req,env,ctx){const u=new URL(req.url);if(u.pathname==='/__acceptance/time'){now=Number(u.searchParams.get('now'));return Response.json({ok:true});}return worker.fetch(req,env,ctx)}};`},...files.map(p=>({type:'ESModule',path:resolve('dist/server',p)}))];
-const options={cf:false,log:new Log(LogLevel.WARN),modules,modulesRoot:resolve('dist/server'),compatibilityDate:'2026-05-15',compatibilityFlags:['nodejs_compat'],d1Databases:['DB'],bindings:{XOM_LOCAL_ADMIN:'true'},inspectorPort:0};
+// Public context is deliberately unavailable in fixtures; no weather/calendar network dependency.
+const options={cf:false,outboundService:async()=>new Response('',{status:503}),log:new Log(LogLevel.WARN),modules,modulesRoot:resolve('dist/server'),compatibilityDate:'2026-05-15',compatibilityFlags:['nodejs_compat'],d1Databases:['DB'],bindings:{XOM_LOCAL_ADMIN:'true'},inspectorPort:0};
 const denied=new Miniflare({...options,bindings:{XOM_LOCAL_ADMIN:'false'}}),results=[];
 try{
  const deniedOrigin=(await denied.ready).origin;
