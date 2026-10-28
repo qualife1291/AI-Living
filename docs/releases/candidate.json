@@ -1,13 +1,13 @@
 {
   "project_id": "appgprj_6adc7dc364d48191a09202c5b43309e4",
-  "source_commit": "cccc5445c15d8e852ed4c5b8bcf09b013cacaf43",
+  "source_commit": "5e9a079469d20e401cb339bf875c49c87f568c2e",
   "status": "prepared-not-deployed",
-  "archive_sha256": "9e387b00fde64dfdb972897e8904aba6deb78de656a9b2bb5e52be043d2a206b",
-  "archive_local_path": "work/production-cccc544.tar.gz",
+  "archive_sha256": "d79b8b1defc645a7c9416c9322241310c5abbf7afd1a2208454cfd4eab588c07",
+  "archive_local_path": "work/production-5e9a079.tar.gz",
   "production_ledger_unchanged": true,
   "blocker": "Native Sites credential/deploy/status/database tools unavailable in this session; user has already authorized release.",
   "validation": {
-    "unit_suites_passed": 55,
+    "unit_suites_passed": 56,
     "local_api": true,
     "typecheck_lint_build_assets": true,
     "browser_desktop_mobile": true,
@@ -29,7 +29,7 @@
     "unchanged_plan_binding": true,
     "full_duration_encounter_reporting": true,
     "physical_arrival_authority": false,
-    "browser_source_note": "Garden/social/home/cycle/pet desktop/mobile evidence from c77c21c UI. H0 changes backend; H1/H2 are offline experiments; H3 archives reward evidence. H4 adds optional prediction-prior injection with no production caller, plus offline-only trainers/evaluation. Default policy, raw reward, matrices/persistence and UI unchanged. Fresh compiled local API/CAS/history passed; no new browser or production readback.",
+    "browser_source_note": "Garden/social/home/cycle/pet desktop/mobile evidence from c77c21c UI. H0 backend, H1/H2/H4 offline studies, H3 archived reward evidence. H6 adds offline-only replay/curriculum/CLI with no production import or activation. Runtime/renderer/persistence source unchanged from H4; fresh compiled local API JSONL -> actor replay preserves snapshots/history/earned samples. No new browser or production readback.",
     "garden_plots": 5,
     "garden_plants": 30,
     "garden_phases": 5,
@@ -128,9 +128,30 @@
       "full_horizon_reward_gate_failed": true,
       "runtime_hierarchy_installed": false,
       "offline_code_excluded_from_worker": true
+    },
+    "learning_h6": {
+      "protocol": "docs/validation/learning-h6-protocol-v1.json",
+      "evidence": "docs/validation/learning-h6-2026-10-28.json",
+      "local_archive_actor_scoped_and_hash_pinned": true,
+      "compiled_JSONL_replay_integration": true,
+      "exact_dedup_and_sample_ledger": true,
+      "conflicts_reject_artifact": true,
+      "private_artifacts_ignored_only": true,
+      "legacy_not_backfilled": true,
+      "own_samples_history_and_matrices_preserved": true,
+      "training_outcomes": 69120,
+      "prediction_validation_outcomes": 69120,
+      "holdout_plans": 2764800,
+      "one_pass_order_agreement_within_1e_minus_8": true,
+      "full_train_candidate_H1_repeats_identical_bytes": true,
+      "warm24_promotion_gates_passed": false,
+      "runtime_importer_or_policy_installed": false,
+      "production_archive_processed": false,
+      "offline_code_excluded_from_worker": true,
+      "new_migrations": false
     }
   },
-  "prepared_at_utc": "2026-10-28T07:01:37.396912Z",
+  "prepared_at_utc": "2026-10-28T07:45:06.374004Z",
   "migrations_to_check": [
     "0006_client_logs",
     "0007_learning_policies"

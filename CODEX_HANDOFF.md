@@ -4,7 +4,7 @@ Chỉ cần đọc [AGENTS](AGENTS.md) và file này để bắt đầu. [README
 
 | Phần | Context hiện tại |
 |---|---|
-| Source | `work` đang H6; `main` còn H4. Xem `git status/log` cho HEAD. Default policy giữ LinUCB. H3 thêm evidence archive/audit; H1/H2 experimental policies vẫn offline. |
+| Source | `work` và `main` đồng bộ sau H6 foundation offline. Xem `git status/log` cho HEAD. Default policy giữ LinUCB. H3 thêm evidence archive/audit; H1/H2 experimental policies vẫn offline. |
 | Sản phẩm | Thành phố Three.js, An/Bình/Chi + NPC, tag/pet/bike, nhãn/thoại DOM, 60 cửa nhà, audio opt-in, 5 khóm hoa/30 cây có growth/moisture/care. Không còn renderer 2D. |
 | AI/dữ liệu | LinUCB 6D, 8 domain skills/gates, policy table 0007/CAS, memories top-K/RAG, dialogue hashes, 49 context cards/33 nơi. Đây là học policy mô phỏng, chưa fine-tune LLM. |
 | Đã kiểm | H6 source:56suite + TypeScript/lint/build/assets/API JSONL/replay/CAS đạt; full H1 byte-identical. H2 warm stress/prior repeat ở evidence cũ. D1: 20 pulse→1 pipeline; compiled HTTP: 12 viewer→1 pipeline. Browser flora/social/home/cycle/pet desktop/mobile đã đạt ở UI trước H0; H0 không đổi renderer. |
@@ -20,7 +20,7 @@ Chỉ cần đọc [AGENTS](AGENTS.md) và file này để bắt đầu. [README
 
 **Đề xuất Society/NIM:** đã gộp vào [ROADMAP](ROADMAP.md), đối chiếu chi tiết ở [review](docs/validation/society-nim-review-2026-10-28.json). WP20–27 là tương lai có phụ thuộc; sửa accounting/knowledge/retention assumptions, không tạo root spec/MEMORY. NVIDIA trial API và output không dùng production; mới kiểm tài liệu chính thức, chưa key/inference/account/quota hay benchmark. Không chặn thứ tự học hiện tại để làm NIM.
 
-**Blocker:** phiên gần nhất thiếu native Sites credential/deploy/status/DB tools. User đã cho phép merge/push/prod; thiếu capability không phải thiếu quyền. Candidate H4 đã đóng gói đúng source `cccc544` trong candidate.json; offline audit/hierarchy models không vào Worker. Khi công cụ có lại, xác minh project/audience, backup/schema 0006/0007, deploy đúng candidate và readback theo [runbook](docs/PRODUCTION_RUNBOOK.md). Không tạo cron/Site khác, bỏ client pulse hoặc tìm credential cũ.
+**Blocker:** phiên gần nhất thiếu native Sites credential/deploy/status/DB tools. User đã cho phép merge/push/prod; thiếu capability không phải thiếu quyền. Candidate H6 đã đóng gói đúng source `5e9a079` trong candidate.json; offline replay/audit/hierarchy models không vào Worker. Khi công cụ có lại, xác minh project/audience, backup/schema 0006/0007, deploy đúng candidate và readback theo [runbook](docs/PRODUCTION_RUNBOOK.md). Không tạo cron/Site khác, bỏ client pulse hoặc tìm credential cũ.
 
 **Giới hạn cần nhớ:** ground/playback/tag/pet/bike còn theo viewer; backend completion theo simtime+plan matching, chưa authoritative arrival. Không cấp skill/P2P từ ETA, lời kể hoặc render. Gallery không đồng nghĩa mọi loài đã sống trong phố. Chưa GPU điện thoại/soak/model A/B thực.
 
