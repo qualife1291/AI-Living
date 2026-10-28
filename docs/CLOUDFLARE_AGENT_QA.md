@@ -17,6 +17,16 @@
 - QA token hết hạn 04/11/2026 17:10:19 UTC; cần rotate/cấp mới trước đó, không ghi secret trong Git.
 - Không thay đổi dữ liệu hay automation của ChatGPT Sites A/Cloudflare staging. Không gọi khả năng tự học chạy 24/7 khi chưa có cron đã kiểm.
 
+## Khắc phục 403 ở QA pulse — 29/10/2026
+
+- Lỗi ghi nhận: `POST /api/living/pulse` trả HTTP 403 ngay tại auth gate của `worker/index.ts`, trước route handler. Cloudflare Access có thể xác thực người dùng nhưng các biến `XOM_ADMIN_USER_ID`, `XOM_OWNER_PRIVATE_ORIGIN`, `XOM_LOCAL_ADMIN` của hosting ChatGPT Sites không có trên Worker độc lập.
+- **Không** đặt `XOM_OWNER_PRIVATE_ORIGIN=https://ai-living-qa.hoanglonglea1mtl.workers.dev`: đây là cơ chế native Sites, không phải chứng thực trên Cloudflare; cũng không loại trừ pulse khỏi gate.
+- Commit **`2d8a42eee29ff72c265776bf04a2d7c3ac5cb591`** trên `cloudflare-qa` thêm `cloudflareQaAccessAllowed` trong `lib/admin.ts`; `worker/index.ts` cho phép mutation khi `ctx.access.aud` từ Cloudflare runtime khớp chính xác Access app QA, chỉ trên HTTPS hostname QA. Không tin Origin, header email hoặc `cf-access-jwt-assertion` do client tự gửi. Các luồng Sites A giữ nguyên.
+- `scripts/configure-cloudflare-qa.mjs` inject hai **public config** (`XOM_QA_ACCESS_AUD`, `XOM_QA_HOSTNAME`) vào QA Worker. QA Access app owner+service token vẫn enforced ở edge, deployment giữ nguyên D1 QA.
+- Build `5fd33384-d69d-49ce-8032-ae4e82522b83` **success**, deploy `9cfc7a89-8912-4262-a747-11ebd944df02`, version `61812b25-d703-4016-8248-902977fe773a` 100% traffic. Binding D1 và 2 QA config đã xác minh qua API.
+- **Chưa có browser-authenticated POST sau bản vá**, không gán nhãn bug PASS cho tới khi `/api/living/pulse` thực sự trả 200 (hoặc 409 khi pause/conflict) và D1 `worlds.revision`, `tick_runs`, `living_turns` tăng theo nhịp. Có regression assertions trong `scripts/test-hardening.mjs` nhưng chưa chạy độc lập trong CI.
+- Nếu vẫn 403, cần đọc Worker Logs theo *new version* và kiểm sự tồn tại của `ctx.access` trong runtime, AUD matching, hostname, không mở quyền bằng Origin. Nếu 503 thì xem `living_pulse_failed` và resource limits khác biệt.
+
 > Cập nhật 29/10/2026 (Asia/Ho_Chi_Minh). Tài liệu áp dụng cho **môi trường thử nghiệm QA**, không phải ChatGPT Sites production hoặc Cloudflare staging giữ trạng thái. Kiểm tra trạng thái Cloudflare thực tế trước khi thay đổi; các URL không có nghĩa ứng dụng đã được deploy.
 
 ## 1. Môi trường và phân quyền
