@@ -41,6 +41,7 @@ import {SKILL_DOMAINS,SKILL_LABELS} from "@/lib/living/skills";
 import type { World, EpisodeEvent } from "@/lib/world";
 import type { WeatherState } from "@/lib/clock";
 import {worldTime} from "@/lib/clock";
+import {PauseRequestError, requestPause} from "@/lib/city/pause-request";
 
 type Snapshot = {
   revision: number;
@@ -64,6 +65,7 @@ export default function Page() {
     [quality, setQuality] = useState<Quality>("balanced"),
     [views, setViews] = useState<number | null>(null),
     [pulseError, setPulseError] = useState(""),
+    [controlError, setControlError] = useState(""),
     [navigation, setNavigation] = useState<{
       x: number;
       y: number;
@@ -74,6 +76,7 @@ export default function Page() {
   const dialog = useRef<HTMLDialogElement>(null),
     restoreFocus = useRef<HTMLElement | null>(null);
   const loading = useRef(0);
+  const controlling = useRef(false);
   const newest = useRef({revision:-1,serverMs:0});
   const load = useCallback(async (force = false) => {
     if (loading.current > 0 && !force) return;
@@ -139,22 +142,18 @@ export default function Page() {
     return () => window.removeEventListener("keydown", key);
   }, [panel]);
   async function pause() {
-    if (!data || busy) return;
+    if (!data || controlling.current) return;
+    controlling.current = true;
     setBusy(true);
+    setControlError("");
     try {
-      const r = await fetch("/api/world", {
-        method: "POST",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify({
-          revision: data.revision,
-          paused: !data.world.paused,
-        }),
-      });
-      if (!r.ok) throw Error("Trạng thái vừa đổi, hãy thử lại.");
+      await requestPause(data.revision, !data.world.paused);
       await load(true);
     } catch (e) {
-      setError(e instanceof Error ? e.message : "Lỗi thao tác");
+      if (e instanceof PauseRequestError && e.kind === 'conflict') await load(true);
+      setControlError(e instanceof Error ? e.message : "Lỗi thao tác");
     } finally {
+      controlling.current = false;
       setBusy(false);
     }
   }
@@ -255,10 +254,10 @@ export default function Page() {
           {sound.enabled?<Volume2 size={17}/>:<VolumeX size={17}/>}
         </button>
       </header>
-      {(error || pulseError || sound.error) && (
+      {(controlError || error || pulseError || sound.error) && (
         <div className="live-alert" role="alert">
-          {error || pulseError || sound.error}
-          <button onClick={() => void load()} aria-label="Thử kết nối lại">
+          {controlError || error || pulseError || sound.error}
+          <button disabled={busy} onClick={() => {setControlError("");void load(true);}} aria-label="Thử kết nối lại">
             <RefreshCw size={15} />
           </button>
         </div>

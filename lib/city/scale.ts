@@ -7,8 +7,11 @@ export const VEHICLES = {
   metro: { width: 28, height: 32, length: 120 },
 };
 export type Quality = 'eco' | 'balanced' | 'sharp';
-export function pixelRatio(quality: Quality = 'balanced', dpr = 1) {
-  return Math.max(1, Math.min(dpr, quality === 'eco' ? 1 : quality === 'sharp' ? 2.5 : 1.75));
+export function pixelRatio(quality: Quality = 'balanced', dpr = 1, width = 0, height = 0) {
+  const ratio = Math.max(1, Math.min(Number.isFinite(dpr) ? dpr : 1, quality === 'eco' ? 1 : quality === 'sharp' ? 2.5 : 1.75));
+  if (!(width > 0 && height > 0 && Number.isFinite(width * height))) return ratio;
+  const pixels = quality === 'eco' ? 1_000_000 : quality === 'sharp' ? 6_000_000 : 2_000_000;
+  return Math.min(ratio, width < 700 && quality === 'balanced' ? 1.5 : ratio, Math.sqrt(pixels / (width * height)));
 }
 /** Keep the mobile shadow target at 1 MiB; eco uses existing contact shadows. */
 export function shadowMapSize(quality: Quality = 'balanced', width = 1440) {

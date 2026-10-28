@@ -170,5 +170,8 @@
   ],
   [
     "scripts/test-bounded-search.mjs"
+  ],
+  [
+    "scripts/test-g0-ux.mjs"
   ]
 ]

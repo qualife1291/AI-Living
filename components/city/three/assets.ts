@@ -5,9 +5,13 @@ import catalog from "../../../public/models/kenney/catalog.json" with { type: "j
 import resources from "../../../public/models/resources/catalog.json" with { type: "json" };
 import { resolveModel } from "../../../lib/city/asset-bindings.ts";
 import { CORE_MODELS } from "../../../lib/city/character-models.ts";
+import {cityAssetIds} from '../../../lib/city/city-assets.ts';
+import transfers from '../../../data/assets/city-transfer-manifest.json' with {type:'json'};
+import {decodeAssetTransfer} from '../../../lib/city/asset-transfer.ts';
+
+export {cityAssetIds};
 
 export const approvedAssets = [...catalog.assets, ...resources.assets];
-export const cityAssetIds = [...Object.values(CORE_MODELS), ...["character-a", "character-b", "character-c", "character-d", "character-e", "car-sedan", "car-hatchback", "car-taxi", "display-bread", "display-fruit", "bin"].map(key => resolveModel(key)!).filter(Boolean), "commercial/building-a", "commercial/building-b", "commercial/building-c", "commercial/building-skyscraper-a", "commercial/detail-parasol-a", "suburban/building-type-a", "suburban/building-type-b", "suburban/building-type-c", "suburban/tree-large", "suburban/tree-small", "watercraft/boat-fishing-small", "watercraft/boat-row-small", "watercraft/boat-house-a", "watercraft/buoy", "trains/railroad-straight", "trains/train-tram-modern", "roads/traffic-light"];
 export type AssetPlacement = { id: string; x: number; y: number; z: number; width: number; depth: number; height: number; yaw?: number; stretch?: boolean };
 type Compiled = { geometry: THREE.BufferGeometry; material: THREE.MeshPhongMaterial; size: THREE.Vector3 };
 export type ResourceSets = { geometries: Set<THREE.BufferGeometry>; materials: Set<THREE.Material>; textures: Set<THREE.Texture> };
@@ -23,6 +27,7 @@ export class AssetLibrary {
   private pending = new Map<string, Promise<GLTF>>();
   private compiled = new Map<string, Compiled>();
   private dead = false;
+  private transferAbort = new AbortController();
   readonly failures = new Set<string>();
   get(id: string) { return this.loaded.get(id); }
   async load(id: string) {
@@ -31,7 +36,17 @@ export class AssetLibrary {
     const request = this.pending.get(id); if (request) return request;
     const metadata = approvedAssets.find(a => a.id === id);
     if (!metadata || metadata.license !== "CC0-1.0" || !["/models/kenney/", "/models/resources/"].some(prefix => metadata.url.startsWith(prefix)) || metadata.url.includes("..")) throw new Error(`Unapproved asset: ${id}`);
-    const promise = this.loader.loadAsync(`${metadata.url}?v=${metadata.sha256.slice(0, 12)}`).then(model => {
+    const canonical = `${metadata.url}?v=${metadata.sha256.slice(0, 12)}`;
+    const transfer = transfers.assets.find(a=>a.id===id&&a.sourceSha256===metadata.sha256&&a.sourceUrl===metadata.url);
+    const requestModel = transfer && typeof DecompressionStream !== 'undefined' && globalThis.crypto?.subtle
+      ? fetch(transfer.url,{signal:this.transferAbort.signal}).then(async response=>{
+          if(!response.ok)throw Error('Asset transport unavailable');
+          const decoded=await decodeAssetTransfer(await response.arrayBuffer(),transfer);
+          if(this.dead)throw Error('Asset view disposed');
+          return this.loader.parseAsync(decoded,metadata.url.slice(0,metadata.url.lastIndexOf('/')+1));
+        }).catch(error=>{if(this.dead)throw error;return this.loader.loadAsync(canonical);})
+      : this.loader.loadAsync(canonical);
+    const promise = requestModel.then(model => {
       if (this.dead) { const sets: ResourceSets = { geometries: new Set(), materials: new Set(), textures: new Set() }; collectAssetResources(model.scene, sets); sets.geometries.forEach(g => g.dispose()); sets.materials.forEach(m => m.dispose()); sets.textures.forEach(t => t.dispose()); throw new Error("Asset view disposed"); }
       this.failures.delete(id); this.loaded.set(id, model); return model;
     }).catch(error => { this.failures.add(id); throw error; }).finally(() => { this.pending.delete(id); });
@@ -39,7 +54,14 @@ export class AssetLibrary {
   }
   async preload(ids = cityAssetIds, timeoutMs = 4000) {
     let timer: ReturnType<typeof setTimeout> | undefined;
-    await Promise.race([Promise.allSettled(ids.map(id => this.load(id))), new Promise(resolve => { timer = setTimeout(resolve, timeoutMs); })]);
+    await Promise.race([Promise.allSettled(ids.map(async id => {
+      try { await this.load(id); }
+      catch {
+        const actor=Object.keys(CORE_MODELS).find(actor=>CORE_MODELS[actor]===id);
+        const fallback=actor&&resolveModel(`character-${{an:'a',binh:'b',chi:'c'}[actor as 'an'|'binh'|'chi']}`);
+        if(fallback&&!this.dead)await this.load(fallback);
+      }
+    })), new Promise(resolve => { timer = setTimeout(resolve, timeoutMs); })]);
     if (timer) clearTimeout(timer);
     return this;
   }
@@ -102,7 +124,7 @@ export class AssetLibrary {
       coarse.instanceMatrix.needsUpdate = true; if (coarse.instanceColor) coarse.instanceColor.needsUpdate = true;
     };
   }
-  collectAndClose(sets: ResourceSets) { this.dead = true; this.manager.abort(); for (const model of this.loaded.values()) collectAssetResources(model.scene, sets); for (const model of this.compiled.values()) { sets.geometries.add(model.geometry); sets.materials.add(model.material); } this.loaded.clear(); this.compiled.clear(); }
+  collectAndClose(sets: ResourceSets) { this.dead = true; this.transferAbort.abort(); this.manager.abort(); for (const model of this.loaded.values()) collectAssetResources(model.scene, sets); for (const model of this.compiled.values()) { sets.geometries.add(model.geometry); sets.materials.add(model.material); } this.loaded.clear(); this.compiled.clear(); }
   dispose() { const sets: ResourceSets = { geometries: new Set(), materials: new Set(), textures: new Set() }; this.collectAndClose(sets); sets.geometries.forEach(g => g.dispose()); sets.materials.forEach(m => m.dispose()); sets.textures.forEach(t => t.dispose()); }
   stats() { return { loaded: this.loaded.size, failed: this.failures.size }; }
 }

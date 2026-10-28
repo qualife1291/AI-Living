@@ -1,0 +1,1570 @@
+{
+  "source": "3de93502583b9d430571e1c6ec2bec97ebd02a27",
+  "production": false,
+  "renderer": "Chromium SwiftShader",
+  "fixture": "social-preview-fixture; all API requests mocked; separate fresh pages in one browser; timings are local samples, not hardware/network SLA",
+  "cases": [
+    {
+      "firstReadyMs": 3722.89999999851,
+      "resources": [
+        {
+          "url": "/_next/static/css/index.CzkVscjo.css",
+          "encoded": 5509,
+          "decoded": 22437,
+          "transfer": 5809,
+          "ms": 64,
+          "start": 116.69999999925494
+        },
+        {
+          "url": "/_next/static/chunks/index-D9Nlnmis.js",
+          "encoded": 53345,
+          "decoded": 189638,
+          "transfer": 53645,
+          "ms": 84.30000000074506,
+          "start": 117.29999999888241
+        },
+        {
+          "url": "/_next/static/chunks/rolldown-runtime-C60lm6uB.js",
+          "encoded": 422,
+          "decoded": 694,
+          "transfer": 722,
+          "ms": 141.5,
+          "start": 117.5
+        },
+        {
+          "url": "/_next/static/chunks/framework-D_rUT4EX.js",
+          "encoded": 59092,
+          "decoded": 190152,
+          "transfer": 59392,
+          "ms": 150,
+          "start": 117.89999999850988
+        },
+        {
+          "url": "/_next/static/chunks/app-elements-H_Dr48wG.js",
+          "encoded": 4223,
+          "decoded": 12828,
+          "transfer": 4523,
+          "ms": 142.30000000074506,
+          "start": 118.29999999888241
+        },
+        {
+          "url": "/_next/static/chunks/hash-Cp347hhd.js",
+          "encoded": 181,
+          "decoded": 256,
+          "transfer": 481,
+          "ms": 139.19999999925494,
+          "start": 118.59999999962747
+        },
+        {
+          "url": "/_next/static/chunks/record-uXSNv6cl.js",
+          "encoded": 94,
+          "decoded": 79,
+          "transfer": 394,
+          "ms": 141.2000000011176,
+          "start": 118.89999999850988
+        },
+        {
+          "url": "/_next/static/chunks/app-rsc-render-mode-CvTCGruk.js",
+          "encoded": 345,
+          "decoded": 668,
+          "transfer": 645,
+          "ms": 208.5,
+          "start": 119.09999999962747
+        },
+        {
+          "url": "/_next/static/chunks/app-rsc-cache-busting-BAmlfTMU.js",
+          "encoded": 2046,
+          "decoded": 4962,
+          "transfer": 2346,
+          "ms": 208.7999999988824,
+          "start": 119.09999999962747
+        },
+        {
+          "url": "/_next/static/chunks/headers-C_MtfdF4.js",
+          "encoded": 1285,
+          "decoded": 3286,
+          "transfer": 1585,
+          "ms": 196.59999999962747,
+          "start": 119.5
+        },
+        {
+          "url": "/_next/static/chunks/protocol-headers-B9-bVeat.js",
+          "encoded": 177,
+          "decoded": 327,
+          "transfer": 477,
+          "ms": 207.59999999962747,
+          "start": 119.69999999925494
+        },
+        {
+          "url": "/_next/static/chunks/deployment-id-DFhHa9wO.js",
+          "encoded": 103,
+          "decoded": 97,
+          "transfer": 403,
+          "ms": 208,
+          "start": 119.79999999888241
+        },
+        {
+          "url": "/_next/static/chunks/navigation-errors-D5LMQqDL.js",
+          "encoded": 1625,
+          "decoded": 4040,
+          "transfer": 1925,
+          "ms": 238.90000000037253,
+          "start": 119.79999999888241
+        },
+        {
+          "url": "/_next/static/chunks/layout-segment-context-rS4SuyYw.js",
+          "encoded": 368,
+          "decoded": 534,
+          "transfer": 668,
+          "ms": 268.90000000037253,
+          "start": 119.89999999850988
+        },
+        {
+          "url": "/_next/static/chunks/Diagnostics-D_S4UmTX.js",
+          "encoded": 981,
+          "decoded": 1626,
+          "transfer": 1281,
+          "ms": 271.3999999985099,
+          "start": 120
+        },
+        {
+          "url": "/_next/static/chunks/page-BXNagBQs.js",
+          "encoded": 17621,
+          "decoded": 54406,
+          "transfer": 17921,
+          "ms": 260.5,
+          "start": 120.09999999962747
+        },
+        {
+          "url": "/_next/static/chunks/diagnostics-Cu35oiBn.js",
+          "encoded": 843,
+          "decoded": 1379,
+          "transfer": 1143,
+          "ms": 271.59999999962747,
+          "start": 120.09999999962747
+        },
+        {
+          "url": "/_next/static/chunks/world-CVHWHlub.js",
+          "encoded": 31518,
+          "decoded": 102938,
+          "transfer": 31818,
+          "ms": 277.80000000074506,
+          "start": 120.19999999925494
+        },
+        {
+          "url": "/_next/static/chunks/flora-DDvO37zS.js",
+          "encoded": 1183,
+          "decoded": 2431,
+          "transfer": 1483,
+          "ms": 328.6000000014901,
+          "start": 120.39999999850988
+        },
+        {
+          "url": "/_next/static/chunks/play-BaNA__d8.js",
+          "encoded": 954,
+          "decoded": 1712,
+          "transfer": 1254,
+          "ms": 390.30000000074506,
+          "start": 120.39999999850988
+        },
+        {
+          "url": "/_next/static/chunks/engine-CY0SGOp-.js",
+          "encoded": 16132,
+          "decoded": 51751,
+          "transfer": 16432,
+          "ms": 391.7000000011176,
+          "start": 120.39999999850988
+        },
+        {
+          "url": "/_next/static/chunks/box-C99i-rud.js",
+          "encoded": 214,
+          "decoded": 298,
+          "transfer": 514,
+          "ms": 424.69999999925494,
+          "start": 120.59999999962747
+        },
+        {
+          "url": "/_next/static/chunks/clapperboard-C2m22nic.js",
+          "encoded": 254,
+          "decoded": 348,
+          "transfer": 554,
+          "ms": 424.5,
+          "start": 120.59999999962747
+        },
+        {
+          "url": "https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap",
+          "encoded": 0,
+          "decoded": 0,
+          "transfer": 0,
+          "ms": 63.09999999962747,
+          "start": 182.69999999925494
+        },
+        {
+          "url": "/favicon.ico",
+          "encoded": 0,
+          "decoded": 0,
+          "transfer": 0,
+          "ms": 16.700000001117587,
+          "start": 665.8999999985099
+        },
+        {
+          "url": "/api/living/pulse",
+          "encoded": 21,
+          "decoded": 21,
+          "transfer": 321,
+          "ms": 36.09999999962747,
+          "start": 669.1999999992549
+        },
+        {
+          "url": "/api/visits",
+          "encoded": 21,
+          "decoded": 21,
+          "transfer": 321,
+          "ms": 34.70000000111759,
+          "start": 671.3999999985099
+        },
+        {
+          "url": "/api/world?compact=1",
+          "encoded": 88961,
+          "decoded": 88961,
+          "transfer": 89261,
+          "ms": 34.79999999888241,
+          "start": 674.0999999996275
+        },
+        {
+          "url": "/_next/static/chunks/runtime-CqjRztAp.js",
+          "encoded": 37069,
+          "decoded": 137221,
+          "transfer": 37369,
+          "ms": 36.59999999962747,
+          "start": 765.2999999988824
+        },
+        {
+          "url": "/_next/static/chunks/ground-BZeDjHkR.js",
+          "encoded": 4841,
+          "decoded": 11147,
+          "transfer": 5141,
+          "ms": 45.19999999925494,
+          "start": 765.5999999996275
+        },
+        {
+          "url": "/_next/static/chunks/three.module-TSXUrXAS.js",
+          "encoded": 156273,
+          "decoded": 626193,
+          "transfer": 156573,
+          "ms": 74.5,
+          "start": 766
+        },
+        {
+          "url": "/_next/static/chunks/assets-CDVd-lU9.js",
+          "encoded": 22867,
+          "decoded": 74771,
+          "transfer": 23167,
+          "ms": 109.69999999925494,
+          "start": 768.5999999996275
+        },
+        {
+          "url": "/_next/static/chunks/BufferGeometryUtils-U3RX_RBf.js",
+          "encoded": 1393,
+          "decoded": 4759,
+          "transfer": 1693,
+          "ms": 99.29999999888241,
+          "start": 769.0999999996275
+        },
+        {
+          "url": "/_next/static/chunks/catalog-CinPLLxX.js",
+          "encoded": 37725,
+          "decoded": 164314,
+          "transfer": 38025,
+          "ms": 109.5,
+          "start": 769.5999999996275
+        },
+        {
+          "url": "/_next/static/chunks/people-CSoVaRuC.js",
+          "encoded": 5236,
+          "decoded": 11841,
+          "transfer": 5536,
+          "ms": 97,
+          "start": 770
+        },
+        {
+          "url": "/_next/static/chunks/model-actors-BiAxARO2.js",
+          "encoded": 3539,
+          "decoded": 8021,
+          "transfer": 3839,
+          "ms": 95.40000000037253,
+          "start": 770.3999999985099
+        },
+        {
+          "url": "/_next/static/chunks/rigged-avatar-CYC7fUTg.js",
+          "encoded": 3744,
+          "decoded": 9419,
+          "transfer": 4044,
+          "ms": 120,
+          "start": 770.8999999985099
+        },
+        {
+          "url": "/_next/static/chunks/OrbitControls-DaZD2hrK.js",
+          "encoded": 4436,
+          "decoded": 19876,
+          "transfer": 4736,
+          "ms": 131.09999999962747,
+          "start": 771.1999999992549
+        },
+        {
+          "url": "/models/resources/gobkit-human002/ItEngineer.glb?v=c082c83ec000",
+          "encoded": 702068,
+          "decoded": 702068,
+          "transfer": 702368,
+          "ms": 86.89999999850988,
+          "start": 2153
+        },
+        {
+          "url": "/models/resources/gobkit-human002/Accountant.glb?v=69220c194637",
+          "encoded": 610648,
+          "decoded": 610648,
+          "transfer": 610948,
+          "ms": 92,
+          "start": 2153.5
+        },
+        {
+          "url": "/models/resources/gobkit-human002/Receptionist.glb?v=89b0eda99fdd",
+          "encoded": 640492,
+          "decoded": 640492,
+          "transfer": 640792,
+          "ms": 91.19999999925494,
+          "start": 2154
+        },
+        {
+          "url": "/models/kenney/characters/character-a.glb?v=8ee5dae167ec",
+          "encoded": 113596,
+          "decoded": 113596,
+          "transfer": 113896,
+          "ms": 66.59999999962747,
+          "start": 2154.2999999988824
+        },
+        {
+          "url": "/models/kenney/characters/character-b.glb?v=30ed390a741a",
+          "encoded": 113596,
+          "decoded": 113596,
+          "transfer": 113896,
+          "ms": 84.20000000111759,
+          "start": 2154.7999999988824
+        },
+        {
+          "url": "/models/kenney/characters/character-e.glb?v=9a12684981bc",
+          "encoded": 113596,
+          "decoded": 113596,
+          "transfer": 113896,
+          "ms": 84.09999999962747,
+          "start": 2155.5999999996275
+        },
+        {
+          "url": "/models/kenney/characters/character-d.glb?v=bd7cbf0d45e5",
+          "encoded": 113596,
+          "decoded": 113596,
+          "transfer": 113896,
+          "ms": 96.5,
+          "start": 2155.7999999988824
+        },
+        {
+          "url": "/models/kenney/cars/sedan.glb?v=b532ea7d2c59",
+          "encoded": 172216,
+          "decoded": 172216,
+          "transfer": 172516,
+          "ms": 100.5,
+          "start": 2156.2999999988824
+        },
+        {
+          "url": "/models/kenney/cars/hatchback-sports.glb?v=bd5c9d4c3b4b",
+          "encoded": 197804,
+          "decoded": 197804,
+          "transfer": 198104,
+          "ms": 112.89999999850988,
+          "start": 2157
+        },
+        {
+          "url": "/models/kenney/cars/taxi.glb?v=3803539718ff",
+          "encoded": 175608,
+          "decoded": 175608,
+          "transfer": 175908,
+          "ms": 114.59999999962747,
+          "start": 2157.5
+        },
+        {
+          "url": "/models/kenney/market/display-bread.glb?v=33a57fee0e33",
+          "encoded": 36640,
+          "decoded": 36640,
+          "transfer": 36940,
+          "ms": 134.90000000037253,
+          "start": 2157.89999999851
+        },
+        {
+          "url": "/models/kenney/market/display-fruit.glb?v=4cc38dcbd0f7",
+          "encoded": 62976,
+          "decoded": 62976,
+          "transfer": 63276,
+          "ms": 133.59999999962747,
+          "start": 2158.199999999255
+        },
+        {
+          "url": "/models/kenney/roads/dumpster.glb?v=d87d4a812567",
+          "encoded": 24400,
+          "decoded": 24400,
+          "transfer": 24700,
+          "ms": 133.80000000074506,
+          "start": 2158.39999999851
+        },
+        {
+          "url": "/models/kenney/commercial/building-a.glb?v=5cf220f90ee3",
+          "encoded": 108936,
+          "decoded": 108936,
+          "transfer": 109236,
+          "ms": 182.5,
+          "start": 2158.7999999988824
+        },
+        {
+          "url": "/models/kenney/commercial/building-b.glb?v=3b5d3ac0799c",
+          "encoded": 106408,
+          "decoded": 106408,
+          "transfer": 106708,
+          "ms": 180.40000000037253,
+          "start": 2159.0999999996275
+        },
+        {
+          "url": "/models/kenney/commercial/building-c.glb?v=f6887608a95a",
+          "encoded": 102788,
+          "decoded": 102788,
+          "transfer": 103088,
+          "ms": 181.5,
+          "start": 2159.5
+        },
+        {
+          "url": "/models/kenney/commercial/building-skyscraper-a.glb?v=d8339bbb7594",
+          "encoded": 111336,
+          "decoded": 111336,
+          "transfer": 111636,
+          "ms": 181.09999999962747,
+          "start": 2159.699999999255
+        },
+        {
+          "url": "/models/kenney/commercial/detail-parasol-a.glb?v=70e636bea8dc",
+          "encoded": 10320,
+          "decoded": 10320,
+          "transfer": 10620,
+          "ms": 178.5,
+          "start": 2160
+        },
+        {
+          "url": "/models/kenney/suburban/building-type-a.glb?v=49f32e20b9dc",
+          "encoded": 98604,
+          "decoded": 98604,
+          "transfer": 98904,
+          "ms": 181.30000000074506,
+          "start": 2160.39999999851
+        },
+        {
+          "url": "/models/kenney/suburban/building-type-b.glb?v=a964a10c51bb",
+          "encoded": 146720,
+          "decoded": 146720,
+          "transfer": 147020,
+          "ms": 251.19999999925494,
+          "start": 2160.5
+        },
+        {
+          "url": "/models/kenney/suburban/building-type-c.glb?v=86a69f30f1a0",
+          "encoded": 99592,
+          "decoded": 99592,
+          "transfer": 99892,
+          "ms": 247,
+          "start": 2161
+        },
+        {
+          "url": "/models/kenney/suburban/tree-large.glb?v=16d1f95c149b",
+          "encoded": 5812,
+          "decoded": 5812,
+          "transfer": 6112,
+          "ms": 245.40000000037253,
+          "start": 2161.39999999851
+        },
+        {
+          "url": "/models/kenney/suburban/tree-small.glb?v=5f63359e5f39",
+          "encoded": 5812,
+          "decoded": 5812,
+          "transfer": 6112,
+          "ms": 245.2999999988824,
+          "start": 2161.5999999996275
+        },
+        {
+          "url": "/models/kenney/watercraft/boat-fishing-small.glb?v=f6a03c86e714",
+          "encoded": 22948,
+          "decoded": 22948,
+          "transfer": 23248,
+          "ms": 243.90000000037253,
+          "start": 2161.89999999851
+        },
+        {
+          "url": "/models/kenney/watercraft/boat-row-small.glb?v=82e85f716f05",
+          "encoded": 17636,
+          "decoded": 17636,
+          "transfer": 17936,
+          "ms": 244.19999999925494,
+          "start": 2162.0999999996275
+        },
+        {
+          "url": "/models/kenney/watercraft/boat-house-a.glb?v=8b912a92f6e1",
+          "encoded": 38416,
+          "decoded": 38416,
+          "transfer": 38716,
+          "ms": 275.2000000011176,
+          "start": 2162.89999999851
+        },
+        {
+          "url": "/models/kenney/watercraft/buoy.glb?v=25cde68fddea",
+          "encoded": 12112,
+          "decoded": 12112,
+          "transfer": 12412,
+          "ms": 275.69999999925494,
+          "start": 2163.5
+        },
+        {
+          "url": "/models/kenney/trains/railroad-straight.glb?v=bcbd501f74b7",
+          "encoded": 34736,
+          "decoded": 34736,
+          "transfer": 35036,
+          "ms": 273.59999999962747,
+          "start": 2165.0999999996275
+        },
+        {
+          "url": "/models/kenney/trains/train-tram-modern.glb?v=a4c82a34554a",
+          "encoded": 135128,
+          "decoded": 135128,
+          "transfer": 135428,
+          "ms": 274,
+          "start": 2165.7999999988824
+        },
+        {
+          "url": "/models/kenney/roads/traffic-light.glb?v=6c9ee253b737",
+          "encoded": 20344,
+          "decoded": 20344,
+          "transfer": 20644,
+          "ms": 281.40000000037253,
+          "start": 2166.199999999255
+        },
+        {
+          "url": "/models/kenney/characters/Textures/texture-a.png",
+          "encoded": 14875,
+          "decoded": 14875,
+          "transfer": 15175,
+          "ms": 145.5,
+          "start": 2303.2999999988824
+        },
+        {
+          "url": "/models/kenney/characters/Textures/texture-b.png",
+          "encoded": 11109,
+          "decoded": 11109,
+          "transfer": 11409,
+          "ms": 143.2999999988824,
+          "start": 2311
+        },
+        {
+          "url": "/models/kenney/characters/Textures/texture-e.png",
+          "encoded": 11432,
+          "decoded": 11432,
+          "transfer": 11732,
+          "ms": 24.90000000037253,
+          "start": 2437.7999999988824
+        },
+        {
+          "url": "/models/kenney/characters/Textures/texture-d.png",
+          "encoded": 11205,
+          "decoded": 11205,
+          "transfer": 11505,
+          "ms": 26.5,
+          "start": 2451
+        },
+        {
+          "url": "/models/kenney/cars/Textures/colormap.png",
+          "encoded": 3977,
+          "decoded": 3977,
+          "transfer": 4277,
+          "ms": 44.69999999925494,
+          "start": 2453.699999999255
+        },
+        {
+          "url": "/models/kenney/cars/Textures/colormap.png",
+          "encoded": 3977,
+          "decoded": 3977,
+          "transfer": 4277,
+          "ms": 39.59999999962747,
+          "start": 2457.0999999996275
+        },
+        {
+          "url": "/models/kenney/cars/Textures/colormap.png",
+          "encoded": 3977,
+          "decoded": 3977,
+          "transfer": 4277,
+          "ms": 39.40000000037253,
+          "start": 2458.89999999851
+        },
+        {
+          "url": "/models/kenney/market/Textures/colormap.png",
+          "encoded": 5503,
+          "decoded": 5503,
+          "transfer": 5803,
+          "ms": 66.5,
+          "start": 2467.7999999988824
+        },
+        {
+          "url": "/models/kenney/roads/Textures/colormap.png",
+          "encoded": 3700,
+          "decoded": 3700,
+          "transfer": 4000,
+          "ms": 55.20000000111759,
+          "start": 2468.89999999851
+        },
+        {
+          "url": "/models/kenney/market/Textures/colormap.png",
+          "encoded": 5503,
+          "decoded": 5503,
+          "transfer": 5803,
+          "ms": 54.59999999962747,
+          "start": 2470
+        },
+        {
+          "url": "/models/kenney/commercial/Textures/colormap.png",
+          "encoded": 3504,
+          "decoded": 3504,
+          "transfer": 3804,
+          "ms": 62.19999999925494,
+          "start": 2487
+        },
+        {
+          "url": "/models/kenney/commercial/Textures/colormap.png",
+          "encoded": 3504,
+          "decoded": 3504,
+          "transfer": 3804,
+          "ms": 64.89999999850988,
+          "start": 2488.5
+        },
+        {
+          "url": "/models/kenney/commercial/Textures/colormap.png",
+          "encoded": 3504,
+          "decoded": 3504,
+          "transfer": 3804,
+          "ms": 94.70000000111759,
+          "start": 2490.2999999988824
+        },
+        {
+          "url": "/models/kenney/commercial/Textures/colormap.png",
+          "encoded": 3504,
+          "decoded": 3504,
+          "transfer": 3804,
+          "ms": 96.40000000037253,
+          "start": 2491.2999999988824
+        },
+        {
+          "url": "/models/kenney/suburban/Textures/colormap.png",
+          "encoded": 7047,
+          "decoded": 7047,
+          "transfer": 7347,
+          "ms": 90.20000000111759,
+          "start": 2492.2999999988824
+        },
+        {
+          "url": "/models/kenney/commercial/Textures/colormap.png",
+          "encoded": 3504,
+          "decoded": 3504,
+          "transfer": 3804,
+          "ms": 90.40000000037253,
+          "start": 2494.0999999996275
+        },
+        {
+          "url": "/models/kenney/suburban/Textures/colormap.png",
+          "encoded": 7047,
+          "decoded": 7047,
+          "transfer": 7347,
+          "ms": 94.5,
+          "start": 2495.39999999851
+        },
+        {
+          "url": "/models/kenney/suburban/Textures/colormap.png",
+          "encoded": 7047,
+          "decoded": 7047,
+          "transfer": 7347,
+          "ms": 92,
+          "start": 2498
+        },
+        {
+          "url": "/models/kenney/watercraft/Textures/colormap.png",
+          "encoded": 5781,
+          "decoded": 5781,
+          "transfer": 6081,
+          "ms": 100.20000000111759,
+          "start": 2499.39999999851
+        },
+        {
+          "url": "/models/kenney/watercraft/Textures/colormap.png",
+          "encoded": 5781,
+          "decoded": 5781,
+          "transfer": 6081,
+          "ms": 108.29999999888241,
+          "start": 2500.5999999996275
+        },
+        {
+          "url": "/models/kenney/suburban/Textures/colormap.png",
+          "encoded": 7047,
+          "decoded": 7047,
+          "transfer": 7347,
+          "ms": 91.70000000111759,
+          "start": 2517.2999999988824
+        },
+        {
+          "url": "/models/kenney/suburban/Textures/colormap.png",
+          "encoded": 7047,
+          "decoded": 7047,
+          "transfer": 7347,
+          "ms": 96.59999999962747,
+          "start": 2521
+        },
+        {
+          "url": "/models/kenney/watercraft/Textures/colormap.png",
+          "encoded": 5781,
+          "decoded": 5781,
+          "transfer": 6081,
+          "ms": 84.09999999962747,
+          "start": 2524.5
+        },
+        {
+          "url": "/models/kenney/trains/Textures/colormap.png",
+          "encoded": 8052,
+          "decoded": 8052,
+          "transfer": 8352,
+          "ms": 79.30000000074506,
+          "start": 2529.39999999851
+        },
+        {
+          "url": "/models/kenney/trains/Textures/colormap.png",
+          "encoded": 8052,
+          "decoded": 8052,
+          "transfer": 8352,
+          "ms": 85.5,
+          "start": 2532.2999999988824
+        },
+        {
+          "url": "/models/kenney/watercraft/Textures/colormap.png",
+          "encoded": 5781,
+          "decoded": 5781,
+          "transfer": 6081,
+          "ms": 93.70000000111759,
+          "start": 2533.39999999851
+        },
+        {
+          "url": "/models/kenney/roads/Textures/colormap.png",
+          "encoded": 3700,
+          "decoded": 3700,
+          "transfer": 4000,
+          "ms": 84.59999999962747,
+          "start": 2544
+        }
+      ],
+      "canvas": [
+        2520,
+        1575
+      ],
+      "css": [
+        1440,
+        900
+      ],
+      "dpr": 2,
+      "quality": "balanced",
+      "pixelRatio": "1.75",
+      "drawCalls": "63",
+      "viewport": "desktop",
+      "errors": [],
+      "modelBytes": 4325825,
+      "jsBytes": 470129
+    },
+    {
+      "firstReadyMs": 1958.8999999985099,
+      "resources": [
+        {
+          "url": "/_next/static/css/index.CzkVscjo.css",
+          "encoded": 5509,
+          "decoded": 22437,
+          "transfer": 5809,
+          "ms": 43.79999999888241,
+          "start": 61.59999999962747
+        },
+        {
+          "url": "/_next/static/chunks/index-D9Nlnmis.js",
+          "encoded": 53345,
+          "decoded": 189638,
+          "transfer": 53645,
+          "ms": 64.40000000037253,
+          "start": 62.899999998509884
+        },
+        {
+          "url": "/_next/static/chunks/rolldown-runtime-C60lm6uB.js",
+          "encoded": 422,
+          "decoded": 694,
+          "transfer": 722,
+          "ms": 85.10000000149012,
+          "start": 63.399999998509884
+        },
+        {
+          "url": "/_next/static/chunks/framework-D_rUT4EX.js",
+          "encoded": 59092,
+          "decoded": 190152,
+          "transfer": 59392,
+          "ms": 94,
+          "start": 64.29999999888241
+        },
+        {
+          "url": "/_next/static/chunks/app-elements-H_Dr48wG.js",
+          "encoded": 4223,
+          "decoded": 12828,
+          "transfer": 4523,
+          "ms": 75.70000000111759,
+          "start": 73.39999999850988
+        },
+        {
+          "url": "/_next/static/chunks/hash-Cp347hhd.js",
+          "encoded": 181,
+          "decoded": 256,
+          "transfer": 481,
+          "ms": 73.29999999888241,
+          "start": 73.59999999962747
+        },
+        {
+          "url": "/_next/static/chunks/record-uXSNv6cl.js",
+          "encoded": 94,
+          "decoded": 79,
+          "transfer": 394,
+          "ms": 74.59999999962747,
+          "start": 73.69999999925494
+        },
+        {
+          "url": "/_next/static/chunks/headers-C_MtfdF4.js",
+          "encoded": 1285,
+          "decoded": 3286,
+          "transfer": 1585,
+          "ms": 109.69999999925494,
+          "start": 73.69999999925494
+        },
+        {
+          "url": "/_next/static/chunks/app-rsc-cache-busting-BAmlfTMU.js",
+          "encoded": 2046,
+          "decoded": 4962,
+          "transfer": 2346,
+          "ms": 110.40000000037253,
+          "start": 73.69999999925494
+        },
+        {
+          "url": "/_next/static/chunks/app-rsc-render-mode-CvTCGruk.js",
+          "encoded": 345,
+          "decoded": 668,
+          "transfer": 645,
+          "ms": 110.40000000037253,
+          "start": 73.69999999925494
+        },
+        {
+          "url": "/_next/static/chunks/protocol-headers-B9-bVeat.js",
+          "encoded": 177,
+          "decoded": 327,
+          "transfer": 477,
+          "ms": 109.90000000037253,
+          "start": 73.89999999850988
+        },
+        {
+          "url": "/_next/static/chunks/navigation-errors-D5LMQqDL.js",
+          "encoded": 1625,
+          "decoded": 4040,
+          "transfer": 1925,
+          "ms": 115.30000000074506,
+          "start": 73.89999999850988
+        },
+        {
+          "url": "/_next/static/chunks/deployment-id-DFhHa9wO.js",
+          "encoded": 103,
+          "decoded": 97,
+          "transfer": 403,
+          "ms": 114.5,
+          "start": 73.89999999850988
+        },
+        {
+          "url": "/_next/static/chunks/layout-segment-context-rS4SuyYw.js",
+          "encoded": 368,
+          "decoded": 534,
+          "transfer": 668,
+          "ms": 126.20000000111759,
+          "start": 73.89999999850988
+        },
+        {
+          "url": "/_next/static/chunks/Diagnostics-D_S4UmTX.js",
+          "encoded": 981,
+          "decoded": 1626,
+          "transfer": 1281,
+          "ms": 139.30000000074506,
+          "start": 73.89999999850988
+        },
+        {
+          "url": "/_next/static/chunks/diagnostics-Cu35oiBn.js",
+          "encoded": 843,
+          "decoded": 1379,
+          "transfer": 1143,
+          "ms": 140.59999999962747,
+          "start": 74
+        },
+        {
+          "url": "/_next/static/chunks/page-BXNagBQs.js",
+          "encoded": 17621,
+          "decoded": 54406,
+          "transfer": 17921,
+          "ms": 144.09999999962747,
+          "start": 74.09999999962747
+        },
+        {
+          "url": "/_next/static/chunks/world-CVHWHlub.js",
+          "encoded": 31518,
+          "decoded": 102938,
+          "transfer": 31818,
+          "ms": 143.40000000037253,
+          "start": 74.19999999925494
+        },
+        {
+          "url": "/_next/static/chunks/flora-DDvO37zS.js",
+          "encoded": 1183,
+          "decoded": 2431,
+          "transfer": 1483,
+          "ms": 138.7000000011176,
+          "start": 74.29999999888241
+        },
+        {
+          "url": "/_next/static/chunks/engine-CY0SGOp-.js",
+          "encoded": 16132,
+          "decoded": 51751,
+          "transfer": 16432,
+          "ms": 184,
+          "start": 74.59999999962747
+        },
+        {
+          "url": "/_next/static/chunks/box-C99i-rud.js",
+          "encoded": 214,
+          "decoded": 298,
+          "transfer": 514,
+          "ms": 183.90000000037253,
+          "start": 74.69999999925494
+        },
+        {
+          "url": "/_next/static/chunks/play-BaNA__d8.js",
+          "encoded": 954,
+          "decoded": 1712,
+          "transfer": 1254,
+          "ms": 183.80000000074506,
+          "start": 74.69999999925494
+        },
+        {
+          "url": "/_next/static/chunks/clapperboard-C2m22nic.js",
+          "encoded": 254,
+          "decoded": 348,
+          "transfer": 554,
+          "ms": 184.09999999962747,
+          "start": 74.79999999888241
+        },
+        {
+          "url": "https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap",
+          "encoded": 0,
+          "decoded": 0,
+          "transfer": 0,
+          "ms": 68.69999999925494,
+          "start": 110
+        },
+        {
+          "url": "/favicon.ico",
+          "encoded": 0,
+          "decoded": 0,
+          "transfer": 0,
+          "ms": 6.200000001117587,
+          "start": 368.3999999985099
+        },
+        {
+          "url": "/api/living/pulse",
+          "encoded": 21,
+          "decoded": 21,
+          "transfer": 321,
+          "ms": 16.699999999254942,
+          "start": 431.5
+        },
+        {
+          "url": "/api/visits",
+          "encoded": 21,
+          "decoded": 21,
+          "transfer": 321,
+          "ms": 15.700000001117587,
+          "start": 432.7999999988824
+        },
+        {
+          "url": "/api/world?compact=1",
+          "encoded": 88961,
+          "decoded": 88961,
+          "transfer": 89261,
+          "ms": 23.09999999962747,
+          "start": 433.7999999988824
+        },
+        {
+          "url": "/_next/static/chunks/runtime-CqjRztAp.js",
+          "encoded": 37069,
+          "decoded": 137221,
+          "transfer": 37369,
+          "ms": 43.20000000111759,
+          "start": 503.8999999985099
+        },
+        {
+          "url": "/_next/static/chunks/ground-BZeDjHkR.js",
+          "encoded": 4841,
+          "decoded": 11147,
+          "transfer": 5141,
+          "ms": 63.29999999888241,
+          "start": 504.09999999962747
+        },
+        {
+          "url": "/_next/static/chunks/three.module-TSXUrXAS.js",
+          "encoded": 156273,
+          "decoded": 626193,
+          "transfer": 156573,
+          "ms": 88.80000000074506,
+          "start": 504.3999999985099
+        },
+        {
+          "url": "/_next/static/chunks/assets-CDVd-lU9.js",
+          "encoded": 22867,
+          "decoded": 74771,
+          "transfer": 23167,
+          "ms": 72.5,
+          "start": 504.5
+        },
+        {
+          "url": "/_next/static/chunks/BufferGeometryUtils-U3RX_RBf.js",
+          "encoded": 1393,
+          "decoded": 4759,
+          "transfer": 1693,
+          "ms": 62.90000000037253,
+          "start": 504.69999999925494
+        },
+        {
+          "url": "/_next/static/chunks/catalog-CinPLLxX.js",
+          "encoded": 37725,
+          "decoded": 164314,
+          "transfer": 38025,
+          "ms": 78.70000000111759,
+          "start": 504.8999999985099
+        },
+        {
+          "url": "/_next/static/chunks/people-CSoVaRuC.js",
+          "encoded": 5236,
+          "decoded": 11841,
+          "transfer": 5536,
+          "ms": 99.40000000037253,
+          "start": 505.09999999962747
+        },
+        {
+          "url": "/_next/static/chunks/model-actors-BiAxARO2.js",
+          "encoded": 3539,
+          "decoded": 8021,
+          "transfer": 3839,
+          "ms": 99.30000000074506,
+          "start": 505.2999999988824
+        },
+        {
+          "url": "/_next/static/chunks/rigged-avatar-CYC7fUTg.js",
+          "encoded": 3744,
+          "decoded": 9419,
+          "transfer": 4044,
+          "ms": 98.69999999925494,
+          "start": 505.5
+        },
+        {
+          "url": "/_next/static/chunks/OrbitControls-DaZD2hrK.js",
+          "encoded": 4436,
+          "decoded": 19876,
+          "transfer": 4736,
+          "ms": 101.5,
+          "start": 505.59999999962747
+        },
+        {
+          "url": "/models/resources/gobkit-human002/ItEngineer.glb?v=c082c83ec000",
+          "encoded": 702068,
+          "decoded": 702068,
+          "transfer": 702368,
+          "ms": 32.20000000111759,
+          "start": 953.7999999988824
+        },
+        {
+          "url": "/models/resources/gobkit-human002/Accountant.glb?v=69220c194637",
+          "encoded": 610648,
+          "decoded": 610648,
+          "transfer": 610948,
+          "ms": 56.19999999925494,
+          "start": 954.5
+        },
+        {
+          "url": "/models/resources/gobkit-human002/Receptionist.glb?v=89b0eda99fdd",
+          "encoded": 640492,
+          "decoded": 640492,
+          "transfer": 640792,
+          "ms": 55.09999999962747,
+          "start": 955.0999999996275
+        },
+        {
+          "url": "/models/kenney/characters/character-a.glb?v=8ee5dae167ec",
+          "encoded": 113596,
+          "decoded": 113596,
+          "transfer": 113896,
+          "ms": 34.5,
+          "start": 955.5999999996275
+        },
+        {
+          "url": "/models/kenney/characters/character-b.glb?v=30ed390a741a",
+          "encoded": 113596,
+          "decoded": 113596,
+          "transfer": 113896,
+          "ms": 45.90000000037253,
+          "start": 956.2999999988824
+        },
+        {
+          "url": "/models/kenney/characters/character-e.glb?v=9a12684981bc",
+          "encoded": 113596,
+          "decoded": 113596,
+          "transfer": 113896,
+          "ms": 47.19999999925494,
+          "start": 956.6999999992549
+        },
+        {
+          "url": "/models/kenney/characters/character-d.glb?v=bd7cbf0d45e5",
+          "encoded": 113596,
+          "decoded": 113596,
+          "transfer": 113896,
+          "ms": 47.70000000111759,
+          "start": 957.3999999985099
+        },
+        {
+          "url": "/models/kenney/cars/sedan.glb?v=b532ea7d2c59",
+          "encoded": 172216,
+          "decoded": 172216,
+          "transfer": 172516,
+          "ms": 51.59999999962747,
+          "start": 957.6999999992549
+        },
+        {
+          "url": "/models/kenney/cars/hatchback-sports.glb?v=bd5c9d4c3b4b",
+          "encoded": 197804,
+          "decoded": 197804,
+          "transfer": 198104,
+          "ms": 56.30000000074506,
+          "start": 957.8999999985099
+        },
+        {
+          "url": "/models/kenney/cars/taxi.glb?v=3803539718ff",
+          "encoded": 175608,
+          "decoded": 175608,
+          "transfer": 175908,
+          "ms": 62.59999999962747,
+          "start": 958.2999999988824
+        },
+        {
+          "url": "/models/kenney/market/display-bread.glb?v=33a57fee0e33",
+          "encoded": 36640,
+          "decoded": 36640,
+          "transfer": 36940,
+          "ms": 61.90000000037253,
+          "start": 958.3999999985099
+        },
+        {
+          "url": "/models/kenney/market/display-fruit.glb?v=4cc38dcbd0f7",
+          "encoded": 62976,
+          "decoded": 62976,
+          "transfer": 63276,
+          "ms": 69.40000000037253,
+          "start": 958.7999999988824
+        },
+        {
+          "url": "/models/kenney/roads/dumpster.glb?v=d87d4a812567",
+          "encoded": 24400,
+          "decoded": 24400,
+          "transfer": 24700,
+          "ms": 69.60000000149012,
+          "start": 958.8999999985099
+        },
+        {
+          "url": "/models/kenney/commercial/building-a.glb?v=5cf220f90ee3",
+          "encoded": 108936,
+          "decoded": 108936,
+          "transfer": 109236,
+          "ms": 94.59999999962747,
+          "start": 959
+        },
+        {
+          "url": "/models/kenney/commercial/building-b.glb?v=3b5d3ac0799c",
+          "encoded": 106408,
+          "decoded": 106408,
+          "transfer": 106708,
+          "ms": 94.79999999888241,
+          "start": 959
+        },
+        {
+          "url": "/models/kenney/commercial/building-c.glb?v=f6887608a95a",
+          "encoded": 102788,
+          "decoded": 102788,
+          "transfer": 103088,
+          "ms": 91.60000000149012,
+          "start": 959.3999999985099
+        },
+        {
+          "url": "/models/kenney/commercial/building-skyscraper-a.glb?v=d8339bbb7594",
+          "encoded": 111336,
+          "decoded": 111336,
+          "transfer": 111636,
+          "ms": 93.5,
+          "start": 959.8999999985099
+        },
+        {
+          "url": "/models/kenney/commercial/detail-parasol-a.glb?v=70e636bea8dc",
+          "encoded": 10320,
+          "decoded": 10320,
+          "transfer": 10620,
+          "ms": 92.19999999925494,
+          "start": 960.1999999992549
+        },
+        {
+          "url": "/models/kenney/suburban/building-type-a.glb?v=49f32e20b9dc",
+          "encoded": 98604,
+          "decoded": 98604,
+          "transfer": 98904,
+          "ms": 94.80000000074506,
+          "start": 960.7999999988824
+        },
+        {
+          "url": "/models/kenney/suburban/building-type-b.glb?v=a964a10c51bb",
+          "encoded": 146720,
+          "decoded": 146720,
+          "transfer": 147020,
+          "ms": 106.59999999962747,
+          "start": 961.0999999996275
+        },
+        {
+          "url": "/models/kenney/suburban/building-type-c.glb?v=86a69f30f1a0",
+          "encoded": 99592,
+          "decoded": 99592,
+          "transfer": 99892,
+          "ms": 107.40000000037253,
+          "start": 961.0999999996275
+        },
+        {
+          "url": "/models/kenney/suburban/tree-large.glb?v=16d1f95c149b",
+          "encoded": 5812,
+          "decoded": 5812,
+          "transfer": 6112,
+          "ms": 108.5,
+          "start": 961.2999999988824
+        },
+        {
+          "url": "/models/kenney/suburban/tree-small.glb?v=5f63359e5f39",
+          "encoded": 5812,
+          "decoded": 5812,
+          "transfer": 6112,
+          "ms": 108.29999999888241,
+          "start": 961.5999999996275
+        },
+        {
+          "url": "/models/kenney/watercraft/boat-fishing-small.glb?v=f6a03c86e714",
+          "encoded": 22948,
+          "decoded": 22948,
+          "transfer": 23248,
+          "ms": 123.89999999850988,
+          "start": 962
+        },
+        {
+          "url": "/models/kenney/watercraft/boat-row-small.glb?v=82e85f716f05",
+          "encoded": 17636,
+          "decoded": 17636,
+          "transfer": 17936,
+          "ms": 123,
+          "start": 962.8999999985099
+        },
+        {
+          "url": "/models/kenney/watercraft/boat-house-a.glb?v=8b912a92f6e1",
+          "encoded": 38416,
+          "decoded": 38416,
+          "transfer": 38716,
+          "ms": 122.60000000149012,
+          "start": 963.3999999985099
+        },
+        {
+          "url": "/models/kenney/trains/railroad-straight.glb?v=bcbd501f74b7",
+          "encoded": 34736,
+          "decoded": 34736,
+          "transfer": 35036,
+          "ms": 124.5,
+          "start": 963.5999999996275
+        },
+        {
+          "url": "/models/kenney/watercraft/buoy.glb?v=25cde68fddea",
+          "encoded": 12112,
+          "decoded": 12112,
+          "transfer": 12412,
+          "ms": 126.79999999888241,
+          "start": 963.5999999996275
+        },
+        {
+          "url": "/models/kenney/trains/train-tram-modern.glb?v=a4c82a34554a",
+          "encoded": 135128,
+          "decoded": 135128,
+          "transfer": 135428,
+          "ms": 125,
+          "start": 963.7999999988824
+        },
+        {
+          "url": "/models/kenney/roads/traffic-light.glb?v=6c9ee253b737",
+          "encoded": 20344,
+          "decoded": 20344,
+          "transfer": 20644,
+          "ms": 133.59999999962747,
+          "start": 964.5
+        },
+        {
+          "url": "/models/kenney/characters/Textures/texture-a.png",
+          "encoded": 14875,
+          "decoded": 14875,
+          "transfer": 15175,
+          "ms": 59.5,
+          "start": 1039
+        },
+        {
+          "url": "/models/kenney/characters/Textures/texture-b.png",
+          "encoded": 11109,
+          "decoded": 11109,
+          "transfer": 11409,
+          "ms": 58.600000001490116,
+          "start": 1044.3999999985099
+        },
+        {
+          "url": "/models/kenney/characters/Textures/texture-e.png",
+          "encoded": 11432,
+          "decoded": 11432,
+          "transfer": 11732,
+          "ms": 20,
+          "start": 1083.0999999996275
+        },
+        {
+          "url": "/models/kenney/characters/Textures/texture-d.png",
+          "encoded": 11205,
+          "decoded": 11205,
+          "transfer": 11505,
+          "ms": 17.899999998509884,
+          "start": 1096
+        },
+        {
+          "url": "/models/kenney/cars/Textures/colormap.png",
+          "encoded": 3977,
+          "decoded": 3977,
+          "transfer": 4277,
+          "ms": 16.199999999254942,
+          "start": 1098.5999999996275
+        },
+        {
+          "url": "/models/kenney/cars/Textures/colormap.png",
+          "encoded": 3977,
+          "decoded": 3977,
+          "transfer": 4277,
+          "ms": 21.700000001117587,
+          "start": 1099.7999999988824
+        },
+        {
+          "url": "/models/kenney/cars/Textures/colormap.png",
+          "encoded": 3977,
+          "decoded": 3977,
+          "transfer": 4277,
+          "ms": 20.40000000037253,
+          "start": 1101.199999999255
+        },
+        {
+          "url": "/models/kenney/market/Textures/colormap.png",
+          "encoded": 5503,
+          "decoded": 5503,
+          "transfer": 5803,
+          "ms": 45,
+          "start": 1102.3999999985099
+        },
+        {
+          "url": "/models/kenney/market/Textures/colormap.png",
+          "encoded": 5503,
+          "decoded": 5503,
+          "transfer": 5803,
+          "ms": 33.80000000074506,
+          "start": 1103.7999999988824
+        },
+        {
+          "url": "/models/kenney/roads/Textures/colormap.png",
+          "encoded": 3700,
+          "decoded": 3700,
+          "transfer": 4000,
+          "ms": 33.5,
+          "start": 1104.8999999985099
+        },
+        {
+          "url": "/models/kenney/commercial/Textures/colormap.png",
+          "encoded": 3504,
+          "decoded": 3504,
+          "transfer": 3804,
+          "ms": 35.20000000111759,
+          "start": 1115.7999999988824
+        },
+        {
+          "url": "/models/kenney/commercial/Textures/colormap.png",
+          "encoded": 3504,
+          "decoded": 3504,
+          "transfer": 3804,
+          "ms": 42.69999999925494,
+          "start": 1116.699999999255
+        },
+        {
+          "url": "/models/kenney/commercial/Textures/colormap.png",
+          "encoded": 3504,
+          "decoded": 3504,
+          "transfer": 3804,
+          "ms": 42.20000000111759,
+          "start": 1117.3999999985099
+        },
+        {
+          "url": "/models/kenney/commercial/Textures/colormap.png",
+          "encoded": 3504,
+          "decoded": 3504,
+          "transfer": 3804,
+          "ms": 43.59999999962747,
+          "start": 1118.199999999255
+        },
+        {
+          "url": "/models/kenney/commercial/Textures/colormap.png",
+          "encoded": 3504,
+          "decoded": 3504,
+          "transfer": 3804,
+          "ms": 47.69999999925494,
+          "start": 1119.0999999996275
+        },
+        {
+          "url": "/models/kenney/suburban/Textures/colormap.png",
+          "encoded": 7047,
+          "decoded": 7047,
+          "transfer": 7347,
+          "ms": 48.600000001490116,
+          "start": 1120.3999999985099
+        },
+        {
+          "url": "/models/kenney/suburban/Textures/colormap.png",
+          "encoded": 7047,
+          "decoded": 7047,
+          "transfer": 7347,
+          "ms": 45.19999999925494,
+          "start": 1124.199999999255
+        },
+        {
+          "url": "/models/kenney/suburban/Textures/colormap.png",
+          "encoded": 7047,
+          "decoded": 7047,
+          "transfer": 7347,
+          "ms": 52.40000000037253,
+          "start": 1125.2999999988824
+        },
+        {
+          "url": "/models/kenney/suburban/Textures/colormap.png",
+          "encoded": 7047,
+          "decoded": 7047,
+          "transfer": 7347,
+          "ms": 52,
+          "start": 1126.0999999996275
+        },
+        {
+          "url": "/models/kenney/suburban/Textures/colormap.png",
+          "encoded": 7047,
+          "decoded": 7047,
+          "transfer": 7347,
+          "ms": 54.90000000037253,
+          "start": 1126.7999999988824
+        },
+        {
+          "url": "/models/kenney/watercraft/Textures/colormap.png",
+          "encoded": 5781,
+          "decoded": 5781,
+          "transfer": 6081,
+          "ms": 55.09999999962747,
+          "start": 1128.7999999988824
+        },
+        {
+          "url": "/models/kenney/watercraft/Textures/colormap.png",
+          "encoded": 5781,
+          "decoded": 5781,
+          "transfer": 6081,
+          "ms": 57.5,
+          "start": 1130.0999999996275
+        },
+        {
+          "url": "/models/kenney/watercraft/Textures/colormap.png",
+          "encoded": 5781,
+          "decoded": 5781,
+          "transfer": 6081,
+          "ms": 60.90000000037253,
+          "start": 1130.8999999985099
+        },
+        {
+          "url": "/models/kenney/trains/Textures/colormap.png",
+          "encoded": 8052,
+          "decoded": 8052,
+          "transfer": 8352,
+          "ms": 59.80000000074506,
+          "start": 1131.8999999985099
+        },
+        {
+          "url": "/models/kenney/trains/Textures/colormap.png",
+          "encoded": 8052,
+          "decoded": 8052,
+          "transfer": 8352,
+          "ms": 59.09999999962747,
+          "start": 1135.5
+        },
+        {
+          "url": "/models/kenney/watercraft/Textures/colormap.png",
+          "encoded": 5781,
+          "decoded": 5781,
+          "transfer": 6081,
+          "ms": 75.5,
+          "start": 1136.3999999985099
+        },
+        {
+          "url": "/models/kenney/roads/Textures/colormap.png",
+          "encoded": 3700,
+          "decoded": 3700,
+          "transfer": 4000,
+          "ms": 74.40000000037253,
+          "start": 1137.2999999988824
+        }
+      ],
+      "canvas": [
+        682,
+        1477
+      ],
+      "css": [
+        390,
+        844
+      ],
+      "dpr": 3,
+      "quality": "balanced",
+      "pixelRatio": "1.75",
+      "drawCalls": "57",
+      "viewport": "mobile",
+      "errors": [],
+      "modelBytes": 4325825,
+      "jsBytes": 470129
+    }
+  ]
+}

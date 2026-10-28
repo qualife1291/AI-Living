@@ -1,0 +1,296 @@
+{
+  "version": 1,
+  "kind": "lossless-city-transport-v1",
+  "canonicalCatalogs": [
+    "/models/kenney/catalog.json",
+    "/models/resources/catalog.json"
+  ],
+  "assets": [
+    {
+      "id": "cars/hatchback-sports",
+      "format": "gzip",
+      "sourceUrl": "/models/kenney/cars/hatchback-sports.glb",
+      "sourceSha256": "bd5c9d4c3b4bdd254a66b8426563a68b1487ae7a5076df3a2488e6ffed7be64f",
+      "sourceBytes": 197804,
+      "license": "CC0-1.0",
+      "url": "/models/derivatives/bd5c9d4c3b4bdd254a66b8426563a68b1487ae7a5076df3a2488e6ffed7be64f.glb.gz",
+      "sha256": "7319ebc3996c7bd860b0a2d820ae0e1a77890943a6ba2a5cd8f5a72ae3a4ae99",
+      "bytes": 29881
+    },
+    {
+      "id": "cars/sedan",
+      "format": "gzip",
+      "sourceUrl": "/models/kenney/cars/sedan.glb",
+      "sourceSha256": "b532ea7d2c59f7f6b22b138cf1955218a2c1898f1cea932af4d3fd563c3959b7",
+      "sourceBytes": 172216,
+      "license": "CC0-1.0",
+      "url": "/models/derivatives/b532ea7d2c59f7f6b22b138cf1955218a2c1898f1cea932af4d3fd563c3959b7.glb.gz",
+      "sha256": "b4cd89d299a6e6d0fe2b3bd4bcb91a422d8861ab7107f5af06ca60cbe49d132b",
+      "bytes": 31438
+    },
+    {
+      "id": "cars/taxi",
+      "format": "gzip",
+      "sourceUrl": "/models/kenney/cars/taxi.glb",
+      "sourceSha256": "3803539718ffd3b84b515dbce8ed6b489f1ff5be58edb1903d2c5db5c584bdc7",
+      "sourceBytes": 175608,
+      "license": "CC0-1.0",
+      "url": "/models/derivatives/3803539718ffd3b84b515dbce8ed6b489f1ff5be58edb1903d2c5db5c584bdc7.glb.gz",
+      "sha256": "ccfcf951d82f4f05d3dccbdac3c2eafcab00255a236ad14e4eb06067b2f42e49",
+      "bytes": 24500
+    },
+    {
+      "id": "commercial/building-a",
+      "format": "gzip",
+      "sourceUrl": "/models/kenney/commercial/building-a.glb",
+      "sourceSha256": "5cf220f90ee3f21e7abe38055ca409a48aa8ef1d5ffab6e2deb99e5a5e1ed5e0",
+      "sourceBytes": 108936,
+      "license": "CC0-1.0",
+      "url": "/models/derivatives/5cf220f90ee3f21e7abe38055ca409a48aa8ef1d5ffab6e2deb99e5a5e1ed5e0.glb.gz",
+      "sha256": "9610bc5bb04c010d25dff4277c66f526f6883fb4ec6812af6984b73315e47bdc",
+      "bytes": 16497
+    },
+    {
+      "id": "commercial/building-b",
+      "format": "gzip",
+      "sourceUrl": "/models/kenney/commercial/building-b.glb",
+      "sourceSha256": "3b5d3ac0799c024781d92bb15971d42f4f8e380554dc5cf6a40c2f07d948947a",
+      "sourceBytes": 106408,
+      "license": "CC0-1.0",
+      "url": "/models/derivatives/3b5d3ac0799c024781d92bb15971d42f4f8e380554dc5cf6a40c2f07d948947a.glb.gz",
+      "sha256": "60950d2852a1fe9f5d6b7c4e52178bcd526fe62bfe3ee01aa5a65f13f815a930",
+      "bytes": 16771
+    },
+    {
+      "id": "commercial/building-c",
+      "format": "gzip",
+      "sourceUrl": "/models/kenney/commercial/building-c.glb",
+      "sourceSha256": "f6887608a95a165503561730252c30506938803731c6546efca12bd47b1666bd",
+      "sourceBytes": 102788,
+      "license": "CC0-1.0",
+      "url": "/models/derivatives/f6887608a95a165503561730252c30506938803731c6546efca12bd47b1666bd.glb.gz",
+      "sha256": "09a53d20e4552e91ebb97cdc70eef2dc417ebdc2035a04301a80eee6d617e694",
+      "bytes": 17422
+    },
+    {
+      "id": "commercial/building-skyscraper-a",
+      "format": "gzip",
+      "sourceUrl": "/models/kenney/commercial/building-skyscraper-a.glb",
+      "sourceSha256": "d8339bbb75944ff91d1ec9a70ec6dead71bd98b94a42d3dd0fc1f3b107ddbe85",
+      "sourceBytes": 111336,
+      "license": "CC0-1.0",
+      "url": "/models/derivatives/d8339bbb75944ff91d1ec9a70ec6dead71bd98b94a42d3dd0fc1f3b107ddbe85.glb.gz",
+      "sha256": "1da1ce009976d7d5d178ebec67064649f5fe1a9744596767ed5b88cb51b0dae4",
+      "bytes": 17408
+    },
+    {
+      "id": "commercial/detail-parasol-a",
+      "format": "gzip",
+      "sourceUrl": "/models/kenney/commercial/detail-parasol-a.glb",
+      "sourceSha256": "70e636bea8dc67c3bfd19b163333e824356118458c8c401017322ec43c10a7f7",
+      "sourceBytes": 10320,
+      "license": "CC0-1.0",
+      "url": "/models/derivatives/70e636bea8dc67c3bfd19b163333e824356118458c8c401017322ec43c10a7f7.glb.gz",
+      "sha256": "e30e823dc4cb6d30e6b0ce438b1470d8b90026af14ed7202101596137c34b83d",
+      "bytes": 2227
+    },
+    {
+      "id": "gobkit-human002/accountant",
+      "format": "gzip",
+      "sourceUrl": "/models/resources/gobkit-human002/Accountant.glb",
+      "sourceSha256": "69220c194637fc86262f0d82d53292953a6e04edc24ca3ebdce242bf576a318b",
+      "sourceBytes": 610648,
+      "license": "CC0-1.0",
+      "url": "/models/derivatives/69220c194637fc86262f0d82d53292953a6e04edc24ca3ebdce242bf576a318b.glb.gz",
+      "sha256": "71055938db52d90fa585f63e7452d23fae87abf6ceb43f00f23b88919e788efc",
+      "bytes": 188162
+    },
+    {
+      "id": "gobkit-human002/it-engineer",
+      "format": "gzip",
+      "sourceUrl": "/models/resources/gobkit-human002/ItEngineer.glb",
+      "sourceSha256": "c082c83ec0007b10615624cb2f662d666ae30e6083640c7d5c5807e9bcc8a235",
+      "sourceBytes": 702068,
+      "license": "CC0-1.0",
+      "url": "/models/derivatives/c082c83ec0007b10615624cb2f662d666ae30e6083640c7d5c5807e9bcc8a235.glb.gz",
+      "sha256": "40db3d34729053a6a78ce8ad142c8854ae0044b05a7fbf73e4aee340ebab892f",
+      "bytes": 210173
+    },
+    {
+      "id": "gobkit-human002/receptionist",
+      "format": "gzip",
+      "sourceUrl": "/models/resources/gobkit-human002/Receptionist.glb",
+      "sourceSha256": "89b0eda99fddbe5a608b8d4400fce4786cf4bd0e01baa30c09b3b87deaf10067",
+      "sourceBytes": 640492,
+      "license": "CC0-1.0",
+      "url": "/models/derivatives/89b0eda99fddbe5a608b8d4400fce4786cf4bd0e01baa30c09b3b87deaf10067.glb.gz",
+      "sha256": "0f9b6195b69d5ead439a11f33f2068b86e330806a0bc7107dfd149144ff45edd",
+      "bytes": 195562
+    },
+    {
+      "id": "market/display-bread",
+      "format": "gzip",
+      "sourceUrl": "/models/kenney/market/display-bread.glb",
+      "sourceSha256": "33a57fee0e331e5e40df5f0dc7af302e93266fd978dda810ab9f0ea4a2c205d1",
+      "sourceBytes": 36640,
+      "license": "CC0-1.0",
+      "url": "/models/derivatives/33a57fee0e331e5e40df5f0dc7af302e93266fd978dda810ab9f0ea4a2c205d1.glb.gz",
+      "sha256": "bda950d8a43ffc30484eb6d23c0d8e2ad33438b980b73fd28d47162e517d3042",
+      "bytes": 5994
+    },
+    {
+      "id": "market/display-fruit",
+      "format": "gzip",
+      "sourceUrl": "/models/kenney/market/display-fruit.glb",
+      "sourceSha256": "4cc38dcbd0f703d5bc829ff4a627648872dd3f6578f3e7e01fdcee066367873b",
+      "sourceBytes": 62976,
+      "license": "CC0-1.0",
+      "url": "/models/derivatives/4cc38dcbd0f703d5bc829ff4a627648872dd3f6578f3e7e01fdcee066367873b.glb.gz",
+      "sha256": "419bae19429d5d3d8faa17dac6326b22ac0df2ebdccdc5905c28189b02ce6f26",
+      "bytes": 25403
+    },
+    {
+      "id": "roads/dumpster",
+      "format": "gzip",
+      "sourceUrl": "/models/kenney/roads/dumpster.glb",
+      "sourceSha256": "d87d4a812567d0e8b91c545387d758aa18f7652eb8fc0aed2513a83abb988dd6",
+      "sourceBytes": 24400,
+      "license": "CC0-1.0",
+      "url": "/models/derivatives/d87d4a812567d0e8b91c545387d758aa18f7652eb8fc0aed2513a83abb988dd6.glb.gz",
+      "sha256": "4b91870e57c4f0740e60956ec51168a41c211988325cbb84d9808da71d20d9fc",
+      "bytes": 5872
+    },
+    {
+      "id": "roads/traffic-light",
+      "format": "gzip",
+      "sourceUrl": "/models/kenney/roads/traffic-light.glb",
+      "sourceSha256": "6c9ee253b7370e1043168493b2e662b349484a0cdd02100cff04d9d8d1bd9abb",
+      "sourceBytes": 20344,
+      "license": "CC0-1.0",
+      "url": "/models/derivatives/6c9ee253b7370e1043168493b2e662b349484a0cdd02100cff04d9d8d1bd9abb.glb.gz",
+      "sha256": "fd5e920383ce1e6a66b8c2d77769b5ef09b6597a98e21999dd4e8fee727a315b",
+      "bytes": 4099
+    },
+    {
+      "id": "suburban/building-type-a",
+      "format": "gzip",
+      "sourceUrl": "/models/kenney/suburban/building-type-a.glb",
+      "sourceSha256": "49f32e20b9dcd24b1c8f6d6488807b8c8cb684cbb595bfb0bb36ad903e470faa",
+      "sourceBytes": 98604,
+      "license": "CC0-1.0",
+      "url": "/models/derivatives/49f32e20b9dcd24b1c8f6d6488807b8c8cb684cbb595bfb0bb36ad903e470faa.glb.gz",
+      "sha256": "bf7052d6059c29c21a1e809e0f8de8b1b4af0395b8c11bc2276e075e641b5749",
+      "bytes": 17171
+    },
+    {
+      "id": "suburban/building-type-b",
+      "format": "gzip",
+      "sourceUrl": "/models/kenney/suburban/building-type-b.glb",
+      "sourceSha256": "a964a10c51bb334be677657fd8fa483531974dd15b4243575990192818e2300e",
+      "sourceBytes": 146720,
+      "license": "CC0-1.0",
+      "url": "/models/derivatives/a964a10c51bb334be677657fd8fa483531974dd15b4243575990192818e2300e.glb.gz",
+      "sha256": "12fb11d05a26ac1e8b62526e25ed865e30b1185f6b576d113d98e8a15a4fb1b3",
+      "bytes": 26882
+    },
+    {
+      "id": "suburban/building-type-c",
+      "format": "gzip",
+      "sourceUrl": "/models/kenney/suburban/building-type-c.glb",
+      "sourceSha256": "86a69f30f1a09461283e158514945ae5cc9d56357b0ddc83a9a3f0eecd113591",
+      "sourceBytes": 99592,
+      "license": "CC0-1.0",
+      "url": "/models/derivatives/86a69f30f1a09461283e158514945ae5cc9d56357b0ddc83a9a3f0eecd113591.glb.gz",
+      "sha256": "69969b659a1a5e372c49d371a263fef1af0296b3399360afe0bf4368339938d2",
+      "bytes": 18333
+    },
+    {
+      "id": "suburban/tree-large",
+      "format": "gzip",
+      "sourceUrl": "/models/kenney/suburban/tree-large.glb",
+      "sourceSha256": "16d1f95c149bc727a953a473cf20bf21de9bf1a88747c4f9d2eeb4ac7d43e291",
+      "sourceBytes": 5812,
+      "license": "CC0-1.0",
+      "url": "/models/derivatives/16d1f95c149bc727a953a473cf20bf21de9bf1a88747c4f9d2eeb4ac7d43e291.glb.gz",
+      "sha256": "c1b7b088cfdacdeb3806c49c0ca874b4695207edffb4af5126b655bdde19af80",
+      "bytes": 1865
+    },
+    {
+      "id": "suburban/tree-small",
+      "format": "gzip",
+      "sourceUrl": "/models/kenney/suburban/tree-small.glb",
+      "sourceSha256": "5f63359e5f392609d7617cc98070855ca1ffd4f4b4bc3978a5ff56ece88a58d6",
+      "sourceBytes": 5812,
+      "license": "CC0-1.0",
+      "url": "/models/derivatives/5f63359e5f392609d7617cc98070855ca1ffd4f4b4bc3978a5ff56ece88a58d6.glb.gz",
+      "sha256": "ac8baee232ca7e74c073f429b80c5598674d96cc7f17c8196a779bcd679e4bcd",
+      "bytes": 1889
+    },
+    {
+      "id": "trains/railroad-straight",
+      "format": "gzip",
+      "sourceUrl": "/models/kenney/trains/railroad-straight.glb",
+      "sourceSha256": "bcbd501f74b754b61f2ddb5cba2d45d5d694bfd25c497fa72af65202a53930d9",
+      "sourceBytes": 34736,
+      "license": "CC0-1.0",
+      "url": "/models/derivatives/bcbd501f74b754b61f2ddb5cba2d45d5d694bfd25c497fa72af65202a53930d9.glb.gz",
+      "sha256": "e43723fd5416035b130a7171351c210b5860d2fa032ab465b1a5f8531692e271",
+      "bytes": 4324
+    },
+    {
+      "id": "trains/train-tram-modern",
+      "format": "gzip",
+      "sourceUrl": "/models/kenney/trains/train-tram-modern.glb",
+      "sourceSha256": "a4c82a34554adfc27a2847832d82d1cb75f3e1ff98ad2cbaf7aad35bb292aecc",
+      "sourceBytes": 135128,
+      "license": "CC0-1.0",
+      "url": "/models/derivatives/a4c82a34554adfc27a2847832d82d1cb75f3e1ff98ad2cbaf7aad35bb292aecc.glb.gz",
+      "sha256": "adfa636588b6413ce31962f56e6788e57f4d42468175213890518c418f259001",
+      "bytes": 19580
+    },
+    {
+      "id": "watercraft/boat-fishing-small",
+      "format": "gzip",
+      "sourceUrl": "/models/kenney/watercraft/boat-fishing-small.glb",
+      "sourceSha256": "f6a03c86e7147764de6aac135433a428ee503d42852ecd101c1795a278480742",
+      "sourceBytes": 22948,
+      "license": "CC0-1.0",
+      "url": "/models/derivatives/f6a03c86e7147764de6aac135433a428ee503d42852ecd101c1795a278480742.glb.gz",
+      "sha256": "b9c8501ba715aca623a7deda6d0a7cb9a15ede5f63bcd064ac1a9152d7c04348",
+      "bytes": 5150
+    },
+    {
+      "id": "watercraft/boat-house-a",
+      "format": "gzip",
+      "sourceUrl": "/models/kenney/watercraft/boat-house-a.glb",
+      "sourceSha256": "8b912a92f6e12192fe360077377336990e214f6171cb7d68cad56feca84cdad6",
+      "sourceBytes": 38416,
+      "license": "CC0-1.0",
+      "url": "/models/derivatives/8b912a92f6e12192fe360077377336990e214f6171cb7d68cad56feca84cdad6.glb.gz",
+      "sha256": "e692e28dd867b88804c22b950ef9d2be8969b8b57beee825e2262c6747b2cafb",
+      "bytes": 6583
+    },
+    {
+      "id": "watercraft/boat-row-small",
+      "format": "gzip",
+      "sourceUrl": "/models/kenney/watercraft/boat-row-small.glb",
+      "sourceSha256": "82e85f716f059b3e5cd90088a6e5b7c7722518ff93e1592afe3fff076b617830",
+      "sourceBytes": 17636,
+      "license": "CC0-1.0",
+      "url": "/models/derivatives/82e85f716f059b3e5cd90088a6e5b7c7722518ff93e1592afe3fff076b617830.glb.gz",
+      "sha256": "ac43955449a33c9b7ff7320373fb5d950dbcdd6b14a50261ccb8f8277c3abb1d",
+      "bytes": 4104
+    },
+    {
+      "id": "watercraft/buoy",
+      "format": "gzip",
+      "sourceUrl": "/models/kenney/watercraft/buoy.glb",
+      "sourceSha256": "25cde68fddeaf8a43bb5c7d844817680f0ad9598b0df34a3b4ab79aafa55e14e",
+      "sourceBytes": 12112,
+      "license": "CC0-1.0",
+      "url": "/models/derivatives/25cde68fddeaf8a43bb5c7d844817680f0ad9598b0df34a3b4ab79aafa55e14e.glb.gz",
+      "sha256": "7ac0db15a46d3910f619bee8a4d1d47ffad8a8d50321c0e9b4ca79da67c28161",
+      "bytes": 2400
+    }
+  ]
+}

@@ -100,7 +100,7 @@ export function createCity(
     powerPreference: "high-performance",
   });
   renderer.setPixelRatio(
-    pixelRatio(input().quality, devicePixelRatio),
+    pixelRatio(input().quality, devicePixelRatio, host.clientWidth, host.clientHeight),
   );
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
@@ -118,7 +118,9 @@ export function createCity(
   scene.fog = fog;
   const camera = new THREE.PerspectiveCamera(38, 1, 2, 20000);
   const controls = new OrbitControls(camera, renderer.domElement);
-  controls.enableDamping = true;
+  const motionPreference = matchMedia('(prefers-reduced-motion: reduce)');
+  controls.enableDamping = !motionPreference.matches;
+  controls.listenToKeyEvents(renderer.domElement);
   controls.dampingFactor = 0.09;
   controls.minDistance = 42;
   controls.maxDistance = 11000;
@@ -618,7 +620,7 @@ export function createCity(
   shadowContext.fillStyle = gradient; shadowContext.fillRect(0, 0, 64, 64);
   const contactShadows = new THREE.InstancedMesh(new THREE.PlaneGeometry(1, 1).rotateX(-Math.PI / 2), new THREE.MeshBasicMaterial({ map: new THREE.CanvasTexture(shadowCanvas), transparent: true, depthWrite: false }), capacity + TRAFFIC_COUNT);
   contactShadows.frustumCulled = false; scene.add(contactShadows);
-  let following = true,
+  let following = !motionPreference.matches,
     dead = false,
     frame = 0,
     lastDraw = 0,
@@ -649,6 +651,16 @@ export function createCity(
     host.dataset.view = "orbit";
   };
   controls.addEventListener("start", onStart);
+  const motionChanged = () => {
+    controls.enableDamping = !motionPreference.matches;
+    if(motionPreference.matches)following=false;
+  };
+  motionPreference.addEventListener('change',motionChanged);
+  const cameraKey = (event: KeyboardEvent) => {
+    if(event.key.startsWith('Arrow'))onStart();
+  };
+  // Key listeners stay on the canvas; typing in chat never moves the camera.
+  renderer.domElement.addEventListener('keydown',cameraKey);
   const raycaster = new THREE.Raycaster(),
     pointer = new THREE.Vector2();
   let down: { x: number; y: number } | null = null;
@@ -683,7 +695,7 @@ export function createCity(
       hit.object.userData.ids?.[hit.instanceId]
     ) {
       callbacks.select(hit.object.userData.ids[hit.instanceId]);
-      following = true;
+      following = !motionPreference.matches;
     }
   };
   renderer.domElement.addEventListener("pointerdown", pointerDown);
@@ -697,6 +709,7 @@ export function createCity(
   const resize = new ResizeObserver(() => {
     const { width, height } = host.getBoundingClientRect();
     if (!width || !height) return;
+    renderer.setPixelRatio(pixelRatio(renderQuality, devicePixelRatio, width, height));
     renderer.setSize(width, height);
     camera.aspect = width / height;
     camera.updateProjectionMatrix();
@@ -753,6 +766,7 @@ export function createCity(
   }
   const visibilityChanged = () => { lastDraw = 0; };
   document.addEventListener("visibilitychange", visibilityChanged);
+  window.addEventListener('resize',visibilityChanged);
   let activeQuality = input().quality;
   const qualityBudget = new QualityBudget();
   let drawnFrames = 0;
@@ -776,9 +790,10 @@ export function createCity(
       { world, selected } = state,
       now = Date.now() + (state.clockOffsetMs ?? 0);
     const budgetQuality = qualityBudget.frame(state.quality, frameMs);
-    if (activeQuality !== budgetQuality) {
+    const targetRatio=pixelRatio(budgetQuality, devicePixelRatio, host.clientWidth, host.clientHeight);
+    if (activeQuality !== budgetQuality || Math.abs(renderer.getPixelRatio()-targetRatio)>.001) {
       activeQuality = renderQuality = budgetQuality;
-      renderer.setPixelRatio(pixelRatio(activeQuality, devicePixelRatio));
+      renderer.setPixelRatio(targetRatio);
       renderer.setSize(host.clientWidth, host.clientHeight);
       configureShadows();
       people.setQuality(activeQuality);
@@ -805,7 +820,7 @@ export function createCity(
       exchanges = social.exchanges;
       current = actors.find((a) => a.id === selected) ?? actors[0];
       if (lastSelected !== selected) {
-        following = true;
+        following = !motionPreference.matches;
         if (current) {
           const peer = actors.find(a => a.id === socialPoses.get(current!.id)?.peerId) ?? groundAnimals.find(a => a.petOwnerId === current!.id);
           const height = Math.max(modelActors.height(current.id), peer && modelActors.ids.has(peer.id) ? modelActors.height(peer.id) : peer && actors.some(a => a.id === peer.id) ? 20 : 0);
@@ -942,11 +957,17 @@ export function createCity(
           Math.abs(p.y) < 0.8,
       });
     }
+    if(!drawnFrames){
+      const now=performance.now();
+      host.dataset.firstFrameMs=now.toFixed(1);
+      performance.measure('xom-city-start-to-first-frame',{start:Number(host.dataset.startedAt)||now,end:now});
+    }
     host.dataset.ready = "true";
     host.dataset.paused = String(world.paused);
     host.dataset.frame = String(++drawnFrames);
     host.dataset.pixelRatio = String(renderer.getPixelRatio());
     host.dataset.effectiveQuality = activeQuality ?? "balanced";
+    host.dataset.reducedMotion = String(motionPreference.matches);
     host.dataset.triangles = String(renderer.info.render.triangles);
     host.dataset.geometries = String(renderer.info.memory.geometries);
     host.dataset.textures = String(renderer.info.memory.textures);
@@ -997,8 +1018,8 @@ export function createCity(
     follow() {
       callbacks.select("an");
       host.dataset.view = "follow";
-      following = true;
-      if (current) focus(current.position[0], current.position[1]);
+      following = !motionPreference.matches;
+      lastSelected = ""; // One explicit framing in reduced motion, then a stationary camera.
     },
     overview() {
       host.dataset.view = "overview";
@@ -1027,6 +1048,9 @@ export function createCity(
       renderer.domElement.removeEventListener("pointerup", pointerUp);
       renderer.domElement.removeEventListener("webglcontextlost", lost);
       document.removeEventListener("visibilitychange", visibilityChanged);
+      window.removeEventListener('resize',visibilityChanged);
+      motionPreference.removeEventListener('change',motionChanged);
+      renderer.domElement.removeEventListener('keydown',cameraKey);
       modelActors.dispose();
       gardens.dispose();
       const geometries = new Set<THREE.BufferGeometry>(),

@@ -24,12 +24,14 @@ export function City3D(props: Props) {
   useEffect(() => {
     if (failed) return;
     let cancelled = false;
+    const startedAt = performance.now();
     import("./three/runtime")
       .then(async ({ createCity }) => {
         if (cancelled || !host.current) return;
         const { AssetLibrary } = await import("./three/assets");
         const assets = await new AssetLibrary().preload();
         if (cancelled || !host.current) { assets.dispose(); return; }
+        host.current.dataset.startedAt = String(startedAt);
         try {
           runtime.current = createCity(host.current, () => latest.current, {
             select: (id) => latest.current.onSelect(id),
@@ -106,7 +108,7 @@ export function City3D(props: Props) {
       </div>
       <div className="map-credit">
         Thành phố 3D mô phỏng · Kéo để xoay · Chuột phải / hai ngón để dịch ·
-        Cuộn để zoom
+        Cuộn để zoom · Phím mũi tên khi chọn khung 3D
       </div>
     </div>
   );

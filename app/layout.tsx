@@ -3,9 +3,9 @@ import './globals.css';
 import { Diagnostics } from '../components/Diagnostics';
 
 export const metadata: Metadata = {
-  title: 'Xóm AI · Chuyện nhỏ mỗi ngày',
+  title: 'Xóm AI · Thành phố nhỏ, nhiều cuộc đời',
   description:
-    'Ba người bạn, một khu trọ nhỏ và những câu chuyện tiếp nối.',
+    'Khám phá thành phố 3D mô phỏng, gặp gỡ cư dân và theo dõi những thói quen được học từ trải nghiệm.',
 };
 
 export default function RootLayout({
