@@ -31,6 +31,7 @@ import { lifeStory } from "@/lib/city/lifestory";
 import { PetCare } from "@/components/characters/PetCare";
 import { Wardrobe } from "@/components/characters/Wardrobe";
 import { City3D } from "@/components/city/City3D";
+import {GardenCare} from "@/components/city/GardenCare";
 import {useSoundscape} from "@/components/city/useSoundscape";
 import { LivingPanel } from "@/components/living/LivingPanel";
 import { venues, type Venue } from "@/lib/city/world";
@@ -68,6 +69,7 @@ export default function Page() {
       y: number;
       key: number;
       homeId?:string;
+      gardenId?:string;
     } | null>(null);
   const dialog = useRef<HTMLDialogElement>(null),
     restoreFocus = useRef<HTMLElement | null>(null);
@@ -408,6 +410,7 @@ export default function Page() {
                 </p>
               )}
               {venue && world && <InteriorView key={venue.name} world={world} venue={venue.name} clockOffset={clockOffset} />}
+              {world&&data&&<GardenCare world={world} revision={data.revision} now={Date.parse(data.serverNow)} venue={venue?.name} refresh={()=>load(true)} onView={plot=>{setMode("city");setNavigation({x:plot.x,y:plot.z,key:Date.now(),gardenId:plot.id});setPanel(null);}}/>}
               <div className="venue-grid">
                 {venues.map((v) => (
                   <button

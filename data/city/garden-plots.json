@@ -1,0 +1,60 @@
+{
+  "version": 1,
+  "plots": [
+    {
+      "id": "street-prop:0:0",
+      "venue": "Sân chung",
+      "x": 288,
+      "z": 318.2,
+      "width": 18,
+      "depth": 12,
+      "seed": 0,
+      "floor": -0.5,
+      "label": "Khóm hoa · Sân chung"
+    },
+    {
+      "id": "street-prop:5:0",
+      "venue": "Vườn nhỏ",
+      "x": 784,
+      "z": 645.2,
+      "width": 18,
+      "depth": 12,
+      "seed": 5,
+      "floor": -0.5,
+      "label": "Khóm hoa · Vườn nhỏ"
+    },
+    {
+      "id": "street-prop:6:0",
+      "venue": "Công viên",
+      "x": 185,
+      "z": 597.2,
+      "width": 18,
+      "depth": 12,
+      "seed": 6,
+      "floor": -0.5,
+      "label": "Khóm hoa · Công viên"
+    },
+    {
+      "id": "street-prop:10:0",
+      "venue": "Quảng trường",
+      "x": 541,
+      "z": 370.2,
+      "width": 18,
+      "depth": 12,
+      "seed": 10,
+      "floor": -0.5,
+      "label": "Khóm hoa · Quảng trường"
+    },
+    {
+      "id": "street-prop:11:0",
+      "venue": "Phố đi bộ",
+      "x": 373,
+      "z": 464.2,
+      "width": 18,
+      "depth": 12,
+      "seed": 11,
+      "floor": -0.5,
+      "label": "Khóm hoa · Phố đi bộ"
+    }
+  ]
+}

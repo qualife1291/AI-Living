@@ -7,6 +7,8 @@ import { sceneryTrees, sceneryLamps, streetProps, venueSceneryPose } from "@/lib
 import { characterShot } from "@/lib/city/cinematography";
 import { groundElevation } from "@/lib/city/ground";
 import {HOME_ANCHORS,homeAnchor,homeCameraOffset} from "../../../lib/city/homes";
+import {gardenPlot,gardenCameraOffset} from "../../../lib/city/garden-plots";
+import {createGardens} from "./gardens";
 import { resolveModel } from "@/lib/city/asset-bindings";
 import { createPeople } from "./people";
 import { createAmbience } from "./ambience";
@@ -41,7 +43,7 @@ export type SceneInput = {
   events?: EpisodeEvent[];
   selected: string;
   clockOffsetMs?: number;
-  target?: { x: number; y: number; key: number; homeId?:string } | null;
+  target?: { x: number; y: number; key: number; homeId?:string;gardenId?:string } | null;
 };
 export type SceneStatus = {
   name: string;
@@ -486,6 +488,7 @@ export function createCity(
     box(lamp.x - 4, 52, lamp.z, 11, 2, 5, "#f7dba1");
   }
   for (const prop of streetProps) {
+    if(prop.kind==="flowers")continue; // Stateful flower beds use their own two batches.
     const id = propAsset(prop);
     if (id && assets.get(id)) placements.push({ id, x: prop.x, y: groundElevation(prop.x, prop.z), z: prop.z, width: prop.width, depth: prop.depth, height: prop.kind === "bin" ? 8 : 12, yaw: Math.PI });
     else for (const part of streetModel(prop)) {
@@ -564,6 +567,10 @@ export function createCity(
   host.dataset.towers = String(buildings.filter((b) => b.tower).length);
 
   const ambience = createAmbience(scene);
+  const gardens=createGardens(scene);
+  host.dataset.gardenPlots=String(gardens.stats().plots);
+  host.dataset.gardenPlants=String(gardens.stats().plants);
+  host.dataset.gardenBatches=String(gardens.stats().batches);
   host.dataset.fountainStreams = String(ambience.stats.fountainStreams);
   host.dataset.cloudLobes = String(ambience.stats.cloudLobes);
   const capacity = 72, people = createPeople(scene, capacity), boxGeo = people.geometry.box;
@@ -628,9 +635,9 @@ export function createCity(
   let lastStatus = 0;
   const viewOffset = new THREE.Vector3(48, 34, 62);
   const cameraBuildings = [...venues.filter(v => !openVenue(v)).map(venueGeometry), ...buildings.map(b => ({ x:b.x,z:b.z,width:b.width,depth:b.depth }))];
-  function focus(x: number, z: number, offset = viewOffset) {
+  function focus(x: number, z: number, offset = viewOffset,targetY=15) {
     scene.fog = fog;
-    controls.target.set(x, 15, z);
+    controls.target.set(x, targetY, z);
     camera.position.copy(controls.target).add(offset);
     controls.update();
     for (const chunk of detailChunks) chunk.mesh.visible = Math.hypot(camera.position.x - chunk.x, camera.position.z - chunk.z) < 520;
@@ -833,10 +840,14 @@ export function createCity(
       following = false;
       targetKey = state.target.key;
       const home=homeAnchor(state.target.homeId);
-      const offset=home?homeCameraOffset(home,(from,to)=>!cameraBuildings.some(rect=>segmentHits(rect,from,to,2))):undefined;
-      focus(state.target.x, state.target.y,offset?new THREE.Vector3(...offset):undefined);
+      const plot=gardenPlot(state.target.gardenId),clear=(from:[number,number],to:[number,number])=>!cameraBuildings.some(rect=>segmentHits(rect,from,to,2));
+      const offset=plot?gardenCameraOffset(plot,clear):home?homeCameraOffset(home,clear):undefined;
+      focus(state.target.x,state.target.y,offset?new THREE.Vector3(...offset):undefined,plot?plot.floor+5:15);
       if(home)host.dataset.homeFocus=home.id;
+      if(plot)host.dataset.gardenFocus=plot.id;
     }
+    gardens.draw(world,seconds*1000);
+    if(stamp-lastStatus>180){const stats=gardens.stats();host.dataset.gardenStates=JSON.stringify(stats.views);host.dataset.gardenUpdates=String(stats.updates);host.dataset.gardenStateError=String(stats.failed);}
     const currentWeather = weatherAt(world.born, worldTime(world, lastTime), world.clock?.weatherOverride);
     ambience.update(seconds, currentWeather.kind, currentWeather.intensity);
     if (ambience.flash > 0) {
@@ -1012,6 +1023,7 @@ export function createCity(
       renderer.domElement.removeEventListener("webglcontextlost", lost);
       document.removeEventListener("visibilitychange", visibilityChanged);
       modelActors.dispose();
+      gardens.dispose();
       const geometries = new Set<THREE.BufferGeometry>(),
         materials = new Set<THREE.Material>(),
         textures = new Set<THREE.Texture>();

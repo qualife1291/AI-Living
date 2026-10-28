@@ -66,6 +66,7 @@ export type LivingState = {
   appearances?: Record<string, import("../city/appearance").Appearance>;
   animalLearning?: Record<string, import("./animal-learning").AnimalPolicy>;
   petOwners?: Record<string, string>;
+  flora?: import("./flora").FloraState;
 };
 export type RealContext = {
   date: string;

@@ -1,8 +1,9 @@
 import type { StreetProp } from "../../../lib/city/scenery.ts";
+import type {GrowthPhase} from "../../../lib/living/flora.ts";
 
 export type StreetSolid = { shape: "box" | "cylinder" | "wheel" | "bud"; x: number; y: number; z: number; w: number; h: number; d: number; color: string; angle?: number; tilt?: number };
 /** Model dimensions stay inside the exact shared ground reservation. */
-export function streetModel(prop: StreetProp): StreetSolid[] {
+export function streetModel(prop: StreetProp,plant?:{phase:GrowthPhase;moisture:number}): StreetSolid[] {
   const parts: StreetSolid[] = [], palette = ["#dd936e", "#62a49b", "#e0b750", "#859fb4", "#a7819d"];
   const accent = palette[prop.seed % palette.length];
   const box = (x: number, y: number, z: number, w: number, h: number, d: number, color: string, tilt = 0) => parts.push({ shape: "box", x: prop.x + x, y, z: prop.z + z, w, h, d, color, tilt });
@@ -36,11 +37,18 @@ export function streetModel(prop: StreetProp): StreetSolid[] {
     box(-1, 2.3, 1.2, .5, 3.5, .5, "#9aab9d", -.35);
   } else if (prop.kind === "flowers") {
     box(0, 2.3, 0, 18, 3.5, 12, "#bd8c6b"); box(0, 4.1, 0, 16.8, .4, 10.8, "#776c51");
+    const phase=plant?.phase??"bloom",moisture=plant?.moisture??100;
+    const height={sprout:1.2,young:2.4,bud:3.1,bloom:3.5,rest:3}[phase];
+    const leaf={sprout:1.1,young:1.8,bud:2.2,bloom:2.5,rest:2.1}[phase];
+    const green=moisture<25?"#aaa376":moisture<55?"#93a578":"#80ac6e";
     for (let n = 0; n < 6; n++) {
-      const x = -5.5 + n % 3 * 5.5, z = -2.5 + Math.floor(n / 3) * 5, y = 7.5 + n % 3;
+      const x = -5.5 + n % 3 * 5.5, z = -2.5 + Math.floor(n / 3) * 5, stem=(height+n%3*(phase==="bloom"?1:.4))*(.75+.25*moisture/100),y=4+stem;
       box(x, (y + 4) / 2, z, .4, y - 4, .4, "#6c9c70");
-      round("bud", x, y, z, 3.5, 1.8, 3.5, ["#f3c66d", "#dc91a7", "#fff2cd"][n % 3]);
-      box(x + 1, y - 1.5, z, 2.5, .3, 1, "#80ac6e", .3);
+      if(["bud","bloom","rest"].includes(phase)){
+        const size=phase==="bloom"?3.5:phase==="bud"?1.4:1.3;
+        round("bud", x, y, z, size, phase==="bloom"?1.8:1.1, size, phase==="rest"?"#b29b74":phase==="bud"?"#9db77b":["#f3c66d", "#dc91a7", "#fff2cd"][n % 3]);
+      }
+      box(x+(phase==="sprout"?.5:1),y-Math.min(1.5,stem*.4),z,leaf,.3,1,green,.3);
     }
   } else if (prop.kind === "notice") {
     for (const x of [-6.5, 6.5]) box(x, 11, 0, 1, 21, 1, "#8a9c8f");
