@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
- * Configure the compiled Vinext Worker for an isolated isolated Cloudflare QA deploy.
- * Run AFTER npm run build, BEFORE wrangler versions upload.
+ * Configure the compiled Vinext Worker for an isolated Cloudflare QA deploy.
+ * Run AFTER npm run build, BEFORE wrangler deploy.
  * Never use this for the ChatGPT Sites or staging deployment.
  */
 import { readFileSync, writeFileSync, existsSync } from "node:fs";
@@ -11,7 +11,8 @@ const location = resolve("dist/server/wrangler.json");
 if (!existsSync(location)) throw Error("Vinext build not found; run npm run build first.");
 const cfg = JSON.parse(readFileSync(location, "utf8"));
 
-if (cfg.name !== "ai-living-qa") throw Error(`Wrong Worker name: ${cfg.name}`);
+if (cfg.name !== "ai-living-staging") throw Error(`Unexpected Vinext source Worker name: ${cfg.name}`);
+cfg.name = "ai-living-qa";
 if (cfg.main !== "index.js" || !existsSync(resolve(dirname(location), cfg.main))) {
   throw Error("Unexpected/missing Vinext Worker entrypoint.");
 }
@@ -26,10 +27,10 @@ if (!Array.isArray(cfg.d1_databases) || cfg.d1_databases.length !== 1 ||
   throw Error("Unexpected D1 binding layout. Refusing to deploy.");
 }
 if (cfg.route || cfg.routes || cfg.triggers?.crons?.length) {
-  throw Error("Unexpected production route or cron; staging must be isolated.");
+  throw Error("Unexpected route or cron; QA must be isolated.");
 }
 
-// Public identifiers (not credentials). This DB was created for staging and contains
+// Public identifiers (not credentials). This DB was created for QA and contains
 // NO imported ChatGPT Sites production history.
 cfg.d1_databases = [{
   binding: "DB",
