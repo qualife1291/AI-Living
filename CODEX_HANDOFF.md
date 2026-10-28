@@ -16,7 +16,7 @@ Chỉ cần đọc [AGENTS](AGENTS.md) và file này để bắt đầu. [README
 
 **Đề xuất Society/NIM:** đã gộp vào [ROADMAP](ROADMAP.md), đối chiếu chi tiết ở [review](docs/validation/society-nim-review-2026-10-28.json). WP20–27 là tương lai có phụ thuộc; sửa accounting/knowledge/retention assumptions, không tạo root spec/MEMORY. NVIDIA trial API và output không dùng production; mới kiểm tài liệu chính thức, chưa key/inference/account/quota hay benchmark. Không chặn thứ tự học hiện tại để làm NIM.
 
-**Blocker:** phiên gần nhất thiếu native Sites credential/deploy/status/DB tools. User đã cho phép merge/push/prod; thiếu capability không phải thiếu quyền. Candidate H2 đã đóng gói đúng source `d835821` trong candidate.json; experimental modules không vào Worker. Khi công cụ có lại, xác minh project/audience, backup/schema 0006/0007, deploy đúng candidate và readback theo [runbook](docs/PRODUCTION_RUNBOOK.md). Không tạo cron/Site khác, bỏ client pulse hoặc tìm credential cũ.
+**Blocker:** phiên gần nhất thiếu native Sites credential/deploy/status/DB tools. User đã cho phép merge/push/prod; thiếu capability không phải thiếu quyền. Candidate H3 đã đóng gói đúng source `891691f` trong candidate.json; offline audit/experimental policy không vào Worker. Khi công cụ có lại, xác minh project/audience, backup/schema 0006/0007, deploy đúng candidate và readback theo [runbook](docs/PRODUCTION_RUNBOOK.md). Không tạo cron/Site khác, bỏ client pulse hoặc tìm credential cũ.
 
 **Giới hạn cần nhớ:** ground/playback/tag/pet/bike còn theo viewer; backend completion theo simtime+plan matching, chưa authoritative arrival. Không cấp skill/P2P từ ETA, lời kể hoặc render. Gallery không đồng nghĩa mọi loài đã sống trong phố. Chưa GPU điện thoại/soak/model A/B thực.
 

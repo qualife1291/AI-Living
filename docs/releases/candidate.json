@@ -1,13 +1,13 @@
 {
   "project_id": "appgprj_6adc7dc364d48191a09202c5b43309e4",
-  "source_commit": "d835821bd0f03373397030fc0975f3506680f45e",
+  "source_commit": "891691f742ec687db77bf73d66048eb97cb11ca9",
   "status": "prepared-not-deployed",
-  "archive_sha256": "da338bcbac06ba3155706288fe3ca69c8159d0db6ec078fab3660ade494dde4b",
-  "archive_local_path": "work/production-d835821.tar.gz",
+  "archive_sha256": "c7f756c11b11d92c0c150f09082972157d7919783e89a23e988ddeee8fd5efda",
+  "archive_local_path": "work/production-891691f.tar.gz",
   "production_ledger_unchanged": true,
   "blocker": "Native Sites credential/deploy/status/database tools unavailable in this session; user has already authorized release.",
   "validation": {
-    "unit_suites_passed": 53,
+    "unit_suites_passed": 54,
     "local_api": true,
     "typecheck_lint_build_assets": true,
     "browser_desktop_mobile": true,
@@ -29,7 +29,7 @@
     "unchanged_plan_binding": true,
     "full_duration_encounter_reporting": true,
     "physical_arrival_authority": false,
-    "browser_source_note": "Garden/social/home/cycle/pet desktop/mobile evidence from c77c21c UI. H0 changes backend; H1/H2 add offline experiments. H2 leaves runtime/planner/reward/persistence/UI source unchanged and excludes experimental modules from Worker. Fresh compiled local API passed; no new browser or production readback.",
+    "browser_source_note": "Garden/social/home/cycle/pet desktop/mobile evidence from c77c21c UI. H0 changes backend; H1/H2 are offline experiments. H3 adds versioned evidence to the existing atomic archive and keeps serialized snapshots compact; raw reward/LinUCB and UI unchanged. Fresh compiled local API/CAS race/JSONL evidence passed; no new browser or production readback.",
     "garden_plots": 5,
     "garden_plants": 30,
     "garden_phases": 5,
@@ -81,9 +81,36 @@
       "experimental_code_in_worker": false
     },
     "packaged_source_verified": true,
-    "archive_entries": 796
+    "archive_entries": 796,
+    "learning_h3": {
+      "evidence": "docs/validation/learning-h3-2026-10-28.json",
+      "reward_version": "scenario-outcome-v1",
+      "feature_version": "needs-6d-v1",
+      "simulation_plan_time_authority": true,
+      "physical_arrival_authority": false,
+      "raw_reward_unchanged": true,
+      "atomic_world_policy_evidence_archive": true,
+      "concurrent_requests_one_sample_one_archive": true,
+      "full_evidence_in_JSONL_archive": true,
+      "snapshot_summaries_compact": true,
+      "legacy_archive_bytes_preserved": true,
+      "legacy_incomplete_plan_not_upgraded": true,
+      "offline_audit_read_only": true,
+      "H1_full_repeat_identical_bytes": true,
+      "new_migrations": false,
+      "long_term_reward_implemented": false,
+      "hierarchy_or_replay_enabled": false
+    },
+    "society_nim_review": {
+      "evidence": "docs/validation/society-nim-review-2026-10-28.json",
+      "official_trial_terms_and_model_cards_checked": true,
+      "hosted_inference": false,
+      "new_society_runtime_features": false,
+      "future_work_in_ROADMAP": true
+    },
+    "offline_audit_code_in_worker": false
   },
-  "prepared_at_utc": "2026-10-28T05:44:59.319765Z",
+  "prepared_at_utc": "2026-10-28T06:26:44.597743Z",
   "migrations_to_check": [
     "0006_client_logs",
     "0007_learning_policies"
