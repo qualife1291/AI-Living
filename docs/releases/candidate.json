@@ -1,13 +1,13 @@
 {
   "project_id": "appgprj_6adc7dc364d48191a09202c5b43309e4",
-  "source_commit": "e6fe88804f262bc7f7cacfa2813128454eceada4",
+  "source_commit": "d835821bd0f03373397030fc0975f3506680f45e",
   "status": "prepared-not-deployed",
-  "archive_sha256": "9b1fcc5c0f8b92a8f95b6da387e5e845726be0bc7bbc0c8bbec01b69f5e034ea",
-  "archive_local_path": "work/production-e6fe888.tar.gz",
+  "archive_sha256": "da338bcbac06ba3155706288fe3ca69c8159d0db6ec078fab3660ade494dde4b",
+  "archive_local_path": "work/production-d835821.tar.gz",
   "production_ledger_unchanged": true,
   "blocker": "Native Sites credential/deploy/status/database tools unavailable in this session; user has already authorized release.",
   "validation": {
-    "unit_suites_passed": 52,
+    "unit_suites_passed": 53,
     "local_api": true,
     "typecheck_lint_build_assets": true,
     "browser_desktop_mobile": true,
@@ -29,7 +29,7 @@
     "unchanged_plan_binding": true,
     "full_duration_encounter_reporting": true,
     "physical_arrival_authority": false,
-    "browser_source_note": "Garden/social/home/cycle/pet desktop/mobile evidence from c77c21c UI. H0/H1 change backend or offline tools only; no new browser run. H1 compiled local API uses the same learning source blob; no production readback.",
+    "browser_source_note": "Garden/social/home/cycle/pet desktop/mobile evidence from c77c21c UI. H0 changes backend; H1/H2 add offline experiments. H2 leaves runtime/planner/reward/persistence/UI source unchanged and excludes experimental modules from Worker. Fresh compiled local API passed; no new browser or production readback.",
     "garden_plots": 5,
     "garden_plants": 30,
     "garden_phases": 5,
@@ -61,9 +61,29 @@
       "unchanged": true
     },
     "intelligence_reviews_triaged": true,
-    "default_runtime_policy_changed": false
+    "default_runtime_policy_changed": false,
+    "learning_h2": {
+      "protocol": "docs/validation/learning-h2-protocol-v1.json",
+      "evidence": "docs/validation/learning-h2-2026-10-28.json",
+      "profiles": 2,
+      "variants_per_profile": 4,
+      "evaluation_seeds_per_variant": 20,
+      "training_seeds_per_prior": 8,
+      "evaluation_plans": 5529600,
+      "training_plans": 552960,
+      "disjoint_seeds": true,
+      "all_candidates_failed_promotion": true,
+      "same_decision_prediction_improved": true,
+      "warm_start_return_benefit_demonstrated": false,
+      "default_runtime_policy_changed": false,
+      "full_repeat_warm_stress_and_prior_identical": true,
+      "H1_full_repeat_identical": true,
+      "experimental_code_in_worker": false
+    },
+    "packaged_source_verified": true,
+    "archive_entries": 796
   },
-  "prepared_at_utc": "2026-10-28T04:01:10.795Z",
+  "prepared_at_utc": "2026-10-28T05:44:59.319765Z",
   "migrations_to_check": [
     "0006_client_logs",
     "0007_learning_policies"

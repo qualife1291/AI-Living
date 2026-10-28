@@ -4,7 +4,7 @@ Chỉ cần đọc [AGENTS](AGENTS.md) và file này để bắt đầu. [README
 
 | Phần | Context hiện tại |
 |---|---|
-| Source | `work` đang có H2; `main` chờ merge sau kiểm chứng. Xem `git status/log` cho HEAD. Default policy giữ LinUCB; H1 outcome/rollout và H2 prior/residual/cold-stress chỉ offline, chưa đưa policy mới lên runtime. |
+| Source | `work` và `main` đồng bộ sau H2; xem Git cho HEAD. Xem `git status/log` cho HEAD. Default policy giữ LinUCB; H1 outcome/rollout và H2 prior/residual/cold-stress chỉ offline, chưa đưa policy mới lên runtime. |
 | Sản phẩm | Thành phố Three.js, An/Bình/Chi + NPC, tag/pet/bike, nhãn/thoại DOM, 60 cửa nhà, audio opt-in, 5 khóm hoa/30 cây có growth/moisture/care. Không còn renderer 2D. |
 | AI/dữ liệu | LinUCB 6D, 8 domain skills/gates, policy table 0007/CAS, memories top-K/RAG, dialogue hashes, 49 context cards/33 nơi. Đây là học policy mô phỏng, chưa fine-tune LLM. |
 | Đã kiểm | H2 source:53 suite + TypeScript/lint/build/assets/API local đạt; full repeat H1/warm stress/prior byte-identical. D1: 20 pulse→1 pipeline; compiled HTTP: 12 viewer→1 pipeline. Browser flora/social/home/cycle/pet desktop/mobile đã đạt ở UI trước H0; H0 không đổi renderer. |
@@ -14,7 +14,7 @@ Chỉ cần đọc [AGENTS](AGENTS.md) và file này để bắt đầu. [README
 
 **Bước triển khai tiếp:** H3 reward/outcome provenance, sau đó H4 hierarchy theo [ROADMAP](ROADMAP.md). Có thể làm với LinUCB hiện hành; không bật candidate H2 đã thất bại. Reward mới chỉ từ outcome có authority, không cấp skill/social/travel từ ETA/thoại. H2 promotion vẫn chờ phiên bản/protocol/seed mới nếu tiếp tục nghiên cứu. H6 còn archive replay/curriculum; synthetic prior H2 chỉ là một phần, không đánh dấu hoàn tất.
 
-**Blocker:** phiên gần nhất thiếu native Sites credential/deploy/status/DB tools. User đã cho phép merge/push/prod; thiếu capability không phải thiếu quyền. Candidate H1 đã đóng gói đúng source trong candidate.json. Khi công cụ có lại, xác minh project/audience, backup/schema 0006/0007, deploy đúng candidate và readback theo [runbook](docs/PRODUCTION_RUNBOOK.md). Không tạo cron/Site khác, bỏ client pulse hoặc tìm credential cũ.
+**Blocker:** phiên gần nhất thiếu native Sites credential/deploy/status/DB tools. User đã cho phép merge/push/prod; thiếu capability không phải thiếu quyền. Candidate H2 đã đóng gói đúng source `d835821` trong candidate.json; experimental modules không vào Worker. Khi công cụ có lại, xác minh project/audience, backup/schema 0006/0007, deploy đúng candidate và readback theo [runbook](docs/PRODUCTION_RUNBOOK.md). Không tạo cron/Site khác, bỏ client pulse hoặc tìm credential cũ.
 
 **Giới hạn cần nhớ:** ground/playback/tag/pet/bike còn theo viewer; backend completion theo simtime+plan matching, chưa authoritative arrival. Không cấp skill/P2P từ ETA, lời kể hoặc render. Gallery không đồng nghĩa mọi loài đã sống trong phố. Chưa GPU điện thoại/soak/model A/B thực.
 
