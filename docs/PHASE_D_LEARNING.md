@@ -6,7 +6,7 @@
 
 Disjoint LinUCB dùng 6 features `[1, energy/100, hunger/100, socialNeed/100, isFreshRain, skill/100]`, ridge prior I, inverse covariance đối xứng 21 số và b 6 số. Sherman–Morrison cập nhật từ outcome hợp lệ; điểm là `xᵀA⁻¹b + α√(xᵀA⁻¹x)`. Các ưu tiên nhu cầu, ngủ, sức khỏe, mưa và tránh lặp vẫn được giữ.
 
-Pending mới lưu context lúc chọn. Pending cũ thiếu context tiếp tục tabular, không gán context giả; trials, meanReward, memories và archive cũ được giữ. Chỉ hoàn tất đúng kế hoạch một lần mới học. MinSkill mở dạy lớp ở 8, sửa xe ở 4, văn phòng ở 3 và dự án học ở 2; hoạt động học cơ bản vẫn mở. Không hủy hồi tố kế hoạch cũ. Chưa có vector kỹ năng theo ngành hoặc phân cấp global/role/P2P.
+Pending mới lưu context lúc chọn. Pending cũ thiếu context tiếp tục tabular, không gán context giả; trials, meanReward, memories và archive cũ được giữ. Chỉ hoàn tất đúng kế hoạch một lần mới học. MinSkill mở dạy lớp ở 8, sửa xe ở 4, văn phòng ở 3 và dự án học ở 2; hoạt động học cơ bản vẫn mở. Không hủy hồi tố kế hoạch cũ. Tám nhóm điểm thực hành và bốn domain gates đã bổ sung trong source tiếp nối; chưa phân cấp global/role/P2P.
 
 Pending NPC đã dùng tổng thời lượng mọi bước thay 180 giây cố định. Completion vẫn theo simulation time và plan matching, **chưa phải bằng chứng vị trí ground**. Không dùng nó để công nhận đã trực tiếp gặp, nghe kể hoặc boarding thật.
 
@@ -44,3 +44,13 @@ Server chạy reviewNarrative: 4–6 câu ngắn, hai speaker luân phiên, khô
 LinUCB dự đoán tốt hơn nhưng điểm có exploration cho thưởng tức thời thấp hơn trong mẫu này. Reward là công thức mô phỏng, không phải hoàn thành vật lý/chất lượng ngôn ngữ; immediate regret không đo lợi ích dài hạn. Không chỉnh hyperparameter để ép thắng holdout hoặc nhận claim 3,71×/20–50×.
 
 Oracle ridge độc lập 1.200 update sai số tối đa 5,83e-16; test context-at-choice/gates/no-early/no-duplicate/cancel/legacy/purity đạt. Full 45 suite/check/lint/build/assets và compiled Worker/D1 API đạt, gồm policy hydration, CAS/retry/history, actor privacy, role guard và server review. Browser dialogue/poll/F5 đã đạt ở mốc phase D; lượt nguồn tích hợp mới được ghi riêng trong MEMORY_LONG và candidate ledger sau khi hoàn tất. Chưa có model A/B thực, GPU phần cứng, soak dài hoặc production readback phiên này.
+
+## Điểm thực hành theo ngành
+
+Tám nhóm: học tập, kỹ thuật, phục vụ, công việc/mua sắm, vận động, đi lại, chăm cây/thú và cộng đồng. Hoàn tất kế hoạch hợp lệ chỉ cộng nhóm skillDomain của scenario, tối đa 100. Việc mới bắt đầu, bị hủy, sai plan hoặc retry không cộng; đi khám không tạo chuyên môn y tế. Archive ghi skillGain thực gồm domain/before/after/amount, không gán điểm cũ cho mọi nhóm.
+
+New models phải đủ minSkill và minDomainSkill cho bốn hoạt động nâng cao. Mô hình cũ chưa có vector vẫn dùng scalar; khi có outcome mới, ghi vector từ 0 và giữ đúng danh sách gate đã mở trước đó. Core có scalar progress trước khi có policy cũng giữ các gate cũ, không được tăng samples/điểm ngành chỉ vì backfill. ID, ký ức, tabular và posterior được giữ; chưa retroactively hủy plan. UI Học hỏi hiển thị tám nhóm và bốn trạng thái mở khóa.
+
+46/46 suite, check/lint/build, API D1 archive/persistence đạt. Browser desktop/mobile/320px xác minh hai gate mở/hai khóa theo fixture, legacy giữ bốn gate, không NaN/overflow/JS error; social6/poll/F5 đạt. Ảnh ở screenshots/domain-skills là preview fixture, không phải production.
+
+Benchmark v1 ở bảng phía trên được giữ riêng tại validation/policy-holdout-v1.json. V2 trong policy-holdout.json dùng explicit single-domain synthetic history và meetsSkillGate runtime cho cả baseline/oracle. V2 reward/MSE: tabular 0,561797/0,003588; LinUCB 0,559612/0,002683. Tiếp tục không tuyên bố thuật toán luôn thắng; đây không phải model A/B ngôn ngữ hoặc hoàn thành ground.

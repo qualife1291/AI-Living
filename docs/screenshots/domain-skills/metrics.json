@@ -1,0 +1,27 @@
+{
+  "production": false,
+  "renderer": "Chromium SwiftShader",
+  "fixture": "synthetic skills; no writes",
+  "cases": [
+    {
+      "viewport": "desktop",
+      "domains": 8,
+      "gates": 4,
+      "earnedOpen": 2,
+      "domainLocked": 2,
+      "legacyOpen": 4,
+      "responsive320": true,
+      "errors": []
+    },
+    {
+      "viewport": "mobile",
+      "domains": 8,
+      "gates": 4,
+      "earnedOpen": 2,
+      "domainLocked": 2,
+      "legacyOpen": 4,
+      "responsive320": true,
+      "errors": []
+    }
+  ]
+}
