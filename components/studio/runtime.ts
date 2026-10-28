@@ -3,14 +3,14 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { AssetLibrary, collectAssetResources, type AssetPlacement } from "../city/three/assets.ts";
 import { simpleProp } from "../city/three/model-actors.ts";
 import { scenarioFrame, scenarioDefinitions, type ScenarioId, type ScenarioFrame, type EnvironmentProp } from "../../lib/city/scenarios/index.ts";
-import { RiggedAvatar } from "../city/three/rigged-avatar.ts";
+import {StudioAvatar} from "./avatar.ts";
 import {poseStudioActors} from "./actors.ts";
 import {StudioFeline} from "./feline.ts";
 import {STAGE_Y,stagePoint} from "./motion.ts";
 import { resolveModel } from "../../lib/city/asset-bindings.ts";
 
 export type StudioRuntime = { dispose: () => void };
-type Stage = { group: THREE.Group; actors: Map<string, RiggedAvatar>; kitten: StudioFeline | null; props: Map<string, THREE.Group> };
+type Stage = { group: THREE.Group; actors: Map<string, StudioAvatar>; kitten: StudioFeline | null; props: Map<string, THREE.Group> };
 const modelFor = (hint = "") => resolveModel(hint) ?? "";
 
 function box(x: number, y: number, z: number, w: number, h: number, d: number, color: string) {
@@ -45,7 +45,7 @@ export async function createStudio(host: HTMLDivElement, input: () => { id: Scen
   let manual = false; controls.addEventListener("start", () => { manual = true; });
   const stages = new Map<ScenarioId, Stage>(), skies = new Map<ScenarioId, THREE.CanvasTexture>();
   function build(frame: ScenarioFrame): Stage {
-    const group = new THREE.Group(), actors = new Map<string, RiggedAvatar>(), props = new Map<string, THREE.Group>();
+    const group = new THREE.Group(), actors = new Map<string, StudioAvatar>(), props = new Map<string, THREE.Group>();
     const floor=box(0, -.6, 0, 300, 1.2, 240, frame.theme.groundHex);floor.receiveShadow=true;group.add(floor);
     // Pavement bands make distance and posture readable, without expensive textures.
     for (let n = -6; n <= 6; n++) group.add(box(n * 16, .005, 0, .12, .02, 180, "#b8b4a1"));
@@ -62,7 +62,7 @@ export async function createStudio(host: HTMLDivElement, input: () => { id: Scen
     for (const actor of frame.actors) {
       if (actor.species === "cat") { cat = new StudioFeline(); group.add(cat.group); continue; }
       const source = library.get(modelFor(actor.modelHint)); if (!source) throw Error(`Studio actor asset unavailable: ${actor.modelHint}`);
-      const avatar = new RiggedAvatar(source, actor.heightMeters * 10, actor.radius * .9, actor.modelHint.startsWith("gobkit-human002/")); avatar.tint({ shirt: actor.wardrobe.shirt, trousers: actor.wardrobe.trousers, skin: "#e6c69e" }); actors.set(actor.id, avatar); group.add(avatar.group);
+      const avatar = new StudioAvatar(source, actor.heightMeters * 10, actor.radius * .9, actor.wardrobe.shirt); avatar.tint({ shirt: actor.wardrobe.shirt, trousers: actor.wardrobe.trousers, skin: "#e6c69e" }); actors.set(actor.id, avatar); group.add(avatar.group);
     }
     scene.add(group); const stage = { group, actors, props, kitten: cat }; stages.set(frame.id, stage); return stage;
   }
@@ -77,7 +77,7 @@ export async function createStudio(host: HTMLDivElement, input: () => { id: Scen
   function tick(stamp: number) {
     if (dead) return; handle = requestAnimationFrame(tick); if (document.hidden || stamp - lastDraw < 20) return;
     lastDraw = stamp; const state = input();
-    if (!dirty && state.id === lastId && state.time === lastTime) { if (controls.update()) render(); return; }
+    if (!dirty && state.id === lastId && state.time === lastTime) { if (manual&&controls.update()) render(); return; }
     const frame = scenarioFrame(state.id, state.time), seeking = state.id !== lastId || Math.abs(state.time - lastTime) > .6;
     const stage = stages.get(state.id) ?? build(frame);
     for (const [id, item] of stages) item.group.visible = id === state.id;
@@ -104,7 +104,7 @@ export async function createStudio(host: HTMLDivElement, input: () => { id: Scen
       eye.sub(target).multiplyScalar(.72).add(target);
       // Portrait keeps both participants readable with the same cinematic lens.
       if (camera.aspect < .85) eye.sub(target).multiplyScalar(.85 / Math.max(.35, camera.aspect)).add(target);
-      if (seeking) { camera.position.copy(eye); controls.target.copy(target); } else { camera.position.lerp(eye, .2); controls.target.lerp(target, .2); }
+      camera.position.copy(eye); controls.target.copy(target);
       camera.fov = frame.camera.fov; camera.updateProjectionMatrix();
     }
     controls.update(); render(); dirty = false;

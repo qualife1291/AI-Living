@@ -92,18 +92,20 @@ function sanitation(d: ScenarioDefinition, t: number) {
   const hanh = actor(d.cast[0], [[0, 0, 0], [120, 0, 0]], [[0, "sweep", "interact-right"], [20, "rest"], [24, "sweep", "interact-right"], [65, "look"], [75, "receive", "holding-both"], [85, "thank", "emote-yes"], [92, "drink", "holding-right"], [103, "sit", "sit"]], [[0, 0], [64, 0], [68, Math.PI/2], [120, Math.PI/2]], t);
   const hoang = actor(d.cast[1], [[0, -30, 30], [48, -30, 30], [58, -18, 12], [65, -12, 2], [100, -12, 2], [112, -18, 18], [120, -18, 18]], [[0, "observe"], [48, "walk"], [60, "pick-up", "pick-up"], [65, "sweep", "interact-right"], [96, "rest"], [100, "walk"], [113, "thank", "emote-yes"]], [[0, .6], [48, .6], [58, 2.2], [65, 2.2], [99, 2.2], [102, -.4], [120, -.4]], t);
   const lan = actor(d.cast[2], [[0, 30, 35], [36, 30, 35], [45, 30, 18], [50, 30, 18], [58, 20, 12], [65, 8, 0], [100, 8, 0], [112, 15, 18], [120, 15, 18]], [[0, "observe"], [36, "walk"], [45, "receive", "holding-right"], [50, "walk"], [65, "offer", "holding-both"], [83, "thank", "emote-yes"], [100, "walk"], [113, "rest"]], [[0, Math.PI], [50, Math.PI], [65, -Math.PI/2], [99, -Math.PI/2], [102, .4], [120, .4]], t);
-  const handoff: Vec3 = [4, 6.5, 0], counter: Vec3 = [36, 10.1, 19];
+  const handoff: Vec3 = [4, 6.5, 0], counter: Vec3 = [34.5, 6.1, 19];
   let cupPosition: Vec3, cupHolder: string | null, cupOwner: string, cupStage: string;
   if (t < 47) { cupPosition = counter; cupHolder = null; cupOwner = "vendor"; cupStage = "counter"; }
   else if (t < 78) { cupPosition = blend(counter, grip(lan), progress(t, 47, 49)); cupHolder = "lan"; cupOwner = "lan"; cupStage = t < 49 ? "picked-up" : "held"; }
   else if (t < 82) { cupPosition = blend(grip(lan), handoff, progress(t, 78, 80)); cupHolder = "lan"; cupOwner = "lan"; cupStage = "offered"; }
   else { cupPosition = blend(handoff, grip(hanh), progress(t, 82, 85)); cupHolder = "hanh"; cupOwner = "hanh"; cupStage = t < 92 ? "received" : "drinking"; }
+  if(t>=45&&t<47)lan.handTargets={right:[...counter],left:[...counter]};
   if (cupHolder === "lan") lan.handTargets = { right: [...cupPosition], left: [...cupPosition] };
   if (t >= 78) hanh.handTargets = { right: [...cupPosition], left: [...cupPosition] };
   const broomGround: Vec3 = [-12, 8, 3], stowed: Vec3 = [-18, 8, 2], broomPosition = t < 63 ? broomGround : t < 98 ? blend(broomGround, grip(hoang, 9), progress(t, 63, 65)) : t < 100 ? blend(grip(hoang, 9), stowed, progress(t, 98, 100)) : stowed;
   const mainBroom = item("hanh-broom", "broom", blend(grip(hanh, 8.4), [6, 8, 0], progress(t, 65, 69)), [.6, 16, .6], "#b39766", "hanh", t < 69 ? "hanh" : null, t < 65 ? "sweeping" : "stowed"); mainBroom.attachment = "right-hand";
   const sweepEnvelope=(1-progress(t,18,20))*progress(t,0,1)+(progress(t,24,26)*(1-progress(t,63,65)));
   mainBroom.position[0]+=Math.sin(t*2.4)*1.5*sweepEnvelope;mainBroom.position[2]+=Math.cos(t*2.4)*.6*sweepEnvelope;mainBroom.rotation[2]=Math.sin(t*2.4)*.12*sweepEnvelope;
+  if(t>=60&&t<63)hoang.handTargets={right:[...broomGround],left:[...broomGround]};
   const spareBroom = item("spare-broom", "broom", broomPosition, [.6, 16, .6], "#b39766", "hanh", t >= 63 && t < 100 ? "hoang" : null, t >= 100 ? "stowed" : t >= 63 ? "helping" : "available");
   const leaves = Array.from({ length: 8 }, (_, i) => item(`leaf-${i}`, "leaf", blend([-18 + i % 4 * 4, .06, 8 + Math.floor(i / 4) * 4], [-12 + i % 3 * .8, .06, 10 + Math.floor(i / 3) * .6], progress(t, 65 + i * .7, 75 + i * .7)), [1.2, .08, .6], i % 2 ? "#c9ad68" : "#ac8f59", null, null, t < 80 ? "being-gathered" : "gathered"));
   return {
@@ -118,9 +120,9 @@ function kitten(d: ScenarioDefinition, t: number) {
   const thanh = actor(d.cast[0], [[0, -35, 25], [30, -35, 25], [48, -3.2, 2], [105, -3.2, 2], [120, -30, -12]], [[0, "observe"], [30, "approach"], [48, "call-rescue", "idle"], [55, "comfort", "interact-right"], [72, "prepare-cloth", "pick-up"], [88, "carry", "holding-both"], [105, "walk"]], [[0, 2.2], [94, 2.2], [105, -2.16], [120, -2.16]], t);
   const mai = actor(d.cast[1], [[0, -22, 32], [30, -22, 32], [48, 9, 9], [105, 9, 9], [120, -15, -7]], [[0, "listen"], [25, "call-adult", "interact-right"], [30, "approach"], [48, "observe"], [60, "prepare-cloth", "holding-both"], [74, "comfort", "interact-right"], [96, "thank", "emote-yes"], [105, "walk"]], [[0, 2.3], [48, 2.3], [52, -2.36], [95, -2.36], [105, -2.16], [120, -2.16]], t);
   const miu = actor(d.cast[2], [[0, 0, 0], [120, 0, 0]], [[0, "distress"], [55, "comfort"], [78, "warm"], [88, "carried"]], [[0, .4], [120, .4]], t);
-  const floor: Vec3 = [0, .15, 0], carried = grip(thanh, 10), kittenPosition = t < 88 ? floor : blend(floor, carried, progress(t, 88, 92));
+  const floor: Vec3 = [0, .15, 0], carried = grip(thanh, 7), kittenPosition = t < 88 ? floor : blend(floor, carried, progress(t, 88, 92));
   miu.position = [...kittenPosition]; miu.carrierId = t >= 88 ? "thanh" : null; miu.clip = "idle"; if (t >= 88) miu.yaw = .4 + Math.atan2(Math.sin(thanh.yaw - .4), Math.cos(thanh.yaw - .4)) * progress(t, 88, 92);
-  if (t >= 55) thanh.handTargets = { right: [...kittenPosition], left: [...kittenPosition] };
+  if (t >= 55) thanh.handTargets = { right: [kittenPosition[0]-.35,kittenPosition[1]+1.8,kittenPosition[2]], left: [kittenPosition[0]+.35,kittenPosition[1]+1.8,kittenPosition[2]] };
   const clothPosition = t < 72 ? grip(mai, 8) : t < 88 ? blend(grip(mai, 8), [0, .1, 0], progress(t, 72, 75)) : [...kittenPosition] as Vec3;
   const cloth = item("warm-cloth", "cloth", clothPosition, [8, .2, 6], "#d5a6b3", "mai", t < 72 ? "mai" : t >= 88 ? "thanh" : null, t < 72 ? "folded" : t < 78 ? "laid-out" : "wrapped"); cloth.visible = t >= 60;
   if (t >= 78) cloth.attachment = "wrap";
@@ -161,7 +163,7 @@ function bakery(d: ScenarioDefinition, t: number) {
   const breadHolder = t >= 92 && t < 96 ? "seller" : t >= 99 ? "ba" : null;
   const bread = item("loaf-0", "bread", breadPosition, [3.3, .9, 1.2], "#d5a666", t >= 99 ? "ba" : "seller", breadHolder, t < 92 ? "stock" : t < 96 ? "offered" : t < 99 ? "counter" : "received", "bread");
   bread.attachment = "right-hand";bread.rotation[1]=Math.PI/2;
-  if (t >= 92 && t < 96) seller.handTargets = { right: [breadPosition[0],breadPosition[1],breadPosition[2]-1.2] }; if (t >= 99) ba.handTargets = { right: [breadPosition[0],breadPosition[1],breadPosition[2]+1.2] };
+  if (t >= 90 && t < 99) seller.handTargets = { right: [breadPosition[0],breadPosition[1],breadPosition[2]-1.2] }; if (t >= 97) ba.handTargets = { right: [breadPosition[0],breadPosition[1],breadPosition[2]+1.2] };
   const remainingBread = Array.from({ length: 4 }, (_, i) => item(`loaf-${i + 1}`, "bread", [-8 + i * 5, 6.55, -1], [3.3, .9, 1.2], "#d5a666", "seller", null, "stock", "bread"));
   const crutch = item("ba-crutch", "crutch", [ba.position[0] + Math.cos(ba.yaw) * 3.8, 7, ba.position[2] - Math.sin(ba.yaw) * 3.8], [.7, 14, .7], "#b89563", "ba", "ba", "support");
   crutch.attachment = "left-hand";

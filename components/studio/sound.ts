@@ -8,7 +8,7 @@ export class StudioSound {
  private voice:{source:AudioBufferSourceNode;clip:Voice;started:number;offset:number}|null=null;
  private sources=new Set<AudioScheduledSourceNode>();private ambient:AudioBufferSourceNode|null=null;
  private previous:{id:string;time:number;travel:Map<string,number>}|null=null;private noise:AudioBuffer|null=null;private loading:Promise<void>|null=null;
- private stats={status:'off',voices:0,effects:0,active:0,offset:0,rms:0,decoded:0,failures:0};
+ private stats={status:'off',voices:0,effects:0,active:0,offset:0,voiceId:'',rms:0,decoded:0,failures:0};
  constructor(private report:(state:typeof this.stats)=>void){}
  async enable(){
   if(this.dead)return false;
@@ -23,7 +23,7 @@ export class StudioSound {
  }
  mute(){this.enabled=false;this.stop();this.stats.status='off';this.publish();}
  private publish(){this.stats.active=this.sources.size;this.report({...this.stats});}
- private stop(){for(const source of this.sources){try{source.stop();}catch{ /* already ended */ }source.disconnect();}this.sources.clear();this.voice=null;this.ambient=null;this.previous=null;this.stats.rms=0;}
+ private stop(){for(const source of this.sources){try{source.stop();}catch{ /* already ended */ }source.disconnect();}this.sources.clear();this.voice=null;this.ambient=null;this.previous=null;this.stats.rms=0;this.stats.voiceId='';}
  private connect(source:AudioScheduledSourceNode,gain:number,duration?:number){const ctx=this.context!,level=ctx.createGain();level.gain.setValueAtTime(0,ctx.currentTime);level.gain.linearRampToValueAtTime(gain,ctx.currentTime+.012);if(duration){level.gain.setTargetAtTime(0,ctx.currentTime+duration*.55,Math.max(.01,duration*.12));source.stop(ctx.currentTime+duration);}
   (source as AudioNode).connect(level);level.connect(this.master!);this.sources.add(source);source.onended=()=>{source.disconnect();level.disconnect();this.sources.delete(source);};return level;}
  private noiseBuffer(){if(this.noise)return this.noise;const ctx=this.context!,buffer=ctx.createBuffer(1,ctx.sampleRate*3,ctx.sampleRate),data=buffer.getChannelData(0);let seed=197,previous=0;for(let i=0;i<data.length;i++){seed=(1664525*seed+1013904223)>>>0;previous=(previous+(seed/4294967296*2-1)*.02)/1.02;data[i]=previous;}return this.noise=buffer;}
@@ -35,8 +35,8 @@ export class StudioSound {
   if(seek)this.stop();
   if(!this.ambient){const source=this.context.createBufferSource();source.buffer=this.noiseBuffer();source.loop=true;this.connect(source,frame.theme.wetness>.2?.09:.035);source.start();this.ambient=source;}
   const clip=manifest.clips.find(c=>c.scenario===frame.id&&frame.time>=c.at&&frame.time<c.at+c.duration);
-  if(this.voice&&(this.voice.clip.id!==clip?.id||Math.abs((this.context.currentTime-this.voice.started+this.voice.offset)-(frame.time-this.voice.clip.at))>.22)){this.voice.source.stop();this.voice=null;}
-  if(clip&&!this.voice&&this.buffers.has(clip.id)){const source=this.context.createBufferSource();source.buffer=this.buffers.get(clip.id)!;const offset=Math.max(0,frame.time-clip.at);this.connect(source,.94);source.start(0,offset);this.voice={source,clip,started:this.context.currentTime,offset};this.stats.voices++;this.stats.offset=offset;}
+  if(this.voice&&(this.voice.clip.id!==clip?.id||Math.abs((this.context.currentTime-this.voice.started+this.voice.offset)-(frame.time-this.voice.clip.at))>.22)){this.voice.source.stop();this.voice=null;this.stats.voiceId='';}
+  if(clip&&!this.voice&&this.buffers.has(clip.id)){const source=this.context.createBufferSource();source.buffer=this.buffers.get(clip.id)!;const offset=Math.max(0,frame.time-clip.at);this.connect(source,.94);source.start(0,offset);this.voice={source,clip,started:this.context.currentTime,offset};this.stats.voices++;this.stats.offset=offset;this.stats.voiceId=clip.id;}
   if(!seek&&prior){
    for(const a of frame.actors){const old=prior.travel.get(a.id);if(a.species==='cat'||old===undefined||a.speedMps<.05)continue;if(Math.floor(old/.65)!==Math.floor(a.travelMeters/.65)){this.tone(a.mobility?100:135,.09,.09,55);this.rustle(.09,.09);}}
    for(const e of frame.events)if(e.at>prior.time&&e.at<=frame.time){if(/cloth|warm|bread|wallet|broom|water|item-picked/.test(e.type))this.rustle(.18,.35);if(/received|returned|consented/.test(e.type))this.tone(520,.035,.12,650);}
