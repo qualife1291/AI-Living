@@ -36,7 +36,8 @@
     "batchFailure": "Invalid JSON/UTF8/record, strong/weak identity conflict, reused sample, temporal fork, changed source, over-budget or fault rolls back entire current batch. Earlier committed batches remain. CLI emits a line after each commit so later failure does not hide accepted progress.",
     "crash": "Kernel/SQLite transaction rollback; no user PID lease or forced stale-lock deletion. Status may need normal run recovery if a killed writer left a hot journal.",
     "training": "Do not fit per batch. Only fit once after the entire source set has been accepted, in the same global chronological/curriculum order as single-file replay. Final model and final cursor share one transaction.",
-    "export": "Separate action, private JSON exclusive-create, current source/head verified; export failure never changes checkpoint."
+    "export": "Separate action, private JSON staged+fsynced then published via same-directory exclusive hard link. Current source/head verified; output collision/failure never changes checkpoint or exposes a partial JSON.",
+    "compatibility": "Marker and checkpoint pin current replay/reward/feature versions and scenario signature; changed processor compatibility cannot silently resume."
   },
   "privacy": [
     "Actor filter before audit or storage. Foreign raw records never enter the checkpoint.",

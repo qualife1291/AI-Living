@@ -11,9 +11,11 @@ import {createHash} from "node:crypto";
 /** In-process local worker integration; no hosting, account or production DB access. */
 import assert from 'node:assert/strict';
 import {readMigrationFiles} from 'drizzle-orm/migrator';
-import { realpathSync, readdirSync } from 'node:fs';
+import { realpathSync, readdirSync, mkdirSync, mkdtempSync, writeFileSync, readFileSync, rmSync } from 'node:fs';
 import { createRequire } from 'node:module';
-import { resolve } from 'node:path';
+import { resolve, join } from 'node:path';
+import {bulkReplay} from './bulk-replay.mjs';
+import {digest,corpusDigest} from './replay-files.mjs';
 const require=createRequire(realpathSync(resolve('node_modules/wrangler/package.json')));
 const {Miniflare}=require('miniflare');
 // A fixed daytime clock prevents five-minute slot rollovers and night-only
@@ -214,6 +216,36 @@ try{
  assert.deepEqual(await db.prepare("SELECT data FROM worlds WHERE id='home'").first(),replayBefore,'Offline fit cannot change snapshots, personal credit or source history');
  assert.equal(JSON.parse((await db.prepare('SELECT data FROM learning_policies WHERE actor_id=?').bind(learner.id).first()).data)['learn-trade'].samples,2);
  console.log('PASS compiled JSONL -> actor-filtered audited replay keeps legacy binding, source history and earned personal samples unchanged');
+ // Multiple actual paginated JSONL responses feed the local transactional cursor job.
+ const bulkRoot=resolve('.sites-runtime/training');mkdirSync(bulkRoot,{recursive:true});const bulkDir=mkdtempSync(join(bulkRoot,'h6b-api-'));
+ try {
+  const historyBefore=(await db.prepare('SELECT seq,data FROM agent_experiences ORDER BY seq').all()).results;
+  const policiesBefore=(await db.prepare('SELECT * FROM learning_policies ORDER BY actor_id').all()).results;
+  const memoriesBefore=(await db.prepare('SELECT * FROM memories ORDER BY id').all()).results;
+  let after=0;const pages=[];
+  for(;;){
+   const response=await mf.dispatchFetch(`http://localhost/api/living/learning?format=jsonl&limit=2&after=${after}`);assert.equal(response.status,200);
+   const raw=await response.text();if(!raw.trim())break;const next=Number(response.headers.get('X-Next-Cursor'));assert(Number.isSafeInteger(next)&&next>after);after=next;pages.push(raw);
+  }
+  assert(pages.length);pages.push(pages[0]); // Overlap is not an extra earned or replayed sample.
+  const sources=pages.map((raw,i)=>{const file=`page-${i}.jsonl`;writeFileSync(join(bulkDir,file),raw);return{file,sha256:digest(raw),bytes:Buffer.byteLength(raw)};});
+  const manifest={version:1,kind:'local-owner-replay-set-v1',actorId:learner.id,order:'curriculum',batchRecords:1,sources};
+  const manifestPath=join(bulkDir,'source.json');writeFileSync(manifestPath,JSON.stringify(manifest));
+  const args={manifestPath,expectedManifestSha256:digest(readFileSync(manifestPath)),job:join(bulkDir,'job'),expectedCheckpoint:'new',maxBatches:1};
+  let progress=bulkReplay(args),resumes=0;
+  while(!progress.complete){assert(++resumes<100);progress=bulkReplay({...args,expectedCheckpoint:progress.checkpointSha256});}
+  assert(resumes>=1);const out=join(bulkDir,'replay.json');bulkReplay({...args,action:'export',expectedCheckpoint:progress.checkpointSha256,out});
+  const exported=JSON.parse(readFileSync(out));
+  const combined=pages.join(''),builder=new ReplayCorpus({kind:'actor',actorId:learner.id});for(const line of combined.split('\n'))if(line.trim())builder.add(JSON.parse(line));
+  const corpus=builder.finish(),oracle=fitReplay(corpus,'curriculum',{kind:'local-owner-jsonl',sha256:digest(combined),acceptedDigest:corpusDigest(corpus)},null);
+  assert.deepEqual(exported.artifact,oracle);assert(exported.artifact.report.weak>=1);assert.equal(progress.report.accepted,offlineReplay.report.accepted);
+  assert.deepEqual(await db.prepare("SELECT data FROM worlds WHERE id='home'").first(),replayBefore);
+  assert.deepEqual((await db.prepare('SELECT seq,data FROM agent_experiences ORDER BY seq').all()).results,historyBefore);
+  assert.deepEqual((await db.prepare('SELECT * FROM learning_policies ORDER BY actor_id').all()).results,policiesBefore);
+  assert.deepEqual((await db.prepare('SELECT * FROM memories ORDER BY id').all()).results,memoriesBefore);
+  console.log('PASS compiled paginated JSONL -> bulk/cursor/resume/private export matches single-file replay and preserves world/history/memories/earned policies');
+ }finally{rmSync(bulkDir,{recursive:true,force:true});}
+
  // Proposal validation must run on the actual server before dated-ID expansion.
  await db.prepare('CREATE TABLE IF NOT EXISTS context_cache(id TEXT PRIMARY KEY,data TEXT,expires_at INTEGER)').run();
  const proposalNow=Date.now(),date=localDate(proposalNow),vn=new Date(proposalNow+7*3600000);

@@ -42,7 +42,8 @@
     "train:replay": "node scripts/train-replay.mjs",
     "simulate:replay": "node scripts/sim-replay.mjs",
     "optimize:policy": "node scripts/optimize-policy.mjs",
-    "assets:compress": "node scripts/compress-city-assets.mjs --write"
+    "assets:compress": "node scripts/compress-city-assets.mjs --write",
+    "replay:bulk": "node scripts/replay-bulk.mjs"
   },
   "dependencies": {
     "@base-ui/react": "^1.7.0",

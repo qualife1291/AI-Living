@@ -173,5 +173,8 @@
   ],
   [
     "scripts/test-g0-ux.mjs"
+  ],
+  [
+    "scripts/test-bulk-replay.mjs"
   ]
 ]
