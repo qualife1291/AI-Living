@@ -2,7 +2,7 @@
  * actor matrices, runtime configuration, a DB write or a deployment. */
 import {z} from "zod";
 import {hashSeed} from "../clock.ts";
-import {chooseScenario,type AgentLearning,type Scenario} from "./learning.ts";
+import {chooseScenario,availableScenarios,type AgentLearning,type Scenario} from "./learning.ts";
 import {decisionContext,linearScore} from "./linucb.ts";
 import {compileReplay,type ReplayArtifact,type CompiledReplay} from "./outcome-replay.ts";
 import {hierarchyRole} from "./hierarchical-prior.ts";
@@ -25,6 +25,7 @@ export const searchProtocolSchema=z.object({
   shortlist_rule:z.string(),validation_rule:z.string(),holdout_rule:z.string(),policy:z.string(),seed_mapping:z.string(),
   gates:z.object({return:z.literal("paired CI95 lower>=0"),needs:z.literal("paired CI95 lower>=0"),opportunity_cost:z.literal("paired CI95 upper<=0"),entropy:z.literal("paired CI95 lower(candidate-.8baseline)>=0")}).strict(),
   promotion:z.string(),limits:z.array(z.string()).max(10),
+  effect_gate:z.string(),amendment_before_search:z.object({reason:z.string(),status:z.string(),previous_implementation:z.literal("311e9f7")}).strict(),
 }).strict().superRefine((p,ctx)=>{
   const all=[...p.fit.seedIndices,...p.fit.pointValidationIndices,...p.search.seedIndices,...p.validation.seedIndices,...p.holdout.seedIndices];
   const hashes=all.map(i=>hashSeed(`H1-seed:${i}`));
@@ -59,21 +60,22 @@ export function runBoundedRollout(options:BoundedOptions,artifact?:ReplayArtifac
   const prior=artifact?compileReplay(artifact):undefined;
   if(prior&&(prior.scope.kind!=="synthetic-cohort"||prior.profile!==options.profile||prior.scope.trainingSeeds.some(s=>options.seeds.includes(s))))
     throw Error("Bounded search prior source/profile mismatch or seed overlap");
-  const decisions=new Map<string,{personal:number;blended:number;weight:number;day:number}>();
-  const stats=new Map<number,{n:number;a:number;b:number;first:number;uses:number;late:number}>();
+  const decisions=new Map<string,{personal:number;blended:number;weight:number;day:number;changed:boolean}>();
+  const stats=new Map<number,{n:number;a:number;b:number;first:number;uses:number;late:number;changes:number}>();
   const raw=runLearningRollout({policy:"linucb",profile:options.profile,agents:options.agents,days:options.days,seeds:[...options.seeds],shiftDay:options.shiftDay},
     (agent,id,context)=>{
       const day=Math.round((Date.parse(context.date)-Date.UTC(2026,9,1))/86_400_000),role=hierarchyRole(id,day,options.shiftDay);
       const s=selectBoundedScenario(agent,id,context,role.place,params,prior),x=decisionContext(agent,context.weather),arm=agent.linear?.[s.id];
       const personal=arm?linearScore(arm,x).mean:agent.actions[s.id]?.meanReward??0,shared=prior&&params?warmPrediction(prior,params,agent,id,s,x):null;
-      decisions.set(id,{personal,blended:shared?personal+(shared.mean-personal)*shared.weight:personal,weight:shared?.weight??0,day});return s;
+      const changed=!!shared&&availableScenarios(agent,context).length>1&&s.id!==chooseScenario(agent,id,context,role.place).id;
+      decisions.set(id,{personal,blended:shared?personal+(shared.mean-personal)*shared.weight:personal,weight:shared?.weight??0,day,changed});return s;
     },{onOutcome:o=>{
       const d=decisions.get(o.actorId)!;decisions.delete(o.actorId);const seed=Number(o.actorId.split(":")[1]);
-      const m=stats.get(seed)??{n:0,a:0,b:0,first:0,uses:0,late:0};m.n++;m.a+=(o.reward-d.personal)**2;m.b+=(o.reward-d.blended)**2;
+      const m=stats.get(seed)??{n:0,a:0,b:0,first:0,uses:0,late:0,changes:0};m.n++;m.a+=(o.reward-d.personal)**2;m.b+=(o.reward-d.blended)**2;if(d.changed)m.changes++;
       if(d.day===0)m.first+=o.reward;if(d.weight>0){m.uses++;if(params&&o.sampleBefore>=params.warmPlans)m.late++;}stats.set(seed,m);
     }});
   const runs=options.seeds.map(seed=>{const m=stats.get(seed)!;return {seed,personalMSE:m.a/m.n,blendedMSE:m.b/m.n,
-    firstDayReturn:m.first/options.agents,priorPredictions:m.uses,priorPredictionsAfterCutoff:m.late};});
+    firstDayReturn:m.first/options.agents,priorPredictions:m.uses,priorPredictionsAfterCutoff:m.late,voluntaryChoiceChanges:m.changes};});
   return {kind:"bounded-parameter-rollout-v1",config:{...options,params,seeds:[...options.seeds]},raw,runs,
     sameDecisionMSEDelta:summarize(runs.map(r=>r.blendedMSE-r.personalMSE)),productionAccess:false,activatesRuntimePolicy:false};
 }
@@ -84,6 +86,7 @@ export function compareBoundedRollouts(a:ReturnType<typeof runBoundedRollout>,b:
   return {...comparison,baseline:"personal-v1",candidate:b.config.params?warmConfigId(b.config.params):"personal-v1",
     relativeReturnDelta:comparison.differences.returnPerAgentDay.mean/Math.max(1e-9,Math.abs(baseReturn)),
     meanEntropyRatio:b.raw.summary.actionEntropy!.mean/Math.max(1e-9,a.raw.summary.actionEntropy!.mean),
+    voluntaryChoiceChanges:b.runs.reduce((n,r)=>n+r.voluntaryChoiceChanges,0),
     firstDayReturnDelta:summarize(b.runs.map((r,i)=>r.firstDayReturn-a.runs[i].firstDayReturn))};
 }
 export type CandidateScore={id:string;params:WarmConfig;profiles:{profile:string;comparison:ReturnType<typeof compareBoundedRollouts>}[]};
@@ -91,7 +94,7 @@ function validScore(candidate:CandidateScore) {
   const params=warmConfigSchema.parse(candidate.params);
   if(candidate.id!==warmConfigId(params)||candidate.profiles.length!==2||
     new Set(candidate.profiles.map(p=>p.profile)).size!==2||
-    !candidate.profiles.every(p=>["ordinary-v1","cold-stress-v1"].includes(p.profile)&&Number.isFinite(p.comparison.relativeReturnDelta)&&Number.isFinite(p.comparison.meanEntropyRatio)))throw Error("Invalid bounded candidate score");
+    !candidate.profiles.every(p=>["ordinary-v1","cold-stress-v1"].includes(p.profile)&&Number.isFinite(p.comparison.relativeReturnDelta)&&Number.isFinite(p.comparison.meanEntropyRatio)&&Number.isSafeInteger(p.comparison.voluntaryChoiceChanges)&&p.comparison.voluntaryChoiceChanges>=0))throw Error("Invalid bounded candidate score");
   return candidate;
 }
 function ranked(candidates:CandidateScore[]) {
@@ -101,14 +104,14 @@ function ranked(candidates:CandidateScore[]) {
 export function shortlistCandidates(candidates:CandidateScore[],limit=2) {
   if(!Number.isInteger(limit)||limit<1||limit>2||candidates.length>9||new Set(candidates.map(c=>c.id)).size!==candidates.length)throw Error("Search budget or candidate uniqueness violated");
   const windows=new Set<number>(),chosen:CandidateScore[]=[];
-  for(const c of ranked(candidates))if(c.profiles.every(p=>p.comparison.meanEntropyRatio>=.8)&&!windows.has(c.params.warmPlans)) {
+  for(const c of ranked(candidates))if(c.profiles.every(p=>p.comparison.meanEntropyRatio>=.8&&p.comparison.voluntaryChoiceChanges>0)&&!windows.has(c.params.warmPlans)) {
     windows.add(c.params.warmPlans);chosen.push(c);if(chosen.length===limit)break;
   }
   return chosen;
 }
 export function performancePass(c:CandidateScore) {
   validScore(c);
-  return c.profiles.every(({comparison:p})=>p.gates.fullProfile&&p.gates.returnNonDecrease&&p.gates.needsNonDecrease&&p.gates.regretNonIncrease&&p.gates.entropyFloor);
+  return c.profiles.every(({comparison:p})=>p.voluntaryChoiceChanges>0&&p.gates.fullProfile&&p.gates.returnNonDecrease&&p.gates.needsNonDecrease&&p.gates.regretNonIncrease&&p.gates.entropyFloor);
 }
 export function selectValidationCandidate(candidates:CandidateScore[],shortlist:readonly string[]) {
   if(shortlist.length>2||new Set(shortlist).size!==shortlist.length||candidates.length!==shortlist.length||

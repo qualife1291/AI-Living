@@ -123,5 +123,11 @@
     "Existing role-independent reward, synthetic role/place fixture, hourly plans, transient stress and own-state depth1 oracle limitations remain.",
     "Search/validation can overfit; only one fixed held-out candidate is admissible. A no-selection result is valid and preserves holdout.",
     "This is finite deterministic parameter search, not LLM fine-tuning, learned occupational expertise, or self-modifying code."
-  ]
+  ],
+  "effect_gate": "Candidate must change at least one voluntary same-state choice versus personal selector on each profile in search and validation; an inert forced-only configuration is not a candidate improvement.",
+  "amendment_before_search": {
+    "reason": "H1 starts at midnight; first6plans are forced sleep. Keep warm6 as negative control, but exclude zero voluntary-choice effect before shortlist/validation selection. This is deduced from guards, not search results.",
+    "status": "registered before any search/validation/holdout rollout; only model-fitting fixtures have run",
+    "previous_implementation": "311e9f7"
+  }
 }

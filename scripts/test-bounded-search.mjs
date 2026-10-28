@@ -20,13 +20,16 @@ for(const change of [p=>p.budget.candidates=10,p=>p.grid.warmPlans=[6,6,24],p=>p
 assert.equal(new Set(seedValues([...protocol.fit.seedIndices,...protocol.fit.pointValidationIndices,...protocol.search.seedIndices,...protocol.validation.seedIndices,...protocol.holdout.seedIndices])).size,48);
 const config={warmPlans:6,priorK:.5};
 for(const bad of [{...config,priorK:0},{...config,priorK:Infinity},{...config,warmPlans:73},{...config,reward:1}])assert.throws(()=>warmConfigSchema.parse(bad));
-const scored=(params,relative=.01,changes={})=>({id:warmConfigId(params),params,profiles:['ordinary-v1','cold-stress-v1'].map(profile=>({profile,comparison:{relativeReturnDelta:relative,meanEntropyRatio:1,
+const scored=(params,relative=.01,changes={})=>({id:warmConfigId(params),params,profiles:['ordinary-v1','cold-stress-v1'].map(profile=>({profile,comparison:{relativeReturnDelta:relative,meanEntropyRatio:1,voluntaryChoiceChanges:1,
  gates:{fullProfile:true,enoughSeeds:false,returnNonDecrease:true,needsNonDecrease:true,regretNonIncrease:true,entropyFloor:true,...changes}}}))});
 const grid=searchGrid(protocol),scores=grid.map(c=>scored(c.params));
 const shortlist=shortlistCandidates(scores),reverse=shortlistCandidates([...scores].reverse());assert.deepEqual(shortlist,reverse);
 assert.equal(shortlist.length,2);assert.notEqual(shortlist[0].params.warmPlans,shortlist[1].params.warmPlans);
 const diverse=scored({warmPlans:12,priorK:.5},.1);diverse.profiles[0].comparison.meanEntropyRatio=.79;
 assert(!shortlistCandidates([diverse,scored(config)]).some(c=>c.id===diverse.id),'Action entropy constrains search eligibility');
+const inert=scored(config,1);for(const p of inert.profiles)p.comparison.voluntaryChoiceChanges=0;
+assert.equal(shortlistCandidates([inert]).length,0,'A forced-only no-op is not an improvement candidate');
+assert.equal(selectValidationCandidate([inert],[inert.id]),null);
 assert.throws(()=>shortlistCandidates([scores[0],scores[0]]),/budget|uniqueness/);assert.throws(()=>shortlistCandidates(scores,3),/budget/);
 const ids=shortlist.map(c=>c.id);assert(selectValidationCandidate(shortlist,ids),'Eight-seed validation uses performance gates; it is not a20seed holdout claim');
 const failed=shortlist.map(c=>scored(c.params,.02,{needsNonDecrease:false}));assert.equal(selectValidationCandidate(failed,ids),null);
@@ -46,6 +49,7 @@ assert.equal(selectBoundedScenario({...agent,energy:5},id,context,'Thư viện',
 const options={profile:'cold-stress-v1',agents:2,days:4,seeds:[101,107],shiftDay:2,params:null};
 const baseline=runBoundedRollout(options),candidate=runBoundedRollout({...options,params:config},artifact);
 assert.deepEqual(runBoundedRollout({...options,params:config},artifact),candidate);assert(candidate.runs.every(r=>r.priorPredictionsAfterCutoff===0));
+assert(candidate.runs.every(r=>r.voluntaryChoiceChanges===0));assert.deepEqual(candidate.raw,baseline.raw,'Warm6 is the midnight forced-sleep negative control');
 assert(candidate.raw.runs.every(r=>r.trainedSamples===r.completedPlans));assert.equal(compareBoundedRollouts(baseline,candidate).gates.enoughSeeds,false);
 assert.throws(()=>runBoundedRollout({...options,seeds:[11],params:config},artifact),/overlap/);
 assert.throws(()=>runBoundedRollout({...options,profile:'ordinary-v1',params:config},artifact),/profile/);
