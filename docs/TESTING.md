@@ -1,6 +1,6 @@
 # Kiểm thử và bằng chứng
 
-`scripts/unit-suites.json` là danh sách suite hiện hành; `npm run test:unit` dùng process độc lập, tối đa 4 workers, thu đủ lỗi thay vì fail-fast. `XOM_TEST_JOBS=1` chạy tuần tự. Mốc H3 có54suite đã đạt; đây không phải kết quả chạy mới mỗi khi sửa tài liệu.
+`scripts/unit-suites.json` là danh sách suite hiện hành; `npm run test:unit` dùng process độc lập, tối đa 4 workers, thu đủ lỗi thay vì fail-fast. `XOM_TEST_JOBS=1` chạy tuần tự. Mốc H4 có55suite đã đạt; đây không phải kết quả chạy mới mỗi khi sửa tài liệu.
 
 ## Chọn kiểm tra theo thay đổi
 
@@ -49,6 +49,8 @@ Restart Worker từ `dist/server/wrangler.json` sau build. `QA_BASE` bắt buộ
 `node scripts/test-learning-policy.mjs` kiểm golden trước refactor, outcome/purity/gates, oracle/drift, determinism/censoring/CI/seed alignment. `npm run simulate:learning` và `scripts/compare-learning.mjs` chạy offline; profile/limits/hash và kết quả ở [LEARNING](LEARNING.md). CLI từ chối ghi đè baseline khác và so sánh report sai checksum. Không đưa rollout/synthetic outcomes vào DB thật. H2 thêm `test-residual-policy.mjs`: ownership/completion/replay/checkpoint, raw models/skills không đổi, EMA shift, prior không tạo samples, cap không chặn emergency, cold-stress và H1 row giữ nguyên. Evidence H2 ghi full repeat byte/hash, prior checksum/profile/seed-overlap và immutable-output CLI guards; negative result không cho phép tự bật policy.
 
 H3 `test-reward-evidence.mjs` kiểm settlement khác decision state, đầy đủ duration/key/legacy, saturation và negative outcome, actor/context/version/domain tamper, replay và inspector không backfill/ghi đè/lộ raw record kể cả JSONL lỗi. Compiled API kiểm evidence trong archive/JSONL, legacy bytes giữ nguyên và hai request học cạnh tranh chỉ tạo một sample/receipt/archive. Golden và full H1 hash phải giữ nguyên. Kết quả thực tế từng mốc nằm trong validation JSON, không suy từ tên suite.
+
+H4 `test-hierarchical-prior.mjs` kiểm source/version/catalog/signature/support/SPD, ownership/monotonic samples/dedup, compiler không bị input sửa, bounded confidence/fallback, giữ raw personal models/skills và emergency/gates. CLI kiểm seed/profile/checksum/immutable output; wrapper giữ H1/H2 default reports. [Protocol](validation/learning-h4-protocol-v1.json) cố định trước kết quả; artifact/reports/same-decision MSE/paired gates/repeats ở [evidence](validation/learning-h4-2026-10-28.json). Không gọi donor support là earned samples hoặc tắt guard để cải thiện benchmark.
 
 ## ZIP source
 

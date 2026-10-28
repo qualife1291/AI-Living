@@ -134,3 +134,18 @@ npm run simulate:hierarchy -- --variant=role-prior-v1 --profile=cold-stress-v1 -
 CLI kiểm SHA/schema/profile/train-eval overlap/size và không ghi đè artifact khác. Wrapper H4 tái sử dụng hourly rollout/oracle H1/H2 bằng selector+observer riêng; golden/default reports không đổi. Paired CI95 trên seed deltas theo gates return/needs không giảm, opportunity cost không tăng, entropy≥80% baseline; MSE so personal/blended trên **cùng decision của từng candidate**, không dùng hai trajectory khác nhau để nhận cải thiện dự đoán. Role-vs-global là ablation riêng, không tự chứng minh specialization.
 
 Reward v1 hiện không có payoff phụ thuộc role; cải thiện nếu có chỉ từ phân bố context/action và warm start. H4 chưa cài artifact vào runtime/policy store0007, không auto promotion, không có CAS format mới. Runtime tương lai cần nguồn actor/role **tại decision**, artifact installation/version/rollback/CAS và bằng chứng riêng; không suy role lịch sử từ role hiện tại hoặc hiện thực hoá synthetic prior thành trải nghiệm thật. Không thay H2 đã thất bại, reward dài hạn, H5 sharing hoặc H6 replay.
+
+[Evidence H4](validation/learning-h4-2026-10-28.json) và [raw artifacts](validation/h4-v1/) ghi552.960train +1.658.880validation +4.147.200holdout plans,55suite/check/lint/build/assets/API local đạt; full prior train, full role-stress và H1 đều repeat cùng byte/hash. Chưa runtime installation/deploy.
+
+| Holdout profile / variant | Reward/agent/ngày (60ngày) | Reward ngày1/agent | Đủ gates |
+|---|---:|---:|---|
+|ordinary-v1 / Cá nhân|1,202140|2,529416|Baseline|
+|ordinary-v1 / Global|1,200715|3,175454|Không|
+|ordinary-v1 / Role-kind|1,200286|3,152865|Không|
+|cold-stress-v1 / Cá nhân|3,360767|5,808847|Baseline|
+|cold-stress-v1 / Global|3,353370|6,410548|Không|
+|cold-stress-v1 / Role-kind|3,353333|6,392904|Không|
+
+Cả hai candidate giảm reward60ngày với paired CI95 dưới0 ở cả hai profile: global Δ−0,001425 ordinary /−0,007397 stress; role Δ−0,001854/−0,007434. Opportunity-cost và entropy gates đạt. Stress needs đạt; ordinary needs có mean tăng nhẹ nhưng CI chưa chứng minh không giảm — không diễn giải thành needs trung bình bị giảm. Role-vs-global CI reward/opportunity-cost chứa0, chưa có bằng chứng lợi ích riêng của nhóm role.kind.
+
+Warm-start có lợi ở ngày1: global Δreward+0,646 ordinary/+0,602stress; role+0,623/+0,584, tất cả paired CI95 trên0. Cùng-decision MSE giảm khoảng60,62%/59,06% ở global,59,98%/58,74% ở role, không đồng nghĩa policy tốt hơn cả60ngày. Giữ default LinUCB cá nhân và **không promote v1**. Warm-only/cutoff là giả thuyết nghiên cứu cho protocol/seed mới, chưa triển khai và không thử lại để ép các seed này thắng. H6 replay/curriculum là bước độc lập tiếp; H3b/H5 còn chờ authority.

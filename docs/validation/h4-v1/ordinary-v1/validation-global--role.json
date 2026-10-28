@@ -1,0 +1,88 @@
+{
+  "kind": "paired-rollout-comparison-v1",
+  "baseline": "global-prior-v1",
+  "candidate": "role-prior-v1",
+  "differences": {
+    "returnPerAgentDay": {
+      "mean": 0.0005167735100685966,
+      "ci95": [
+        -0.00012384486970735335,
+        0.0011573918898445466
+      ],
+      "n": 8,
+      "min": -0.0004859225436475434,
+      "max": 0.0017071035157734116
+    },
+    "immediateRegretPerAgentDay": {
+      "mean": 0.004283803189898572,
+      "ci95": [
+        -0.0009186858042506633,
+        0.009486292184047807
+      ],
+      "n": 8,
+      "min": -0.006193510150165782,
+      "max": 0.011584784972720641
+    },
+    "needOkRatio": {
+      "mean": -0.000007233796296315931,
+      "ci95": [
+        -0.00003227723892352559,
+        0.000017809646330893728
+      ],
+      "n": 8,
+      "min": -0.000057870370370416424,
+      "max": 0.000028935185185208212
+    },
+    "actionEntropy": {
+      "mean": -0.00009557335416766899,
+      "ci95": [
+        -0.0005981607408057933,
+        0.0004070140324704553
+      ],
+      "n": 8,
+      "min": -0.0012773357909900973,
+      "max": 0.0008545362721105176
+    },
+    "repeatRate": {
+      "mean": 0.000028955293027564666,
+      "ci95": [
+        -0.00003703298077586148,
+        0.00009494356683099081
+      ],
+      "n": 8,
+      "min": -0.00008686587908268706,
+      "max": 0.00014477646513788578
+    }
+  },
+  "entropyMargin": {
+    "mean": 0.1177883542025534,
+    "ci95": [
+      0.11702629228982625,
+      0.11855041611528055
+    ],
+    "n": 8,
+    "min": 0.11609994222619746,
+    "max": 0.11855943533083635
+  },
+  "gates": {
+    "enoughSeeds": false,
+    "fullProfile": true,
+    "returnNonDecrease": false,
+    "regretNonIncrease": false,
+    "needsNonDecrease": false,
+    "entropyFloor": true
+  },
+  "passesProposedOfflineGates": false,
+  "activatesRuntimePolicy": false,
+  "limits": "Same-state one-step opportunity cost is not long-horizon counterfactual regret. Needs/competence can have no headroom in this profile.",
+  "firstDayReturnDelta": {
+    "mean": -0.03659723734403936,
+    "ci95": [
+      -0.05413445862363324,
+      -0.019060016064445476
+    ],
+    "n": 8,
+    "min": -0.060627061512498415,
+    "max": -0.006069828122499121
+  }
+}

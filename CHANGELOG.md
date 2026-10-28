@@ -4,6 +4,8 @@ Chỉ ghi mốc sản phẩm. Chi tiết commit/review nằm trong Git; số ver
 
 ## 28/10/2026
 
+- H4 thêm global/role.kind priors có H3 provenance, strict artifact/seed split và bounded prediction blend;55suite/API local đạt. Warm-start ngày đầu và MSE tốt hơn trong mô phỏng, nhưng reward60ngày giảm nên chưa promote; default LinUCB cá nhân giữ nguyên.
+
 - Review Society/NIM, đưa phần phù hợp vào backlog có phụ thuộc và sửa accounting/knowledge/retention assumptions. H3 thêm evidence/version/breakdown cho reward simulation hiện hành và audit JSONL offline; giữ raw reward/LinUCB/legacy, chưa có reward dài hạn hoặc tích hợp NIM.
 
 - H2 thêm cold-stress, model-prior/residual-EMA và warm prior có provenance/seed split, receipt chống replay; hơn5,5 triệu plan đánh giá offline. Cả3 candidate chưa đủ gates thay LinUCB; giữ default, không ghi liveDB.53suite/check/lint/build/assets/API local đạt.
