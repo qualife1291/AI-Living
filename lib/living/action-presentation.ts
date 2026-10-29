@@ -12,5 +12,5 @@ export function activityLift(kind: Step["kind"], seconds: number) {
 }
 export const hasHandProp = (kind: Step["kind"]) => ["read", "study", "garden", "eat", "drink", "work", "shop"].includes(kind);
 export function handProp(kind: Step["kind"]): string {
-  return kind === "study" ? "read" : kind === "drink" || kind === "eat" ? "cup" : kind === "shop" ? "bag" : kind;
+  return kind === "study" ? "read" : kind === "drink" ? "cup" : kind === "eat" ? "bread" : kind === "shop" ? "bag" : kind;
 }

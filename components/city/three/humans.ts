@@ -155,6 +155,7 @@ type MotionState = { position: [number, number]; phase: number; weight: number; 
  * Joint transitions ease without moving the collision-safe root position. */
 export class HumanMotion {
   private states = new Map<string, MotionState>();
+  phase(id:string){return this.states.get(id)?.phase??0;}
   frame(actors: Actor[], poses: Map<string, { peerId: string; gesture: string; speaking: boolean }>, seconds: number, dt: number, paused: boolean) {
     const output = new Map<string, { yaw: number; pose: HumanPose }>();
     const active = new Set(actors.map(a => a.id));

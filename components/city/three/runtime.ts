@@ -582,7 +582,7 @@ export function createCity(
   host.dataset.gardenBatches=String(gardens.stats().batches);
   host.dataset.fountainStreams = String(ambience.stats.fountainStreams);
   host.dataset.cloudLobes = String(ambience.stats.cloudLobes);
-  const capacity = 72, people = createPeople(scene, capacity), boxGeo = people.geometry.box;
+  const capacity = 72, people = createPeople(scene, capacity,assets), boxGeo = people.geometry.box;
   people.setQuality(input().quality);
   sceneDetail.apply(scene, input().quality);
   const modelActors = createModelActors(scene, assets);
@@ -725,12 +725,15 @@ export function createCity(
   });
   resize.observe(host);
   const heading = new Map<string, number>();
-  function drawActors(seconds: number, world: World, dt: number) {
-    modelActors.prepare(world,input().selected,actors.filter(a=>!world.people.some(p=>p.id===a.id)&&Math.hypot(camera.position.x-a.position[0],camera.position.z-a.position[1])<420).sort((a,b)=>Math.hypot(camera.position.x-a.position[0],camera.position.z-a.position[1])-Math.hypot(camera.position.x-b.position[0],camera.position.z-b.position[1])),socialPoses.keys());
+  let poseClock=0;
+  function drawActors(world: World, dt: number) {
+    if(!world.paused)poseClock+=Math.max(0,Math.min(.15,dt));
+    host.dataset.poseClock=poseClock.toFixed(3);
+    modelActors.prepare(world,input().selected,actors.filter(a=>!world.people.some(p=>p.id===a.id)&&camera.position.distanceTo(new THREE.Vector3(a.position[0],groundElevation(...a.position)+8.75,a.position[1]))<420).sort((a,b)=>camera.position.distanceToSquared(new THREE.Vector3(a.position[0],groundElevation(...a.position)+8.75,a.position[1]))-camera.position.distanceToSquared(new THREE.Vector3(b.position[0],groundElevation(...b.position)+8.75,b.position[1]))),socialPoses.keys());
     host.dataset.assetActors = String(modelActors.ids.size);
-    const updated = people.draw(world, actors, socialPoses, seconds, dt, camera, input().selected, modelActors.ids);
+    const updated = people.draw(world, actors, socialPoses, poseClock, dt, camera, input().selected, modelActors.ids);
     heading.clear(); for (const [id, yaw] of updated) heading.set(id, yaw);
-    modelActors.draw(world, actors, socialPoses, heading, seconds);
+    modelActors.draw(world, actors, socialPoses, heading, poseClock,people.phase);
   }
   function traffic() {
     let fallbackCars = cars;
@@ -901,7 +904,7 @@ export function createCity(
       sun.intensity = 4.2;
       ambient.intensity = 2.1;
     }
-    drawActors(seconds, world, dt);
+    drawActors(world, dt);
     traffic();
     contactShadows.count = actors.length + cars.length;
     for (let i = 0; i < contactShadows.count; i++) {
@@ -960,7 +963,7 @@ export function createCity(
       const speech = exchange?.speech,
         speaker = actors.find((a) => a.id === speech?.speaker);
       const listener = actors.find(a => a.id === (exchange?.a === speaker?.id ? exchange?.b : exchange?.a));
-      const actorHead = (actor: Actor) => modelActors.head(actor.id)?.add(new THREE.Vector3(0, 1, 0)) ?? new THREE.Vector3(actor.position[0], groundElevation(...actor.position) + 21.5 + (actor.bicycle ? 4 : 0), actor.position[1]);
+      const actorHead = (actor: Actor) => (modelActors.head(actor.id)??people.head(actor.id))?.add(new THREE.Vector3(0, 1, 0)) ?? new THREE.Vector3(actor.position[0], groundElevation(...actor.position) + 18.5 + (actor.bicycle ? 4 : 0), actor.position[1]);
       const p = speaker ? actorHead(speaker).project(camera) : new THREE.Vector3();
       const labels: LabelAnchor[] = [];
       for (const actor of actors) {
@@ -1029,9 +1032,10 @@ export function createCity(
       const clearSightline=!cameraFoliage.some(box=>cameraRayBlocked(box,[a.position[0],groundElevation(...a.position)+4,a.position[1]],camera.position.toArray()))&&!cameraBuildings.some(box=>segmentHits(box,a.position,[camera.position.x,camera.position.z],2));
       return { id: a.id, ownerId: a.petOwnerId, position: a.position, walking: a.walking, clearSightline, onScreen: screen.z > -1 && screen.z < 1 && Math.abs(screen.x) < .95 && Math.abs(screen.y) < .95 };
     }));
-    host.dataset.pickTargets=JSON.stringify(actors.filter(a=>modelActors.ids.has(a.id)).map(actor=>{const point=new THREE.Vector3(actor.position[0],groundElevation(...actor.position)+modelActors.height(actor.id)*.6,actor.position[1]).project(camera);return{id:actor.id,x:(point.x+1)*host.clientWidth/2,y:(1-point.y)*host.clientHeight/2,depth:point.z};}));
+    host.dataset.pickTargets=JSON.stringify(actors.filter(a=>modelActors.ids.has(a.id)||people.head(a.id)).map(actor=>{const point=new THREE.Vector3(actor.position[0],groundElevation(...actor.position)+modelActors.height(actor.id)*.6,actor.position[1]).project(camera);return{id:actor.id,x:(point.x+1)*host.clientWidth/2,y:(1-point.y)*host.clientHeight/2,depth:point.z};}));
     host.dataset.selected = current?.id ?? "";
     host.dataset.humanBatches = String(people.stats().batches);
+    host.dataset.crowdModels=JSON.stringify(people.stats());
     host.dataset.humanInstances = String(people.stats().instances);
     host.dataset.modelActors = JSON.stringify(modelActors.snapshots());
     host.dataset.drawCalls = String(renderer.info.render.calls);
@@ -1096,6 +1100,7 @@ export function createCity(
       motionPreference.removeEventListener('change',motionChanged);
       renderer.domElement.removeEventListener('keydown',cameraKey);
       modelActors.dispose();
+      people.dispose();
       gardens.dispose();
       const geometries = new Set<THREE.BufferGeometry>(),
         materials = new Set<THREE.Material>(),

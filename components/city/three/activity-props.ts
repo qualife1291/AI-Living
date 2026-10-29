@@ -19,8 +19,10 @@ export function createBicycle() {
   }
   for(const [from,to] of [[[0,3,-5.5],[0,7,-1]],[[0,3,0],[0,7,-1]],[[0,3,0],[0,3,-5.5]],[[0,3,0],[0,7,3]],[[0,7,-1],[0,7,3]],[[0,7,3],[0,3,5.5]],[[0,7,3],[0,9,3.5]]])rod(from,to);
   const saddle=new THREE.Mesh(new THREE.BoxGeometry(2.4,.6,2),tire);saddle.position.set(0,7.5,-1);group.add(saddle);rod([-2,9,3.5],[2,9,3.5]);
+  for(const side of [-1,1]){const pedal=new THREE.Mesh(new THREE.BoxGeometry(.9,.3,1.4),tire);pedal.name=side===1?'bicycle-pedal-left':'bicycle-pedal-right';pedal.position.set(side*1.35,3,side*1.1);group.add(pedal);}
   return group;
 }
 export function spinBicycle(bicycle: THREE.Group, distance: number) {
+  const phase=distance/3;for(const side of [-1,1])bicycle.getObjectByName(side===1?'bicycle-pedal-left':'bicycle-pedal-right')?.position.set(side*1.35,3+side*Math.sin(phase)*1.1,side*Math.cos(phase)*1.1);
   for (const wheel of bicycle.children) if (wheel.name === "bicycle-wheel") wheel.rotation.z = -distance / BICYCLE_WHEEL_RADIUS;
 }
