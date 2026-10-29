@@ -670,5 +670,60 @@
     "ownerAndLoopbackGates": true,
     "noBootstrapOrWrites": true,
     "missingSchema503": true
+  },
+  "backendGuardSource": "3cafc55",
+  "privateReaderAliases": {
+    "suite": "progress-private-aliases",
+    "results": [
+      {
+        "path": "/api/system/progress",
+        "status": 403
+      },
+      {
+        "path": "/api/system/progress/",
+        "status": 403
+      },
+      {
+        "path": "//api/system/progress",
+        "status": 404
+      },
+      {
+        "path": "/api/%73ystem/progress",
+        "status": 404
+      },
+      {
+        "path": "/api/system/%70rogress",
+        "status": 404
+      },
+      {
+        "path": "/api/system%2Fprogress",
+        "status": 404
+      }
+    ]
+  },
+  "qa": {
+    "candidate": "8af40bb",
+    "parentRemotePreserved": "5749ce4b8cb833cbdc12c0513500b92bcfbf55b2",
+    "previousCombinedGate": {
+      "source": "3a04626",
+      "unit": 84,
+      "passed": 84,
+      "typecheck": "PASS",
+      "lint": "PASS",
+      "assets": "PASS",
+      "exactBuild": "PASS",
+      "compiledChat": "PASS",
+      "compiledProgress": "PASS"
+    },
+    "status": "FINAL_GATES_RUNNING",
+    "worker": "ai-living-qa",
+    "database": "ai_living_qa",
+    "cron": [
+      "*/5 * * * *"
+    ],
+    "accessPreserved": true,
+    "structuredLogs": true,
+    "versionMetadataBinding": "CF_VERSION_METADATA",
+    "authenticatedBrowser": "BLOCKED: no credentials in graphics session"
   }
 }
