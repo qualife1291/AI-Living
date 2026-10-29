@@ -5,15 +5,18 @@ import {scenarios,scenarioSchema,availableScenarios,chooseScenario,initializeAge
   applyScenarioOutcome,OUTCOME_SCENARIO_SIGNATURE} from '../lib/living/learning.ts';
 import {hashSeed} from '../lib/clock.ts';
 const legacy=["factory-shift","teach-class","learn-trade","hospital-check","rehabilitate","cinema-evening","traffic-check","motorbike-repair","ride-bus","ride-metro","airport-visit","office-shift","job-search","job-change","lunch","groceries","date-invitation","friendship","sports","minor-injury","culture","post-office","fire-training","garden-care","shared-meal","rest-home","neighborhood","market-chat","library","cafe-shift","school-project","quiet-walk","practice-drink","practice-run","practice-jump","practice-tag","practice-cycle","practice-exercise","practice-walk-pet","practice-shop","practice-study"];
-const fixture=JSON.parse(readFileSync(new URL('../data/city/scenarios.json',import.meta.url),'utf8'));
-assert.equal(scenarios.length,96);
-assert.deepEqual(scenarios.map(s=>s.id).slice(0,41),legacy,'legacy IDs and order are preserved');
-assert.deepEqual(fixture,scenarios);
-assert.equal(new Set(scenarios.map(s=>s.id)).size,96);
+const fixture=JSON.parse(readFileSync(new URL('../data/training/h6-scenario-catalog.json',import.meta.url),'utf8'));
+assert.equal(scenarios.length,41,'Legacy runtime registry must remain unchanged until migration is verified');
+assert.equal(fixture.length,96);
+assert.deepEqual(scenarios.map(s=>s.id),legacy,'Legacy runtime IDs/order must be preserved');
+assert.deepEqual(fixture.slice(0,41),scenarios,'Shadow pack must extend, never replace live catalogue');
+assert.equal(new Set(fixture.map(s=>s.id)).size,96);
 const domains=new Map();
-for(const s of scenarios)scenarioSchema.parse(s);
+// Existing runtime fingerprint must not change: older reward evidence must remain verifiable.
+assert.equal(OUTCOME_SCENARIO_SIGNATURE,hashSeed(JSON.stringify(scenarios)));
+for(const s of fixture)scenarioSchema.parse(s);
 // Legacy scenarios retain historical skill semantics; new scenarios must explicitly attribute gains.
-for(const s of scenarios.slice(41)){
+for(const s of fixture.slice(41)){
   assert(s.skill===0||s.skillDomain, s.id+' missing skill domain');
   domains.set(s.skillDomain,(domains.get(s.skillDomain)||0)+1);
 }
@@ -53,4 +56,11 @@ for(let i=0;i<96;i++){
 assert(decisions===384);
 assert(outcomes>=1000,'scenario stress did not exercise enough choices');
 assert(chosen.size>=4,'decision diversity collapsed');
-console.log(JSON.stringify({suite:'h6-scenario-validation',scenarios:96,added:55,domains:Object.fromEntries(domains),decisions,outcomes,selectedActions:chosen.size,signature:OUTCOME_SCENARIO_SIGNATURE,passed:true}));
+for(const candidate of fixture){
+  const initial=initializeAgent('h6-shadow:'+candidate.id);
+  const value=applyScenarioOutcome(initial,candidate);
+  assert(Number.isFinite(value.reward));
+  assert(value.after.energy>=0&&value.after.energy<=100);
+  assert(value.after.hunger>=0&&value.after.hunger<=100);
+}
+console.log(JSON.stringify({suite:'h6-scenario-validation',scenarios:96,legacyLive:41,added:55,domains:Object.fromEntries(domains),decisions,outcomes,selectedActions:chosen.size,signature:OUTCOME_SCENARIO_SIGNATURE,passed:true}));
