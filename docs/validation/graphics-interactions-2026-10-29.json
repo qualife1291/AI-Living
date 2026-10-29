@@ -2,7 +2,7 @@
   "kind": "graphics-interactions-acceptance-v1",
   "date": "2026-10-29",
   "timezone": "Asia/Ho_Chi_Minh",
-  "status": "LOCAL_PASS_QA_BUILD_PENDING",
+  "status": "LOCAL_PASS_REMOTE_READBACK_PENDING",
   "appSource": "3b3b3dbedf901cec9db36d84abe79039ba8a6eea",
   "production": false,
   "unit": {
@@ -574,7 +574,7 @@
     }
   },
   "pending": [
-    "QA branch final gates/build/push/readback."
+    "Cloudflare Build/readback for final push; authenticated browser and same-version native D1/Cron acceptance remain separate."
   ],
   "limits": [
     "Loopback fixture/Chromium SwiftShader; not hardware FPS or soak.",
@@ -715,7 +715,7 @@
       "compiledChat": "PASS",
       "compiledProgress": "PASS"
     },
-    "status": "FINAL_GATES_RUNNING",
+    "status": "LOCAL_PASS_REMOTE_READBACK_PENDING",
     "worker": "ai-living-qa",
     "database": "ai_living_qa",
     "cron": [
@@ -724,6 +724,22 @@
     "accessPreserved": true,
     "structuredLogs": true,
     "versionMetadataBinding": "CF_VERSION_METADATA",
-    "authenticatedBrowser": "BLOCKED: no credentials in graphics session"
+    "authenticatedBrowser": "BLOCKED: no credentials in graphics session",
+    "unit": {
+      "source": "8af40bb",
+      "total": 84,
+      "passed": 84,
+      "failed": [],
+      "workers": 4,
+      "seconds": 186.03
+    },
+    "typecheck": "PASS",
+    "lint": "PASS",
+    "assets": "PASS",
+    "exactBuildSource": "8af40bb",
+    "compiledChat": "PASS",
+    "compiledProgressAndPrivateAliases": "PASS",
+    "candidateParent": "383c562",
+    "offlineH6": "Merged shadow-only; 41 live scenarios unchanged, separate 96 catalog; no trainer activation or runtime importer."
   }
 }
