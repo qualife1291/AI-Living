@@ -92,5 +92,42 @@
   ],
   "productionAccess": false,
   "schemaChanged": false,
-  "deployment": false
+  "deployment": false,
+  "postConcurrentStudioMerge": {
+    "appSource": "5b29b86",
+    "testFixtureSource": "de93850f07d4fae15c06bf8ff669c414a4054fcd",
+    "unit": {
+      "suite": "unit-summary",
+      "total": 73,
+      "passed": 73,
+      "failed": [],
+      "workers": 2,
+      "seconds": 126.91
+    },
+    "typecheck": "PASS after fixture fix",
+    "lint": "PASS on merged app; touched fixture files lint PASS",
+    "assets": "PASS after latest Studio asset merge",
+    "build": "PASS on 5b29b86; later changes test fixtures only",
+    "compiledD1": {
+      "suite": "chat-admission-compiled-http",
+      "concurrentUnique": 60,
+      "concurrentDuplicate": 16,
+      "limit": 30,
+      "windowMs": 60000,
+      "atomicRollbackCases": 2,
+      "originOwnerBodyPauseActorGuards": true,
+      "retryAfter": true,
+      "rejectedUuidReusable": true,
+      "historyPreserved": true,
+      "productionAccess": false
+    },
+    "legacyLivenessHttp": "PASS",
+    "browserSource": "cdd8996; unchanged chat UI, latest Studio visual acceptance still owned by asset agent",
+    "testFlakeDisposition": {
+      "observed": "Full run on 5b29b86: 72/73, authority-view expected active speech 1 but got 0; GND3 runtime unchanged",
+      "cause": "Unit fixture used wall-clock world birth/seed with fixed expected speech window",
+      "fix": "Fixture accepts optional time; unit uses explicit 2026-10-29T02:00:00Z. Browser/default callers retain Date.now; assertions unchanged",
+      "verification": "Isolated fixed-fixture run and repeat PASS; full 73/73 PASS"
+    }
+  }
 }
