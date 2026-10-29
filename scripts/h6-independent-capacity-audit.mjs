@@ -88,10 +88,10 @@ for(let actor=0;actor<actorCount;actor++){
   assert(validArm(model)&&model.samples===1);
   const prediction=linearScore(model,context);
   assert(Number.isFinite(prediction.mean)&&Number.isFinite(prediction.uncertainty));
-  if(actor%16===0)scores.push([scenario.id,model]); // retain sample for audit of memory pressure
+  scores.push([scenario.id,model]); // hold ALL 393,216 6D posteriors concurrently
   trainedArms++;totalFit++;
  }
- if(scores.length)summaries.push({actor,arms:scores});
+ summaries.push({actor,arms:scores});
  if(actor%128===0)peakRss=Math.max(peakRss,process.memoryUsage().rss);
 }
 const elapsedMs=Math.round(performance.now()-start);
@@ -99,10 +99,12 @@ const outcome={phase:"H6-adversarial-independent",catalogueSignature:OUTCOME_SCE
  scenarios:96,checkedDecisions:heldout.decisions,selectedActions:heldout.selected.size,
  checkedRewards:heldout.rewardBounds,forcedSafetyCases:heldout.safeguard,
  rainyCases:heldout.weather,syntheticActors:actorCount,syntheticArms:trainedArms,
- sampleCountRealResidents:0,uniquePolicyRowsWrittenToD1:0,cloudflareWorkerDeployed:false,
+ sampleCountRealResidents:0,uniquePolicyRowsWrittenToD1:0,heldInMemoryArms:trainedArms,cloudflareWorkerDeployed:false,
  artifactsLoadedIntoRuntime:false,selectionMs,elapsedMs,peakRss,
  processBudget:{maxMillis:180000,maxRssBytes:1500000000},testsPassed:true};
 assert.equal(trainedArms,4096*96);
+assert.equal(summaries.length,4096);
+assert.equal(summaries.reduce((n,r)=>n+r.arms.length,0),trainedArms,"Lost posterior data under memory pressure");
 assert(elapsedMs<180000,"H6 offline process exceeded 180s budget");
 assert(peakRss<1500000000,"H6 offline process exceeded 1.5GB RSS budget");
 mkdirSync(".h6-audit",{recursive:true});writeFileSync(OUTPUT,JSON.stringify(outcome,null,2)+"\n");
