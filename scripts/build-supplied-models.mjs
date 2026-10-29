@@ -34,6 +34,18 @@ for(const selected of selection.assets){
  sample(neutral,0);
  const rest=bones.map(b=>({p:b.getWorldPosition(new THREE.Vector3()),q:b.getWorldQuaternion(new THREE.Quaternion())}));
  const parents=bones.map(b=>bones.indexOf(b.parent)),hips=bones.indexOf(byName.get('Hips'));
+ // Source characters include a complete body beneath separate garments. A garment
+ // simplified into larger triangles can cut through that body. Remove only body
+ // faces actually covered by a nearby garment in the reviewed neutral pose.
+ const occluders=[];let bodyFacesRemoved=0,pantsHem=Infinity;
+ source.scene.traverse(mesh=>{if(!mesh.isSkinnedMesh||!/pants|shorts|shirt|top|shoes/i.test(mesh.name))return;mesh.skeleton.update();const p=mesh.geometry.getAttribute('position'),v=new Float32Array(p.count*3);for(let i=0;i<p.count;i++){const point=mesh.getVertexPosition(i,new THREE.Vector3()).applyMatrix4(mesh.matrixWorld);point.toArray(v,i*3);if(/pants|shorts/i.test(mesh.name))pantsHem=Math.min(pantsHem,point.y);}const geometry=new THREE.BufferGeometry().setAttribute('position',new THREE.BufferAttribute(v,3));if(mesh.geometry.index)geometry.setIndex(mesh.geometry.index.clone());const o=new THREE.Mesh(geometry,new THREE.MeshBasicMaterial({side:THREE.DoubleSide}));o.updateMatrixWorld();occluders.push(o);});
+ const bodyHeight=new THREE.Box3().setFromObject(source.scene).getSize(new THREE.Vector3()).y,ray=new THREE.Raycaster();ray.far=bodyHeight*.065;
+ const coveredFace=(mesh,index,k)=>{const a=mesh.getVertexPosition(index[k],new THREE.Vector3()).applyMatrix4(mesh.matrixWorld),b=mesh.getVertexPosition(index[k+1],new THREE.Vector3()).applyMatrix4(mesh.matrixWorld),c=mesh.getVertexPosition(index[k+2],new THREE.Vector3()).applyMatrix4(mesh.matrixWorld),normal=b.clone().sub(a).cross(c.clone().sub(a)).normalize(),center=a.add(b).add(c).multiplyScalar(1/3),si=mesh.geometry.getAttribute('skinIndex'),sw=mesh.geometry.getAttribute('skinWeight');let leg=0,arm=0;for(let v=0;v<3;v++)for(let j=0;j<4;j++){const name=bones[si.getComponent(index[k+v],j)].name,weight=sw.getComponent(index[k+v],j)/3;if(/Hips|Leg|Foot|Toe/.test(name))leg+=weight;if(/Arm/.test(name))arm+=weight;}
+  // Exact reviewed garments: all five have trousers/shorts; the first three
+  // listed here have long sleeves. Retain bare calves, ankles, wrists and hands.
+  if(leg>.55)return center.y>pantsHem+bodyHeight*.003;
+  if(arm>.8&&['supplied/jacket','supplied/service','supplied/office'].includes(selected.id))return true;
+  ray.set(center.addScaledVector(normal,-bodyHeight*1e-5),normal);return ray.intersectObjects(occluders,false).length>0;};
  const pos=[],normal=[],uv=[],color=[],joints=[],weights=[],wardrobe=[],indices=[],skinCandidates=[];let mainTexture;
  source.scene.traverse(mesh=>{
   if(!mesh.isSkinnedMesh)return;
@@ -49,6 +61,7 @@ for(const selected of selection.assets){
    if(mainTexture&&hash(texture.getImage())!==hash(mainTexture.getImage()))throw Error('Multiple body palettes need an explicit atlas');mainTexture=texture;
    const remap=new Map(),mask=/pants/i.test(mesh.name)?2:/shirt|top/i.test(mesh.name)?1:0;
    for(let k=group.start;k<group.start+group.count;k++){
+    if((k-group.start)%3===0&&(/body/i.test(mesh.name)||/^ChessPlayer_0[12]$/.test(mesh.name))&&coveredFace(mesh,index,k)){bodyFacesRemoved++;k+=2;continue;}
     const vi=index[k];let out=remap.get(vi);
     if(out===undefined){out=pos.length/3;remap.set(vi,out);const v=mesh.getVertexPosition(vi,new THREE.Vector3()).applyMatrix4(mesh.matrixWorld);pos.push(...v);uv.push(u.getX(vi),u.getY(vi));color.push(c?.getX(vi)??1,c?.getY(vi)??1,c?.getZ(vi)??1,c?.itemSize===4?c.getW(vi):1);
      const skinMatrix=new THREE.Matrix4();skinMatrix.elements.fill(0);for(let j=0;j<4;j++){const bi=skin.getComponent(vi,j),weight=w.getComponent(vi,j);joints.push(bi);weights.push(weight);const bm=mesh.skeleton.boneMatrices;for(let z=0;z<16;z++)skinMatrix.elements[z]+=bm[bi*16+z]*weight;}
@@ -103,7 +116,7 @@ for(const selected of selection.assets){
  const jsonDoc=await io.writeJSON(doc);const d=jsonDoc.json,binaryKeys=Object.keys(jsonDoc.resources).filter(k=>k.endsWith('.bin'));if(binaryKeys.length!==1)throw Error('Unexpected output buffers');const binary=jsonDoc.resources[binaryKeys[0]],jsonImages=d.images??[];
  for(const img of jsonImages){if(img.uri){const imgBytes=jsonDoc.resources[img.uri];if(!imgBytes||hash(imgBytes)!==hash(image))throw Error('Unexpected derivative image');img.uri=textureName;}}
  d.buffers[0]={byteLength:binary.length};let j=Buffer.from(JSON.stringify(d));j=Buffer.concat([j,Buffer.alloc((4-j.length%4)%4,32)]);let bin=Buffer.from(binary);bin=Buffer.concat([bin,Buffer.alloc((4-bin.length%4)%4)]);const header=Buffer.alloc(28);header.write('glTF');header.writeUInt32LE(2,4);header.writeUInt32LE(28+j.length+bin.length,8);header.writeUInt32LE(j.length,12);header.writeUInt32LE(0x4e4f534a,16);header.writeUInt32LE(bin.length,20);header.writeUInt32LE(0x004e4942,24);const output=Buffer.concat([header.subarray(0,20),j,header.subarray(20),bin]);
- const url='/models/'+selected.id+'.glb';writeFileSync('public'+url,output);assets.push({...selected,url,bytes:output.length,sha256:hash(output),license:selection.license,pack:'supplied-civilians',genre:'daily-life',skins:1,triangles:reduced.length/3,primitives:1,relativeSimplificationError:error,clips:clipSpecs.map(c=>c[0]),clipOrigins:origins,resources:[{url:'/models/supplied/'+textureName,bytes:image.length,sha256:hash(image)}]});
+ const url='/models/'+selected.id+'.glb';writeFileSync('public'+url,output);assets.push({...selected,url,bytes:output.length,sha256:hash(output),license:selection.license,pack:'supplied-civilians',genre:'daily-life',skins:1,triangles:reduced.length/3,primitives:1,hiddenBodyTrianglesRemoved:bodyFacesRemoved,relativeSimplificationError:error,clips:clipSpecs.map(c=>c[0]),clipOrigins:origins,resources:[{url:'/models/supplied/'+textureName,bytes:image.length,sha256:hash(image)}]});
  console.log(JSON.stringify({id:selected.id,sourceTriangles:selected.triangles,triangles:reduced.length/3,error,bytes:output.length,palette:image.length}));
  mixer.stopAllAction();
 }

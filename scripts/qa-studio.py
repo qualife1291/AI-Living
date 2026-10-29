@@ -17,7 +17,7 @@ with sync_playwright() as p:
     page.get_by_label('Chọn kịch bản',exact=True).select_option(scenario);page.wait_for_function('(id)=>document.querySelector(".studio-canvas")?.dataset.scenario===id',arg=scenario)
     for shot in range(1,6):
      page.get_by_role('button',name=f'Phân cảnh {shot}',exact=True).click();page.wait_for_function('(n)=>Number(document.querySelector(".studio-canvas")?.dataset.beat)===n',arg=shot-1)
-     assert host.get_attribute('data-asset-failures')=='0';assert int(host.get_attribute('data-triangles'))<25000;assert int(host.get_attribute('data-draw-calls'))<150
+     assert host.get_attribute('data-asset-failures')=='0';assert int(host.get_attribute('data-triangles'))<25000,(name,scenario,shot,host.evaluate('(e)=>({...e.dataset})'));assert int(host.get_attribute('data-draw-calls'))<150
     page.get_by_role('button',name='Phân cảnh 4',exact=True).click();page.wait_for_function('document.querySelector(".studio-canvas")?.dataset.beat==="3"')
     page.screenshot(path=str(out/f'{scenario}-{name}-preview.png'))
     # Settle the authored 2.4s transition, then require selected heads/feet to fit.
@@ -48,4 +48,10 @@ with sync_playwright() as p:
     report.append({'viewport':name,'scenario':scenario,'shots':5,'controls':'play/pause/restart/seek/end/replay-after-completion','renderedTimeProbes':[0,24,48,72,96,119.9,120,37.5],'stats':host.evaluate('(e)=>({...e.dataset})')});print(name,scenario,'PASS',flush=True)
    assert not errors,errors;assert not failures,failures;page.close()
   (out/'studio-metrics.json').write_text(json.dumps({'renderer':'Chromium SwiftShader','production':False,'cases':report},indent=2,ensure_ascii=False))
+ except Exception:
+  try:
+   page.screenshot(path=str(out/'failure.png'),timeout=5000)
+   (out/'failure.json').write_text(json.dumps({'errors':errors,'assetFailures':failures,'stats':host.evaluate('(e)=>({...e.dataset})')},indent=2,ensure_ascii=False))
+  except Exception as capture:print('Failure capture:',str(capture)[:150],flush=True)
+  raise
  finally:b.close()
