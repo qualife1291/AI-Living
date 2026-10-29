@@ -1,0 +1,46 @@
+{
+  "source": "actual local CPU Qwen2.5-1.5B-Instruct Q4_K_M",
+  "fixture": {
+    "place": "Quán cà phê",
+    "cast": [
+      {
+        "id": "an",
+        "name": "An",
+        "voice": "Tò mò, muốn tập phục vụ quầy nước"
+      },
+      {
+        "id": "chi",
+        "name": "Chi",
+        "voice": "Quan sát kỹ, nói nhẹ nhàng"
+      }
+    ],
+    "facts": "Hai người đang đứng bên hiên quán, đã nghỉ tay. Chưa mua hay uống gì. Không có thông tin thời tiết."
+  },
+  "proposal": {
+    "title": "An tò mò, hỏi Chi việc nhỏ liên quan chỗ ngồi",
+    "summary": "An đứng bên hiên quán, nhìn quanh. Chi đứng bên cạnh An, quan sát menu.",
+    "dialogue": [
+      {
+        "speaker": "an",
+        "text": "Chi, do bạn muốn ngồi gần cửa ra vào hay ở chỗ khác? Tôi muốn thử cà phê iced mới."
+      },
+      {
+        "speaker": "chi",
+        "text": "An, bạn muốn ngồi gần cửa ra vào hay ở chỗ khác? Tôi muốn thử cà phê iced mới."
+      },
+      {
+        "speaker": "an",
+        "text": "Chi, do bạn muốn ngồi gần cửa ra vào hay ở chỗ khác? Tôi muốn thử cà phê iced mới."
+      },
+      {
+        "speaker": "chi",
+        "text": "An, bạn muốn ngồi gần cửa ra vào hay ở chỗ khác? Tôi muốn thử cà phê iced mới."
+      }
+    ]
+  },
+  "rejection": "Lượt thoại bị lặp",
+  "approved": false,
+  "persistedToWorld": false,
+  "blindEvaluation": false,
+  "weightsTrained": false
+}

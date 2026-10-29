@@ -188,5 +188,8 @@
   ],
   [
     "scripts/test-shared-ground.mjs"
+  ],
+  [
+    "scripts/test-studio-quality.mjs"
   ]
 ]

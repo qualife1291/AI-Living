@@ -1,10 +1,13 @@
-"""Repeat cold-page loading measurements for two compiled loopback builds. No real API writes."""
+"""Repeat cold loads on a compiled loopback build; optional distinct before build. No API writes."""
 import json,os,subprocess,statistics
 from pathlib import Path
 from urllib.parse import urlparse
 from playwright.sync_api import sync_playwright
 root=Path(__file__).resolve().parent.parent
-bases=[('before',os.environ['QA_BEFORE']),('after',os.environ['QA_BASE'])]
+bases=[('current',os.environ['QA_BASE'])]
+if os.environ.get('QA_BEFORE'):
+ assert os.environ['QA_BEFORE']!=os.environ['QA_BASE'],'Comparison requires a distinct compiled before build'
+ bases=[('before',os.environ['QA_BEFORE']),('after',os.environ['QA_BASE'])]
 assert all(urlparse(base).hostname in ('localhost','127.0.0.1') for _,base in bases)
 results=[]
 with sync_playwright() as p:
@@ -32,4 +35,4 @@ for viewport in ('desktop','mobile'):
  for version,_ in bases:
   cases=[r for r in results if r['version']==version and r['viewport']==viewport]
   summary.append({'viewport':viewport,'version':version,'samples':len(cases),'medianFirstReadyMs':statistics.median(r['firstReadyMs'] for r in cases),'medianModelEncodedBytes':statistics.median(r['modelEncodedBytes'] for r in cases),'medianModelTransferBytes':statistics.median(r['modelTransferBytes'] for r in cases),'loadedAssets':[r['loadedAssets'] for r in cases]})
-Path(os.environ['QA_LOADING_OUT']).write_text(json.dumps({'production':False,'renderer':'Chromium SwiftShader','network':{'latencyMs':30,'downloadBytesPerSecond':2000000,'uploadBytesPerSecond':1000000,'cacheDisabled':True},'fixture':'Synthetic, API mocked, three fresh-page repeats per viewport/build; alternating build order. Not a hardware/phone/production SLA.','cases':results,'summary':summary},ensure_ascii=False,indent=2)+'\n')
+Path(os.environ['QA_LOADING_OUT']).write_text(json.dumps({'production':False,'renderer':'Chromium SwiftShader','network':{'latencyMs':30,'downloadBytesPerSecond':2000000,'uploadBytesPerSecond':1000000,'cacheDisabled':True},'comparison':len(bases)==2,'fixture':'Synthetic, API mocked, three fresh-page repeats per viewport/build; paired order alternates only with a distinct before build. A single build proves loading/completeness, not an improvement or hardware/production SLA.','cases':results,'summary':summary},ensure_ascii=False,indent=2)+'\n')

@@ -4,7 +4,7 @@ from pathlib import Path
 from urllib.parse import urlparse
 from playwright.sync_api import sync_playwright
 root=Path(__file__).resolve().parent.parent;base=os.environ.get('QA_BASE','http://127.0.0.1:5292');assert urlparse(base).hostname in ['localhost','127.0.0.1']
-out=root/'docs/screenshots/soundscape';out.mkdir(parents=True,exist_ok=True);report=[]
+out=Path(os.environ.get('QA_OUT',str(root/'docs/screenshots/soundscape')));out.mkdir(parents=True,exist_ok=True);report=[]
 instrument='''window.__soundQA={contexts:[],voices:0};const NativeAudioContext=window.AudioContext;window.AudioContext=class extends NativeAudioContext{constructor(...args){super(...args);window.__soundQA.contexts.push(this)}createGain(){const g=super.createGain();(this.qaGains??=[]).push(g);return g}createOscillator(){window.__soundQA.voices++;return super.createOscillator()}};'''
 with sync_playwright() as p:
  browser=p.chromium.launch(executable_path='/usr/bin/chromium',headless=True,args=['--no-sandbox','--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader'])

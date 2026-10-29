@@ -187,16 +187,6 @@ export class AssetAvatar {
       material.map = null; material.needsUpdate = true;
     });
   }
-  aimHands(targets: { right?: readonly number[]; left?: readonly number[] }) {
-    for (const side of ["right", "left"] as const) {
-      const goal = targets[side], arm = this.model.getObjectByName(`arm-${side}`) as THREE.Mesh | undefined;
-      if (!goal || !arm?.parent || !arm.geometry) continue;
-      const local = arm.parent.worldToLocal(new THREE.Vector3(...goal)).sub(arm.position);
-      arm.geometry.computeBoundingBox(); const bounds = arm.geometry.boundingBox!, grip = bounds.getCenter(new THREE.Vector3()); grip.y = bounds.min.y + .12;
-      if (local.lengthSq() > .0001) arm.quaternion.setFromUnitVectors(grip.normalize(), local.normalize());
-      arm.updateMatrixWorld(true);
-    }
-  }
   hand(side = "right") {
     const mesh = this.model.getObjectByName(`arm-${side}`) as THREE.Mesh | undefined;
     if (!mesh?.geometry) return this.group.position.clone().add(new THREE.Vector3(0, 9, 1));

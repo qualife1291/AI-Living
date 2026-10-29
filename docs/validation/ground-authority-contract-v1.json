@@ -1,0 +1,80 @@
+{
+  "phase": "GND3",
+  "version": 1,
+  "scope": "server-ground-authority-v1",
+  "date": "2026-10-29",
+  "timezone": "Asia/Ho_Chi_Minh",
+  "registeredBeforeImplementation": true,
+  "acceptedApplicationSource": "4ecb5f5dc5bb9f1057396e3c51853ea78ed6ddca",
+  "acceptanceEvidence": "docs/validation/acceptance-2026-10-28.json",
+  "gates": {
+    "localFunctionalAcceptance": true,
+    "policyOrLLMPromotion": false,
+    "productionOrRemoteQaAccepted": false
+  },
+  "activation": "Explicit owner+local-admin+loopback start on existing shared session and expected checkpoint. No automatic start, cron, new daemon, world bootstrap, reset or production migration.",
+  "clock": {
+    "policy": "capture-offset-v1",
+    "mapping": "For a newly observed explicit plan/turn, map world simulation timestamp P to G+(P-S), with G ground simtime and S exact source-world simtime at immutable journal acceptance. Freeze this bridge for that intent; do not backdate credit.",
+    "navigationGate": "Require the actual shared replay raw active step to match the intended plan hash/index/location; clocks or step disagreement cannot yield completion.",
+    "pause": "Zero simulation delta earns no dwell/contact/speech duration. Accepted pause/scale/source boundaries retain replay order.",
+    "window": "Half-open step windows; interval closure precedes a source adoption at the exact boundary. Late/cancelled/replaced/retired plans cannot complete."
+  },
+  "outcomes": {
+    "baseline": "Existing plans and new actor seed plans are baselines, never historical arrival. Only later observed plan replacements are tracked.",
+    "arrival": "Bind actor epoch, exact raw plan SHA, source revision/seq, step index/window, requested+routed navigation goal and actual server pose. Distinguish already-present from observed movement. No camera, ETA, declared location or client position proof.",
+    "fulfillment": "presence-completed only: goal arrival and continuous stationary presence for at least38% of the declared step window, then full window closure without replacement/exit. This is simulated presence fulfillment, not productive/economic/medical effects.",
+    "unsupported": "Unknown/malformed/legacy plans without explicit simulation anchor, transit/boarding/motorbike/plane and moving games/exercise do not receive unsupported completion labels."
+  },
+  "encounter": {
+    "participants": "All current human actors in authoritative shared replay; renderer subset/selection is irrelevant.",
+    "distanceUnits": 30,
+    "minimumContinuousSimulationMs": 3000,
+    "visibility": "Conservative swept/static footprint clearance; no meeting through walls. Reset on separation, retirement or source epoch change.",
+    "knowledge": "Witnessed co-presence only for the two participants, not arbitrary facts/actions. No camera-derived witnesses."
+  },
+  "speech": {
+    "source": "Only a fresh committed server LivingTurn for its exact two plan-bound participants. Baseline turns, viewer-local/editorial ambient scripts and public availability are not emissions.",
+    "earliest": "Map turn.simStartedAt+120000ms through the frozen source bridge; never emit before capture or outside both participant plan windows.",
+    "durationMs": 12000,
+    "gapMs": 1000,
+    "maximumLines": 6,
+    "emission": "Server observer explicitly starts an utterance only after verified co-presence, matching plans/goals, stationary bodies and clear static sightline. Planned text alone is not heard.",
+    "heard": "Only the named other participant gets a heard-utterance receipt after the whole emitted window stays valid; interruption/pause/source replacement cannot fabricate delivery. Text is hearsay, not witnessed truth.",
+    "viewer": "Shared mode may display only authoritative server utterances with matching shared checkpoint/sample time; cosmetic gestures cannot alter roots. No TTS/audio or LLM-thinking claim."
+  },
+  "persistence": {
+    "namespace": "Independent authority checkpoint/batch ledger, append-only migration0011; active marker binds existing shared state.",
+    "atomicity": "Authority state/records, shared state/source cursor and base receipt commit together under exact CAS and SQL postassert. Silent ignore/abort/concurrency/lost ACK cannot create partial credit.",
+    "preflight": "Once active, incomplete schema/state/receipt fails before ordinary pulse world writes. Missing0011 remains optional for inactive GND2.",
+    "preserve": "World revision/born/IDs/history/memories/policies/earned samples remain untouched by authority accounting."
+  },
+  "limits": {
+    "actors": 246,
+    "humans": 243,
+    "physicsStepsPerBatch": 120,
+    "sourcePage": 8,
+    "stateBytes": 1887436,
+    "receiptBytes": 1887436,
+    "recordsPerBatch": 8192,
+    "activePairs": 8192,
+    "recentUtterances": 64,
+    "requestBytes": 2048,
+    "cliResponseBytes": 32768
+  },
+  "consumerPolicy": {
+    "eligibleForReward": false,
+    "eligibleForP2P": false,
+    "automaticMemoryImport": false,
+    "automaticPolicyOrModelTraining": false,
+    "reason": "Future H3b/H5 require their own feature/reward/sharing namespace and measured admission. GND1/GND2 or simulation-plan-time evidence is not relabelled."
+  },
+  "acceptance": [
+    "Pure deterministic resume/chunk/source/clock equivalence, all-actor accounting and finite budgets.",
+    "Arrival/presence window, cancellation/removal/baseline/unsupported and clock mismatch negatives.",
+    "Encounter duration/separation/LOS and explicit emission/full delivery/recipient isolation; planned/partial text never knowledge.",
+    "Native SQLite and compiled D1 strict guards/missing schema/no bootstrap/atomic start/advance/concurrency/retry and silent-ignore rollback.",
+    "Fresh shared browser two viewers authoritative text/camera/F5/pause/no root mutation, actual screenshots; default renderer regressions.",
+    "Full unit/type/lint/assets/build/API; keep research negatives and live/remote blockers."
+  ]
+}

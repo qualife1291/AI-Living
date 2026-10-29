@@ -20,25 +20,29 @@ npm run build
 npm run test:api:local
 npm run test:api:ground
 npm run test:api:shared-ground
+npm run test:api:legacy
+npm run audit:learning-evidence
 ```
 
 Unit dùng memory/fixtures/D1 cô lập, không production. Có core/schema/time, learning/social/domain/plan-completion, ground/traffic/camera/household, geometry/assets/rigs, security/telemetry/pulse-gate. `node scripts/run-unit-tests.mjs --list` liệt kê đầy đủ, không cần chép danh sách tên vào docs.
+
+`test:api:legacy` chạy thêm các hợp đồng HTTP world/living/learning/liveness/appearance/proposal, mỗi script có D1 mới đủ migration và clock fixture riêng; không dùng DB của preview/người dùng. `audit:learning-evidence` kiểm checksum và tính lại các comparison H2/H4/H6/H10 từ report đã đóng băng; không sinh rollout mới hoặc mở outcome holdout12000–12019.
 
 API dùng Worker mới build và D1 riêng: owner/origin/schema/bytes, pet/flora/CAS/history, policy/memories/actor privacy, proposal guards, pulse 12 viewer không audit trùng, diagnostics GET chỉ đọc/POST retention và health schema. Health có8table probes+latest tick trong một batch; backfill schema0008 được kiểm thiếu→503/đủ→ready, world giữ nguyên. D1 gate suite riêng kiểm 20 request→1 pipeline, pause/failure/expiry/nonce/cadence. Không gọi đây là production load/billing benchmark.
 
 ## Browser
 
-Restart Worker từ `dist/server/wrangler.json` sau build. `QA_BASE` bắt buộc loopback; không gửi localhost làm link preview cho người dùng. Ví dụ lệnh nội bộ: `QA_BASE=http://127.0.0.1:5320 python3 scripts/qa-social.py`.
+Restart Worker từ `dist/server/wrangler.json` sau build. `QA_BASE` bắt buộc loopback; đặt `QA_OUT` để lưu ảnh/metrics một lượt nghiệm thu riêng và giữ bằng chứng cũ; không gửi localhost làm link preview cho người dùng. Ví dụ lệnh nội bộ: `QA_BASE=http://127.0.0.1:5320 python3 scripts/qa-social.py`.
 
 | Harness trong scripts/ | Điều phải giữ |
 |---|---|
 | qa-g0-ux.py | Gzip/canonical fallback, pause403/409/5xx/network/ACK, chat focus/draft, keyboard,320px, presets/resize/hidden/context loss/retry và reduced-motion. |
 | qa-shared-ground.py | Hai shared viewer desktop/mobile mở lệch giờ, cùng absolute sample roots, camera/F5/pause, no extrapolation, ảnh thật; synthetic source và D1 riêng. |
-| qa-loading.py | Hai compiled loopback builds,3 cold-page repeat/viewport, network profile cố định, bytes/first-frame và asset completeness; không SLA thiết bị thật. |
+| qa-loading.py | Compiled loopback build,3 cold-page repeat/viewport, network profile cố định, bytes/first-frame và asset completeness; `QA_BEFORE` tùy chọn phải là build khác nếu so sánh. Một build không chứng minh cải thiện/SLA thiết bị thật. |
 | qa-social.py | Đủ 6 lượt, luân phiên/poll/F5/source badge/camera. |
 | qa-overlays-households.py | Tên dài/câu 240 ký tự, pill/occlusion/click, hồ sơ và 320px. |
 | qa-cycle.py, qa-tag.py | Full bike/ground/pause/dismount, đổi vai/no teleport/cancel. |
-| qa-three-only-pets.py | Follow/pause/assignment/wardrobe/OSM, hide/resize, WebGL loss/retry/no2D. |
+| qa-three-only-pets.py | Follow/pause/assignment/wardrobe/OSM, hide/resize, WebGL loss/retry/no2D; ≥80% sample có cả inFrame+sightline qua cây/building. Fixture bootstrap có thể chưa sát caretaker: giữ seed, gap<120 và đóng về<55 cuối cửa sổ12s; ghi initial/final gap, không teleport để ép đạt. |
 | qa-home-anchors.py | 60 cửa/đích riêng/địa chỉ/camera desktop/mobile. |
 | qa-gardens.py | 5 phase/care/pause/framing/CAS/errors/320px. |
 | qa-domain-skills.py | 8 domain/4 gate/legacy/no overflow. |
@@ -76,3 +80,5 @@ Curation `test-dataset-curation.mjs` kiểm exact request/context/model/sampling
 Ground `test-ground-timeline.mjs` kiểm600fixed ticks vs6chunk bằng nhau,423moving peer sweeps bằng oracle, static segment/speed cap, plan baseline/replacement/unsupported/late/expired không bịa arrival, backlog/pause/rewind/born và segmented speed/pause/resume. Native SQLite kiểm status/preview zero-write, exact world/session CAS, concurrent/lost-ACK operation, receipt tamper kể cả rehash, ignore session INSERT/UPDATE hoặc receipt INSERT rollback cả cursor/ledger, source race và giữ world/memory/history/policy. `test:api:ground` chạy Worker compiled+D1 cô lập: owner/local/remote/origin/UTF8/bytes/schema, thiếu0009 không bootstrap, server plan→600step→1arrival, concurrent one commit, status readers và silent receipt ignore D1 rollback thật. Migration0009 chỉ fixture; chưa prod/migrate DB người dùng. Shared A* normalized source giữ byte-identical ngoài logger callback;1089route/5401frame regression đạt, UI/renderbehavior không đổi nên không browser mới. [Evidence](validation/ground-timeline-2026-10-28.json).
 
 GND2 `test-shared-ground.mjs` kiểm replay capture-boundary theo chunk/resume, source plan replacement/removal, roster enter/leave, accepted pause/scale clock,246actor+12car occupancy, bike/tag/pet checkpoint và physics budgets. Native SQL kiểm immutable journal atomic cùng world, source error rollback writer, no-op lost ACK/concurrent one commit/CAS, ignored session/receipt rollback. Pure sampling cùng absolute time, no extrapolation và giữ whole frame khi roster/body đổi. Compiled D1 `test:api:shared-ground` lặp guards/missing0010/no-bootstrap/atomic sources/world readback/rollback và reuse pulse; existing API/GND1 cũng đạt. Browser hai viewer thực desktop/mobile trên build mới, mock source frames riêng, camera/F5/pause/hold và overflow; không gọi đây là production/GPU/soak. Gói prod từ build sạch chặn cache `.wrangler`, fixture/DB/private sources và kiểm lại source/migration0010/26gzip bytes. [Evidence](validation/ground-shared-2026-10-28.json).
+
+Studio: `npm run simulate:living` kiểm 28.804 frame logic; `node scripts/test-studio-quality.mjs` kiểm model rig/tay thật, tiếp xúc đạo cụ, seek/replay và hash 21 voice clip. `QA_BASE=http://127.0.0.1:PORT QA_OUT=work/studio python3 scripts/qa-studio.py` kiểm cả4 cảnh desktop/mobile trên build mới; chạy thêm `scripts/qa-studio-sound.py` để đo AudioContext thật, pause/seek/hidden/unmount và lỗi tải clip. Đây là mô phỏng biên tập, không ghi world, không chứng minh quality LLM/GPU/mobile FPS hay human listening/MOS.

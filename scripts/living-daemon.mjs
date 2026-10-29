@@ -74,17 +74,9 @@ export async function cycle() {
               {
                 role: "assistant",
                 content: JSON.stringify({
-                  title: "Một người bạn mới",
-                  summary: "An và Minh cùng đọc một quyển sách.",
-                  dialogue: [
-                    { speaker: "an", text: "Mình đọc cùng bạn nhé?" },
-                    {
-                      speaker: "neighbor-1",
-                      text: "Được chứ, mình đang xem tới đoạn này.",
-                    },
-                    { speaker: "an", text: "Mình chọn một truyện ngắn trước nhé?" },
-                    { speaker: "neighbor-1", text: "Ừ, đọc xong mình cùng kể lại đoạn thích nhất nhé." },
-                  ],
+                  title: result.turn.title,
+                  summary: `Ví dụ biên tập cho ${result.turn.activity} tại ${result.turn.location}; chưa là sự kiện đã xảy ra.`,
+                  dialogue: result.turn.dialogue.map(({speaker,text})=>({speaker,text})),
                 }),
               },
               {
@@ -192,6 +184,7 @@ export async function cycle() {
         });
         if (!reply.ok) throw Error("Model unavailable");
         const output = await reply.json();
+        if(output.choices?.[0]?.finish_reason!=="stop")throw Error("Model output incomplete");
         const candidate = proposalSchema.parse(
           JSON.parse(output.choices[0].message.content),
         );

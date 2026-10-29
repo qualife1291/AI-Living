@@ -6,7 +6,7 @@ from playwright.sync_api import sync_playwright
 root=Path(__file__).resolve().parent.parent
 base=os.environ.get('QA_BASE','http://127.0.0.1:5320')
 assert urlparse(base).hostname in ('127.0.0.1','localhost')
-out=root/'docs/screenshots/g0';out.mkdir(parents=True,exist_ok=True)
+out=Path(os.environ.get('QA_OUT',str(root/'docs/screenshots/g0')));out.mkdir(parents=True,exist_ok=True)
 report=[]
 flags=['--no-sandbox','--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader']
 def setup(browser,width=1440,height=900,dpr=2,motion='no-preference',fallback=None):
@@ -101,7 +101,11 @@ with sync_playwright() as p:
    state['chatPending'].fulfill(status=200,content_type='application/json',body='{"reply":"Hẹn gặp lại nhé."}');state['chatPending']=None
    page.get_by_text('Hẹn gặp lại nhé.',exact=True).wait_for();assert close.evaluate('(e)=>e===document.activeElement')
    page.keyboard.press('Escape');assert page.get_by_role('button',name='Cư dân',exact=True).evaluate('(e)=>e===document.activeElement')
-   canvas=host.locator('canvas');canvas.focus();before=host.get_attribute('data-camera');page.keyboard.press('ArrowRight');page.keyboard.press('ArrowRight');page.keyboard.press('ArrowRight')
+   canvas=host.locator('canvas');canvas.focus();before=host.get_attribute('data-camera')
+   # This diagnostic rounds coordinates to whole world units. At a low/close
+   # portrait shot three 7px pans can stay in the same rounding bin.
+   # Use enough key travel to observe motion; focus and orbit assertions stay.
+   for _ in range(12):page.keyboard.press('ArrowRight')
    page.wait_for_function('document.querySelector(".three-canvas").dataset.view==="orbit"');page.wait_for_function('(before)=>document.querySelector(".three-canvas").dataset.camera!==before',arg=before)
    # Explicit presets, resize, hidden rendering and context-loss cleanup.
    quality=page.get_by_role('button',name='Chất lượng đồ họa',exact=True)

@@ -4,7 +4,7 @@ import os
 from urllib.parse import urlparse
 base=os.environ.get("QA_BASE", "http://127.0.0.1:5174")
 assert urlparse(base).hostname in ["localhost", "127.0.0.1"], "Local preview QA only"
-out=Path(__file__).resolve().parent.parent/'docs/screenshots/hardening';out.mkdir(parents=True,exist_ok=True)
+out=Path(os.environ.get('QA_OUT',str(Path(__file__).resolve().parent.parent/'docs/screenshots/hardening')));out.mkdir(parents=True,exist_ok=True)
 with sync_playwright() as p:
  browser=p.chromium.launch(executable_path='/usr/bin/chromium',headless=True,args=['--no-sandbox','--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader'])
  for name,width,height in [('desktop',1440,960),('mobile',390,844)]:
@@ -14,7 +14,7 @@ with sync_playwright() as p:
   page.goto(base,wait_until='domcontentloaded',timeout=60000)
   page.locator('.three-canvas[data-ready="true"]').wait_for(timeout=90000)
   page.screenshot(path=str(out/f'city-{name}-preview.png'))
-  page.locator('.live-person button').click()
+  page.locator('.live-person > button').first.click()
   page.locator('.life-story').wait_for()
   assert 'tuổi mô phỏng' in page.locator('.life-story').inner_text()
   page.screenshot(path=str(out/f'profile-{name}-preview.png'))

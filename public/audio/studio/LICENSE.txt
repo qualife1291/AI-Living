@@ -1,0 +1,16 @@
+Studio fictional Vietnamese dialogue audio
+
+Generated offline by Piper TTS 1.4.1 from the VAIS-1000 Vietnamese voice.
+Voice model: rhasspy/piper-voices, vi_VN-vais1000-medium
+Revision: 5041a7a49ae5b3a0f30e6837769eb03fdbb231bd
+SHA256: ec7c89e2c85f4d1edc24b6120c18aaf1bda614f06b511567eb9c7c0de15e2dab
+Model card: https://huggingface.co/rhasspy/piper-voices/blob/5041a7a49ae5b3a0f30e6837769eb03fdbb231bd/vi/vi_VN/vais1000/medium/MODEL_CARD
+Dataset attribution: VAIS-1000, https://ieee-dataport.org/documents/vais-1000-vietnamese-speech-synthesis-corpus
+Dataset/model-card license: Creative Commons Attribution 4.0 International
+https://creativecommons.org/licenses/by/4.0/
+Model trained by the Piper contributors, fine-tuned from lessac (medium).
+Changes: synthetic readings of original fictional AI-Living scripts, timing adjustment and Ogg Vorbis encoding. No recording of a cast member or claim to their identity.
+The checked-in generated speech clips are distributed under CC BY 4.0, with this attribution.
+Piper engine (GPL-3.0) and model weights are authoring tools only and are not bundled with the app.
+Generated procedural environmental/footstep/action sounds and the Studio cat geometry are original AI-Living code, not external recordings or models.
+See manifest.json for exact text, timings, source and individual file hashes.

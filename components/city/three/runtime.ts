@@ -4,7 +4,7 @@ import { WalkDirector } from "@/lib/city/walkability";
 import { TrafficDirector, TRAFFIC_COUNT, trafficJunctions, type TrafficVehicle } from "@/lib/city/traffic";
 import { venueGeometry, openVenue, segmentHits } from "@/lib/city/footprints";
 import { sceneryTrees, sceneryLamps, streetProps, venueSceneryPose } from "@/lib/city/scenery";
-import { characterShot } from "@/lib/city/cinematography";
+import { characterShot, cameraRayBlocked } from "@/lib/city/cinematography";
 import { groundElevation } from "@/lib/city/ground";
 import {HOME_ANCHORS,homeAnchor,homeCameraOffset} from "../../../lib/city/homes";
 import {gardenPlot,gardenCameraOffset} from "../../../lib/city/garden-plots";
@@ -640,6 +640,14 @@ export function createCity(
   let lastStatus = 0;
   const viewOffset = new THREE.Vector3(48, 34, 62);
   const cameraBuildings = [...venues.filter(v => !openVenue(v)).map(venueGeometry), ...buildings.map(b => ({ x:b.x,z:b.z,width:b.width,depth:b.depth }))];
+  // Render-only crown/trunk bounds, separate from walkable ground footprints.
+  const cameraFoliage=sceneryTrees.flatMap(t=>{
+    const ground=groundElevation(t.x,t.z);
+    return [{x:t.x,z:t.z,width:3,depth:3,minY:ground,maxY:ground+34+t.seed%7},
+      ...[-1,0,1].map(side=>({x:t.x+side*6,z:t.z+(side===0?0:2),width:side===0?22:18,depth:20,
+        minY:ground+36+t.seed%7+(side===0?4:0)-(side===0?13:10),
+        maxY:ground+36+t.seed%7+(side===0?4:0)+(side===0?13:10)}))];
+  });
   function focus(x: number, z: number, offset = viewOffset,targetY=15) {
     scene.fog = fog;
     controls.minPolarAngle=Math.hypot(offset.x,offset.z)<.1?0:.22;
@@ -842,7 +850,7 @@ export function createCity(
         if (current) {
           const peer = actors.find(a => a.id === socialPoses.get(current!.id)?.peerId) ?? groundAnimals.find(a => a.petOwnerId === current!.id);
           const height = Math.max(modelActors.height(current.id), peer && modelActors.ids.has(peer.id) ? modelActors.height(peer.id) : peer && actors.some(a => a.id === peer.id) ? 20 : 0);
-          const shot = characterShot(current, peer, heading.get(current.id) ?? .35, cameraBuildings, camera.aspect, height);
+          const shot = characterShot(current, peer, heading.get(current.id) ?? .35, cameraBuildings, camera.aspect, height, {boxes:cameraFoliage,peerHeight:peer && groundAnimals.some(a=>a.id===peer.id) ? 5 : height,elevation:p=>groundElevation(p[0],p[1])});
           scene.fog = fog;
           controls.target.set(...shot.target);
           camera.position.set(...shot.position);
@@ -909,10 +917,19 @@ export function createCity(
         const partnerId = socialPoses.get(current.id)?.peerId;
         const peer = actors.find(a => a.id === partnerId) ?? groundAnimals.find(a => a.petOwnerId === current!.id);
         const height = Math.max(modelActors.height(current.id), peer && modelActors.ids.has(peer.id) ? modelActors.height(peer.id) : peer && actors.some(a => a.id === peer.id) ? 20 : 0);
-        const shot = characterShot(current, peer, heading.get(current.id) ?? .35, cameraBuildings, camera.aspect, height);
-        const alpha = 1 - Math.exp(-2.8 * dt);
-        controls.target.lerp(new THREE.Vector3(...shot.target), alpha);
-        camera.position.lerp(new THREE.Vector3(...shot.position), alpha);
+        const shot = characterShot(current, peer, heading.get(current.id) ?? .35, cameraBuildings, camera.aspect, height, {boxes:cameraFoliage,peerHeight:peer && groundAnimals.some(a=>a.id===peer.id) ? 5 : height,elevation:p=>groundElevation(p[0],p[1])});
+        const sightClear=(position:THREE.Vector3)=>[{actor:current!,height},...(peer?[{actor:peer,height:groundAnimals.some(a=>a.id===peer.id)?5:height}]:[])].every(({actor,height:h})=>
+          !cameraFoliage.some(box=>cameraRayBlocked(box,[actor.position[0],groundElevation(...actor.position)+Math.max(2,h*.8),actor.position[1]],position.toArray()))&&
+          !cameraBuildings.some(box=>segmentHits(box,actor.position,[position.x,position.z],2)));
+        const desired=new THREE.Vector3(...shot.position),target=new THREE.Vector3(...shot.target);
+        if(!sightClear(camera.position)&&sightClear(desired)){
+          // Easing through an opaque crown hides the companion even when the
+          // chosen endpoint is clear. Make an explicit deterministic correction.
+          controls.target.copy(target);camera.position.copy(desired);
+        }else{
+          const alpha = 1 - Math.exp(-2.8 * dt);
+          controls.target.lerp(target, alpha);camera.position.lerp(desired, alpha);
+        }
       }
     }
     controls.update();
@@ -1007,7 +1024,8 @@ export function createCity(
     host.dataset.tagCast = JSON.stringify(actors.filter(a => a.tagGame).map(a => ({ id: a.id, position: a.position, walking: a.walking, ...a.tagGame })));
     host.dataset.petWalks = JSON.stringify(groundAnimals.filter(a => a.petOwnerId).map(a => {
       const screen = new THREE.Vector3(a.position[0], 2, a.position[1]).project(camera);
-      return { id: a.id, ownerId: a.petOwnerId, position: a.position, walking: a.walking, onScreen: screen.z > -1 && screen.z < 1 && Math.abs(screen.x) < .95 && Math.abs(screen.y) < .95 };
+      const clearSightline=!cameraFoliage.some(box=>cameraRayBlocked(box,[a.position[0],groundElevation(...a.position)+4,a.position[1]],camera.position.toArray()))&&!cameraBuildings.some(box=>segmentHits(box,a.position,[camera.position.x,camera.position.z],2));
+      return { id: a.id, ownerId: a.petOwnerId, position: a.position, walking: a.walking, clearSightline, onScreen: screen.z > -1 && screen.z < 1 && Math.abs(screen.x) < .95 && Math.abs(screen.y) < .95 };
     }));
     host.dataset.selected = current?.id ?? "";
     host.dataset.humanBatches = String(people.stats().batches);

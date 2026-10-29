@@ -4,7 +4,7 @@ from pathlib import Path
 from urllib.parse import urlparse
 from playwright.sync_api import sync_playwright
 root=Path(__file__).resolve().parent.parent;base=os.environ.get('QA_BASE','http://127.0.0.1:5310');assert urlparse(base).hostname in ['localhost','127.0.0.1']
-plots=json.loads((root/'data/city/garden-plots.json').read_text())['plots'];out=root/'docs/screenshots/gardens';out.mkdir(parents=True,exist_ok=True);report=[];day=86400000
+plots=json.loads((root/'data/city/garden-plots.json').read_text())['plots'];out=Path(os.environ.get('QA_OUT',str(root/'docs/screenshots/gardens')));out.mkdir(parents=True,exist_ok=True);report=[];day=86400000
 water_js="import fs from 'node:fs';import{waterGarden}from'./lib/living/flora.ts';const x=JSON.parse(fs.readFileSync(0,'utf8'));process.stdout.write(JSON.stringify(waterGarden(x.state,x.id,x.simMs)))"
 with sync_playwright() as p:
  browser=p.chromium.launch(executable_path='/usr/bin/chromium',headless=True,args=['--no-sandbox','--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader'])
