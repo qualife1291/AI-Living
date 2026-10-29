@@ -2,6 +2,8 @@
 
 Học policy trong mô phỏng, không fine-tune trọng số Qwen. Modules chính: `lib/living/{learning,linucb,policy-store,skills,prompt-memories,context-cards,dialogue-pool,director,service}.ts` và `lib/{memory-records,memory-backfill,memory-backfill-store}.ts`; schema/code là nguồn contract chi tiết.
 
+H6 mở rộng96candidate trong sandbox riêng, giữ41scenario live và chưa promote; contract/CI/artifact ở [H6 offline](H6_OFFLINE_POLICY_SCALE.md). Các study H6 cũ bên dưới là replay/cold-start khác, không suy kết quả của một experiment sang experiment khác. Việc còn lại chỉ ghi ở [ROADMAP](../ROADMAP.md).
+
 ## Outcome và policy
 
 Disjoint LinUCB có6 features `[1,energy/100,hunger/100,socialNeed/100,isFreshRain,skill/100]`, ridge I, inverse covariance đối xứng21 số và b gồm 6 số; Sherman–Morrison fit outcome hợp lệ. Điểm `xᵀA⁻¹b + α√(xᵀA⁻¹x)` cùng needs/health/sleep/weather/novelty guards. Pending lưu context-at-choice; legacy thiếu context chỉ tabular, không tạo context/samples giả.
@@ -16,7 +18,7 @@ Animal policy có4 action rest/forage/play/shelter, giữ lịch sử riêng; kh
 
 ## Memory và bối cảnh
 
-Structured memories ghi event-report đúng recipient hoặc simulation-plan-outcome đúng actor, stableID/INSERTORIGNORE/revision+nonce cùng batch. Future dialogue không cấp witness. Legacy record đọc có nhãn; memory backfill local additive có ở phần bên dưới, nguồn thiếu chứng cứ vẫn giữ nguyên/bỏ qua. Curation còn trong [ROADMAP](../ROADMAP.md). Archive dùng INSERTSELECTjson_each, không xóa history đã lưu.
+Structured memories ghi event-report đúng recipient hoặc simulation-plan-outcome đúng actor, stableID/INSERTORIGNORE/revision+nonce cùng batch. Future dialogue không cấp witness. Legacy record đọc có nhãn; memory backfill local additive có ở phần bên dưới, nguồn thiếu chứng cứ vẫn giữ nguyên/bỏ qua. Curation offline có ở phần dưới; corpus model thật, blind evaluation và activation còn trong [ROADMAP](../ROADMAP.md). Archive dùng INSERTSELECTjson_each, không xóa history đã lưu.
 
 Owner-only memory API lấy top-K theo topic/importance/time từ100 row gần nhất, lọc actor/witness. Daemon chỉ đúng hai actor,3 record/người,400 ký tự/record, deadline2,5s song song; kiểm owner/kind/ID/date và giữ provenance/truncation trong prompt. Denied401/403 không fallback; unavailable chỉ own summaries. Helper chỉ loopback, không ghi memory/skill/P2P. Context là dữ liệu, không là chỉ thị thực thi; kiểm prompt không chứng minh LLM luôn giữ đúng ngữ nghĩa.
 

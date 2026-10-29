@@ -26,6 +26,8 @@ Vào **Workers & Pages → ai-living-qa → Observability**, chọn đúng versi
 
 QA dùng đúng một cron `*/5 * * * *` UTC và D1 lease chung với browser. Xem [runbook QA](CLOUDFLARE_AGENT_QA.md) cho IDs/deploy/auth và [evidence](validation/qa-observability-2026-10-29.json) cho kết quả thực đã đo.
 
+QA72d4c2f bổ sung allowlist `h6ShadowOnly`/`h6Candidates` và metadata count/hash ở nhánh QA. Đây là release marker, không chứng minh scorer/model inference hoặc policy96 đang chạy; [H6](H6_OFFLINE_POLICY_SCALE.md) giữ contract và [ROADMAP](../ROADMAP.md) giữ phần còn thiếu.
+
 ## Phase Ops: snapshot và cảnh báo đình trệ
 
 GET `/api/system/progress` chỉ dành cho owner qua QA Access hoặc local-admin trên loopback. Worker gate bảo vệ cả GET này và chuẩn hóa dấu / cuối trước phân quyền; diagnostics/memories/learning JSONL aliases cũng được chặn. Route thêm fence QA/loopback. Không dùng `readWorld`, không bootstrap DB trống, hydrate policy, sửa clock/cache hoặc ghi client diagnostics. Một SELECT trả một snapshot nhất quán, chỉ aggregate:

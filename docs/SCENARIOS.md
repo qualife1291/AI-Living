@@ -8,7 +8,7 @@ Mở `/studio`. Bốn ID `wallet-return`, `sanitation-gratitude`, `kitten-care`,
 
 Hiện dùng5rig supplied Casino/Chess đã chuẩn hóa cùng city/gallery, giữ tỷ lệ và chung world scale với đạo cụ/camera, bỏ tay nguyên khối khỏi instance rồi dựng tay hai đoạn/khuỷu/palm và contact targets. Absolute rig sampling giữ seek tương đương; kernel chuyển động nhân quả0,6s nối các hành động, prop theo tay hiện tại. Mèo có khớp/chuyển động thở/tai/đuôi, khăn gấp cong theo thân. Camera fit người/đạo cụ theo aspect và shot, nền không lộ mép trong portrait. Renderer giữ dưới25.000triangle/150drawcall theo contract local. Đây là điều khiển kinematic, chưa vật lý toàn thân hoặc finger/foot locking đầy đủ.
 
-Studio đã bỏ đường render/preload Kenney character cũ và factory mèo placeholder. Catalog Kenney còn dùng ở city fallback, environment và gallery nên vẫn giữ model/texture/license đó; không xóa tài nguyên đang có consumer.
+Studio đã bỏ đường render/preload Kenney character cũ và factory mèo placeholder. Catalog Kenney còn dùng cho environment/gallery/reference nên vẫn giữ model/texture/license; fallback nhân vật hiện theo bộ supplied ở ASSETS, không xóa tài nguyên đang có consumer.
 
 ## Hợp đồng câu chuyện
 
@@ -29,7 +29,9 @@ Browser đã đo AudioContext phát voice/steps và điều khiển, không ph�
 
 ## Bằng chứng và giới hạn
 
-Mới nhất: [Supplied acceptance](validation/supplied-civilians-2026-10-29.json)/[12ảnh thật](screenshots/supplied-civilians/manifest.json), source68060d6:8case desktop/mobile,40shot dưới25ktriangle/150drawcall, scenery sightline/cutaway,4contact gap0 và4audio output thật. Fit theo torso, cap vai và LOD có skin weights giữ hình thể; không lấy ảnh chuyển cảnh làm ảnh settled. Mốc trước: [Citizens acceptance](validation/citizens-2026-10-29.json)/[ảnh](screenshots/citizens/manifest.json),8case desktop/mobile với rig mới; contact gap≤0,2943unit, không đổi custody/logic/audio. Mốc Human002 trước đó: [Contract v2](validation/studio-quality-contract-v2.json), [report](validation/studio-quality-v2-2026-10-29.json), [12ảnh thật gồm before](screenshots/studio-v2/manifest.json). Logic11/11case/28.804frame, không static/swept-human overlap; rig test bốn cảnh seek tương đương, gap tiếp xúc tối đa0,2231unit. Browser8case desktop/mobile qua40shot/framing, play/pause/seek/end/replay, thêm hai retest khăn; audio bốn cảnh có output thật. Nguồn build cho từng nhóm được tách rõ trong report, không gọi tất cả là một lần chạy cùng SHA. Mốc GND3 sau đó chạy đầy đủ69suite, gồm cả hai suite Studio.
+Work có [graphics acceptance](validation/graphics-interactions-2026-10-29.json)/[ảnh thật](screenshots/graphics-interactions/manifest.json) cho camera/picking/crowd/wardrobe/contact và bốn Studio; không dùng báo cáo68060d6 làm source mới nhất. Fix carrier-focus trên nhánh riêng còn được theo dõi ở [ROADMAP](../ROADMAP.md), chưa coi đã merge vào work.
+
+Các mốc trước giữ nguyên để audit: [supplied](validation/supplied-civilians-2026-10-29.json), [Citizens](validation/citizens-2026-10-29.json), [contract v2](validation/studio-quality-contract-v2.json)/[report](validation/studio-quality-v2-2026-10-29.json). Mỗi report giữ source, contact/framing/seek và audio scope riêng; không gộp số case hoặc SHA của các lượt đó thành một lần nghiệm thu mới.
 
 ```bash
 npm run simulate:living

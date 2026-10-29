@@ -6,7 +6,7 @@ HEAD/handoff cho biết source hiện hành; phiên bản production được gh
 
 Mặc định trình duyệt đọc `/api/world`, đồng bộ `serverNow` và dùng đồng hồ phân đoạn trong `lib/clock.ts`. `lib/life.ts` và routine sinh ý định/đích; WalkDirector áp dụng ground/collision, TagDirector/PetWalkDirector cấp mục tiêu. Local opt-in `?ground=shared` dùng journal/replay/frame GND2 bên dưới; camera không chạy physics hoặc sinh spawn. Cả hai là mô phỏng theo luật, không gọi LLM mỗi frame.
 
-`City3D` tải runtime Three.js theo nhu cầu. Runtime dựng cảnh instanced/LOD, cập nhật người, thú, xe và camera. Ba core cùng một NPC đang chọn có thể dùng skin/skeleton clone độc lập; đám đông dùng sáu batch và thú dùng năm batch. Nhãn tên/thoại là DOM qua WorldOverlays, ACK đọc bắt đầu sau DOM commit. Chỉ có renderer 3D; lỗi WebGL có retry, không SVG/fallback 2D. Texture canvas, ảnh atlas của glTF và icon giao diện vẫn cần cho3D/UI.
+`City3D` tải runtime Three.js theo nhu cầu. Runtime dựng cảnh instanced/LOD, cập nhật người, thú, xe và camera. Ba core và tối đa5NPC gần/đang chọn dùng skin/skeleton clone, tổng≤8skeletal controller; crowd dùng cùng5skin/palette với8pose nội suy GPU và CPU picking theo pose. Thú có batch/clip theo loài. Nhãn tên/thoại là DOM qua WorldOverlays, ACK đọc bắt đầu sau DOM commit. Chỉ có renderer 3D; lỗi WebGL có retry, không SVG/fallback 2D. Texture canvas, ảnh atlas của glTF và icon giao diện vẫn cần cho3D/UI.
 
 Planner/rules hoặc local LLM sinh kế hoạch và hội thoại có nguồn riêng. Server lưu snapshot/history bằng revision CAS; các lượt đủ điều kiện mới ghi kết quả học vào archive. Hoàn thành theo simulation time hiện chưa phải bằng chứng nhân vật đã đến bằng groundnavigation; các director presentation và reading time hiện còn theo phiên viewer. Không tự quảng bá thành authoritative multiplayer hoặc suy nghĩ liên tục.
 
@@ -27,7 +27,7 @@ Planner/rules hoặc local LLM sinh kế hoạch và hội thoại có nguồn r
 |---|---|
 | app/page.tsx | Thành phố toàn màn hình, drawer/camera/wardrobe/petcare; /assets là catalog3D, /studio là timeline độc lập |
 | components/city/three/runtime.ts | Điều phối render/camera/quality/lifecycle; không ghi history qua mỗi frame |
-| people.ts, model-actors.ts, rigged-avatar.ts, fauna.ts | Batch/procedural rigs và model có skin; pause, ground alignment, asset disposal |
+| people.ts, model-actors.ts, rigged-avatar.ts, crowd-batch.ts, actor-actions.ts, limb-contact.ts, fauna.ts | Skin/crowd pose, contact trình bày, native picking, pause/ground alignment/disposal; không ghi reward từ pose |
 | lib/city/walk-ground.ts, walk-path.ts, walkability.ts, footprints.ts, scenery.ts | Shared geometry và pure A*/cache; WalkDirector giữ frame/collision người/xe/bike9,2unit |
 | lib/living/ground-timeline.ts, ground-store.ts | Ground GND1 local core/static fixed-step, independent session/CAS/receipts; chưa reward/P2P/renderer authority |
 | lib/living/shared-ground{,-store,-view}.ts, city/director-state.ts | GND2 journal replay/all-actor+traffic checkpoint và server-frame sampling; local opt-in, không reward/P2P |
@@ -42,10 +42,11 @@ Planner/rules hoặc local LLM sinh kế hoạch và hội thoại có nguồn r
 | living/context-cards.ts, prompt-memories.ts | Catalog gợi ý theo nơi/phase/weather/festival; private top-K đúng actor cho daemon, không ghi sự kiện hoặc trao ký ức cho peer |
 | living/flora.ts, city/garden-plots.ts, three/gardens.ts | Pure growth/owner care metadata, generated shared footprints và hai batch3D; không ghi actor outcomes từ render |
 | lib/training.ts, living/director.ts | Context/data mẫu/reflection và guard; không coi điểm heuristic là chứng minh chất lượng model |
+| system-log.ts, living/pulse-pipeline.ts, ops/progress-watch.ts | Log allowlist/request context,3stage pulse và aggregate snapshot/CLI zero-write; contract ở OBSERVABILITY |
 
 ## Giới hạn và hướng tiếp
 
-Household đã có60 cửa riêng; chưa có indoor route; bus/metro chưa authoritative boarding. Core chibi giữ tỷ lệ gốc trong disc thay vì kéo dài tới chiều cao người thủ tục. Gallery đủ asset on-demand; không thả tất cả loài/fantasy vào phố. GPU thật, soak, privacy public viewer, production scheduler và native deploy phải được kiểm chứng riêng. Quyết định SVG cũ trong ADR-0006 đã được thay thế; không dùng lịch sử để phục hồi2D.
+Household đã có60 cửa riêng; chưa có indoor route; bus/metro chưa authoritative boarding. Rig supplied/crowd giữ scale và footprint chung; contact IK đã có, chưa thay physical completion hoặc foot/finger physics đầy đủ. Gallery đủ asset on-demand; không thả tất cả loài/fantasy vào phố. QA Cron đã có native proof trong OBSERVABILITY; GPU/soak/public privacy và scheduler/deploy của từng môi trường vẫn cần acceptance riêng. Quyết định SVG cũ trong ADR-0006 đã được thay thế; không dùng lịch sử để phục hồi2D.
 
 ## Ground GND1 — timeline server local
 
