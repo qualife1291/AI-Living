@@ -25,5 +25,7 @@ const entry=readFileSync(new URL("../worker/index.ts",import.meta.url),"utf8");
 assert.match(entry,/qaLivingCronEnabled\(settings, event\.cron\)/);
 assert.match(entry,/runCoalescedPulse\(db/);
 assert.match(entry,/if \(!db\) throw new Error\("QA D1 binding missing"\)/);
-assert.match(entry,/qa_cron_pulse/);
+assert.match(entry,/systemLog\("cron_result"/);
+assert.match(entry,/runSystemTask\("cron"/);
+assert.match(entry,/runPulsePipeline/);
 console.log("PASS: QA Cron is opt-in, QA-only, and shares browser D1 pulse lease.");
