@@ -10,8 +10,8 @@ const sides=['left','right'] as const,Y=new THREE.Vector3(0,1,0);
 export class ActorActions{
  private states=new Map<string,State>();
  forget(id:string){this.states.delete(id);}
- apply(avatar:RiggedAvatar,actor:Actor,kind:string,seconds:number){
-  const floor=groundElevation(...actor.position),origin=new THREE.Vector3(actor.position[0],floor,actor.position[1]),yaw=avatar.group.rotation.y,h=avatar.height;
+ apply(avatar:RiggedAvatar,actor:Actor,kind:string,seconds:number,lift=0){
+  const floor=groundElevation(...actor.position),origin=new THREE.Vector3(actor.position[0],floor+(actor.bicycle?0:lift),actor.position[1]),yaw=avatar.group.rotation.y,h=avatar.height;
   const toLocal=(p:THREE.Vector3)=>p.sub(origin).applyAxisAngle(Y,-yaw),toWorld=(p:THREE.Vector3)=>p.clone().applyAxisAngle(Y,yaw).add(origin);
   const base={left:toLocal(avatar.hand('left')),right:toLocal(avatar.hand('right'))},key=actor.bicycle?'cycle':actor.walking?'walk':kind;
   let state=this.states.get(actor.id);

@@ -6,6 +6,7 @@ import {
   type BufferGeometry,
 } from "three";
 import { RoundedBoxGeometry } from "three/addons/geometries/RoundedBoxGeometry.js";
+import {activityLift} from "../../../lib/living/action-presentation.ts";
 import type { Actor } from "@/lib/life";
 
 /** Unit bounds let the instanced renderer retain its physical dimensions. */
@@ -43,11 +44,12 @@ function actorPhase(id: string): number {
   return (hash >>> 0) / 4294967296;
 }
 
-type MotionState = { position: [number, number]; phase: number; weight: number; yaw: number };
+type MotionState = { position: [number, number]; phase: number; weight: number; yaw: number; action:string; started:number; fromLift:number; lift:number };
 /** Gait follows distance actually travelled, never the requested schedule.
  * Joint transitions ease without moving the collision-safe root position. */
 export class HumanMotion {
   private states = new Map<string, MotionState>();
+  lift(id:string){return this.states.get(id)?.lift??0;}
   phase(id:string){return this.states.get(id)?.phase??0;}
   frame(actors: Actor[], poses: Map<string, { peerId: string; gesture: string; speaking: boolean }>, seconds: number, dt: number, paused: boolean) {
     const output = new Map<string, { yaw: number; phase:number; weight:number }>();
@@ -58,10 +60,14 @@ export class HumanMotion {
       let state = this.states.get(actor.id);
       const social = poses.get(actor.id), peer = social?.gesture !== "idle" ? actors.find(a => a.id === social?.peerId) : undefined;
       if (!state) {
-        state = { position: [...actor.position], phase: actorPhase(actor.id) * Math.PI * 2, weight: 0, yaw: peer ? Math.atan2(peer.position[0] - actor.position[0], peer.position[1] - actor.position[1]) : .35 };
+        state = { position: [...actor.position], phase: actorPhase(actor.id) * Math.PI * 2, weight: 0, action:actor.bicycle?'cycle':actor.walking?'walk':actor.kind,started:seconds,fromLift:0,lift:0,yaw: peer ? Math.atan2(peer.position[0] - actor.position[0], peer.position[1] - actor.position[1]) : .35 };
         this.states.set(actor.id, state);
       }
       if (!paused) {
+        const action=actor.bicycle?'cycle':actor.walking?'walk':actor.kind;
+        if(action!==state.action){state.action=action;state.started=seconds;state.fromLift=state.lift;}
+        const elapsed=seconds-state.started,t=Math.max(0,Math.min(1,elapsed/.4)),ease=t*t*(3-2*t);
+        state.lift=state.fromLift*(1-ease)+(actor.walking?0:activityLift(actor.kind,elapsed))*ease;
         const dx = actor.position[0] - state.position[0], dz = actor.position[1] - state.position[1], distance = Math.hypot(dx, dz);
         const walking = actor.walking && distance > .001 && actor.transport === "walk";
         state.weight += ((walking ? 1 : 0) - state.weight) * (1 - Math.exp(-10 * step));

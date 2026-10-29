@@ -77,9 +77,9 @@ export class CrowdBatch {
  sample(phase:number){const p=((phase%FRAMES)+FRAMES)%FRAMES,a=Math.floor(p),b=(a+1)%FRAMES,t=p-a,output=new Float32Array(this.positions[0].length);for(let i=0;i<output.length;i++)output[i]=this.positions[a][i]*(1-t)+this.positions[b][i]*t;return output;}
  head(seconds:number,position:readonly number[],yaw:number){const f=((seconds/this.period)%1+1)%1*FRAMES,a=Math.floor(f),b=(a+1)%FRAMES;return this.heads[a].clone().lerp(this.heads[b],f-a).applyAxisAngle(new THREE.Vector3(0,1,0),yaw).add(new THREE.Vector3(position[0],groundElevation(position[0],position[1]),position[1]));}
  hand(side:'left'|'right',seconds:number,position:readonly number[],yaw:number){const f=((seconds/this.period)%1+1)%1*FRAMES,a=Math.floor(f),b=(a+1)%FRAMES;return this.hands[a][side].clone().lerp(this.hands[b][side],f-a).applyAxisAngle(new THREE.Vector3(0,1,0),yaw).add(new THREE.Vector3(position[0],groundElevation(position[0],position[1]),position[1]));}
- add(id:string,position:readonly number[],yaw:number,seconds:number,colors:{shirt:string;trousers:string;skin:string}){
+ add(id:string,position:readonly number[],yaw:number,seconds:number,colors:{shirt:string;trousers:string;skin:string},lift=0){
   const i=this.mesh.count++;if(i>=this.mesh.instanceMatrix.count)throw Error('Crowd capacity exceeded');
-  const matrix=new THREE.Matrix4().makeRotationY(yaw);matrix.setPosition(position[0],groundElevation(position[0],position[1]),position[1]);this.mesh.setMatrixAt(i,matrix);this.mesh.userData.ids[i]=id;
+  const matrix=new THREE.Matrix4().makeRotationY(yaw);matrix.setPosition(position[0],groundElevation(position[0],position[1])+lift,position[1]);this.mesh.setMatrixAt(i,matrix);this.mesh.userData.ids[i]=id;
   this.phase.setX(i,((seconds/this.period)%1+1)%1*FRAMES);['shirt','trousers','skin'].forEach((key,j)=>new THREE.Color(colors[key as keyof typeof colors]).toArray(this.tones[j].array,i*3));
  }
  reset(){this.mesh.count=0;this.mesh.userData.ids.length=0;}

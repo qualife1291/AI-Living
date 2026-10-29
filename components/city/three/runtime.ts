@@ -733,7 +733,7 @@ export function createCity(
     host.dataset.assetActors = String(modelActors.ids.size);
     const updated = people.draw(world, actors, socialPoses, poseClock, dt, camera, input().selected, modelActors.ids);
     heading.clear(); for (const [id, yaw] of updated) heading.set(id, yaw);
-    modelActors.draw(world, actors, socialPoses, heading, poseClock,people.phase);
+    modelActors.draw(world, actors, socialPoses, heading, poseClock,people.phase,people.lift);
   }
   function traffic() {
     let fallbackCars = cars;

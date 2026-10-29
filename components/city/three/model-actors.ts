@@ -141,7 +141,7 @@ export function createModelActors(scene: THREE.Scene, library: AssetLibrary) {
       for(const id of [...ids])if(!CORE_MODELS[id]&&!wanted.includes(id))remove(id);
       for(const id of wanted){const resident=world.living!.residents.find(r=>r.id===id)!;install(id,residentModel(resident.roleId,resident.id));}
     },
-    draw(world: World, actors: Actor[], social: Map<string, SocialPose>, headings: Map<string, number>, seconds: number, gait?:(id:string)=>number) {
+    draw(world: World, actors: Actor[], social: Map<string, SocialPose>, headings: Map<string, number>, seconds: number, gait?:(id:string)=>number,sharedLift?:(id:string)=>number) {
       for (const [id, avatar] of avatars) {
         const actor = actors.find(a => a.id === id); avatar.group.visible = !!actor;
         if (!actor) { const prop = props.get(id)?.group, bike = bicycles.get(id); if (prop) prop.visible = false; if (bike) bike.visible = false; continue; }
@@ -161,8 +161,8 @@ export function createModelActors(scene: THREE.Scene, library: AssetLibrary) {
         const motionKey=actor.bicycle?'cycle':actor.walking?'walk':actor.kind;
         let vertical=verticalMotion.get(id);if(!vertical){vertical={key:motionKey,start:seconds,from:0,last:0};verticalMotion.set(id,vertical);}if(vertical.key!==motionKey){vertical={key:motionKey,start:seconds,from:vertical.last,last:vertical.last};verticalMotion.set(id,vertical);}
         const phase=seconds-vertical.start,t=THREE.MathUtils.clamp(phase/.4,0,1),ease=t*t*(3-2*t),lift=actor.walking?0:activityLift(actor.kind,phase);vertical.last=vertical.from*(1-ease)+lift*ease;
-        const changed=avatar.pose(clip,animationTime,seconds,actor.position,headings.get(id)??.35,groundElevation(...actor.position)+vertical.last+(actor.bicycle?4:0));
-        if(changed)actions.apply(avatar,actor,holding?propKind:actor.kind,seconds);
+        const changed=avatar.pose(clip,animationTime,seconds,actor.position,headings.get(id)??.35,groundElevation(...actor.position)+(sharedLift?sharedLift(id):vertical.last)+(actor.bicycle?4:0));
+        if(changed)actions.apply(avatar,actor,holding?propKind:actor.kind,seconds,sharedLift?sharedLift(id):vertical.last);
         const cycling=!!actor.bicycle;
         if(cycling && !bicycles.has(id)){const bike=createBicycle();bike.traverse(o=>{if((o as THREE.Mesh).isMesh)o.userData.actorId=id;});scene.add(bike);bicycles.set(id,bike);}
         const bike=bicycles.get(id);if(bike){bike.visible=cycling;bike.position.set(actor.position[0],groundElevation(...actor.position),actor.position[1]);bike.rotation.y=headings.get(id)??.35;if(actor.bicycle)spinBicycle(bike,actor.bicycle.distance);}

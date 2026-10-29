@@ -33,6 +33,7 @@ export function createPeople(scene:THREE.Scene,capacity:number,library:Pick<Asse
   setQuality(next:Quality='balanced'){quality=next;for(const {batch} of batches.values())batch.mesh.receiveShadow=quality!=='eco';},
   collectGeometry(target:Set<THREE.BufferGeometry>){for(const g of Object.values(geometry))target.add(g);},
   head:(id:string)=>heads.get(id)?.clone(),
+  lift:(id:string)=>motion.lift(id),
   phase:(id:string)=>motion.phase(id),
   draw(world:World,actors:Actor[],poses:Map<string,SocialPose>,seconds:number,dt:number,_camera:THREE.Camera,_selected:string,skip=new Set<string>()){
    built=false;clock=seconds;heads.clear();assignments.clear();for(const {batch} of batches.values())batch.reset();
@@ -46,11 +47,11 @@ export function createPeople(scene:THREE.Scene,capacity:number,library:Pick<Asse
     const modelId=library.get(wanted)?wanted:library.get(CITIZEN_FALLBACK)?CITIZEN_FALLBACK:undefined;if(!modelId)continue;
     const clip=resolveActorClip(actor,poses.get(actor.id)?.speaking),kind=actor.bicycle?'cycle':actor.walking||actor.kind==='run'?clip:poses.has(actor.id)?actorActionKind(actor)+'|'+(poses.get(actor.id)?.speaking?'talk':'listen'):clip==='sit'?'sit':actorActionKind(actor),batch=batchFor(modelId,kind)??batchFor(modelId,'idle')??batches.get(CITIZEN_FALLBACK+'/idle')?.batch;
     const appearance=world.living?.appearances?.[actor.id]??defaultAppearance(actor.id,core?.role??npc?.roleId);
-    if(batch){const time=kind==='cycle'?(actor.bicycle?.distance??0)/3:actor.walking?motion.phase(actor.id)/(Math.PI*2)*batch.period:seconds;batch.add(actor.id,actor.position,yaw,time,appearance);heads.set(actor.id,batch.head(time,actor.position,yaw));assignments.set(actor.id,batch.modelId);
+    if(batch){const time=kind==='cycle'?(actor.bicycle?.distance??0)/3:actor.walking?motion.phase(actor.id)/(Math.PI*2)*batch.period:seconds;batch.add(actor.id,actor.position,yaw,time,appearance,motion.lift(actor.id));heads.set(actor.id,batch.head(time,actor.position,yaw).add(new THREE.Vector3(0,motion.lift(actor.id),0)));assignments.set(actor.id,batch.modelId);
      const propKind=actorActionKind(actor);
      if(_camera.position.distanceTo(new THREE.Vector3(actor.position[0],groundElevation(...actor.position)+8,actor.position[1]))<300&&!actor.walking&&!actor.bicycle&&(hasHandProp(actor.kind)||['cook','soccer','swim','lantern'].includes(propKind))){
       let prop=props.get(actor.id);if(prop?.kind!==propKind){if(prop)release(prop.group);const group=simpleProp(propKind);group.traverse(o=>{if((o as THREE.Mesh).isMesh)o.userData.actorId=actor.id;});scene.add(group);prop={kind:propKind,group};props.set(actor.id,prop);}
-      prop.group.visible=true;placeActionProp(prop.group,propKind,batch.height,yaw,new THREE.Vector3(actor.position[0],groundElevation(...actor.position),actor.position[1]),{left:batch.hand('left',time,actor.position,yaw),right:batch.hand('right',time,actor.position,yaw)},time);
+      prop.group.visible=true;placeActionProp(prop.group,propKind,batch.height,yaw,new THREE.Vector3(actor.position[0],groundElevation(...actor.position),actor.position[1]),{left:batch.hand('left',time,actor.position,yaw).add(new THREE.Vector3(0,motion.lift(actor.id),0)),right:batch.hand('right',time,actor.position,yaw).add(new THREE.Vector3(0,motion.lift(actor.id),0))},time);
      }
     }
     if(actor.bicycle&&!bicycles.has(actor.id)){const bike=createBicycle();bike.traverse(o=>{if((o as THREE.Mesh).isMesh)o.userData.actorId=actor.id;});scene.add(bike);bicycles.set(actor.id,bike);}

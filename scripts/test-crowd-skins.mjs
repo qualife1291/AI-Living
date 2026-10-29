@@ -18,6 +18,7 @@ for(const [id,source] of library.loaded){
   const pos=batch.sample(.31/batch.period*8),bounds=new THREE.Box3();for(let i=0;i<pos.length;i+=3)bounds.expandByPoint(new THREE.Vector3(pos[i],pos[i+1]+groundElevation(0,0),pos[i+2]));
   const ray=new THREE.Raycaster(new THREE.Vector3(0,bounds.min.y+(bounds.max.y-bounds.min.y)*.55,50),new THREE.Vector3(0,0,-1)),hits=[];mesh.raycast(ray,hits);
   assert(hits.length,`${id}/${kind} actual animated body must be clickable`);assert(hits.every(h=>h.instanceId===0&&h.object===mesh));
+  batch.reset();batch.add('fixture',[0,0],0,.31,colors,2.5);const moved=new THREE.Matrix4();mesh.getMatrixAt(0,moved);assert(Math.abs(moved.elements[13]-groundElevation(0,0)-2.5)<1e-6,'Jump lift is part of the instance transform and native picking');
   const old=mesh.geometry.getAttribute('shirtTone').getX(0);batch.reset();batch.add('fixture',[0,0],0,.31,{...colors,shirt:'#44ff66'});assert.notEqual(mesh.geometry.getAttribute('shirtTone').getX(0),old,'Same shader tint path while paused');
   batch.reset();const empty=[];mesh.raycast(ray,empty);assert.equal(empty.length,0,'Previous LOD instances cannot intercept a click');let released=false;mesh.addEventListener('dispose',()=>released=true);batch.dispose();assert(released,'Evicted action batches release instance buffers before city unmount');
  }

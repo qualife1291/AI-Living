@@ -35,6 +35,9 @@ for(const asset of catalog){
   if(kind==='cycle'){assert(kindGrip<.35,asset.id+' handlebar contact '+kindGrip);assert(kindFoot<.35,asset.id+' pedal contact '+kindFoot);assert(kindSeat<.35,asset.id+' saddle contact '+kindSeat);}
   radiusMax=Math.max(radiusMax,kindRadius);gripMax=Math.max(gripMax,kindGrip);footMax=Math.max(footMax,kindFoot);seatMax=Math.max(seatMax,kindSeat);report.push({id:asset.id,kind,radius:kindRadius,handleGap:kindGrip,pedalGap:kindFoot,seatGap:kindSeat});
  }
+ // Jump contact targets move with the same visual lift as the body.
+ const jumping={id:'lift-fixture',kind:'jump',position:[0,0],walking:false};rig.pose('idle',.5,900,[0,0],0,floor+3);actions.apply(rig,jumping,'jump',900,3);
+ assert(rig.hand('right').y>floor+3+rig.height*.65,'A raised body must not leave its hand targets on the ground');
  // Constant animation tracks must overwrite prior IK offsets on each frame.
  const clean=new RiggedAvatar(source);rig.pose('idle',0,1000,[0,0],0,floor);clean.pose('idle',0,1000,[0,0],0,floor);
  for(const side of ['left','right'])assert(rig.hand(side).distanceTo(clean.hand(side))<1e-6,'No contact pose leaks into idle');

@@ -18,3 +18,5 @@ const stopped=motion.frame([a,b],poses,1,1/60,true);
 for(const time of [2,100,86400])assert.deepEqual(motion.frame([b,a],poses,time,1/60,true),new Map([...stopped].reverse()));
 assert.equal(JSON.stringify([a,b]),before,'Render motion cannot edit roots or source provenance');
 console.log(JSON.stringify({suite:'human-visuals',sharedFaunaPrimitives:triangles,stableIdentity:true,distanceGait:true,pause:true,sourceImmutable:true,oldHumanGeometry:false}));
+
+const jumper={...a,kind:'jump',walking:false},jumpMotion=new HumanMotion();jumpMotion.frame([jumper],poses,0,0,false);assert.equal(jumpMotion.lift('an'),0);jumpMotion.frame([jumper],poses,.5,.1,false);assert(jumpMotion.lift('an')>2.5);const held=jumpMotion.lift('an');jumpMotion.frame([jumper],poses,10,.1,true);assert.equal(jumpMotion.lift('an'),held,'Near and crowd consume the same paused jump phase');
