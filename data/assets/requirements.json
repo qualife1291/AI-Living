@@ -1,10 +1,10 @@
 {
   "version": 1,
   "preferred": {
-    "character-a": "citizens/an",
-    "character-b": "citizens/binh",
-    "character-c": "citizens/chi",
-    "character-e": "citizens/summer",
+    "character-a": "supplied/office",
+    "character-b": "supplied/waistcoat",
+    "character-c": "supplied/service",
+    "character-e": "supplied/leisure",
     "car-sedan": "cars/sedan",
     "car-hatchback": "cars/hatchback-sports",
     "car-taxi": "cars/taxi",
@@ -14,7 +14,7 @@
     "dumpster": "roads/dumpster",
     "tree": "suburban/tree-large",
     "house": "suburban/building-type-a",
-    "character-d": "citizens/linen",
+    "character-d": "supplied/jacket",
     "building-a": "commercial/building-a",
     "building-b": "commercial/building-b",
     "building-c": "commercial/building-c",

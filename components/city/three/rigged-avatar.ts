@@ -6,7 +6,7 @@ import {dailyHumanGeometry} from './daily-rig-geometry.ts';
 type Colors = {shirt:string;trousers:string;skin:string};
 const clipAliases:Record<string,string[]> = {
  idle:['Idle','idle','Idle_A'],walk:['Walk','walk','Walking_A'],sprint:['Run','Running_A','walk'],
- talk:['Talk','Speech','Idle'],listen:['Listen','Nod','Idle'],drive:['Sit','Idle'],
+ talk:['Talk','Speech','Idle'],listen:['Listen','Nod','Idle'],drive:['Ride','Sit','Idle'],
  'holding-both':['Think','Idle'], 'holding-right':['Idle'], 'emote-yes':['Nod','Idle'], 'emote-no':['Shake','Idle'],
  'pick-up':['PickUp','Interact','Idle'],sit:['Sit','Idle'],wave:['Wave','Idle'],
 };
@@ -29,7 +29,7 @@ export class RiggedAvatar {
  private wardrobeEnabled={value:0};
  constructor(source:GLTF,height=17.5,radius=4.4,dailyHuman=false) {
   this.model=clone(source.scene);this.offset.add(this.model);this.group.add(this.offset);
-  this.model.traverse(o=>{const mesh=o as THREE.Mesh;if(mesh.isMesh)mesh.geometry=dailyHuman&&source.scene.userData.profile!=='xom-citizen-v1'?dailyHumanGeometry(mesh.geometry):mesh.geometry.clone();});
+  this.model.traverse(o=>{const mesh=o as THREE.Mesh;if(mesh.isMesh)mesh.geometry=dailyHuman&&!['xom-citizen-v1','xom-supplied-v1'].includes(source.scene.userData.profile)?dailyHumanGeometry(mesh.geometry):mesh.geometry.clone();});
   const bones:THREE.Bone[]=[];
   this.model.traverse(object=>{if((object as THREE.Bone).isBone)bones.push(object as THREE.Bone);});
   this.rest=bones.map(bone=>({bone,position:bone.position.clone(),quaternion:bone.quaternion.clone(),scale:bone.scale.clone()}));
@@ -50,6 +50,8 @@ export class RiggedAvatar {
   // Preserve authored proportions; shrink uniformly when clearance is tighter.
   this.group.scale.setScalar(horizontal);this.height=size.y*horizontal;this.offset.position.set(-center.x,-box.min.y,-center.z);
   this.findJoints(bones);
+  const aliases=this.model.userData.jointAliases as Record<string,string>|undefined;
+  if(aliases)for(const [key,name] of Object.entries(aliases)){const bone=bones.find(b=>b.name===name);if(bone)this.joints.set(key,bone);}
   this.feet=['foot-left','foot-right'].map(key=>this.joints.get(key)).filter((b):b is THREE.Object3D=>!!b);
   this.group.updateMatrixWorld(true);
   this.footOffset=this.feet.length?Math.min(...this.feet.map(b=>b.getWorldPosition(new THREE.Vector3()).y)):0;
@@ -80,11 +82,12 @@ export class RiggedAvatar {
    const samples:{mesh:THREE.SkinnedMesh;indices:number[]}[]=[];
    this.model.traverse(object=>{
     const mesh=object as THREE.SkinnedMesh;if(!mesh.isSkinnedMesh)return;
-    const boneIndex=mesh.skeleton.bones.indexOf(bone as THREE.Bone);if(boneIndex<0)return;
+    const related=new Set<THREE.Object3D>([bone]);if(key.startsWith('foot'))bone.traverse(b=>related.add(b));
+    const boneIndices=new Set(mesh.skeleton.bones.map((b,i)=>related.has(b)?i:-1).filter(i=>i>=0));if(!boneIndices.size)return;
     const skin=mesh.geometry.getAttribute('skinIndex'),weights=mesh.geometry.getAttribute('skinWeight');
     const candidates:{i:number;p:THREE.Vector3}[]=[];
     for(let i=0;i<skin.count;i++) {
-     let weight=0;for(let j=0;j<4;j++)if(skin.getComponent(i,j)===boneIndex)weight+=weights.getComponent(i,j);
+     let weight=0;for(let j=0;j<4;j++)if(boneIndices.has(skin.getComponent(i,j)))weight+=weights.getComponent(i,j);
      if(weight>=.5)candidates.push({i,p:mesh.getVertexPosition(i,new THREE.Vector3()).applyMatrix4(mesh.matrixWorld)});
     }
     if(!candidates.length)return;
@@ -139,7 +142,7 @@ export class RiggedAvatar {
   this.group.position.y=floor-bottom;this.group.updateMatrixWorld(true);return true;
  }
  /** Absolute, seekable mixing for the editorial Studio. No accumulated pose/clock. */
- poseTimeline(layers:{clip:string;time:number;weight:number}[],position:readonly number[],yaw:number,bend=0) {
+ poseTimeline(layers:{clip:string;time:number;weight:number}[],position:readonly number[],yaw:number,bend=0,lean=0) {
   this.mixer.stopAllAction();
   for(const rest of this.rest){rest.bone.position.copy(rest.position);rest.bone.quaternion.copy(rest.quaternion);rest.bone.scale.copy(rest.scale);}
   const weights=new Map<string,{weight:number;time:number}>();
@@ -150,7 +153,7 @@ export class RiggedAvatar {
   this.group.position.set(position[0],0,position[2]);this.group.rotation.set(0,yaw,0);
   // A squat precedes low reaches; keep both feet grounded after bending knees.
   for(const side of ['left','right']){const leg=this.joint(`leg-${side}`);if(!leg)continue;leg.rotateX(-1.35*bend);const knee=leg.children.find(o=>(o as THREE.Bone).isBone);knee?.rotateX(2.7*bend);this.joint(`foot-${side}`)?.rotateX(-1.35*bend);}
-  (this.joint('Spine')??this.joint('torso'))?.rotateX(.65*bend);
+  (this.joint('Spine')??this.joint('torso'))?.rotateX(.65*bend+lean);
   this.group.updateMatrixWorld(true);
   const feet=['foot-left','foot-right'].map(k=>this.surface(k,'min')?.y).filter((y):y is number=>y!==undefined);
   this.group.position.y=position[1]-(feet.length?Math.min(...feet):0);this.group.updateMatrixWorld(true);

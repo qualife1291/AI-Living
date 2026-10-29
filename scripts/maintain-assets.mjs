@@ -1,14 +1,15 @@
 import {readFileSync,writeFileSync} from 'node:fs';
+import {reviewedAssetLicense} from '../lib/city/asset-policy.ts';
 import assert from 'node:assert/strict';
 import {scenarioDefinitions,scenarioFrame} from '../lib/city/scenarios/index.ts';
 const read=path=>JSON.parse(readFileSync(new URL(path,import.meta.url),'utf8'));
-const catalog={assets:[...read('../public/models/kenney/catalog.json').assets,...read('../public/models/resources/catalog.json').assets,...read('../public/models/citizens/catalog.json').assets]};
+const catalog={assets:[...read('../public/models/kenney/catalog.json').assets,...read('../public/models/resources/catalog.json').assets,...read('../public/models/citizens/catalog.json').assets,...read('../public/models/supplied/catalog.json').assets]};
 const policy=read('../data/assets/requirements.json');
 export function resolveRequirements(keys,approved,preferred,procedural){
  const bindings={},missing=[];
  for(const key of [...new Set(keys)].sort()){
   const chosen=preferred[key]??approved.find(a=>a.id===key||a.id.split('/').at(-1)===key)?.id;
-  if(chosen&&approved.some(a=>a.id===chosen&&a.license==='CC0-1.0'))bindings[key]=chosen;
+  if(chosen&&approved.some(a=>a.id===chosen&&reviewedAssetLicense(a)))bindings[key]=chosen;
   else if(procedural.includes(key))bindings[key]=`procedural/${key}`;
   else missing.push({key,reason:'A reviewed model or implemented procedural recipe is needed.'});
  }
