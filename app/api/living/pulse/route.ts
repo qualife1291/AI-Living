@@ -2,10 +2,11 @@ import { database,json,validOrigin } from '@/lib/store';
 import { learnCompleted,tickLiving,advanceResidentSocial } from '@/lib/living/service';
 import { runCoalescedPulse } from '@/lib/living/pulse-gate';
 import {env} from 'cloudflare:workers';
+import {runPulsePipeline} from '@/lib/living/pulse-pipeline';
+import {systemLog,safeErrorType} from '@/lib/system-log';
 import {pulseSharedGround,preflightSharedGround} from '@/lib/living/shared-ground-store';
 export async function POST(req: Request) {
   if (!validOrigin(req)) {
-    console.warn('living_pulse_origin_rejected', { origin: req.headers.get('origin'), target: new URL(req.url).origin });
     return json({ error: 'Origin không hợp lệ', code: 'PULSE_ORIGIN_REJECTED' }, 403);
   }
 
@@ -21,18 +22,8 @@ export async function POST(req: Request) {
       }
     }
 
-    const result = await runCoalescedPulse(database(), async () => {
-      const learned = await learnCompleted();
-      if (learned.status !== 200) return learned;
-      const social = await advanceResidentSocial();
-      if (social.status !== 200) return social;
-      const tick = await tickLiving();
-      return { status: tick.status, data: { ...tick.data, learning: learned.data } };
-    });
-
-    if (result.status !== 200 && result.status !== 409) {
-      console.warn('living_pulse_rejected', { status: result.status, error: result.data.error });
-    }
+    const result = await runCoalescedPulse(database(), () => runPulsePipeline({learning:learnCompleted,social:advanceResidentSocial,tick:tickLiving}));
+    systemLog('pulse_result',{status:result.status,duplicate:result.data.duplicate,coalesced:result.data.coalesced});
 
     if (sharedActive) {
       try {
@@ -44,7 +35,7 @@ export async function POST(req: Request) {
     }
     return json(result.data, result.status);
   } catch (error) {
-    console.error('living_pulse_failed', error);
+    systemLog('pulse_result',{status:503,errorType:safeErrorType(error)});
     return json({ error: 'Không thể cập nhật nhịp sống. Hãy kiểm tra nhật ký Worker.', code: 'PULSE_RUNTIME_ERROR' }, 503);
   }
 }

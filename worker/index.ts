@@ -6,50 +6,42 @@ import { qaLivingCronEnabled } from "../lib/living/qa-scheduler";
 import handler from "vinext/server/fetch-handler";
 import { runWithConnectorBinding } from "../lib/connector-context";
 import type { ConnectorBinding } from "../lib/connector-contract.mjs";
+import {observeHttp,runSystemTask,systemLog,safeErrorType} from "../lib/system-log";
+import {runPulsePipeline} from "../lib/living/pulse-pipeline";
 
 const worker = {
   async scheduled(event: ScheduledController, env: Cloudflare.Env, ctx: ExecutionContext) {
     // Scheduled events bypass HTTP Access. Restrict to explicit QA configuration.
     const settings = env as unknown as Record<string, string | undefined>;
-    if (!qaLivingCronEnabled(settings, event.cron)) {
-      console.warn("qa_cron_disabled_or_mismatched", { cron: event.cron });
-      return;
-    }
-    // Use exactly the browser pulse D1 lease so cron and open tabs never
-    // double-run learning/ticks; CAS and five-minute turn IDs stay authoritative.
-    ctx.waitUntil((async () => {
-      try {
-        const db = env.DB;
-        if (!db) throw new Error("QA D1 binding missing");
-        const result = await runCoalescedPulse(db, async () => {
-          const learned = await learnCompleted();
-          if (learned.status !== 200) return learned;
-          const social = await advanceResidentSocial();
-          if (social.status !== 200) return social;
-          const tick = await tickLiving();
-          return { status: tick.status, data: { ...tick.data, learning: learned.data } };
-        });
-        const learning = result.data.learning as { updated?: number } | undefined;
-        console.info("qa_cron_pulse", {
-          status: result.status,
-          duplicate: result.data.duplicate === true,
-          coalesced: result.data.coalesced === true,
-          updated: learning?.updated ?? 0,
-        });
-        if (result.status !== 200 && result.status !== 409)
-          throw new Error("QA Cron pulse rejected: " + result.status);
-      } catch (error) {
-        console.error("qa_cron_failed", { name: error instanceof Error ? error.name : "unknown" });
-        throw error;
-      }
-    })());
+    return runSystemTask("cron", settings.XOM_SYSTEM_LOGS === "true", () => {
+      if (!qaLivingCronEnabled(settings, event.cron)) { systemLog("cron_disabled"); return; }
+      ctx.waitUntil((async () => {
+        const started = performance.now();
+        try {
+          const db = env.DB;
+          if (!db) throw new Error("QA D1 binding missing");
+          const result = await runCoalescedPulse(db, () => runPulsePipeline({learning:learnCompleted,social:advanceResidentSocial,tick:tickLiving}));
+          const learning = result.data.learning as {updated?:number}|undefined;
+          systemLog("cron_result", {status:result.status,duplicate:result.data.duplicate === true,coalesced:result.data.coalesced === true,updated:learning?.updated ?? 0,durationMs:performance.now()-started});
+          if (result.status !== 200 && result.status !== 409) throw new Error("QA Cron pulse rejected");
+        } catch(error) {
+          systemLog("cron_failed", {status:503,errorType:safeErrorType(error),durationMs:performance.now()-started});
+          throw error;
+        }
+      })());
+    }, (env as unknown as Record<string,unknown>).CF_VERSION_METADATA);
   },
-  async fetch(request: Request, env: Cloudflare.Env, ctx: ExecutionContext<{ CONNECTORS?: ConnectorBinding }>) {
+  fetch(request: Request, env: Cloudflare.Env, ctx: ExecutionContext<{ CONNECTORS?: ConnectorBinding }>) {
+    const settings = env as unknown as Record<string,unknown>;
+    return observeHttp(request,settings.XOM_SYSTEM_LOGS === "true",()=>worker.handleRequest(request,env,ctx),settings.CF_VERSION_METADATA);
+  },
+  async handleRequest(request: Request, env: Cloudflare.Env, ctx: ExecutionContext<{ CONNECTORS?: ConnectorBinding }>) {
     const settings = env as unknown as Record<string, string | undefined>;
     const url = new URL(request.url);
     const mutation = url.pathname.startsWith("/api/") && !["GET", "HEAD", "OPTIONS"].includes(request.method);
     const diagnostic = url.pathname === "/api/diagnostics";
     const privateMemories = url.pathname === "/api/living/memories";
+    const privateSystem = url.pathname === "/api/system/progress";
     const archive = url.pathname === "/api/living/learning" && url.searchParams.get("format") === "jsonl";
     // Worker-level Cloudflare Access is the only QA authorization source.
     // ctx.access is provided by Cloudflare after Access verification; request
@@ -67,19 +59,18 @@ const worker = {
         teamDomain: settings.XOM_QA_ACCESS_TEAM_DOMAIN ?? "",
       })
     );
-    if ((mutation || archive || diagnostic || privateMemories) &&
+    if ((mutation || archive || diagnostic || privateMemories || privateSystem) &&
         !qaAuthorized &&
         !( !isQaWorker && adminAllowed(request, { ownerId: settings.XOM_ADMIN_USER_ID, localAdmin: settings.XOM_LOCAL_ADMIN, privateOrigin: settings.XOM_OWNER_PRIVATE_ORIGIN }) )) {
       if (url.hostname === "ai-living-qa.hoanglonglea1mtl.workers.dev") {
-        console.warn("qa_access_gate_denied", {
+        systemLog("qa_auth_denied", {
+          status:403,
           accessContextPresent: Boolean(qaAccess),
           accessAudiencePresent: Boolean(qaAccess?.aud),
           accessAudienceMatches: Boolean(qaAccess?.aud && qaAccess.aud === settings.XOM_QA_ACCESS_AUD),
           configuredAudiencePresent: Boolean(settings.XOM_QA_ACCESS_AUD),
           expectedHostnameMatches: url.hostname === settings.XOM_QA_HOSTNAME,
           https: url.protocol === "https:",
-          method: request.method,
-          path: url.pathname,
           // Never log JWT, user identity, email, cookies or credentials.
         });
       }

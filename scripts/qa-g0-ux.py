@@ -91,7 +91,7 @@ with sync_playwright() as p:
    input.fill('Chào An, hôm nay thế nào?');input.press('Enter')
    page.wait_for_function('document.querySelector(".conversation form").getAttribute("aria-busy")==="true"')
    assert input.evaluate('(e)=>e===document.activeElement&&e.readOnly&&!e.disabled')
-   state['chatPending'].fulfill(status=200,content_type='application/json',body='{"reply":"Mình đang dạo quanh thành phố."}');state['chatPending']=None
+   state['chatPending'].fulfill(status=200,content_type='application/json',body=json.dumps({**state['chatPending'].request.post_data_json,'reply':'Mình đang dạo quanh thành phố.'}));state['chatPending']=None
    page.locator('.conversation blockquote').wait_for();assert input.input_value()=='';assert input.evaluate('(e)=>e===document.activeElement')
    input.fill('Giữ lại lời nhắn này');input.press('Enter');page.wait_for_function('document.querySelector(".conversation form").getAttribute("aria-busy")==="true"')
    state['chatPending'].fulfill(status=503,content_type='application/json',body='{"error":"Chưa gửi được, hãy thử lại."}');state['chatPending']=None
@@ -103,7 +103,7 @@ with sync_playwright() as p:
    page.screenshot(path=str(out/f'{name}-chat-preview.png'))
    input.press('Enter');page.wait_for_function('document.querySelector(".conversation form").getAttribute("aria-busy")==="true"')
    close=page.get_by_role('button',name='Đóng bảng thông tin',exact=True);close.focus()
-   state['chatPending'].fulfill(status=200,content_type='application/json',body='{"reply":"Hẹn gặp lại nhé."}');state['chatPending']=None
+   state['chatPending'].fulfill(status=200,content_type='application/json',body=json.dumps({**state['chatPending'].request.post_data_json,'reply':'Hẹn gặp lại nhé.'}));state['chatPending']=None
    page.get_by_text('Hẹn gặp lại nhé.',exact=True).wait_for();assert close.evaluate('(e)=>e===document.activeElement')
    page.keyboard.press('Escape');assert page.get_by_role('button',name='Cư dân',exact=True).evaluate('(e)=>e===document.activeElement')
    canvas=host.locator('canvas');canvas.focus();before=host.get_attribute('data-camera')

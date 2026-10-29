@@ -1,0 +1,198 @@
+{
+  "phase": "H5a",
+  "date": "2026-10-29",
+  "timezone": "Asia/Ho_Chi_Minh",
+  "testedSource": "143f94c322b055cb7105f7bdc2d1f89c2d9a0505",
+  "protocolRegisteredAt": "bbb1bf1",
+  "implementation": "offline-peer-hearsay-v1",
+  "artifact": {
+    "kind": "H5-peer-admission-study-v1",
+    "namespace": "offline-peer-hearsay-v1",
+    "protocolSha256": "fd5caf03850c733bd7d7b513a34fb20bdc8f13c9783b921a4cbeccec836d2e44",
+    "scope": "synthetic editorial offers with actual accepted physics; not blind semantic evaluation",
+    "positive": {
+      "admitted": 3,
+      "duplicateNoops": 3,
+      "cloneRejections": 3,
+      "wrongRecipientRejections": 3,
+      "heardLines": 6,
+      "physicsSteps": 2700,
+      "halfLifeConfidence": 0.25,
+      "expiredVisible": 0
+    },
+    "negatives": [
+      {
+        "diagnostic": "baseline",
+        "mintedAdvice": 0,
+        "physicsSteps": 2700
+      },
+      {
+        "diagnostic": "partial",
+        "mintedAdvice": 0,
+        "physicsSteps": 1260
+      },
+      {
+        "diagnostic": "paused",
+        "mintedAdvice": 0,
+        "physicsSteps": 1284
+      },
+      {
+        "diagnostic": "cancel",
+        "mintedAdvice": 0,
+        "physicsSteps": 2700
+      },
+      {
+        "diagnostic": "transit",
+        "mintedAdvice": 0,
+        "physicsSteps": 2700
+      }
+    ],
+    "evidence": [
+      {
+        "id": "bfe095cccdca7e16b968b12fd3ade4dd6773c314d2cb06e2bdd6a7f9195f2e79",
+        "source": "synthetic-ground-peer-study-v1",
+        "topic": "gardening",
+        "evidence": {
+          "turnSha256": "eed3b707448da4e5751626721c9397509773fc1db921b2cd9bc108b6c8f6b086",
+          "sourceSha256": "aae2c1ff805033de0347d883dfe9bb3dc4c028f90da9d40a69b1b74e6b481b1e",
+          "recordsSha256": "44ddc95f922cb7cc456d389b7c4e5b7a38553dd05feddbf861ed927ee9d1a6ce",
+          "utteranceId": "h5-study-0:2:0",
+          "epochs": [
+            1,
+            4
+          ]
+        }
+      },
+      {
+        "id": "818bb26439133cecad4b06fad641365425da4c2b50effcf5445d0a3390d9f451",
+        "source": "synthetic-ground-peer-study-v1",
+        "topic": "cooking",
+        "evidence": {
+          "turnSha256": "eed3b707448da4e5751626721c9397509773fc1db921b2cd9bc108b6c8f6b086",
+          "sourceSha256": "aae2c1ff805033de0347d883dfe9bb3dc4c028f90da9d40a69b1b74e6b481b1e",
+          "recordsSha256": "44ddc95f922cb7cc456d389b7c4e5b7a38553dd05feddbf861ed927ee9d1a6ce",
+          "utteranceId": "h5-study-0:2:2",
+          "epochs": [
+            1,
+            4
+          ]
+        }
+      },
+      {
+        "id": "0d33e1aff076ae3b84653e48b5e51c132663b513599754b8dbe9d68bb5a13ed8",
+        "source": "synthetic-ground-peer-study-v1",
+        "topic": "repair",
+        "evidence": {
+          "turnSha256": "eed3b707448da4e5751626721c9397509773fc1db921b2cd9bc108b6c8f6b086",
+          "sourceSha256": "aae2c1ff805033de0347d883dfe9bb3dc4c028f90da9d40a69b1b74e6b481b1e",
+          "recordsSha256": "44ddc95f922cb7cc456d389b7c4e5b7a38553dd05feddbf861ed927ee9d1a6ce",
+          "utteranceId": "h5-study-0:2:4",
+          "epochs": [
+            1,
+            4
+          ]
+        }
+      }
+    ],
+    "worldOrPolicyWrites": false,
+    "runtimeImportAllowed": false,
+    "modelQualityGainMeasured": false,
+    "productionAccess": false,
+    "sha256": "1a91bf99f38413c873cf11c87d462446af14d302f4162df0d3617f00e10203fe"
+  },
+  "checks": {
+    "unit": {
+      "suite": "unit-summary",
+      "total": 74,
+      "passed": 74,
+      "failed": [],
+      "workers": 2,
+      "seconds": 146.32
+    },
+    "typecheck": "PASS",
+    "lint": "PASS",
+    "assets": "PASS",
+    "build": "PASS on abf9d99; later code changes restricted to excluded offline inbox/its test",
+    "compiledChatD1": {
+      "suite": "chat-admission-compiled-http",
+      "concurrentUnique": 60,
+      "concurrentDuplicate": 16,
+      "limit": 30,
+      "windowMs": 60000,
+      "atomicRollbackCases": 2,
+      "originOwnerBodyPauseActorGuards": true,
+      "retryAfter": true,
+      "rejectedUuidReusable": true,
+      "historyPreserved": true,
+      "productionAccess": false
+    },
+    "legacyLivenessHttp": "PASS on isolated compiled Worker/D1",
+    "repeatArtifactSha256": "1a91bf99f38413c873cf11c87d462446af14d302f4162df0d3617f00e10203fe",
+    "repeatPayloadByteEquivalent": true,
+    "offlineModuleInWorkerJs": false,
+    "browser": "No new run: no app UI/schema/runtime integration; offline modules absent from Worker JS"
+  },
+  "additionalCases": [
+    "Actual GND3 emitted/heard/co-presence + pre-registered editorial offers",
+    "3 advice deliveries from 6 fully heard lines; chunk/resume proofs equal",
+    "Baseline/partial/pause/cancel/transit cannot mint delivery",
+    "JSON/clone/forwarded view/tamper rejected; recipient/world/session isolation",
+    "Expiry/half-life/top-K/topic + immutable no-write reads",
+    "Tightened capacity2 exercises full rejection, dedup retention and expired-proof replay rejection; default32 constructor bound",
+    "Monotonic admission time after duplicate/full/expired attempts",
+    "CLI actual subprocess, strict options/bytes/checksum/exclusive output/private errors; shared path-guard regression unchanged",
+    "Source seed/world/personal state immutable; no new samples, mastery, skill, posterior, facts or memories"
+  ],
+  "limits": [
+    "Synthetic four-human fixed-scenario proof, not authenticated D1 production receipt",
+    "Only three pre-authored advice offers; no blind semantics or model learning gain measured",
+    "In-process mint capability cannot be imported from JSON or another process",
+    "Per-inbox isolation is not a replacement for runtime owner/recipient API authorization",
+    "H5b needs durable offers + source-authentic receipt/inbox CAS before live P2P; no promotion now"
+  ],
+  "worldOrPolicyWrites": false,
+  "schemaChanges": false,
+  "productionAccess": false,
+  "deployment": false,
+  "mergedVerification": {
+    "source": "c6b7cd17f211889badd69c43d58cf7568192b111",
+    "acceptedAssets": "15e89fa (browser app source68060d6, evidence owned by asset agent)",
+    "unit": {
+      "suite": "unit-summary",
+      "total": 74,
+      "passed": 74,
+      "failed": [],
+      "workers": 2,
+      "seconds": 158.74
+    },
+    "typecheck": "PASS",
+    "lint": "PASS",
+    "assets": "PASS: 239 resource models, 27 exact lossless derivatives",
+    "build": "PASS",
+    "offlineModuleInWorkerJs": false,
+    "compiledChatD1": {
+      "suite": "chat-admission-compiled-http",
+      "concurrentUnique": 60,
+      "concurrentDuplicate": 16,
+      "limit": 30,
+      "windowMs": 60000,
+      "atomicRollbackCases": 2,
+      "originOwnerBodyPauseActorGuards": true,
+      "retryAfter": true,
+      "rejectedUuidReusable": true,
+      "historyPreserved": true,
+      "productionAccess": false
+    },
+    "legacyLivenessHttp": "PASS",
+    "frozenLearningAudit": {
+      "kind": "frozen-learning-evidence-acceptance-v1",
+      "artifacts": 76,
+      "comparisons": 42,
+      "holdout": {
+        "reserved12000to12019": "unobserved",
+        "plans": 0
+      }
+    },
+    "browser": "No new H5 browser: offline-only, no H5 UI/runtime/schema. Concurrent asset acceptance preserved separately."
+  }
+}

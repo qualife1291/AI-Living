@@ -4,7 +4,12 @@ Chỉ ghi mốc sản phẩm. Chi tiết commit/review nằm trong Git; số ver
 
 ## 29/10/2026
 
+- Sửa chat mất ACK/timeout tạo tin trùng: giữ UUID khi chủ động gửi lại trong cùng panel, kiểm ACK đúng actor/nội dung và hủy request khi đóng panel. D1 postassert kiểm payload/counter chặt hơn và từ chối bản ghi hỏng; body quá lớn trả413 kể cả upstream cancel treo. H5a chặn clock vượt miền an toàn trước khi đổi watermark. [Bằng chứng đối kháng](docs/validation/phase-verification-2026-10-29.json).
+
+- H5a bổ sung thử nghiệm offline lời khuyên có nguồn: chỉ nhận sau GND3 nghe đủ, khóa world/session/người nhận, chống replay/giả receipt và tính decay/TTL khi đọc. Không ghi world/skill/policy/memory hoặc bật P2P live; artifact không được import runtime.
+
 - Áp dụng5rig đời thường Casino/Chess do chủ dự án cung cấp vào city/Studio/gallery, dùng2palette chung và LOD có skin weights; sửa da xuyên quần áo/giày, khớp vai và tỷ lệ Studio. Camera tự cutaway mái/tán cây chắn cảnh, giữ render budget;73suite và browser/audio bốn cảnh đạt. Review đủ4ZIP/593GLB entries/25bản nhạc; ZIP4 gồm50mẫu công trường tĩnh có5LOD, giữ cho phase phù hợp. [Bằng chứng](docs/validation/supplied-civilians-2026-10-29.json).
+
 
 - Chat có quota chung30 tin mới/cửa sổ60giây, counter và exchange ghi cùng transaction D1. Retry UUID không mất quota;429 có Retry-After, UI giữ bản nháp, lỗi lưu rollback. Không quét/xóa lịch sử hoặc đổi world/policy/schema.
 

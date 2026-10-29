@@ -221,6 +221,21 @@
     "scripts/test-chat-admission.mjs"
   ],
   [
+    "scripts/test-peer-sharing.mjs"
+  ],
+  [
+    "scripts/test-chat-adversarial.mjs"
+  ],
+  [
+    "scripts/test-peer-sharing-audit.mjs"
+  ],
+  [
+    "scripts/test-system-log.mjs"
+  ],
+  [
+    "scripts/test-progress-watch.mjs"
+  ],
+  [
     "scripts/test-cloudflare-access.mjs"
   ],
   [

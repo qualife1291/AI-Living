@@ -1,25 +1,33 @@
 "use client";
-import {useRef, useState} from 'react';
+import {useEffect, useRef, useState} from 'react';
 import {MessageCircle, Send} from 'lucide-react';
 
 export function Conversation({actorId,name,paused}:{actorId:string;name:string;paused:boolean}) {
   const [message,setMessage]=useState(''),[busy,setBusy]=useState(false),[reply,setReply]=useState(''),[error,setError]=useState('');
   const input=useRef<HTMLInputElement>(null),section=useRef<HTMLElement>(null),sending=useRef(false);
+  const pending=useRef<{id:string;actorId:string;message:string}|null>(null),controller=useRef<AbortController|null>(null);
+  useEffect(()=>()=>{controller.current?.abort();},[]);
   async function send(text:string) {
     if(sending.current||paused||!text.trim())return;
+    const normalized=text.trim();
+    if(pending.current?.actorId!==actorId||pending.current.message!==normalized)pending.current={id:crypto.randomUUID(),actorId,message:normalized};
+    const request=pending.current;
     sending.current=true;setBusy(true);setError('');
+    const active=new AbortController();controller.current=active;
+    const timeout=window.setTimeout(()=>active.abort(),10000);
     try {
       const response=await fetch('/api/living/interact',{
         method:'POST',headers:{'content-type':'application/json'},
-        body:JSON.stringify({id:crypto.randomUUID(),actorId,message:text}),signal:AbortSignal.timeout(10000),
+        body:JSON.stringify(request),signal:active.signal,
       });
-      const data=await response.json().catch(()=>null) as {error?:string;reply?:string}|null;
+      const data=await response.json().catch(()=>null) as {error?:string;reply?:string;id?:string;actorId?:string;message?:string}|null;
       if(!response.ok)throw Error(data?.error??'Chưa gửi được lời nhắn. Hãy thử lại.');
-      if(typeof data?.reply!=='string'||!data.reply.trim())throw Error('Chưa xác nhận được câu trả lời. Lời nhắn của bạn vẫn được giữ lại.');
-      setReply(data.reply);setMessage('');
+      if(typeof data?.reply!=='string'||!data.reply.trim()||data.id!==request.id||data.actorId!==request.actorId||data.message!==request.message)throw Error('Chưa xác nhận được câu trả lời. Lời nhắn của bạn vẫn được giữ lại.');
+      pending.current=null;setReply(data.reply);setMessage('');
     } catch(e) {
-      setError(e instanceof Error&&e.name!=='TypeError'&&e.name!=='TimeoutError'?e.message:'Mất kết nối khi gửi lời nhắn. Nội dung vẫn được giữ lại.');
+      setError(e instanceof Error&&e.name!=='TypeError'&&e.name!=='TimeoutError'&&e.name!=='AbortError'?e.message:'Mất kết nối khi gửi lời nhắn. Nội dung vẫn được giữ lại.');
     } finally {
+      window.clearTimeout(timeout);if(controller.current===active)controller.current=null;
       sending.current=false;setBusy(false);
       // Keep typing continuous, but never steal focus if the visitor moved elsewhere.
       if(document.activeElement===document.body||section.current?.contains(document.activeElement))input.current?.focus({preventScroll:true});
