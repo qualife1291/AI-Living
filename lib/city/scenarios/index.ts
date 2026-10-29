@@ -122,7 +122,7 @@ function kitten(d: ScenarioDefinition, t: number) {
   const miu = actor(d.cast[2], [[0, 0, 0], [120, 0, 0]], [[0, "distress"], [55, "comfort"], [78, "warm"], [88, "carried"]], [[0, .4], [120, .4]], t);
   const floor: Vec3 = [0, .15, 0], carried = grip(thanh, 7), kittenPosition = t < 88 ? floor : blend(floor, carried, progress(t, 88, 92));
   miu.position = [...kittenPosition]; miu.carrierId = t >= 88 ? "thanh" : null; miu.clip = "idle"; if (t >= 88) miu.yaw = .4 + Math.atan2(Math.sin(thanh.yaw - .4), Math.cos(thanh.yaw - .4)) * progress(t, 88, 92);
-  if (t >= 55) thanh.handTargets = { right: [kittenPosition[0]-.35,kittenPosition[1]+1.8,kittenPosition[2]], left: [kittenPosition[0]+.35,kittenPosition[1]+1.8,kittenPosition[2]] };
+  if (t >= 55) thanh.handTargets = { right: [kittenPosition[0]-.35,kittenPosition[1]+.8,kittenPosition[2]], left: [kittenPosition[0]+.35,kittenPosition[1]+.8,kittenPosition[2]] };
   const wrap=progress(t,78,88),unfold=progress(t,70,75),clothHeight=mix(.2,3.2,wrap);
   const clothPosition = t < 72 ? grip(mai, 8) : blend(grip(mai, 8), [0, .1, 0], progress(t, 72, 75));
   if(t>=78){clothPosition[0]=kittenPosition[0]*wrap;clothPosition[2]=kittenPosition[2]*wrap;clothPosition[1]=kittenPosition[1]*wrap+clothHeight/2;}

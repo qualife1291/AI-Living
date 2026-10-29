@@ -731,7 +731,7 @@ export function createCity(
   resize.observe(host);
   const heading = new Map<string, number>();
   function drawActors(seconds: number, world: World, dt: number) {
-    modelActors.prepare(world, input().selected);
+    modelActors.prepare(world,input().selected,actors.filter(a=>!world.people.some(p=>p.id===a.id)&&Math.hypot(camera.position.x-a.position[0],camera.position.z-a.position[1])<420).sort((a,b)=>Math.hypot(camera.position.x-a.position[0],camera.position.z-a.position[1])-Math.hypot(camera.position.x-b.position[0],camera.position.z-b.position[1])),socialPoses.keys());
     host.dataset.assetActors = String(modelActors.ids.size);
     const updated = people.draw(world, actors, socialPoses, seconds, dt, camera, input().selected, modelActors.ids);
     heading.clear(); for (const [id, yaw] of updated) heading.set(id, yaw);

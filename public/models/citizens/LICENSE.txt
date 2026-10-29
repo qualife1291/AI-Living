@@ -1,0 +1,3 @@
+Xóm AI Citizens — original geometry, skeletons and animation authored for this project, 2026.
+Dedicated to the public domain under CC0 1.0 Universal: https://creativecommons.org/publicdomain/zero/1.0/
+No third-party mesh, texture or character likeness was used. Rebuild with scripts/build-citizen-models.mjs.

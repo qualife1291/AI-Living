@@ -25,11 +25,11 @@ export class RiggedAvatar {
  private feet:THREE.Object3D[]=[];private footOffset=0;private tintKey='';
  private attachments=new Map<string,{mesh:THREE.SkinnedMesh;indices:number[]}[]>();
  private rest:{bone:THREE.Bone;position:THREE.Vector3;quaternion:THREE.Quaternion;scale:THREE.Vector3}[]=[];
- private colors={shirt:new THREE.Color('white'),trousers:new THREE.Color('white')};
+ private colors={shirt:new THREE.Color('white'),trousers:new THREE.Color('white'),skin:new THREE.Color('white')};
  private wardrobeEnabled={value:0};
  constructor(source:GLTF,height=17.5,radius=4.4,dailyHuman=false) {
   this.model=clone(source.scene);this.offset.add(this.model);this.group.add(this.offset);
-  this.model.traverse(o=>{const mesh=o as THREE.Mesh;if(mesh.isMesh)mesh.geometry=dailyHuman?dailyHumanGeometry(mesh.geometry):mesh.geometry.clone();});
+  this.model.traverse(o=>{const mesh=o as THREE.Mesh;if(mesh.isMesh)mesh.geometry=dailyHuman&&source.scene.userData.profile!=='xom-citizen-v1'?dailyHumanGeometry(mesh.geometry):mesh.geometry.clone();});
   const bones:THREE.Bone[]=[];
   this.model.traverse(object=>{if((object as THREE.Bone).isBone)bones.push(object as THREE.Bone);});
   this.rest=bones.map(bone=>({bone,position:bone.position.clone(),quaternion:bone.quaternion.clone(),scale:bone.scale.clone()}));
@@ -47,8 +47,7 @@ export class RiggedAvatar {
   const box=new THREE.Box3().setFromObject(this.model,true),size=box.getSize(new THREE.Vector3()),center=box.getCenter(new THREE.Vector3());
   if(![...size].every(n=>Number.isFinite(n)&&n>0))throw new Error('Invalid rigged model bounds');
   const yScale=height/size.y,horizontal=Math.min(yScale,radius/Math.max(.001,Math.hypot(size.x/2,size.z/2)));
-  // Keep the authored chibi proportions. Height is a maximum, never a stretch
-  // target that turns a wide head into a thin strip to fit the navigation disc.
+  // Preserve authored proportions; shrink uniformly when clearance is tighter.
   this.group.scale.setScalar(horizontal);this.height=size.y*horizontal;this.offset.position.set(-center.x,-box.min.y,-center.z);
   this.findJoints(bones);
   this.feet=['foot-left','foot-right'].map(key=>this.joints.get(key)).filter((b):b is THREE.Object3D=>!!b);
@@ -58,17 +57,18 @@ export class RiggedAvatar {
    const mesh=object as THREE.SkinnedMesh;if(!mesh.isMesh)return;
    // Per-instance attributes/materials; source textures and animation tracks stay immutable.
    const original=(Array.isArray(mesh.material)?mesh.material[0]:mesh.material) as THREE.MeshStandardMaterial;
-   const material=new THREE.MeshPhongMaterial({map:original.map,color:original.color,side:original.side,shininess:12,alphaTest:original.alphaTest});
+   const material=new THREE.MeshPhongMaterial({map:original.map,color:original.color,side:original.side,vertexColors:original.vertexColors,shininess:12,alphaTest:original.alphaTest});
    mesh.material=material;mesh.castShadow=true;mesh.receiveShadow=true;mesh.frustumCulled=false;
+   const authoredMask=mesh.geometry.getAttribute('_wardrobe');
    const count=mesh.geometry.attributes.position.count,mask=new THREE.BufferAttribute(new Float32Array(count),1),inverse=this.group.matrixWorld.clone().invert();
-   for(let i=0;i<count;i++){mesh.getVertexPosition(i,scratch).applyMatrix4(mesh.matrixWorld).applyMatrix4(inverse);const y=scratch.y/size.y,x=Math.abs(scratch.x)/size.y;mask.setX(i,y>.08&&y<.43?2:y>=.43&&y<.66&&x<.24?1:0);}
+   for(let i=0;i<count;i++){mesh.getVertexPosition(i,scratch).applyMatrix4(mesh.matrixWorld).applyMatrix4(inverse);const y=scratch.y/size.y,x=Math.abs(scratch.x)/size.y;mask.setX(i,authoredMask?authoredMask.getX(i):y>.08&&y<.43?2:y>=.43&&y<.66&&x<.24?1:0);}
    mesh.geometry.setAttribute('wardrobe',mask);
    material.onBeforeCompile=shader=>{
-    shader.uniforms.shirtTone={value:this.colors.shirt};shader.uniforms.trousersTone={value:this.colors.trousers};shader.uniforms.wardrobeEnabled=this.wardrobeEnabled;
+    shader.uniforms.shirtTone={value:this.colors.shirt};shader.uniforms.trousersTone={value:this.colors.trousers};shader.uniforms.wardrobeEnabled=this.wardrobeEnabled;shader.uniforms.skinTone={value:this.colors.skin};
     shader.vertexShader=shader.vertexShader.replace('#include <common>','#include <common>\nattribute float wardrobe; varying float vWardrobe;').replace('#include <begin_vertex>','#include <begin_vertex>\nvWardrobe=wardrobe;');
-    shader.fragmentShader=shader.fragmentShader.replace('#include <common>','#include <common>\nuniform float wardrobeEnabled; uniform vec3 shirtTone; uniform vec3 trousersTone; varying float vWardrobe;').replace('#include <map_fragment>','#include <map_fragment>\nfloat clothLight=.7+.3*dot(diffuseColor.rgb,vec3(.2126,.7152,.0722));\nif(wardrobeEnabled>.5){if(vWardrobe>1.5)diffuseColor.rgb=trousersTone*clothLight;else if(vWardrobe>.5)diffuseColor.rgb=shirtTone*clothLight;}');
+    shader.fragmentShader=shader.fragmentShader.replace('#include <common>','#include <common>\nuniform float wardrobeEnabled; uniform vec3 shirtTone; uniform vec3 trousersTone; uniform vec3 skinTone; varying float vWardrobe;').replace('#include <map_fragment>','#include <map_fragment>\nfloat clothLight=.7+.3*dot(diffuseColor.rgb,vec3(.2126,.7152,.0722));\nif(wardrobeEnabled>.5){if(vWardrobe>2.5)diffuseColor.rgb=skinTone*clothLight;else if(vWardrobe>1.5)diffuseColor.rgb=trousersTone*clothLight;else if(vWardrobe>.5)diffuseColor.rgb=shirtTone*clothLight;}');
    };
-   material.customProgramCacheKey=()=> 'living-wardrobe-v1';
+   material.customProgramCacheKey=()=> 'living-wardrobe-v2';
   });
   this.findAttachments();
  }
@@ -149,20 +149,20 @@ export class RiggedAvatar {
   this.mixer.update(0);
   this.group.position.set(position[0],0,position[2]);this.group.rotation.set(0,yaw,0);
   // A squat precedes low reaches; keep both feet grounded after bending knees.
-  for(const side of ['left','right']){const leg=this.joint(`leg-${side}`);if(!leg)continue;leg.rotateX(-.65*bend);const knee=leg.children.find(o=>(o as THREE.Bone).isBone);knee?.rotateX(1.3*bend);}
-  this.joint('torso')?.rotateX(.45*bend);
+  for(const side of ['left','right']){const leg=this.joint(`leg-${side}`);if(!leg)continue;leg.rotateX(-1.35*bend);const knee=leg.children.find(o=>(o as THREE.Bone).isBone);knee?.rotateX(2.7*bend);this.joint(`foot-${side}`)?.rotateX(-1.35*bend);}
+  (this.joint('Spine')??this.joint('torso'))?.rotateX(.65*bend);
   this.group.updateMatrixWorld(true);
   const feet=['foot-left','foot-right'].map(k=>this.surface(k,'min')?.y).filter((y):y is number=>y!==undefined);
   this.group.position.y=position[1]-(feet.length?Math.min(...feet):0);this.group.updateMatrixWorld(true);
  }
  tint(colors:Colors) {
-  const key=colors.shirt+'/'+colors.trousers;if(key===this.tintKey)return;this.tintKey=key;
+  const key=colors.shirt+'/'+colors.trousers+'/'+colors.skin;if(key===this.tintKey)return;this.tintKey=key;
   this.wardrobeEnabled.value=1;
-  this.colors.shirt.set(colors.shirt);this.colors.trousers.set(colors.trousers);
+  this.colors.shirt.set(colors.shirt);this.colors.trousers.set(colors.trousers);this.colors.skin.set(colors.skin);
  }
  assignId(id:string){this.model.traverse(o=>{if((o as THREE.Mesh).isMesh)o.userData.actorId=id;});}
  hand(side='right'){return this.surface(`hand-${side}`)??this.joint(`hand-${side}`)?.getWorldPosition(new THREE.Vector3())??this.group.position.clone().add(new THREE.Vector3(0,10,0));}
  head(){return this.surface('head','max')??this.group.position.clone().add(new THREE.Vector3(0,17.5,0));}
- snapshot(){return{clip:this.requested,resolvedClip:this.current,leg:this.joint('leg-left')?.quaternion.toArray(),position:this.group.position.toArray(),skinned:true};}
+ snapshot(){return{clip:this.requested,resolvedClip:this.current,leg:this.joint('leg-left')?.quaternion.toArray(),position:this.group.position.toArray(),skinned:true,height:this.height,profile:this.model.userData.profile??'imported'};}
  dispose(){this.mixer.stopAllAction();this.mixer.uncacheRoot(this.model);this.model.traverse(o=>{const mesh=o as THREE.SkinnedMesh;if(!mesh.isMesh)return;mesh.geometry.dispose();for(const m of Array.isArray(mesh.material)?mesh.material:[mesh.material])m.dispose();if(mesh.isSkinnedMesh)mesh.skeleton.dispose();});this.group.removeFromParent();}
 }

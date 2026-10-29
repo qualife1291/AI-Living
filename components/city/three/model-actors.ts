@@ -1,12 +1,11 @@
 import { activityLift, hasHandProp, handProp } from "../../../lib/living/action-presentation.ts";
 import { createBicycle, spinBicycle } from "./activity-props.ts";
 import * as THREE from "three";
-import { AssetAvatar, AssetLibrary } from "./assets.ts";
+import { AssetLibrary } from "./assets.ts";
 import { RiggedAvatar } from "./rigged-avatar.ts";
-import { CORE_MODELS, residentModel } from "../../../lib/city/character-models.ts";
+import { CORE_MODELS, CITIZEN_FALLBACK, residentModel } from "../../../lib/city/character-models.ts";
 import { defaultAppearance } from "../../../lib/city/appearance.ts";
 import { groundElevation } from "../../../lib/city/ground.ts";
-import { resolveModel } from "../../../lib/city/asset-bindings.ts";
 import type { World } from "../../../lib/world";
 import type { Actor } from "../../../lib/life.ts";
 import type { SocialPose } from "../../../lib/living/social.ts";
@@ -91,17 +90,12 @@ export function resolveActorClip(actor: Actor, speaking = false): string {
 }
 
 export function createModelActors(scene: THREE.Scene, library: AssetLibrary) {
-  const avatars = new Map<string, AssetAvatar | RiggedAvatar>(), props = new Map<string, { kind: string; group: THREE.Group }>(), travel = new Map<string, { x: number; z: number; distance: number }>();
+  const avatars = new Map<string, RiggedAvatar>(), props = new Map<string, { kind: string; group: THREE.Group }>(), travel = new Map<string, { x: number; z: number; distance: number }>();
   const ids = new Set<string>(), modelIds = new Map<string, string>();
   const posed = new Set<string>();
   const poseTimes = new Map<string, number>();
   const proceduralBases = new Map<string, Map<THREE.Object3D, THREE.Quaternion>>();
   const bicycles = new Map<string, THREE.Group>();
-  for (const [id, modelId] of [["an", resolveModel("character-a")!], ["binh", resolveModel("character-b")!], ["chi", resolveModel("character-c")!]]) {
-    const rigId = CORE_MODELS[id], source = library.get(rigId) ?? library.get(modelId); if (!source) continue;
-    const avatar = library.get(rigId) ? new RiggedAvatar(source, 17.5, 4.4, true) : new AssetAvatar(source);
-    avatar.assignId(id); scene.add(avatar.group); avatars.set(id, avatar); ids.add(id); modelIds.set(id, library.get(rigId) ? rigId : modelId);
-  }
   const remove = (id: string) => {
     avatars.get(id)?.dispose(); avatars.delete(id); ids.delete(id); modelIds.delete(id);
     for (const group of [props.get(id)?.group, bicycles.get(id)]) if (group) {
@@ -109,17 +103,24 @@ export function createModelActors(scene: THREE.Scene, library: AssetLibrary) {
     }
     props.delete(id); bicycles.delete(id); travel.delete(id); posed.delete(id); poseTimes.delete(id); proceduralBases.delete(id);
   };
+  const request = (id:string) => {if(!library.get(id)&&!library.failures.has(id))void library.load(id).catch(()=>{});};
+  const install = (id:string,wanted:string) => {
+    request(wanted);
+    const modelId=library.get(wanted)?wanted:library.get(CITIZEN_FALLBACK)?CITIZEN_FALLBACK:Object.values(CORE_MODELS).find(key=>library.get(key));
+    if(!modelId||modelIds.get(id)===modelId)return;
+    const source=library.get(modelId)!;if(ids.has(id))remove(id);
+    const avatar=new RiggedAvatar(source,17.5,4.4);avatar.assignId(id);scene.add(avatar.group);avatars.set(id,avatar);ids.add(id);modelIds.set(id,modelId);
+  };
+  for(const [id,model] of Object.entries(CORE_MODELS))install(id,model);
   return {
     ids,
-    /** Three core avatars plus at most one focused NPC. Other residents keep batched LOD. */
-    prepare(world: World, selected: string) {
-      for (const id of ids) if (!CORE_MODELS[id] && id !== selected) remove(id);
-      const resident = world.living?.residents.find(r => r.id === selected);
-      if (!resident || ids.has(selected)) return;
-      const modelId = residentModel(resident.roleId), source = library.get(modelId);
-      if (!source) { if (!library.failures.has(modelId)) void library.load(modelId).catch(() => {}); return; }
-      const avatar = new RiggedAvatar(source, 17.5, 4.4, modelId.startsWith("gobkit-human002/")); avatar.assignId(selected); scene.add(avatar.group);
-      avatars.set(selected, avatar); ids.add(selected); modelIds.set(selected, modelId);
+    /** Bounded close cast: three core plus selected, speakers and nearby residents. */
+    prepare(world:World,selected:string,nearby:Actor[]=[],speakers:Iterable<string>=[]) {
+      for(const [id,model] of Object.entries(CORE_MODELS))install(id,model);
+      const visible=new Set(nearby.map(a=>a.id)),wanted=[...new Set([selected,...speakers,...nearby.map(a=>a.id)])]
+        .filter(id=>!CORE_MODELS[id]&&(id===selected||visible.has(id))&&world.living?.residents.some(r=>r.id===id)).slice(0,5);
+      for(const id of [...ids])if(!CORE_MODELS[id]&&!wanted.includes(id))remove(id);
+      for(const id of wanted){const resident=world.living!.residents.find(r=>r.id===id)!;install(id,residentModel(resident.roleId,resident.id));}
     },
     draw(world: World, actors: Actor[], social: Map<string, SocialPose>, headings: Map<string, number>, seconds: number) {
       for (const [id, avatar] of avatars) {
@@ -135,7 +136,7 @@ export function createModelActors(scene: THREE.Scene, library: AssetLibrary) {
         const propKind = ["drink", "study", "shop"].includes(actor.kind) ? handProp(actor.kind) : /cook|nấu ăn/.test(act) ? "cook" : /soccer|đá bóng/.test(act) ? "soccer" : /swim|bơi/.test(act) ? "swim" : /lễ hội|festival|đèn lồng/.test(act) ? "lantern" : actor.kind;
         const holding = !actor.bicycle && !actor.walking && (hasHandProp(actor.kind) || ["cook", "soccer", "swim", "lantern"].includes(propKind));
         const speaking = social.get(id)?.speaking;
-        const clip = avatar instanceof RiggedAvatar && !actor.walking && social.has(id)
+        const clip = !actor.walking && social.has(id)
           ? speaking ? "talk" : "listen" : resolveActorClip(actor, speaking);
         const animationTime = actor.bicycle ? actor.bicycle.distance / 14 : actor.walking ? (distance + walked) / 14 * (2 / 3) : seconds;
         // Some authored clips do not key every limb. Restore the previous base
@@ -151,7 +152,7 @@ export function createModelActors(scene: THREE.Scene, library: AssetLibrary) {
             const arm=avatar.joint(`arm-${side}`),leg=avatar.joint(`leg-${side}`),sign=side==="left"?1:-1;
             if (arm) bases.set(arm, arm.quaternion.clone());
             if (leg) bases.set(leg, leg.quaternion.clone());
-            if(arm && actor.kind === "exercise") arm.rotation.z += sign*(.4+.6*Math.sin(seconds*2));
+            if(arm && actor.kind === "exercise") arm.rotation.z += sign*(.25+.2*Math.sin(seconds*2));
             if(arm && side === "right" && actor.kind === "drink") arm.rotation.x -= .3+.35*(1+Math.sin(seconds*1.6));
             if(leg && actor.bicycle) leg.rotation.x += sign*Math.sin(actor.bicycle.distance/3)*.6;
           }
@@ -164,14 +165,14 @@ export function createModelActors(scene: THREE.Scene, library: AssetLibrary) {
         const oldProp = props.get(id);
         if (holding && oldProp?.kind !== propKind) {
           if (oldProp) { scene.remove(oldProp.group); oldProp.group.traverse(o => { const m = o as THREE.Mesh; m.geometry?.dispose(); if (m.material) (m.material as THREE.Material).dispose(); }); }
-          const group = simpleProp(propKind); if (avatar instanceof RiggedAvatar) group.scale.setScalar(avatar.height / 17.5); scene.add(group); props.set(id, { kind: propKind, group });
+          const group = simpleProp(propKind); group.scale.setScalar(avatar.height / 17.5); scene.add(group); props.set(id, { kind: propKind, group });
         }
         const prop = props.get(id)?.group;
         if (prop) { prop.visible = holding; const right = avatar.hand(); prop.position.copy(actor.kind === "read" ? right.add(avatar.hand("left")).multiplyScalar(.5) : right); prop.rotation.set(0, headings.get(id) ?? .35, 0); }
       }
     },
     head: (id: string) => avatars.get(id)?.head(),
-    height: (id: string) => { const avatar = avatars.get(id); return avatar instanceof RiggedAvatar ? avatar.height : 17.5; },
+    height: (id: string) => { const avatar = avatars.get(id); return avatar?.height??17.5; },
     snapshots: () => Object.fromEntries([...avatars].map(([id, avatar]) => [id, { ...avatar.snapshot(), modelId: modelIds.get(id) }])),
     dispose() { for (const id of [...ids]) remove(id); },
   };

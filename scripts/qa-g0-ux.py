@@ -36,9 +36,9 @@ def setup(browser,width=1440,height=900,dpr=2,motion='no-preference',fallback=No
  page.route('**/api/world*',world);page.route('**/api/living/interact',chat)
  if fallback=='unsupported':page.add_init_script('window.DecompressionStream=undefined;')
  if fallback in ('corrupt','core-failure'):
-  manifest=json.loads((root/'data/assets/city-transfer-manifest.json').read_text());asset=next(a for a in manifest['assets'] if a['id']=='gobkit-human002/it-engineer')
+  manifest=json.loads((root/'data/assets/city-transfer-manifest.json').read_text());asset=next(a for a in manifest['assets'] if a['id']=='citizens/an')
   page.route('**'+asset['url'],lambda r:r.fulfill(status=200,body=b'bad gzip'))
-  if fallback=='core-failure':page.route('**/models/resources/gobkit-human002/ItEngineer.glb*',lambda r:r.fulfill(status=503,body='unavailable'))
+  if fallback=='core-failure':page.route('**/models/citizens/an.glb*',lambda r:r.fulfill(status=503,body='unavailable'))
  page.add_init_script('''new MutationObserver(()=>{const h=document.querySelector('.three-canvas[data-ready="true"]');if(h&&!window.__firstReady)window.__firstReady=performance.now()}).observe(document,{childList:true,subtree:true,attributes:true,attributeFilter:['data-ready']});''')
  page.goto(base,wait_until='domcontentloaded',timeout=60000)
  host=page.locator('.three-canvas[data-ready="true"]');host.wait_for(timeout=90000)
@@ -58,7 +58,7 @@ with sync_playwright() as p:
    page,host,state,fixture=setup(browser,w,h,dpr);initial=check_pixels(page)
    assert page.title()=='Xóm AI · Thành phố nhỏ, nhiều cuộc đời'
    assert 'thành phố 3D' in page.locator('meta[name="description"]').get_attribute('content')
-   assert len([x for x in state['modelRequests'] if '/derivatives/' in x])==26
+   assert len([x for x in state['modelRequests'] if '/derivatives/' in x])==len(json.loads((root/'data/assets/city-transfer-manifest.json').read_text())['assets'])
    assert not any('/characters/character-' in x for x in state['modelRequests'])
    page.screenshot(path=str(out/f'{name}-preview.png'))
    # Error classes keep the authoritative state and never automatically retry writes.
@@ -149,10 +149,10 @@ with sync_playwright() as p:
   page.screenshot(path=str(out/'mobile-reduced-motion-preview.png'));assert not state['errors'];report.append({'reducedMotion':True,'preferenceChange':True,'worldNotPaused':True,'pageErrors':[]});page.close()
   for mode in ['unsupported','corrupt','core-failure']:
    page,host,state,fixture=setup(browser,390,844,1,fallback=mode)
-   models=json.loads(host.get_attribute('data-model-actors'));assert len(models)==3
+   models=json.loads(host.get_attribute('data-model-actors'));assert 3<=len(models)<=8;assert all(id in models for id in ['an','binh','chi'])
    if mode=='unsupported':assert not any('/derivatives/' in x for x in state['modelRequests'])
-   if mode=='corrupt':assert models['an']['modelId']=='gobkit-human002/it-engineer';assert any('/ItEngineer.glb?' in x for x in state['modelRequests'])
-   if mode=='core-failure':assert models['an']['modelId']=='characters/character-a';assert any('/characters/character-a.glb?' in x for x in state['modelRequests'])
-   assert not state['errors'],state['errors'];report.append({'transportFallback':mode,'pageErrors':[]});print('PASS fallback',mode,flush=True);page.close()
+   if mode=='corrupt':assert models['an']['modelId']=='citizens/an';assert any('/citizens/an.glb?' in x for x in state['modelRequests'])
+   if mode=='core-failure':assert models['an']['modelId']=='citizens/linen';assert any('/citizens/linen.glb' in x for x in state['modelRequests'])
+   assert all(m['profile']=='xom-citizen-v1' for m in models.values());assert not any('/gobkit-human' in x or '/characters/character-' in x for x in state['modelRequests']);assert not state['errors'],state['errors'];report.append({'transportFallback':mode,'pageErrors':[]});print('PASS fallback',mode,flush=True);page.close()
   (out/'metrics.json').write_text(json.dumps({'production':False,'renderer':'Chromium SwiftShader','fixture':'Synthetic world; all APIs mocked. Compiled local D1 persistence tested separately.','cases':report},ensure_ascii=False,indent=2)+'\n')
  finally:browser.close()

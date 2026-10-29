@@ -2,16 +2,16 @@ import * as THREE from "three";
 import { GLTFLoader, type GLTF } from "three/addons/loaders/GLTFLoader.js";
 import { mergeGeometries } from "three/addons/utils/BufferGeometryUtils.js";
 import catalog from "../../../public/models/kenney/catalog.json" with { type: "json" };
+import citizens from "../../../public/models/citizens/catalog.json" with {type:"json"};
 import resources from "../../../public/models/resources/catalog.json" with { type: "json" };
-import { resolveModel } from "../../../lib/city/asset-bindings.ts";
-import { CORE_MODELS } from "../../../lib/city/character-models.ts";
+import { CORE_MODELS, CITIZEN_FALLBACK } from "../../../lib/city/character-models.ts";
 import {cityAssetIds} from '../../../lib/city/city-assets.ts';
 import transfers from '../../../data/assets/city-transfer-manifest.json' with {type:'json'};
 import {decodeAssetTransfer} from '../../../lib/city/asset-transfer.ts';
 
 export {cityAssetIds};
 
-export const approvedAssets = [...catalog.assets, ...resources.assets];
+export const approvedAssets = [...catalog.assets, ...resources.assets, ...citizens.assets];
 export type AssetPlacement = { id: string; x: number; y: number; z: number; width: number; depth: number; height: number; yaw?: number; stretch?: boolean };
 type Compiled = { geometry: THREE.BufferGeometry; material: THREE.MeshPhongMaterial; size: THREE.Vector3 };
 export type ResourceSets = { geometries: Set<THREE.BufferGeometry>; materials: Set<THREE.Material>; textures: Set<THREE.Texture> };
@@ -35,7 +35,7 @@ export class AssetLibrary {
     const cached = this.loaded.get(id); if (cached) return cached;
     const request = this.pending.get(id); if (request) return request;
     const metadata = approvedAssets.find(a => a.id === id);
-    if (!metadata || metadata.license !== "CC0-1.0" || !["/models/kenney/", "/models/resources/"].some(prefix => metadata.url.startsWith(prefix)) || metadata.url.includes("..")) throw new Error(`Unapproved asset: ${id}`);
+    if (!metadata || metadata.license !== "CC0-1.0" || !["/models/kenney/", "/models/resources/", "/models/citizens/"].some(prefix => metadata.url.startsWith(prefix)) || metadata.url.includes("..")) throw new Error(`Unapproved asset: ${id}`);
     const canonical = `${metadata.url}?v=${metadata.sha256.slice(0, 12)}`;
     const transfer = transfers.assets.find(a=>a.id===id&&a.sourceSha256===metadata.sha256&&a.sourceUrl===metadata.url);
     const requestModel = transfer && typeof DecompressionStream !== 'undefined' && globalThis.crypto?.subtle
@@ -58,7 +58,7 @@ export class AssetLibrary {
       try { await this.load(id); }
       catch {
         const actor=Object.keys(CORE_MODELS).find(actor=>CORE_MODELS[actor]===id);
-        const fallback=actor&&resolveModel(`character-${{an:'a',binh:'b',chi:'c'}[actor as 'an'|'binh'|'chi']}`);
+        const fallback=actor&&CITIZEN_FALLBACK;
         if(fallback&&!this.dead)await this.load(fallback);
       }
     })), new Promise(resolve => { timer = setTimeout(resolve, timeoutMs); })]);
@@ -132,68 +132,4 @@ export class AssetLibrary {
 export function setAssetTransform(dummy: THREE.Object3D, size: THREE.Vector3, p: AssetPlacement) {
   const sx = p.width / size.x, sy = p.height / size.y, sz = p.depth / size.z, uniform = Math.min(sx, sy, sz);
   dummy.position.set(p.x, p.y, p.z); dummy.rotation.set(0, p.yaw ?? 0, 0); dummy.scale.set(p.stretch ? sx : uniform, p.stretch ? sy : uniform, p.stretch ? sz : uniform); dummy.updateMatrix();
-}
-
-/** Real object-node animations; normal cloning is valid for these skin-free GLBs. */
-export class AssetAvatar {
-  readonly group = new THREE.Group();
-  readonly model: THREE.Object3D;
-  private mixer: THREE.AnimationMixer;
-  private actions = new Map<string, THREE.AnimationAction>();
-  private current = ""; private previous = ""; private changedAt = 0; private lastTime = 0;
-  private bounds = new THREE.Box3();
-  private tintKey = "";
-  constructor(source: GLTF, height = 17.5, radius = 4.4, tint?: { shirt: string; trousers: string; skin: string }) {
-    this.model = source.scene.clone(true);
-    this.model.traverse(o => { const mesh = o as THREE.Mesh; if (!mesh.isMesh) return; const old = (Array.isArray(mesh.material) ? mesh.material[0] : mesh.material) as THREE.MeshStandardMaterial; const color = /torso/i.test(mesh.name) ? tint?.shirt : /leg/i.test(mesh.name) ? tint?.trousers : /head/i.test(mesh.name) ? tint?.skin : undefined; mesh.castShadow = true; mesh.receiveShadow = true; mesh.material = new THREE.MeshPhongMaterial({ map: old.map, color: color ?? old.color, shininess: 18, specular: new THREE.Color("#635d52") }); });
-    this.group.add(this.model); this.mixer = new THREE.AnimationMixer(this.model);
-    for (const clip of source.animations) this.actions.set(clip.name, this.mixer.clipAction(clip));
-    const rest = new THREE.Box3().setFromObject(this.model), center = rest.getCenter(new THREE.Vector3()), size = rest.getSize(new THREE.Vector3());
-    // Keep the authored body proportions. Extended interaction limbs are not a
-    // body collider: fitting the entire pickup sweep would turn people into strips.
-    const extent = Math.hypot(size.x / 2, size.z / 2);
-    const yScale = height / size.y, horizontal = Math.min(yScale, radius / Math.max(.001, extent));
-    this.group.scale.set(horizontal, yScale, horizontal); this.model.position.x -= center.x; this.model.position.z -= center.z;
-  }
-  pose(clip: string, animationTime: number, presentationTime: number, position: readonly number[], yaw: number, floor: number) {
-    if (this.current && presentationTime === this.lastTime) return false;
-    const name = this.actions.has(clip) ? clip : "idle", delta = Math.max(0, Math.min(.15, presentationTime - this.lastTime)), seek = Math.abs(presentationTime - this.lastTime) > 1;
-    if (name !== this.current || seek) { this.previous = seek ? "" : this.current; this.current = name; this.changedAt = seek ? presentationTime - .45 : presentationTime; this.actions.get(name)?.reset().play(); }
-    const blend = Math.min(1, Math.max(0, (presentationTime - this.changedAt) / .45));
-    for (const [key, action] of this.actions) {
-      const active = key === name || key === this.previous && blend < 1;
-      action.enabled = active; action.setEffectiveWeight(key === name ? blend : key === this.previous ? 1 - blend : 0);
-      if (key === name) { const duration = Math.max(.001, action.getClip().duration); action.time = ((animationTime % duration) + duration) % duration; }
-      else if (active) action.time += delta;
-    }
-    this.mixer.update(0); this.lastTime = presentationTime;
-    this.group.position.set(position[0], 0, position.length > 2 ? position[2] : position[1]); this.group.rotation.set(0, yaw, 0); this.group.updateMatrixWorld(true);
-    this.bounds.setFromObject(this.model); this.group.position.y = floor - this.bounds.min.y; this.group.updateMatrixWorld(true);
-    return true;
-  }
-  assignId(id: string) { this.model.traverse(o => { const mesh = o as THREE.Mesh; if (mesh.isMesh) mesh.userData.actorId = id; }); }
-  tint(colors: { shirt: string; trousers: string; skin: string }) {
-    const key = `${colors.shirt}/${colors.trousers}/${colors.skin}`; if (this.tintKey === key) return; this.tintKey = key;
-    this.model.traverse(o => {
-      const mesh = o as THREE.Mesh; if (!mesh.isMesh || /head/i.test(mesh.name)) return;
-      const material = mesh.material as THREE.MeshPhongMaterial;
-      if (/arm/i.test(mesh.name)) {
-        if (!mesh.userData.wardrobeGeometry) { mesh.geometry = mesh.geometry.clone(); mesh.userData.wardrobeGeometry = true; }
-        const position = mesh.geometry.getAttribute("position"), pixels = new Float32Array(position.count * 3), color = new THREE.Color();
-        mesh.geometry.computeBoundingBox(); const handEnd = mesh.geometry.boundingBox!.min.y + .24;
-        for (let i = 0; i < position.count; i++) { color.set(position.getY(i) <= handEnd ? colors.skin : colors.shirt); color.toArray(pixels, i * 3); }
-        mesh.geometry.setAttribute("color", new THREE.BufferAttribute(pixels, 3)); material.vertexColors = true; material.color.set("white");
-      } else material.color.set(/leg/i.test(mesh.name) ? colors.trousers : colors.shirt);
-      material.map = null; material.needsUpdate = true;
-    });
-  }
-  hand(side = "right") {
-    const mesh = this.model.getObjectByName(`arm-${side}`) as THREE.Mesh | undefined;
-    if (!mesh?.geometry) return this.group.position.clone().add(new THREE.Vector3(0, 9, 1));
-    mesh.geometry.computeBoundingBox(); const box = mesh.geometry.boundingBox!, point = box.getCenter(new THREE.Vector3()); point.y = box.min.y + .12; return mesh.localToWorld(point);
-  }
-  joint(name: string) { return this.model.getObjectByName(name); }
-  head() { const head = this.joint("head"); return head ? new THREE.Box3().setFromObject(head).getCenter(new THREE.Vector3()).setY(new THREE.Box3().setFromObject(head).max.y) : this.group.position.clone().add(new THREE.Vector3(0, 17.5, 0)); }
-  dispose() { this.mixer.stopAllAction(); this.mixer.uncacheRoot(this.model); this.model.traverse(o => { const mesh = o as THREE.Mesh; if (!mesh.isMesh) return; if (mesh.userData.wardrobeGeometry) mesh.geometry.dispose(); for (const m of Array.isArray(mesh.material) ? mesh.material : [mesh.material]) m.dispose(); }); this.group.removeFromParent(); }
-  snapshot() { const leg = this.model.getObjectByName("leg-left"); return { clip: this.current, leg: leg?.quaternion.toArray(), position: this.group.position.toArray() }; }
 }
