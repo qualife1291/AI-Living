@@ -1,0 +1,37 @@
+name: QA H6 Shadow Release Safety
+on:
+  pull_request:
+    paths:
+      - 'data/training/h6-scenario-catalog.json'
+      - 'scripts/h6-*.mjs'
+      - 'scripts/test-h6-scenario-scale.mjs'
+      - 'scripts/configure-cloudflare-qa.mjs'
+      - 'scripts/test-cloudflare-qa-config.mjs'
+      - 'scripts/test-qa-h6-release.mjs'
+      - 'worker/index.ts'
+      - 'lib/system-log.ts'
+      - 'scripts/test-system-log.mjs'
+      - 'docs/QA_H6_ROLLOUT_20261029.md'
+      - '.github/workflows/qa-h6-release-safety.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  qa-h6-shadow-safety:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Install exact locked dependencies
+        run: corepack pnpm install --frozen-lockfile
+      - name: Validate H6 96 vs 41 immutable catalog
+        run: node scripts/test-h6-scenario-scale.mjs && node scripts/test-qa-h6-release.mjs
+      - name: Validate QA config, Access+Cron idempotence and H6 metadata
+        run: node scripts/test-cloudflare-qa-config.mjs && node scripts/test-qa-scheduler.mjs
+      - name: Validate redacted Cron logs, ownership, and privacy
+        run: node scripts/test-system-log.mjs && node scripts/test-cloudflare-access.mjs
+      - name: Confirm type safety
+        run: npm run check

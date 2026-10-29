@@ -23,6 +23,13 @@ try{
  assert.deepEqual(logs.slice(-3).map(x=>x.stage),['learning','social','tick']);assert.equal(new Set(logs.slice(-3).map(x=>x.requestId)).size,1);assert(logs.slice(-3).every(x=>x.trigger==='cron'));
  invoked.length=0;const stopped=await runPulsePipeline({learning:step('learning',409),social:step('social'),tick:step('tick')});assert.equal(stopped.status,409);assert.deepEqual(invoked,['learning']);
  const failed=new Error('PRIVATE');await assert.rejects(runSystemTask('cron',true,()=>runPulsePipeline({learning:async()=>{throw failed;},social:step('social'),tick:step('tick')})),e=>e===failed);assert.equal(logs.at(-1).stage,'learning');assert.equal(logs.at(-1).status,500);
+ const h6Count=logs.length;
+ runSystemTask('cron',true,()=>{
+   systemLog('cron_result',{status:200,h6ShadowOnly:true,h6Candidates:96,cookie:'PRIVATE',modelDump:'PRIVATE'});
+ });
+ assert.equal(logs.length,h6Count+1);
+ assert.equal(logs.at(-1).h6ShadowOnly,true);
+ assert.equal(logs.at(-1).h6Candidates,96);
  console.info=()=>{throw Error('Sink unavailable');};assert.equal((await observeHttp(req,true,()=>new Response('ok'))).status,200);
  assert(!JSON.stringify(logs).includes('PRIVATE'));
 }finally{Object.assign(console,original);}

@@ -15,11 +15,11 @@ export function systemLog(event: Event, fields: Record<string, unknown> = {}) {
   const context = contexts.getStore();
   if (!context || !events.includes(event)) return;
   const safe: Record<string, string|number|boolean> = {};
-  for (const key of ['status','durationMs','updated','retryAfter'] as const) {
+  for (const key of ['status','durationMs','updated','retryAfter','h6Candidates'] as const) {
     const value = fields[key];
     if (typeof value === 'number' && Number.isFinite(value) && value >= 0 && value <= 1e12) safe[key] = Math.round(value * 100) / 100;
   }
-  for (const key of ['duplicate','coalesced','accessContextPresent','accessAudiencePresent','accessAudienceMatches','configuredAudiencePresent','expectedHostnameMatches','https'] as const) if (typeof fields[key] === 'boolean') safe[key] = fields[key];
+  for (const key of ['duplicate','coalesced','h6ShadowOnly','accessContextPresent','accessAudiencePresent','accessAudienceMatches','configuredAudiencePresent','expectedHostnameMatches','https'] as const) if (typeof fields[key] === 'boolean') safe[key] = fields[key];
   if (typeof fields.stage === 'string' && stages.has(fields.stage)) safe.stage = fields.stage;
   if (typeof fields.errorType === 'string') safe.errorType = errorNames.has(fields.errorType) ? fields.errorType : 'Error';
   const error = event === 'http_uncaught' || event === 'chat_storage_failed' || event === 'cron_failed' || Number(safe.status) >= 500;
