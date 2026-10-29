@@ -17,7 +17,7 @@ Planner/rules hoặc local LLM sinh kế hoạch và hội thoại có nguồn r
 | UI/framework | TypeScript5.9.3 strict, React19.2.6, Vinext1.0.0-beta.5/Vite8.0.13; Next/eslint-config-next16.4.1 theo lockfile |
 | 3D | Three.js0.186.1/WebGL2, GLTFLoader, SkeletonUtils, InstancedMesh/LOD; 41 modelKenney +239 Gobkit/KayKit canonical CC0 |
 | API/schema | Worker nodejs_compat, Zod4.6.6; endpoint mutations có origin/schema/body limits và owner guard |
-| Persistence | D1 SQLite, Drizzle0.45.2;23bảng trong db/schema.ts, migration0000–0011 (0004reconciliation); ground0009–0011 local opt-in |
+| Persistence | D1 SQLite, Drizzle0.45.2; 23bảng trong db/schema.ts, migration0000–0011 (0004reconciliation); ground0009–0011 local opt-in |
 | AI local | llama.cpp/CPU opt-in; rule fallback, narrative guard, không cần paid API để chạy ứng dụng |
 | Production | Sites project cũ, owner-private; native credential/deploy/readback theo PRODUCTION_RUNBOOK |
 
@@ -77,7 +77,7 @@ Ground clock ban đầu lấy world simtime, sau đó tích phân pause/scale **
 
 Server restore checkpoint của Walk/Traffic/Tag/Pet directors, chạy cả243human tối đa+3thú+12xe ambient, không phụ thuộc camera/budget72 của renderer. Footprint, peer sweeps, bike radius, tag/pet state được giữ; thêm kiểm car/pedestrian liên tục bảo thủ. Nếu bước xe không an toàn, giữ xe và tính lại người; còn lỗi thì giữ pose, không teleport. Spawn/retire là sự kiện simulation có nguồn. Bus/metro boarding, activity fulfillment và semantic encounters chưa có. Quy tắc yielding có thể blocked; không hứa crowd liveness.
 
-State, source cursor,20frame gần nhất và operation receipt commit bằng exact world/source/state CAS + SQL postassert; receipt bị silently ignore rollback cả frame/cursor. Advance0tick vẫn consume operation. Status read-only, không bootstrap world. API yêu cầu đủ3 table+3index+3trigger; active pulse preflight checkpoint/journal trước world writes. World revisions phải liền mạch; SQLite seq chỉ cần tăng, có thể có khoảng trống. Đứt journal hoặc thiếu trigger bị chặn, không tự backfill nguồn. Existing local pulse chạy shared step nếu đã start (CAS/coalescing khoảng 1s); base learning/narrative gate9s giữ nguyên, không cron/daemon mới. Chưa start thì trigger/pulse không tạo shared source hoặc session.
+State, source cursor,20frame gần nhất và operation receipt commit bằng exact world/source/state CAS + SQL postassert; receipt bị silently ignore rollback cả frame/cursor. Advance0tick vẫn consume operation. Status read-only, không bootstrap world. API yêu cầu đủ 3 table+3index+3trigger; active pulse preflight checkpoint/journal trước world writes. World revisions phải liền mạch; SQLite seq chỉ cần tăng, có thể có khoảng trống. Đứt journal hoặc thiếu trigger bị chặn, không tự backfill nguồn. Existing local pulse chạy shared step nếu đã start (CAS/coalescing khoảng 1s); base learning/narrative gate9s giữ nguyên, không cron/daemon mới. Chưa start thì trigger/pulse không tạo shared source hoặc session.
 
 ```bash
 npm run ground:shared
@@ -85,7 +85,7 @@ npm run ground:shared -- --action=start --session=UUID_SESSION --operation=UUID_
 npm run ground:shared -- --action=advance --session=UUID_SESSION --operation=UUID_OPERATION_MOI --expected-checkpoint=SHA_HEAD
 ```
 
-Sau start, mở đường dẫn local với `?ground=shared` để xem preview. API/GET world query chỉ owner+local-admin+loopback; production owner vẫn bị từ chối. Shared page dùng loop pulse/poll hiện có ở1s, đọc metadata+frame server. Renderer sample theo thời gian đã align với server trừ1,5s playback delay; không Walk/TrafficDirector local, không extrapolate khi thiếu frame, không fallback physics riêng. Roster/body-envelope đổi thì giữ cả khung cũ đến khung kế tiếp. Hai viewer mở lệch giờ/camera/F5 nhận cùng root pose ở cùng thời điểm; render rigs/camera không là authority. Browser QA dùng fixture synthetic trên build mới, D1 được kiểm riêng; ảnh thật ở [desktop](screenshots/gnd2/shared-desktop-preview.png) / [mobile](screenshots/gnd2/shared-mobile-preview.png).
+Sau start, mở đường dẫn local với `?ground=shared` để xem preview. API/GET world query chỉ owner+local-admin+loopback; production owner vẫn bị từ chối. Shared page dùng loop pulse/poll hiện có ở 1s, đọc metadata+frame server. Renderer sample theo thời gian đã align với server trừ1,5s playback delay; không Walk/TrafficDirector local, không extrapolate khi thiếu frame, không fallback physics riêng. Roster/body-envelope đổi thì giữ cả khung cũ đến khung kế tiếp. Hai viewer mở lệch giờ/camera/F5 nhận cùng root pose ở cùng thời điểm; render rigs/camera không là authority. Browser QA dùng fixture synthetic trên build mới, D1 được kiểm riêng; ảnh thật ở [desktop](screenshots/gnd2/shared-desktop-preview.png) / [mobile](screenshots/gnd2/shared-mobile-preview.png).
 
 Shared preview không phát thoại/script do viewer quyết định; GND3 bên dưới bổ sung caption server khi được kích hoạt riêng. Receipt luôn không eligible reward/P2P; không đổi learned samples, policy/memory hoặc gán outcome ground vào namespace simulation-plan-time cũ. Migration0010 chưa áp dụng DB người dùng/production; health8probes vẫn không yêu cầu shared tables. Giữ owner-private và local-admin đóng trên Site.
 

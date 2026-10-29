@@ -10,7 +10,7 @@ Camera mặc định ưu tiên đời sống mặt đường, thấy cả cặp/
 
 G0 giới hạn render target thành phố eco1M/balanced2M/sharp6M pixel, đồng thời giữ capDPR1/1,75/2,5 (balanced dưới 700px cap1,5). Resize/DPR/preset tính lại budget; DOM tên/thoại giữ độ nét CSS. Phím mũi tên chỉ điều khiển khi canvas có focus, không bắt phím chat. `prefers-reduced-motion` tắt camera tự theo và damping; chọn cư dân/nút Theo chỉ frame một lần, đổi preference có hiệu lực ngay và không pause clock. Mark `xom-city-start-to-first-frame` và `data-first-frame-ms` đo first render sau khi dựng scene, không phải toàn bộ asset/pixel đã được GPU trình bày.
 
-Pause chỉ xác nhận từ `{ok:true}` rồi đọc lại snapshot;403 hướng về tài khoản owner,409 refresh revision để người dùng kiểm tra,5xx/network/ACK lỗi giữ thông báo và không tự retry write. Poll thành công không xóa lỗi điều khiển. Chat giữ focus/bản nháp khi lỗi hoặc đang gửi, không giành focus nếu đã chuyển sang nút khác; response thiếu reply không được nhận là thành công.
+Pause chỉ xác nhận từ `{ok:true}` rồi đọc lại snapshot; 403 hướng về tài khoản owner,409 refresh revision để người dùng kiểm tra,5xx/network/ACK lỗi giữ thông báo và không tự retry write. Poll thành công không xóa lỗi điều khiển. Chat giữ focus/bản nháp khi lỗi hoặc đang gửi, không giành focus nếu đã chuyển sang nút khác; response thiếu reply không được nhận là thành công.
 
 | Hành vi | Hợp đồng |
 |---|---|
@@ -18,7 +18,7 @@ Pause chỉ xác nhận từ `{ok:true}` rồi đọc lại snapshot;403 hướn
 | Tag | Chỉ ghép người đã chọn tag gần Công viên/Sân thể thao, line of sight; giữ cặp qua poll. Đuổi28/chạy20 unit/s, đổi vai khi ground≤13,6 và không vật cản; miễn bắt1,6s và tách thêm3 unit trước bắt lại. Pause/đổi activity/mất actor hủy hoặc đóng băng đúng trạng thái. Không ghi reward/ký ức từ game render. |
 | Cycle | Tối đa22 unit/s, tăng tốc12 unit/s²; disc toàn xe/người9,2 thay clearance đi bộ4,8. Đứng chật thì đi ra chỗ thoáng trước mount, không teleport. Pedal/bánh theo quãng đường, pause giữ rig; giữ xe đến arrival ground rồi mới xuống/hiện props mới. Đã có contact tay lái/bàn đạp/yên; chưa tire physics, lean/fall hoặc foot locking trên địa hình. |
 | Pet | `living.petOwners` additive; legacy mặc định An–Cún/Chi–Mướp khi thiếu trường, tôn trọng unassign, không gán sẻ. Walk-pet chỉ người đi bộ, thú theo ground từ vị trí thật; người chờ khi xa>40, đi tiếp khi mọi thú<25 unit. Cancel pending thú bị ngắt, không thưởng hoạt động chưa xong. Chưa leash/contact với thú đầy đủ; quyền hoàn tất không suy từ pet-follow. |
-| Nhà |60 cửa từ building footprints, ID/địa chỉ additive; giữ custom/retired/home cũ. Crowd về cửa khi nghỉ, nhiều người giữ điểm tách nhau; projection vẫn Khu dân cư. Chưa indoor routing hoặc authoritative occupancy. |
+| Nhà | 60 cửa từ building footprints, ID/địa chỉ additive; giữ custom/retired/home cũ. Crowd về cửa khi nghỉ, nhiều người giữ điểm tách nhau; projection vẫn Khu dân cư. Chưa indoor routing hoặc authoritative occupancy. |
 
 Tag/vai/đường đi/pet-follow là trạng thái **viewer**. Backend completion vẫn theo simtime+plan matching; chưa chứng nhận arrival/physical meeting nhiều viewer. Đồ thị nhiều làn, bus/tram boarding và indoor còn ở [ROADMAP](../ROADMAP.md).
 

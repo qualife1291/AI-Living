@@ -1,6 +1,6 @@
 # Bốn kịch bản Studio — hợp đồng hiện hành
 
-Nguồn đặc tả: [living-scenarios-request](specs/living-scenarios-request.md), file người dùng `Kịch Bản.md`, SHA256 ` 787b96e54aaab31c567170074702b3e082184807071e596d126d6eb20954f327`. Chỉ tra cứu micro-spec khi sửa cảnh. Các điểm94–97, tự patch/weights và WebGPU-ultra trong đặc tả không phải kết quả nghiệm thu.
+Nguồn đặc tả: [living-scenarios-request](specs/living-scenarios-request.md), file người dùng `Kịch Bản.md`, SHA256 `787b96e54aaab31c567170074702b3e082184807071e596d126d6eb20954f327`. Chỉ tra cứu micro-spec khi sửa cảnh. Các điểm94–97, tự patch/weights và WebGPU-ultra trong đặc tả không phải kết quả nghiệm thu.
 
 ## Chạy và nguồn dữ liệu
 
@@ -43,4 +43,4 @@ QA_BASE=http://127.0.0.1:PORT QA_OUT=work/studio python3 scripts/qa-studio.py
 QA_BASE=http://127.0.0.1:PORT QA_OUT=work/studio-sound python3 scripts/qa-studio-sound.py
 ```
 
-SwiftShader/local fixture chưa chứng minh GPU/mobile FPS,24h soak, tiếp xúc từng ngón, weight transfer toàn thân, pores/tóc/vải/lông vi mô, DOF/volumetrics/reflection hoặc chất lượng model LLM. Không fine-tune weights, auto-patch hoặc xuất video từ cảnh; video/public/multi-user vẫn tạm hoãn.
+SwiftShader/local fixture chưa chứng minh GPU/mobile FPS,24 h soak, tiếp xúc từng ngón, weight transfer toàn thân, pores/tóc/vải/lông vi mô, DOF/volumetrics/reflection hoặc chất lượng model LLM. Không fine-tune weights, auto-patch hoặc xuất video từ cảnh; video/public/multi-user vẫn tạm hoãn.
