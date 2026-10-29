@@ -680,7 +680,8 @@ export function createCity(
   const raycaster = new THREE.Raycaster(),
     pointer = new THREE.Vector2();
   const gesture=new TapGesture();
-  const selectActor=(id:string)=>{callbacks.select(id);following=!motionPreference.matches;if(id===input().selected)lastSelected="";};
+  const clearCameraMotion=()=>{const damping=controls.enableDamping;controls.enableDamping=false;controls.update();controls.enableDamping=damping;};
+  const selectActor=(id:string)=>{clearCameraMotion();callbacks.select(id);following=!motionPreference.matches;if(id===input().selected)lastSelected="";};
   const pointerDown=(e:PointerEvent)=>gesture.down(e);
   const pointerMove=(e:PointerEvent)=>gesture.move(e);
   const pointerCancel=(e:PointerEvent)=>gesture.cancel(e);
@@ -696,6 +697,7 @@ export function createCity(
     // Include buildings so picking never selects a resident through a tower.
     const hit=pickVisible(raycaster,scene,new Set([ring,contactShadows]));
     if (!hit){following=followedBeforeGesture;return;}
+    host.dataset.lastPick=String(hit.object.userData.actorId??(hit.instanceId!==undefined?hit.object.userData.ids?.[hit.instanceId]:undefined)??"scenery");
     if (hit.object.userData.actorId) selectActor(hit.object.userData.actorId);
     else if (hit.object.userData.venue) callbacks.venue(hit.object.userData.venue);
     else if (hit.instanceId !== undefined && hit.object.userData.ids?.[hit.instanceId])selectActor(hit.object.userData.ids[hit.instanceId]);
@@ -1027,6 +1029,7 @@ export function createCity(
       const clearSightline=!cameraFoliage.some(box=>cameraRayBlocked(box,[a.position[0],groundElevation(...a.position)+4,a.position[1]],camera.position.toArray()))&&!cameraBuildings.some(box=>segmentHits(box,a.position,[camera.position.x,camera.position.z],2));
       return { id: a.id, ownerId: a.petOwnerId, position: a.position, walking: a.walking, clearSightline, onScreen: screen.z > -1 && screen.z < 1 && Math.abs(screen.x) < .95 && Math.abs(screen.y) < .95 };
     }));
+    host.dataset.pickTargets=JSON.stringify(actors.filter(a=>modelActors.ids.has(a.id)).map(actor=>{const point=new THREE.Vector3(actor.position[0],groundElevation(...actor.position)+modelActors.height(actor.id)*.6,actor.position[1]).project(camera);return{id:actor.id,x:(point.x+1)*host.clientWidth/2,y:(1-point.y)*host.clientHeight/2,depth:point.z};}));
     host.dataset.selected = current?.id ?? "";
     host.dataset.humanBatches = String(people.stats().batches);
     host.dataset.humanInstances = String(people.stats().instances);
@@ -1053,6 +1056,7 @@ export function createCity(
       camera.position.copy(controls.target).add(offset);
     },
     follow() {
+      clearCameraMotion();
       if(current&&current.id!==input().selected)callbacks.select(current.id);
       host.dataset.view = "follow";
       following = !motionPreference.matches;

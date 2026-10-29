@@ -44,10 +44,11 @@ export async function createStudio(host: HTMLDivElement, input: () => { id: Scen
   renderer.domElement.setAttribute("aria-label", "Các nhân vật trong kịch bản mô phỏng"); host.appendChild(renderer.domElement);
   const scene = new THREE.Scene(), camera = new THREE.PerspectiveCamera(38, 1, .1, 2000), hemi = new THREE.HemisphereLight("#edf6fc", "#93836d", 1.9), sun = new THREE.DirectionalLight("#ffe7bb", 2.3);
   sun.castShadow=true;sun.shadow.mapSize.set(1024,1024);Object.assign(sun.shadow.camera,{left:-100,right:100,top:100,bottom:-100,near:1,far:400});sun.shadow.normalBias=.15;sun.shadow.bias=-.0003;
-  scene.add(hemi, sun); const controls = new OrbitControls(camera, renderer.domElement); controls.enableDamping = true; controls.minDistance = 12; controls.maxDistance = 1200; controls.maxPolarAngle = Math.PI / 2 - .03;
+  scene.add(hemi, sun); const controls = new OrbitControls(camera, renderer.domElement); controls.enableDamping = true; controls.minDistance = 12; controls.maxDistance = 1200; controls.maxPolarAngle = Math.PI / 2 - .03;renderer.domElement.tabIndex=0;controls.listenToKeyEvents(renderer.domElement);
   let manualBeforeGesture=false;
   let manual = false,focused:string|null=null,lastReset=-1,snapBeat:number|undefined;
-  let focusAnchor:THREE.Vector3|undefined; controls.addEventListener("start", () => {manualBeforeGesture=manual; manual = true; });
+  let focusAnchor:THREE.Vector3|undefined;
+  const clearCameraMotion=()=>{const damping=controls.enableDamping;controls.enableDamping=false;controls.update();controls.enableDamping=damping;}; controls.addEventListener("start", () => {manualBeforeGesture=manual; manual = true; });
   const stages = new Map<ScenarioId, Stage>(), skies = new Map<ScenarioId, THREE.CanvasTexture>();
   function build(frame: ScenarioFrame): Stage {
     const group = new THREE.Group(), actors = new Map<string, StudioAvatar>(), props = new Map<string, THREE.Group>(),occluders:THREE.Object3D[]=[];
@@ -76,7 +77,7 @@ export async function createStudio(host: HTMLDivElement, input: () => { id: Scen
   const resize = new ResizeObserver(() => { renderer.setSize(host.clientWidth, host.clientHeight); camera.aspect = host.clientWidth / Math.max(1, host.clientHeight); camera.updateProjectionMatrix(); dirty = true; }); resize.observe(host);
   let handle = 0, dead = false, lastDraw = 0, lastId = "", lastTime = -10, lastStatus = 0;
   const target = new THREE.Vector3(), eye = new THREE.Vector3();
-  let activeStage:Stage|undefined,activeFrame:ScenarioFrame|undefined,subjectPoints:THREE.Vector3[]=[];
+  let activeStage:Stage|undefined,activeFrame:ScenarioFrame|undefined,activeContacts:ReturnType<typeof poseStudioActors>=[],subjectPoints:THREE.Vector3[]=[];
   const sightRay=new THREE.Raycaster();sightRay.near=.01;
   function render() {
     // Cosmetic cutaway of decorative roofs/canopies only. Preserve all actors,
@@ -86,13 +87,17 @@ export async function createStudio(host: HTMLDivElement, input: () => { id: Scen
     if(manual){controls.target.y=Math.max(.5,controls.target.y);if(camera.position.y<.75){camera.position.y=.75;camera.lookAt(controls.target);}}
     host.dataset.camera=JSON.stringify({position:camera.position.toArray(),target:controls.target.toArray(),mode:focused?'actor':manual?'manual':'script',focused,distance:camera.position.distanceTo(controls.target)});
     renderer.render(scene, camera);
+    if(activeFrame){const shown=activeFrame;
+    host.dataset.framing=JSON.stringify([...activeContacts,...shown.actors.filter(a=>a.species==='cat').map(a=>({id:a.id,head:[a.position[0],a.position[1]*STAGE_Y+2.25,a.position[2]]}))].map(c=>{const actor=shown.actors.find(a=>a.id===c.id)!;const head=new THREE.Vector3(...c.head).project(camera),feet=new THREE.Vector3(actor.position[0],actor.position[1]*STAGE_Y,actor.position[2]).project(camera);return{id:c.id,head:head.toArray(),feet:feet.toArray()};}));
+    host.dataset.pickTargets=JSON.stringify(shown.actors.map(actor=>{const head=activeContacts.find(c=>c.id===actor.id)?.head??[actor.position[0],actor.position[1]+2.25,actor.position[2]],point=new THREE.Vector3(actor.position[0],actor.position[1]+(head[1]-actor.position[1])*.6,actor.position[2]).project(camera);return{id:actor.id,x:(point.x+1)*host.clientWidth/2,y:(1-point.y)*host.clientHeight/2,depth:point.z};}));
+    }
     host.dataset.triangles = String(renderer.info.render.triangles); host.dataset.drawCalls = String(renderer.info.render.calls); host.dataset.frames = String(Number(host.dataset.frames ?? 0) + 1);
   }
   function tick(stamp: number) {
     if (dead) return; handle = requestAnimationFrame(tick); if (document.hidden || stamp - lastDraw < 20) return;
     lastDraw = stamp; const state = input();
     const reset=(state.cameraReset??0)!==lastReset;
-    if(reset){manual=false;focused=null;focusAnchor=undefined;onSelect(null);}
+    if(reset){clearCameraMotion();manual=false;focused=null;focusAnchor=undefined;onSelect(null);}
     if (!reset&&!dirty && state.id === lastId && state.time === lastTime) { if (manual&&controls.update()) render(); return; }
     const frame = scenarioFrame(state.id, state.time), seeking = state.id !== lastId || Math.abs(state.time - lastTime) > .6;
     const stage = stages.get(state.id) ?? build(frame);activeFrame=frame;
@@ -103,7 +108,7 @@ export async function createStudio(host: HTMLDivElement, input: () => { id: Scen
       let sky = skies.get(state.id); if (!sky) { const canvas = document.createElement("canvas"); canvas.width = 8; canvas.height = 256; const ctx = canvas.getContext("2d")!, gradient = ctx.createLinearGradient(0, 256, 0, 0); frame.theme.skyHex.forEach((color, i, all) => gradient.addColorStop(i / Math.max(1, all.length - 1), color)); ctx.fillStyle = gradient; ctx.fillRect(0, 0, 8, 256); sky = new THREE.CanvasTexture(canvas); sky.colorSpace = THREE.SRGBColorSpace; skies.set(state.id, sky); }
       scene.background = sky; sun.position.set(-60, Math.tan(frame.theme.sunElevation * Math.PI / 180) * 80, 80); sun.color.set(frame.theme.kelvin < 5000 ? "#ffe1b1" : "#e8f2ff");
     }
-    const contacts=poseStudioActors(stage.actors,frame);
+    const contacts=poseStudioActors(stage.actors,frame);activeContacts=contacts;
     // Pairs retain both body shadows; triples retain the primary subject's.
     // Larger queues use ground contact geometry to bound the shadow render pass.
     const shadowSubject=frame.dialogue[0]?.speaker??scenarioDefinitions.find(d=>d.id===frame.id)!.shots[frame.beat.index].targetId;
@@ -132,7 +137,6 @@ export async function createStudio(host: HTMLDivElement, input: () => { id: Scen
     if(focused){const next=actorAnchor(focused);if(next){if(focusAnchor){const delta=next.clone().sub(focusAnchor);controls.target.add(delta);camera.position.add(delta);}focusAnchor=next;}}
     if(frame.time>=scenarioDefinitions.find(d=>d.id===frame.id)!.shots[frame.beat.index].at+2.4)snapBeat=undefined;
     controls.update(); render(); dirty = false;
-    host.dataset.framing=JSON.stringify([...contacts,...frame.actors.filter(a=>a.species==='cat').map(a=>({id:a.id,head:[a.position[0],a.position[1]*STAGE_Y+2.25,a.position[2]]}))].map(c=>{const actor=frame.actors.find(a=>a.id===c.id)!;const head=new THREE.Vector3(...c.head).project(camera),feet=new THREE.Vector3(actor.position[0],0,actor.position[2]).project(camera);return{id:c.id,head:head.toArray(),feet:feet.toArray()};}));
     host.dataset.contacts=JSON.stringify(contacts);host.dataset.modelGeneration="supplied-civilians-v1";host.dataset.shadows=String(sun.castShadow);
     host.dataset.ready = "true"; host.dataset.scenario = frame.id; host.dataset.time = frame.time.toFixed(3); host.dataset.beat = String(frame.beat.index); host.dataset.assets = String(library.stats().loaded); host.dataset.assetFailures = String(library.stats().failed);
     if (stamp - lastStatus > 200 || seeking) { lastStatus = stamp; host.dataset.state = JSON.stringify(frame.state); host.dataset.cast = JSON.stringify(frame.actors.map(a => ({ id: a.id, age: a.age, clip: a.clip, position: a.position }))); host.dataset.props = JSON.stringify(frame.props.map(p => ({ id: p.id, holder: p.holderId, stage: p.stage, position: p.position }))); }
@@ -140,14 +144,17 @@ export async function createStudio(host: HTMLDivElement, input: () => { id: Scen
   }
   function actorAnchor(id:string){const actor=activeFrame?.actors.find(a=>a.id===id);if(!actor)return;const head=activeStage?.actors.get(id)?.head().y??(actor.position[1]+actor.heightMeters*10)*STAGE_Y;return new THREE.Vector3(actor.position[0],(head+actor.position[1]*STAGE_Y)*.5,actor.position[2]);}
   function focusActor(id:string){const actor=activeFrame?.actors.find(a=>a.id===id),anchor=actorAnchor(id);if(!actor||!anchor)return;const height=activeStage?.actors.get(id)?.height??2.5,offset=camera.position.clone().sub(controls.target),distance=Math.max(12,height/(2*Math.tan(THREE.MathUtils.degToRad(camera.fov)/2)*(camera.aspect<.85?.5:.62)),actor.radius/(Math.tan(THREE.MathUtils.degToRad(camera.fov)/2)*Math.max(.3,camera.aspect)*.7));
-    manual=true;focused=id;focusAnchor=anchor.clone();onSelect(id);controls.target.copy(anchor);camera.position.copy(anchor).addScaledVector(offset.normalize(),distance);dirty=true;
+    clearCameraMotion();manual=true;focused=id;focusAnchor=anchor.clone();onSelect(id);controls.target.copy(anchor);camera.position.copy(anchor).addScaledVector(offset.normalize(),distance);dirty=true;
   }
   const pointer=new THREE.Vector2(),pickRay=new THREE.Raycaster(),gesture=new TapGesture();
   const pointerDown=(e:PointerEvent)=>gesture.down(e),pointerMove=(e:PointerEvent)=>gesture.move(e),pointerCancel=(e:PointerEvent)=>gesture.cancel(e),pointerWheel=()=>gesture.invalidate();
-  const pointerUp=(e:PointerEvent)=>{if(!gesture.up(e))return;const rect=renderer.domElement.getBoundingClientRect();pointer.set((e.clientX-rect.left)/rect.width*2-1,1-(e.clientY-rect.top)/rect.height*2);pickRay.setFromCamera(pointer,camera);const hit=pickVisible(pickRay,scene);if(hit?.object.userData.actorId)focusActor(hit.object.userData.actorId);else{manual=manualBeforeGesture;dirty=true;}};
+  const pointerUp=(e:PointerEvent)=>{if(!gesture.up(e))return;const rect=renderer.domElement.getBoundingClientRect();pointer.set((e.clientX-rect.left)/rect.width*2-1,1-(e.clientY-rect.top)/rect.height*2);pickRay.setFromCamera(pointer,camera);const hit=pickVisible(pickRay,scene);if(hit?.object.userData.actorId){host.dataset.lastPick=hit.object.userData.actorId;focusActor(hit.object.userData.actorId);}else{manual=manualBeforeGesture;dirty=true;}};
   renderer.domElement.addEventListener('pointerdown',pointerDown);renderer.domElement.addEventListener('pointermove',pointerMove);renderer.domElement.addEventListener('pointerup',pointerUp);renderer.domElement.addEventListener('pointercancel',pointerCancel);renderer.domElement.addEventListener('wheel',pointerWheel,{passive:true});
+  const cameraKey=(e:KeyboardEvent)=>{if(e.key.startsWith('Arrow'))manual=true;if(e.key==='Escape'){clearCameraMotion();manual=false;focused=null;focusAnchor=undefined;snapBeat=activeFrame?.beat.index;onSelect(null);dirty=true;}};
+  renderer.domElement.addEventListener('keydown',cameraKey);
   handle = requestAnimationFrame(tick);
   return { focus:focusActor,dispose() {
+    renderer.domElement.removeEventListener('keydown',cameraKey);
     renderer.domElement.removeEventListener('pointerdown',pointerDown);renderer.domElement.removeEventListener('pointermove',pointerMove);renderer.domElement.removeEventListener('pointerup',pointerUp);renderer.domElement.removeEventListener('pointercancel',pointerCancel);renderer.domElement.removeEventListener('wheel',pointerWheel);
     dead = true; for(const stage of stages.values())for(const actor of stage.actors.values())actor.dispose(); cancelAnimationFrame(handle); resize.disconnect(); controls.dispose();
     const sets = { geometries: new Set<THREE.BufferGeometry>(), materials: new Set<THREE.Material>(), textures: new Set<THREE.Texture>() }; collectAssetResources(scene, sets); library.collectAndClose(sets); skies.forEach(s => sets.textures.add(s)); sets.geometries.forEach(g => g.dispose()); sets.materials.forEach(m => m.dispose()); sets.textures.forEach(t => t.dispose()); renderer.dispose(); renderer.forceContextLoss(); renderer.domElement.remove();
