@@ -222,5 +222,8 @@
   ],
   [
     "scripts/test-peer-sharing.mjs"
+  ],
+  [
+    "scripts/test-scene-interactions.mjs"
   ]
 ]

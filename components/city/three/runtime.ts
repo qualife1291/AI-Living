@@ -15,6 +15,7 @@ import { createAmbience } from "./ambience";
 import { createFauna } from "./fauna";
 import { AssetLibrary, setAssetTransform, type AssetPlacement } from "./assets";
 import { createModelActors } from "./model-actors";
+import {pickVisible,TapGesture} from "./picking";
 import { SceneDetail } from "./scene-detail";
 import { QualityBudget } from "../../../lib/city/quality-budget";
 import { streetModel } from "./streetscape";
@@ -69,6 +70,7 @@ export type SceneStatus = {
   location: string;
 };
 export type CityRuntime = {
+  select: (id:string) => void;
   presentSpeech: (key: string) => void;
   zoom: (factor: number) => void;
   follow: () => void;
@@ -659,8 +661,9 @@ export function createCity(
     for (const chunk of detailChunks) chunk.mesh.visible = Math.hypot(camera.position.x - chunk.x, camera.position.z - chunk.z) < 520;
   }
   focus(350, 280);
+  let followedBeforeGesture=false;
   const onStart = () => {
-    following = false;
+    followedBeforeGesture=following;following = false;
     host.dataset.view = "orbit";
   };
   controls.addEventListener("start", onStart);
@@ -676,20 +679,14 @@ export function createCity(
   renderer.domElement.addEventListener('keydown',cameraKey);
   const raycaster = new THREE.Raycaster(),
     pointer = new THREE.Vector2();
-  let down: { x: number; y: number } | null = null;
-  const pointerDown = (e: PointerEvent) => {
-    down = { x: e.clientX, y: e.clientY };
-  };
+  const gesture=new TapGesture();
+  const selectActor=(id:string)=>{callbacks.select(id);following=!motionPreference.matches;if(id===input().selected)lastSelected="";};
+  const pointerDown=(e:PointerEvent)=>gesture.down(e);
+  const pointerMove=(e:PointerEvent)=>gesture.move(e);
+  const pointerCancel=(e:PointerEvent)=>gesture.cancel(e);
+  const pointerWheel=()=>gesture.invalidate();
   const pointerUp = (e: PointerEvent) => {
-    if (
-      !down ||
-      Math.hypot(e.clientX - down.x, e.clientY - down.y) > 5 ||
-      e.button !== 0
-    ) {
-      down = null;
-      return;
-    }
-    down = null;
+    if(!gesture.up(e))return;
     const rect = renderer.domElement.getBoundingClientRect();
     pointer.set(
       ((e.clientX - rect.left) / rect.width) * 2 - 1,
@@ -697,22 +694,18 @@ export function createCity(
     );
     raycaster.setFromCamera(pointer, camera);
     // Include buildings so picking never selects a resident through a tower.
-    const hit = raycaster
-      .intersectObjects(scene.children, true)
-      .find((h) => h.object !== ring);
-    if (!hit) return;
-    if (hit.object.userData.actorId) callbacks.select(hit.object.userData.actorId);
+    const hit=pickVisible(raycaster,scene,new Set([ring,contactShadows]));
+    if (!hit){following=followedBeforeGesture;return;}
+    if (hit.object.userData.actorId) selectActor(hit.object.userData.actorId);
     else if (hit.object.userData.venue) callbacks.venue(hit.object.userData.venue);
-    else if (
-      hit.instanceId !== undefined &&
-      hit.object.userData.ids?.[hit.instanceId]
-    ) {
-      callbacks.select(hit.object.userData.ids[hit.instanceId]);
-      following = !motionPreference.matches;
-    }
+    else if (hit.instanceId !== undefined && hit.object.userData.ids?.[hit.instanceId])selectActor(hit.object.userData.ids[hit.instanceId]);
+    else following=followedBeforeGesture;
   };
   renderer.domElement.addEventListener("pointerdown", pointerDown);
   renderer.domElement.addEventListener("pointerup", pointerUp);
+  renderer.domElement.addEventListener("pointermove",pointerMove);
+  renderer.domElement.addEventListener("pointercancel",pointerCancel);
+  renderer.domElement.addEventListener("wheel",pointerWheel,{passive:true});
   const lost = (e: Event) => {
     e.preventDefault();
     logClient("webgl_lost");
@@ -939,6 +932,7 @@ export function createCity(
       }
     }
     controls.update();
+    if(!following){const floor=groundElevation(camera.position.x,camera.position.z)+3;controls.target.y=Math.max(controls.target.y,groundElevation(controls.target.x,controls.target.z)+2);if(camera.position.y<floor){camera.position.y=floor;camera.lookAt(controls.target);}}
     // Keep signs subordinate to residents; distant districts need no text clutter.
     updateAssetLOD(camera, activeQuality === "sharp");
     for (const chunk of detailChunks) chunk.mesh.visible = Math.hypot(camera.position.x - chunk.x, camera.position.z - chunk.z) < 520;
@@ -1048,6 +1042,7 @@ export function createCity(
   }
   frame = requestAnimationFrame(tick);
   return {
+    select:selectActor,
     presentSpeech(key) { if(!input().sharedGroundRequested)socialDirector.presented(key, Date.now() + (input().clockOffsetMs ?? 0)); },
     zoom(factor) {
       following = false;
@@ -1058,7 +1053,7 @@ export function createCity(
       camera.position.copy(controls.target).add(offset);
     },
     follow() {
-      callbacks.select("an");
+      if(current&&current.id!==input().selected)callbacks.select(current.id);
       host.dataset.view = "follow";
       following = !motionPreference.matches;
       lastSelected = ""; // One explicit framing in reduced motion, then a stationary camera.
@@ -1088,6 +1083,9 @@ export function createCity(
       controls.dispose();
       renderer.domElement.removeEventListener("pointerdown", pointerDown);
       renderer.domElement.removeEventListener("pointerup", pointerUp);
+      renderer.domElement.removeEventListener("pointermove",pointerMove);
+      renderer.domElement.removeEventListener("pointercancel",pointerCancel);
+      renderer.domElement.removeEventListener("wheel",pointerWheel);
       renderer.domElement.removeEventListener("webglcontextlost", lost);
       document.removeEventListener("visibilitychange", visibilityChanged);
       window.removeEventListener('resize',visibilityChanged);

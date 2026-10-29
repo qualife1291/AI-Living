@@ -58,7 +58,7 @@ export function City3D(props: Props) {
     <div className="urban-map-host city-three">
       <div ref={host} className="three-canvas" />
       {!status && <div className="three-notice">Đang dựng thành phố 3D…</div>}
-      {status && <WorldOverlays status={status} onSelect={props.onSelect} onPresented={presented} />}
+      {status && <WorldOverlays status={status} onSelect={id=>{if(runtime.current)runtime.current.select(id);else props.onSelect(id);}} onPresented={presented} />}
       <div className="live-hud live-person">
         <span className="person-indicator">{status?.walking ? <Footprints size={16}/> : <Coffee size={16}/>}</span>
         <button onClick={props.onInspect}>
@@ -87,7 +87,7 @@ export function City3D(props: Props) {
         </button>
         <button
           aria-label="Theo nhân vật"
-          title="Góc điện ảnh · theo An"
+          title={`Góc điện ảnh · theo ${status?.name??"nhân vật đang chọn"}`}
           aria-pressed={status?.following ?? true}
           onClick={() => runtime.current?.follow()}
         >
