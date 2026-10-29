@@ -1,12 +1,13 @@
+import { readBoundedJson } from '@/lib/bounded-json';
 import { z } from 'zod';
 import { database,readWorld,json,validOrigin } from '@/lib/store';
 import { replyToVisitor } from '@/lib/living/interaction';
 const schema=z.object({id:z.string().uuid(),actorId:z.string().min(1).max(100),message:z.string().trim().min(1).max(280)}).strict();
 export async function POST(req:Request){
  if(!validOrigin(req))return json({error:'Origin không hợp lệ'},403);
- const raw=await req.text();if(new TextEncoder().encode(raw).length>2000)return json({error:'Dữ liệu quá lớn'},413);
- let body:unknown;try{body=JSON.parse(raw);}catch{return json({error:'JSON không hợp lệ'},400);}
- const parsed=schema.safeParse(body);if(!parsed.success)return json({error:'Tin nhắn không hợp lệ'},400);
+ const body=await readBoundedJson(req,2000);
+ if(!body.ok)return json({error:body.error},body.status);
+ const parsed=schema.safeParse(body.value);if(!parsed.success)return json({error:'Tin nhắn không hợp lệ'},400);
  const db=database(),{id,actorId,message}=parsed.data;
  const exists=await db.prepare('SELECT data FROM visitor_exchanges WHERE id=?').bind(id).first<{data:string}>();
  if(exists)return json({...JSON.parse(exists.data),duplicate:true});
