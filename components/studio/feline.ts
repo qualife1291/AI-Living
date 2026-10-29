@@ -9,7 +9,6 @@ export class StudioFeline {
   for(const sign of [-1,1]){const ear=new THREE.Group();ear.position.set(sign*.43,.39,.02);this.head.add(ear);const outer=new THREE.Mesh(new THREE.ConeGeometry(.32,.65,3),fur),inner=new THREE.Mesh(new THREE.ConeGeometry(.19,.4,3),pink);outer.rotation.y=Math.PI;inner.rotation.y=Math.PI;inner.position.set(0,.01,.06);ear.add(outer,inner);this.ears.push(ear);
    ellipsoid(this.head,[sign*.28,.04,.49],[.13,.16,.07],dark);ellipsoid(this.head,[sign*.30,.08,.55],[.035,.04,.025],cream);const lid=ellipsoid(this.head,[sign*.28,.04,.55],[.15,.001,.025]);this.lids.push(lid);
    for(const z of [-.8,.55]){ellipsoid(this.chest,[sign*.44,.3,z],[.23,.36,.25]);ellipsoid(this.chest,[sign*.44,.12,z+.12],[.25,.12,.34],cream);}
-   for(let i=0;i<3;i++){const stripe=ellipsoid(this.chest,[sign*.6,1.05,-.7+i*.5],[.055,.25,.09],dark);stripe.rotation.z=sign*.35;}
    for(let i=0;i<3;i++){const curve=new THREE.LineCurve3(new THREE.Vector3(sign*.2,-.25,.6),new THREE.Vector3(sign*.95,-.18+i*.11,.6));this.head.add(new THREE.Mesh(new THREE.TubeGeometry(curve,1,.009,3),cream));}
   }
   ellipsoid(this.head,[0,-.18,.65],[.11,.07,.06],pink);this.tail.position.set(0,.8,-1);this.chest.add(this.tail);

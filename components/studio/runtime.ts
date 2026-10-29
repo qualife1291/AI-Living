@@ -42,7 +42,7 @@ export async function createStudio(host: HTMLDivElement, input: () => { id: Scen
   renderer.domElement.setAttribute("aria-label", "Các nhân vật trong kịch bản mô phỏng"); host.appendChild(renderer.domElement);
   const scene = new THREE.Scene(), camera = new THREE.PerspectiveCamera(38, 1, .1, 2000), hemi = new THREE.HemisphereLight("#edf6fc", "#93836d", 1.9), sun = new THREE.DirectionalLight("#ffe7bb", 2.3);
   sun.castShadow=true;sun.shadow.mapSize.set(1024,1024);Object.assign(sun.shadow.camera,{left:-100,right:100,top:100,bottom:-100,near:1,far:400});sun.shadow.normalBias=.15;sun.shadow.bias=-.0003;
-  scene.add(hemi, sun); const controls = new OrbitControls(camera, renderer.domElement); controls.enableDamping = true; controls.minDistance = 12; controls.maxDistance = 350; controls.maxPolarAngle = Math.PI / 2 - .03;
+  scene.add(hemi, sun); const controls = new OrbitControls(camera, renderer.domElement); controls.enableDamping = true; controls.minDistance = 12; controls.maxDistance = 1200; controls.maxPolarAngle = Math.PI / 2 - .03;
   let manual = false; controls.addEventListener("start", () => { manual = true; });
   const stages = new Map<ScenarioId, Stage>(), skies = new Map<ScenarioId, THREE.CanvasTexture>();
   function build(frame: ScenarioFrame): Stage {
