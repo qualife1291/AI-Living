@@ -1,7 +1,7 @@
 import {scenarioFrame,type ActorFrame,type ScenarioFrame,type ScenarioId,type Vec3} from '../../lib/city/scenarios/index.ts';
-// Studio uses the city's authored chibi proportions and navigation footprint.
-// One vertical stage transform applies to scenery, props, cues and cameras alike.
-export const STAGE_Y=.34;
+// Citizens, scenery, props, cues and cameras share the same world-unit scale.
+// Compressing only Y made natural human rigs too short for the authored contacts.
+export const STAGE_Y=1;
 export const stagePoint=(p:readonly number[]):Vec3=>[p[0],p[1]*STAGE_Y,p[2]];
 export function motionSamples(id:ScenarioId,time:number){return Array.from({length:49},(_,i)=>scenarioFrame(id,Math.max(0,time-i*.0125)));}
 function clipFor(actor:ActorFrame,frame:ScenarioFrame){if(actor.speedMps>.005)return actor.clip;if(frame.dialogue.some(l=>l.speaker===actor.id))return 'talk';if(frame.dialogue.length&&!actor.handTargets)return 'listen';return actor.clip;}

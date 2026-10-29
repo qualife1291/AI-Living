@@ -3,7 +3,8 @@
   "kind": "lossless-city-transport-v1",
   "canonicalCatalogs": [
     "/models/kenney/catalog.json",
-    "/models/resources/catalog.json"
+    "/models/resources/catalog.json",
+    "/models/citizens/catalog.json"
   ],
   "assets": [
     {
@@ -38,6 +39,50 @@
       "url": "/models/derivatives/3803539718ffd3b84b515dbce8ed6b489f1ff5be58edb1903d2c5db5c584bdc7.glb.gz",
       "sha256": "ccfcf951d82f4f05d3dccbdac3c2eafcab00255a236ad14e4eb06067b2f42e49",
       "bytes": 24500
+    },
+    {
+      "id": "citizens/an",
+      "format": "gzip",
+      "sourceUrl": "/models/citizens/an.glb",
+      "sourceSha256": "52a5399d31bcd8f9135d77d9bd1bd461b5c14c54d7282d194b36d57eb6d73cb1",
+      "sourceBytes": 465968,
+      "license": "CC0-1.0",
+      "url": "/models/derivatives/52a5399d31bcd8f9135d77d9bd1bd461b5c14c54d7282d194b36d57eb6d73cb1.glb.gz",
+      "sha256": "93e6475f5115b89b146afee428796d9134f0dfdf7ca94b95cd3cdea9e792c1d8",
+      "bytes": 27467
+    },
+    {
+      "id": "citizens/binh",
+      "format": "gzip",
+      "sourceUrl": "/models/citizens/binh.glb",
+      "sourceSha256": "ee35c0d6f03726d811af03d0eaf99064ea86ec49d72437d9f18183afd3080b28",
+      "sourceBytes": 472880,
+      "license": "CC0-1.0",
+      "url": "/models/derivatives/ee35c0d6f03726d811af03d0eaf99064ea86ec49d72437d9f18183afd3080b28.glb.gz",
+      "sha256": "aa4c7b7b9d94c0dd83098c3c9e75ed5f4edecb9040c86555573800f4ce92cd05",
+      "bytes": 28289
+    },
+    {
+      "id": "citizens/chi",
+      "format": "gzip",
+      "sourceUrl": "/models/citizens/chi.glb",
+      "sourceSha256": "9813bb049316509e6de6ce9890351eedb75bcb8674091aedd66816f0e848d61e",
+      "sourceBytes": 462512,
+      "license": "CC0-1.0",
+      "url": "/models/derivatives/9813bb049316509e6de6ce9890351eedb75bcb8674091aedd66816f0e848d61e.glb.gz",
+      "sha256": "4ce776b7397dcc1c7c638ec59ca6ae9e2a2c984ce23e7a0dd1523324c77af7b9",
+      "bytes": 28006
+    },
+    {
+      "id": "citizens/linen",
+      "format": "gzip",
+      "sourceUrl": "/models/citizens/linen.glb",
+      "sourceSha256": "fa7ead55bbe45e04812784493cf0759d19fd2607bc712351f50ddda948beeaab",
+      "sourceBytes": 478928,
+      "license": "CC0-1.0",
+      "url": "/models/derivatives/fa7ead55bbe45e04812784493cf0759d19fd2607bc712351f50ddda948beeaab.glb.gz",
+      "sha256": "3b90b85b556e72a4158e203cebf17cc4615dd929ee609802911ab591a02a747c",
+      "bytes": 28050
     },
     {
       "id": "commercial/building-a",
@@ -93,39 +138,6 @@
       "url": "/models/derivatives/70e636bea8dc67c3bfd19b163333e824356118458c8c401017322ec43c10a7f7.glb.gz",
       "sha256": "e30e823dc4cb6d30e6b0ce438b1470d8b90026af14ed7202101596137c34b83d",
       "bytes": 2227
-    },
-    {
-      "id": "gobkit-human002/accountant",
-      "format": "gzip",
-      "sourceUrl": "/models/resources/gobkit-human002/Accountant.glb",
-      "sourceSha256": "69220c194637fc86262f0d82d53292953a6e04edc24ca3ebdce242bf576a318b",
-      "sourceBytes": 610648,
-      "license": "CC0-1.0",
-      "url": "/models/derivatives/69220c194637fc86262f0d82d53292953a6e04edc24ca3ebdce242bf576a318b.glb.gz",
-      "sha256": "71055938db52d90fa585f63e7452d23fae87abf6ceb43f00f23b88919e788efc",
-      "bytes": 188162
-    },
-    {
-      "id": "gobkit-human002/it-engineer",
-      "format": "gzip",
-      "sourceUrl": "/models/resources/gobkit-human002/ItEngineer.glb",
-      "sourceSha256": "c082c83ec0007b10615624cb2f662d666ae30e6083640c7d5c5807e9bcc8a235",
-      "sourceBytes": 702068,
-      "license": "CC0-1.0",
-      "url": "/models/derivatives/c082c83ec0007b10615624cb2f662d666ae30e6083640c7d5c5807e9bcc8a235.glb.gz",
-      "sha256": "40db3d34729053a6a78ce8ad142c8854ae0044b05a7fbf73e4aee340ebab892f",
-      "bytes": 210173
-    },
-    {
-      "id": "gobkit-human002/receptionist",
-      "format": "gzip",
-      "sourceUrl": "/models/resources/gobkit-human002/Receptionist.glb",
-      "sourceSha256": "89b0eda99fddbe5a608b8d4400fce4786cf4bd0e01baa30c09b3b87deaf10067",
-      "sourceBytes": 640492,
-      "license": "CC0-1.0",
-      "url": "/models/derivatives/89b0eda99fddbe5a608b8d4400fce4786cf4bd0e01baa30c09b3b87deaf10067.glb.gz",
-      "sha256": "0f9b6195b69d5ead439a11f33f2068b86e330806a0bc7107dfd149144ff45edd",
-      "bytes": 195562
     },
     {
       "id": "market/display-bread",

@@ -6,13 +6,13 @@ import {loadLocalGLTF} from './load-local-gltf.mjs';
 import {StudioAvatar} from '../components/studio/avatar.ts';
 import {poseStudioActors} from '../components/studio/actors.ts';
 import {studioCamera} from '../components/studio/camera.ts';
-import {stagePoint} from '../components/studio/motion.ts';
+import {stagePoint,STAGE_Y} from '../components/studio/motion.ts';
 import {scenarioFrame,scenarioDefinitions} from '../lib/city/scenarios/index.ts';
-const catalog=JSON.parse(readFileSync('public/models/resources/catalog.json')).assets,models=new Map(),report=[];
+const catalog=JSON.parse(readFileSync('public/models/citizens/catalog.json')).assets,models=new Map(),report=[];
 const equivalent=(a,b)=>{if(typeof a==='number'&&typeof b==='number'){assert(Math.abs(a-b)<1e-5,`Pose drift ${a} vs ${b}`);return;}if(a&&b&&typeof a==='object'&&typeof b==='object'){assert.deepEqual(Object.keys(a),Object.keys(b));for(const k of Object.keys(a))equivalent(a[k],b[k]);}else assert.equal(a,b);};
 const gap=(a,b)=>Math.hypot(...a.map((v,i)=>v-b[i]));
 for(const d of scenarioDefinitions){
- const actors=new Map();for(const s of d.cast.filter(s=>s.species==='human')){assert(s.modelHint.startsWith('gobkit-human002/'));if(!models.has(s.modelHint))models.set(s.modelHint,await loadLocalGLTF(catalog.find(a=>a.id===s.modelHint).url));actors.set(s.id,new StudioAvatar(models.get(s.modelHint),s.heightMeters*10,s.radius*.9,s.wardrobe.shirt));}
+ const actors=new Map();for(const s of d.cast.filter(s=>s.species==='human')){assert(s.modelHint.startsWith('citizens/'));if(!models.has(s.modelHint))models.set(s.modelHint,await loadLocalGLTF(catalog.find(a=>a.id===s.modelHint).url));actors.set(s.id,new StudioAvatar(models.get(s.modelHint),s.heightMeters*10*STAGE_Y,s.radius*.9,s.wardrobe.shirt));}
  const sample=t=>poseStudioActors(actors,scenarioFrame(d.id,t));
  // Playing, seeking backwards and replaying must give identical deformed pose.
  const snapshot=t=>{const contacts=sample(t);return {contacts,rigs:[...actors].map(([id,a])=>[id,a.model.toJSON().object,a.group.position.toArray()])};};
@@ -25,10 +25,10 @@ for(const d of scenarioDefinitions){
  const probes={ 'wallet-return':[[42,'wallet','tuan'],[86,'wallet','tuan'],[94,'wallet','minh']], 'sanitation-gratitude':[[82,'cup','hanh'],[93,'cup','hanh']], 'kitten-care':[], 'bakery-courtesy':[[93,'loaf-0','seller'],[99,'loaf-0','ba'],[104,'loaf-0','ba']] }[d.id];
  for(const aspect of [1440/900,390/844])for(const at of d.shots.map(s=>s.at+2.5)){
   const f=scenarioFrame(d.id,at),contacts=sample(at),shot=studioCamera(f,contacts,aspect),camera=new THREE.PerspectiveCamera(f.camera.fov,aspect,.1,2000);camera.position.copy(shot.eye);camera.lookAt(shot.target);camera.updateMatrixWorld(true);
-  for(const id of shot.subjects){const a=f.actors.find(a=>a.id===id),head=contacts.find(c=>c.id===id)?.head??[a.position[0],a.position[1]*.34+2.25,a.position[2]];for(const p of [head,stagePoint(a.position)]){const ndc=new THREE.Vector3(...p).project(camera);assert(Math.abs(ndc.x)<.95&&Math.abs(ndc.y)<.95,`${d.id} ${id} camera ${at} clips head/feet`);}}
+  for(const id of shot.subjects){const a=f.actors.find(a=>a.id===id),head=contacts.find(c=>c.id===id)?.head??[a.position[0],a.position[1]*STAGE_Y+2.25,a.position[2]];for(const p of [head,stagePoint(a.position)]){const ndc=new THREE.Vector3(...p).project(camera);assert(Math.abs(ndc.x)<.95&&Math.abs(ndc.y)<.95,`${d.id} ${id} camera ${at} clips head/feet`);}}
  }
  let maximumContactGap=0;
- for(const [t,id,actor] of probes){const f=scenarioFrame(d.id,t),p=f.props.find(p=>p.id===id),a=sample(t).find(a=>a.id===actor),centre=new THREE.Vector3(...stagePoint(p.position)),q=new THREE.Quaternion().setFromEuler(new THREE.Euler(...p.rotation)).invert(),hand=new THREE.Vector3(...a.hands.right).sub(centre).applyQuaternion(q),size=p.size.map((v,i)=>i===1?v*.34:v),outside=Math.hypot(...hand.toArray().map((v,i)=>Math.max(0,Math.abs(v)-size[i]/2)));maximumContactGap=Math.max(maximumContactGap,outside);assert(outside<.35,`${d.id}/${id} at ${t}: rendered palm outside prop ${outside}`);}
+ for(const [t,id,actor] of probes){const f=scenarioFrame(d.id,t),p=f.props.find(p=>p.id===id),a=sample(t).find(a=>a.id===actor),centre=new THREE.Vector3(...stagePoint(p.position)),q=new THREE.Quaternion().setFromEuler(new THREE.Euler(...p.rotation)).invert(),hand=new THREE.Vector3(...a.hands.right).sub(centre).applyQuaternion(q),size=p.size.map((v,i)=>i===1?v*STAGE_Y:v),outside=Math.hypot(...hand.toArray().map((v,i)=>Math.max(0,Math.abs(v)-size[i]/2)));maximumContactGap=Math.max(maximumContactGap,outside);assert(outside<.35,`${d.id}/${id} at ${t}: rendered palm outside prop ${outside}`);}
  if(d.id==='kitten-care'){const c=sample(119),f=scenarioFrame(d.id,119),cat=f.actors.find(a=>a.id==='miu'),a=c.find(a=>a.id==='thanh');for(const side of ['left','right']){const h=a.hands[side],p=stagePoint(cat.position);assert(Math.abs(h[0]-p[0])<1&&Math.abs(h[2]-p[2])<1.3&&h[1]>p[1]&&h[1]<p[1]+1.2,'Both hands support the actual feline body');}}
  report.push({scenario:d.id,maxHandStep,maximumContactGap,seekEquivalent:true});for(const a of actors.values())a.dispose();
 }

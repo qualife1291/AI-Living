@@ -64,15 +64,12 @@ assert(mixedDistance>200,'Avoidance must make useful progress, not pass by freez
 console.log(JSON.stringify({suite:'cycle-transitions-and-people',mountWithoutTeleport:mounted,mixedFrames:1600,mixedDistance,sweptCollisionCount:0,reorder:true}));
 // Verify actual bicycle geometry and rigged avatar fit the navigation envelope at every yaw.
 const THREE=await import('three');
-const {GLTFLoader}=await import('three/addons/loaders/GLTFLoader.js');
-const {readFileSync}=await import('node:fs');
 const {AssetLibrary}=await import('../components/city/three/assets.ts');
 const {createModelActors}=await import('../components/city/three/model-actors.ts');
 const {createBicycle,spinBicycle}=await import('../components/city/three/activity-props.ts');
-const bytes=readFileSync('public/models/kenney/characters/character-a.glb'),loader=new GLTFLoader();
-loader.register(()=>({name:'qa-material',loadMaterial:()=>Promise.resolve(new THREE.MeshBasicMaterial())}));
-const model=await loader.parseAsync(bytes.buffer.slice(bytes.byteOffset,bytes.byteOffset+bytes.byteLength),'');
-const library=new AssetLibrary();library.loaded.set('characters/character-a',model);
+const {loadLocalGLTF}=await import('./load-local-gltf.mjs');
+const {CORE_MODELS}=await import('../lib/city/character-models.ts');
+const library=new AssetLibrary();for(const id of Object.values(CORE_MODELS))library.loaded.set(id,await loadLocalGLTF('/models/'+id+'.glb'));
 const scene=new THREE.Scene(),avatars=createModelActors(scene,library);let maximumRadius=0;
 for(let i=0;i<36;i++){
  const a={...bike,position:[-400,-700],transport:'bicycle',bicycle:{radius:BICYCLE_RADIUS,distance:i*.8,yaw:i*Math.PI/18}};

@@ -2,7 +2,7 @@ import {readFileSync,writeFileSync} from 'node:fs';
 import assert from 'node:assert/strict';
 import {scenarioDefinitions,scenarioFrame} from '../lib/city/scenarios/index.ts';
 const read=path=>JSON.parse(readFileSync(new URL(path,import.meta.url),'utf8'));
-const catalog={assets:[...read('../public/models/kenney/catalog.json').assets,...read('../public/models/resources/catalog.json').assets]};
+const catalog={assets:[...read('../public/models/kenney/catalog.json').assets,...read('../public/models/resources/catalog.json').assets,...read('../public/models/citizens/catalog.json').assets]};
 const policy=read('../data/assets/requirements.json');
 export function resolveRequirements(keys,approved,preferred,procedural){
  const bindings={},missing=[];

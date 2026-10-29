@@ -64,7 +64,7 @@ export async function createStudio(host: HTMLDivElement, input: () => { id: Scen
     for (const actor of frame.actors) {
       if (actor.species === "cat") { cat = new StudioFeline(); group.add(cat.group); continue; }
       const source = library.get(modelFor(actor.modelHint)); if (!source) throw Error(`Studio actor asset unavailable: ${actor.modelHint}`);
-      const avatar = new StudioAvatar(source, actor.heightMeters * 10, actor.radius * .9, actor.wardrobe.shirt); avatar.tint({ shirt: actor.wardrobe.shirt, trousers: actor.wardrobe.trousers, skin: "#e6c69e" }); actors.set(actor.id, avatar); group.add(avatar.group);
+      const avatar = new StudioAvatar(source, actor.heightMeters * 10 * STAGE_Y, actor.radius * .9, actor.wardrobe.shirt); avatar.tint({ shirt: actor.wardrobe.shirt, trousers: actor.wardrobe.trousers, skin: "#e6c69e" }); actors.set(actor.id, avatar); group.add(avatar.group);
       const contact=new THREE.Mesh(new THREE.CircleGeometry(actor.radius*.7,16),new THREE.MeshBasicMaterial({color:"#4b5145",transparent:true,opacity:.13,depthWrite:false}));contact.rotation.x=-Math.PI/2;contact.position.set(actor.position[0],.025,actor.position[2]);contact.name=`contact-${actor.id}`;group.add(contact);
     }
     scene.add(group); const stage = { group, actors, props, kitten: cat }; stages.set(frame.id, stage); return stage;
@@ -114,7 +114,7 @@ export async function createStudio(host: HTMLDivElement, input: () => { id: Scen
     }
     controls.update(); render(); dirty = false;
     host.dataset.framing=JSON.stringify([...contacts,...frame.actors.filter(a=>a.species==='cat').map(a=>({id:a.id,head:[a.position[0],a.position[1]*STAGE_Y+2.25,a.position[2]]}))].map(c=>{const actor=frame.actors.find(a=>a.id===c.id)!;const head=new THREE.Vector3(...c.head).project(camera),feet=new THREE.Vector3(actor.position[0],0,actor.position[2]).project(camera);return{id:c.id,head:head.toArray(),feet:feet.toArray()};}));
-    host.dataset.contacts=JSON.stringify(contacts);host.dataset.modelGeneration="daily-rig-v2";host.dataset.shadows=String(sun.castShadow);
+    host.dataset.contacts=JSON.stringify(contacts);host.dataset.modelGeneration="citizens-v1";host.dataset.shadows=String(sun.castShadow);
     host.dataset.ready = "true"; host.dataset.scenario = frame.id; host.dataset.time = frame.time.toFixed(3); host.dataset.beat = String(frame.beat.index); host.dataset.assets = String(library.stats().loaded); host.dataset.assetFailures = String(library.stats().failed);
     if (stamp - lastStatus > 200 || seeking) { lastStatus = stamp; host.dataset.state = JSON.stringify(frame.state); host.dataset.cast = JSON.stringify(frame.actors.map(a => ({ id: a.id, age: a.age, clip: a.clip, position: a.position }))); host.dataset.props = JSON.stringify(frame.props.map(p => ({ id: p.id, holder: p.holderId, stage: p.stage, position: p.position }))); }
     lastId = state.id; lastTime = state.time;

@@ -4,14 +4,15 @@ import { readFileSync } from 'node:fs';
 import { loadLocalGLTF } from './load-local-gltf.mjs';
 import { AssetLibrary } from '../components/city/three/assets.ts';
 import { createModelActors } from '../components/city/three/model-actors.ts';
-import { CORE_MODELS, residentModel } from '../lib/city/character-models.ts';
+import {CORE_MODELS,CITIZEN_MODELS,CITIZEN_FALLBACK,residentModel} from '../lib/city/character-models.ts';
+import {RiggedAvatar} from '../components/city/three/rigged-avatar.ts';
 import { groundElevation } from '../lib/city/ground.ts';
 import { BICYCLE_RADIUS } from '../lib/city/bicycle.ts';
 import { initializeLiving } from '../lib/living/engine.ts';
 import { seed } from '../lib/world.ts';
-const catalog=JSON.parse(readFileSync('public/models/resources/catalog.json','utf8'));
+const catalog=JSON.parse(readFileSync('public/models/citizens/catalog.json','utf8'));
 const library=new AssetLibrary();
-for(const id of new Set([...Object.values(CORE_MODELS), residentModel('doctor'),residentModel('vendor')])) {
+for(const id of new Set([...Object.values(CORE_MODELS), residentModel('doctor'),residentModel('vendor','neighbor-4')])) {
   const asset=catalog.assets.find(a=>a.id===id); assert(asset,`Approved model ${id}`);
   library.loaded.set(id,await loadLocalGLTF(asset.url));
 }
@@ -35,6 +36,7 @@ for(let n=0;n<180;n++) {
     const actualPos=actors.find(a=>a.id===id).position;
     const root=scene.children.find(o=>{let match=false;o.traverse(c=>{if(c.userData.actorId===id)match=true;});return match;});
     const bounds=new THREE.Box3().setFromObject(root,true),head=models.head(id);
+    assert(models.height(id)>16&&models.height(id)<=17.5,`Civilian height stays at human scale: ${models.height(id)}`);
     assert.equal(root.scale.x,root.scale.y,'Preserve authored proportions instead of stretching narrow heads');
     assert.equal(root.scale.z,root.scale.y);
     assert([...bounds.min,...bounds.max,...head].every(Number.isFinite));
@@ -56,5 +58,25 @@ models.prepare(world,vendor.id);assert(models.ids.has(vendor.id));assert(!models
 models.prepare(world,'an');assert.equal(models.ids.size,3);
 assert.equal(JSON.stringify(world),saved,'Rendering preserves every snapshot field');
 assert.equal(JSON.stringify([...library.loaded].map(([id,g])=>[id,g.scene.toJSON()])),sourceBefore,'Instances never edit cached source rigs');
-models.dispose();assert.equal(scene.children.length,0,'All actors/props/bikes are removed on unmount');library.dispose();
-console.log(JSON.stringify({suite:'city-rigs',coreModels:3,frames:180,maxRadius,maxGroundError,actualTalkListen:true,focusedNpcBudget:1,headSurface:true,pause:true,sourceImmutable:true,worldWrites:false,disposed:true}));
+// The near cast has diverse models and a hard ceiling, independent of population.
+for(const id of CITIZEN_MODELS)if(!library.get(id))library.loaded.set(id,await loadLocalGLTF(catalog.assets.find(a=>a.id===id).url));
+const neighbors=world.living.residents.slice(0,20).map(r=>({...actor(r.id,'walk'),position:[0,0]}));
+models.prepare(world,neighbors[0].id,neighbors,[neighbors[1].id]);assert.equal(models.ids.size,8);
+assert(new Set(Object.values(models.snapshots()).map(a=>a.modelId)).size>=5,'Near residents need actual mesh diversity');
+assert(new Set(world.living.residents.map(r=>residentModel(r.roleId,r.id))).size>=8,'Existing population uses diverse residents');
+assert.equal(new Set(Array.from({length:1000},(_,i)=>residentModel('vendor','fixture-'+i))).size,9,'All nine resident styles are reachable');
+models.prepare(world,'an');assert.equal(models.ids.size,3);
+models.dispose();assert.equal(scene.children.length,0,'All actors/props/bikes are removed on unmount');
+// Timed-out primary loads replace a temporary modern rig once ready, without remount.
+const cache=new Map([[CITIZEN_FALLBACK,library.get(CITIZEN_FALLBACK)]]),requests=[];
+const delayed={get:id=>cache.get(id),failures:new Set(),load:async id=>{requests.push(id);throw Error('synthetic delayed load');}};
+const late=createModelActors(scene,delayed);assert.equal(late.snapshots().an.modelId,CITIZEN_FALLBACK);
+cache.set(CORE_MODELS.an,library.get(CORE_MODELS.an));late.prepare(world,'an');assert.equal(late.snapshots().an.modelId,CORE_MODELS.an);
+assert(Object.values(late.snapshots()).every(a=>a.profile==='xom-citizen-v1'));assert(requests.every(id=>id.startsWith('citizens/')));late.dispose();
+// Every style stays in the unchanged walking clearance at actual gait poses.
+let gaitRadius=0;
+for(const asset of catalog.assets){const rig=new RiggedAvatar(await loadLocalGLTF(asset.url));for(const clip of ['walk','sprint','talk','listen'])for(let n=0;n<30;n++){
+ rig.pose(clip,n/30,n/30+10*['walk','sprint','talk','listen'].indexOf(clip),[0,0],0,0);
+ rig.model.traverse(m=>{if(!m.isMesh)return;for(let i=0;i<m.geometry.attributes.position.count;i++){const p=m.getVertexPosition(i,new THREE.Vector3()).applyMatrix4(m.matrixWorld),radius=Math.hypot(p.x,p.z);gaitRadius=Math.max(gaitRadius,radius);assert(radius<=4.8+.001,`${asset.id}/${clip} outside navigation radius: ${radius}`);}});
+}rig.dispose();}library.dispose();
+console.log(JSON.stringify({suite:'city-rigs',coreModels:3,frames:180,maxRadius,maxGroundError,actualTalkListen:true,focusedNpcBudget:5,lateLoadUpgrade:true,styles:12,gaitRadius,headSurface:true,pause:true,sourceImmutable:true,worldWrites:false,disposed:true}));

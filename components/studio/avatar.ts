@@ -2,14 +2,14 @@ import * as THREE from 'three';
 import {mergeGeometries} from 'three/addons/utils/BufferGeometryUtils.js';
 import type {GLTF} from 'three/addons/loaders/GLTFLoader.js';
 import {RiggedAvatar} from '../city/three/rigged-avatar.ts';
-/** Modern head/body skin plus articulated daily-life arms. Human002 has no elbow
- * bones: stretching its one-piece arm made handoffs look like rigid poles. */
+/** Civilian skin with deterministic two-segment arm contact for editorial scenes. */
 export class StudioAvatar extends RiggedAvatar {
  private arms=new Map<string,{upper:THREE.Mesh;lower:THREE.Mesh;hand:THREE.Group;elbow:THREE.Mesh}>();
  constructor(source:GLTF,height:number,radius:number,shirt:string){
   super(source,height,radius,true);
-  const armBones=new Set(['arm-left','arm-right','hand-left','hand-right'].map(k=>this.joint(k)));
-  this.model.traverse(o=>{const mesh=o as THREE.SkinnedMesh;if(!mesh.isSkinnedMesh)return;const mask=mesh.geometry.getAttribute('wardrobe');for(let i=0;i<mask.count;i++){const p=mesh.getVertexPosition(i,new THREE.Vector3()).applyMatrix4(mesh.matrixWorld);const y=p.y/this.height;mask.setX(i,y>.04&&y<.18?2:y>=.18&&y<.365?1:0);}mask.needsUpdate=true;const skin=mesh.geometry.getAttribute('skinIndex'),weights=mesh.geometry.getAttribute('skinWeight'),indices=mesh.geometry.index?Array.from(mesh.geometry.index.array):Array.from({length:skin.count},(_,i)=>i),kept:number[]=[];
+  const original=source.scene.userData.profile==='xom-citizen-v1';
+  const armBones=new Set<THREE.Object3D>();for(const side of ['left','right'])this.joint(`arm-${side}`)?.traverse(b=>{if((b as THREE.Bone).isBone)armBones.add(b);});
+  this.model.traverse(o=>{const mesh=o as THREE.SkinnedMesh;if(!mesh.isSkinnedMesh)return;const mask=mesh.geometry.getAttribute('wardrobe');for(let i=0;i<mask.count;i++){const p=mesh.getVertexPosition(i,new THREE.Vector3()).applyMatrix4(mesh.matrixWorld);const y=p.y/this.height;if(!original)mask.setX(i,y>.04&&y<.18?2:y>=.18&&y<.365?1:0);}mask.needsUpdate=true;const skin=mesh.geometry.getAttribute('skinIndex'),weights=mesh.geometry.getAttribute('skinWeight'),indices=mesh.geometry.index?Array.from(mesh.geometry.index.array):Array.from({length:skin.count},(_,i)=>i),kept:number[]=[];
    const isArm=(v:number)=>{let w=0;for(let n=0;n<4;n++)if(armBones.has(mesh.skeleton.bones[skin.getComponent(v,n)]))w+=weights.getComponent(v,n);return w>.45;};
    for(let i=0;i<indices.length;i+=3)if(!indices.slice(i,i+3).some(isArm))kept.push(...indices.slice(i,i+3));mesh.geometry.setIndex(kept);
   });
@@ -26,7 +26,7 @@ export class StudioAvatar extends RiggedAvatar {
   }
  }
  private placeArm(side:string,target:THREE.Vector3,strength:number){
-  const arm=this.arms.get(side)!,origin=this.joint(`arm-${side}`)!.getWorldPosition(new THREE.Vector3()),rest=super.hand(side),goal=rest.lerp(target,strength),delta=goal.clone().sub(origin),distance=delta.length(),length=1.72*this.height/5.4;
+  const arm=this.arms.get(side)!,origin=this.joint(`arm-${side}`)!.getWorldPosition(new THREE.Vector3()),rest=super.hand(side),goal=rest.lerp(target,strength),delta=goal.clone().sub(origin),distance=delta.length(),length=.195*this.height;
   const reach=Math.min(distance,length*2-.02),direction=delta.normalize();goal.copy(origin).addScaledVector(direction,reach);
   const pole=new THREE.Vector3(side==='left'?1:-1,-.75,-.5).applyAxisAngle(new THREE.Vector3(0,1,0),this.group.rotation.y);pole.addScaledVector(direction,-pole.dot(direction)).normalize();
   const elbow=origin.clone().addScaledVector(direction,reach/2).addScaledVector(pole,Math.sqrt(Math.max(0,length*length-reach*reach/4)));
