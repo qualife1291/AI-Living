@@ -12,13 +12,15 @@ import {createGardens} from "./gardens";
 import { resolveModel } from "@/lib/city/asset-bindings";
 import { createPeople } from "./people";
 import { createAmbience } from "./ambience";
-import { createFauna } from "./fauna";
+import { createFauna } from "./fauna-models";
 import { AssetLibrary, setAssetTransform, type AssetPlacement } from "./assets";
 import { createModelActors } from "./model-actors";
 import {pickVisible,TapGesture} from "./picking";
 import { SceneDetail } from "./scene-detail";
 import { QualityBudget } from "../../../lib/city/quality-budget";
 import { streetModel } from "./streetscape";
+import {neighborhoodProps} from '../../../lib/city/neighborhood-props.ts';
+import {visibleHumans} from '../../../lib/city/actor-budget.ts';
 import * as THREE from "three";
 import type { LabelAnchor } from "../../../lib/city/overlay-layout";
 import { logClient, recordFrame } from "../../../lib/diagnostics";
@@ -246,6 +248,10 @@ export function createCity(
   road(metroLine, 10, 3, "#617878");
   road(metroLine, 5, 3.5, "#bac7bd");
   const placements: AssetPlacement[] = [];
+  const neighborhood=neighborhoodProps(new Set(approvedLoadedIds()));
+  function approvedLoadedIds(){return ['suburban/tree-large',...['book','books','chair','chessboard','lamp','plant','shelf','table','monitor','keyboard','mouse'].map(k=>'supplied/props/'+k)].filter(id=>assets.get(id));}
+  placements.push(...neighborhood.placements);
+  host.dataset.neighborhoodProps=JSON.stringify({placements:neighborhood.placements.length,plants:neighborhood.plantCount,trees:neighborhood.trees?sceneryTrees.length:0,models:[...new Set(neighborhood.placements.map(p=>p.id))]});
   const modelBuildings = ["commercial/building-a", "commercial/building-b", "commercial/building-c"];
   const modelHomes = ["suburban/building-type-a", "suburban/building-type-b", "suburban/building-type-c"];
   const propAsset = (prop: typeof streetProps[number]) => resolveModel(prop.kind === "produce" ? prop.venue === "Chợ nhỏ" ? "display-bread" : "display-fruit" : prop.kind) ?? "";
@@ -372,7 +378,7 @@ export function createCity(
     if (!open) nameOccluders.push(new THREE.Box3(new THREE.Vector3(v.x-52,0,v.y-83), new THREE.Vector3(v.x+52,height+6,v.y-11)));
     box(v.x, 1, v.y - 25, 125, 2, 112, open ? "#c8d3b4" : "#e6dec9");
     // Functional details at the edges; the central door/frontage slots stay open.
-    if (["cafe", "restaurant"].includes(v.type)) {
+    if (!neighborhood.tables&&["cafe", "restaurant"].includes(v.type)) {
       for (const side of [-1, 1]) {
         const x = v.x + side * 65, z = v.y + 20;
         cylinder(x, 7.5, z, 13, 1, "#e7c88b");
@@ -392,7 +398,7 @@ export function createCity(
       box(x, 8, z - 2, 18, 5, 1.5, "#d49b66");
       for (const dx of [-6, 6]) box(x + dx, 2.8, z, 1.2, 5, 4, "#5f7c75");
     }
-    if (!open) {
+    if (!open&&!neighborhood.planters) {
       for (const side of [-1, 1]) {
         cylinder(v.x + side * 53, 3, v.y - 4, 5, 5, "#c68668");
         leaves.push({ x: v.x + side * 53, y: 7.5, z: v.y - 4, w: 6, h: 7, d: 6, color: "#68a879" });
@@ -491,12 +497,13 @@ export function createCity(
       venueLabels.push({ sprite: sign, width: 112 });
     }
   }
-  for (const t of sceneryTrees) tree(t.x, t.z, t.seed);
+  for(const t of sceneryTrees){if(neighborhood.trees)cylinder(t.x,10,t.z,2.6,20,'#9c8769');else tree(t.x,t.z,t.seed);}
   for (const lamp of sceneryLamps) {
     cylinder(lamp.x, 26, lamp.z, 1.4, 52, "#728882");
     box(lamp.x - 4, 52, lamp.z, 11, 2, 5, "#f7dba1");
   }
   for (const prop of streetProps) {
+    if(neighborhood.replacedStreet.has(prop.id))continue;
     if(prop.kind==="flowers")continue; // Stateful flower beds use their own two batches.
     const id = propAsset(prop);
     if (id && assets.get(id)) placements.push({ id, x: prop.x, y: groundElevation(prop.x, prop.z), z: prop.z, width: prop.width, depth: prop.depth, height: prop.kind === "bin" ? 8 : 12, yaw: Math.PI });
@@ -619,7 +626,7 @@ export function createCity(
   );
   ring.rotation.x = -Math.PI / 2;
   scene.add(ring);
-  const fauna = createFauna(scene, people.geometry);
+  const fauna = createFauna(scene, people.geometry,assets);
   host.dataset.animalBatches = String(fauna.stats.batches);
   const shadowCanvas = document.createElement("canvas"); shadowCanvas.width = shadowCanvas.height = 64;
   const shadowContext = shadowCanvas.getContext("2d")!, gradient = shadowContext.createRadialGradient(32, 32, 3, 32, 32, 31);
@@ -647,6 +654,7 @@ export function createCity(
   // Render-only crown/trunk bounds, separate from walkable ground footprints.
   const cameraFoliage=sceneryTrees.flatMap(t=>{
     const ground=groundElevation(t.x,t.z);
+    if(neighborhood.trees)return [{x:t.x,z:t.z,width:3,depth:3,minY:ground,maxY:ground+20},{x:t.x,z:t.z,width:36,depth:32,minY:ground+18,maxY:ground+50}];
     return [{x:t.x,z:t.z,width:3,depth:3,minY:ground,maxY:ground+34+t.seed%7},
       ...[-1,0,1].map(side=>({x:t.x+side*6,z:t.z+(side===0?0:2),width:side===0?22:18,depth:20,
         minY:ground+36+t.seed%7+(side===0?4:0)-(side===0?13:10),
@@ -816,11 +824,10 @@ export function createCity(
       const shared=state.sharedGround;
       if(shared&&shared.worldBorn===world.born){
         const sampled=sampleSharedGround(shared,now-1500);
-        const animals=new Set(['muop','cun','se']),allHumans=sampled.actors.filter(a=>!animals.has(a.id));
+        const animals=new Set(animalsAt(world,0).map(a=>a.id)),allHumans=sampled.actors.filter(a=>!animals.has(a.id));
         const serverLines=sampleAuthoritySpeech(state.sharedAuthority,shared,sampled.simMs,sampled.actors);
         const preferred=new Set([selected,...(serverLines.length?serverLines.flatMap(u=>[u.speakerId,u.listenerId]):[world.livingTurn?.residentId])]);
-        const reserved=serverLines.length?preferred.size:2;
-        actors=[...allHumans.slice(0,capacity-reserved),...allHumans.filter(a=>preferred.has(a.id)&&!allHumans.slice(0,capacity-reserved).some(p=>p.id===a.id))].slice(0,capacity);
+        actors=visibleHumans(allHumans,capacity,[...world.people.map(p=>p.id),...preferred]);
         groundAnimals=animalsAt(world,0).flatMap(base=>{const actor=sampled.actors.find(a=>a.id===base.id);return actor?[{...base,...actor}]:[];});cars=sampled.cars;seconds=sampled.simMs/1000;
         socialPoses=new Map();exchanges=[];
         for(const line of serverLines){const source=line.generator==='local-llm'?'ai':'script';socialPoses.set(line.speakerId,{peerId:line.listenerId,gesture:'explain',speaking:true,source});socialPoses.set(line.listenerId,{peerId:line.speakerId,gesture:'listen',speaking:false,source});exchanges.push({a:line.speakerId,b:line.listenerId,title:'Trò chuyện trong xóm',source,speech:{speaker:line.speakerId,text:line.text,source:source==='ai'?'ai':'routine',key:`ground:${line.id}`}});}
@@ -830,12 +837,12 @@ export function createCity(
       current=actors.find(a=>a.id===selected)??actors[0];
     }else{
       delete host.dataset.sharedGround;delete host.dataset.sharedAuthority;
-      const rawActors = [
+      const rawActors = visibleHumans([
         ...actorsAt(world, lastTime),
         ...(world.living
           ? crowdAt(world.living, world, lastTime, selected)
           : []),
-      ].slice(0, capacity);
+      ],capacity,[selected,...world.people.map(p=>p.id),world.livingTurn?.residentId]);
       const animalProjections = animalsAt(world, lastTime);
       cars = trafficDirector.frame(seconds, [...actors, ...groundAnimals].map(a => a.position), [...actors, ...groundAnimals].map(a => a.bicycle?.radius ?? 4.8));
       const safeAll = walkDirector.frame(world, rawActors, seconds, cars, animalProjections);
@@ -912,7 +919,8 @@ export function createCity(
       dummy.position.set(point[0], groundElevation(point[0], point[1]) + .04, point[1]); dummy.rotation.set(0, car?.yaw ?? 0, 0); dummy.scale.set(car ? car.width * 1.35 : 11, 1, car ? car.length * 1.2 : 8); dummy.updateMatrix(); contactShadows.setMatrixAt(i, dummy.matrix);
     }
     contactShadows.instanceMatrix.needsUpdate = true;
-    fauna.draw(groundAnimals, seconds, dt, world.paused);
+    fauna.draw(groundAnimals, poseClock, dt, world.paused);
+    host.dataset.animalModels=JSON.stringify(fauna.snapshots());
     host.dataset.animalPositions = JSON.stringify(groundAnimals.map(a => ({ id: a.id, species: a.species, position: a.position })));
     host.dataset.homeTargets=JSON.stringify(actors.filter(a=>a.homeAnchor).map(a=>({id:a.id,target:a.homeAnchor,position:a.position})));
     if (current) {
@@ -1100,6 +1108,7 @@ export function createCity(
       motionPreference.removeEventListener('change',motionChanged);
       renderer.domElement.removeEventListener('keydown',cameraKey);
       modelActors.dispose();
+      fauna.dispose();
       people.dispose();
       gardens.dispose();
       const geometries = new Set<THREE.BufferGeometry>(),

@@ -42,7 +42,8 @@
     "boat-fishing": "watercraft/boat-fishing-small",
     "boat-row": "watercraft/boat-row-small",
     "boat-house": "watercraft/boat-house-a",
-    "buoy": "watercraft/buoy"
+    "buoy": "watercraft/buoy",
+    "book": "supplied/props/book"
   },
   "procedural": [
     "bench",

@@ -17,6 +17,11 @@ export async function requireAuthoritySchema(db:D1Database){
  if(rows.length!==expected.length||expected.some(([name,type,table])=>!rows.some(r=>r.name===name&&r.type===type&&r.tbl_name===table)))fail('authority-schema-incomplete',503);
 }
 async function validateReceipt(row:BatchRow){const r=receiptSchema.parse(JSON.parse(bounded(row.data,AUTHORITY_LIMITS.receiptBytes)));if(await groundHash(r.basis)!==row.checksum||r.basis.sequence!==row.sequence||r.basis.createdAt!==row.created_at||r.basis.operationId!==row.operation_id||r.basis.protocolSha256!==await authorityProtocolSha()||r.basis.records.some(v=>v.eligibleForReward!==false||v.eligibleForP2P!==false))fail('authority-receipt-integrity');return r;}
+/** Internal durable consumers select by operation; callers cannot supply receipt JSON. */
+export async function readAuthorityBatch(db:D1Database,operationId:string){
+ const row=await batchRow(db,z.string().uuid().parse(operationId));if(!row)fail('authority-receipt-missing');
+ return {row:row!,receipt:await validateReceipt(row!)};
+}
 /** Missing0011 is optional until a shared marker activates accounting. Orphans fail closed. */
 export async function loadAuthority(db:D1Database,shared:SharedState,parentCheckpoint:string):Promise<AuthorityHead|null>{
  const present=await db.prepare("SELECT name FROM sqlite_master WHERE type='table' AND name='ground_authority_states'").first();

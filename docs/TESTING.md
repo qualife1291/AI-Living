@@ -1,6 +1,6 @@
 # Kiểm thử và bằng chứng
 
-`scripts/unit-suites.json` là danh sách suite hiện hành; `npm run test:unit` dùng process độc lập, tối đa 4 workers, thu đủ lỗi thay vì fail-fast. `XOM_TEST_JOBS=1` chạy tuần tự. Mốc H3b có70suite đã đạt; đây không phải kết quả chạy mới mỗi khi sửa tài liệu.
+`scripts/unit-suites.json` là danh sách suite hiện hành; `npm run test:unit` dùng process độc lập, tối đa 4 workers, thu đủ lỗi thay vì fail-fast. `XOM_TEST_JOBS=1` chạy tuần tự. Kết quả đã đạt phải đọc theo source/SHA trong validation; dọn tài liệu không tạo kết quả test mới.
 
 ## Chọn kiểm tra theo thay đổi
 
@@ -22,6 +22,7 @@ npm run test:api:ground
 npm run test:api:shared-ground
 npm run test:api:legacy
 node scripts/test-chat-admission-api.mjs
+node scripts/test-progress-api.mjs
 npm run audit:learning-evidence
 ```
 
@@ -37,7 +38,7 @@ Restart Worker từ `dist/server/wrangler.json` sau build. `QA_BASE` bắt buộ
 
 | Harness trong scripts/ | Điều phải giữ |
 |---|---|
-| qa-scene-interactions.py | City follow giữ ID, native skin/instance picking/occlusion, drag/pinch không thành tap;4Studio×desktop/mobile focus/zoom/orbit/shot/restart/reset và mèo trên đất/được bế. |
+| qa-scene-interactions.py | City follow giữ ID, native skin/instance picking/occlusion, drag/pinch không thành tap;4Studio×desktop/mobile focus/zoom/orbit/shot/restart/reset và mèo trên đất/được bế phải có cả người hỗ trợ trong khung; dimensions khăn phải khớp mesh sau chuyển stage. |
 | qa-jump-lod.py | Pause khi NPC đang nhảy rồi chuyển native→crowd→native: cùng model/độ cao/clock desktop-mobile, không reset pha khi select/zoom. |
 | qa-city-activities.py, qa-wardrobe-lod.py |15ca hoạt động/2ca wardrobe desktop-mobile; shader errors, đủ cư dân khi action atlas warm, model preview/city trùng, màu khi pause, một preview canvas và zoom giữ identity. API writes synthetic; contact/clearance kiểm actual skin trong city-actions/crowd-skins. |
 | qa-chat-admission.py | HTTP429 giữ draft/focus, không tự retry, hồi phục khi chủ động gửi lại; desktop/mobile, không overflow. Mock UI writes; quota/rollback kiểm riêng trên compiled D1. |
@@ -53,6 +54,8 @@ Restart Worker từ `dist/server/wrangler.json` sau build. `QA_BASE` bắt buộ
 | qa-domain-skills.py | 8 domain/4 gate/legacy/no overflow. |
 | qa-soundscape.py | Gesture opt-in, signal thật, pause/hidden/OSM/off/unmount/unsupported. |
 | qa-resource-gallery.py | 19 mẫu/15 pack, texture/clip, selection race/load retry/pause/dispose. |
+
+Framing metadata đạt vẫn phải mở ảnh cận cảnh: trường hợp mèo từng đạt head/feet nhưng camera lọt vào tay người bế và khăn giữ kích thước cũ. Giữ ảnh lỗi như baseline, sửa cả kiểm tra envelope/mesh dimensions trước khi chốt.
 
 Ảnh và metrics ở [screenshots](screenshots/), bằng chứng máy đọc ở [validation](validation/). Browser có thể mock mutations; persistence phải kiểm D1 riêng. Gửi ảnh QA thực cho người dùng, ghi preview local hay production. Ảnh AI/asset preview không thay QA; SwiftShader và synthetic 240 không chứng minh hardware FPS/pin/nhiệt/density live hoặc soak 24 giờ.
 
@@ -94,11 +97,13 @@ GND3: `test-ground-authority.mjs` chạy observer trên GND2 physics thật, ki�
 
 H3b `test-ground-learning.mjs` chạy appointment thật qua GND2/GND3: đủ hai presence receipt/plan/epoch và overlap cửa sổ mới có reward, actual root distance là cost; partial/pause/cancel/baseline/transit/clock jump/retirement không nhận positive credit. Context/outcome bất biến, chunk/resume cùng proof, duplicate không fit lại, raw JSON/partition/namespace sai bị loại. Matrix artifact rebuild từ one-pass ledger; CLI smoke process thật và guards SHA/UTF8/bytes/exclusive/symlink/hardlink/traversal/overwrite. `test-ground-authority-store.mjs` inject cùng clock cho SQLite julianday và server, không phụ thuộc giờ thật đã vượt fixed fixture anchor. [H3b evidence](validation/learning-h3b-2026-10-29.json) giữ70/70full suite và hai lỗi đã sửa;96study task/32train repeat byte-identical, holdout action collapse **không promote**. UI/runtime/schema không đổi; kiểm build loại experimental code thay vì chạy browser lại để nhận một bằng chứng không liên quan.
 
-Citizens29/10: [evidence](validation/citizens-2026-10-29.json) giữ70work/73QA suite,12style/radius/late upgrade/source immutability và8Studio case ảnh thật. G0 dùng manifest27transport hiện tại,4fallback gồm delayed primary; `QA_G0_ONLY_FALLBACKS=1` hoặc `QA_G0_VIEWPORT=mobile` chạy phần bị ảnh hưởng, report chỉ nhận phần đã chạy. Harness ghi screenshot/body/errors/canvas telemetry khi lỗi; một mobile OSM timeout rồi retest đạt chưa là soak PASS. Source-vault check chỉ đọc/hash các ZIP trong registry ngoài app, không tải hoặc deploy.
+Citizens29/10: [evidence](validation/citizens-2026-10-29.json) giữ70work/73QA suite,12style/radius/late upgrade/source immutability và8Studio case ảnh thật. G0 dùng transfer manifest hiện hành,4fallback gồm delayed primary; `QA_G0_ONLY_FALLBACKS=1` hoặc `QA_G0_VIEWPORT=mobile` chạy phần bị ảnh hưởng, report chỉ nhận phần đã chạy. Harness ghi screenshot/body/errors/canvas telemetry khi lỗi; một mobile OSM timeout rồi retest đạt chưa là soak PASS. Source-vault check chỉ đọc/hash các ZIP trong registry ngoài app, không tải hoặc deploy.
 
 Supplied29/10: [evidence](validation/supplied-civilians-2026-10-29.json) giữ73suite và browser source68060d6; `test-supplied-assets.mjs` kiểm5member/SHA/license chính xác, cấm đổi CC0, một mesh/material/44bone/11clip và2palette. G0 giữ4fallback + delayed upgrade; Studio thêm mức chiều cao≥93% và đường nhìn qua scenery trang trí. Authoring --write cần vault/Pillow/dev tools; CI --check chỉ đọc derivative. Bốn ZIP gốc ngoài app đã kiểm bytes/SHA, ZIP4 có250GLB tĩnh/50mẫu×5LOD chứ không có rig/clip.
 
 H5a `test-peer-sharing.mjs` chạy accepted GND3 physics và chứng minh offer-before-hearing, chunk/resume cùng proof, baseline/partial/pause/cancel/transit không mint. Kiểm clone/JSON/forwarding/sai world-session-recipient, TTL/decay chỉ đọc, top-K/topic, immutable proof, capacity không eviction-amplification và clock fence sau duplicate. CLI subprocess kiểm checksum, bounds/options/private errors/exclusive output; path guards tái sử dụng helper study đã có test symlink/hardlink. Study cố định và biên tập, không đo policy/model gain; module phải vắng trong Worker JS build. Không persistence/UI/schema đổi, nên không API/browser H5 mới; regression compiled app vẫn phải đạt.
+
+H5b1 `node scripts/test-peer-offer-store.mjs` (có trong unit) chạy journal/receipt trên SQLite thật: append-only0012 giữ dữ liệu cũ, UUID/lost-ACK/concurrent, exact source/two-head CAS, immutable ledger, silent-ignore rollback, sai recipient/proof JSON/receipt-parent/hash/session và offer hồi tố. Hai heard receipt được GND3 replay thực tạo ra; kiểm verifier zero-write và giữ memory/history/policy. `node scripts/test-peer-offer-d1.mjs` bundle **các hàm nội bộ** vào workerd fixture riêng, apply toàn bộ migration và lặp concurrent/rollback/2heard/privacy/read-only trên D1 thật. Clock capture SQL chỉ inject trong fixture; không update receipt/source để dựng proof. Đây không là app API/auth E2E hoặc production migration. Build phải vắng `ground-peer-offer-v1`; chưa UI/pulse/importer nên không có browser run mới. [Contract](LEARNING.md#h5b1--journal-và-đối-chiếu-receipt-bền-vững), [evidence](validation/peer-offer-journal-2026-10-29.json).
 
 Rà soát chat/H5a: `test-chat-adversarial.mjs` kiểm6fault native SQLite; `test-chat-admission-api.mjs` chạy hai Worker isolate dùng chung D1,60UUID mới/16duplicate và6rollback D1 thật, counter legacy/corruption và readback bảo toàn history. `test-bounded-json.mjs` thêm cancel không resolve. `test-peer-sharing-audit.mjs` kiểm8trial,20chunk size(trial0),6delivery permutation, capacity1–32 với3proof, TTL/proxy/clock và world purity. Không báo các miền độc lập thành tích Descartes hoặc32liveentry.
 

@@ -145,3 +145,9 @@ export const groundAuthorityStates = sqliteTable('ground_authority_states', {
 export const groundAuthorityBatches = sqliteTable('ground_authority_batches', {
  id:text('id').primaryKey(),stateId:text('state_id').notNull().references(()=>groundAuthorityStates.id),operationId:text('operation_id').notNull(),sequence:integer('sequence').notNull(),data:text('data').notNull(),checksum:text('checksum').notNull(),createdAt:integer('created_at').notNull(),
 },t=>[uniqueIndex('idx_authority_batch_sequence').on(t.stateId,t.sequence),uniqueIndex('idx_authority_batch_operation').on(t.stateId,t.operationId)]);
+
+/** H5b foundation only: offers precede publication; no inbox or learning writes. */
+export const peerOffers = sqliteTable('peer_offers', {
+ id:text('id').primaryKey(),sessionId:text('session_id').notNull(),recipientId:text('recipient_id').notNull(),
+ data:text('data').notNull(),checksum:text('checksum').notNull(),createdAt:integer('created_at').notNull(),
+},t=>[index('idx_peer_offers_recipient').on(t.sessionId,t.recipientId)]);

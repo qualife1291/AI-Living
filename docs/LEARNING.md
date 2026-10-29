@@ -2,6 +2,8 @@
 
 Học policy trong mô phỏng, không fine-tune trọng số Qwen. Modules chính: `lib/living/{learning,linucb,policy-store,skills,prompt-memories,context-cards,dialogue-pool,director,service}.ts` và `lib/{memory-records,memory-backfill,memory-backfill-store}.ts`; schema/code là nguồn contract chi tiết.
 
+H6 mở rộng96candidate trong sandbox riêng, giữ41scenario live và chưa promote; contract/CI/artifact ở [H6 offline](H6_OFFLINE_POLICY_SCALE.md). Các study H6 cũ bên dưới là replay/cold-start khác, không suy kết quả của một experiment sang experiment khác. Việc còn lại chỉ ghi ở [ROADMAP](../ROADMAP.md).
+
 ## Outcome và policy
 
 Disjoint LinUCB có6 features `[1,energy/100,hunger/100,socialNeed/100,isFreshRain,skill/100]`, ridge I, inverse covariance đối xứng21 số và b gồm 6 số; Sherman–Morrison fit outcome hợp lệ. Điểm `xᵀA⁻¹b + α√(xᵀA⁻¹x)` cùng needs/health/sleep/weather/novelty guards. Pending lưu context-at-choice; legacy thiếu context chỉ tabular, không tạo context/samples giả.
@@ -16,7 +18,7 @@ Animal policy có4 action rest/forage/play/shelter, giữ lịch sử riêng; kh
 
 ## Memory và bối cảnh
 
-Structured memories ghi event-report đúng recipient hoặc simulation-plan-outcome đúng actor, stableID/INSERTORIGNORE/revision+nonce cùng batch. Future dialogue không cấp witness. Legacy record đọc có nhãn; memory backfill local additive có ở phần bên dưới, nguồn thiếu chứng cứ vẫn giữ nguyên/bỏ qua. Curation còn trong [ROADMAP](../ROADMAP.md). Archive dùng INSERTSELECTjson_each, không xóa history đã lưu.
+Structured memories ghi event-report đúng recipient hoặc simulation-plan-outcome đúng actor, stableID/INSERTORIGNORE/revision+nonce cùng batch. Future dialogue không cấp witness. Legacy record đọc có nhãn; memory backfill local additive có ở phần bên dưới, nguồn thiếu chứng cứ vẫn giữ nguyên/bỏ qua. Curation offline có ở phần dưới; corpus model thật, blind evaluation và activation còn trong [ROADMAP](../ROADMAP.md). Archive dùng INSERTSELECTjson_each, không xóa history đã lưu.
 
 Owner-only memory API lấy top-K theo topic/importance/time từ100 row gần nhất, lọc actor/witness. Daemon chỉ đúng hai actor,3 record/người,400 ký tự/record, deadline2,5s song song; kiểm owner/kind/ID/date và giữ provenance/truncation trong prompt. Denied401/403 không fallback; unavailable chỉ own summaries. Helper chỉ loopback, không ghi memory/skill/P2P. Context là dữ liệu, không là chỉ thị thực thi; kiểm prompt không chứng minh LLM luôn giữ đúng ngữ nghĩa.
 
@@ -319,3 +321,13 @@ Chia80/10/10 theo SHA **connected groups** chung scene/source/exact prompt/conte
 Clock phải hữu hạn, không âm và≤`Number.MAX_SAFE_INTEGER`; input ngoài miền bị từ chối trước khi thay watermark. [Audit bổ sung](validation/phase-verification-2026-10-29.json) kiểm8trial và20chunk size ở trial0,6thứ tự delivery, constructor capacity1–32 với3proof thực, TTL boundary và proxy/prototype/forged text. Đây không phải load32entry hoặc tích Descartes8×20, không đo learning gain hay cấp authority bền vững.
 
 `node scripts/peer-sharing-study.mjs --out=.sites-runtime/training/h5-smoke.json` chạy study hữu hạn, output exclusive/checksum, không URL/input model/DB/network. Hai lần chạy acceptance phải cùng artifact; không là đo gain học tập, blind semantic/model evaluation hoặc rollout. App bundle không import module này; không browser mới vì UI/runtime/schema không đổi. H5b còn offer provenance bền vững, xác thực receipt từ journal thật, inbox/receipt CAS, recipient guard và kiểm thử API/privacy trước khi kết nối live. Không dùng artifact offline để bật P2P/model promotion.
+
+### H5b1 — journal và đối chiếu receipt bền vững
+
+`peer-offer-store.ts` bổ sung nền tảng nội bộ, **chưa được app/API/pulse import**. `recordPeerOffer` nhận UUID và expected shared/authority checkpoint; chỉ ghi khi GND3 active, source đã theo kịp world, không pause và đúng An + một resident. Offer giữ speaker/recipient/topic/text, born/session, revision/source high-water, simtime và SHA context trước publication. Exact world + hai head + source high-water được CAS cùng INSERT/postassert trong một D1 batch. UUID retry trả snapshot gốc, đổi payload bị từ chối; silent ignore phải rollback. Không ghi world, ký ức hoặc policy.
+
+`verifyPeerOfferDelivery` chỉ nhận ID offer/utterance/operation và recipient đã được caller tin cậy cố định. Nó đọc offer và hai receipt từ DB, đối chiếu GND3 với parent GND2 cùng operation/session/request/source/time; emitted và heard phải đúng cùng text, hai người, epoch/plan/window, đủ12giây. Source chứa turn phải đến **sau** offer cả revision lẫn sequence; turn SHA, generator và dialogue line phải khớp. Clock capture SQL có thể làm tròn ms, vì vậy thứ tự dùng revision/sequence + CAS, không dựa timestamp client. Không nhận proof JSON, caption ACK hoặc checksum bên ngoài làm authority. SHA kiểm integrity; trust nằm ở server writer và immutable ledger, không là chữ ký chống người có toàn quyền sửa DB.
+
+Migration0012 thêm `peer_offers`, index và immutable triggers; đồng thời khóa UPDATE/DELETE của shared batch được dùng làm historical parent. Snapshot/journal Drizzle đi cùng, chỉ mới áp dụng fixture; health8probes và DB live chưa thay đổi. Verifier chỉ đọc, trả `heard-from-peer`/`unverified-advice`/`ownExperience:false` và hai eligibility false. Nó chưa có durable inbox, TTL admission hoặc quyền cấp sample/skill/reward.
+
+Bước sau là nối producer tin cậy **trước choice**, inbox + receipt-consumption CAS/quota/clock fence trong cùng batch, rồi API owner/recipient privacy và evaluation. Hàm journal chứng minh trước publication; chưa có hook runtime để bảo đảm mọi choice đã được capture. Không dùng kết quả verifier hoặc artifact H5a làm importer tự động. [Evidence và lệnh test](validation/peer-offer-journal-2026-10-29.json).

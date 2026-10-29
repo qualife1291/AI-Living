@@ -7,13 +7,14 @@ import resources from "../../../public/models/resources/catalog.json" with { typ
 import { CORE_MODELS, CITIZEN_FALLBACK } from "../../../lib/city/character-models.ts";
 import {cityAssetIds} from '../../../lib/city/city-assets.ts';
 import supplied from '../../../public/models/supplied/catalog.json' with {type:'json'};
+import suppliedProps from '../../../public/models/supplied/props/catalog.json' with {type:'json'};
 import {reviewedAssetLicense} from '../../../lib/city/asset-policy.ts';
 import transfers from '../../../data/assets/city-transfer-manifest.json' with {type:'json'};
 import {decodeAssetTransfer} from '../../../lib/city/asset-transfer.ts';
 
 export {cityAssetIds};
 
-export const approvedAssets = [...catalog.assets, ...resources.assets, ...citizens.assets,...supplied.assets];
+export const approvedAssets = [...catalog.assets, ...resources.assets, ...citizens.assets,...supplied.assets,...suppliedProps.assets];
 export type AssetPlacement = { id: string; x: number; y: number; z: number; width: number; depth: number; height: number; yaw?: number; stretch?: boolean };
 type Compiled = { geometry: THREE.BufferGeometry; material: THREE.MeshPhongMaterial; size: THREE.Vector3 };
 export type ResourceSets = { geometries: Set<THREE.BufferGeometry>; materials: Set<THREE.Material>; textures: Set<THREE.Texture> };
@@ -71,11 +72,12 @@ export class AssetLibrary {
   compile(id: string): Compiled | undefined {
     const cached = this.compiled.get(id); if (cached) return cached;
     const model = this.get(id); if (!model || model.animations.length) return;
-    const geometries: THREE.BufferGeometry[] = []; let texture: THREE.Texture | null = null;
+    const geometries: THREE.BufferGeometry[] = []; let texture: THREE.Texture | null = null,doubleSided=false;
     model.scene.updateMatrixWorld(true);
     model.scene.traverse(o => {
       const mesh = o as THREE.Mesh; if (!mesh.isMesh) return;
       const material = (Array.isArray(mesh.material) ? mesh.material[0] : mesh.material) as THREE.MeshStandardMaterial;
+      doubleSided ||= material.side===THREE.DoubleSide;
       if (material.map) texture = material.map;
       const geo = mesh.geometry.index ? mesh.geometry.toNonIndexed() : mesh.geometry.clone(); geo.applyMatrix4(mesh.matrixWorld);
       if (!geo.getAttribute("normal")) geo.computeVertexNormals();
@@ -89,7 +91,7 @@ export class AssetLibrary {
     const geometry = mergeGeometries(geometries); geometries.forEach(g => g.dispose()); if (!geometry) return;
     geometry.computeBoundingBox(); const box = geometry.boundingBox!, center = box.getCenter(new THREE.Vector3()), size = box.getSize(new THREE.Vector3());
     geometry.translate(-center.x, -box.min.y, -center.z); geometry.computeBoundingBox();
-    const compiled = { geometry, size, material: new THREE.MeshPhongMaterial({ map: texture, vertexColors: true, shininess: 20, specular: new THREE.Color("#5c584f"), alphaTest: .1 }) };
+    const compiled = { geometry, size, material: new THREE.MeshPhongMaterial({ map: texture, vertexColors: true, shininess: 20, specular: new THREE.Color("#5c584f"), alphaTest: .1,side:doubleSided?THREE.DoubleSide:THREE.FrontSide }) };
     this.compiled.set(id, compiled); return compiled;
   }
   addBatches(scene: THREE.Object3D, placements: AssetPlacement[]) {
@@ -107,23 +109,26 @@ export class AssetLibrary {
   }
   addWorldLOD(scene: THREE.Scene, placements: AssetPlacement[]) {
     const meshes = this.addBatches(scene, placements), dummy = new THREE.Object3D(), tint = new THREE.Color();
-    let lastX = Infinity, lastZ = Infinity;
+    let lastX = Infinity, lastY=Infinity,lastZ = Infinity;
     const coarse = new THREE.InstancedMesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshLambertMaterial(), Math.max(1, placements.length)); coarse.frustumCulled = false; coarse.instanceMatrix.setUsage(THREE.DynamicDrawUsage); scene.add(coarse);
+    const farTrees=new THREE.InstancedMesh(new THREE.SphereGeometry(.5,7,5),new THREE.MeshLambertMaterial({color:'#6f9f74'}),Math.max(1,placements.filter(p=>p.id==='suburban/tree-large').length));farTrees.count=0;farTrees.frustumCulled=false;farTrees.instanceMatrix.setUsage(THREE.DynamicDrawUsage);scene.add(farTrees);
     return (camera: THREE.Camera, detailedShadows = false) => {
       for (const mesh of meshes.values()) mesh.castShadow = detailedShadows;
-      if (Math.hypot(camera.position.x - lastX, camera.position.z - lastZ) < 8) return;
-      lastX = camera.position.x; lastZ = camera.position.z;
-      coarse.count = 0;
+      if (Math.hypot(camera.position.x - lastX,camera.position.y-lastY, camera.position.z - lastZ) < 8) return;
+      lastX = camera.position.x;lastY=camera.position.y; lastZ = camera.position.z;
+      coarse.count = farTrees.count=0;
       for (const mesh of meshes.values()) {
         mesh.count = 0;
         for (const p of mesh.userData.placements as AssetPlacement[]) {
-          const distance = Math.hypot(camera.position.x - p.x, camera.position.z - p.z), building = p.width > 40 && p.height > 30;
+          const distance = Math.hypot(camera.position.x - p.x,camera.position.y-p.y, camera.position.z - p.z), building = p.width > 40 && p.height > 30;
           if (distance < (building ? 650 : p.height < 2 ? 420 : 320)) { setAssetTransform(dummy, mesh.userData.assetSize, p); mesh.setMatrixAt(mesh.count++, dummy.matrix); }
           else if (building) { dummy.position.set(p.x, p.y + p.height / 2, p.z); dummy.rotation.set(0, p.yaw ?? 0, 0); dummy.scale.set(p.width, p.height, p.depth); dummy.updateMatrix(); coarse.setMatrixAt(coarse.count, dummy.matrix); coarse.setColorAt(coarse.count++, tint.set(p.id.startsWith("commercial") ? "#c9d3cc" : "#d6c9ad")); }
+          else if(p.id==='suburban/tree-large'){dummy.position.set(p.x,p.y+p.height/2,p.z);dummy.rotation.set(0,0,0);dummy.scale.set(p.width,p.height,p.depth);dummy.updateMatrix();farTrees.setMatrixAt(farTrees.count++,dummy.matrix);}
         }
         mesh.instanceMatrix.needsUpdate = true;
       }
       coarse.instanceMatrix.needsUpdate = true; if (coarse.instanceColor) coarse.instanceColor.needsUpdate = true;
+      farTrees.instanceMatrix.needsUpdate=true;
     };
   }
   collectAndClose(sets: ResourceSets) { this.dead = true; this.transferAbort.abort(); this.manager.abort(); for (const model of this.loaded.values()) collectAssetResources(model.scene, sets); for (const model of this.compiled.values()) { sets.geometries.add(model.geometry); sets.materials.add(model.material); } this.loaded.clear(); this.compiled.clear(); }

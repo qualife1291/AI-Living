@@ -1,0 +1,127 @@
+{
+  "kind": "peer-offer-journal-acceptance-v1",
+  "date": "2026-10-29",
+  "timezone": "Asia/Ho_Chi_Minh",
+  "status": "LOCAL_ACCEPTED_RUNTIME_NOT_CONNECTED",
+  "sourceBase": "38fd1d7",
+  "scope": "H5b1 internal durable pre-publication offer journal and read-only grounded delivery verifier",
+  "implementation": {
+    "module": "lib/living/peer-offer-store.ts",
+    "migration": "drizzle/0012_peer_offers.sql",
+    "sourceTables": 24,
+    "liveMigrationApplied": false,
+    "appApiPulseImporter": false,
+    "runtimeP2P": false,
+    "modelOrLearningChanged": false
+  },
+  "nativeSQLite": {
+    "suite": "peer-offer-store",
+    "nativeSQLite": true,
+    "actualGroundReplay": true,
+    "heard": 2,
+    "prePublicationJournal": true,
+    "sourceCAS": true,
+    "immutableOfferAndSharedLedger": true,
+    "lostAckIdempotent": true,
+    "parallelSameUuidOneCommit": true,
+    "silentIgnoreRollback": true,
+    "readOnlyRecipientVerification": true,
+    "wrongReceiptSourceRejected": true,
+    "retroactiveOfferRejected": true,
+    "protectedPersonalStateUnchanged": true,
+    "runtimeP2P": false,
+    "training": false,
+    "liveDatabaseWrites": 0,
+    "appendOnlyMigrationPreservesExistingRows": true
+  },
+  "workerdD1": {
+    "suite": "peer-offer-workerd-d1",
+    "bundledInternalFunctions": true,
+    "allMigrations": true,
+    "parallelSameUuidOneCommit": true,
+    "silentIgnoreRollback": true,
+    "actualHeardReceipts": 2,
+    "recipientAndJsonGuards": true,
+    "readOnlyVerification": true,
+    "protectedPersonalState": true,
+    "appApiAdded": false,
+    "runtimeP2P": false,
+    "liveDatabaseWrites": 0
+  },
+  "checks": {
+    "typecheck": "PASS",
+    "lint": {
+      "errors": 0,
+      "warnings": 1,
+      "existingWarning": "scripts/h6-shadow-worker.mjs:37 unused trainReport"
+    },
+    "fullUnit": {
+      "suite": "unit-summary",
+      "total": 82,
+      "passed": 82,
+      "failed": [],
+      "workers": 4,
+      "seconds": 160.57
+    },
+    "exactBuild": {
+      "status": "PASS",
+      "commit_sha": "13999b2a552ca67878e09ff8f852148c82c1b7be",
+      "built_at": "2026-10-29T16:47:27.592Z"
+    },
+    "compiledGroundRegression": {
+      "suite": "ground-authority-api",
+      "compiledWorker": true,
+      "ephemeralD1": true,
+      "ownerLocalRemoteAndOriginGuards": true,
+      "bodyUtf8And2KiB": true,
+      "noBootstrapOrClientPositions": true,
+      "optionalInactive0011": true,
+      "explicitStartBaseline": true,
+      "coupledCAS": true,
+      "concurrentOneCommit": true,
+      "actualReplayCounts": {
+        "arrivals": 8,
+        "presence": 5,
+        "encounters": 1,
+        "heard": 2
+      },
+      "immutableReceipts": true,
+      "silentIgnoreRollback": 4,
+      "lostAckNoCredit": true,
+      "worldViewParentBound": true,
+      "reusedPulse": true,
+      "preflightBeforeWorldWrite": true,
+      "userMemoryPreserved": true,
+      "productionAccess": false,
+      "eligibleForReward": false,
+      "eligibleForP2P": false
+    },
+    "peerModuleAbsentFromWorker": true
+  },
+  "trustBoundary": "Trusted server DB writer and immutable source/authority/shared ledgers. Hashes are integrity, not signatures. Caller supplies IDs, never receipt JSON; future HTTP caller must bind the authorized recipient.",
+  "limits": [
+    "Pre-publication order is tested; runtime before-choice producer hook is not connected.",
+    "No durable inbox/consumption CAS, quota, TTL admission, API owner/recipient E2E or runtime evaluation in this slice.",
+    "Two synthetic heard receipts from actual GND3 physics are not semantic correctness, policy gain or witnessed truth.",
+    "Migration tested only on isolated fixtures. No user/QA/prod database writes.",
+    "No new UI behavior; no browser acceptance claimed.",
+    "Independent review and production/authenticated QA/GPU/soak remain separate."
+  ],
+  "nextAgent": [
+    "Read AGENTS.md and CODEX_HANDOFF.md, then LEARNING.md H5b1 contract. Fetch work and QA before changing branches.",
+    "Implement trusted producer capture before choice; preserve stored source high-water and UUID retry semantics.",
+    "Implement inbox + consumed-receipt journal in one D1 batch with exact recipient/session/head/clock CAS and SQL postassert; test ignore/alter/rollback/concurrency/lost ACK.",
+    "Apply H5a TTL/quota/decay without turning hearsay into facts, own samples, skill or reward.",
+    "Add owner/private API with recipient fixed from trusted scope, then evaluate before any opt-in runtime connection.",
+    "Backup and schema readback before any authorized live migration; never reset world/history/policy."
+  ],
+  "source": "13999b2a552ca67878e09ff8f852148c82c1b7be",
+  "commands": [
+    "npm run test:unit",
+    "npm run check",
+    "npm run lint",
+    "npm run release:build",
+    "node scripts/test-peer-offer-d1.mjs",
+    "node --import ./scripts/sites-env.mjs scripts/test-ground-authority-api.mjs"
+  ]
+}

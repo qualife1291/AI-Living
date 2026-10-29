@@ -2,7 +2,7 @@
 
 Thành phố 3D mô phỏng đời sống của An, Bình, Chi và các cư dân, với ký ức, nhu cầu, quan hệ và học lựa chọn hoạt động. Three.js/React/Vinext chạy trên Cloudflare Worker + D1. Tiếng Việt, owner-private, không dùng API tính phí.
 
-**Agent bắt đầu:** [AGENTS](AGENTS.md) → [CODEX_HANDOFF](CODEX_HANDOFF.md). Không cần đọc toàn bộ tài liệu. Việc tiếp theo chỉ ghi tại [ROADMAP](ROADMAP.md).
+**Agent bắt đầu:** [AGENTS](AGENTS.md) → [CODEX_HANDOFF](CODEX_HANDOFF.md). Không cần đọc toàn bộ tài liệu. Việc chưa xong và điều kiện nghiệm thu chỉ ghi tại [ROADMAP](ROADMAP.md), tách thiếu implementation, có offline/QA, chờ test và chưa đạt promotion gates.
 
 ## Chạy local
 
@@ -26,12 +26,15 @@ Setup chỉ áp dụng D1 local, giữ dữ liệu đã có. `npm run dev` dùng
 | D1, snapshot, bất biến, migration | [DATA_MODEL](docs/DATA_MODEL.md) |
 | Endpoint, quyền, pause/CAS/pulse | [API](docs/API.md) |
 | Learning, memory, context, hội thoại | [LEARNING](docs/LEARNING.md) |
+| H6 offline/shadow và điều kiện promotion | [H6](docs/H6_OFFLINE_POLICY_SCALE.md) |
 | Ground, camera, rigs, pet/bike/tag, flora/audio | [RENDERING](docs/RENDERING.md) |
 | Asset/OSM, license, import/hash/budget | [ASSETS](docs/ASSETS.md) |
 | Bốn cảnh studio và phạm vi đã kiểm | [SCENARIOS](docs/SCENARIOS.md) |
 | Quyết định kiến trúc/sản phẩm | [DECISIONS](docs/DECISIONS.md) |
 | Test và bằng chứng | [TESTING](docs/TESTING.md) |
-| Backup, deploy, automation, phục hồi | [PRODUCTION_RUNBOOK](docs/PRODUCTION_RUNBOOK.md) |
+| Log, snapshot tiến độ, cảnh báo đình trệ | [OBSERVABILITY](docs/OBSERVABILITY.md) |
+| Backup, deploy, automation, phục hồi Sites A | [PRODUCTION_RUNBOOK](docs/PRODUCTION_RUNBOOK.md) |
+| Cloudflare QA / staging riêng | [QA](docs/CLOUDFLARE_AGENT_QA.md) · [Staging](docs/CLOUDFLARE_STAGING.md) |
 
 [CHANGELOG](CHANGELOG.md) ghi mốc sản phẩm; Git lưu lịch sử review/WIP đã gộp. [candidate.json](docs/releases/candidate.json) là gói chuẩn bị, [latest.json](docs/releases/latest.json) là deploy đã xác minh cuối. Push GitHub không chứng minh đang chạy production.
 

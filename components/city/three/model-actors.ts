@@ -18,9 +18,13 @@ export const proceduralPropKinds = [
   "lantern", "festival", "umbrella", "drum"
 ];
 
-export function simpleProp(kind: string) {
+export function simpleProp(kind: string,library?:Partial<Pick<AssetLibrary,'compile'>>) {
   if (!proceduralPropKinds.includes(kind)) throw new Error(`No procedural prop recipe for ${kind}`);
   const group = new THREE.Group();
+  if(/^(book|read)$/.test(kind)){
+    const source=library?.compile?.('supplied/props/book');
+    if(source){const mesh=new THREE.Mesh(source.geometry.clone(),source.material.clone());mesh.scale.setScalar(Math.min(3.7/source.size.x,.55/source.size.y,2.3/source.size.z));mesh.castShadow=true;mesh.receiveShadow=true;group.add(mesh);group.userData.assetId='supplied/props/book';return group;}
+  }
   const box = (x: number, y: number, z: number, w: number, h: number, d: number, color: string) => {
     const mesh = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), new THREE.MeshPhongMaterial({ color, shininess: 18, specular: "#635d52" }));
     mesh.castShadow = true; mesh.receiveShadow = true; mesh.position.set(x, y, z); group.add(mesh);
@@ -170,7 +174,7 @@ export function createModelActors(scene: THREE.Scene, library: AssetLibrary) {
         const oldProp = props.get(id);
         if (holding && oldProp?.kind !== propKind) {
           if (oldProp) { scene.remove(oldProp.group); oldProp.group.traverse(o => { const m = o as THREE.Mesh; m.geometry?.dispose(); if (m.material) (m.material as THREE.Material).dispose(); }); }
-          const group = simpleProp(propKind);group.traverse(o=>{if((o as THREE.Mesh).isMesh)o.userData.actorId=id;}); group.scale.setScalar(avatar.height / 17.5); scene.add(group); props.set(id, { kind: propKind, group });
+          const group = simpleProp(propKind,library);group.traverse(o=>{if((o as THREE.Mesh).isMesh)o.userData.actorId=id;}); group.scale.setScalar(avatar.height / 17.5); scene.add(group); props.set(id, { kind: propKind, group });
         }
         const prop = props.get(id)?.group;
         if(prop){prop.visible=holding;placeActionProp(prop,propKind,avatar.height,headings.get(id)??.35,new THREE.Vector3(actor.position[0],groundElevation(...actor.position),actor.position[1]),{left:avatar.hand('left'),right:avatar.hand('right')},seconds);}

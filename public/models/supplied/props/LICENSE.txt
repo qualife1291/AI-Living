@@ -1,0 +1,3 @@
+Free — owner supplied and confirmed. NOT CC0.
+Selected ZIP1 members and source SHA256: data/assets/supplied-props-selection.json. Original archives: data/assets/source-archives.json.
+Derived geometry and basecolor atlases preserve the original UVs and owner-confirmed permission. No casino gameplay or assets imported.

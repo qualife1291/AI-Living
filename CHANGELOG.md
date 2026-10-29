@@ -1,10 +1,10 @@
 # Changelog
 
-- Sửa tương tác đồ họa city/Studio: picker theo skin/visibility, follow giữ nhân vật, focus và reset camera sau zoom/shot/restart; thống nhất crowd/wardrobe với5model mới, pose real-time và contact tay/đạo cụ/xe đạp. Bằng chứng local và giới hạn remote ở [graphics acceptance](docs/validation/graphics-interactions-2026-10-29.json).
-
 Chỉ ghi mốc sản phẩm. Chi tiết commit/review nằm trong Git; số version/deployment và readback nằm ở [releases](docs/releases/).
 
 ## 29/10/2026
+
+- Sửa tương tác đồ họa city/Studio: picker theo skin/visibility, follow giữ nhân vật, focus và reset camera sau zoom/shot/restart; thống nhất crowd/wardrobe với5model mới, pose real-time và contact tay/đạo cụ/xe đạp. Bằng chứng local và giới hạn remote ở [graphics acceptance](docs/validation/graphics-interactions-2026-10-29.json).
 
 - Thêm structured log opt-in với request ID/version/status/duration và các bước pulse, allowlist loại private payload và giữ streaming response. Phase Ops có owner-only QA/local snapshot tiến độ zero-write và CLI so sánh phát hiện stall/pause/đổi deployment/state/clock, không tự repair hoặc tạo scheduler. [Hợp đồng](docs/OBSERVABILITY.md).
 
@@ -13,7 +13,6 @@ Chỉ ghi mốc sản phẩm. Chi tiết commit/review nằm trong Git; số ver
 - H5a bổ sung thử nghiệm offline lời khuyên có nguồn: chỉ nhận sau GND3 nghe đủ, khóa world/session/người nhận, chống replay/giả receipt và tính decay/TTL khi đọc. Không ghi world/skill/policy/memory hoặc bật P2P live; artifact không được import runtime.
 
 - Áp dụng5rig đời thường Casino/Chess do chủ dự án cung cấp vào city/Studio/gallery, dùng2palette chung và LOD có skin weights; sửa da xuyên quần áo/giày, khớp vai và tỷ lệ Studio. Camera tự cutaway mái/tán cây chắn cảnh, giữ render budget;73suite và browser/audio bốn cảnh đạt. Review đủ4ZIP/593GLB entries/25bản nhạc; ZIP4 gồm50mẫu công trường tĩnh có5LOD, giữ cho phase phù hợp. [Bằng chứng](docs/validation/supplied-civilians-2026-10-29.json).
-
 
 - Chat có quota chung30 tin mới/cửa sổ60giây, counter và exchange ghi cùng transaction D1. Retry UUID không mất quota;429 có Retry-After, UI giữ bản nháp, lỗi lưu rollback. Không quét/xóa lịch sử hoặc đổi world/policy/schema.
 

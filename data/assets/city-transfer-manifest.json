@@ -5,7 +5,8 @@
     "/models/kenney/catalog.json",
     "/models/resources/catalog.json",
     "/models/citizens/catalog.json",
-    "/models/supplied/catalog.json"
+    "/models/supplied/catalog.json",
+    "/models/supplied/props/catalog.json"
   ],
   "assets": [
     {
@@ -95,6 +96,39 @@
       "url": "/models/derivatives/70e636bea8dc67c3bfd19b163333e824356118458c8c401017322ec43c10a7f7.glb.gz",
       "sha256": "e30e823dc4cb6d30e6b0ce438b1470d8b90026af14ed7202101596137c34b83d",
       "bytes": 2227
+    },
+    {
+      "id": "gobkit-animal/corgi",
+      "format": "gzip",
+      "sourceUrl": "/models/resources/gobkit-animal/Corgi.glb",
+      "sourceSha256": "978926dbb2e45c968753ef359949ef35d27c09894439bb3195207b3e6f91cff0",
+      "sourceBytes": 107344,
+      "license": "CC0-1.0",
+      "url": "/models/derivatives/978926dbb2e45c968753ef359949ef35d27c09894439bb3195207b3e6f91cff0.glb.gz",
+      "sha256": "954dede88f460c4868799a71f735574614165d0e3c8e4576d323373bf27b0a23",
+      "bytes": 29483
+    },
+    {
+      "id": "gobkit-animal007/chick",
+      "format": "gzip",
+      "sourceUrl": "/models/resources/gobkit-animal007/Chick.glb",
+      "sourceSha256": "c74b1e07f052eb4a75b959abe5691cdf937971c18bfc58fab36536a4abf7c090",
+      "sourceBytes": 90108,
+      "license": "CC0-1.0",
+      "url": "/models/derivatives/c74b1e07f052eb4a75b959abe5691cdf937971c18bfc58fab36536a4abf7c090.glb.gz",
+      "sha256": "a95124e6eb91f5ed604ad730a0be934cceb7001e802c1ca1f13c94aeedb81f8b",
+      "bytes": 49273
+    },
+    {
+      "id": "gobkit-animal007/quail",
+      "format": "gzip",
+      "sourceUrl": "/models/resources/gobkit-animal007/Quail.glb",
+      "sourceSha256": "462d5980c6ae0ee922e5ddd20eacccda4ff08bdd1d5baf0d767085179b6feeb1",
+      "sourceBytes": 96504,
+      "license": "CC0-1.0",
+      "url": "/models/derivatives/462d5980c6ae0ee922e5ddd20eacccda4ff08bdd1d5baf0d767085179b6feeb1.glb.gz",
+      "sha256": "51c31c3ef2fa63a4c7bcd13490f3176e0e338fd4917368a285157a2723c30bcf",
+      "bytes": 53022
     },
     {
       "id": "market/display-bread",
@@ -227,6 +261,127 @@
       "url": "/models/derivatives/26fe3acfb8bae82a26a4beeedd4812a858175bdd6114584df67afe25df9d00b2.glb.gz",
       "sha256": "6cf89ef279d1d848e6506dcf17a9797a73c5d8021e487064352327c7bdb84add",
       "bytes": 217125
+    },
+    {
+      "id": "supplied/props/book",
+      "format": "gzip",
+      "sourceUrl": "/models/supplied/props/book.glb",
+      "sourceSha256": "9913d756156175a19570df50ffc1ee8e8cd83edfb571d1932c2cf13226cc7b38",
+      "sourceBytes": 113180,
+      "license": "LicenseRef-Owner-Confirmed-Free",
+      "url": "/models/derivatives/9913d756156175a19570df50ffc1ee8e8cd83edfb571d1932c2cf13226cc7b38.glb.gz",
+      "sha256": "3c0e25ff9f5b101c4e64db2a1ce27af800f7ea0a41e2ddd7729f64783ff9cd73",
+      "bytes": 106641
+    },
+    {
+      "id": "supplied/props/books",
+      "format": "gzip",
+      "sourceUrl": "/models/supplied/props/books.glb",
+      "sourceSha256": "7d58e3437ea7127780aa6b5d862af95195d8070202cf0ec7daa7697e404f80e3",
+      "sourceBytes": 56340,
+      "license": "LicenseRef-Owner-Confirmed-Free",
+      "url": "/models/derivatives/7d58e3437ea7127780aa6b5d862af95195d8070202cf0ec7daa7697e404f80e3.glb.gz",
+      "sha256": "8e02149b4eecb2a91e1725835d1358beaafa0bd4c2ae239a242cc4b56089cf55",
+      "bytes": 45461
+    },
+    {
+      "id": "supplied/props/chair",
+      "format": "gzip",
+      "sourceUrl": "/models/supplied/props/chair.glb",
+      "sourceSha256": "9b0df14e726d7376e35293501ad379321606c5b7eaa9d94d807c92b61e65c0de",
+      "sourceBytes": 51684,
+      "license": "LicenseRef-Owner-Confirmed-Free",
+      "url": "/models/derivatives/9b0df14e726d7376e35293501ad379321606c5b7eaa9d94d807c92b61e65c0de.glb.gz",
+      "sha256": "faf41971e41f7640b616559d6e34ec1ddb5cc929309328dd9ea4fbd8604f935b",
+      "bytes": 46264
+    },
+    {
+      "id": "supplied/props/chessboard",
+      "format": "gzip",
+      "sourceUrl": "/models/supplied/props/chessboard.glb",
+      "sourceSha256": "13880e25df0d2fab3767f35cb142ad3b8eccd5f1e1756e9a4f7f4a330fa308ae",
+      "sourceBytes": 94344,
+      "license": "LicenseRef-Owner-Confirmed-Free",
+      "url": "/models/derivatives/13880e25df0d2fab3767f35cb142ad3b8eccd5f1e1756e9a4f7f4a330fa308ae.glb.gz",
+      "sha256": "934ed0ec40e71dbd15f82d12017bf6db57ce8678b0546d21cd487e80d63fa91c",
+      "bytes": 79534
+    },
+    {
+      "id": "supplied/props/keyboard",
+      "format": "gzip",
+      "sourceUrl": "/models/supplied/props/keyboard.glb",
+      "sourceSha256": "0f9b23f5cfdb40bb7ef80bb78274fdcc82b198b19bf9117e1c736983ea05f863",
+      "sourceBytes": 73360,
+      "license": "LicenseRef-Owner-Confirmed-Free",
+      "url": "/models/derivatives/0f9b23f5cfdb40bb7ef80bb78274fdcc82b198b19bf9117e1c736983ea05f863.glb.gz",
+      "sha256": "66d537a287930365296da9d4670b8ae9047fc2d87e4102874fd731b08b714439",
+      "bytes": 58354
+    },
+    {
+      "id": "supplied/props/lamp",
+      "format": "gzip",
+      "sourceUrl": "/models/supplied/props/lamp.glb",
+      "sourceSha256": "45d622b0eb744e39f4028551b29d4916b04ca9984e45fd110cc001a328dbfe41",
+      "sourceBytes": 60336,
+      "license": "LicenseRef-Owner-Confirmed-Free",
+      "url": "/models/derivatives/45d622b0eb744e39f4028551b29d4916b04ca9984e45fd110cc001a328dbfe41.glb.gz",
+      "sha256": "025b93fc9dc8184aafb00332d13b4da6d8e37f88856b4ee9af36ea5883c162a0",
+      "bytes": 47769
+    },
+    {
+      "id": "supplied/props/monitor",
+      "format": "gzip",
+      "sourceUrl": "/models/supplied/props/monitor.glb",
+      "sourceSha256": "a9731349b89023daf8c7753595623069b997d00101351f4b808eb18e7c29ed7c",
+      "sourceBytes": 121244,
+      "license": "LicenseRef-Owner-Confirmed-Free",
+      "url": "/models/derivatives/a9731349b89023daf8c7753595623069b997d00101351f4b808eb18e7c29ed7c.glb.gz",
+      "sha256": "919a7a278982132be0a8d6afeb0553c8c9a62a22b46250f11fe64fdb7a64a8da",
+      "bytes": 117308
+    },
+    {
+      "id": "supplied/props/mouse",
+      "format": "gzip",
+      "sourceUrl": "/models/supplied/props/mouse.glb",
+      "sourceSha256": "c5c06e4d2ec7bd84652fc5a1597dcd8d2fb23e3687ae0218c71fab60cd772330",
+      "sourceBytes": 53384,
+      "license": "LicenseRef-Owner-Confirmed-Free",
+      "url": "/models/derivatives/c5c06e4d2ec7bd84652fc5a1597dcd8d2fb23e3687ae0218c71fab60cd772330.glb.gz",
+      "sha256": "e80e8f724b4cfa6a4db41f5471c5ce5ebb726f7bcba111ea8735a99afaca7e56",
+      "bytes": 52249
+    },
+    {
+      "id": "supplied/props/plant",
+      "format": "gzip",
+      "sourceUrl": "/models/supplied/props/plant.glb",
+      "sourceSha256": "82a69a079251a975bc1bf793a31c6c31c4ff208396f83ec80dc56d34bd45ed8f",
+      "sourceBytes": 73088,
+      "license": "LicenseRef-Owner-Confirmed-Free",
+      "url": "/models/derivatives/82a69a079251a975bc1bf793a31c6c31c4ff208396f83ec80dc56d34bd45ed8f.glb.gz",
+      "sha256": "b505695766313af5da24a888b742862af5b07fe9909717481a3839c23e2fcc2e",
+      "bytes": 63525
+    },
+    {
+      "id": "supplied/props/shelf",
+      "format": "gzip",
+      "sourceUrl": "/models/supplied/props/shelf.glb",
+      "sourceSha256": "8bf434de715e41c408f13b427b768118ffd36f9b8ae1f26150b181625ef13818",
+      "sourceBytes": 46208,
+      "license": "LicenseRef-Owner-Confirmed-Free",
+      "url": "/models/derivatives/8bf434de715e41c408f13b427b768118ffd36f9b8ae1f26150b181625ef13818.glb.gz",
+      "sha256": "3c849e2a69328fe51902b825b4d87528ff4afe05ad1b3996bc7f2c26966ea388",
+      "bytes": 40053
+    },
+    {
+      "id": "supplied/props/table",
+      "format": "gzip",
+      "sourceUrl": "/models/supplied/props/table.glb",
+      "sourceSha256": "c976bcbb3f2f9b681ca329ae8e46378b82f28aec3f6311bdaca26a5a085e263b",
+      "sourceBytes": 59760,
+      "license": "LicenseRef-Owner-Confirmed-Free",
+      "url": "/models/derivatives/c976bcbb3f2f9b681ca329ae8e46378b82f28aec3f6311bdaca26a5a085e263b.glb.gz",
+      "sha256": "515684d70efc4fc39ef75ad5c30635b863bcfa77eda8d95ad8c2cfa7f85199fd",
+      "bytes": 53692
     },
     {
       "id": "supplied/service",

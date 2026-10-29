@@ -4,21 +4,21 @@ Chỉ Three.js/WebGL; giữ tọa độ XZ, navigation, canvas textures/icon. Kh
 
 ## Ground và camera
 
-Một hệ10 world units/m; tỷ lệ procedural người khoảng17,5 unit, xe hơi dài44 unit. Giữ tỷ lệ model gốc, envelope clip và footprint. Renderer/nav dùng cùng building/tree/street-prop geometry; actor/props đặt theo `groundElevation`. WalkDirector xử lý route, swept collision, personal space và nhường xe. Tag/Pet directors chỉ cấp goal, không teleport hoặc bỏ collision vì timeout.
+Một hệ10 world units/m; chiều cao người tham chiếu khoảng 17,5 unit, xe hơi dài44 unit. Giữ tỷ lệ model gốc, envelope clip và footprint. Renderer/nav dùng cùng building/tree/street-prop geometry; actor/props đặt theo `groundElevation`. WalkDirector xử lý route, swept collision, personal space và nhường xe. Tag/Pet directors chỉ cấp goal, không teleport hoặc bỏ collision vì timeout.
 
 Camera mặc định ưu tiên đời sống mặt đường, thấy cả cặp/xe/thú trên portrait. Focus nhà/vườn dùng aspect và segment clearance, có fallback nhìn từ trên. Ground có thể dừng khi projection đã báo đến; không dùng label/location thay kiểm vị trí thực. LOD/pause/poll phải giữ liên tục; không đổi appearance theo frame.
 
-G0 giới hạn render target thành phố eco1M/balanced2M/sharp6M pixel, đồng thời giữ capDPR1/1,75/2,5 (balanced dưới700px cap1,5). Resize/DPR/preset tính lại budget; DOM tên/thoại giữ độ nét CSS. Phím mũi tên chỉ điều khiển khi canvas có focus, không bắt phím chat. `prefers-reduced-motion` tắt camera tự theo và damping; chọn cư dân/nút Theo chỉ frame một lần, đổi preference có hiệu lực ngay và không pause clock. Mark `xom-city-start-to-first-frame` và `data-first-frame-ms` đo first render sau khi dựng scene, không phải toàn bộ asset/pixel đã được GPU trình bày.
+G0 giới hạn render target thành phố eco1M/balanced2M/sharp6M pixel, đồng thời giữ capDPR1/1,75/2,5 (balanced dưới 700px cap1,5). Resize/DPR/preset tính lại budget; DOM tên/thoại giữ độ nét CSS. Phím mũi tên chỉ điều khiển khi canvas có focus, không bắt phím chat. `prefers-reduced-motion` tắt camera tự theo và damping; chọn cư dân/nút Theo chỉ frame một lần, đổi preference có hiệu lực ngay và không pause clock. Mark `xom-city-start-to-first-frame` và `data-first-frame-ms` đo first render sau khi dựng scene, không phải toàn bộ asset/pixel đã được GPU trình bày.
 
-Pause chỉ xác nhận từ `{ok:true}` rồi đọc lại snapshot;403 hướng về tài khoản owner,409 refresh revision để người dùng kiểm tra,5xx/network/ACK lỗi giữ thông báo và không tự retry write. Poll thành công không xóa lỗi điều khiển. Chat giữ focus/bản nháp khi lỗi hoặc đang gửi, không giành focus nếu đã chuyển sang nút khác; response thiếu reply không được nhận là thành công.
+Pause chỉ xác nhận từ `{ok:true}` rồi đọc lại snapshot; 403 hướng về tài khoản owner,409 refresh revision để người dùng kiểm tra,5xx/network/ACK lỗi giữ thông báo và không tự retry write. Poll thành công không xóa lỗi điều khiển. Chat giữ focus/bản nháp khi lỗi hoặc đang gửi, không giành focus nếu đã chuyển sang nút khác; response thiếu reply không được nhận là thành công.
 
 | Hành vi | Hợp đồng |
 |---|---|
 | Đi/chạy | Walk16 unit/s; run/tag tối đa28, cùng swept navigation. Không cam kết mọi chỗ hết kẹt trong20s. |
 | Tag | Chỉ ghép người đã chọn tag gần Công viên/Sân thể thao, line of sight; giữ cặp qua poll. Đuổi28/chạy20 unit/s, đổi vai khi ground≤13,6 và không vật cản; miễn bắt1,6s và tách thêm3 unit trước bắt lại. Pause/đổi activity/mất actor hủy hoặc đóng băng đúng trạng thái. Không ghi reward/ký ức từ game render. |
-| Cycle | Tối đa22 unit/s, tăng tốc12 unit/s²; disc toàn xe/người9,2 thay clearance đi bộ4,8. Đứng chật thì đi ra chỗ thoáng trước mount, không teleport. Pedal/bánh theo quãng đường, pause giữ rig; giữ xe đến arrival ground rồi mới xuống/hiện props mới. Chưa tire physics/lean/fall/IK. |
-| Pet | `living.petOwners` additive; legacy mặc định An–Cún/Chi–Mướp khi thiếu trường, tôn trọng unassign, không gán sẻ. Walk-pet chỉ người đi bộ, thú theo ground từ vị trí thật; người chờ khi xa>40, đi tiếp khi mọi thú<25 unit. Cancel pending thú bị ngắt, không thưởng hoạt động chưa xong. Chưa leash/IK/shared occupancy. |
-| Nhà |60 cửa từ building footprints, ID/địa chỉ additive; giữ custom/retired/home cũ. Crowd về cửa khi nghỉ, nhiều người giữ điểm tách nhau; projection vẫn Khu dân cư. Chưa indoor routing hoặc authoritative occupancy. |
+| Cycle | Tối đa22 unit/s, tăng tốc12 unit/s²; disc toàn xe/người9,2 thay clearance đi bộ4,8. Đứng chật thì đi ra chỗ thoáng trước mount, không teleport. Pedal/bánh theo quãng đường, pause giữ rig; giữ xe đến arrival ground rồi mới xuống/hiện props mới. Đã có contact tay lái/bàn đạp/yên; chưa tire physics, lean/fall hoặc foot locking trên địa hình. |
+| Pet | `living.petOwners` additive; legacy mặc định An–Cún/Chi–Mướp khi thiếu trường, tôn trọng unassign, không gán sẻ. Walk-pet chỉ người đi bộ, thú theo ground từ vị trí thật; người chờ khi xa>40, đi tiếp khi mọi thú<25 unit. Cancel pending thú bị ngắt, không thưởng hoạt động chưa xong. Chưa leash/contact với thú đầy đủ; quyền hoàn tất không suy từ pet-follow. |
+| Nhà | 60 cửa từ building footprints, ID/địa chỉ additive; giữ custom/retired/home cũ. Crowd về cửa khi nghỉ, nhiều người giữ điểm tách nhau; projection vẫn Khu dân cư. Chưa indoor routing hoặc authoritative occupancy. |
 
 Tag/vai/đường đi/pet-follow là trạng thái **viewer**. Backend completion vẫn theo simtime+plan matching; chưa chứng nhận arrival/physical meeting nhiều viewer. Đồ thị nhiều làn, bus/tram boarding và indoor còn ở [ROADMAP](../ROADMAP.md).
 
@@ -26,7 +26,7 @@ Tag/vai/đường đi/pet-follow là trạng thái **viewer**. Backend completio
 
 ## Rigs, tên và thoại
 
-Batched crowd/procedural rigs, core/focused NPC model theo [ASSETS](ASSETS.md). Reset base pose trước offset pedal/exercise; clip không key mọi limb không được tích lũy xoay. Pause giữ transform. Đạo cụ theo tay/step thật, không tồn tại sau actor đổi activity; chưa inventory hay finger contact/IK đầy đủ.
+Core/near NPC và crowd dùng cùng approved skin/palette theo [ASSETS](ASSETS.md); crowd nội suy8 pose GPU, picker CPU theo cùng pose,≤ 8 skeletal controllers. Renderer người ghép procedural cũ đã bỏ. Reset base pose trước offset pedal/exercise; clip không key mọi limb không được tích lũy xoay. Pause giữ transform. Đạo cụ theo tay/step thật, không tồn tại sau actor đổi activity; contact IK tay và chân đạp xe đã có; chưa inventory, finger contact hay foot IK trên bậc/nền đầy đủ.
 
 WorldOverlays là DOM: pill tên compact, ellipsis/title, giới hạn nhãn gần và ưu tiên selected/speaking; kiểm occlusion và viewport. Bubble giữ đủ text, safe insets theo mobile/HUD, badge nguồn riêng. ACK đọc bắt đầu sau DOM commit, không lúc gửi status. Thời gian đọc còn viewer-local; poll/frame trễ không được làm mất lượt. Hội thoại và quyền biết ở [LEARNING](LEARNING.md).
 
@@ -44,4 +44,4 @@ WebAudio gió/mưa/chim mô phỏng, mặc định off, không AudioContext trư
 
 ## Bằng chứng và chạy lại
 
-[TESTING](TESTING.md) liệt kê unit/QA harness; screenshots/metrics ở `docs/screenshots/{social,cycle,tag,three-only-pets,homes,gardens,soundscape}`.5 phase/care/camera/pause/errors/320px và các hồi quy đã có preview desktop/mobile; persistence được kiểm riêng compiledD1, browser mutations có thể mocked. Không lấy số frame SwiftShader hoặc synthetic240 làm hardware FPS/density live. GPU/soak, IK, inventory và timeline chung vẫn chưa được chứng minh.
+[TESTING](TESTING.md) liệt kê unit/QA harness; screenshots/metrics ở `docs/screenshots/{social,cycle,tag,three-only-pets,homes,gardens,soundscape}`.5 phase/care/camera/pause/errors/320px và các hồi quy đã có preview desktop/mobile; persistence được kiểm riêng compiledD1, browser mutations có thể mocked. Không lấy số frame SwiftShader hoặc synthetic240 làm hardware FPS/density live. GPU/soak, physical/finger/foot contact đầy đủ, inventory và rollout timeline chung lên production còn ở [ROADMAP](../ROADMAP.md).

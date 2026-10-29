@@ -64,6 +64,13 @@
       "when": 1793237427669,
       "tag": "0011_ground_authority",
       "breakpoints": true
+    },
+    {
+      "idx": 12,
+      "version": "6",
+      "when": 1793291719246,
+      "tag": "0012_peer_offers",
+      "breakpoints": true
     }
   ]
 }

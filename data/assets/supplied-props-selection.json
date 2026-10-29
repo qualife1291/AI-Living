@@ -1,0 +1,94 @@
+{
+  "version": 1,
+  "license": "LicenseRef-Owner-Confirmed-Free",
+  "assets": [
+    {
+      "id": "supplied/props/book",
+      "archive": "1.zip",
+      "member": "Chess_Pack_Free_glb/Props/Book_01.glb",
+      "sourceSha256": "ff69bc4c22cc7e4cc7e3c50c32bdf5ad0864c5bf3dcad89745ab2feba7068d74",
+      "sourceBytes": 592656,
+      "nested": "chess_pack_free_glb.zip"
+    },
+    {
+      "id": "supplied/props/books",
+      "archive": "1.zip",
+      "member": "Chess_Pack_Free_glb/Props/Books_01.glb",
+      "sourceSha256": "37e9ffa249a88919f2a7587d3d70afcf71d022fd67193ceceb65e26ffee69433",
+      "sourceBytes": 280296,
+      "nested": "chess_pack_free_glb.zip"
+    },
+    {
+      "id": "supplied/props/chair",
+      "archive": "1.zip",
+      "member": "Chess_Pack_Free_glb/Props/Chair_01.glb",
+      "sourceSha256": "9fe20ff123dcf0d013937a102ac78b51ff302d9726d1b27d33b699ca722e312e",
+      "sourceBytes": 275640,
+      "nested": "chess_pack_free_glb.zip"
+    },
+    {
+      "id": "supplied/props/chessboard",
+      "archive": "1.zip",
+      "member": "Chess_Pack_Free_glb/Props/Chesspad_01.glb",
+      "sourceSha256": "dcf7eb7aa78a64a3a48439c7b4c860ddfaa27a91f5b205079175bbaa45e8d925",
+      "sourceBytes": 494296,
+      "nested": "chess_pack_free_glb.zip"
+    },
+    {
+      "id": "supplied/props/lamp",
+      "archive": "1.zip",
+      "member": "Chess_Pack_Free_glb/Props/Night_Lamp_01.glb",
+      "sourceSha256": "5ba8258b0d03e8bd30e25751850876aec43073647e49dd7973afd9d50ba89703",
+      "sourceBytes": 284484,
+      "nested": "chess_pack_free_glb.zip"
+    },
+    {
+      "id": "supplied/props/plant",
+      "archive": "1.zip",
+      "member": "Chess_Pack_Free_glb/Props/Plant_001.glb",
+      "sourceSha256": "b3fd23155d6a84891325491f1a589cc820550f5a14a86495e8e3ccc72c94df8c",
+      "sourceBytes": 668864,
+      "nested": "chess_pack_free_glb.zip"
+    },
+    {
+      "id": "supplied/props/shelf",
+      "archive": "1.zip",
+      "member": "Chess_Pack_Free_glb/Props/Shelving_01.glb",
+      "sourceSha256": "3eb122060e52a7c872cfd51a123889da735dca1b2b20f4c01e67fd09b25059dd",
+      "sourceBytes": 270164,
+      "nested": "chess_pack_free_glb.zip"
+    },
+    {
+      "id": "supplied/props/table",
+      "archive": "1.zip",
+      "member": "Casino_Free_glb/Casino_Free_Assets_glb/Table_06.glb",
+      "sourceSha256": "a1a383de9c3405f296d39ba5f8155b510a78ed717023a54e4fed99647d02cad5",
+      "sourceBytes": 420984,
+      "nested": "casino_free_glb.zip"
+    },
+    {
+      "id": "supplied/props/monitor",
+      "archive": "1.zip",
+      "member": "Casino_Free_glb/Casino_Free_Assets_glb/Monitor_02.glb",
+      "sourceSha256": "6c35fb4613b5c7338c1ac8415f6acd826828bec2ac2dbae85419d7f37cfc67d3",
+      "sourceBytes": 1482716,
+      "nested": "casino_free_glb.zip"
+    },
+    {
+      "id": "supplied/props/keyboard",
+      "archive": "1.zip",
+      "member": "Casino_Free_glb/Casino_Free_Assets_glb/Keyboard_01.glb",
+      "sourceSha256": "bd96a3730061ef8ada281c5c89162eb6696864974c2b037310a6b95e96ff6ac4",
+      "sourceBytes": 434592,
+      "nested": "casino_free_glb.zip"
+    },
+    {
+      "id": "supplied/props/mouse",
+      "archive": "1.zip",
+      "member": "Casino_Free_glb/Casino_Free_Assets_glb/Mouse_01.glb",
+      "sourceSha256": "601491c0e67112749b01fdcc596e76625f77221b83d06796bae249c0a489340e",
+      "sourceBytes": 414604,
+      "nested": "casino_free_glb.zip"
+    }
+  ]
+}

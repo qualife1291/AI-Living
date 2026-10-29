@@ -1,54 +1,40 @@
-# H6 — Scenario scale and hierarchical offline models (QA-only, draft)
+# H6 — catalog và model offline, chưa promote
 
-Status: **merged into work as shadow-only; no live-model deployment or promotion**. H6/CI changes were integrated at `b3881d7`; legacy runtime remains at 41 scenarios. Functional CI and model-quality gates are separate.
+Work đã hợp nhất tooling/catalog tại `b3881d7`. Runtime vẫn dùng 41 scenario và personal LinUCB; 96 candidate (41 gốc + 55 biên tập) chỉ ở `data/training/h6-scenario-catalog.json` và sandbox. QA 72d4c2f có metadata `XOM_H6_MODE=shadow-only`, count/hash và log marker; **không chạy model inference hoặc scorer chỉ nhờ marker**. Kế hoạch còn lại chỉ ghi tại [ROADMAP](../ROADMAP.md).
 
-## Why this phase exists
-Baseline at `work` SHA `7dfad9541b67cc0bb891e24b9891419172fd91b7` has **41** learning scenarios, a schema cap of **100**, and contextual per-actor LinUCB. H6 adds **55 human-curated scenarios** across eight skill domains in a **separate shadow catalog of 96 total**, preserving the 41-scenario live registry and all its reward fingerprints. The sandbox trains against the 96-scenario catalog and never overwrites live files. It does not create real `learning_policies` or fabricate experience rows.
+## Code và phạm vi
 
-## Isolation
-H6 branch `feat/h6-policy-scale-stacked-20261029`. PR #4 into `test/ci-install-exec-boundary-20261029` so the existing full GitHub quality suite can run with repaired shell permissions. Future H6 changes require review and checks on the combined source before rollout; runtime activation still requires the promotion gates below. Other agents currently own chat, visuals, H5 peer admission, D1 consistency; H6 does not change those modules. Only a new versioned training scenario catalog, H6-only scripts, H6 workflow and this note are modified; the live data/city/scenarios.json stays byte-for-byte identical.
+- `scripts/test-h6-scenario-scale.mjs`: schema/ID/domain/constraint của 96 candidate, 384 adversarial contexts và hơn 1.000 outcome checks; giữ live registry/fingerprints gốc.
+- `scripts/h6-train-and-audit.mjs`/`h6-shadow-worker.mjs`: sandbox riêng thay catalog của bản sao, huấn luyện hai hierarchical-disjoint-LinUCB priors cho `ordinary-v1`/`cold-stress-v1`. Không sửa `data/city/scenarios.json`, D1, memories hoặc personal earned samples.
+- `.github/workflows/h6-offline-quality.yml`: PR H6 và manual dispatch; functional/model-quality gates tách riêng. Code safety/CI smoke pass không là quyền activate model.
+- QA release code chỉ ở nhánh `cloudflare-qa`; xem [release note theo nhánh](https://github.com/qualife1291/AI-Living/blob/cloudflare-qa/docs/QA_H6_ROLLOUT_20261029.md). Không merge hosting/auth/Cron QA ngược vào work/main.
 
-## Offline models and experiment
-`scripts/h6-train-and-audit.mjs` trains **two hierarchical-disjoint-LinUCB priors** independently, for `ordinary-v1` and `cold-stress-v1`, using the existing `HierarchyTrainer`. Only verified synthetic **completed plan outcomes** are accepted. Each artifact is SHA-256 checked and includes catalog/scenario signatures and transcript hash. Holdout seeds differ from all training seeds. Strict covariance validation, min multi-actor/multi-seed support, no donor memories or owner IDs, no seeded D1 observations. The candidate's personal sample count must equal its own completed plans.
+## Contract experiment
 
-The full-profile existing acceptance tests require **20 independent holdout seeds, 24 agents, 60 days** plus all lower-bound performance gates. CI-scale training/evaluation runs are *functional and provenance smoke/regression tests*, **not evidence of performance improvement**, even if they pass. Never activate the artifact as a runtime policy on CI-only evidence.
+Chỉ synthetic completed plan outcomes đã qua validator; đây chưa là ground productive-effect authority. Artifact pin SHA256, catalog/scenario signature, transcript hash và support; covariance/SPD/min multi-actor/multi-seed support phải hợp lệ. Train/validation/holdout tách seed; chọn personal/global/role trên validation, không dùng holdout để chọn hoặc retune. Candidate không có bằng chứng loại trừ loss thì giữ personal fallback; non-personal được chọn vẫn phải qua holdout safety. Priors không thành own experience/samples.
 
-### Workflows
-`H6 Offline Model Scale & Deep Quality` on H6 PR:
-- `corepack pnpm install --frozen-lockfile`
-- `node scripts/test-h6-scenario-scale.mjs` (96 schemas/ID invariants, 384 adversarial contexts, >1,000 outcome reward checks, hard needs and weather constraints)
-- `node scripts/h6-train-and-audit.mjs --tier=ci` (two independent synthetic training+holdout evaluations)
-- Full original unit suite, TypeScript check, lint and production build.
-- Artifacts retained 14 days **only when the entire workflow passes**.
-- Parallel original `Project quality and asset coverage` workflow must also pass.
+| Tier, mỗi profile | Train | Holdout | Vai trò |
+|---|---|---|---|
+| ci | 5 seed × 16 actor × 21 ngày | 6 seed × 16 actor × 21 ngày | Smoke/provenance/regression, không promotion |
+| heavy | 12 seed × 32 actor × 45 ngày | 20 seed × 24 actor × 60 ngày | Full-profile gates, explicit manual run |
+| extreme | 32 seed × 64 actor × 90 ngày | 20 seed × 24 actor × 60 ngày | Stress có thể fail vì resource; không default merge gate |
 
-Manual `workflow_dispatch` tiers (ONLY run deliberately to avoid unexpected costs):
-- `ci`: 5 training seeds × 16 agents × 21 days and 6 holdout seeds × 16 agents × 21 days **per profile**.
-- `heavy`: 12 training seeds × 32 agents × 45 days and 20 holdout seeds × 24 agents × 60 days **per profile**.
-- `extreme`: 32 training seeds × 64 agents × 90 days and 20 holdout seeds × 24 agents × 60 days **per profile**, bounded by GitHub Actions timeout of 60 minutes and runner resources.
-Metrics: accepted outcomes, prior rows/support, decision reward, holdout CI, runtime seconds and workflow CPU/memory failures. Extreme is **intentionally able to fail due to resource limits**; it is not the default CI merge gate. If extreme fails, record evidence and propose a proportionate machine upgrade; do not upgrade or enable paid services automatically.
+Giữ timeout 60 phút/budget runner; không tự nâng máy/dịch vụ trả phí. Workflow lưu artifact ẩn `.h6-offline-results/` với `include-hidden-files`, `if-no-files-found:error`, retention 14 ngày theo file workflow; `if: always()` có thể upload output khi job fail. **Có artifact không chứng minh job hoặc model đạt gates.** Kiểm outcome toàn bộ workflow và hash/provenance trước dùng; không tự rerun trainer khi chỉ dọn tài liệu.
 
-## Model promotion rules
-1. PR #3 and PR #4 merged with coordinated ownership and with *all* required checks passing on current `work`, not stale merge-base.
-2. Final full-profile offline benchmark with unseen holdout reaches existing strict `passesProposedOfflineGates` in **both** profiles. No fabricated or private data, no leakage.
-3. Shadow deploy on isolated `ai-living-qa` only after verifying versioned scenario fingerprint and replay compatibility with existing D1; **do not mutate D1 or install prior into current production runtime** until a separately reviewed switch and rollback plan is ready.
-4. For a production/QA live-model activation require CPU/memory/latency measurements under Cloudflare limits, and no regression to Cron/Access or world learning. Do not assume scenarios added imply more actual experiences.
-5. Only then consider a promote/merge plan. Failed quality gates mean keep PR draft; publish FAIL and evidence.
+## Bằng chứng đã ghi nhận
 
-## Agent handoff
-Related files: `data/city/scenarios.json`, `scripts/test-h6-scenario-scale.mjs`, `scripts/h6-train-and-audit.mjs`, `.github/workflows/h6-offline-quality.yml`.
-Avoid modifying the same files concurrently. Read GitHub PR #4 and commit status before starting any competing H6 training. If high tier exhausts Actions limits, keep ordinary CI passing and document the high-tier failure separately; do not weaken safeguards.
+| Nguồn | Kết quả và giới hạn |
+|---|---|
+| [CI H6](https://github.com/qualife1291/AI-Living/actions/runs/40878609106), [quality](https://github.com/qualife1291/AI-Living/actions/runs/40878609036) | Code/safety pass; mỗi profile 744 prior rows/40.320 synthetic outcomes. Ordinary return delta +0,0038263 (95% CI +0,00119..+0,00646); cold-stress −0,0148942 (CI −0,02177..−0,00802): shared prior chưa an toàn. |
+| [Heavy](https://github.com/qualife1291/AI-Living/actions/runs/40879968010) | 414.720 completed outcomes/profile; full 20 seed/24 actor/60 ngày. Ordinary chọn global, holdout delta +0,00233146 (CI +0,00179057..+0,00287234); cold-stress giữ personal fallback. RSS ≈ 458 MiB, ≈ 25 phút 24 giây. Strict gates chưa đủ, promotion=false. Không phải field gain. |
 
-## Regression discovered by actual GitHub Actions (strict hold)
-Initial attempt to change the live scenario registry to 96 **failed** existing `test-learning-policy` and `test-residual-policy` baseline fingerprint gates. Do NOT update expected snapshots to hide this; prior reward evidence uses the original scenario signature. On commit `194a007c`, the 96-scenario training is isolated by `scripts/h6-train-and-audit.mjs`: a temporary sandbox copies `lib`, `data`, package metadata, and node_modules link, substitutes only the sandbox's catalog, runs synthetic worker, then deletes sandbox; live world/D1 and runtime continue to use 41. The wrapper verifies unchanged live bytes. This is a deliberate compatibility safeguard, not a claim that the new 96 scenarios are deployed.
+Lần thử đưa 96 vào live registry đã fail baseline `test-learning-policy`/`test-residual-policy`; `194a007c` chuyển sang sandbox. Giữ safeguard này, không sửa expected snapshots để che regression. PR độc lập #6 và các branch audit/stress không tự được merge hoặc chấp nhận chỉ vì tooling đã vào work.
 
-## Empirical CI run and shadow-model rejection
-H6 run [40878609106](https://github.com/qualife1291/AI-Living/actions/runs/40878609106) and standard quality run [40878609036](https://github.com/qualife1291/AI-Living/actions/runs/40878609036) passed all **code/safety** checks. Training evidence before model-selection gate: two independent priors, **744 rows per profile**, **40,320 verified synthetic outcomes per profile**. Ordinary holdout return +0.0038263 per agent-day (95% CI [+0.00119,+0.00646]); cold-stress candidate return **-0.0148942** (CI [-0.02177,-0.00802]) versus personal baseline. Cold-stress shared prior is **not safe to promote**. Additionally, GitHub upload-artifact@v4 omitted the hidden `.h6-offline-results/` directory; the workflow is patched to include hidden files and fail if no artifact. H6 trainer now selects personal/global/role using dedicated validation seeds disjoint from training AND holdout; falls back to personal when no candidate excludes a loss. A selected non-personal candidate must also pass holdout safety; full-scale acceptance is still mandatory for promotion. CPU and peak RSS metrics are now recorded for upgrade decisions. No runtime model deployed.
+## Nghiệm thu trước runtime
 
-## Integration checkpoint — 29 October 2026
+1. Source tích hợp phải qua full code/security/asset/type/lint/build và compatibility với 41 scenario/fingerprints. Kiểm artifact installation/version/CAS/rollback và lưu provenance bền vững trước khi artifact CI hết hạn.
+2. Cùng quyết định/context live mới được shadow-score; chỉ aggregate, không đổi world/policy hoặc reward history. 96 action dùng signature riêng, từ chối mismatch/ID không có ở registry live.
+3. Đo baseline theo các cửa sổ cố định 24–72 h: completion, actor/action hợp lệ, earned samples/arm coverage, reward evidence rejects/drift/diversity, Cron/CPU/D1. Counter tăng hoặc nhiều scenario hơn không chứng minh H6 hiệu quả.
+4. Full-profile ordinary **và** cold-stress phải qua strict gates với cohort/split phù hợp; chưa đủ thì không activate. Feature flag, bounded latency/resources, review/rollback và E2E riêng trước graduated QA rollout; Sites A/staging không đổi.
 
-User requested H6 merge for real-world measurement. **Merge offline/shadow tooling into `work` only; NOT automatic activation of H6 synthetic model**. Initial QA live D1 snapshot (read-only, before H6 integration): revision=716, living_turns=232, completed tick_runs=232, agent_experiences=3185, learning_policies=27; QA Cron `*/5 * * * *`, active Worker version `1eaf1958-1c76-4ed1-bc2c-69338b44bc10`. These numbers were earned by the pre-existing 41-scenario live engine, **not by H6**. Record every later reading with timestamp, Worker version and change reason; no causal claims from a simple count increase.
-
-H6 heavy stress [run 40879968010](https://github.com/qualife1291/AI-Living/actions/runs/40879968010) **passed** with 414,720 completed synthetic outcomes for EACH of ordinary/cold-stress, full 20-seed 24-agent 60-day test; model promotion remained `false` because strict full-profile quality gates were not all met. Ordinary validation selects global prior and has positive holdout delta (+0.00233146 return per agent-day, 95% CI [+0.00179057,+0.00287234]); cold-stress remains personal fallback. Heavy resource usage: peak RSS approximately 458 MiB and elapsed approximately 25m24s. This is an offline capacity result, NOT field evidence. Independent QA PR #6 must not be silently merged by this integration.
-
-For **real field measurement**, first collect read-only QA metrics over multiple fixed time windows, with trained models strictly in shadow: per-actor completion/sample increments, action distribution/variety, reward quality/audit rejects, replay fingerprint versions and drift, Cron success rate and CPU. Shadow scoring must not overwrite resident policies, modify D1, rewrite historical rewards, add fake samples, or implicitly activate a prior. Any future H6 rollout requires a distinct gated QA implementation, explicit rollback and E2E checks against existing 41-scenario evidence. Keep QA production and Site A untouched by this PR.
+Policy rows là số actor, arms nằm trong JSON của từng policy. Baseline native từng ghi 27 row/922 arm/3.205 sample; 41×27=1.107 và 96×27=2.592 chỉ là sức chứa lý thuyết, không target để backfill giả. Five-minute turn identity hiện giới hạn ≤ 288 scheduled durable turns/ngày; tăng Cron frequency không tự tăng turn hợp lệ. Chi tiết nguồn/thời điểm baseline nằm trong release note theo nhánh, không coi số cũ là current state.

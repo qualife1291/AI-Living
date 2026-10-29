@@ -1,10 +1,11 @@
 import type { LivingState, RealContext } from "./schema";
 import type { World, PersonPlan } from "../world";
-import { animals, animalsAt, actorsAt, actorTransition, type Step } from "../life.ts";
+import { animalRoster, animalsAt, actorsAt, actorTransition, type Step } from "../life.ts";
 import { crowdAt } from "./engine.ts";
 import { petOwners } from "./pets.ts";
 import { computeSimMs, hashSeed } from "../clock.ts";
 import { fitAction, type LearnedAction } from "./learning.ts";
+import {planKey} from './plan-identity.ts';
 export type AnimalAction = "rest" | "forage" | "play" | "shelter";
 export type AnimalPolicy = {
   samples: number;
@@ -19,6 +20,8 @@ export type AnimalPolicy = {
     started: number;
     done: boolean;
     cancelled?: boolean;
+    planKey?: string;
+    durationMs?: number;
   };
 };
 const labels: Record<AnimalAction, string> = {
@@ -44,7 +47,7 @@ export function updateAnimalLearning(
   const simMs = computeSimMs(world.born, world.clock, now);
   const before = animalsAt(world, now);
   const accompanied = accompaniedPets(world, state, now);
-  for (const animal of animals) {
+  for (const animal of animalRoster({...world,living:state})) {
     if (accompanied.has(animal.id)) continue; // The walk interrupts autonomous choices, without earning a reward.
     const policy: AnimalPolicy = policies[animal.id] ?? {
       samples: 0,
@@ -55,6 +58,14 @@ export function updateAnimalLearning(
       context.weather.status === "fresh" &&
       (context.weather.precipitation ?? 0) > 0;
     const night = context.hour >= 21 || context.hour < 6;
+    // Slow simulation clocks need several pulses to finish a plan. Do not
+    // continuously replace it and thereby prevent any valid settlement.
+    if(policy.pending&&!policy.pending.done){
+      const matches=!!policy.plan&&policy.plan.simStartedAt===policy.pending.started&&(!policy.pending.planKey||planKey(policy.plan)===policy.pending.planKey);
+      const emergency=rain&&policy.pending.action!=='shelter'||!rain&&(night||policy.energy<30)&&policy.pending.action!=='rest';
+      if(matches&&!emergency)continue;
+      policy.pending.done=true;policy.pending.cancelled=true;
+    }
     const options: AnimalAction[] = ["rest", "forage", "play"];
     const action: AnimalAction = rain
       ? "shelter"
@@ -114,6 +125,8 @@ export function updateAnimalLearning(
       action,
       started: simMs,
       done: false,
+      planKey:planKey(policy.plan),
+      durationMs:policy.plan.steps.reduce((sum,s)=>sum+s.duration*1000,0),
     };
     policies[animal.id] = policy;
   }
@@ -133,10 +146,14 @@ export function settleAnimalLearning(
       policy.pending.done = true; policy.pending.cancelled = true;
       continue;
     }
+    const duration=policy.plan?.steps.reduce((sum,s)=>sum+s.duration*1000,0)??180000;
+    if(policy.pending&&!policy.pending.done&&(!policy.plan||policy.plan.simStartedAt!==policy.pending.started||policy.pending.planKey&&planKey(policy.plan)!==policy.pending.planKey||policy.pending.durationMs!==undefined&&policy.pending.durationMs!==duration)){
+      policy.pending.done=true;policy.pending.cancelled=true;continue;
+    }
     if (
       policy.pending &&
       !policy.pending.done &&
-      simMs - policy.pending.started >= 180000
+      simMs - policy.pending.started >= duration
     ) {
       policy.pending.done = true;
       const reward = policy.pending.action === "play" ? 0.2 : 0.55;
