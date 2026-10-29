@@ -1,0 +1,48 @@
+name: H6 Offline Model Scale & Deep Quality
+on:
+  pull_request:
+    paths:
+      - 'data/city/scenarios.json'
+      - 'scripts/test-h6-scenario-scale.mjs'
+      - 'scripts/h6-train-and-audit.mjs'
+      - '.github/workflows/h6-offline-quality.yml'
+  workflow_dispatch:
+    inputs:
+      tier:
+        description: 'Resource stress profile. Heavy and extreme are isolated offline and do not promote.'
+        type: choice
+        options: [ci, heavy, extreme]
+        default: ci
+permissions:
+  contents: read
+jobs:
+  h6-verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      CI: 'true'
+      XOM_TEST_JOBS: '4'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Install locked dependencies
+        run: corepack pnpm install --frozen-lockfile
+      - name: Strict scenario validity and adversarial policy checks
+        run: node scripts/test-h6-scenario-scale.mjs
+      - name: Offline hierarchical model training, provenance and disjoint holdout
+        run: node scripts/h6-train-and-audit.mjs --tier=${{ github.event.inputs.tier || 'ci' }}
+      - name: Existing unit coverage (unmodified)
+        run: npm run test:unit
+      - name: Typecheck and lint
+        run: npm run check && npm run lint
+      - name: Production build
+        run: npm run build
+      - name: Upload immutable shadow-only models and evaluation
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: h6-offline-models-${{ github.sha }}
+          path: .h6-offline-results/
+          retention-days: 14
