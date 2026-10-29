@@ -1,4 +1,4 @@
-"""Real UI, controlled lost-ACK server simulation. Loopback only; no live writes."""
+"""Real UI lost-ACK test; optional real Worker/D1 on a dedicated loopback fixture."""
 import datetime,json,os,subprocess,sqlite3
 from pathlib import Path
 from urllib.parse import urlparse
@@ -15,7 +15,10 @@ if db_path:
  assert marker and json.loads(marker.read_text())['purpose']=='chat-verification-only'
  db=sqlite3.connect('file:'+str(path)+'?mode=ro',uri=True)
  assert db.execute('select count(*) from visitor_exchanges').fetchone()[0]==0,'Fresh dedicated fixture required'
- def protected_snapshot():return json.dumps([db.execute('select * from '+table+' order by id').fetchall() for table in ['worlds','episodes','memories','learning_policies','agent_experiences']],ensure_ascii=False)
+ def protected_snapshot():
+  # Not every protected table has an `id` column. Sort the full serialized rows
+  # so the comparison covers every column without assuming a shared key shape.
+  return [sorted(json.dumps(row,ensure_ascii=False) for row in db.execute('select * from '+table).fetchall()) for table in ['worlds','episodes','memories','learning_policies','agent_experiences']]
  protected_before=protected_snapshot()
 with sync_playwright() as p:
  browser=p.chromium.launch(executable_path='/usr/bin/chromium',headless=True,args=['--no-sandbox','--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader'])
@@ -59,15 +62,29 @@ with sync_playwright() as p:
     state['mode']='invalid-ack';field.fill('Chưa được xác nhận đúng UUID');field.press('Enter');page.get_by_role('alert').filter(has_text='Chưa xác nhận').wait_for()
     invalid=state['requests'][-1]['id'];assert field.input_value()=='Chưa được xác nhận đúng UUID'
     state['mode']='success';field.press('Enter');page.wait_for_function('document.querySelector(".conversation form").getAttribute("aria-busy")==="false" && document.querySelector("#visitor-message").value===""');assert state['requests'][-1]['id']==invalid
+    # The server commits, but its ACK remains held beyond the real 10s UI deadline.
+    state['mode']='held';state['pending']=None;field.fill('Giữ lời nhắn khi hết thời gian');field.press('Enter')
+    page.get_by_role('alert').filter(has_text='Mất kết nối').wait_for(timeout=15000)
+    timed_out=state['requests'][-1]['id'];held=state['pending'];assert held is not None
+    assert field.input_value()=='Giữ lời nhắn khi hết thời gian' and not field.get_attribute('readonly')
+    requests_before=len(state['requests']);page.wait_for_timeout(500);assert len(state['requests'])==requests_before
+    timeout_gate=db.execute("select data,expires_at from context_cache where id='internal:visitor-chat:v1'").fetchone() if db else None
+    try:held.abort('failed')
+    except Exception:pass # the browser deadline may already have aborted this route
+    state['mode']='success';field.press('Enter');page.wait_for_function('document.querySelector(".conversation form").getAttribute("aria-busy")==="false" && document.querySelector("#visitor-message").value===""')
+    assert state['requests'][-1]['id']==timed_out
+    if db:assert db.execute("select data,expires_at from context_cache where id='internal:visitor-chat:v1'").fetchone()==timeout_gate
     state['mode']='held';field.fill('Đợi An trả lời');field.press('Enter');page.wait_for_function('document.querySelector(".conversation form").getAttribute("aria-busy")==="true"')
     before=len(state['requests']);page.locator('.conversation form').evaluate('(f)=>{f.requestSubmit();f.requestSubmit()}');page.wait_for_timeout(100);assert len(state['requests'])==before
-    old=state['pending'];page.locator('.people-grid button').filter(has_text='Bình').click();field=page.locator('#visitor-message');field.fill('Chào Bình')
+    old=state['pending'];page.locator('.people-grid button').filter(has_text='Bình').click()
+    # Choosing a resident intentionally closes the panel; reopen it for Bình.
+    page.get_by_role('button',name='Cư dân',exact=True).click();field=page.locator('#visitor-message');field.fill('Chào Bình')
     try:old.fulfill(status=200,content_type='application/json',body=json.dumps({**state['stored'][state['requests'][-1]['id']],'reply':'Câu cũ của An'}))
     except Exception:pass # expected if cleanup already aborted the unmounted request
     page.wait_for_timeout(300);assert page.locator('.conversation blockquote').count()==0,'No old actor response in the new actor panel'
     state['mode']='success';field.fill(text);field.press('Enter');page.locator('.conversation blockquote').wait_for();assert state['requests'][-1]['actorId']=='binh'
     assert page.evaluate('document.documentElement.scrollWidth<=innerWidth');assert not state['errors'],state['errors']
-    results.append({'viewport':name,'lostAckStableUuid':True,'noExtraStoredExchange':True,'newIntentNewUuid':True,'wrongAckRejected':True,'inflightDuplicateBlocked':True,'actorSwitchIsolated':True,'pageErrors':state['errors']})
+    results.append({'viewport':name,'lostAckStableUuid':True,'noExtraStoredExchange':True,'newIntentNewUuid':True,'wrongAckRejected':True,'deadlineMs':10000,'deadlineKeepsDraftAndUuid':True,'inflightDuplicateBlocked':True,'actorSwitchIsolated':True,'pageErrors':state['errors']})
     print(name,'PASS stable UUID, valid ACK binding, actor isolation',flush=True)
    except Exception:
     page.screenshot(path=str(out/f'{name}-failure-preview.png'));(out/f'{name}-failure.json').write_text(json.dumps(state,ensure_ascii=False,indent=2,default=str));raise
