@@ -153,5 +153,46 @@
   "worldOrPolicyWrites": false,
   "schemaChanges": false,
   "productionAccess": false,
-  "deployment": false
+  "deployment": false,
+  "mergedVerification": {
+    "source": "c6b7cd17f211889badd69c43d58cf7568192b111",
+    "acceptedAssets": "15e89fa (browser app source68060d6, evidence owned by asset agent)",
+    "unit": {
+      "suite": "unit-summary",
+      "total": 74,
+      "passed": 74,
+      "failed": [],
+      "workers": 2,
+      "seconds": 158.74
+    },
+    "typecheck": "PASS",
+    "lint": "PASS",
+    "assets": "PASS: 239 resource models, 27 exact lossless derivatives",
+    "build": "PASS",
+    "offlineModuleInWorkerJs": false,
+    "compiledChatD1": {
+      "suite": "chat-admission-compiled-http",
+      "concurrentUnique": 60,
+      "concurrentDuplicate": 16,
+      "limit": 30,
+      "windowMs": 60000,
+      "atomicRollbackCases": 2,
+      "originOwnerBodyPauseActorGuards": true,
+      "retryAfter": true,
+      "rejectedUuidReusable": true,
+      "historyPreserved": true,
+      "productionAccess": false
+    },
+    "legacyLivenessHttp": "PASS",
+    "frozenLearningAudit": {
+      "kind": "frozen-learning-evidence-acceptance-v1",
+      "artifacts": 76,
+      "comparisons": 42,
+      "holdout": {
+        "reserved12000to12019": "unobserved",
+        "plans": 0
+      }
+    },
+    "browser": "No new H5 browser: offline-only, no H5 UI/runtime/schema. Concurrent asset acceptance preserved separately."
+  }
 }
