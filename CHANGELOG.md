@@ -4,6 +4,8 @@ Chỉ ghi mốc sản phẩm. Chi tiết commit/review nằm trong Git; số ver
 
 ## 29/10/2026
 
+- H5a bổ sung thử nghiệm offline lời khuyên có nguồn: chỉ nhận sau GND3 nghe đủ, khóa world/session/người nhận, chống replay/giả receipt và tính decay/TTL khi đọc. Không ghi world/skill/policy/memory hoặc bật P2P live; artifact không được import runtime.
+
 - Chat có quota chung30 tin mới/cửa sổ60giây, counter và exchange ghi cùng transaction D1. Retry UUID không mất quota;429 có Retry-After, UI giữ bản nháp, lỗi lưu rollback. Không quét/xóa lịch sử hoặc đổi world/policy/schema.
 
 - API trò chuyện kiểm giới hạn2.000byte ngay khi đọc stream, hủy phần dư trước khi truy cập DB; giữ UUID retry/paused/origin guards, từ chối UTF-8 lỗi. Không thay history, reply rules hoặc schema.
