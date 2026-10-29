@@ -5,7 +5,9 @@ import {realpathSync,readdirSync} from 'node:fs';
 import {createRequire} from 'node:module';
 import {resolve} from 'node:path';
 const require=createRequire(realpathSync(resolve('node_modules/wrangler/package.json'))),{Miniflare,Log,LogLevel}=require('miniflare');
-const modules=readdirSync('dist/server',{recursive:true}).filter(p=>p.endsWith('.js')&&!p.split('/').includes('.wrangler')).map(p=>({type:'ESModule',path:resolve('dist/server',p)}));
+const files=readdirSync('dist/server',{recursive:true}).filter(p=>p.endsWith('.js')&&p!=='index.js'&&!p.split('/').includes('.wrangler'));
+// Vite can emit a manifest before index.js alphabetically; entry must be explicit.
+const modules=['index.js',...files].map(p=>({type:'ESModule',path:resolve('dist/server',p)}));
 const options={cf:false,outboundService:async()=>new Response('',{status:503}),log:new Log(LogLevel.ERROR),modules,modulesRoot:resolve('dist/server'),compatibilityDate:'2026-05-15',compatibilityFlags:['nodejs_compat'],d1Databases:['DB'],inspectorPort:0};
 const mf=new Miniflare({...options,bindings:{XOM_LOCAL_ADMIN:'true',XOM_SYSTEM_LOGS:'true'}}),denied=new Miniflare({...options,bindings:{XOM_LOCAL_ADMIN:'false',XOM_SYSTEM_LOGS:'true'}});
 try{
