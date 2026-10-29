@@ -1,6 +1,6 @@
 import { AsyncLocalStorage } from 'node:async_hooks';
 
-const events = ['http_complete','http_uncaught','chat_storage_failed','chat_throttled','pulse_stage','pulse_result','cron_result','cron_failed','cron_disabled'] as const;
+const events = ['http_complete','http_uncaught','chat_storage_failed','chat_throttled','pulse_stage','pulse_result','cron_result','cron_failed','cron_disabled','qa_auth_denied'] as const;
 type Event = typeof events[number];
 type Context = { requestId: string; trigger: 'http'|'cron'; route: string; method: string; version?: string };
 const contexts = new AsyncLocalStorage<Context>();
@@ -19,7 +19,7 @@ export function systemLog(event: Event, fields: Record<string, unknown> = {}) {
     const value = fields[key];
     if (typeof value === 'number' && Number.isFinite(value) && value >= 0 && value <= 1e12) safe[key] = Math.round(value * 100) / 100;
   }
-  for (const key of ['duplicate','coalesced'] as const) if (typeof fields[key] === 'boolean') safe[key] = fields[key];
+  for (const key of ['duplicate','coalesced','accessContextPresent','accessAudiencePresent','accessAudienceMatches','configuredAudiencePresent','expectedHostnameMatches','https'] as const) if (typeof fields[key] === 'boolean') safe[key] = fields[key];
   if (typeof fields.stage === 'string' && stages.has(fields.stage)) safe.stage = fields.stage;
   if (typeof fields.errorType === 'string') safe.errorType = errorNames.has(fields.errorType) ? fields.errorType : 'Error';
   const error = event === 'http_uncaught' || event === 'chat_storage_failed' || event === 'cron_failed' || Number(safe.status) >= 500;
