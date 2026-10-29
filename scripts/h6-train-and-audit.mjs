@@ -2,7 +2,7 @@
  * All trained priors carry the H6 (96 scenario) fingerprint. Production's
  * 41-scenario registry is kept byte-for-byte identical and cannot import them.
  */
-import {cpSync,mkdtempSync,writeFileSync,symlinkSync,rmSync,readFileSync} from 'node:fs';
+import {cpSync,mkdtempSync,mkdirSync,writeFileSync,symlinkSync,rmSync,readFileSync} from 'node:fs';
 import {tmpdir} from 'node:os';
 import {join,dirname,resolve} from 'node:path';
 import {fileURLToPath} from 'node:url';
@@ -21,6 +21,7 @@ try {
   cpSync(join(root,'lib'),join(sandbox,'lib'),{recursive:true});
   cpSync(join(root,'data'),join(sandbox,'data'),{recursive:true});
   cpSync(join(root,'package.json'),join(sandbox,'package.json'));
+  mkdirSync(join(sandbox,'scripts'),{recursive:true});
   cpSync(join(root,'scripts/h6-shadow-worker.mjs'),join(sandbox,'scripts/h6-shadow-worker.mjs'));
   symlinkSync(join(root,'node_modules'),join(sandbox,'node_modules'),'dir');
   writeFileSync(join(sandbox,'data/city/scenarios.json'),JSON.stringify(shadow));
