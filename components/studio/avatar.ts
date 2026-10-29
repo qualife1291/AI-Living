@@ -12,7 +12,7 @@ export class StudioAvatar extends RiggedAvatar {
   const armBones=new Set<THREE.Object3D>();for(const side of ['left','right'])this.joint(`arm-${side}`)?.traverse(b=>{if((b as THREE.Bone).isBone)armBones.add(b);});
   this.model.traverse(o=>{const mesh=o as THREE.SkinnedMesh;if(!mesh.isSkinnedMesh)return;const mask=mesh.geometry.getAttribute('wardrobe');for(let i=0;i<mask.count;i++){const p=mesh.getVertexPosition(i,new THREE.Vector3()).applyMatrix4(mesh.matrixWorld);const y=p.y/this.height;if(!original)mask.setX(i,y>.04&&y<.18?2:y>=.18&&y<.365?1:0);}mask.needsUpdate=true;const skin=mesh.geometry.getAttribute('skinIndex'),weights=mesh.geometry.getAttribute('skinWeight'),indices=mesh.geometry.index?Array.from(mesh.geometry.index.array):Array.from({length:skin.count},(_,i)=>i),kept:number[]=[];
    const isArm=(v:number)=>{let w=0;for(let n=0;n<4;n++)if(armBones.has(mesh.skeleton.bones[skin.getComponent(v,n)]))w+=weights.getComponent(v,n);return w>.45;};
-   for(let i=0;i<indices.length;i+=3)if(!indices.slice(i,i+3).some(isArm))kept.push(...indices.slice(i,i+3));mesh.geometry.setIndex(kept);
+   for(let i=0;i<indices.length;i+=3)if(!indices.slice(i,i+3).every(isArm))kept.push(...indices.slice(i,i+3));mesh.geometry.setIndex(kept);
   });
   for(const side of ['left','right']){
    const cloth=new THREE.MeshPhongMaterial({color:shirt,shininess:12}),skin=new THREE.MeshPhongMaterial({color:'#e7c19c',shininess:15});
