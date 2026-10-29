@@ -1,6 +1,7 @@
 # AI–Living — Quy trình remote QA cho AI coding agents
 
-**Bản chuẩn bị mới29/10:** app`130f710` (Citizens/GND3/Studio/H3b đã có negative gates) đã nhập vào QA, local73suite/type/lint/assets/build và [browser/evidence](validation/citizens-2026-10-29.json) đạt. QA-only guard nay nhận đúng template`site-creator-vinext-starter`, giữ idempotent **một** cron`*/5`, Access/JWKS và D1`ai_living_qa`;14case config rejection có regression. User đã yêu cầu push QA sau local acceptance; chưa promote main/staging/prod. Deployment/version/authenticated readback của source mới còn cần xác minh sau push, không suy từ build local. Lịch sử cron-off bên dưới là mốc cũ; config hiện hành giữ cron`*/5` theo bản b6397b1.
+**Bản mới29/10:** đã push source`b1579687fa89c492dce89ea07feb778cbd5488e8` lên `cloudflare-qa`; remote ref khớp. Cloudflare Workers Builds`1774e31b-a671-4efc-81ad-5647e09e516a` **completed/success** theo GitHub check-run. Local73suite/type/lint/assets và exact QA build đạt; app runtime diff với73suite source`ac52c74` rỗng. [Evidence/ảnh](validation/citizens-2026-10-29.json) giữ source browser`130f710`,4cảnh×desktop/mobile và12style. QA-only deploy guard nhận đúng template, giữ Access/JWKS/D1`ai_living_qa` và **một** cron`*/5`;14case config rejection có regression. HEAD chưa auth trả403; chưa có authenticated browser/native version/deployment/D1 readback của source mới, chưa promote main/staging/prod. Lịch sử cron-off bên dưới là mốc cũ.
+
 
 
 ## Trạng thái thực tế đã kiểm — 29/10/2026 (cập nhật sau thiết lập)

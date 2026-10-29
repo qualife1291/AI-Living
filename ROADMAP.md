@@ -13,7 +13,7 @@
 | A3 — đồ dùng | Chọn ghế/bàn/sách/đèn/máy tính/bàn cờ từ hai bộ; palette đồng bộ, semantic binding và footprint. Không nhập slot machine/casino props chỉ vì miễn phí. Hình ảnh không cấp inventory/skill hay xác nhận outcome. |
 | A4 — môi trường sau | Chọn cây/rau/quả/đồ gỗ nhẹ trong225module, rồi indoor/chợ theo phụ thuộc gameplay. Chợ full115.240triangle/384primitives cần tách/merge/LOD; tách240UCX khỏi render WC. ZIP2 có module tường/cửa/mái55.900triangle/69texture, giữ kế hoạch chuẩn hóa từng module/atlas/LOD cho nhà gỗ hoặc indoor sau này. Sáu crateZIP2~1.5M triangles, backpack/ghế4K, crate445MB/3×8K và fantasy1.5M triangles không nhập raw. Texture rời phải chứng minh UV khớp trước dùng. |
 | Âm thanh/animation bổ sung | ZIP3 có25bản nhạc48kHz stereo (~89.7phút), chọn sau human listening rồi OGG/ducking/loop/opt-in, không gọi là ambience hay bước chân. Mannequin nhiều LOD và rig xe đạp167joint chỉ làm tham khảo/retarget sau khi chuẩn hóa; giữ copyright UDD-CID. Fab đã đọc120listing/6detail; ưu tiên foley/ambience/props có format portable và tier phù hợp0đ, không nhập Niagara/UMG native. Chưa có account/library entitlement để tải file Fab. |
-| A5 — QA | Push bản đã kiểm vào `cloudflare-qa` theo yêu cầu; giữ Access/JWT/D1 và một cron hiện có. Xác minh source→build→deployment→authenticated browser riêng; git push không là deployment PASS. |
+| A5 — remote QA còn chờ | Đã push`b157968`, Cloudflare Build1774e31b báo success; còn authenticated browser/native version/deployment/D1/scheduled progress và independent review. Giữ Access/JWT/D1 và một cron; không gọi build check là runtime acceptance. |
 
 ## Thứ tự tiếp theo
 

@@ -12543,7 +12543,7 @@
           "Human listening/style check before choosing1–3tracks; existing Vietnamese voices stay intact",
           "Convert selected tracks to OGG/Opus or Vorbis, measure true/integrated loudness and peak headroom; verify loop/crossfade",
           "Reuse one opt-in audio lifecycle, duck music during dialogue, mute/pause/seek/hidden/unmount and no autoplay",
-          "Keep original25WAVs only in source vault; no970MB WAV preload or blanket runtime import"
+          "Keep original25WAVs only in source vault; no complete WAV preload or blanket runtime import"
         ]
       }
     ],
