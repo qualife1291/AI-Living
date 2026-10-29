@@ -458,7 +458,7 @@
     "Read-only snapshots do not prove Cron attribution or learning quality; compare requires native scheduled evidence",
     "15min stall is a diagnostic warning; intermediate pause/restart history is not visible",
     "No authenticated remote HTTP/browser, physical GPU or24h soak acceptance",
-    "No new graphics/H6 WIP imported into work; QA preserves already deployed f39287c from concurrent63d1086"
+    "Accepted concurrent graphics and H6 shadow-only work preserved; Ops did not rerun their trainer or promote models."
   ],
   "ci": {
     "existingTrigger": "24a32899-c5bf-474f-b31e-29ba7581ba24",
@@ -567,5 +567,91 @@
       "log": "qa-ops-final-browser-chat.log",
       "sha256": "d303dfe9ce0675327f2008a677a57b7d8434952251d2d81d00ab626160c08c4f"
     }
-  ]
+  ],
+  "latestQaIntegration": {
+    "source": "4377ed75be7d844d5970167cefab6b81d799261b",
+    "build": "efa85b42-162f-4840-bc6d-64476790254a",
+    "buildOutcome": "success",
+    "deployment": "55bdb507-2c4f-4219-a6a3-0f67fc7f316c",
+    "version": "f77411ba-338f-48e8-a1d2-2eeffc474e91",
+    "trafficPercent": 100,
+    "deployedOn": "2026-10-29T14:10:30.572983Z",
+    "opsFilesByteIdenticalTo5749ce4": true,
+    "nativeScheduledProof": {
+      "observedAt": "2026-10-29T14:15:41.553Z",
+      "success": true,
+      "status": 200,
+      "events": [
+        {
+          "timestamp": 1793283043167,
+          "nativeVersion": "f77411ba-338f-48e8-a1d2-2eeffc474e91",
+          "nativeRequestId": "ddd6aad5167898a4b937a8c4b3d16e7c",
+          "outcome": "ok",
+          "cpuTimeMs": 162,
+          "wallTimeMs": 880
+        },
+        {
+          "timestamp": 1793283043167,
+          "nativeVersion": "f77411ba-338f-48e8-a1d2-2eeffc474e91",
+          "nativeRequestId": "ddd6aad5167898a4b937a8c4b3d16e7c",
+          "schema": "xom-system-log-v1",
+          "event": "cron_result",
+          "requestId": "f667ac86-ab45-4101-9e60-5492adbe866a",
+          "version": "f77411ba-338f-48e8-a1d2-2eeffc474e91",
+          "status": 200,
+          "updated": 10,
+          "duplicate": false,
+          "coalesced": false,
+          "durationMs": 738
+        },
+        {
+          "timestamp": 1793283043144,
+          "nativeVersion": "f77411ba-338f-48e8-a1d2-2eeffc474e91",
+          "nativeRequestId": "ddd6aad5167898a4b937a8c4b3d16e7c",
+          "schema": "xom-system-log-v1",
+          "event": "pulse_stage",
+          "requestId": "f667ac86-ab45-4101-9e60-5492adbe866a",
+          "version": "f77411ba-338f-48e8-a1d2-2eeffc474e91",
+          "stage": "tick",
+          "status": 200,
+          "durationMs": 332
+        },
+        {
+          "timestamp": 1793283042812,
+          "nativeVersion": "f77411ba-338f-48e8-a1d2-2eeffc474e91",
+          "nativeRequestId": "ddd6aad5167898a4b937a8c4b3d16e7c",
+          "schema": "xom-system-log-v1",
+          "event": "pulse_stage",
+          "requestId": "f667ac86-ab45-4101-9e60-5492adbe866a",
+          "version": "f77411ba-338f-48e8-a1d2-2eeffc474e91",
+          "stage": "social",
+          "status": 200,
+          "durationMs": 83
+        },
+        {
+          "timestamp": 1793283042729,
+          "nativeVersion": "f77411ba-338f-48e8-a1d2-2eeffc474e91",
+          "nativeRequestId": "ddd6aad5167898a4b937a8c4b3d16e7c",
+          "schema": "xom-system-log-v1",
+          "event": "pulse_stage",
+          "requestId": "f667ac86-ab45-4101-9e60-5492adbe866a",
+          "version": "f77411ba-338f-48e8-a1d2-2eeffc474e91",
+          "stage": "learning",
+          "status": 200,
+          "updated": 10,
+          "durationMs": 214
+        }
+      ]
+    },
+    "ownership": "Subsequent graphics/H6 integration published by other agents; preserved their accepted work, no local trainer or model promotion by Ops"
+  },
+  "finalWorkMerge": {
+    "otherAcceptedWork": "05a446c",
+    "merge": "049e71d",
+    "targetedSystemLog": "PASS",
+    "targetedProgressWatch": "PASS",
+    "typecheck": "PASS",
+    "lint": "PASS",
+    "fullSuiteLimits": "Own full78/QA82 refer to pinned sources above. Later graphics/H6 full acceptance stays in its own evidence; no relabeling these counts as a new full run."
+  }
 }

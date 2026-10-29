@@ -8,6 +8,8 @@ Môi trường QA riêng, không phải Sites A production hoặc Cloudflare sta
 
 Native readback29/10 12:59UTC trên version`9a27dabf-1d97-4339-ae73-ae7d854a2896`/deployment`fea1c25f-cc95-42b3-85aa-124e003c7620`: revision683,221turn/completed tick,3113experience,27policy.13:17UTC revision695/225turn/3140experience/27policy;14:03UTC revision722/234turn/3199experience/27policy, born giữ nguyên. Khoảng này đi qua hai version; counter delta không tự chứng minh nguồn Cron/model gain. Native scheduled logs trước rollout mới có outcome=ok, qa_cron_pulse/status200, updated10–13 và non-coalesced trên cùng version. Đây là cửa sổ quan sát thật, chưa authenticated browser acceptance, model quality hoặc soak24giờ. Số mới và đối chiếu sau deploy nằm trong evidence; không dùng các số này làm current health vô thời hạn.
 
+Sau đó agent graphics/H6 đã push`4377ed75be7d844d5970167cefab6b81d799261b`: Build`efa85b42-162f-4840-bc6d-64476790254a` success, deployment`55bdb507-2c4f-4219-a6a3-0f67fc7f316c`, version`f77411ba-338f-48e8-a1d2-2eeffc474e91`100%. Phần Worker/log/progress/config byte-identical với5749; native Cron14:10UTC được kiểm lại riêng: outcomeok/status200/updated10/non-coalesced,3stage cùng request/version. Đây là readback mới hơn, không gán full78/82 của source cũ thành full run cho mã graphics/H6 mới.
+
 ## Môi trường và ranh giới
 
 | Thành phần | Cấu hình |
