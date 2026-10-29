@@ -2,13 +2,15 @@
   "kind": "graphics-interactions-acceptance-v1",
   "date": "2026-10-29",
   "timezone": "Asia/Ho_Chi_Minh",
-  "status": "IN_PROGRESS",
-  "appSource": "c0b51d4de517e026e4b7d4ec744db484bee8f24e",
+  "status": "LOCAL_PASS_QA_BUILD_PENDING",
+  "appSource": "3b3b3dbedf901cec9db36d84abe79039ba8a6eea",
   "production": false,
   "unit": {
-    "total": 79,
-    "passed": 79,
-    "failed": []
+    "total": 81,
+    "passed": 81,
+    "failed": [],
+    "workers": 4,
+    "seconds": 139.73
   },
   "typecheck": "PASS",
   "lint": "PASS",
@@ -17,41 +19,656 @@
   "compiledChat": "PASS: two Worker isolates, shared D1, 60 unique/16 duplicate/6 rollback",
   "browser": {
     "controls": {
-      "cases": 10,
+      "cases": [
+        {
+          "viewport": "desktop",
+          "scene": "city",
+          "followKeepsSelection": true,
+          "nativeBodyPicking": true,
+          "dragAndPinchDoNotSelect": true,
+          "errors": []
+        },
+        {
+          "viewport": "desktop",
+          "scene": "wallet-return",
+          "clickFocusAndWheel": true,
+          "nativeBodyPicking": true,
+          "shotAfterManualZoom": true,
+          "restartAndResetCamera": true,
+          "errors": []
+        },
+        {
+          "viewport": "desktop",
+          "scene": "sanitation-gratitude",
+          "clickFocusAndWheel": true,
+          "nativeBodyPicking": true,
+          "shotAfterManualZoom": true,
+          "restartAndResetCamera": true,
+          "errors": []
+        },
+        {
+          "viewport": "desktop",
+          "scene": "kitten-care",
+          "clickFocusAndWheel": true,
+          "nativeBodyPicking": true,
+          "shotAfterManualZoom": true,
+          "restartAndResetCamera": true,
+          "errors": []
+        },
+        {
+          "viewport": "desktop",
+          "scene": "bakery-courtesy",
+          "clickFocusAndWheel": true,
+          "nativeBodyPicking": true,
+          "shotAfterManualZoom": true,
+          "restartAndResetCamera": true,
+          "errors": []
+        },
+        {
+          "viewport": "mobile",
+          "scene": "city",
+          "followKeepsSelection": true,
+          "nativeBodyPicking": true,
+          "dragAndPinchDoNotSelect": true,
+          "errors": []
+        },
+        {
+          "viewport": "mobile",
+          "scene": "wallet-return",
+          "clickFocusAndWheel": true,
+          "nativeBodyPicking": true,
+          "shotAfterManualZoom": true,
+          "restartAndResetCamera": true,
+          "errors": []
+        },
+        {
+          "viewport": "mobile",
+          "scene": "sanitation-gratitude",
+          "clickFocusAndWheel": true,
+          "nativeBodyPicking": true,
+          "shotAfterManualZoom": true,
+          "restartAndResetCamera": true,
+          "errors": []
+        },
+        {
+          "viewport": "mobile",
+          "scene": "kitten-care",
+          "clickFocusAndWheel": true,
+          "nativeBodyPicking": true,
+          "shotAfterManualZoom": true,
+          "restartAndResetCamera": true,
+          "errors": []
+        },
+        {
+          "viewport": "mobile",
+          "scene": "bakery-courtesy",
+          "clickFocusAndWheel": true,
+          "nativeBodyPicking": true,
+          "shotAfterManualZoom": true,
+          "restartAndResetCamera": true,
+          "errors": []
+        }
+      ],
       "status": "PASS",
       "catGroundAndCarried": true
     },
     "activities": {
-      "cases": 15,
+      "cases": [
+        {
+          "viewport": "desktop",
+          "kind": "read",
+          "actors": 27,
+          "nativeControllers": 8,
+          "crowdInstances": 19,
+          "triangles": 210840,
+          "errors": []
+        },
+        {
+          "viewport": "desktop",
+          "kind": "drink",
+          "actors": 27,
+          "nativeControllers": 8,
+          "crowdInstances": 19,
+          "triangles": 180334,
+          "errors": []
+        },
+        {
+          "viewport": "desktop",
+          "kind": "eat",
+          "actors": 27,
+          "nativeControllers": 8,
+          "crowdInstances": 19,
+          "triangles": 184499,
+          "errors": []
+        },
+        {
+          "viewport": "desktop",
+          "kind": "garden",
+          "actors": 27,
+          "nativeControllers": 8,
+          "crowdInstances": 19,
+          "triangles": 181497,
+          "errors": []
+        },
+        {
+          "viewport": "desktop",
+          "kind": "shop",
+          "actors": 27,
+          "nativeControllers": 8,
+          "crowdInstances": 19,
+          "triangles": 208839,
+          "errors": []
+        },
+        {
+          "viewport": "desktop",
+          "kind": "study",
+          "actors": 27,
+          "nativeControllers": 8,
+          "crowdInstances": 19,
+          "triangles": 210840,
+          "errors": []
+        },
+        {
+          "viewport": "desktop",
+          "kind": "exercise",
+          "actors": 27,
+          "nativeControllers": 7,
+          "crowdInstances": 20,
+          "triangles": 203920,
+          "errors": []
+        },
+        {
+          "viewport": "desktop",
+          "kind": "jump",
+          "actors": 27,
+          "nativeControllers": 7,
+          "crowdInstances": 20,
+          "triangles": 184047,
+          "errors": []
+        },
+        {
+          "viewport": "desktop",
+          "kind": "cycle",
+          "actors": 27,
+          "nativeControllers": 8,
+          "crowdInstances": 19,
+          "triangles": 180970,
+          "errors": []
+        },
+        {
+          "viewport": "desktop",
+          "kind": "cook",
+          "actors": 27,
+          "nativeControllers": 7,
+          "crowdInstances": 20,
+          "triangles": 184611,
+          "errors": []
+        },
+        {
+          "viewport": "desktop",
+          "kind": "soccer",
+          "actors": 27,
+          "nativeControllers": 7,
+          "crowdInstances": 20,
+          "triangles": 184431,
+          "errors": []
+        },
+        {
+          "viewport": "desktop",
+          "kind": "swim",
+          "actors": 27,
+          "nativeControllers": 7,
+          "crowdInstances": 20,
+          "triangles": 185247,
+          "errors": []
+        },
+        {
+          "viewport": "mobile",
+          "kind": "read",
+          "actors": 27,
+          "nativeControllers": 8,
+          "crowdInstances": 19,
+          "triangles": 180749,
+          "errors": []
+        },
+        {
+          "viewport": "mobile",
+          "kind": "cycle",
+          "actors": 27,
+          "nativeControllers": 8,
+          "crowdInstances": 19,
+          "triangles": 184191,
+          "errors": []
+        },
+        {
+          "viewport": "mobile",
+          "kind": "cook",
+          "actors": 27,
+          "nativeControllers": 6,
+          "crowdInstances": 21,
+          "triangles": 181859,
+          "errors": []
+        }
+      ],
       "status": "PASS",
       "allActorAccounting": true,
       "shaderErrors": 0
     },
     "wardrobe": {
-      "cases": 2,
+      "cases": [
+        {
+          "viewport": "desktop",
+          "previewModel": "supplied/office",
+          "savePaused": true,
+          "clockFrozen": true,
+          "singlePreviewCanvas": true,
+          "resident": "neighbor-1",
+          "residentModel": "supplied/service",
+          "crowd": {
+            "batches": 10,
+            "instances": 23,
+            "modelIds": [
+              "supplied/service",
+              "supplied/office",
+              "supplied/leisure",
+              "supplied/jacket",
+              "supplied/waistcoat"
+            ],
+            "style": "same-approved-civilian-skins",
+            "samples": 8
+          },
+          "errors": []
+        },
+        {
+          "viewport": "mobile",
+          "previewModel": "supplied/office",
+          "savePaused": true,
+          "clockFrozen": true,
+          "singlePreviewCanvas": true,
+          "resident": "neighbor-1",
+          "residentModel": "supplied/service",
+          "crowd": {
+            "batches": 10,
+            "instances": 23,
+            "modelIds": [
+              "supplied/service",
+              "supplied/office",
+              "supplied/leisure",
+              "supplied/jacket",
+              "supplied/waistcoat"
+            ],
+            "style": "same-approved-civilian-skins",
+            "samples": 8
+          },
+          "errors": []
+        }
+      ],
       "status": "PASS",
       "previewMatchesCity": true,
       "saveWhilePaused": true
     },
     "studio": {
-      "cases": 8,
+      "cases": [
+        {
+          "viewport": "desktop",
+          "scenario": "wallet-return",
+          "shots": 5,
+          "controls": "play/pause/restart/seek/end/replay-after-completion",
+          "renderedTimeProbes": [
+            0,
+            24,
+            48,
+            72,
+            96,
+            119.9,
+            120,
+            37.5
+          ]
+        },
+        {
+          "viewport": "desktop",
+          "scenario": "sanitation-gratitude",
+          "shots": 5,
+          "controls": "play/pause/restart/seek/end/replay-after-completion",
+          "renderedTimeProbes": [
+            0,
+            24,
+            48,
+            72,
+            96,
+            119.9,
+            120,
+            37.5
+          ]
+        },
+        {
+          "viewport": "desktop",
+          "scenario": "kitten-care",
+          "shots": 5,
+          "controls": "play/pause/restart/seek/end/replay-after-completion",
+          "renderedTimeProbes": [
+            0,
+            24,
+            48,
+            72,
+            96,
+            119.9,
+            120,
+            37.5
+          ]
+        },
+        {
+          "viewport": "desktop",
+          "scenario": "bakery-courtesy",
+          "shots": 5,
+          "controls": "play/pause/restart/seek/end/replay-after-completion",
+          "renderedTimeProbes": [
+            0,
+            24,
+            48,
+            72,
+            96,
+            119.9,
+            120,
+            37.5
+          ]
+        },
+        {
+          "viewport": "mobile",
+          "scenario": "wallet-return",
+          "shots": 5,
+          "controls": "play/pause/restart/seek/end/replay-after-completion",
+          "renderedTimeProbes": [
+            0,
+            24,
+            48,
+            72,
+            96,
+            119.9,
+            120,
+            37.5
+          ]
+        },
+        {
+          "viewport": "mobile",
+          "scenario": "sanitation-gratitude",
+          "shots": 5,
+          "controls": "play/pause/restart/seek/end/replay-after-completion",
+          "renderedTimeProbes": [
+            0,
+            24,
+            48,
+            72,
+            96,
+            119.9,
+            120,
+            37.5
+          ]
+        },
+        {
+          "viewport": "mobile",
+          "scenario": "kitten-care",
+          "shots": 5,
+          "controls": "play/pause/restart/seek/end/replay-after-completion",
+          "renderedTimeProbes": [
+            0,
+            24,
+            48,
+            72,
+            96,
+            119.9,
+            120,
+            37.5
+          ]
+        },
+        {
+          "viewport": "mobile",
+          "scenario": "bakery-courtesy",
+          "shots": 5,
+          "controls": "play/pause/restart/seek/end/replay-after-completion",
+          "renderedTimeProbes": [
+            0,
+            24,
+            48,
+            72,
+            96,
+            119.9,
+            120,
+            37.5
+          ]
+        }
+      ],
       "shots": 40,
       "status": "PASS"
     },
     "sound": {
-      "scenarios": 4,
-      "decodedVoiceClips": 21,
+      "renderer": "Chromium SwiftShader",
+      "production": false,
+      "footsteps": true,
+      "hiddenStops": true,
+      "visibilityFixture": "document.hidden override exercises real visibilitychange handler",
+      "navigationDestroysOldDocument": true,
+      "explicitDispose": "separate strict API lifecycle unit test",
+      "navigationDestination": "intercepted local HTML fixture; unload callbacks are not reliably observable",
+      "unsupportedGraceful": true,
+      "unverified": [
+        "human listening/MOS",
+        "device speaker volume"
+      ],
+      "cases": [
+        {
+          "scenario": "wallet-return",
+          "audible": {
+            "status": "ready",
+            "voices": 1,
+            "effects": 0,
+            "active": 2,
+            "offset": 0.29999999999999716,
+            "voiceId": "wallet-return-54",
+            "rms": 0.034568230828735766,
+            "decoded": 21,
+            "failures": 0
+          },
+          "pauseStopsAllSources": true,
+          "seekDropsOldVoice": true
+        },
+        {
+          "scenario": "sanitation-gratitude",
+          "audible": {
+            "status": "ready",
+            "voices": 2,
+            "effects": 2,
+            "active": 2,
+            "offset": 0.3000000000000007,
+            "voiceId": "sanitation-gratitude-31",
+            "rms": 0.12912462666759592,
+            "decoded": 21,
+            "failures": 0
+          },
+          "pauseStopsAllSources": true,
+          "seekDropsOldVoice": true
+        },
+        {
+          "scenario": "kitten-care",
+          "audible": {
+            "status": "ready",
+            "voices": 3,
+            "effects": 4,
+            "active": 2,
+            "offset": 0.3000000000000007,
+            "voiceId": "kitten-care-25",
+            "rms": 0.07671834522351227,
+            "decoded": 21,
+            "failures": 0
+          },
+          "pauseStopsAllSources": true,
+          "seekDropsOldVoice": true
+        },
+        {
+          "scenario": "bakery-courtesy",
+          "audible": {
+            "status": "ready",
+            "voices": 4,
+            "effects": 4,
+            "active": 2,
+            "offset": 0.29999999999999716,
+            "voiceId": "bakery-courtesy-60",
+            "rms": 0.005174166571815721,
+            "decoded": 21,
+            "failures": 0
+          },
+          "pauseStopsAllSources": true,
+          "seekDropsOldVoice": true
+        }
+      ],
       "status": "PASS"
     },
-    "g0": "RUNNING"
+    "g0": {
+      "status": "PASS",
+      "appSource": "c0b51d4de517e026e4b7d4ec744db484bee8f24e",
+      "cases": "desktop/mobile/reduced-motion/unsupported-decompression/corrupt-gzip/core-failure/late-primary",
+      "unchangedAfter": "Shared jump lift and reviewed backend observability merge; dedicated jump/pause/wardrobe/control acceptance repeated on appSource above."
+    },
+    "jumpLod": {
+      "cases": [
+        {
+          "viewport": "desktop",
+          "actor": "neighbor-1",
+          "model": "supplied/service",
+          "lift": 2.297385106096275,
+          "nativeBefore": [
+            1502,
+            6.047385106096275,
+            1040
+          ],
+          "nativeAfter": [
+            1502,
+            6.047385106096275,
+            1040
+          ],
+          "clockFrozen": true,
+          "crowdSkinSame": true,
+          "errors": []
+        },
+        {
+          "viewport": "mobile",
+          "actor": "neighbor-1",
+          "model": "supplied/service",
+          "lift": 2.8662198622147725,
+          "nativeBefore": [
+            1502,
+            6.6162198622147725,
+            1040
+          ],
+          "nativeAfter": [
+            1502,
+            6.6162198622147725,
+            1040
+          ],
+          "clockFrozen": true,
+          "crowdSkinSame": true,
+          "errors": []
+        }
+      ],
+      "status": "PASS"
+    }
   },
   "pending": [
-    "Shared near/crowd jump lift correction: direct motion/crowd/action/phaseB/rig/type/lint pass; not yet compiled/browser accepted.",
-    "Merge latest reviewed observability work; final combined gates, QA branch build/readback and screenshots."
+    "QA branch final gates/build/push/readback."
   ],
   "limits": [
     "Loopback fixture/Chromium SwiftShader; not hardware FPS or soak.",
     "Native Sites and authenticated Cloudflare acceptance unavailable in this session.",
     "Cosmetic animation/IK is not a physics receipt or training gain."
-  ]
+  ],
+  "screenshots": "docs/screenshots/graphics-interactions/manifest.json",
+  "baseline": {
+    "source": "68060d6",
+    "production": false,
+    "renderer": "Chromium SwiftShader",
+    "cases": [
+      {
+        "case": "city-follow-keeps-selected",
+        "expected": "binh",
+        "actual": "an"
+      },
+      {
+        "case": "studio-shot-after-zoom",
+        "framing": [
+          {
+            "id": "minh",
+            "head": [
+              133.68985033427225,
+              31.064002745257792,
+              0.7982258955823744
+            ],
+            "feet": [
+              187.62693294879884,
+              -54.171070669648316,
+              0.7172991169165287
+            ]
+          },
+          {
+            "id": "tuan",
+            "head": [
+              26.519182338841897,
+              6.326353098318877,
+              0.9552186793857055
+            ],
+            "feet": [
+              20.605890665313844,
+              -6.623380055699308,
+              0.9646676286878293
+            ]
+          }
+        ]
+      },
+      {
+        "case": "studio-restart-camera",
+        "sameAsInitial": false
+      }
+    ]
+  },
+  "nativeActionContacts": {
+    "suite": "city-actions",
+    "styles": 5,
+    "actions": 12,
+    "frames": 2880,
+    "radiusMax": 6.725199427675243,
+    "gripMax": 1.6692352678450505e-07,
+    "footMax": 5.557868234440265e-05,
+    "seatMax": 0.19302764649207305,
+    "limbLengthsPreserved": true,
+    "sourceImmutable": true,
+    "worldWrites": false
+  },
+  "crowdSkin": {
+    "suite": "crowd-skins",
+    "models": 5,
+    "actions": 16,
+    "interpolatedPoses": 2560,
+    "radiusMax": 5.045278657802991,
+    "nativeTopology": true,
+    "actualPosePicking": true,
+    "pausedTint": true,
+    "sourceImmutable": true,
+    "noMissingFirstFrameActors": 72,
+    "retainedIdleStyles": 5,
+    "jumpLiftShared": true,
+    "instanceBuffersDisposedOnEviction": true
+  },
+  "transport": {
+    "derivatives": 28,
+    "canonicalBytes": 4867380,
+    "gzipBytes": 1373120,
+    "sharedPaletteBytes": 668521,
+    "sourceLicenseAndCanonicalPreserved": true
+  },
+  "compiledProgress": {
+    "status": "PASS",
+    "concurrentReaders": 12,
+    "ownerAndLoopbackGates": true,
+    "noBootstrapOrWrites": true,
+    "missingSchema503": true
+  }
 }
