@@ -34,6 +34,7 @@ const cast=Array.from({length:72},(_,i)=>({...actor,id:`person-${i}`,position:[i
 world.living.appearances=Object.fromEntries(cast.map(p=>[p.id,{...defaultAppearance(p.id),theme:'chef',face:'glasses'}]));
 const camera=new PerspectiveCamera();camera.position.set(80,50,170);
 const snapshot=JSON.stringify(world);
+people.draw(world,cast,poses,0,0,camera,'person-0');assert.equal(people.stats().instances,72,'No actor disappears while the shared action atlas warms');
 for(let frame=0;frame<120;frame++)people.draw(world,cast,poses,frame/60,1/60,camera,'person-0');
 assert(people.stats().batches<=20,'72 actors share style/action batches instead of skeletal controllers');
 assert.equal(people.stats().instances,72);assert.equal(people.stats().modelIds.length,5);

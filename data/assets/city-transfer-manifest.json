@@ -207,6 +207,17 @@
       "bytes": 223395
     },
     {
+      "id": "supplied/leisure",
+      "format": "gzip",
+      "sourceUrl": "/models/supplied/leisure.glb",
+      "sourceSha256": "ebbb94d2520244263ae85ac9dcf445d28372e7470288bfe226325a898d9789cd",
+      "sourceBytes": 549852,
+      "license": "LicenseRef-Owner-Confirmed-Free",
+      "url": "/models/derivatives/ebbb94d2520244263ae85ac9dcf445d28372e7470288bfe226325a898d9789cd.glb.gz",
+      "sha256": "4bfaf6d70d9321a8c270f983a03d076cd6051cb22435c2bef4d227c38691f9e3",
+      "bytes": 181749
+    },
+    {
       "id": "supplied/office",
       "format": "gzip",
       "sourceUrl": "/models/supplied/office.glb",
