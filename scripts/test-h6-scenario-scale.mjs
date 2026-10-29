@@ -11,8 +11,12 @@ assert.deepEqual(scenarios.map(s=>s.id).slice(0,41),legacy,'legacy IDs and order
 assert.deepEqual(fixture,scenarios);
 assert.equal(new Set(scenarios.map(s=>s.id)).size,96);
 const domains=new Map();
-for(const s of scenarios){scenarioSchema.parse(s);assert(s.skill===0||s.skillDomain, s.id+' missing skill domain');}
-for(const s of scenarios.slice(41))domains.set(s.skillDomain,(domains.get(s.skillDomain)||0)+1);
+for(const s of scenarios)scenarioSchema.parse(s);
+// Legacy scenarios retain historical skill semantics; new scenarios must explicitly attribute gains.
+for(const s of scenarios.slice(41)){
+  assert(s.skill===0||s.skillDomain, s.id+' missing skill domain');
+  domains.set(s.skillDomain,(domains.get(s.skillDomain)||0)+1);
+}
 for(const domain of ['community','learning','technical','ecology','commerce','mobility','fitness','service'])
   assert((domains.get(domain)||0)>=5,domain+' coverage below 5');
 assert.equal(OUTCOME_SCENARIO_SIGNATURE,hashSeed(JSON.stringify(scenarios)));
