@@ -199,45 +199,45 @@
       "id": "supplied/jacket",
       "format": "gzip",
       "sourceUrl": "/models/supplied/jacket.glb",
-      "sourceSha256": "e886d2fd56b1cbb8deae0703d14bc4b981867b025c3a0783a50b126c5265c57a",
-      "sourceBytes": 683204,
+      "sourceSha256": "bf84316a2c153c39f5a3a5c6caadf8d46013b1f192d98eed1c7eecfec78d2095",
+      "sourceBytes": 672184,
       "license": "LicenseRef-Owner-Confirmed-Free",
-      "url": "/models/derivatives/e886d2fd56b1cbb8deae0703d14bc4b981867b025c3a0783a50b126c5265c57a.glb.gz",
-      "sha256": "34d0086c30d230ab9d0a1def6bffa7985b9451aa6f8ab8f0cb1188bcaf08b20e",
-      "bytes": 262832
+      "url": "/models/derivatives/bf84316a2c153c39f5a3a5c6caadf8d46013b1f192d98eed1c7eecfec78d2095.glb.gz",
+      "sha256": "3f383fe6224ecac80803f8fb05ea0b6e9b41a1f636765ead35167a8823b00cb5",
+      "bytes": 231407
     },
     {
       "id": "supplied/office",
       "format": "gzip",
       "sourceUrl": "/models/supplied/office.glb",
-      "sourceSha256": "745ae9c5ed4157892f16cdd120c55b97d5971759e1646c3b0ede8a95e2815049",
-      "sourceBytes": 673240,
+      "sourceSha256": "b5e48693199e1ab46c5d10bf090837f5316c2d08a89e86d0ff7d1ea897470127",
+      "sourceBytes": 661084,
       "license": "LicenseRef-Owner-Confirmed-Free",
-      "url": "/models/derivatives/745ae9c5ed4157892f16cdd120c55b97d5971759e1646c3b0ede8a95e2815049.glb.gz",
-      "sha256": "dbe8daded03f1245f0e537457bc615be84440b3cbb6f9610a0b4807332e0ead2",
-      "bytes": 255961
+      "url": "/models/derivatives/b5e48693199e1ab46c5d10bf090837f5316c2d08a89e86d0ff7d1ea897470127.glb.gz",
+      "sha256": "4014cab93e958c6cf0e25ab96ff6574feaa8f80a27f2f44cd444e8c966b27226",
+      "bytes": 222443
     },
     {
       "id": "supplied/service",
       "format": "gzip",
       "sourceUrl": "/models/supplied/service.glb",
-      "sourceSha256": "f278782f1dd30a067f61ae525678abb89125f26a9cad6667e2ed8e1329ed67f5",
-      "sourceBytes": 658700,
+      "sourceSha256": "ae613b2238a29da680687a27b73f15ed3c5b9682670db5097f62d216ac8b1629",
+      "sourceBytes": 647676,
       "license": "LicenseRef-Owner-Confirmed-Free",
-      "url": "/models/derivatives/f278782f1dd30a067f61ae525678abb89125f26a9cad6667e2ed8e1329ed67f5.glb.gz",
-      "sha256": "6908d15f942a7a5abfa4d6713d2455e1c6f5cf1fbee3b4f14830f36d3a4dd86e",
-      "bytes": 258162
+      "url": "/models/derivatives/ae613b2238a29da680687a27b73f15ed3c5b9682670db5097f62d216ac8b1629.glb.gz",
+      "sha256": "6148d545444446df8795ea498a1d58e31bba72fd2628d440b360b05a537eea9c",
+      "bytes": 226546
     },
     {
       "id": "supplied/waistcoat",
       "format": "gzip",
       "sourceUrl": "/models/supplied/waistcoat.glb",
-      "sourceSha256": "a037f4a62f8eb3c0c6ad62f8bf8607d8fdab3be58cfffe163d78380369f0d2b3",
-      "sourceBytes": 723988,
+      "sourceSha256": "781e8048ab79ed953e05eb2c054051de30080c85581f76481a6fd1a3d50998a4",
+      "sourceBytes": 711872,
       "license": "LicenseRef-Owner-Confirmed-Free",
-      "url": "/models/derivatives/a037f4a62f8eb3c0c6ad62f8bf8607d8fdab3be58cfffe163d78380369f0d2b3.glb.gz",
-      "sha256": "d01125b55c7ef99b5413531f5275c76bcdeea4bdb84036b4d9f830c6267ff253",
-      "bytes": 269797
+      "url": "/models/derivatives/781e8048ab79ed953e05eb2c054051de30080c85581f76481a6fd1a3d50998a4.glb.gz",
+      "sha256": "78856690bcab8949114922ea139172776474af4dc0e24fc60384c20748798c07",
+      "bytes": 237218
     },
     {
       "id": "trains/railroad-straight",

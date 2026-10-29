@@ -212,6 +212,9 @@
     "scripts/test-ground-learning.mjs"
   ],
   [
+    "scripts/test-supplied-assets.mjs"
+  ],
+  [
     "scripts/test-bounded-json.mjs"
   ],
   [

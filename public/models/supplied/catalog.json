@@ -20,8 +20,8 @@
       "sourceSha256": "88090507e0276fa0fa72910338aaab85b81a87cc3f09d9f641ca58c888e071d0",
       "triangles": 2955,
       "url": "/models/supplied/jacket.glb",
-      "bytes": 683204,
-      "sha256": "e886d2fd56b1cbb8deae0703d14bc4b981867b025c3a0783a50b126c5265c57a",
+      "bytes": 672184,
+      "sha256": "bf84316a2c153c39f5a3a5c6caadf8d46013b1f192d98eed1c7eecfec78d2095",
       "license": "LicenseRef-Owner-Confirmed-Free",
       "pack": "supplied-civilians",
       "genre": "daily-life",
@@ -59,6 +59,11 @@
         },
         "Talk": {
           "nativeClip": "Adult_TalkGestureActive",
+          "sourceSegment": [
+            0,
+            2
+          ],
+          "cosinePingPongSeconds": 4,
           "authoredAdditionalMotion": false,
           "inPlace": true
         },
@@ -116,8 +121,8 @@
       "sourceSha256": "b6e8862896996fb2b1fbd9f5b30eace8665bfae86a6362dd659ab4b24249d216",
       "triangles": 2800,
       "url": "/models/supplied/service.glb",
-      "bytes": 658700,
-      "sha256": "f278782f1dd30a067f61ae525678abb89125f26a9cad6667e2ed8e1329ed67f5",
+      "bytes": 647676,
+      "sha256": "ae613b2238a29da680687a27b73f15ed3c5b9682670db5097f62d216ac8b1629",
       "license": "LicenseRef-Owner-Confirmed-Free",
       "pack": "supplied-civilians",
       "genre": "daily-life",
@@ -155,6 +160,11 @@
         },
         "Talk": {
           "nativeClip": "Adult_TalkGestureActive",
+          "sourceSegment": [
+            0,
+            2
+          ],
+          "cosinePingPongSeconds": 4,
           "authoredAdditionalMotion": false,
           "inPlace": true
         },
@@ -212,8 +222,8 @@
       "sourceSha256": "3b3281398c10af9a398d7dcf780263524b6d734ea0fac461d8d785183418e768",
       "triangles": 2784,
       "url": "/models/supplied/leisure.glb",
-      "bytes": 577980,
-      "sha256": "c340ca3b1b2b7fec70b8a914dc0868eea68eae7ec8fd7cec5b3774bac7f0442d",
+      "bytes": 563256,
+      "sha256": "14bdfbd00e1c722e62117e1b253fe96fe07c2f66f73279f4109f3267a08438c9",
       "license": "LicenseRef-Owner-Confirmed-Free",
       "pack": "supplied-civilians",
       "genre": "daily-life",
@@ -251,6 +261,11 @@
         },
         "Talk": {
           "nativeClip": "Plus-sizeAdult_TalkGestureActive",
+          "sourceSegment": [
+            0,
+            2
+          ],
+          "cosinePingPongSeconds": 4,
           "authoredAdditionalMotion": false,
           "inPlace": true
         },
@@ -308,8 +323,8 @@
       "sourceSha256": "540c08928bee56008aeb9627c3f7516ff35ce4199e52e8220459cc0894627391",
       "triangles": 2799,
       "url": "/models/supplied/office.glb",
-      "bytes": 673240,
-      "sha256": "745ae9c5ed4157892f16cdd120c55b97d5971759e1646c3b0ede8a95e2815049",
+      "bytes": 661084,
+      "sha256": "b5e48693199e1ab46c5d10bf090837f5316c2d08a89e86d0ff7d1ea897470127",
       "license": "LicenseRef-Owner-Confirmed-Free",
       "pack": "supplied-civilians",
       "genre": "daily-life",
@@ -347,6 +362,11 @@
         },
         "Talk": {
           "nativeClip": "Adult_TalkGestureActive",
+          "sourceSegment": [
+            0,
+            2
+          ],
+          "cosinePingPongSeconds": 4,
           "authoredAdditionalMotion": false,
           "inPlace": true
         },
@@ -404,8 +424,8 @@
       "sourceSha256": "0661ae70f499386d1e935844c27ce5b6db9c5c943e2c5ba28a87d1a0cef25d17",
       "triangles": 3861,
       "url": "/models/supplied/waistcoat.glb",
-      "bytes": 723988,
-      "sha256": "a037f4a62f8eb3c0c6ad62f8bf8607d8fdab3be58cfffe163d78380369f0d2b3",
+      "bytes": 711872,
+      "sha256": "781e8048ab79ed953e05eb2c054051de30080c85581f76481a6fd1a3d50998a4",
       "license": "LicenseRef-Owner-Confirmed-Free",
       "pack": "supplied-civilians",
       "genre": "daily-life",
@@ -443,6 +463,11 @@
         },
         "Talk": {
           "nativeClip": "Adult_TalkGestureActive",
+          "sourceSegment": [
+            0,
+            2
+          ],
+          "cosinePingPongSeconds": 4,
           "authoredAdditionalMotion": false,
           "inPlace": true
         },
