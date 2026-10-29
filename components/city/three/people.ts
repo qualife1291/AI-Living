@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import {createSharedPrimitives,HumanMotion} from './humans.ts';
 import {CrowdBatch} from './crowd-batch.ts';
 import type {AssetLibrary} from './assets.ts';
-import {CORE_MODELS,CITIZEN_FALLBACK,residentModel} from '../../../lib/city/character-models.ts';
+import {CORE_MODELS,CITIZEN_MODELS,CITIZEN_FALLBACK,residentModel} from '../../../lib/city/character-models.ts';
 import {defaultAppearance} from '../../../lib/city/appearance.ts';
 import type {Quality} from '../../../lib/city/scale.ts';
 import {groundElevation} from '../../../lib/city/ground.ts';
@@ -26,6 +26,8 @@ export function createPeople(scene:THREE.Scene,capacity:number,library:Pick<Asse
   if(built||!library.get(modelId))return;
   built=true;const batch=new CrowdBatch(library.get(modelId)!,modelId,kind,capacity);batch.mesh.receiveShadow=quality!=='eco';scene.add(batch.mesh);batches.set(key,{batch,used:clock});return batch;
  }
+ // Warm one cheap idle batch per available style so a new action never hides a resident.
+ for(const id of CITIZEN_MODELS){built=false;batchFor(id,'idle');}built=false;
  return {
   geometry,
   setQuality(next:Quality='balanced'){quality=next;for(const {batch} of batches.values())batch.mesh.receiveShadow=quality!=='eco';},
@@ -42,7 +44,7 @@ export function createPeople(scene:THREE.Scene,capacity:number,library:Pick<Asse
     const core=world.people.find(p=>p.id===actor.id),npc=world.living?.residents.find(p=>p.id===actor.id),wanted=CORE_MODELS[actor.id]??residentModel(npc?.roleId??'',actor.id);
     if(!library.get(wanted)&&!library.failures.has(wanted))void library.load(wanted).catch(()=>{});
     const modelId=library.get(wanted)?wanted:library.get(CITIZEN_FALLBACK)?CITIZEN_FALLBACK:undefined;if(!modelId)continue;
-    const clip=resolveActorClip(actor,poses.get(actor.id)?.speaking),kind=actor.bicycle?'cycle':actor.walking?clip:poses.has(actor.id)?poses.get(actor.id)?.speaking?'talk':'listen':actorActionKind(actor),batch=batchFor(modelId,kind)??batchFor(modelId,'idle');
+    const clip=resolveActorClip(actor,poses.get(actor.id)?.speaking),kind=actor.bicycle?'cycle':actor.walking||actor.kind==='run'?clip:poses.has(actor.id)?actorActionKind(actor)+'|'+(poses.get(actor.id)?.speaking?'talk':'listen'):clip==='sit'?'sit':actorActionKind(actor),batch=batchFor(modelId,kind)??batchFor(modelId,'idle');
     const appearance=world.living?.appearances?.[actor.id]??defaultAppearance(actor.id,core?.role??npc?.roleId);
     if(batch){const time=kind==='cycle'?(actor.bicycle?.distance??0)/3:actor.walking?motion.phase(actor.id)/(Math.PI*2)*batch.period:seconds;batch.add(actor.id,actor.position,yaw,time,appearance);heads.set(actor.id,batch.head(time,actor.position,yaw));assignments.set(actor.id,modelId);
      const propKind=actorActionKind(actor);

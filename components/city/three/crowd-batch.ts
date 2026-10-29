@@ -28,7 +28,8 @@ export class CrowdBatch {
   let skin:THREE.SkinnedMesh|undefined;rig.model.traverse(o=>{if((o as THREE.SkinnedMesh).isSkinnedMesh)skin=o as THREE.SkinnedMesh;});
   if(!skin)throw Error('Crowd requires an approved civilian skin');
   const body=skin as THREE.SkinnedMesh,geometry=body.geometry.clone(),count=geometry.getAttribute('position').count;
-  const clip=['walk','sprint','sit','talk','listen'].includes(kind)?kind:kind==='cycle'?'drive':'idle';
+  const [actionKind,overrideClip]=kind.split('|');kind=actionKind;
+  const clip=overrideClip??(['walk','sprint','sit','talk','listen'].includes(kind)?kind:kind==='cycle'?'drive':'idle');
   this.period=['walk','sprint','idle','sit','talk','listen'].includes(kind)?rig.duration(clip):kind==='cycle'?Math.PI*2:['cup','bread'].includes(kind)?Math.PI*2/1.5:Math.PI;
   const data=new Float32Array(WIDTH*Math.ceil(count*FRAMES*2/WIDTH)*4),p=new THREE.Vector3();
   for(let f=0;f<FRAMES;f++){

@@ -20,7 +20,7 @@ function unitBounds<T extends BufferGeometry>(geometry: T): T {
   return geometry;
 }
 
-/** Allocate once per city; share between all people and dispose with the scene. */
+/** Shared fauna/traffic primitives; civilian bodies use their approved GLB skins. */
 export function createSharedPrimitives(sharp = true): {
   box: BufferGeometry;
   round: BufferGeometry;

@@ -6,11 +6,12 @@ import {groundElevation} from '../lib/city/ground.ts';
 const library=await loadCivilianLibrary(),before=JSON.stringify([...library.loaded].map(([id,g])=>[id,g.scene.toJSON()]));
 let poses=0,radiusMax=0;
 for(const [id,source] of library.loaded){
- for(const kind of ['idle','walk','sprint','read','cup','bread','work','garden','bag','cook','exercise','soccer','swim','cycle']){
+ for(const kind of ['idle','walk','sprint','read','cup','bread','work','garden','bag','cook','exercise','soccer','swim','cycle','read|talk','cup|listen']){
   const batch=new CrowdBatch(source,id,kind,2),mesh=batch.mesh,colors={shirt:'#cc7755',trousers:'#445566',skin:'#d9ba90'};
   for(let f=0;f<32;f++){
    const points=batch.sample(f/4),radius=kind==='cycle'?9.2:4.8;
    for(let n=0;n<points.length;n+=3){assert(Number.isFinite(points[n]+points[n+1]+points[n+2]));const r=Math.hypot(points[n],points[n+2]);radiusMax=Math.max(radiusMax,r);assert(r<=radius+.001,`${id}/${kind} radius ${r}`);}
+   if(['idle','walk','sprint'].includes(kind)){let min=Infinity;for(let n=1;n<points.length;n+=3)min=Math.min(min,points[n]);assert(min<.35,'Interpolated soles stay on the ground');}
    poses++;
   }
   batch.add('fixture',[0,0],0,.31,colors);mesh.updateMatrixWorld(true);
@@ -22,4 +23,4 @@ for(const [id,source] of library.loaded){
  }
 }
 assert.equal(JSON.stringify([...library.loaded].map(([id,g])=>[id,g.scene.toJSON()])),before);library.dispose();
-console.log(JSON.stringify({suite:'crowd-skins',models:5,actions:14,interpolatedPoses:poses,radiusMax,nativeTopology:true,actualPosePicking:true,pausedTint:true,sourceImmutable:true}));
+console.log(JSON.stringify({suite:'crowd-skins',models:5,actions:16,interpolatedPoses:poses,radiusMax,nativeTopology:true,actualPosePicking:true,pausedTint:true,sourceImmutable:true}));
