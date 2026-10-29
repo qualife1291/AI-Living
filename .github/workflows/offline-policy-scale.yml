@@ -1,0 +1,42 @@
+name: L12 offline policy bank — 512 actors / 97 arms
+on:
+  pull_request:
+    paths:
+      - "data/training/scenario-expansion-v1.json"
+      - "scripts/train-offline-policy-scale.mjs"
+      - "scripts/test-offline-policy-scale.mjs"
+      - "scripts/verify-offline-policy-scale.mjs"
+      - "scripts/unit-suites.json"
+      - ".github/workflows/offline-policy-scale.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  offline-scale:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Install frozen project dependencies (not production)
+        run: npm run install:ci
+      - name: Validate 97 candidate actions and 100-action bound
+        run: node scripts/test-offline-policy-scale.mjs
+      - name: Train 512 synthetic resident policies, validate independent holdout
+        run: node scripts/train-offline-policy-scale.mjs --residents 512 --train-per-action 6 --holdout-per-action 2 --out .sites-runtime/training/l12-synthetic-512x97.json.gz
+      - name: Probe 1024-resident stress limit without artifact
+        run: node scripts/train-offline-policy-scale.mjs --residents 1024 --train-per-action 2 --holdout-per-action 1
+      - name: Verify SHA256, counts, safe runtime isolation and quality gates
+        run: node scripts/verify-offline-policy-scale.mjs .sites-runtime/training/l12-synthetic-512x97.json.gz
+      - name: Archive reproducible OFFLINE-ONLY candidate and stress report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: l12-synthetic-policy-candidate
+          path: |
+            .sites-runtime/training/l12-synthetic-512x97.json.gz
+            .sites-runtime/training/l12-synthetic-512x97.report.json
+          if-no-files-found: warn
+          retention-days: 14
