@@ -1,0 +1,35 @@
+name: H6 Heavy Resource Boundary (isolated offline)
+on:
+  push:
+    branches:
+      - test/h6-boundary-stress-20261029
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  heavy-offline:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      NODE_OPTIONS: '--max-old-space-size=12000'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Frozen dependencies
+        run: corepack pnpm install --frozen-lockfile
+      - name: Validate H6 shadow catalog before stress
+        run: node scripts/test-h6-scenario-scale.mjs
+      - name: Train and evaluate heavy-tier H6 with CPU/RAM accounting
+        run: |
+          /usr/bin/time -v node scripts/h6-train-and-audit.mjs --tier=heavy
+      - name: Upload H6 heavyweight artifacts (including on failure)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: h6-heavy-stress-${{ github.sha }}
+          path: .h6-offline-results/
+          include-hidden-files: true
+          if-no-files-found: warn
+          retention-days: 7
