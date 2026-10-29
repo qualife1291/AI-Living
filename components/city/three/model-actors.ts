@@ -126,12 +126,13 @@ export function createModelActors(scene: THREE.Scene, library: AssetLibrary) {
       for (const [id, avatar] of avatars) {
         const actor = actors.find(a => a.id === id); avatar.group.visible = !!actor;
         if (!actor) { const prop = props.get(id)?.group, bike = bicycles.get(id); if (prop) prop.visible = false; if (bike) bike.visible = false; continue; }
-        if (world.paused && posed.has(id)) continue;
+
         const old = travel.get(id), distance = old?.distance ?? 0;
         const walked = world.paused || !old ? 0 : Math.min(3, Math.hypot(actor.position[0] - old.x, actor.position[1] - old.z));
         travel.set(id, { x: actor.position[0], z: actor.position[1], distance: distance + walked });
         const person = world.people.find(p => p.id === id), appearance = world.living?.appearances?.[id] ?? defaultAppearance(id, person?.role);
         avatar.tint(appearance);
+        if(world.paused&&posed.has(id))continue;
         const act = `${actor.kind} ${actor.activity ?? ""} ${actor.location ?? ""}`.toLowerCase();
         const propKind = ["drink", "study", "shop"].includes(actor.kind) ? handProp(actor.kind) : /cook|nấu ăn/.test(act) ? "cook" : /soccer|đá bóng/.test(act) ? "soccer" : /swim|bơi/.test(act) ? "swim" : /lễ hội|festival|đèn lồng/.test(act) ? "lantern" : actor.kind;
         const holding = !actor.bicycle && !actor.walking && (hasHandProp(actor.kind) || ["cook", "soccer", "swim", "lantern"].includes(propKind));
@@ -159,13 +160,13 @@ export function createModelActors(scene: THREE.Scene, library: AssetLibrary) {
           avatar.group.updateMatrixWorld(true);
         }
         const cycling=!!actor.bicycle;
-        if(cycling && !bicycles.has(id)){const bike=createBicycle();scene.add(bike);bicycles.set(id,bike);}
+        if(cycling && !bicycles.has(id)){const bike=createBicycle();bike.traverse(o=>{if((o as THREE.Mesh).isMesh)o.userData.actorId=id;});scene.add(bike);bicycles.set(id,bike);}
         const bike=bicycles.get(id);if(bike){bike.visible=cycling;bike.position.set(actor.position[0],groundElevation(...actor.position),actor.position[1]);bike.rotation.y=headings.get(id)??.35;if(actor.bicycle)spinBicycle(bike,actor.bicycle.distance);}
         posed.add(id);
         const oldProp = props.get(id);
         if (holding && oldProp?.kind !== propKind) {
           if (oldProp) { scene.remove(oldProp.group); oldProp.group.traverse(o => { const m = o as THREE.Mesh; m.geometry?.dispose(); if (m.material) (m.material as THREE.Material).dispose(); }); }
-          const group = simpleProp(propKind); group.scale.setScalar(avatar.height / 17.5); scene.add(group); props.set(id, { kind: propKind, group });
+          const group = simpleProp(propKind);group.traverse(o=>{if((o as THREE.Mesh).isMesh)o.userData.actorId=id;}); group.scale.setScalar(avatar.height / 17.5); scene.add(group); props.set(id, { kind: propKind, group });
         }
         const prop = props.get(id)?.group;
         if (prop) { prop.visible = holding; const right = avatar.hand(); prop.position.copy(actor.kind === "read" ? right.add(avatar.hand("left")).multiplyScalar(.5) : right); prop.rotation.set(0, headings.get(id) ?? .35, 0); }

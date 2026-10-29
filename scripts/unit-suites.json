@@ -221,6 +221,12 @@
     "scripts/test-chat-admission.mjs"
   ],
   [
+    "scripts/test-peer-sharing.mjs"
+  ],
+  [
+    "scripts/test-scene-interactions.mjs"
+  ],
+  [
     "scripts/test-cloudflare-access.mjs"
   ],
   [
