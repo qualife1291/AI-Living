@@ -47,7 +47,7 @@ export async function createStudio(host: HTMLDivElement, input: () => { id: Scen
   const stages = new Map<ScenarioId, Stage>(), skies = new Map<ScenarioId, THREE.CanvasTexture>();
   function build(frame: ScenarioFrame): Stage {
     const group = new THREE.Group(), actors = new Map<string, StudioAvatar>(), props = new Map<string, THREE.Group>();
-    const floor=box(0, -.6, 0, 300, 1.2, 240, frame.theme.groundHex);floor.receiveShadow=true;group.add(floor);
+    const floor=box(0, -.6, 0, 3000, 1.2, 3000, frame.theme.groundHex);floor.receiveShadow=true;group.add(floor);
     // Pavement bands make distance and posture readable, without expensive textures.
     for (let n = -6; n <= 6; n++) group.add(box(n * 16, .005, 0, .12, .02, 180, "#b8b4a1"));
     let cat: StudioFeline | null = null;

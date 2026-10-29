@@ -9,8 +9,8 @@ report=[]
 with sync_playwright() as p:
  b=p.chromium.launch(executable_path='/usr/bin/chromium',headless=True,args=['--no-sandbox','--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader','--disable-back-forward-cache'])
  try:
-  page=b.new_page(viewport={'width':1280,'height':850});closures=[];page.expose_function('qaContextClosed',lambda:closures.append(True));errors=[];page.on('pageerror',lambda e:errors.append(str(e)))
-  page.add_init_script("""window.__audioContexts=[];const Native=window.AudioContext;window.AudioContext=class extends Native{constructor(...args){super(...args);window.__audioContexts.push(this)}close(){window.qaContextClosed();return super.close()}}""")
+  page=b.new_page(viewport={'width':1280,'height':850});closures=[];page.route('**/__qa/audio-closed',lambda r:r.fulfill(status=204));page.on('request',lambda r:closures.append(True) if r.url.endswith('/__qa/audio-closed') else None);errors=[];page.on('pageerror',lambda e:errors.append(str(e)))
+  page.add_init_script("""window.__audioContexts=[];const Native=window.AudioContext;window.AudioContext=class extends Native{constructor(...args){super(...args);window.__audioContexts.push(this)}close(){navigator.sendBeacon('/__qa/audio-closed','closed');return super.close()}}""")
   page.goto(base+'/studio',wait_until='domcontentloaded');host=page.locator('.studio-canvas[data-ready="true"]');host.wait_for(timeout=90000)
   assert page.evaluate('window.__audioContexts.length')==0,'No autoplay or context before gesture'
   page.get_by_role('button',name='Bật âm thanh',exact=True).click();page.wait_for_function('JSON.parse(document.querySelector(".studio-canvas").dataset.audio||"{}").decoded===21',timeout=90000)
@@ -34,12 +34,12 @@ with sync_playwright() as p:
   page.evaluate("Object.defineProperty(document,'hidden',{configurable:true,get:()=>false});document.dispatchEvent(new Event('visibilitychange'))")
   page.get_by_role('button',name='Tắt âm thanh',exact=True).click();page.wait_for_function('JSON.parse(document.querySelector(".studio-canvas").dataset.audio).active===0')
   # Real pagehide/teardown closes the context before native return navigation.
-  page.get_by_role('link',name='Trở về xóm',exact=True).click();page.wait_for_url(base+'/');assert closures,'Pagehide closes the actual AudioContext'
+  page.route(base+'/',lambda r:r.fulfill(status=200,content_type='text/html',body='<title>Studio teardown fixture</title>'));page.get_by_role('link',name='Trở về xóm',exact=True).click();page.wait_for_url(base+'/');page.wait_for_timeout(300);assert closures,'Pagehide closes the actual AudioContext'
   assert not errors,errors;page.close()
   # A failed clip keeps captions and ambient output, with an explicit partial state.
   partial=b.new_page();partial.route('**/audio/studio/wallet-return-54.ogg',lambda r:r.abort());partial.goto(base+'/studio',wait_until='domcontentloaded');partial.locator('.studio-canvas[data-ready="true"]').wait_for(timeout=90000);partial.get_by_role('button',name='Bật âm thanh',exact=True).click();partial.wait_for_function('JSON.parse(document.querySelector(".studio-canvas").dataset.audio||"{}").status==="partial"',timeout=90000);a=partial.locator('.studio-canvas').get_attribute('data-audio');assert json.loads(a)['failures']==1;assert json.loads(a)['decoded']==20;partial.close()
   unsupported=b.new_page();unsupported.add_init_script('window.AudioContext=undefined');unsupported.goto(base+'/studio',wait_until='domcontentloaded');unsupported.locator('.studio-canvas[data-ready="true"]').wait_for(timeout=90000);unsupported.get_by_role('button',name='Bật âm thanh',exact=True).click();unsupported.wait_for_function('JSON.parse(document.querySelector(".studio-canvas").dataset.audio||"{}").status==="unavailable"');assert unsupported.get_by_role('button',name='Bật âm thanh',exact=True).count()==1;unsupported.close()
-  (out/'sound-metrics.json').write_text(json.dumps({'renderer':'Chromium SwiftShader','production':False,'cases':report,'footsteps':True,'hiddenStops':True,'visibilityFixture':'document.hidden override exercises real visibilitychange handler','unmountClosesContext':True,'partialFetch':json.loads(a),'unsupportedGraceful':True,'unverified':['human listening/MOS','device speaker volume']},ensure_ascii=False,indent=2));print('PASS all four actual voice outputs, footsteps, seek/pause/hidden/mute/teardown and failures',flush=True)
+  (out/'sound-metrics.json').write_text(json.dumps({'renderer':'Chromium SwiftShader','production':False,'cases':report,'footsteps':True,'hiddenStops':True,'visibilityFixture':'document.hidden override exercises real visibilitychange handler','navigationCallsContextClose':True,'navigationDestination':'intercepted local HTML fixture; actual pagehide and AudioContext.close','partialFetch':json.loads(a),'unsupportedGraceful':True,'unverified':['human listening/MOS','device speaker volume']},ensure_ascii=False,indent=2));print('PASS all four actual voice outputs, footsteps, seek/pause/hidden/mute/teardown and failures',flush=True)
  except Exception:
   print('PAGE ERRORS',errors,flush=True)
   try:
