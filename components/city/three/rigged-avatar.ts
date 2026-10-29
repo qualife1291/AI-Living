@@ -171,7 +171,7 @@ export class RiggedAvatar {
   this.wardrobeEnabled.value=1;
   this.colors.shirt.set(colors.shirt);this.colors.trousers.set(colors.trousers);this.colors.skin.set(colors.skin);
  }
- assignId(id:string){this.model.traverse(o=>{if((o as THREE.Mesh).isMesh)o.userData.actorId=id;});}
+ assignId(id:string){this.group.traverse(o=>{if((o as THREE.Mesh).isMesh)o.userData.actorId=id;});}
  hand(side='right'){return this.surface(`hand-${side}`)??this.joint(`hand-${side}`)?.getWorldPosition(new THREE.Vector3())??this.group.position.clone().add(new THREE.Vector3(0,10,0));}
  head(){return this.surface('head','max')??this.group.position.clone().add(new THREE.Vector3(0,17.5,0));}
  snapshot(){return{clip:this.requested,resolvedClip:this.current,leg:this.joint('leg-left')?.quaternion.toArray(),position:this.group.position.toArray(),skinned:true,height:this.height,profile:this.model.userData.profile??'imported'};}

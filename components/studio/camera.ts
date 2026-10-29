@@ -9,8 +9,8 @@ const groups:Record<string,string[][]>={
 };
 type Contact={id:string;head:number[];hands:{left:number[];right:number[]}};
 const ease=(v:number)=>{const t=Math.min(1,Math.max(0,v));return t*t*t*(t*(t*6-15)+10);};
-export function studioCamera(frame:ScenarioFrame,contacts:Contact[],aspect:number){
- const index=frame.beat.index,definition=scenarioDefinitions.find(d=>d.id===frame.id)!,amount=index?ease((frame.time-definition.shots[index].at)/2.4):1;
+export function studioCamera(frame:ScenarioFrame,contacts:Contact[],aspect:number,snap=false){
+ const index=frame.beat.index,definition=scenarioDefinitions.find(d=>d.id===frame.id)!,amount=index&&!snap?ease((frame.time-definition.shots[index].at)/2.4):1;
  const offset=new THREE.Vector3(...frame.camera.position).sub(new THREE.Vector3(...frame.camera.target));offset.y*=.8;
  // Preserve the authored orbit/pitch and fit the actual human/prop envelope.
  const direction=offset.clone().normalize(),right=new THREE.Vector3().crossVectors(new THREE.Vector3(0,1,0),direction).normalize(),up=new THREE.Vector3().crossVectors(direction,right).normalize(),tan=Math.tan(THREE.MathUtils.degToRad(frame.camera.fov)/2);
