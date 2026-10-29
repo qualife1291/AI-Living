@@ -18,6 +18,8 @@ const now=Date.parse('2026-10-29T02:00:00Z'),context={date:'2026-10-29',hour:9,w
 const original={...structuredClone(seed),born:new Date(now).toISOString(),living:initializeLiving(now),clock:{scale:1,pausedAt:null,pausedMs:0,anchors:[{realMs:now,simMs:0,scale:1}]}};
 const initial=JSON.stringify(original);assert.equal(original.living.residents.length,24);assert.equal(animalsAt(original,now).length,3,'Frozen initialization/studies keep their old roster');
 let world=planLivingTurn(original,context,now).world;
+const legacySource={seq:1,revision:0,capturedAt:now,raw:JSON.stringify(original)},legacyShared=await bootstrapShared(legacySource,randomUUID()),expandedSource={seq:2,revision:1,capturedAt:now,raw:JSON.stringify(world)};
+const adopted=await replayShared(legacyShared,legacySource,[expandedSource],now+100);assert.equal(adopted.state.frames.at(-1).poses.length,60,'Existing shared sessions adopt all new humans and animals without a reset');
 assert.equal(JSON.stringify(original),initial);assert.equal(world.born,original.born);assert.equal(world.living.residents.length,48);assert.equal(animalRoster(world).length,9);assert.deepEqual(world.living.petOwners,original.living.petOwners);
 for(const old of original.living.residents){const next=world.living.residents.find(r=>r.id===old.id);for(const key of ['id','name','identity','home','memories','arrivedOn'])assert.deepEqual(next[key],old[key]);}
 const custom=structuredClone(original);custom.living.catalog.maxPopulation=30;custom.living.catalog.initialPopulation=25;assert.equal(planLivingTurn(custom,context,now).world.living.residents.length,25,'Explicit owner population settings survive');

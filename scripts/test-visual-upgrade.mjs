@@ -3,7 +3,8 @@ import { Scene, PerspectiveCamera, Matrix4, Vector3 } from 'three';
 import { HumanMotion } from '../components/city/three/humans.ts';
 import { createPeople } from '../components/city/three/people.ts';
 import { createAmbience } from '../components/city/three/ambience.ts';
-import { createFauna } from '../components/city/three/fauna.ts';
+// Native rigs/felines are covered by test-neighborhood; keep failure silhouettes bounded too.
+import { createFauna } from '../components/city/three/fauna-fallback.ts';
 import { streetModel } from '../components/city/three/streetscape.ts';
 import { streetProps } from '../lib/city/scenery.ts';
 import { seed } from '../lib/world.ts';
