@@ -2,7 +2,7 @@
   "kind": "graphics-interactions-acceptance-v1",
   "date": "2026-10-29",
   "timezone": "Asia/Ho_Chi_Minh",
-  "status": "LOCAL_PASS_QA_BUILD_PENDING",
+  "status": "LOCAL_PASS_CARRIER_FOLLOWUP_QA_PENDING",
   "appSource": "3b3b3dbedf901cec9db36d84abe79039ba8a6eea",
   "production": false,
   "unit": {
@@ -579,7 +579,8 @@
   "limits": [
     "Loopback fixture/Chromium SwiftShader; not hardware FPS or soak.",
     "Native Sites and authenticated Cloudflare acceptance unavailable in this session.",
-    "Cosmetic animation/IK is not a physics receipt or training gain."
+    "Cosmetic animation/IK is not a physics receipt or training gain.",
+    "One cold Studio browser navigation timed out at 60s; concurrent process remained listening and subsequent loopback HTTP probe returned200 in0.163s. Fresh-browser retry uses unchanged build/DB; no reliability or soak PASS. Failure log: work/graphics-interactions-2026-10-29/carrier-studio.log."
   ],
   "screenshots": "docs/screenshots/graphics-interactions/manifest.json",
   "baseline": {
@@ -703,7 +704,7 @@
   },
   "qa": {
     "candidate": "8af40bb",
-    "parentRemotePreserved": "5749ce4b8cb833cbdc12c0513500b92bcfbf55b2",
+    "parentRemotePreserved": "72d4c2f4785aba5a7aec6ec8f62d89da5f61848c",
     "previousCombinedGate": {
       "source": "3a04626",
       "unit": 84,
@@ -724,6 +725,73 @@
     "accessPreserved": true,
     "structuredLogs": true,
     "versionMetadataBinding": "CF_VERSION_METADATA",
-    "authenticatedBrowser": "BLOCKED: no credentials in graphics session"
+    "authenticatedBrowser": "BLOCKED: no credentials in graphics session",
+    "earlierGraphicsBuild": {
+      "source": "4377ed75be7d844d5970167cefab6b81d799261b",
+      "buildId": "efa85b42-162f-4840-bc6d-64476790254a",
+      "checkRun": 123498876478,
+      "conclusion": "success",
+      "supersededByCarrierFollowup": true
+    },
+    "nativeBaselineReference": "docs/validation/qa-observability-2026-10-29.json: independent Ops readback on prior versions; not authenticated acceptance of carrier followup."
+  },
+  "carrierFollowup": {
+    "appSource": "a404bf449eb53dddb0610ac04406633359548c47",
+    "testReportSource": "42d4c3c",
+    "visualFailureFoundAfterTelemetryPass": true,
+    "fixes": [
+      "Selected pet includes supporting/carrier adult in camera envelope, including pickup transition.",
+      "Prop dimensions update every timeline frame; cloth fits the torso, rotates with the kitten and leaves its face clear.",
+      "Actual palm surfaces support the feline belly."
+    ],
+    "unit": {
+      "total": 81,
+      "passed": 81,
+      "seconds": 140.87,
+      "focusedSupportRegression": "PASS after additional ground-support inclusion"
+    },
+    "studioQuality": {
+      "suite": "studio-quality",
+      "report": [
+        {
+          "scenario": "wallet-return",
+          "maxHandStep": 0.6802435889239066,
+          "maximumContactGap": 0,
+          "seekEquivalent": true
+        },
+        {
+          "scenario": "sanitation-gratitude",
+          "maxHandStep": 0.5547269612427581,
+          "maximumContactGap": 0,
+          "seekEquivalent": true
+        },
+        {
+          "scenario": "kitten-care",
+          "maxHandStep": 0.8087991152735698,
+          "maximumContactGap": 0.005616741997440335,
+          "seekEquivalent": true
+        },
+        {
+          "scenario": "bakery-courtesy",
+          "maxHandStep": 0.33471491776391304,
+          "maximumContactGap": 0,
+          "seekEquivalent": true
+        }
+      ],
+      "voices": 21,
+      "scope": "actual rig/arm surfaces and local asset integrity; browser/audio output separate"
+    },
+    "interactionBrowser": {
+      "cases": 10,
+      "status": "PASS",
+      "automaticPickupFraming": true,
+      "renderedClothDimensions": [
+        1.65,
+        1.05,
+        2.5
+      ]
+    },
+    "screenshots": "docs/screenshots/graphics-interactions/manifest.json",
+    "authoredStudioAndSound": "RUNNING"
   }
 }
