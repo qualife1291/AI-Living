@@ -19,7 +19,7 @@ for(const [id,source] of library.loaded){
   const ray=new THREE.Raycaster(new THREE.Vector3(0,bounds.min.y+(bounds.max.y-bounds.min.y)*.55,50),new THREE.Vector3(0,0,-1)),hits=[];mesh.raycast(ray,hits);
   assert(hits.length,`${id}/${kind} actual animated body must be clickable`);assert(hits.every(h=>h.instanceId===0&&h.object===mesh));
   const old=mesh.geometry.getAttribute('shirtTone').getX(0);batch.reset();batch.add('fixture',[0,0],0,.31,{...colors,shirt:'#44ff66'});assert.notEqual(mesh.geometry.getAttribute('shirtTone').getX(0),old,'Same shader tint path while paused');
-  batch.reset();const empty=[];mesh.raycast(ray,empty);assert.equal(empty.length,0,'Previous LOD instances cannot intercept a click');batch.dispose();
+  batch.reset();const empty=[];mesh.raycast(ray,empty);assert.equal(empty.length,0,'Previous LOD instances cannot intercept a click');let released=false;mesh.addEventListener('dispose',()=>released=true);batch.dispose();assert(released,'Evicted action batches release instance buffers before city unmount');
  }
 }
 assert.equal(JSON.stringify([...library.loaded].map(([id,g])=>[id,g.scene.toJSON()])),before);library.dispose();

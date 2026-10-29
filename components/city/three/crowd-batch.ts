@@ -84,5 +84,5 @@ export class CrowdBatch {
  }
  reset(){this.mesh.count=0;this.mesh.userData.ids.length=0;}
  flush(){this.mesh.instanceMatrix.needsUpdate=true;this.phase.needsUpdate=true;for(const a of this.tones)a.needsUpdate=true;}
- dispose(){this.mesh.removeFromParent();this.mesh.geometry.dispose();(this.mesh.material as THREE.Material).dispose();this.proxy.geometry.dispose();this.atlas.dispose();}
+ dispose(){this.mesh.removeFromParent();this.mesh.dispose();this.mesh.geometry.dispose();(this.mesh.material as THREE.Material).dispose();this.proxy.geometry.dispose();this.atlas.dispose();}
 }

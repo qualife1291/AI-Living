@@ -1,8 +1,9 @@
 """Compiled loopback graphics acceptance; synthetic API fixture, never production writes."""
 import json,subprocess,datetime,os,time
 from pathlib import Path
+from urllib.parse import urlparse
 from playwright.sync_api import sync_playwright
-base=os.environ.get('QA_BASE','http://127.0.0.1:5340');assert __import__('urllib.parse',fromlist=['urlparse']).urlparse(base).hostname in ('127.0.0.1','localhost');out=Path(os.environ.get('QA_OUT','work/graphics-interactions/activities'));out.mkdir(parents=True,exist_ok=True)
+base=os.environ.get('QA_BASE','http://127.0.0.1:5340');assert urlparse(base).hostname in ('127.0.0.1','localhost');out=Path(os.environ.get('QA_OUT','work/graphics-interactions/activities'));out.mkdir(parents=True,exist_ok=True)
 report=[]
 flags=['--no-sandbox','--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader']
 with sync_playwright() as p:

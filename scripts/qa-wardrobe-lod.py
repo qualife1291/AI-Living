@@ -1,9 +1,10 @@
 """Compiled loopback graphics acceptance; synthetic API fixture, never production writes."""
 import json,subprocess,datetime,time,os
 from pathlib import Path
+from urllib.parse import urlparse
 from playwright.sync_api import sync_playwright
 out=Path(os.environ.get('QA_OUT','work/graphics-interactions/wardrobe'));out.mkdir(parents=True,exist_ok=True);report=[]
-base=os.environ.get('QA_BASE','http://127.0.0.1:5340');assert __import__('urllib.parse',fromlist=['urlparse']).urlparse(base).hostname in ('127.0.0.1','localhost')
+base=os.environ.get('QA_BASE','http://127.0.0.1:5340');assert urlparse(base).hostname in ('127.0.0.1','localhost')
 with sync_playwright() as p:
  b=p.chromium.launch(executable_path='/usr/bin/chromium',headless=True,args=['--no-sandbox','--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader'])
  try:
