@@ -71,6 +71,20 @@
       "time": 75.1,
       "kind": "before-camera-correction",
       "sha256": "12daed4b8f908149590f4c62b018fa69ceb5ecb0f226156c3ba4be2378de99ea"
+    },
+    {
+      "file": "kitten-care-desktop.png",
+      "source": "20396b13aba5e3c38a2097a72c2edb9823720431",
+      "time": 93,
+      "kind": "actual-local-render-after-cloth",
+      "sha256": "c47d8fe261c9454d51e1c732cd0d9987275ce28225cbee41b770786b98c103ec"
+    },
+    {
+      "file": "kitten-care-mobile.png",
+      "source": "20396b13aba5e3c38a2097a72c2edb9823720431",
+      "time": 93,
+      "kind": "actual-local-render-after-cloth",
+      "sha256": "93d490a737b2e9b322b2217e34a0949b3dddc28443b754ba88d71d10a64a2dd1"
     }
   ]
 }
