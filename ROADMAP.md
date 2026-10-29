@@ -4,14 +4,14 @@
 
 ## Đồ họa mới — cập nhật theo yêu cầu 29/10
 
-[Review ZIP1 và inventory có hash](docs/validation/asset-review-2026-10-29.json), [ảnh mở model thật](docs/screenshots/asset-review/zip-1-contact-sheet.jpg).334GLB/7rig; chưa nhập binary của ZIP1 vào runtime. Chủ dự án xác nhận free; ghi nguồn theo xác nhận, không tự gắn CC0. ZIP3 đính kèm vượt32MiB nên cần link tải; ZIP2/4 chưa nhận.
+[Review ZIP1/2 và inventory có hash](docs/validation/asset-review-2026-10-29.json), [ảnh mở model thật](docs/screenshots/asset-review/zip-1-contact-sheet.jpg).341GLB/7rig trong ZIP1+2; chưa nhập binary hai ZIP vào runtime. Chủ dự án xác nhận free; ghi nguồn theo xác nhận, không tự gắn CC0. ZIP3 đính kèm vượt32MiB nên cần link tải; ZIP4 chưa nhận.
 
 | Bước | Triển khai và gate |
 |---|---|
-| A1 — chọn bộ chung | Đối chiếu ZIP2/3/4 trước khi chốt phong cách. Ưu tiên5rig sinh hoạt Casino/Chess;2rig sân khấu cho cảnh riêng. Chỉ giữ canonical/texture/license/provenance cần dùng, loại bản trùng WC và exports FBX/OBJ cùng nội dung. Không lưu ZIP vào repo. |
+| A1 — chọn bộ chung | ZIP1/2 đã đối chiếu; tiếp ZIP3/4 trước khi chốt phong cách. Ưu tiên5rig sinh hoạt Casino/Chess;2rig sân khấu cho cảnh riêng. Chỉ giữ canonical/texture/license/provenance cần dùng, loại bản trùng WC và exports FBX/OBJ cùng nội dung. Không lưu ZIP vào repo. |
 | A2 — nhân vật | Clip/joint adapter theo pack, loại root motion, atlas/material tương thích, geometry LOD và shared textures. Giữ radius/navigation/identity;3core+≤5near rig. Source7.7–11.2k triangles/6–8primitives mỗi người chưa đạt budget hiện tại khi nhân lên cả cảnh. City và4Studio phải qua contact/seek/pause/fallback/late-load, ảnh desktop/mobile, console và âm thanh. |
 | A3 — đồ dùng | Chọn ghế/bàn/sách/đèn/máy tính/bàn cờ từ hai bộ; palette đồng bộ, semantic binding và footprint. Không nhập slot machine/casino props chỉ vì miễn phí. Hình ảnh không cấp inventory/skill hay xác nhận outcome. |
-| A4 — môi trường sau | Chọn cây/rau/quả/đồ gỗ nhẹ trong225module, rồi indoor/chợ theo phụ thuộc gameplay. Chợ full115.240triangle/384primitives cần tách/merge/LOD; tách240UCX khỏi render WC. Backpack/ghế4K, crate445MB/3×8K và fantasy1.5M triangles không nhập raw. Texture rời phải chứng minh UV khớp trước dùng. |
+| A4 — môi trường sau | Chọn cây/rau/quả/đồ gỗ nhẹ trong225module, rồi indoor/chợ theo phụ thuộc gameplay. Chợ full115.240triangle/384primitives cần tách/merge/LOD; tách240UCX khỏi render WC. ZIP2 có module tường/cửa/mái55.900triangle/69texture, giữ kế hoạch chuẩn hóa từng module/atlas/LOD cho nhà gỗ hoặc indoor sau này. Sáu crateZIP2~1.5M triangles, backpack/ghế4K, crate445MB/3×8K và fantasy1.5M triangles không nhập raw. Texture rời phải chứng minh UV khớp trước dùng. |
 | A5 — QA | Push bản đã kiểm vào `cloudflare-qa` theo yêu cầu; giữ Access/JWT/D1 và một cron hiện có. Xác minh source→build→deployment→authenticated browser riêng; git push không là deployment PASS. |
 
 ## Thứ tự tiếp theo

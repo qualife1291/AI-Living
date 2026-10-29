@@ -8,6 +8,7 @@ base=os.environ.get('QA_BASE','http://127.0.0.1:5320')
 assert urlparse(base).hostname in ('127.0.0.1','localhost')
 out=Path(os.environ.get('QA_OUT',str(root/'docs/screenshots/g0')));out.mkdir(parents=True,exist_ok=True)
 report=[]
+only_fallbacks=os.environ.get('QA_G0_ONLY_FALLBACKS')=='1'
 flags=['--no-sandbox','--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader']
 def setup(browser,width=1440,height=900,dpr=2,motion='no-preference',fallback=None):
  fixture=json.loads(subprocess.check_output(['node','scripts/social-preview-fixture.mjs','--motion'],cwd=root,text=True))
@@ -54,7 +55,7 @@ def check_pixels(page):
 with sync_playwright() as p:
  browser=p.chromium.launch(executable_path='/usr/bin/chromium',headless=True,args=flags)
  try:
-  for name,w,h,dpr in [('desktop',1440,900,2),('mobile',390,844,3)]:
+  for name,w,h,dpr in ([] if only_fallbacks else [('desktop',1440,900,2),('mobile',390,844,3)]):
    page,host,state,fixture=setup(browser,w,h,dpr);initial=check_pixels(page)
    assert page.title()=='Xóm AI · Thành phố nhỏ, nhiều cuộc đời'
    assert 'thành phố 3D' in page.locator('meta[name="description"]').get_attribute('content')
@@ -137,22 +138,26 @@ with sync_playwright() as p:
    assert not state['errors'],state['errors']
    result={'viewport':name,'initial':initial,'pauseErrors':[403,409,503,'network','invalid-ack'],'noDuplicateWrite':True,'pausedMotionFrozen':True,'chatFocusDraftAndNoSteal':True,'keyboard':True,'metadata':True,'responsive320':True,'presetsAndResize':True,'dynamicDPR':True,'pollKeepsCanvas':True,'OSMRemount':True,'hiddenResume':True,'contextLossRetry':True,'pageErrors':state['errors']}
    report.append(result);print('PASS',json.dumps(result),flush=True);page.close()
-  # Reduced motion suppresses autonomous camera movement without pausing the world's clock.
-  page,host,state,fixture=setup(browser,390,844,3,motion='reduce')
-  page.wait_for_function('document.querySelector(".three-canvas").dataset.reducedMotion==="true"')
-  assert page.get_by_role('button',name='Theo nhân vật',exact=True).get_attribute('aria-pressed')=='false'
-  camera=host.get_attribute('data-camera');frame=host.get_attribute('data-frame');page.wait_for_timeout(800)
-  assert camera==host.get_attribute('data-camera');assert frame!=host.get_attribute('data-frame');assert fixture['world']['paused'] is False
-  page.get_by_role('button',name='Theo nhân vật',exact=True).click();frame=int(host.get_attribute('data-frame'));page.wait_for_function('(f)=>Number(document.querySelector(".three-canvas").dataset.frame)>f+1',arg=frame);camera=host.get_attribute('data-camera');page.wait_for_timeout(600);assert camera==host.get_attribute('data-camera')
-  page.emulate_media(reduced_motion='no-preference');page.wait_for_function('document.querySelector(".three-canvas").dataset.reducedMotion==="false"');page.get_by_role('button',name='Theo nhân vật',exact=True).click();page.wait_for_function('document.querySelector(".urban-camera button[title]").getAttribute("aria-pressed")==="true"')
-  page.emulate_media(reduced_motion='reduce');page.wait_for_function('document.querySelector(".urban-camera button[title]").getAttribute("aria-pressed")==="false"');page.wait_for_timeout(200);camera=host.get_attribute('data-camera');page.wait_for_timeout(500);assert camera==host.get_attribute('data-camera')
-  page.screenshot(path=str(out/'mobile-reduced-motion-preview.png'));assert not state['errors'];report.append({'reducedMotion':True,'preferenceChange':True,'worldNotPaused':True,'pageErrors':[]});page.close()
+  if not only_fallbacks:
+   # Reduced motion suppresses autonomous camera movement without pausing the world's clock.
+   page,host,state,fixture=setup(browser,390,844,3,motion='reduce')
+   page.wait_for_function('document.querySelector(".three-canvas").dataset.reducedMotion==="true"')
+   assert page.get_by_role('button',name='Theo nhân vật',exact=True).get_attribute('aria-pressed')=='false'
+   camera=host.get_attribute('data-camera');frame=host.get_attribute('data-frame');page.wait_for_timeout(800)
+   assert camera==host.get_attribute('data-camera');assert frame!=host.get_attribute('data-frame');assert fixture['world']['paused'] is False
+   page.get_by_role('button',name='Theo nhân vật',exact=True).click();frame=int(host.get_attribute('data-frame'));page.wait_for_function('(f)=>Number(document.querySelector(".three-canvas").dataset.frame)>f+1',arg=frame);camera=host.get_attribute('data-camera');page.wait_for_timeout(600);assert camera==host.get_attribute('data-camera')
+   page.emulate_media(reduced_motion='no-preference');page.wait_for_function('document.querySelector(".three-canvas").dataset.reducedMotion==="false"');page.get_by_role('button',name='Theo nhân vật',exact=True).click();page.wait_for_function('document.querySelector(".urban-camera button[title]").getAttribute("aria-pressed")==="true"')
+   page.emulate_media(reduced_motion='reduce');page.wait_for_function('document.querySelector(".urban-camera button[title]").getAttribute("aria-pressed")==="false"');page.wait_for_timeout(200);camera=host.get_attribute('data-camera');page.wait_for_timeout(500);assert camera==host.get_attribute('data-camera')
+   page.screenshot(path=str(out/'mobile-reduced-motion-preview.png'));assert not state['errors'];report.append({'reducedMotion':True,'preferenceChange':True,'worldNotPaused':True,'pageErrors':[]});page.close()
   for mode in ['unsupported','corrupt','core-failure']:
    page,host,state,fixture=setup(browser,390,844,1,fallback=mode)
    models=json.loads(host.get_attribute('data-model-actors'));assert 3<=len(models)<=8;assert all(id in models for id in ['an','binh','chi'])
    if mode=='unsupported':assert not any('/derivatives/' in x for x in state['modelRequests'])
    if mode=='corrupt':assert models['an']['modelId']=='citizens/an';assert any('/citizens/an.glb?' in x for x in state['modelRequests'])
-   if mode=='core-failure':assert models['an']['modelId']=='citizens/linen';assert any('/citizens/linen.glb' in x for x in state['modelRequests'])
+   if mode=='core-failure':
+    assert models['an']['modelId']=='citizens/linen'
+    fallback=next(a for a in json.loads((root/'data/assets/city-transfer-manifest.json').read_text())['assets'] if a['id']=='citizens/linen')
+    assert any(fallback['url'] in x or '/citizens/linen.glb' in x for x in state['modelRequests'])
    assert all(m['profile']=='xom-citizen-v1' for m in models.values());assert not any('/gobkit-human' in x or '/characters/character-' in x for x in state['modelRequests']);assert not state['errors'],state['errors'];report.append({'transportFallback':mode,'pageErrors':[]});print('PASS fallback',mode,flush=True);page.close()
   (out/'metrics.json').write_text(json.dumps({'production':False,'renderer':'Chromium SwiftShader','fixture':'Synthetic world; all APIs mocked. Compiled local D1 persistence tested separately.','cases':report},ensure_ascii=False,indent=2)+'\n')
  finally:browser.close()

@@ -44,45 +44,45 @@
       "id": "citizens/an",
       "format": "gzip",
       "sourceUrl": "/models/citizens/an.glb",
-      "sourceSha256": "52a5399d31bcd8f9135d77d9bd1bd461b5c14c54d7282d194b36d57eb6d73cb1",
-      "sourceBytes": 465968,
+      "sourceSha256": "cfab64b95a604ea7c036dcc068486445fdaa3cd9582d34842cdd41a57f61e43d",
+      "sourceBytes": 507440,
       "license": "CC0-1.0",
-      "url": "/models/derivatives/52a5399d31bcd8f9135d77d9bd1bd461b5c14c54d7282d194b36d57eb6d73cb1.glb.gz",
-      "sha256": "93e6475f5115b89b146afee428796d9134f0dfdf7ca94b95cd3cdea9e792c1d8",
-      "bytes": 27467
+      "url": "/models/derivatives/cfab64b95a604ea7c036dcc068486445fdaa3cd9582d34842cdd41a57f61e43d.glb.gz",
+      "sha256": "64abdc054dd787d44a4ab4aeb8233ee9b404502b2bdbf044ec3d36e6094dbdb4",
+      "bytes": 29564
     },
     {
       "id": "citizens/binh",
       "format": "gzip",
       "sourceUrl": "/models/citizens/binh.glb",
-      "sourceSha256": "ee35c0d6f03726d811af03d0eaf99064ea86ec49d72437d9f18183afd3080b28",
-      "sourceBytes": 472880,
+      "sourceSha256": "0ebc051ae1029c89a50d4bcd50e26b544c223a64472f782565a1ee69a0e2f6f9",
+      "sourceBytes": 514352,
       "license": "CC0-1.0",
-      "url": "/models/derivatives/ee35c0d6f03726d811af03d0eaf99064ea86ec49d72437d9f18183afd3080b28.glb.gz",
-      "sha256": "aa4c7b7b9d94c0dd83098c3c9e75ed5f4edecb9040c86555573800f4ce92cd05",
-      "bytes": 28289
+      "url": "/models/derivatives/0ebc051ae1029c89a50d4bcd50e26b544c223a64472f782565a1ee69a0e2f6f9.glb.gz",
+      "sha256": "0bda2d623ea29c0068c3f2f7e9aa7ae128d5b35887ad73e67d878e8e6d88c76a",
+      "bytes": 30377
     },
     {
       "id": "citizens/chi",
       "format": "gzip",
       "sourceUrl": "/models/citizens/chi.glb",
-      "sourceSha256": "9813bb049316509e6de6ce9890351eedb75bcb8674091aedd66816f0e848d61e",
-      "sourceBytes": 462512,
+      "sourceSha256": "264cf85d966ca283b7f334792e6d2604a00f5a15d5347773db80019df55eb0a2",
+      "sourceBytes": 503988,
       "license": "CC0-1.0",
-      "url": "/models/derivatives/9813bb049316509e6de6ce9890351eedb75bcb8674091aedd66816f0e848d61e.glb.gz",
-      "sha256": "4ce776b7397dcc1c7c638ec59ca6ae9e2a2c984ce23e7a0dd1523324c77af7b9",
-      "bytes": 28006
+      "url": "/models/derivatives/264cf85d966ca283b7f334792e6d2604a00f5a15d5347773db80019df55eb0a2.glb.gz",
+      "sha256": "cb6d9334c66c37d59b0de8c735c48471f6a484f5ff5ef60d959cb3279b660466",
+      "bytes": 30067
     },
     {
       "id": "citizens/linen",
       "format": "gzip",
       "sourceUrl": "/models/citizens/linen.glb",
-      "sourceSha256": "fa7ead55bbe45e04812784493cf0759d19fd2607bc712351f50ddda948beeaab",
-      "sourceBytes": 478928,
+      "sourceSha256": "cbc203574a0c9ffb6cdb49c517db8958e97ec4cf5043266bdde5a670dd884f32",
+      "sourceBytes": 520400,
       "license": "CC0-1.0",
-      "url": "/models/derivatives/fa7ead55bbe45e04812784493cf0759d19fd2607bc712351f50ddda948beeaab.glb.gz",
-      "sha256": "3b90b85b556e72a4158e203cebf17cc4615dd929ee609802911ab591a02a747c",
-      "bytes": 28050
+      "url": "/models/derivatives/cbc203574a0c9ffb6cdb49c517db8958e97ec4cf5043266bdde5a670dd884f32.glb.gz",
+      "sha256": "2946dcc93ab0d25ad141a6c43a09a841367e235cab8082f8d6a9b1608fc3e855",
+      "bytes": 30151
     },
     {
       "id": "commercial/building-a",
