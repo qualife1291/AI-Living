@@ -10,6 +10,39 @@ import {scenarios,scenarioSchema,initializeAgent,chooseScenario,availableScenari
 import {decisionContext,newArm,fitLinear,linearScore,validArm} from "../lib/living/linucb.ts";
 import {hashSeed,mulberry32} from "../lib/clock.ts";
 
+// Run the H6 candidate in an isolated shadow filesystem, never by altering
+// the live 41-action runtime catalog or any Git-tracked file.
+import {cpSync,mkdtempSync,rmSync,symlinkSync,readFileSync} from "node:fs";
+import {tmpdir} from "node:os";
+import {join,dirname,resolve} from "node:path";
+import {fileURLToPath} from "node:url";
+import {spawnSync} from "node:child_process";
+
+if(process.env.H6_INDEPENDENT_SHADOW !== "true"){
+  const root=resolve(dirname(fileURLToPath(import.meta.url)),"..");
+  const live=readFileSync(join(root,"data/city/scenarios.json"));
+  const candidate=JSON.parse(readFileSync(join(root,"data/training/h6-scenario-catalog.json"),"utf8"));
+  assert.equal(JSON.parse(live).length,41,"Runtime catalog must stay at the legacy fingerprint");
+  assert.equal(candidate.length,96,"H6 shadow catalog expected");
+  assert.deepEqual(candidate.slice(0,41),JSON.parse(live),"Shadow candidate altered original 41");
+  const temp=mkdtempSync(join(tmpdir(),"h6-independent-shadow-"));
+  try{
+    cpSync(join(root,"lib"),join(temp,"lib"),{recursive:true});
+    cpSync(join(root,"data"),join(temp,"data"),{recursive:true});
+    cpSync(join(root,"package.json"),join(temp,"package.json"));
+    mkdirSync(join(temp,"scripts"),{recursive:true});
+    cpSync(join(root,"scripts/h6-independent-capacity-audit.mjs"),join(temp,"scripts/h6-independent-capacity-audit.mjs"));
+    symlinkSync(join(root,"node_modules"),join(temp,"node_modules"),"dir");
+    writeFileSync(join(temp,"data/city/scenarios.json"),JSON.stringify(candidate));
+    const result=spawnSync(process.execPath,[join(temp,"scripts/h6-independent-capacity-audit.mjs")],
+      {cwd:root,stdio:"inherit",env:{...process.env,H6_INDEPENDENT_SHADOW:"true"},timeout:180000});
+    assert.equal(readFileSync(join(root,"data/city/scenarios.json")).toString(),live.toString(),
+      "Live catalog mutated by independent capacity test");
+    if(result.error)throw result.error;
+    if(result.signal)throw Error("H6 shadow audit terminated: "+result.signal);
+    assert.equal(result.status,0,"Independent H6 capacity audit did not pass");
+  }finally{rmSync(temp,{recursive:true,force:true,maxRetries:2});}
+}else{
 const OUTPUT=".h6-audit/independent-stress.json";
 const start=performance.now();
 assert.equal(scenarios.length,96);
@@ -109,3 +142,5 @@ assert(elapsedMs<180000,"H6 offline process exceeded 180s budget");
 assert(peakRss<1500000000,"H6 offline process exceeded 1.5GB RSS budget");
 mkdirSync(".h6-audit",{recursive:true});writeFileSync(OUTPUT,JSON.stringify(outcome,null,2)+"\n");
 console.log(JSON.stringify(outcome));
+
+}
