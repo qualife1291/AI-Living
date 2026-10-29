@@ -213,5 +213,8 @@
   ],
   [
     "scripts/test-supplied-assets.mjs"
+  ],
+  [
+    "scripts/test-bounded-json.mjs"
   ]
 ]
