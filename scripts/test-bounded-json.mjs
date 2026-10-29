@@ -3,7 +3,7 @@ import {readBoundedJson} from '../lib/bounded-json.ts';
 const encode=s=>new TextEncoder().encode(s);
 const request=(chunks,options={})=>{
  let at=0,cancelled=false;
- const body=new ReadableStream({pull(c){if(at<chunks.length)c.enqueue(chunks[at++]);else c.close();},cancel(){cancelled=true;if(options.rejectCancel)throw Error('private upstream failure');}},{highWaterMark:0});
+ const body=new ReadableStream({pull(c){if(at<chunks.length)c.enqueue(chunks[at++]);else c.close();},cancel(){cancelled=true;if(options.rejectCancel)throw Error('private upstream failure');if(options.hangCancel)return new Promise(()=>{});}},{highWaterMark:0});
  const req=new Request('http://localhost/api/living/interact',{method:'POST',body,duplex:'half',headers:options.headers});
  return {req,body,reads:()=>at,cancelled:()=>cancelled};
 };
@@ -20,6 +20,11 @@ for(const options of [{},{headers:{'content-length':'1'}},{rejectCancel:true}]){
  const result=await readBoundedJson(stream.req,2000);
  assert.equal(result.status,413);assert.equal(stream.reads(),2,'Stop at first overflowing chunk');assert.equal(stream.cancelled(),true);assert.equal(stream.body.locked,false);
 }
+const hanging=request([exact,encode(' ')],{hangCancel:true});
+let timer;const deadline=new Promise(resolve=>{timer=setTimeout(()=>resolve({status:'blocked'}),500);});
+const result=await Promise.race([readBoundedJson(hanging.req,2000),deadline]);clearTimeout(timer);
+assert.equal(result.status,413,'Upstream cancellation must not hold the 413 response hostage');
+assert.equal(hanging.body.locked,false);
 const unicode=encode(JSON.stringify({message:'ệ'.repeat(700)}));
 assert.equal((await readBoundedJson(request([unicode]).req,2000)).status,413,'Count bytes rather than JS characters');
 for(const chunks of [[],[encode('{')],[new Uint8Array([34,0xff,34])]]){

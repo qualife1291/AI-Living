@@ -231,5 +231,11 @@
   ],
   [
     "scripts/test-crowd-skins.mjs"
+  ],
+  [
+    "scripts/test-chat-adversarial.mjs"
+  ],
+  [
+    "scripts/test-peer-sharing-audit.mjs"
   ]
 ]

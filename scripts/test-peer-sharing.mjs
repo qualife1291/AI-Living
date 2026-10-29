@@ -31,7 +31,7 @@ assert.equal(narrow.receive(full.proofs[2],now),'full');assert.equal(JSON.string
 assert.equal(narrow.receive(full.proofs[2],full.proofs[0].expiresAtSimMs),'accepted','Admission may prune an expired item');assert.equal(narrow.receive(full.proofs[0],full.proofs[0].expiresAtSimMs),'expired','Eviction cannot amplify expired advice');
 const monotonic=new PeerAdviceInbox(scope);monotonic.receive(full.proofs[0],now);assert.equal(monotonic.receive(full.proofs[0],now+1000),'duplicate');assert.throws(()=>monotonic.receive(full.proofs[1],now),/time/,'A duplicate at a later time cannot reopen an earlier admission window');
 assert.throws(()=>inbox.receive(full.proofs[0],now-1),/time/);assert.throws(()=>new PeerAdviceInbox(scope).receive(full.proofs[0],full.proofs[0].heardAtSimMs-1),/time/);assert.throws(()=>inbox.select(now-1),/time/);
-for(const invalid of [NaN,Infinity,-1]){assert.throws(()=>inbox.select(invalid));assert.throws(()=>inbox.receive(full.proofs[0],invalid));}
+for(const invalid of [NaN,Infinity,-1,Number.MAX_SAFE_INTEGER+1,1e100]){assert.throws(()=>inbox.select(invalid));assert.throws(()=>inbox.receive(full.proofs[0],invalid));}
 for(const limit of [0,9,1.5])assert.throws(()=>inbox.select(now,undefined,limit));assert.throws(()=>inbox.select(now,'unknown'));
 for(const capacity of [0,PEER_CAPACITY+1,1.5])assert.throws(()=>new PeerAdviceInbox(scope,capacity));
 for(const diagnostic of ['baseline','partial','paused','cancel','transit']){const trial=await replayPeerSharing({diagnostic});assert.equal(trial.proofs.length,0,`${diagnostic} cannot become delivered advice`);assert.equal(trial.runtimeImportAllowed,false);}
