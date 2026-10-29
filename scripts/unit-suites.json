@@ -243,5 +243,8 @@
   ],
   [
     "scripts/test-progress-watch.mjs"
+  ],
+  [
+    "scripts/test-peer-offer-store.mjs"
   ]
 ]

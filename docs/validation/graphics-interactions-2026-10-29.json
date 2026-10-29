@@ -2,7 +2,7 @@
   "kind": "graphics-interactions-acceptance-v1",
   "date": "2026-10-29",
   "timezone": "Asia/Ho_Chi_Minh",
-  "status": "LOCAL_PASS_CARRIER_FOLLOWUP_QA_PENDING",
+  "status": "LOCAL_PASS_QA_BUILD_SUCCESS_REMOTE_ACCEPTANCE_PENDING",
   "appSource": "3b3b3dbedf901cec9db36d84abe79039ba8a6eea",
   "production": false,
   "unit": {
@@ -703,7 +703,7 @@
     ]
   },
   "qa": {
-    "candidate": "8af40bb",
+    "candidate": "7157c32615f54d99acae1adc7bf45e85d95526c3",
     "parentRemotePreserved": "72d4c2f4785aba5a7aec6ec8f62d89da5f61848c",
     "previousCombinedGate": {
       "source": "3a04626",
@@ -716,7 +716,7 @@
       "compiledChat": "PASS",
       "compiledProgress": "PASS"
     },
-    "status": "FINAL_GATES_RUNNING",
+    "status": "PUSHED_BUILD_SUCCESS_REMOTE_ACCEPTANCE_PENDING",
     "worker": "ai-living-qa",
     "database": "ai_living_qa",
     "cron": [
@@ -733,7 +733,34 @@
       "conclusion": "success",
       "supersededByCarrierFollowup": true
     },
-    "nativeBaselineReference": "docs/validation/qa-observability-2026-10-29.json: independent Ops readback on prior versions; not authenticated acceptance of carrier followup."
+    "nativeBaselineReference": "docs/validation/qa-observability-2026-10-29.json: independent Ops readback on prior versions; not authenticated acceptance of carrier followup.",
+    "finalGates": {
+      "source": "7157c32615f54d99acae1adc7bf45e85d95526c3",
+      "unit": 84,
+      "passed": 84,
+      "failed": 0,
+      "seconds": 165.93,
+      "typecheck": "PASS",
+      "lint": {
+        "errors": 0,
+        "warnings": 1,
+        "existingWarning": "scripts/h6-shadow-worker.mjs:37 unused trainReport"
+      },
+      "assets": "PASS",
+      "exactBuild": "PASS",
+      "configAccessD1SingleCron": "PASS",
+      "h6Runtime41Shadow96NoActivation": "PASS",
+      "compiledChat": "PASS: 60 unique/16 duplicate/6 rollback/two isolates shared D1",
+      "compiledProgress": "PASS: 12 concurrent readers/zero-write/private path aliases blocked"
+    },
+    "cloudflareBuild": {
+      "source": "7157c32615f54d99acae1adc7bf45e85d95526c3",
+      "id": "3deba319-5142-4090-a5ef-8d5b09c1f3b0",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://dash.cloudflare.com/966c7ceee358485648b935a07877ec45/workers/services/view/ai-living-qa/production/builds/3deba319-5142-4090-a5ef-8d5b09c1f3b0",
+      "evidence": "GitHub check-runs API; not runtime native readback or authenticated browser acceptance"
+    }
   },
   "carrierFollowup": {
     "appSource": "a404bf449eb53dddb0610ac04406633359548c47",
