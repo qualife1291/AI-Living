@@ -1,0 +1,37 @@
+name: H6 Independent Adversarial Capacity Audit
+on:
+  pull_request:
+    paths:
+      - 'scripts/h6-independent-capacity-audit.mjs'
+      - '.github/workflows/h6-independent-audit.yml'
+      - 'docs/validation/H6_INDEPENDENT_AUDIT.md'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  independent-audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Frozen dependency install
+        run: corepack pnpm install --frozen-lockfile
+      - name: Independent 16k decisions, 4k actors × 96 arm adversarial stress
+        run: node scripts/h6-independent-capacity-audit.mjs
+      - name: Verify full application typecheck
+        run: npm run check
+      - name: Verify existing unit and H6 scenario suites
+        run: node scripts/test-h6-scenario-scale.mjs && npm run test:unit
+      - name: Verify lint and production build
+        run: npm run lint && npm run build
+      - name: Preserve independent stress measurements
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: h6-independent-capacity-report
+          path: .h6-audit/independent-stress.json
+          if-no-files-found: warn
+          retention-days: 14
