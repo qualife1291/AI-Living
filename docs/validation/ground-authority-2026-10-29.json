@@ -530,5 +530,21 @@
     "GND2 bounded catch-up may retain backlog at scale60. No long-session,24h soak, hardware GPU/mobile FPS or human listening/MOS result.",
     "No native Sites/Cloudflare tools or current authenticated remote QA readback; no deploy/migrate/activation on user DB, main/staging/prod promotion or model/policy promotion.",
     "H1/H2/H4/H6/H10 negatives remain; H3b/H5 need their own protocol, namespace and measured admission."
-  ]
+  ],
+  "candidateBuildAndPackage": {
+    "source_commit": "77d1d1fe93de225293f7ac92747c78fa33cae5ad",
+    "built_at": "2026-10-29T02:53:03.813Z",
+    "archive_local_path": "work/production-77d1d1f.tar.gz",
+    "archive_sha256": "f2b4fd268c61a6de593249c358992bfeaa46498319c8b438f9a99d75c6577d04",
+    "archive_bytes": 20638983,
+    "entries": 856,
+    "files": 774,
+    "migration0011Exact": true,
+    "allMigrationSqlExact": true,
+    "voices": 21,
+    "voiceLicenseManifestAndBytesExact": true,
+    "losslessDerivativesExact": 26,
+    "secretsDbCacheAndFixtureCodeExcluded": true,
+    "productionDeployment": false
+  }
 }
