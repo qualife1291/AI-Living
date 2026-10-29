@@ -37,6 +37,9 @@ Restart Worker từ `dist/server/wrangler.json` sau build. `QA_BASE` bắt buộ
 
 | Harness trong scripts/ | Điều phải giữ |
 |---|---|
+| qa-scene-interactions.py | City follow giữ ID, native skin/instance picking/occlusion, drag/pinch không thành tap;4Studio×desktop/mobile focus/zoom/orbit/shot/restart/reset và mèo trên đất/được bế. |
+| qa-jump-lod.py | Pause khi NPC đang nhảy rồi chuyển native→crowd→native: cùng model/độ cao/clock desktop-mobile, không reset pha khi select/zoom. |
+| qa-city-activities.py, qa-wardrobe-lod.py |15ca hoạt động/2ca wardrobe desktop-mobile; shader errors, đủ cư dân khi action atlas warm, model preview/city trùng, màu khi pause, một preview canvas và zoom giữ identity. API writes synthetic; contact/clearance kiểm actual skin trong city-actions/crowd-skins. |
 | qa-chat-admission.py | HTTP429 giữ draft/focus, không tự retry, hồi phục khi chủ động gửi lại; desktop/mobile, không overflow. Mock UI writes; quota/rollback kiểm riêng trên compiled D1. |
 | qa-g0-ux.py | Gzip/canonical fallback, pause403/409/5xx/network/ACK, chat focus/draft, keyboard,320px, presets/resize/hidden/context loss/retry và reduced-motion. |
 | qa-shared-ground.py | Hai shared viewer desktop/mobile mở lệch giờ, cùng absolute sample roots, camera/F5/pause, no extrapolation, ảnh thật; synthetic source và D1 riêng. |

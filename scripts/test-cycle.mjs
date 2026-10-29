@@ -109,7 +109,9 @@ for(let i=0;i<800;i++){
 assert(arrivedOnBike);assert(!trip.bicycle,'After actual arrival a non-cycle task dismounts');
 console.log('PASS bicycle transport commutes retain the bike until ground arrival, then dismount for the task');
 const {createPeople}=await import('../components/city/three/people.ts');
-const crowdScene=new THREE.Scene(),people=createPeople(crowdScene,1),camera=new THREE.PerspectiveCamera(38,1,.1,1000);camera.position.set(-400,30,-650);
+const {loadCivilianLibrary}=await import('./load-civilian-library.mjs');
+const crowdLibrary=await loadCivilianLibrary();
+const crowdScene=new THREE.Scene(),people=createPeople(crowdScene,1,crowdLibrary),camera=new THREE.PerspectiveCamera(38,1,.1,1000);camera.position.set(-400,30,-650);
 let npcMaximumRadius=0;
 for(let i=0;i<16;i++){
  const npc={...bike,id:'neighbor-1',name:'NPC',position:[-400,-700],transport:'bicycle',bicycle:{radius:BICYCLE_RADIUS,distance:i,yaw:i*.3}};
@@ -125,3 +127,7 @@ for(let i=0;i<16;i++){
  });
 }
 console.log(JSON.stringify({suite:'cycle-instanced-rider',poses:16,npcMaximumRadius,bodyRadius:BICYCLE_RADIUS}));
+
+people.draw(world,[{...bike,id:'neighbor-1',bicycle:{radius:BICYCLE_RADIUS,distance:16,yaw:0}}],new Map(),2,.1,camera,'neighbor-1',new Set(['neighbor-1']));
+assert.equal(people.stats().instances,0);assert(!crowdScene.children.some(o=>o.isGroup&&o.visible),'Near LOD must not leave a second distant bicycle');
+people.dispose();crowdLibrary.dispose();

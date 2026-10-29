@@ -1,5 +1,7 @@
 # Changelog
 
+- Sửa tương tác đồ họa city/Studio: picker theo skin/visibility, follow giữ nhân vật, focus và reset camera sau zoom/shot/restart; thống nhất crowd/wardrobe với5model mới, pose real-time và contact tay/đạo cụ/xe đạp. Bằng chứng local và giới hạn remote ở [graphics acceptance](docs/validation/graphics-interactions-2026-10-29.json).
+
 Chỉ ghi mốc sản phẩm. Chi tiết commit/review nằm trong Git; số version/deployment và readback nằm ở [releases](docs/releases/).
 
 ## 29/10/2026

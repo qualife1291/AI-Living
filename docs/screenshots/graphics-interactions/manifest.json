@@ -1,0 +1,81 @@
+{
+  "kind": "actual-graphics-browser-screenshots-v1",
+  "appSource": "3b3b3dbedf901cec9db36d84abe79039ba8a6eea",
+  "production": false,
+  "renderer": "Chromium SwiftShader",
+  "fixtures": "Synthetic API projection/wardrobe writes; actual compiled meshes/materials/native input/audio.",
+  "images": [
+    {
+      "file": "docs/screenshots/graphics-interactions/city-read-desktop.png",
+      "sha256": "625ae8e6a55c9823aae7228dbaffc0c71675cfc84cd4c5f349699b3b91c95a13",
+      "bytes": 278399,
+      "pixels": [
+        1440,
+        900
+      ]
+    },
+    {
+      "file": "docs/screenshots/graphics-interactions/city-drink-desktop.png",
+      "sha256": "18128df956eda78d0cc62e4f2aea68d7519ad65e68e537d3c1194714ec298eab",
+      "bytes": 261215,
+      "pixels": [
+        1440,
+        900
+      ]
+    },
+    {
+      "file": "docs/screenshots/graphics-interactions/city-cycle-mobile.png",
+      "sha256": "6e5ad157dc325a9c4ed1c8f8d268de99a5a9c3ee9341ed4a053bc1362b583ed3",
+      "bytes": 73124,
+      "pixels": [
+        390,
+        844
+      ]
+    },
+    {
+      "file": "docs/screenshots/graphics-interactions/city-cook-mobile.png",
+      "sha256": "055c6d5fab780c93231cb4ca771ce4b7ff6f49a5f9430dfd97ae1dd3b43ce81e",
+      "bytes": 108511,
+      "pixels": [
+        390,
+        844
+      ]
+    },
+    {
+      "file": "docs/screenshots/graphics-interactions/wardrobe-paused-desktop.png",
+      "sha256": "b3f62ca9d01d4ae6990133b9b428148cb3fb4e41bfd27994d6a07621ae6f10c3",
+      "bytes": 405221,
+      "pixels": [
+        1440,
+        900
+      ]
+    },
+    {
+      "file": "docs/screenshots/graphics-interactions/jump-lod-mobile.png",
+      "sha256": "db4a2540ea41030c84be88dc826b19bf45d45b34bd5f9c6939fbad2edbd5ec64",
+      "bytes": 81401,
+      "pixels": [
+        390,
+        844
+      ]
+    },
+    {
+      "file": "docs/screenshots/graphics-interactions/studio-wallet-desktop.png",
+      "sha256": "d7325630bd143c64f02cfb98d2b0140e1d07c6f87aa6b3fae1e8e91dfcf2df0f",
+      "bytes": 286316,
+      "pixels": [
+        1800,
+        1125
+      ]
+    },
+    {
+      "file": "docs/screenshots/graphics-interactions/studio-kitten-mobile.png",
+      "sha256": "28c0635715dae0dccb8acacf9de07aabed2e9a0069cdf6fcce8ed2c019fe9d3b",
+      "bytes": 73866,
+      "pixels": [
+        390,
+        844
+      ]
+    }
+  ]
+}

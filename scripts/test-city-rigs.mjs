@@ -40,7 +40,7 @@ for(let n=0;n<180;n++) {
     assert.equal(root.scale.x,root.scale.y,'Preserve authored proportions instead of stretching narrow heads');
     assert.equal(root.scale.z,root.scale.y);
     assert([...bounds.min,...bounds.max,...head].every(Number.isFinite));
-    assert(head.y<=bounds.max.y+.01&&head.y>=bounds.max.y-.6,'Label anchor follows the visible head');
+    assert(head.y<=bounds.max.y+.01&&head.y>=bounds.max.y-.6,`Label anchor follows visible head: ${JSON.stringify({id,n,kind,head:head.toArray(),min:bounds.min.toArray(),max:bounds.max.toArray()})}`);
     if(kind==='walk')maxGroundError=Math.max(maxGroundError,Math.abs(bounds.min.y-floor));
     root.traverse(mesh=>{if(!mesh.isMesh)return;for(let i=0;i<mesh.geometry.attributes.position.count;i++) {
       const vertex=mesh.getVertexPosition(i,new THREE.Vector3()).applyMatrix4(mesh.matrixWorld);

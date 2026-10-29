@@ -224,6 +224,15 @@
     "scripts/test-peer-sharing.mjs"
   ],
   [
+    "scripts/test-scene-interactions.mjs"
+  ],
+  [
+    "scripts/test-city-actions.mjs"
+  ],
+  [
+    "scripts/test-crowd-skins.mjs"
+  ],
+  [
     "scripts/test-chat-adversarial.mjs"
   ],
   [
