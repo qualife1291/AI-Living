@@ -1,0 +1,96 @@
+{
+  "date": "2026-10-29",
+  "timezone": "Asia/Ho_Chi_Minh",
+  "appSource": "cdd8996d0524719b96c4f5cf7a51f46e25995d06",
+  "scope": "Chat write admission; no rig/auth/scheduler/learning/schema edits by this phase",
+  "assetMerge": "a9a6759 (includes 475fe75 fixes by asset agent)",
+  "contract": {
+    "limit": 30,
+    "windowMs": 60000,
+    "window": "Fixed window starting at first admitted new UUID, shared across actors/tabs",
+    "storage": "One disposable context_cache row; gate and durable exchange in one D1 batch with SQL postassert",
+    "duplicates": "Saved UUID remains readable while full; never increments counter or overwrites exchange",
+    "denial": "429 + Retry-After seconds, no writes",
+    "storageFailure": "503 and transaction rollback; no unguarded save",
+    "body": "Existing 2000-byte strict UTF8 stream guard unchanged"
+  },
+  "checks": {
+    "typecheck": "PASS",
+    "lint": "PASS",
+    "build": "PASS",
+    "assets": "PASS; canonical hashes, 239 resource models, 27 lossless derivatives",
+    "unit": {
+      "suite": "unit-summary",
+      "total": 73,
+      "passed": 73,
+      "failed": [],
+      "workers": 2,
+      "seconds": 118.03
+    },
+    "compiledD1": {
+      "suite": "chat-admission-compiled-http",
+      "concurrentUnique": 60,
+      "concurrentDuplicate": 16,
+      "limit": 30,
+      "windowMs": 60000,
+      "atomicRollbackCases": 2,
+      "originOwnerBodyPauseActorGuards": true,
+      "retryAfter": true,
+      "rejectedUuidReusable": true,
+      "historyPreserved": true,
+      "productionAccess": false
+    },
+    "legacyLivenessHttp": "PASS; isolated D1, concurrent visits/pulse, durable chat retry, body/pause/actor guards",
+    "nativeTransactionFaults": [
+      "silent exchange INSERT ignore",
+      "silent counter UPDATE ignore",
+      "explicit exchange INSERT abort",
+      "corrupt active counter",
+      "missing context_cache"
+    ],
+    "browser": {
+      "productionAccess": false,
+      "uiWritesMocked": true,
+      "results": [
+        {
+          "viewport": "desktop",
+          "fixture": "synthetic local, mocked HTTP writes",
+          "renderer": "Chromium SwiftShader",
+          "http429DraftAndFocus": true,
+          "noAutomaticRetryMs": 2500,
+          "manualRetryAndClearDraft": true,
+          "overflow": false,
+          "pageErrors": []
+        },
+        {
+          "viewport": "mobile",
+          "fixture": "synthetic local, mocked HTTP writes",
+          "renderer": "Chromium SwiftShader",
+          "http429DraftAndFocus": true,
+          "noAutomaticRetryMs": 2500,
+          "manualRetryAndClearDraft": true,
+          "overflow": false,
+          "pageErrors": []
+        }
+      ]
+    }
+  },
+  "preMergeUnit": {
+    "total": 72,
+    "passed": 70,
+    "inheritedFailures": [
+      "supplied jacket Sit radius",
+      "old CC0-only G0 assertion"
+    ],
+    "disposition": "Resolved by concurrent asset agent commits; merged suite now passes 73/73"
+  },
+  "limits": [
+    "Local fixtures, Chromium SwiftShader; not physical GPU, load SLA or production evidence",
+    "Only accepted new exchanges are rate-limited, not every read/body/request cost",
+    "Not a rolling-window limiter or IP/identity quota; uses server time",
+    "Asset agent still owns broad city/Studio acceptance and remote QA; no promotion performed"
+  ],
+  "productionAccess": false,
+  "schemaChanged": false,
+  "deployment": false
+}
