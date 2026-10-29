@@ -580,7 +580,7 @@
     "Loopback fixture/Chromium SwiftShader; not hardware FPS or soak.",
     "Native Sites and authenticated Cloudflare acceptance unavailable in this session.",
     "Cosmetic animation/IK is not a physics receipt or training gain.",
-    "One cold Studio browser navigation timed out at 60s; concurrent process remained listening and subsequent loopback HTTP probe returned200 in0.163s. Fresh-browser retry uses unchanged build/DB; no reliability or soak PASS. Failure log: work/graphics-interactions-2026-10-29/carrier-studio.log."
+    "One cold Studio browser navigation timed out at 60s; preview remained listening after failure and subsequent loopback HTTP probe returned200 in0.163s. Fresh-browser retry uses unchanged build/DB; no reliability or soak PASS. Failure log: work/graphics-interactions-2026-10-29/carrier-studio.log."
   ],
   "screenshots": "docs/screenshots/graphics-interactions/manifest.json",
   "baseline": {
@@ -792,6 +792,14 @@
       ]
     },
     "screenshots": "docs/screenshots/graphics-interactions/manifest.json",
-    "authoredStudioAndSound": "RUNNING"
+    "authoredStudioAndSound": {
+      "status": "PASS",
+      "studioCases": 8,
+      "shots": 40,
+      "voiceScenarios": 4,
+      "decodedVoiceClips": 21,
+      "studioBrowserSource": "a404bf449eb53dddb0610ac04406633359548c47",
+      "coldNavigationFailure": "Preserved at work/graphics-interactions-2026-10-29/carrier-studio.log; retry in fresh browser passed unchanged build, no server or DB reset."
+    }
   }
 }
