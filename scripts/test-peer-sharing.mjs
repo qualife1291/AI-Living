@@ -29,6 +29,7 @@ assert.throws(()=>new PeerAdviceInbox({...scope,worldBorn:'2025-01-01T00:00:00.0
 const narrow=new PeerAdviceInbox(scope,2);assert.equal(narrow.receive(full.proofs[0],now),'accepted');assert.equal(narrow.receive(full.proofs[1],now),'accepted');const narrowBefore=JSON.stringify(narrow.select(now));
 assert.equal(narrow.receive(full.proofs[2],now),'full');assert.equal(JSON.stringify(narrow.select(now)),narrowBefore,'Full inbox never evicts live dedup keys');assert.equal(narrow.receive(full.proofs[0],now),'duplicate');
 assert.equal(narrow.receive(full.proofs[2],full.proofs[0].expiresAtSimMs),'accepted','Admission may prune an expired item');assert.equal(narrow.receive(full.proofs[0],full.proofs[0].expiresAtSimMs),'expired','Eviction cannot amplify expired advice');
+const monotonic=new PeerAdviceInbox(scope);monotonic.receive(full.proofs[0],now);assert.equal(monotonic.receive(full.proofs[0],now+1000),'duplicate');assert.throws(()=>monotonic.receive(full.proofs[1],now),/time/,'A duplicate at a later time cannot reopen an earlier admission window');
 assert.throws(()=>inbox.receive(full.proofs[0],now-1),/time/);assert.throws(()=>new PeerAdviceInbox(scope).receive(full.proofs[0],full.proofs[0].heardAtSimMs-1),/time/);assert.throws(()=>inbox.select(now-1),/time/);
 for(const invalid of [NaN,Infinity,-1]){assert.throws(()=>inbox.select(invalid));assert.throws(()=>inbox.receive(full.proofs[0],invalid));}
 for(const limit of [0,9,1.5])assert.throws(()=>inbox.select(now,undefined,limit));assert.throws(()=>inbox.select(now,'unknown'));

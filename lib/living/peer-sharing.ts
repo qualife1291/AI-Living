@@ -81,7 +81,7 @@ export async function replayPeerSharing(input:unknown={}){
 /** Single recipient and session are fixed at construction, never model query parameters. */
 export class PeerAdviceInbox{
  readonly #scope:{worldBorn:string;sessionId:string;recipientId:string};readonly #capacity:number;
- #entries:PeerProof[]=[];#lastAdmissionMs=0;
+ #entries:PeerProof[]=[];#lastSeenSimMs=0;
  constructor(scope:{worldBorn:string;sessionId:string;recipientId:string},capacity=PEER_CAPACITY){
   this.#scope=z.object({worldBorn:z.string().datetime(),sessionId:z.string().uuid(),recipientId:z.string().min(1).max(100)}).strict().parse(scope);
   this.#capacity=z.number().int().min(1).max(PEER_CAPACITY).parse(capacity);
@@ -91,15 +91,17 @@ export class PeerAdviceInbox{
   if(!input||typeof input!=='object'||!minted.has(input))throw Error('peer-proof-untrusted');
   const proof=input as PeerProof;
   if(proof.worldBorn!==this.#scope.worldBorn||proof.sessionId!==this.#scope.sessionId||proof.recipientId!==this.#scope.recipientId)throw Error('peer-recipient-scope');
-  if(now<this.#lastAdmissionMs||now<proof.heardAtSimMs)throw Error('peer-admission-time');
+  if(now<this.#lastSeenSimMs||now<proof.heardAtSimMs)throw Error('peer-admission-time');
+  // Even a duplicate/full/expired admission cannot reopen an older time window.
+  this.#lastSeenSimMs=now;
   if(now>=proof.expiresAtSimMs)return 'expired';
   if(this.#entries.some(entry=>entry.id===proof.id))return 'duplicate';
   const retained=this.#entries.filter(entry=>entry.expiresAtSimMs>now);
   if(retained.length>=this.#capacity)return 'full';
-  this.#entries=[...retained,proof];this.#lastAdmissionMs=now;return 'accepted';
+  this.#entries=[...retained,proof];return 'accepted';
  }
  select(nowSimMs:number,topic?:PeerTopic,limit=8):readonly PeerAdvice[]{
-  const now=time.parse(nowSimMs);if(now<this.#lastAdmissionMs)throw Error('peer-read-time');
+  const now=time.parse(nowSimMs);if(now<this.#lastSeenSimMs)throw Error('peer-read-time');
   const k=z.number().int().min(1).max(8).parse(limit);if(topic!==undefined)z.enum(PEER_TOPICS).parse(topic);
   return freeze(this.#entries.filter(entry=>entry.heardAtSimMs<=now&&entry.expiresAtSimMs>now&&(!topic||entry.topic===topic))
    .map(entry=>({...entry,knowledge:'heard-from-peer' as const,truth:'unverified-advice' as const,ownExperience:false as const,confidence:protocol.retention.initialConfidence*2**(-(now-entry.heardAtSimMs)/PEER_HALF_LIFE_MS)}))
