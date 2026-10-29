@@ -5,7 +5,8 @@ import * as THREE from 'three';
 import {loadLocalGLTF} from './load-local-gltf.mjs';
 import {StudioAvatar} from '../components/studio/avatar.ts';
 import {poseStudioActors} from '../components/studio/actors.ts';
-import {studioCamera} from '../components/studio/camera.ts';
+import {StudioFeline} from '../components/studio/feline.ts';
+import {studioCamera,studioFocus} from '../components/studio/camera.ts';
 import {stagePoint,STAGE_Y} from '../components/studio/motion.ts';
 import {scenarioFrame,scenarioDefinitions} from '../lib/city/scenarios/index.ts';
 const catalog=JSON.parse(readFileSync('public/models/supplied/catalog.json')).assets,models=new Map(),report=[];
@@ -31,6 +32,15 @@ for(const d of scenarioDefinitions){
  let maximumContactGap=0;
  for(const [t,id,actor] of probes){const f=scenarioFrame(d.id,t),p=f.props.find(p=>p.id===id),a=sample(t).find(a=>a.id===actor),centre=new THREE.Vector3(...stagePoint(p.position)),q=new THREE.Quaternion().setFromEuler(new THREE.Euler(...p.rotation)).invert(),hand=new THREE.Vector3(...a.hands.right).sub(centre).applyQuaternion(q),size=p.size.map((v,i)=>i===1?v*STAGE_Y:v),outside=Math.hypot(...hand.toArray().map((v,i)=>Math.max(0,Math.abs(v)-size[i]/2)));maximumContactGap=Math.max(maximumContactGap,outside);assert(outside<.35,`${d.id}/${id} at ${t}: rendered palm outside prop ${outside}`);}
  if(d.id==='kitten-care'){const c=sample(119),f=scenarioFrame(d.id,119),cat=f.actors.find(a=>a.id==='miu'),a=c.find(a=>a.id==='thanh');for(const side of ['left','right']){const h=a.hands[side],p=stagePoint(cat.position);assert(Math.abs(h[0]-p[0])<1&&Math.abs(h[2]-p[2])<1.3&&h[1]>p[1]&&h[1]<p[1]+1.2,'Both hands support the actual feline body');}}
+ if(d.id==='kitten-care'){
+  const feline=new StudioFeline();
+  for(const at of [60,80,93,95,119]){const f=scenarioFrame(d.id,at),cat=f.actors.find(a=>a.id==='miu'),contacts=sample(at),hands=contacts.find(c=>c.id==='thanh').hands;feline.pose(at,stagePoint(cat.position),cat.yaw,true,!!cat.carrierId);feline.group.updateMatrixWorld(true);
+   for(const side of ['left','right']){const hand=new THREE.Vector3(...hands[side]),body=feline.group.getObjectByName('cat-body'),index=body.geometry.index;let distance=Infinity;for(let i=0;i<index.count;i+=3){const points=[0,1,2].map(j=>body.getVertexPosition(index.getX(i+j),new THREE.Vector3()).applyMatrix4(body.matrixWorld)),closest=new THREE.Triangle(...points).closestPointToPoint(hand,new THREE.Vector3());distance=Math.min(distance,closest.distanceTo(hand));}maximumContactGap=Math.max(maximumContactGap,distance);assert(distance<.15,'Palm must support rendered belly: '+JSON.stringify({at,side,distance}));}
+
+   for(const aspect of [1440/900,390/844]){const shot=studioFocus(f,contacts,'miu',aspect,40,new THREE.Vector3(15,10,24)),camera=new THREE.PerspectiveCamera(40,aspect,.1,2000);camera.position.copy(shot.eye);camera.lookAt(shot.target);camera.updateMatrixWorld(true);assert(shot.subjects.includes('thanh'),'Focus includes the supporting adult on the ground and while carried');for(const id of shot.subjects){const a=f.actors.find(a=>a.id===id),head=contacts.find(c=>c.id===id)?.head??[a.position[0],a.position[1]+2.25,a.position[2]];for(const p of [head,stagePoint(a.position)]){const ndc=new THREE.Vector3(...p).project(camera);assert(Math.abs(ndc.x)<.95&&Math.abs(ndc.y)<.95,'Focused cat and carrier stay in frame');}}}
+  }
+  const geometries=new Set(),materials=new Set();feline.group.traverse(o=>{if(o.isMesh){geometries.add(o.geometry);materials.add(o.material);}});geometries.forEach(g=>g.dispose());materials.forEach(m=>m.dispose());
+ }
  report.push({scenario:d.id,maxHandStep,maximumContactGap,seekEquivalent:true});for(const a of actors.values())a.dispose();
 }
 const voices=JSON.parse(readFileSync('public/audio/studio/manifest.json'));assert.equal(voices.clips.length,21);

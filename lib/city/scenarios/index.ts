@@ -122,11 +122,11 @@ function kitten(d: ScenarioDefinition, t: number) {
   const miu = actor(d.cast[2], [[0, 0, 0], [120, 0, 0]], [[0, "distress"], [55, "comfort"], [78, "warm"], [88, "carried"]], [[0, .4], [120, .4]], t);
   const floor: Vec3 = [0, .15, 0], carried = grip(thanh, 7), kittenPosition = t < 88 ? floor : blend(floor, carried, progress(t, 88, 92));
   miu.position = [...kittenPosition]; miu.carrierId = t >= 88 ? "thanh" : null; miu.clip = "idle"; if (t >= 88) miu.yaw = .4 + Math.atan2(Math.sin(thanh.yaw - .4), Math.cos(thanh.yaw - .4)) * progress(t, 88, 92);
-  if (t >= 55) thanh.handTargets = { right: [kittenPosition[0]-.35,kittenPosition[1]+.8,kittenPosition[2]], left: [kittenPosition[0]+.35,kittenPosition[1]+.8,kittenPosition[2]] };
-  const wrap=progress(t,78,88),unfold=progress(t,70,75),clothHeight=mix(.2,3.2,wrap);
+  if(t>=55){const support=(sign:number):Vec3=>[kittenPosition[0]+sign*.35*Math.cos(miu.yaw)-.15*Math.sin(miu.yaw),kittenPosition[1]+.32,kittenPosition[2]-sign*.35*Math.sin(miu.yaw)-.15*Math.cos(miu.yaw)];thanh.handTargets={right:support(-1),left:support(1)};}
+  const wrap=progress(t,78,88),unfold=progress(t,70,75),clothHeight=mix(.2,1.05,wrap);
   const clothPosition = t < 72 ? grip(mai, 8) : blend(grip(mai, 8), [0, .1, 0], progress(t, 72, 75));
   if(t>=78){clothPosition[0]=kittenPosition[0]*wrap;clothPosition[2]=kittenPosition[2]*wrap;clothPosition[1]=kittenPosition[1]*wrap+clothHeight/2;}
-  const cloth = item("warm-cloth", "cloth", clothPosition, [mix(mix(4,5,unfold),3.4,wrap),clothHeight,mix(mix(3,4,unfold),2.8,wrap)], "#d5a6b3", "mai", t < 72 ? "mai" : t >= 88 ? "thanh" : null, t < 72 ? "folded" : t < 78 ? "laid-out" : "wrapped"); cloth.visible = t >= 60;
+  const cloth = item("warm-cloth", "cloth", clothPosition, [mix(mix(4,5,unfold),1.65,wrap),clothHeight,mix(mix(3,4,unfold),2.5,wrap)], "#d5a6b3", "mai", t < 72 ? "mai" : t >= 88 ? "thanh" : null, t < 72 ? "folded" : t < 78 ? "laid-out" : "wrapped"); cloth.visible = t >= 60;cloth.rotation[1]=miu.yaw*wrap;
   if (t >= 78) cloth.attachment = "wrap";
   return {
     actors: [thanh, mai, miu], props: [cloth],

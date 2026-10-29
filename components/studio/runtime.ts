@@ -6,7 +6,7 @@ import { scenarioFrame, scenarioDefinitions, type ScenarioId, type ScenarioFrame
 import {pickVisible,TapGesture} from "../city/three/picking.ts";
 import {StudioAvatar} from "./avatar.ts";
 import {studioCloth} from "./cloth.ts";
-import {studioCamera} from "./camera.ts";
+import {studioCamera,studioFocus,studioFocusSubjects} from "./camera.ts";
 import {poseStudioActors} from "./actors.ts";
 import {StudioFeline} from "./feline.ts";
 import {STAGE_Y,stagePoint} from "./motion.ts";
@@ -47,6 +47,7 @@ export async function createStudio(host: HTMLDivElement, input: () => { id: Scen
   scene.add(hemi, sun); const controls = new OrbitControls(camera, renderer.domElement); controls.enableDamping = true; controls.minDistance = 12; controls.maxDistance = 1200; controls.maxPolarAngle = Math.PI / 2 - .03;renderer.domElement.tabIndex=0;controls.listenToKeyEvents(renderer.domElement);
   let manualBeforeGesture=false;
   let manual = false,focused:string|null=null,lastReset=-1,snapBeat:number|undefined;
+  let focusKey='';
   let focusAnchor:THREE.Vector3|undefined;
   const clearCameraMotion=()=>{const damping=controls.enableDamping;controls.enableDamping=false;controls.update();controls.enableDamping=damping;}; controls.addEventListener("start", () => {manualBeforeGesture=manual; manual = true; });
   const stages = new Map<ScenarioId, Stage>(), skies = new Map<ScenarioId, THREE.CanvasTexture>();
@@ -121,30 +122,32 @@ export async function createStudio(host: HTMLDivElement, input: () => { id: Scen
         const compiled = library.compile(modelFor(prop.modelHint ?? prop.kind));
         const model = compiled ? new THREE.Group().add(new THREE.Mesh(compiled.geometry, compiled.material)) : prop.kind==="cloth"?studioCloth():simpleProp(prop.kind), box = new THREE.Box3().setFromObject(model), size = box.getSize(new THREE.Vector3());
         model.position.sub(box.getCenter(new THREE.Vector3())); group = new THREE.Group(); group.add(model);
-        group.scale.set(prop.size[0] / Math.max(.01, size.x), prop.size[1]*STAGE_Y / Math.max(.01, size.y), prop.size[2] / Math.max(.01, size.z));
+        group.userData.sourceSize=size.toArray();
         stage.props.set(prop.id, group); stage.group.add(group);
       }
+      const sourceSize=group.userData.sourceSize as number[];group.scale.set(prop.size[0]/Math.max(.01,sourceSize[0]),prop.size[1]*STAGE_Y/Math.max(.01,sourceSize[1]),prop.size[2]/Math.max(.01,sourceSize[2]));
       group.traverse(o=>{if((o as THREE.Mesh).isMesh)o.userData.actorId=prop.holderId??undefined;});
       group.visible = prop.visible; group.position.set(...stagePoint(prop.position)); group.rotation.set(...prop.rotation);
     }
-    const shot=studioCamera(frame,contacts,camera.aspect,snapBeat===frame.beat.index);const subjects=focused?[focused]:shot.subjects;host.dataset.cameraSubjects=JSON.stringify(subjects);activeStage=stage;
+    const shot=studioCamera(frame,contacts,camera.aspect,snapBeat===frame.beat.index);const subjects=focused?studioFocusSubjects(frame,focused):shot.subjects;host.dataset.cameraSubjects=JSON.stringify(subjects);activeStage=stage;
     subjectPoints=subjects.flatMap(id=>{const contact=contacts.find(c=>c.id===id),actor=frame.actors.find(a=>a.id===id)!;const head=contact?.head??[actor.position[0],actor.position[1]*STAGE_Y+2.25,actor.position[2]];return [new THREE.Vector3(...head),new THREE.Vector3(head[0],head[1]*.65,head[2])];});
     if (!manual) {
       target.copy(shot.target);eye.copy(shot.eye);
       camera.position.copy(eye); controls.target.copy(target);
       camera.fov = frame.camera.fov; camera.updateProjectionMatrix();
     }
-    if(focused){const next=actorAnchor(focused);if(next){if(focusAnchor){const delta=next.clone().sub(focusAnchor);controls.target.add(delta);camera.position.add(delta);}focusAnchor=next;}}
+    if(focused){if(focusKey!==studioFocusSubjects(frame,focused).join('|'))focusActor(focused);const next=actorAnchor(focused);if(next){if(focusAnchor){const delta=next.clone().sub(focusAnchor);controls.target.add(delta);camera.position.add(delta);}focusAnchor=next;}}
     if(frame.time>=scenarioDefinitions.find(d=>d.id===frame.id)!.shots[frame.beat.index].at+2.4)snapBeat=undefined;
     controls.update(); render(); dirty = false;
     host.dataset.contacts=JSON.stringify(contacts);host.dataset.modelGeneration="supplied-civilians-v1";host.dataset.shadows=String(sun.castShadow);
     host.dataset.ready = "true"; host.dataset.scenario = frame.id; host.dataset.time = frame.time.toFixed(3); host.dataset.beat = String(frame.beat.index); host.dataset.assets = String(library.stats().loaded); host.dataset.assetFailures = String(library.stats().failed);
     if (stamp - lastStatus > 200 || seeking) { lastStatus = stamp; host.dataset.state = JSON.stringify(frame.state); host.dataset.cast = JSON.stringify(frame.actors.map(a => ({ id: a.id, age: a.age, clip: a.clip, position: a.position }))); host.dataset.props = JSON.stringify(frame.props.map(p => ({ id: p.id, holder: p.holderId, stage: p.stage, position: p.position }))); }
+    host.dataset.renderedProps=JSON.stringify(frame.props.map(p=>{const group=stage.props.get(p.id)!,base=group.userData.sourceSize as number[];return{id:p.id,size:base.map((v,i)=>v*group.scale.getComponent(i))};}));
     lastId = state.id; lastTime = state.time;
   }
-  function actorAnchor(id:string){const actor=activeFrame?.actors.find(a=>a.id===id);if(!actor)return;const head=activeStage?.actors.get(id)?.head().y??(actor.position[1]+actor.heightMeters*10)*STAGE_Y;return new THREE.Vector3(actor.position[0],(head+actor.position[1]*STAGE_Y)*.5,actor.position[2]);}
-  function focusActor(id:string){const actor=activeFrame?.actors.find(a=>a.id===id),anchor=actorAnchor(id);if(!actor||!anchor)return;const height=activeStage?.actors.get(id)?.height??2.5,offset=camera.position.clone().sub(controls.target),distance=Math.max(12,height/(2*Math.tan(THREE.MathUtils.degToRad(camera.fov)/2)*(camera.aspect<.85?.5:.62)),actor.radius/(Math.tan(THREE.MathUtils.degToRad(camera.fov)/2)*Math.max(.3,camera.aspect)*.7));
-    clearCameraMotion();manual=true;focused=id;focusAnchor=anchor.clone();onSelect(id);controls.target.copy(anchor);camera.position.copy(anchor).addScaledVector(offset.normalize(),distance);dirty=true;
+  function actorAnchor(id:string){return activeFrame?studioFocus(activeFrame,activeContacts,id,camera.aspect,camera.fov,camera.position.clone().sub(controls.target)).target:undefined;}
+  function focusActor(id:string){if(!activeFrame?.actors.some(a=>a.id===id))return;const shot=studioFocus(activeFrame,activeContacts,id,camera.aspect,camera.fov,camera.position.clone().sub(controls.target));
+    clearCameraMotion();manual=true;focused=id;focusKey=shot.subjects.join('|');focusAnchor=shot.target.clone();onSelect(id);controls.target.copy(shot.target);camera.position.copy(shot.eye);dirty=true;
   }
   const pointer=new THREE.Vector2(),pickRay=new THREE.Raycaster(),gesture=new TapGesture();
   const pointerDown=(e:PointerEvent)=>gesture.down(e),pointerMove=(e:PointerEvent)=>gesture.move(e),pointerCancel=(e:PointerEvent)=>gesture.cancel(e),pointerWheel=()=>gesture.invalidate();
