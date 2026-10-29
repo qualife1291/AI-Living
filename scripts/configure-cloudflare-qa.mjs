@@ -6,8 +6,18 @@
  */
 import { readFileSync, writeFileSync, existsSync } from "node:fs";
 import { resolve, dirname } from "node:path";
+import { fileURLToPath } from "node:url";
+import { createHash } from "node:crypto";
 import { QA_LIVING_CRON } from "../lib/living/qa-scheduler.ts";
 
+// H6 is versioned QA shadow metadata only; the live 41-scenario registry is NOT changed.
+const src = resolve(dirname(fileURLToPath(import.meta.url)), "..");
+const liveCatalog = JSON.parse(readFileSync(resolve(src, "data/city/scenarios.json"), "utf8"));
+const h6CandidateCatalog = JSON.parse(readFileSync(resolve(src, "data/training/h6-scenario-catalog.json"), "utf8"));
+if (liveCatalog.length !== 41 || h6CandidateCatalog.length !== 96 ||
+    JSON.stringify(h6CandidateCatalog.slice(0, 41)) !== JSON.stringify(liveCatalog))
+  throw Error("H6 shadow/live catalog compatibility failed; refusing QA deploy.");
+const h6CatalogHash = createHash("sha256").update(JSON.stringify(h6CandidateCatalog)).digest("hex");
 const location = resolve("dist/server/wrangler.json");
 if (!existsSync(location)) throw Error("Vinext build not found; run npm run build first.");
 const cfg = JSON.parse(readFileSync(location, "utf8"));
@@ -59,6 +69,9 @@ cfg.vars = {
   XOM_QA_ACCESS_TEAM_DOMAIN: "super-snow-e21e.cloudflareaccess.com",
   XOM_RULE_SCHEDULER: "true",
   XOM_SYSTEM_LOGS: "true",
+  XOM_H6_MODE: "shadow-only",
+  XOM_H6_CANDIDATE_COUNT: "96",
+  XOM_H6_CATALOG_SHA256: h6CatalogHash,
 };
 if (cfg.vars.XOM_OWNER_PRIVATE_ORIGIN || cfg.vars.XOM_ADMIN_USER_ID || cfg.vars.XOM_LOCAL_ADMIN === "true")
   throw Error("Unsafe Sites authorization variables must not be used in QA");
@@ -76,4 +89,7 @@ console.log(JSON.stringify({
   cron: cfg.triggers.crons[0],
   schedulerEnabled: cfg.vars.XOM_RULE_SCHEDULER,
   mode: "access-protected-qa-deploy",
+  h6Mode: cfg.vars.XOM_H6_MODE,
+  h6Candidates: cfg.vars.XOM_H6_CANDIDATE_COUNT,
+  h6CatalogSha256: cfg.vars.XOM_H6_CATALOG_SHA256,
 }));

@@ -22,7 +22,7 @@ const worker = {
           if (!db) throw new Error("QA D1 binding missing");
           const result = await runCoalescedPulse(db, () => runPulsePipeline({learning:learnCompleted,social:advanceResidentSocial,tick:tickLiving}));
           const learning = result.data.learning as {updated?:number}|undefined;
-          systemLog("cron_result", {status:result.status,duplicate:result.data.duplicate === true,coalesced:result.data.coalesced === true,updated:learning?.updated ?? 0,durationMs:performance.now()-started});
+          systemLog("cron_result", {status:result.status,duplicate:result.data.duplicate === true,coalesced:result.data.coalesced === true,updated:learning?.updated ?? 0,h6ShadowOnly:settings.XOM_H6_MODE === "shadow-only",h6Candidates:Number(settings.XOM_H6_CANDIDATE_COUNT ?? 0),durationMs:performance.now()-started});
           if (result.status !== 200 && result.status !== 409) throw new Error("QA Cron pulse rejected");
         } catch(error) {
           systemLog("cron_failed", {status:503,errorType:safeErrorType(error),durationMs:performance.now()-started});

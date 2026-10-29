@@ -24,6 +24,13 @@ try{
  invoked.length=0;const stopped=await runPulsePipeline({learning:step('learning',409),social:step('social'),tick:step('tick')});assert.equal(stopped.status,409);assert.deepEqual(invoked,['learning']);
  const failed=new Error('PRIVATE');await assert.rejects(runSystemTask('cron',true,()=>runPulsePipeline({learning:async()=>{throw failed;},social:step('social'),tick:step('tick')})),e=>e===failed);assert.equal(logs.at(-1).stage,'learning');assert.equal(logs.at(-1).status,500);
  console.info=()=>{throw Error('Sink unavailable');};assert.equal((await observeHttp(req,true,()=>new Response('ok'))).status,200);
+ const h6Count=logs.length;
+ runSystemTask('cron',true,()=>{
+   systemLog('cron_result',{status:200,h6ShadowOnly:true,h6Candidates:96,cookie:'PRIVATE',modelDump:'PRIVATE'});
+ });
+ assert.equal(logs.length,h6Count+1);
+ assert.equal(logs.at(-1).h6ShadowOnly,true);
+ assert.equal(logs.at(-1).h6Candidates,96);
  assert(!JSON.stringify(logs).includes('PRIVATE'));
 }finally{Object.assign(console,original);}
 console.log(JSON.stringify({suite:'system-log',concurrentRequests:20,isolatedCorrelation:true,privacyAllowlist:true,streamPreserved:true,noReadPollSpam:true,sinkFailureNonFatal:true,pipelineOrderAndShortCircuit:true}));
