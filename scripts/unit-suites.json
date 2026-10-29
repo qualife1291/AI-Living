@@ -207,5 +207,8 @@
   ],
   [
     "scripts/test-ground-authority-all-actors.mjs"
+  ],
+  [
+    "scripts/test-ground-learning.mjs"
   ]
 ]
