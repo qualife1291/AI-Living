@@ -3,6 +3,7 @@ import type {World} from '../world';
 import {groundHash,GroundTimelineError} from './ground-timeline.ts';
 import {bootstrapShared,replayShared,validateSharedState,projectionWorld,SHARED_LIMITS,type SharedState,type SharedSource} from './shared-ground.ts';
 import {bootstrapAuthority,authorityObserver,authorityProtocolSha,AUTHORITY_SCOPE} from './ground-authority.ts';
+import {projectAuthorityView} from './ground-authority-view.ts';
 import {loadAuthority,requireAuthoritySchema,prepareAuthorityCommit,authorityDuplicate} from './ground-authority-store.ts';
 import {SHARED_SCOPE,validateSharedView,type SharedGroundView} from './shared-ground-view.ts';
 const hash=z.string().regex(/^[a-f0-9]{64}$/);
@@ -35,7 +36,7 @@ export async function readSharedGround(db:D1Database,nowMs=Date.now()){
  const authority=await loadAuthority(db,s,row.checksum);
  const world=projectionWorld(JSON.parse(source.raw) as World,s.simMs);
  const view:SharedGroundView=validateSharedView({version:2,scope:SHARED_SCOPE,worldBorn:s.worldBorn,checkpoint:row.checksum,sequence:s.sequence,sourceRevision:s.sourceRevision,cursorRealMs:s.cursorRealMs,simMs:s.simMs,backlogMs:Math.max(0,nowMs-s.cursorRealMs),paused:world.paused,descriptors:s.descriptors,frames:s.frames,eligibleForReward:false,eligibleForP2P:false});
- return {view,world,authority};
+ return {view,world,authority,authorityView:authority?projectAuthorityView(authority.state,authority.checkpoint,view):undefined};
 }
 export async function runSharedGround(db:D1Database,input:Request,nowMs=Date.now(),options:{activateAuthority?:true}={}){
  await requireSharedSchema(db);

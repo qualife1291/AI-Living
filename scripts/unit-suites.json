@@ -201,5 +201,11 @@
   ],
   [
     "scripts/test-ground-authority-store.mjs"
+  ],
+  [
+    "scripts/test-ground-authority-view.mjs"
+  ],
+  [
+    "scripts/test-ground-authority-all-actors.mjs"
   ]
 ]

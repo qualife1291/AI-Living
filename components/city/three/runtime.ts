@@ -36,6 +36,7 @@ import {
   pedestrianSegments,
 } from "@/lib/city/three-layout";
 import type { World, EpisodeEvent } from "@/lib/world";
+import {sampleAuthoritySpeech,type AuthorityView} from '@/lib/living/ground-authority-view';
 import {sampleSharedGround,type SharedGroundView} from '@/lib/living/shared-ground-view';
 
 export type SceneInput = {
@@ -46,6 +47,7 @@ export type SceneInput = {
   clockOffsetMs?: number;
   sharedGroundRequested?:boolean;
   sharedGround?:SharedGroundView;
+  sharedAuthority?:AuthorityView;
   target?: { x: number; y: number; key: number; homeId?:string;gardenId?:string } | null;
 };
 export type SceneStatus = {
@@ -817,15 +819,19 @@ export function createCity(
       if(shared&&shared.worldBorn===world.born){
         const sampled=sampleSharedGround(shared,now-1500);
         const animals=new Set(['muop','cun','se']),allHumans=sampled.actors.filter(a=>!animals.has(a.id));
-        const preferred=new Set([selected,world.livingTurn?.residentId]);
-        actors=[...allHumans.slice(0,capacity-2),...allHumans.filter(a=>preferred.has(a.id)&&!allHumans.slice(0,capacity-2).some(p=>p.id===a.id))].slice(0,capacity);
+        const serverLines=sampleAuthoritySpeech(state.sharedAuthority,shared,sampled.simMs,sampled.actors);
+        const preferred=new Set([selected,...(serverLines.length?serverLines.flatMap(u=>[u.speakerId,u.listenerId]):[world.livingTurn?.residentId])]);
+        const reserved=serverLines.length?preferred.size:2;
+        actors=[...allHumans.slice(0,capacity-reserved),...allHumans.filter(a=>preferred.has(a.id)&&!allHumans.slice(0,capacity-reserved).some(p=>p.id===a.id))].slice(0,capacity);
         groundAnimals=animalsAt(world,0).flatMap(base=>{const actor=sampled.actors.find(a=>a.id===base.id);return actor?[{...base,...actor}]:[];});cars=sampled.cars;seconds=sampled.simMs/1000;
         socialPoses=new Map();exchanges=[];
+        for(const line of serverLines){const source=line.generator==='local-llm'?'ai':'script';socialPoses.set(line.speakerId,{peerId:line.listenerId,gesture:'explain',speaking:true,source});socialPoses.set(line.listenerId,{peerId:line.speakerId,gesture:'listen',speaking:false,source});exchanges.push({a:line.speakerId,b:line.listenerId,title:'Trò chuyện trong xóm',source,speech:{speaker:line.speakerId,text:line.text,source:source==='ai'?'ai':'routine',key:`ground:${line.id}`}});}
+        host.dataset.sharedAuthority=JSON.stringify({checkpoint:state.sharedAuthority?.checkpoint??null,parentCheckpoint:shared.checkpoint,simMs:sampled.simMs,utterances:serverLines.map(u=>({id:u.id,speaker:u.speakerId,listener:u.listenerId,text:u.text,fromSimMs:u.fromSimMs,untilSimMs:u.untilSimMs}))});
         host.dataset.sharedGround=JSON.stringify({checkpoint:shared.checkpoint,sequence:shared.sequence,realMs:sampled.realMs,simMs:sampled.simMs,positions:sampled.actors.map(a=>({id:a.id,position:a.position})),cars:cars.map(c=>({id:c.id,position:c.position})),backlogMs:shared.backlogMs});
-      }else{actors=[];groundAnimals=[];cars=[];socialPoses=new Map();exchanges=[];host.dataset.sharedGround='waiting';}
+      }else{actors=[];groundAnimals=[];cars=[];socialPoses=new Map();exchanges=[];host.dataset.sharedGround='waiting';delete host.dataset.sharedAuthority;}
       current=actors.find(a=>a.id===selected)??actors[0];
     }else{
-      delete host.dataset.sharedGround;
+      delete host.dataset.sharedGround;delete host.dataset.sharedAuthority;
       const rawActors = [
         ...actorsAt(world, lastTime),
         ...(world.living
@@ -1042,7 +1048,7 @@ export function createCity(
   }
   frame = requestAnimationFrame(tick);
   return {
-    presentSpeech(key) { socialDirector.presented(key, Date.now() + (input().clockOffsetMs ?? 0)); },
+    presentSpeech(key) { if(!input().sharedGroundRequested)socialDirector.presented(key, Date.now() + (input().clockOffsetMs ?? 0)); },
     zoom(factor) {
       following = false;
       host.dataset.view = "orbit";

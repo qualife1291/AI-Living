@@ -30,7 +30,7 @@ export async function GET(req: Request) {
       const shared=await readSharedGround(database());if(!shared)return json({error:'Chưa khởi tạo timeline chung.'},409);
       const revision=await database().prepare("SELECT revision FROM worlds WHERE id='home'").first<{revision:number}>();
       const wt=worldTime(shared.world,0);
-      return json({revision:revision?.revision??shared.view.sourceRevision,serverNow:new Date().toISOString(),world:shared.world,events:[],worldTime:wt,weatherState:weatherAt(shared.world.born,wt,shared.world.clock?.weatherOverride),sharedGround:shared.view});
+      return json({revision:revision?.revision??shared.view.sourceRevision,serverNow:new Date().toISOString(),world:shared.world,events:[],worldTime:wt,weatherState:weatherAt(shared.world.born,wt,shared.world.clock?.weatherOverride),sharedGround:shared.view,...(shared.authorityView?{sharedAuthority:shared.authorityView}:{})});
     }catch{return json({error:'Timeline chung chưa sẵn sàng.'},503);}
   }
   const data = await readWorld({eventLimit: new URL(req.url).searchParams.get("compact") === "1" ? 8 : 80});

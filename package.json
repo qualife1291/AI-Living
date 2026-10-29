@@ -52,7 +52,8 @@
     "test:api:shared-ground": "node scripts/test-shared-ground-api.mjs",
     "test:api:legacy": "node scripts/test-legacy-api.mjs",
     "audit:learning-evidence": "node scripts/audit-learning-evidence.mjs",
-    "ground:authority": "node scripts/ground-authority.mjs"
+    "ground:authority": "node scripts/ground-authority.mjs",
+    "test:api:authority": "node scripts/test-ground-authority-api.mjs"
   },
   "dependencies": {
     "@base-ui/react": "^1.7.0",
