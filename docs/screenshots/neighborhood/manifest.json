@@ -1,0 +1,69 @@
+{
+  "kind": "actual-browser-neighborhood-proof-v1",
+  "source": "8153f2fca8f01dc551a6d46d981b07864c49965d",
+  "production": false,
+  "fixture": "synthetic world transport, actual compiled QA renderer/assets",
+  "renderer": "Chromium SwiftShader",
+  "files": [
+    {
+      "file": "city-120-desktop.png",
+      "source": "8153f2fca8f01dc551a6d46d981b07864c49965d",
+      "sha256": "f9658dc7bb44c7691211e783084a1680d4ca1385e720384cca44a74ec0fa73d9",
+      "bytes": 279882,
+      "pixels": [
+        1440,
+        900
+      ]
+    },
+    {
+      "file": "city-240-mobile.png",
+      "source": "8153f2fca8f01dc551a6d46d981b07864c49965d",
+      "sha256": "1b7c9f90ca6638448408dd6a17d8b1f8c1cc3138f05918ae396a90fe9541088a",
+      "bytes": 96261,
+      "pixels": [
+        390,
+        844
+      ]
+    },
+    {
+      "file": "animals-park-desktop.png",
+      "source": "8153f2fca8f01dc551a6d46d981b07864c49965d",
+      "sha256": "7d1808c33817adfd55be1845b82ac8ca0802d56d7e2f29a4bbd00081871aa2b9",
+      "bytes": 410152,
+      "pixels": [
+        1440,
+        900
+      ]
+    },
+    {
+      "file": "prop-plant.png",
+      "source": "8153f2fca8f01dc551a6d46d981b07864c49965d",
+      "sha256": "26d23ab355db16c4849e2d67c3916f458a516c18e4d1815ac9b6dfd10f896e1e",
+      "bytes": 134068,
+      "pixels": [
+        1280,
+        900
+      ]
+    },
+    {
+      "file": "prop-chessboard.png",
+      "source": "8153f2fca8f01dc551a6d46d981b07864c49965d",
+      "sha256": "b2487976c754b0bf786110cf40e4665bc7cceb955eebcd6717d6760f4583e77f",
+      "bytes": 149023,
+      "pixels": [
+        1280,
+        900
+      ]
+    },
+    {
+      "file": "prop-chair.png",
+      "source": "8153f2fca8f01dc551a6d46d981b07864c49965d",
+      "sha256": "69d17ef563a9856c769615a0671af1dd03d9aaae01462b0198f50fc87d135604",
+      "bytes": 157086,
+      "pixels": [
+        1280,
+        900
+      ]
+    }
+  ]
+}

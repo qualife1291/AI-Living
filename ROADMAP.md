@@ -28,7 +28,7 @@ Backlog duy nhất của dự án: H5b1 nghiệm thu trên `work`13999b2; đối
 
 | Mục | Trạng thái | Phần còn làm và điều kiện đóng |
 |---|---|---|
-| A3: props đời thường | Một phần | Nhập chọn lọc bàn/ghế/sách/đèn/máy tính/bàn cờ, palette/LOD/footprint và semantic binding; gallery chưa là placement city. Không nhập casino props chỉ vì free. Inventory/outcome phải có code và nguồn riêng. [Assets](docs/ASSETS.md). |
+| A3: props đời thường | Chờ nghiệm thu remote |11props ZIP1 đã vào city/gallery/sách cầm tay; cây có LOD xa,338model cây/chậu trong footprint cũ. Còn authenticated QA/thiết bị thật/network/phiên dài theo A5/P0; [evidence](docs/validation/neighborhood-upgrade-2026-10-29.json). Placement không tự cấp inventory/skill/harvest. [Assets](docs/ASSETS.md). |
 | A4: nhà/chợ/công trường | Một phần | Chuẩn hóa module/atlas/LOD và collider cho indoor/chợ. ZIP4 là 50 mesh tĩnh×5 LOD: re-rig/tách dụng cụ, giảm texture trước placement; không coi tư thế là hành vi/nghề. Giữ ngân sách hình học/texture theo [asset review](docs/validation/asset-review-2026-10-29.json), không nhập raw nặng. |
 | Traffic, boarding và indoor | Một phần | Giao lộ/nhiều làn/tín hiệu/parking; walking→waiting→boarding→riding→alighting dùng occupancy chung. Thêm vào/ra nhà, collider/nội thất/thang máy và routing tương ứng. Model xe/nhà tĩnh không thay tuyến chạy hoặc boarding authority. [Rendering](docs/RENDERING.md). |
 | Flora, habitat và care | Một phần | Có growth/tưới cây, pet-follow và model/clip loài; còn thu hoạch/inventory/NPC care có outcome, habitat và ecology phù hợp. Không cho kiwi/penguin bay, loop attack/dead hoặc cấp reward từ animation. [Rendering](docs/RENDERING.md), [Assets](docs/ASSETS.md). |

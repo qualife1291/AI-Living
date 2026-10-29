@@ -8,6 +8,7 @@ Chỉ đọc khi nhập/model/texture/OSM hoặc tối ưu tải. Danh sách ch�
 | Gobkit/KayKit | `data/assets/resource-manifest.json`, `public/models/resources/catalog.json` |239 canonical glTF/GLB,15 pack/386 file/42.764.728 byte,114 model skinned. Động vật/người, Adventurers, Furniture, City Builder. |
 | Xóm Citizens | `scripts/build-citizen-models.mjs`, `public/models/citizens/catalog.json` |12rig nguyên bản CC0, tóc/mặt/trang phục khác nhau, một skin/material,10clip mỗi model; tái tạo byte-identical. Giữ ở gallery/reference; city và Studio đã chuyển sang bộ supplied bên dưới. |
 | Casino/Chess do chủ dự án cung cấp | `data/assets/supplied-selection.json`, `public/models/supplied/catalog.json` |5rig đã duyệt SHA, một mesh/material,44joint/11clip mỗi model; 2401–2551triangle;2palette dùng chung. LicenseRef theo xác nhận của chủ dự án, không CC0. |
+| Props Casino/Chess | `data/assets/supplied-props-selection.json`, `public/models/supplied/props/catalog.json` |11đồ dùng đã áp dụng: sách/kệ, ghế/bàn, cờ, đèn, cây, màn hình/phím/chuột; tổng802.928byte/6.059triangle. Atlas có gutter, UV và LOD có nguồn/hash; LicenseRef của chủ dự án. |
 | OSM | `data/city/hcm-district1.json`, metadata/source registry | Snapshot bbox `[10.770,106.692,10.782,106.707]`; độc lập với33 venue hư cấu và actor graph. |
 
 Các model/texture/preview/license ở `public/models`; không bỏ license khi dọn tài liệu. [Kenney](https://kenney.nl), các gói Gobkit/KayKit đã nhập dùng [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/); bản license từng pack và manifest là căn cứ, không suy license từ tên website. Không tải FBX/OBJ trùng khi glTF đã đủ. Gallery tải từng model, không nạp toàn bộ catalog vào city.
@@ -21,13 +22,18 @@ npm run assets:check
 npm run assets:maintain
 npm run assets:compress # Tạo lại gzip transport từ canonical đã kiểm hash
 npm run assets:import:supplied # Authoring từ source-vault đã xác minh; không cần trong CI
+npm run assets:import:props    # Chỉ11member đã duyệt từ ZIP1; CI --check không cần vault
 ```
 
 `assets:maintain` ghi semantic bindings; `assets:check` kiểm manifest/hash/texture/license và công thức procedural. Asset unknown-license hoặc nhu cầu thiếu phải báo lỗi; không dựng hộp giả rồi nhận đã hỗ trợ. Importer chỉ đọc whitelist/dependencies, từ chối traversal/URL ngoài/symlink/duplicate entries, có giới hạn bytes; không chạy code/HTML/URL trong ZIP. Dùng source ZIP chỉ khi cần reimport, không thêm ZIP vào Git/production.
 
 Giữ canonical và nguồn/license/hash nếu làm compressed derivative. Dependencies tự phục vụ từ Site, không hotlink CDN lúc runtime. Texture PNG được chủ dự án tùy biến đã có hash mới; không tự thay atlas giữa hai pack chỉ vì cùng tên `colormap.png`.
 
-G0 dùng28gzip transport trong `public/models/derivatives`, manifest `data/assets/city-transfer-manifest.json`:4.867.380byte canonical→1.373.120byte gzip. Hai palette ngoài GLB dùng chung thêm668.521byte; không tính chúng vào gzip GLB. Giải nén phải khớp từng byte/hash; `assets:compress --write` chỉ dọn derivative SHA đã hết preload. Unsupported/corrupt dùng canonical; lỗi model chính dùng rig supplied khác, load trễ vẫn nâng về primary. City/Studio không request Citizens, Kenney character hay Gobkit Human cũ. Các bộ còn trong gallery/reference vẫn giữ canonical/license, không preload cả catalog. Đây là chi phí tải mới, không phải bằng chứng FPS hoặc cải thiện so với bộ nhỏ cũ.
+City dùng42gzip transport trong `public/models/derivatives`, manifest `data/assets/city-transfer-manifest.json`:5.964.264byte canonical→2.215.748byte gzip. Hai palette ngoài GLB dùng chung thêm668.521byte; không tính chúng vào gzip GLB. Giải nén phải khớp từng byte/hash; `assets:compress --write` chỉ dọn derivative SHA đã hết preload. Unsupported/corrupt dùng canonical; lỗi model chính dùng rig supplied khác, load trễ vẫn nâng về primary. City/Studio không request Citizens, Kenney character hay Gobkit Human cũ. Các bộ còn trong gallery/reference vẫn giữ canonical/license, không preload cả catalog. Đây là chi phí tải mới, không phải bằng chứng FPS hoặc cải thiện so với bộ nhỏ cũ.
+
+`neighborhood-props.ts` đặt487model cây/đồ dùng,338model cây/chậu (thay44cụm cũ, tăng ròng294) trong footprint đã có; mặt bàn/kệ dùng chiều cao model sau scale thật, không làm sách/bàn phím lơ lửng. Tán native được nâng khỏi chiều cao nhảy, trunk vẫn2.6unit trong footprint3×3; LOD xa giữ tán cây, kể cả zoom theo trụcY. Cây/chậu mới là scenery, không tự có growth/harvest/care reward. Hoa stateful cũ giữ journal/moisture riêng.
+
+City dùng feline khớp Studio cho mèo và Gobkit corgi/quail/chick cho chó/cút/gà; clip chỉ idle/walk có thật, mặt đất theo pose thật và radius≤4.8. Chim sẻ giữ flock đúng loài; fallback tạm khi thiếu model không thành policy bổ sung.9policy group có11cơ thể nhìn thấy (flock sẻ gồm3); tối đa8human +5animal skeletal controllers, mèo là rig khớp riêng. Scene/pause/dispose không ghi memory/reward. Các mesh công trường tĩnh/Unreal-only chưa được gọi là cư dân hay hành vi.
 
 ## Runtime và rigs
 
