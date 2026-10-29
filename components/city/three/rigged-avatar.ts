@@ -46,7 +46,15 @@ export class RiggedAvatar {
   this.model.updateMatrixWorld(true);
   const box=new THREE.Box3().setFromObject(this.model,true),size=box.getSize(new THREE.Vector3()),center=box.getCenter(new THREE.Vector3());
   if(![...size].every(n=>Number.isFinite(n)&&n>0))throw new Error('Invalid rigged model bounds');
-  const yScale=height/size.y,horizontal=Math.min(yScale,radius/Math.max(.001,Math.hypot(size.x/2,size.z/2)));
+  let clearance=size;
+  if(dailyHuman&&source.scene.userData.profile==='xom-supplied-v1'){
+   // Studio replaces the arms with reach controllers; a wide source hand pose
+   // must not shrink the torso and turn an adult into a child-sized actor.
+   const arms=new Set<THREE.Object3D>();for(const name of ['LeftArm','RightArm'])this.model.getObjectByName(name)?.traverse(o=>arms.add(o));
+   const bodyBox=new THREE.Box3();this.model.traverse(o=>{const mesh=o as THREE.SkinnedMesh;if(!mesh.isSkinnedMesh)return;const skin=mesh.geometry.getAttribute('skinIndex'),weights=mesh.geometry.getAttribute('skinWeight');for(let i=0;i<skin.count;i++){let arm=0;for(let n=0;n<4;n++)if(arms.has(mesh.skeleton.bones[skin.getComponent(i,n)]))arm+=weights.getComponent(i,n);if(arm<.5)bodyBox.expandByPoint(mesh.getVertexPosition(i,new THREE.Vector3()).applyMatrix4(mesh.matrixWorld));}});
+   if(!bodyBox.isEmpty())clearance=bodyBox.getSize(new THREE.Vector3());
+  }
+  const yScale=height/size.y,horizontal=Math.min(yScale,radius/Math.max(.001,Math.hypot(clearance.x/2,clearance.z/2)));
   // Preserve authored proportions; shrink uniformly when clearance is tighter.
   this.group.scale.setScalar(horizontal);this.height=size.y*horizontal;this.offset.position.set(-center.x,-box.min.y,-center.z);
   this.findJoints(bones);

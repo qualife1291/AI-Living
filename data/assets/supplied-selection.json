@@ -55,10 +55,10 @@
     }
   ],
   "pipeline": {
-    "version": 1,
+    "version": 2,
     "humanoidCanonicalBones": true,
     "fps": 24,
-    "targetTriangles": 2800,
+    "targetTriangles": 2000,
     "maxRelativeSimplificationError": 0.012,
     "geometryProfile": "xom-supplied-v1"
   }

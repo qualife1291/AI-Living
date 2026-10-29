@@ -16,7 +16,7 @@ export class StudioAvatar extends RiggedAvatar {
   });
   for(const side of ['left','right']){
    const cloth=new THREE.MeshPhongMaterial({color:shirt,shininess:12}),skin=new THREE.MeshPhongMaterial({color:'#e7c19c',shininess:15});
-   const sleeve=new THREE.CapsuleGeometry(.4,1,2,6),shoulder=new THREE.SphereGeometry(.44,6,3).translate(0,.9,0),upperGeometry=mergeGeometries([sleeve,shoulder])!;sleeve.dispose();shoulder.dispose();
+   const sleeve=new THREE.CapsuleGeometry(.4,1,2,6),shoulder=new THREE.SphereGeometry(.7,8,4).translate(0,-.9,0),upperGeometry=mergeGeometries([sleeve,shoulder])!;sleeve.dispose();shoulder.dispose();
    this.skinMaterials.add(skin);
    const upper=new THREE.Mesh(upperGeometry,cloth),lower=new THREE.Mesh(new THREE.CapsuleGeometry(.3,1,2,6),skin),elbow=new THREE.Mesh(new THREE.SphereGeometry(.32,6,4),cloth),hand=new THREE.Group();
    const palm=new THREE.Mesh(new THREE.SphereGeometry(1,8,4),skin);palm.scale.set(.29,.15,.34);hand.add(palm);
