@@ -6,7 +6,7 @@ Nguồn đặc tả: [living-scenarios-request](specs/living-scenarios-request.m
 
 Mở `/studio`. Bốn ID `wallet-return`, `sanitation-gratitude`, `kitten-care`, `bakery-courtesy`, mỗi cảnh120giây/năm shot,10world units/m. `lib/city/scenarios/index.ts` xuất `scenarioDefinitions`, `scenarioFrame(id,seconds)` và types. Frame có cast, chuyển động, đạo cụ/custody, camera, thoại và ledger biên tập; seek/pause/replay tuyệt đối. Studio không đọc/ghi worldDB, memory/policy hoặc lịch sử live.
 
-V2 dùng cùng Gobkit Human002 đã có trong city, giữ tỷ lệ, bỏ tay nguyên khối khỏi instance rồi dựng tay hai đoạn/khuỷu/palm và contact targets. Absolute rig sampling giữ seek tương đương; kernel chuyển động nhân quả0,6s nối các hành động, prop theo tay hiện tại. Mèo có khớp/chuyển động thở/tai/đuôi, khăn gấp cong theo thân. Camera fit người/đạo cụ theo aspect và shot, nền không lộ mép trong portrait. Renderer giữ dưới25.000triangle/150drawcall theo contract local. Đây là điều khiển kinematic, chưa vật lý toàn thân hoặc finger/foot locking đầy đủ.
+Hiện dùng bộ Citizens nguyên bản cùng city/gallery, giữ tỷ lệ và chung world scale với đạo cụ/camera, bỏ tay nguyên khối khỏi instance rồi dựng tay hai đoạn/khuỷu/palm và contact targets. Absolute rig sampling giữ seek tương đương; kernel chuyển động nhân quả0,6s nối các hành động, prop theo tay hiện tại. Mèo có khớp/chuyển động thở/tai/đuôi, khăn gấp cong theo thân. Camera fit người/đạo cụ theo aspect và shot, nền không lộ mép trong portrait. Renderer giữ dưới25.000triangle/150drawcall theo contract local. Đây là điều khiển kinematic, chưa vật lý toàn thân hoặc finger/foot locking đầy đủ.
 
 Studio đã bỏ đường render/preload Kenney character cũ và factory mèo placeholder. Catalog Kenney còn dùng ở city fallback, environment và gallery nên vẫn giữ model/texture/license đó; không xóa tài nguyên đang có consumer.
 
@@ -29,7 +29,7 @@ Browser đã đo AudioContext phát voice/steps và điều khiển, không ph�
 
 ## Bằng chứng và giới hạn
 
-[Contract v2](validation/studio-quality-contract-v2.json), [report](validation/studio-quality-v2-2026-10-29.json), [12ảnh thật gồm before](screenshots/studio-v2/manifest.json). Logic11/11case/28.804frame, không static/swept-human overlap; rig test bốn cảnh seek tương đương, gap tiếp xúc tối đa0,2231unit. Browser8case desktop/mobile qua40shot/framing, play/pause/seek/end/replay, thêm hai retest khăn; audio bốn cảnh có output thật. Nguồn build cho từng nhóm được tách rõ trong report, không gọi tất cả là một lần chạy cùng SHA. Mốc GND3 sau đó chạy đầy đủ69suite, gồm cả hai suite Studio.
+Mới nhất: [Citizens acceptance](validation/citizens-2026-10-29.json)/[ảnh](screenshots/citizens/manifest.json),8case desktop/mobile với rig mới; contact gap≤0,2943unit, không đổi custody/logic/audio. Mốc Human002 trước đó: [Contract v2](validation/studio-quality-contract-v2.json), [report](validation/studio-quality-v2-2026-10-29.json), [12ảnh thật gồm before](screenshots/studio-v2/manifest.json). Logic11/11case/28.804frame, không static/swept-human overlap; rig test bốn cảnh seek tương đương, gap tiếp xúc tối đa0,2231unit. Browser8case desktop/mobile qua40shot/framing, play/pause/seek/end/replay, thêm hai retest khăn; audio bốn cảnh có output thật. Nguồn build cho từng nhóm được tách rõ trong report, không gọi tất cả là một lần chạy cùng SHA. Mốc GND3 sau đó chạy đầy đủ69suite, gồm cả hai suite Studio.
 
 ```bash
 npm run simulate:living

@@ -1,0 +1,73 @@
+{
+  "source": "130f710c2addacbdc85e4a22f4185a0fa0443dd2",
+  "production": false,
+  "renderer": "Chromium SwiftShader",
+  "images": [
+    {
+      "path": "docs/screenshots/citizens/catalog.jpg",
+      "bytes": 70488,
+      "sha256": "9a5da07e54d1232143cf5fbdb2a5494fd5fee0bc54e966926d1120230f16b95e",
+      "scope": "Actual compiled local Chromium SwiftShader, synthetic editorial/transport fixture; not remote QA"
+    },
+    {
+      "path": "docs/screenshots/citizens/city-desktop.png",
+      "bytes": 724678,
+      "sha256": "98cf7e26529841e07b5440e41bdc23f34fe5c2ab9b95b424b150958eb0183e9c",
+      "scope": "Actual compiled local Chromium SwiftShader, synthetic editorial/transport fixture; not remote QA"
+    },
+    {
+      "path": "docs/screenshots/citizens/city-mobile.png",
+      "bytes": 299617,
+      "sha256": "66a70a43230a22e68b8fdfa7823262115c1bab81e37537a5e5d5117b39d77797",
+      "scope": "Actual compiled local Chromium SwiftShader, synthetic editorial/transport fixture; not remote QA"
+    },
+    {
+      "path": "docs/screenshots/citizens/wallet-return-desktop.png",
+      "bytes": 262948,
+      "sha256": "3cea6c5166b2f2a5d43f464773a11f77d85b5e9749005b336e06a8b3eb3d18a9",
+      "scope": "Actual compiled local Chromium SwiftShader, synthetic editorial/transport fixture; not remote QA"
+    },
+    {
+      "path": "docs/screenshots/citizens/wallet-return-mobile.png",
+      "bytes": 88163,
+      "sha256": "f7afd66fb748acf32d738e995d820fe505078a83817bf3cd966f455a4d7fac23",
+      "scope": "Actual compiled local Chromium SwiftShader, synthetic editorial/transport fixture; not remote QA"
+    },
+    {
+      "path": "docs/screenshots/citizens/sanitation-gratitude-desktop.png",
+      "bytes": 357311,
+      "sha256": "50a40b3761dc63e680f9699ccd6694de2274ce32ae302ba3dba8569b56db6ef8",
+      "scope": "Actual compiled local Chromium SwiftShader, synthetic editorial/transport fixture; not remote QA"
+    },
+    {
+      "path": "docs/screenshots/citizens/sanitation-gratitude-mobile.png",
+      "bytes": 107776,
+      "sha256": "1c439387ae04472dfc6db3b4647698de8348b78f2bf9984808fd2f2ec8d9023f",
+      "scope": "Actual compiled local Chromium SwiftShader, synthetic editorial/transport fixture; not remote QA"
+    },
+    {
+      "path": "docs/screenshots/citizens/kitten-care-desktop.png",
+      "bytes": 207462,
+      "sha256": "c7e2ee72b45c5ee70524406eba515f3f2ea2ad2b1068d477bf60b95aff2bd3a4",
+      "scope": "Actual compiled local Chromium SwiftShader, synthetic editorial/transport fixture; not remote QA"
+    },
+    {
+      "path": "docs/screenshots/citizens/kitten-care-mobile.png",
+      "bytes": 80597,
+      "sha256": "d66ceddc6a0ece227ab7e55b0803013270ea14443cb9da15a74c7b4ac6821923",
+      "scope": "Actual compiled local Chromium SwiftShader, synthetic editorial/transport fixture; not remote QA"
+    },
+    {
+      "path": "docs/screenshots/citizens/bakery-courtesy-desktop.png",
+      "bytes": 347740,
+      "sha256": "68ef34a05b5a908a0c71d4112ce7e3ea570e9abe6849e62e11f60d2d512af710",
+      "scope": "Actual compiled local Chromium SwiftShader, synthetic editorial/transport fixture; not remote QA"
+    },
+    {
+      "path": "docs/screenshots/citizens/bakery-courtesy-mobile.png",
+      "bytes": 89456,
+      "sha256": "735684de57d14298a37ab94fcc80a3f902b3e16ea699c81f51a47bde52f405d2",
+      "scope": "Actual compiled local Chromium SwiftShader, synthetic editorial/transport fixture; not remote QA"
+    }
+  ]
+}

@@ -1,5 +1,8 @@
 # AI–Living — Quy trình remote QA cho AI coding agents
 
+**Bản chuẩn bị mới29/10:** app`130f710` (Citizens/GND3/Studio/H3b đã có negative gates) đã nhập vào QA, local73suite/type/lint/assets/build và [browser/evidence](validation/citizens-2026-10-29.json) đạt. QA-only guard nay nhận đúng template`site-creator-vinext-starter`, giữ idempotent **một** cron`*/5`, Access/JWKS và D1`ai_living_qa`;14case config rejection có regression. User đã yêu cầu push QA sau local acceptance; chưa promote main/staging/prod. Deployment/version/authenticated readback của source mới còn cần xác minh sau push, không suy từ build local. Lịch sử cron-off bên dưới là mốc cũ; config hiện hành giữ cron`*/5` theo bản b6397b1.
+
+
 ## Trạng thái thực tế đã kiểm — 29/10/2026 (cập nhật sau thiết lập)
 
 - **Xác minh cuối (29/10):** hai lượt build trùng commit `00e3027c` đều `success`; deployment mới nhất `e5f5fc2d-fa35-421c-b5eb-88ab4c1bc6d5`, version `39bc5651-7fef-487f-af30-7c761387015e` (100%). Worker QA URL enabled, version URLs disabled, token QA only, cron không có. Cloudflare API chỉ chứng thực deploy và policy, không thay thế HTTP/browser smoke với credential.
@@ -9,7 +12,7 @@
 - Repo: `qualife1291/AI-Living` → `cloudflare-qa`; `auto_build_enabled=true`, previews disabled. Build: `corepack pnpm install --frozen-lockfile && npm run build`. Deploy: `node scripts/configure-cloudflare-qa.mjs && npx wrangler deploy --config dist/server/wrangler.json`.
 - Cloudflare Builds trigger: `24a32899-c5bf-474f-b31e-29ba7581ba24`.
 - Lượt build đầu trên source `6f23658d` build PASS nhưng **deploy FAIL** vì guard yêu cầu `ai-living-staging` trong khi generated Worker name là `ai-living-qa`.
-- Đã sửa guard chỉ chấp nhận hai giá trị `ai-living-staging` hoặc `ai-living-qa`; commit `00e3027cfbda72bb85139e6d6e925b89f36617aa` trên `cloudflare-qa`.
+- Đã sửa guard chấp nhận tên template gốc `site-creator-vinext-starter`, `ai-living-staging` hoặc `ai-living-qa`; commit `00e3027cfbda72bb85139e6d6e925b89f36617aa` trên `cloudflare-qa`.
 - Build `becbb0f3-abfa-49ad-bdc0-42f6baaae6b0` outcome `success`, Wrangler deploy QA version `d391f791-7826-4f15-8163-c9fff29396d1`, deployment `2096c482-6ef5-4178-8ac1-c2db7085919d`, 100% traffic (tại thời điểm xác minh). Host: `https://ai-living-qa.hoanglonglea1mtl.workers.dev/` (**enabled**, Access protected). Có một lượt auto-build trùng commit đang xử lý, cần kiểm deployment mới nhất trước mỗi lần test.
 - Access đã kiểm qua API: worker-level `AI-Living QA — owner and agent service token` gồm allow owner và non_identity một service token QA; policy staging chính vẫn owner-only. QA D1 binding `DB` → `ai_living_qa` đúng UUID, schema 21 bảng/12 index/3 trigger. QA cron chưa bật. DB trước lần browser smoke: 0 world/episodes/policies/experiences.
 - **Chưa QA HTTP E2E bằng credential**: công cụ chạy từ phiên ChatGPT này không resolve được `workers.dev` nên chưa xác minh Access redirect/cookie, UI 3D, `/api/world` hay `/api/living/learning` từ mạng bên ngoài. Bản deploy PASS không thay thế được remote QA. Chạy smoke script từ agent có secret qua kênh kín rồi upload bằng chứng.
@@ -102,7 +105,7 @@ GitHub App Cloudflare đã có quyền repo. Worker QA đã được tạo với
 - Disable automatic preview builds/PR previews (không được chia sẻ cùng QA D1 qua preview)
 - Không nhập env/secret liên quan tới Sites A hoặc production
 
-**Guard:** `scripts/configure-cloudflare-qa.mjs` bắt buộc tên Vinext worker gốc `ai-living-staging`, chuyển thành `ai-living-qa`, thay placeholder D1 thành `ai_living_qa`, đặt `workers_dev=true` (đã có Access) và `preview_urls=false`, từ chối route/cron lạ. Nên xác minh Access vẫn bao phủ Worker **trước khi bật auto-deploy**, vì một lỗi cấu hình Access có thể mở API ghi dữ liệu. Không dùng lệnh từ staging `wrangler versions upload` cho QA này.
+**Guard:** `scripts/configure-cloudflare-qa.mjs` chỉ nhận tên Vinext template gốc `site-creator-vinext-starter`, `ai-living-staging` hoặc `ai-living-qa`, chuyển thành `ai-living-qa`, thay placeholder D1 thành `ai_living_qa`, đặt `workers_dev=true` (đã có Access) và `preview_urls=false`, từ chối route/cron lạ. Nên xác minh Access vẫn bao phủ Worker **trước khi bật auto-deploy**, vì một lỗi cấu hình Access có thể mở API ghi dữ liệu. Không dùng lệnh từ staging `wrangler versions upload` cho QA này.
 
 Khi Connect và build đầu thành công, xác minh Worker deployments, bindings, Access và URL bằng GET chưa đăng nhập (phải bị Access chặn), rồi dùng session owner hoặc token QA để test. **Không suy Git push = deployed** nếu Builds thất bại.
 
