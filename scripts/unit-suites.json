@@ -213,5 +213,8 @@
   ],
   [
     "scripts/test-bounded-json.mjs"
+  ],
+  [
+    "scripts/test-chat-admission.mjs"
   ]
 ]

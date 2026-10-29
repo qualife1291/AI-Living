@@ -1,3 +1,4 @@
+import { saveVisitorExchange } from '@/lib/living/interaction-store';
 import { readBoundedJson } from '@/lib/bounded-json';
 import { z } from 'zod';
 import { database,readWorld,json,validOrigin } from '@/lib/store';
@@ -15,7 +16,11 @@ export async function POST(req:Request){
  if(current.world.paused)return json({error:'Xóm đang tạm nghỉ. Nhấn Tiếp tục để trò chuyện.'},409);
  const reply=replyToVisitor(current.world,actorId,message,Date.now());if(!reply)return json({error:'Không tìm thấy cư dân'},404);
  const exchange={id,actorId,message,reply:reply.text,name:reply.name,source:reply.source,createdAt:new Date().toISOString()};
- await db.prepare('INSERT OR IGNORE INTO visitor_exchanges(id,actor_id,created_at,data) VALUES(?,?,?,?)').bind(id,actorId,exchange.createdAt,JSON.stringify(exchange)).run();
- const saved=await db.prepare('SELECT data FROM visitor_exchanges WHERE id=?').bind(id).first<{data:string}>();
- return json(JSON.parse(saved!.data));
+ let saved;
+ try{saved=await saveVisitorExchange(db,exchange);}catch{return json({error:'Chưa lưu được lời nhắn. Hãy thử lại.'},503);}
+ if(!saved.ok){
+  const response=json({error:'Bạn gửi lời nhắn hơi nhanh. Hãy chờ một chút rồi thử lại.',retryAfter:saved.retryAfter},429);
+  response.headers.set('Retry-After',String(saved.retryAfter));return response;
+ }
+ return json(saved.exchange);
 }
