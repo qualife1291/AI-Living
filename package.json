@@ -49,7 +49,12 @@
     "ground:timeline": "node scripts/ground-timeline.mjs",
     "test:api:ground": "node scripts/test-ground-api.mjs",
     "ground:shared": "node scripts/shared-ground.mjs",
-    "test:api:shared-ground": "node scripts/test-shared-ground-api.mjs"
+    "test:api:shared-ground": "node scripts/test-shared-ground-api.mjs",
+    "test:api:legacy": "node scripts/test-legacy-api.mjs",
+    "audit:learning-evidence": "node scripts/audit-learning-evidence.mjs",
+    "ground:authority": "node scripts/ground-authority.mjs",
+    "test:api:authority": "node scripts/test-ground-authority-api.mjs",
+    "learning:ground-study": "node scripts/ground-study.mjs"
   },
   "dependencies": {
     "@base-ui/react": "^1.7.0",

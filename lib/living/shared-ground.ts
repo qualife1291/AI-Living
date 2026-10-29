@@ -10,9 +10,12 @@ import {groundHash,groundGeometrySha256,serverGroundTime,GroundTimelineError} fr
 import {descriptorSchema,sharedFrameSchema,SHARED_SCOPE,type SharedDescriptor,type SharedFrame} from './shared-ground-view.ts';
 export const SHARED_LIMITS=Object.freeze({worldBytes:2097152,stateBytes:1887436,sourcePage:8,sourceBatchBytes:8388608,realTickMs:100,outerTicksPerBatch:20,physicsStepsPerBatch:120,frames:20,requestBytes:2048});
 const count=z.number().int().nonnegative().safe(),num=z.number().finite().nonnegative(),hash=z.string().regex(/^[a-f0-9]{64}$/);
-export const sharedStateSchema=z.object({version:z.literal(2),scope:z.literal(SHARED_SCOPE),sessionId:z.string().uuid(),worldBorn:z.string().datetime({offset:true}),geometrySha256:hash,genesisRealMs:num,cursorRealMs:num,simMs:num,sourceSeq:count.positive(),sourceSha256:hash,sourceRevision:count,sequence:count,walk:walkStateSchema,traffic:trafficStateSchema,descriptors:z.array(descriptorSchema).max(5000),frames:z.array(sharedFrameSchema).min(1).max(20),holds:count,lastReceiptDigest:hash.nullable(),nonce:z.string().uuid()}).strict();
+export const sharedStateSchema=z.object({version:z.literal(2),scope:z.literal(SHARED_SCOPE),sessionId:z.string().uuid(),worldBorn:z.string().datetime({offset:true}),geometrySha256:hash,genesisRealMs:num,cursorRealMs:num,simMs:num,sourceSeq:count.positive(),sourceSha256:hash,sourceRevision:count,sequence:count,walk:walkStateSchema,traffic:trafficStateSchema,descriptors:z.array(descriptorSchema).max(5000),frames:z.array(sharedFrameSchema).min(1).max(20),holds:count,lastReceiptDigest:hash.nullable(),nonce:z.string().uuid(),authority:z.object({version:z.literal(1),scope:z.literal('server-ground-authority-v1'),protocolSha256:hash,startSequence:count.positive()}).strict().optional()}).strict();
 export type SharedState=z.infer<typeof sharedStateSchema>;
 export type SharedSource={seq:number;revision:number;capturedAt:number;raw:string};
+/** Internal read-only trace of accepted physics. Viewers never supply this input. */
+export type SharedObservation={world:World;source:SharedSource;fromRealMs:number;toRealMs:number;fromSimMs:number;toSimMs:number;before:Actor[];after:Actor[];beforeWalk:SharedState['walk'];afterWalk:SharedState['walk']};
+export type SharedObserver={source?:(world:World,source:SharedSource,groundSimMs:number)=>Promise<void>;step?:(observation:SharedObservation)=>void};
 export type Lifecycle={sourceSeq:number;revision:number;kind:'source'|'plan'|'enter'|'leave'|'clock';actorId?:string;before?:string;after?:string};
 const fail=(code:string):never=>{throw new GroundTimelineError(code);};
 export const sharedGeometrySha=()=>groundGeometrySha256().then(geometry=>groundHash({version:2,geometry,limits:SHARED_LIMITS,physics:'serialized-directors-continuous-check-v1'}));
@@ -73,13 +76,13 @@ async function lifecycle(a:World,b:World,source:SharedSource):Promise<Lifecycle[
  if(a.paused!==b.paused||(a.clock?.scale??1)!==(b.clock?.scale??1))out.push({sourceSeq:source.seq,revision:source.revision,kind:'clock'});return out;
 }
 /** Replay acceptance boundaries, with whole real ticks independent of invocation size/viewer. */
-export async function replayShared(previous:SharedState,current:SharedSource,sources:SharedSource[],targetRealMs:number,nextBoundary:number|null=null){
+export async function replayShared(previous:SharedState,current:SharedSource,sources:SharedSource[],targetRealMs:number,nextBoundary:number|null=null,observer?:SharedObserver){
  const s=await validateSharedState(previous);let world=sourceWorld(current);
  if(world.born!==s.worldBorn||current.seq!==s.sourceSeq||await groundHash(current.raw)!==s.sourceSha256||targetRealMs<s.cursorRealMs)fail('shared-source-or-clock-mismatch');
  if(sources.length>8||sources.some((r,i)=>r.seq<=(i?sources[i-1].seq:current.seq)||r.revision!==(i?sources[i-1].revision:current.revision)+1||r.capturedAt<(i?sources[i-1].capturedAt:s.cursorRealMs)))fail('shared-source-order');
  const walk=new WalkDirector(),traffic=new TrafficDirector();walk.restoreState(s.walk);traffic.restoreState(s.traffic);
  let index=0,physicsSteps=0,outerTicks=0;const events:Lifecycle[]=[];
- const adopt=async()=>{while(index<sources.length&&sources[index].capturedAt<=s.cursorRealMs+.0001){const source=sources[index++],next=sourceWorld(source);if(next.born!==s.worldBorn)fail('shared-world-identity');events.push(...await lifecycle(world,next,source));world=next;s.sourceSeq=source.seq;s.sourceRevision=source.revision;s.sourceSha256=await groundHash(source.raw);}};
+ const adopt=async()=>{while(index<sources.length&&sources[index].capturedAt<=s.cursorRealMs+.0001){const source=sources[index++],next=sourceWorld(source);if(next.born!==s.worldBorn)fail('shared-world-identity');events.push(...await lifecycle(world,next,source));await observer?.source?.(next,source,s.simMs);world=next;s.sourceSeq=source.seq;s.sourceRevision=source.revision;s.sourceSha256=await groundHash(source.raw);}};
  await adopt();
  const target=s.genesisRealMs+Math.floor((targetRealMs-s.genesisRealMs)/100)*100;
  while(outerTicks<20&&s.cursorRealMs+100<=target+.0001){
@@ -97,7 +100,9 @@ export async function replayShared(previous:SharedState,current:SharedSource,sou
     traffic.restoreState(oldTraffic);traffic.holdAt(newSim/1000);cars=oldCars.map(c=>({...c,speed:0}));walk.restoreState(oldWalk);actors=walk.frame(p.view,p.humans,newSim/1000,cars,p.animals);s.holds++;
     if(!safe(before,actors,oldCars,cars,realStep*rate/1000)){walk.restoreState(oldWalk);walk.holdAt(newSim/1000);const active=new Set([...p.humans,...p.animals].map(a=>a.id));actors=before.filter(a=>active.has(a.id)).map(a=>({...a,walking:false}));}
    }
-   walk.retain(new Set(actors.map(a=>a.id)));s.cursorRealMs=newReal;s.simMs=newSim;appendFrame(s,actors,cars,newReal,newSim,s.sourceSeq);physicsSteps++;
+   walk.retain(new Set(actors.map(a=>a.id)));
+   observer?.step?.({world,source:index?sources[index-1]:current,fromRealMs:s.cursorRealMs,toRealMs:newReal,fromSimMs:s.simMs,toSimMs:newSim,before,after:actors,beforeWalk:oldWalk,afterWalk:walk.exportState()});
+   s.cursorRealMs=newReal;s.simMs=newSim;appendFrame(s,actors,cars,newReal,newSim,s.sourceSeq);physicsSteps++;
   }
   s.cursorRealMs=tickEnd;s.frames.at(-1)!.realMs=tickEnd;outerTicks++;await adopt();
  }

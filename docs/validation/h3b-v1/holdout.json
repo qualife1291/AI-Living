@@ -1,0 +1,3223 @@
+{
+  "kind": "H3b-ground-study-v1",
+  "stage": "holdout",
+  "protocolSha256": "9f5fa1a55fefec850fba1d48131b1768458ad2a71dece020a763f543493c0122",
+  "source": "synthetic actual GND2/GND3 replay; no durable D1 or production observations",
+  "modelSha256": "5fc80952e89722596f75f9b45f00e72e997a4a1796593cc26c974d6852c9072f",
+  "model": null,
+  "outcomes": [
+    {
+      "version": 1,
+      "source": "synthetic-ground-study-v1",
+      "rewardVersion": "rendezvous-delayed-v1",
+      "featureVersion": "ground-rendezvous-6d-v1",
+      "protocolSha256": "9f5fa1a55fefec850fba1d48131b1768458ad2a71dece020a763f543493c0122",
+      "id": "H3b:18200:0",
+      "seed": 18200,
+      "episode": 0,
+      "actorId": "an",
+      "peerId": "neighbor-1",
+      "actorScope": "synthetic-H3b:18200:an",
+      "context": [
+        1,
+        0.6,
+        0.4129031902690793,
+        0.5728010090751569,
+        1,
+        0.7142857142857143
+      ],
+      "offeredValue": 0.6,
+      "fulfilled": false,
+      "travelUnits": 825.7256310953344,
+      "reward": -1,
+      "proof": {
+        "worldBorn": "2026-07-30T15:33:20.000Z",
+        "sessionId": "cdffd304-ccca-49a8-803d-f7829f375ed1",
+        "goalSha256": "d827a5ffdbc2982abd2b505106b815abe1eaddd6650ab7e5970a90490753e212",
+        "choiceSharedSha256": "9825727e46cdd7e524db4992f7ed4bebefa3591002b6ffa7456a959dfaba9520",
+        "choiceSourceSha256": "43810e0f81cbdb50f28845b37d30f275102174191fc75d17d0bd3a6413df35ef",
+        "planSourceSha256": "a7df3841e53b30c80aee0ecc3bd43a50eed824e76cccd254d9f69a072b0723f3",
+        "finalSharedSha256": "cef6cbbf133ab6c301c6f446aa0df20a83aa33904810bb96017e02e44b8b7c3c",
+        "finalAuthoritySha256": "fb8b2cf1b4a2426645a5be6c86592ddde92f4c8fb1c1cb3ee6a0315122d801dc",
+        "recordsSha256": "8fc1f982b1954b6b8319dfe2c0c6706f367f50a5cb3e35598104a1f4a96a399d",
+        "actorPlanSha256": "cb139eecc6bb8c9c47b92bf69af877323b16ebe54fa6b2d59b28ddcd3923d61a",
+        "peerPlanSha256": "cb139eecc6bb8c9c47b92bf69af877323b16ebe54fa6b2d59b28ddcd3923d61a",
+        "window": [
+          150000,
+          210000
+        ],
+        "settledSimMs": 210000,
+        "continuousOverlapMs": 60000,
+        "matchedPresenceActors": [
+          "neighbor-1"
+        ],
+        "epochs": [
+          1,
+          4
+        ],
+        "sourceSeq": 2,
+        "geometrySha256": "e1c162084899456b3bcbfa1387b6ca77689a1fe41af62d0e289e1b42458bf76f"
+      },
+      "eligibleForRuntimeReward": false,
+      "eligibleForP2P": false
+    },
+    {
+      "version": 1,
+      "source": "synthetic-ground-study-v1",
+      "rewardVersion": "rendezvous-delayed-v1",
+      "featureVersion": "ground-rendezvous-6d-v1",
+      "protocolSha256": "9f5fa1a55fefec850fba1d48131b1768458ad2a71dece020a763f543493c0122",
+      "id": "H3b:18200:1",
+      "seed": 18200,
+      "episode": 1,
+      "actorId": "an",
+      "peerId": "neighbor-1",
+      "actorScope": "synthetic-H3b:18200:an",
+      "context": [
+        1,
+        0.35,
+        0.1632207094703365,
+        0.7490452179483259,
+        1,
+        0.7142857142857143
+      ],
+      "offeredValue": 0.35,
+      "fulfilled": false,
+      "travelUnits": 326.3861718749999,
+      "reward": -0.8263861718749999,
+      "proof": {
+        "worldBorn": "2026-07-30T15:33:30.000Z",
+        "sessionId": "38a3b380-7be3-467f-8ff9-728a840b96dd",
+        "goalSha256": "cea643a83444998ad386547f87054bbf3109bdfe782b008ced7525f33742b535",
+        "choiceSharedSha256": "23b2bcbb6949b76f313324fcfaa79f2a4c406e754bf535d2f3cbbc0e4f5ae954",
+        "choiceSourceSha256": "189a4a4ba4584c7b74bcfe4fc536fe21280c4e500e721e23e1de9229687aee36",
+        "planSourceSha256": "25f47c1ad0794518b06a4aaadcadb4c84f62ab1dfce0d719dd158f4036fd031c",
+        "finalSharedSha256": "7dae86da1b3fd60474b17de73ba50f865e9de8c8310e85c503e12bb6a25c940d",
+        "finalAuthoritySha256": "977a0920362f40c134a824b98442fbd9946cb0a15ac53f4a75507fad6ce706c1",
+        "recordsSha256": "9690304a31e1dc851e57df5e84c4ce49411fcf5310fe669aca2db920b1476616",
+        "actorPlanSha256": "6214f4d03cfecaddc08dcc6a39c6857af6269444222ad49972c0622480c5a83d",
+        "peerPlanSha256": "6214f4d03cfecaddc08dcc6a39c6857af6269444222ad49972c0622480c5a83d",
+        "window": [
+          150000,
+          210000
+        ],
+        "settledSimMs": 210000,
+        "continuousOverlapMs": 60000,
+        "matchedPresenceActors": [
+          "neighbor-1"
+        ],
+        "epochs": [
+          1,
+          4
+        ],
+        "sourceSeq": 2,
+        "geometrySha256": "e1c162084899456b3bcbfa1387b6ca77689a1fe41af62d0e289e1b42458bf76f"
+      },
+      "eligibleForRuntimeReward": false,
+      "eligibleForP2P": false
+    },
+    {
+      "version": 1,
+      "source": "synthetic-ground-study-v1",
+      "rewardVersion": "rendezvous-delayed-v1",
+      "featureVersion": "ground-rendezvous-6d-v1",
+      "protocolSha256": "9f5fa1a55fefec850fba1d48131b1768458ad2a71dece020a763f543493c0122",
+      "id": "H3b:18200:2",
+      "seed": 18200,
+      "episode": 2,
+      "actorId": "an",
+      "peerId": "neighbor-1",
+      "actorScope": "synthetic-H3b:18200:an",
+      "context": [
+        1,
+        0.85,
+        0.5859729026464939,
+        0.6759129318436928,
+        0,
+        0.7142857142857143
+      ],
+      "offeredValue": 0.85,
+      "fulfilled": false,
+      "travelUnits": 1172.3031331775642,
+      "reward": -1,
+      "proof": {
+        "worldBorn": "2026-07-30T15:33:40.000Z",
+        "sessionId": "3526a5c9-f45d-439d-8723-d67579a7be84",
+        "goalSha256": "e7f7b5ca5afbff9ade9225e0aa492672fc85d1bfc88de4c28cd69d7bb42c3224",
+        "choiceSharedSha256": "4f8bd79665c2c0bfe486d46f00f0949dabfd71d3467ec0598389ddff08820984",
+        "choiceSourceSha256": "8004e9ffe4f8c35fb8eef501a16716c59ef6fb807ee4f9341e43d0992b495681",
+        "planSourceSha256": "7c6c2a7443b22d1941bf021142749316f084290da8a1ccd54c7c5558c9530e3c",
+        "finalSharedSha256": "5deccbd612f04186c428f69fb67909465ebce61639504fd5ea4fbb7c9fd8d2ef",
+        "finalAuthoritySha256": "e6ab5349602c1d70f783d803ee6d2244ffd4ab1bb467586b39e2df21cad864aa",
+        "recordsSha256": "3889c141ecddac8527c663e20533c24768d0b8f03078f6238b573111b8629992",
+        "actorPlanSha256": "3596048eeec2ede5d53c70678b05eab2348ef8da0c728609365118865cddf52b",
+        "peerPlanSha256": "3c426c74b19ea459e14a0624327cc7520ec241cba1bf504ef68d31c923adc1e9",
+        "window": [
+          150000,
+          210000
+        ],
+        "settledSimMs": 210000,
+        "continuousOverlapMs": 0,
+        "matchedPresenceActors": [
+          "an"
+        ],
+        "epochs": [
+          1,
+          4
+        ],
+        "sourceSeq": 2,
+        "geometrySha256": "e1c162084899456b3bcbfa1387b6ca77689a1fe41af62d0e289e1b42458bf76f"
+      },
+      "eligibleForRuntimeReward": false,
+      "eligibleForP2P": false
+    },
+    {
+      "version": 1,
+      "source": "synthetic-ground-study-v1",
+      "rewardVersion": "rendezvous-delayed-v1",
+      "featureVersion": "ground-rendezvous-6d-v1",
+      "protocolSha256": "9f5fa1a55fefec850fba1d48131b1768458ad2a71dece020a763f543493c0122",
+      "id": "H3b:18200:3",
+      "seed": 18200,
+      "episode": 3,
+      "actorId": "an",
+      "peerId": "neighbor-1",
+      "actorScope": "synthetic-H3b:18200:an",
+      "context": [
+        1,
+        0.6,
+        0.1736098388282339,
+        0.7659621301396867,
+        1,
+        0.7142857142857143
+      ],
+      "offeredValue": 0.6,
+      "fulfilled": true,
+      "travelUnits": 350.1268424182297,
+      "reward": 0.24987315758177026,
+      "proof": {
+        "worldBorn": "2026-07-30T15:33:50.000Z",
+        "sessionId": "770b930b-1432-4bb1-8247-ac94fed0b503",
+        "goalSha256": "5ef5b0e00304b08a087cd20408777b5ffe81812be228f988916b667b3846be62",
+        "choiceSharedSha256": "40468ab953d32e9c404bdaf15f7ab8c911915292736ddbe95b1ac6943246e405",
+        "choiceSourceSha256": "cf5c619118a4393bb3988c764e3bc1d85122a56914c8aaa1eedb65dcb63c78f0",
+        "planSourceSha256": "83436dce4a2769e1eeed4b0713e069cbf7157ebcf7fe1f4b7f83ebc58ff497b3",
+        "finalSharedSha256": "5a028330c5161639de06995274adcdf97aea8df75337045ffd5695f2b92cfe8e",
+        "finalAuthoritySha256": "368419f83b50241cc3bf2f5113d0b42a0e306c3ca55d1de7470df07cca5b74bd",
+        "recordsSha256": "27d91a217df1d0652fe7639e7a64944f50dddcb5026bc2a9d60f502c3de2f516",
+        "actorPlanSha256": "0f37415fd8c0fe433e8961bbe9d172d6de77d3181fd3986b38a88e1dfc08e054",
+        "peerPlanSha256": "0f37415fd8c0fe433e8961bbe9d172d6de77d3181fd3986b38a88e1dfc08e054",
+        "window": [
+          150000,
+          210000
+        ],
+        "settledSimMs": 210000,
+        "continuousOverlapMs": 60000,
+        "matchedPresenceActors": [
+          "an",
+          "neighbor-1"
+        ],
+        "epochs": [
+          1,
+          4
+        ],
+        "sourceSeq": 2,
+        "geometrySha256": "e1c162084899456b3bcbfa1387b6ca77689a1fe41af62d0e289e1b42458bf76f"
+      },
+      "eligibleForRuntimeReward": false,
+      "eligibleForP2P": false
+    },
+    {
+      "version": 1,
+      "source": "synthetic-ground-study-v1",
+      "rewardVersion": "rendezvous-delayed-v1",
+      "featureVersion": "ground-rendezvous-6d-v1",
+      "protocolSha256": "9f5fa1a55fefec850fba1d48131b1768458ad2a71dece020a763f543493c0122",
+      "id": "H3b:18201:0",
+      "seed": 18201,
+      "episode": 0,
+      "actorId": "an",
+      "peerId": "neighbor-1",
+      "actorScope": "synthetic-H3b:18201:an",
+      "context": [
+        1,
+        0.85,
+        0.4165623909220909,
+        0.5208408634149356,
+        0,
+        0.7142857142857143
+      ],
+      "offeredValue": 0.85,
+      "fulfilled": false,
+      "travelUnits": 833.1247818441781,
+      "reward": -1,
+      "proof": {
+        "worldBorn": "2026-07-30T15:50:00.000Z",
+        "sessionId": "1e3a1381-65f6-438d-8dd4-3016a9281483",
+        "goalSha256": "611e27cea2dd8ea9407417f097640ec8045816c25dc7682d403cd35441994b08",
+        "choiceSharedSha256": "cc1d208d29d9b7f619f19f5e8a32069cd9d07803659be4f8bcfcf65cbd327e54",
+        "choiceSourceSha256": "ae93cff38db34bf83de2de58c23f747ec1c32334c0dbd2c3730806615c291764",
+        "planSourceSha256": "fe9df7b602d28c0c0276b3042c257b7d95d1988fc27657e2c9475c5c12ddf8be",
+        "finalSharedSha256": "9b030a2cfc07768799641a249ba1c659c6a88a665e1d59ad50b0a7645706a47e",
+        "finalAuthoritySha256": "aa4a4bbe212f080ca60e0cb1d773ef598366f68cf4d06982b7ef5e458b1d6e31",
+        "recordsSha256": "3ded15e4fa81041628808523c9cd3617f2a7e3a49ce71a690a311da14eb5627f",
+        "actorPlanSha256": "a0c77fef76565f19d38d5bf2081c6b8e59fec2f676fa3c6fe37ef97288fd72ee",
+        "peerPlanSha256": "5cd12af2e37ce659aed619780c44fe25af86a0e4e68a571961ff3dc0047c373b",
+        "window": [
+          150000,
+          210000
+        ],
+        "settledSimMs": 210000,
+        "continuousOverlapMs": 0,
+        "matchedPresenceActors": [
+          "an"
+        ],
+        "epochs": [
+          1,
+          4
+        ],
+        "sourceSeq": 2,
+        "geometrySha256": "e1c162084899456b3bcbfa1387b6ca77689a1fe41af62d0e289e1b42458bf76f"
+      },
+      "eligibleForRuntimeReward": false,
+      "eligibleForP2P": false
+    },
+    {
+      "version": 1,
+      "source": "synthetic-ground-study-v1",
+      "rewardVersion": "rendezvous-delayed-v1",
+      "featureVersion": "ground-rendezvous-6d-v1",
+      "protocolSha256": "9f5fa1a55fefec850fba1d48131b1768458ad2a71dece020a763f543493c0122",
+      "id": "H3b:18201:1",
+      "seed": 18201,
+      "episode": 1,
+      "actorId": "an",
+      "peerId": "neighbor-1",
+      "actorScope": "synthetic-H3b:18201:an",
+      "context": [
+        1,
+        0.35,
+        0.6251274270387788,
+        0.46593613719864413,
+        1,
+        0.7142857142857143
+      ],
+      "offeredValue": 0.35,
+      "fulfilled": true,
+      "travelUnits": 1251.0742871257603,
+      "reward": -0.9010742871257603,
+      "proof": {
+        "worldBorn": "2026-07-30T15:50:10.000Z",
+        "sessionId": "e57ac2cd-3b66-440b-8757-b7e66743add4",
+        "goalSha256": "98e3b998bcf3eca81c49f18168ca71b8d700c348ae0bd73158a0784a8ab6a934",
+        "choiceSharedSha256": "b9f3bedb9107d3d27dddd645112f96eecc48f5864aa3e5bcbee17a84d2b93fb1",
+        "choiceSourceSha256": "05baf3e0085bc5107cbd3288ec20ab3f1f72b4a61b921c7a32781e2218fd7133",
+        "planSourceSha256": "d84f61778bcf98c911e421afc5bfe9fc52524d2eefca61baa061c7bba6fb0579",
+        "finalSharedSha256": "d0a36ce7f58c947b6df6489e21ec8b79b781747219eb6a0131c57bac91357d21",
+        "finalAuthoritySha256": "072a96706dbe71dda3a807bbc3dec9e7b64771a9d7495d45e565de147dfef84c",
+        "recordsSha256": "8c6bcd77ff58a3cccb266aa610a28b1cfeb4e7a31f5d92473e98fd849d4b63f4",
+        "actorPlanSha256": "1c78f40da82035a319580f70f851c4c3da9cb093c35dd109cdae0249ce25b6da",
+        "peerPlanSha256": "1c78f40da82035a319580f70f851c4c3da9cb093c35dd109cdae0249ce25b6da",
+        "window": [
+          150000,
+          210000
+        ],
+        "settledSimMs": 210000,
+        "continuousOverlapMs": 60000,
+        "matchedPresenceActors": [
+          "an",
+          "neighbor-1"
+        ],
+        "epochs": [
+          1,
+          4
+        ],
+        "sourceSeq": 2,
+        "geometrySha256": "e1c162084899456b3bcbfa1387b6ca77689a1fe41af62d0e289e1b42458bf76f"
+      },
+      "eligibleForRuntimeReward": false,
+      "eligibleForP2P": false
+    },
+    {
+      "version": 1,
+      "source": "synthetic-ground-study-v1",
+      "rewardVersion": "rendezvous-delayed-v1",
+      "featureVersion": "ground-rendezvous-6d-v1",
+      "protocolSha256": "9f5fa1a55fefec850fba1d48131b1768458ad2a71dece020a763f543493c0122",
+      "id": "H3b:18201:2",
+      "seed": 18201,
+      "episode": 2,
+      "actorId": "an",
+      "peerId": "neighbor-1",
+      "actorScope": "synthetic-H3b:18201:an",
+      "context": [
+        1,
+        0.35,
+        0.6549905118424547,
+        0.302499814526264,
+        0,
+        0.7142857142857143
+      ],
+      "offeredValue": 0.35,
+      "fulfilled": false,
+      "travelUnits": 1312.1632632428173,
+      "reward": -1,
+      "proof": {
+        "worldBorn": "2026-07-30T15:50:20.000Z",
+        "sessionId": "b3917468-0cad-41c5-88b8-f0274b8e25c6",
+        "goalSha256": "5c6510bd42725cbfb50b02f8e8315237bf0f10e5f72b0981974417387430ac29",
+        "choiceSharedSha256": "3c082a49230821d263a73285f0467b0770f3e1e15541fa64edc6d07a97b98f7b",
+        "choiceSourceSha256": "f3e7fd98b07abc9d77cc9a618a4d6b96f082abef550b3f3ba2787f17e6308979",
+        "planSourceSha256": "277cc46a4395bd3d7e78af1a946f5cbe62104909a3b4f0dde775097bc2b94f9c",
+        "finalSharedSha256": "a936796a6ce94e1c09d6c032e959046e8dcfe7ac0df81d805fddd4cd2cc2f5a7",
+        "finalAuthoritySha256": "f03e8f9488269eacacf9213b1aeb0f267b15801ec08ea75225b56c37c7fcf612",
+        "recordsSha256": "b0c30e5d12a552d075d0a33229455c885c6e3d856a2c6b2e4a932abbb3b3b84d",
+        "actorPlanSha256": "74328bfca29b6a36f1cc070196757e88fe1af83033698a3316f5492232960c28",
+        "peerPlanSha256": "076a25e0fe91a0703309e394b165641302b52af8fcbd6cc038c857d0b6a94631",
+        "window": [
+          150000,
+          210000
+        ],
+        "settledSimMs": 210000,
+        "continuousOverlapMs": 0,
+        "matchedPresenceActors": [
+          "an"
+        ],
+        "epochs": [
+          1,
+          4
+        ],
+        "sourceSeq": 2,
+        "geometrySha256": "e1c162084899456b3bcbfa1387b6ca77689a1fe41af62d0e289e1b42458bf76f"
+      },
+      "eligibleForRuntimeReward": false,
+      "eligibleForP2P": false
+    },
+    {
+      "version": 1,
+      "source": "synthetic-ground-study-v1",
+      "rewardVersion": "rendezvous-delayed-v1",
+      "featureVersion": "ground-rendezvous-6d-v1",
+      "protocolSha256": "9f5fa1a55fefec850fba1d48131b1768458ad2a71dece020a763f543493c0122",
+      "id": "H3b:18201:3",
+      "seed": 18201,
+      "episode": 3,
+      "actorId": "an",
+      "peerId": "neighbor-1",
+      "actorScope": "synthetic-H3b:18201:an",
+      "context": [
+        1,
+        0.6,
+        0.42024591090559804,
+        0.5962929229833271,
+        1,
+        0.7142857142857143
+      ],
+      "offeredValue": 0.6,
+      "fulfilled": true,
+      "travelUnits": 840.4859860195929,
+      "reward": -0.24048598601959292,
+      "proof": {
+        "worldBorn": "2026-07-30T15:50:30.000Z",
+        "sessionId": "015ab6a0-7976-4c54-8d12-5152232634b2",
+        "goalSha256": "ead4b5eaa57167e5dfd8e4742d4f666872d6135ab318187aa616093c0bcfe9b4",
+        "choiceSharedSha256": "ff14c6575c04a31db13c8c01014c654122390b7908fea32270c912ec8da82227",
+        "choiceSourceSha256": "c990bae0cac5c8c433442e83a8af1e00cd46b14ac1de9c8b1de4e5dc07d51c27",
+        "planSourceSha256": "32bd1da15ba625efa129f33a960fd6b55b167c01ff8ab5bbc64d3d83e22c456b",
+        "finalSharedSha256": "f4b72069c7e4d4bb4fbdbf72d30a00669ec7b517c8f2260c22f835b7da5f197d",
+        "finalAuthoritySha256": "a575d51c60711b89ebbdae2396dabcfabff9cc172d802424c543b1a87a361a70",
+        "recordsSha256": "8750ece534de464518de276a0a6f0d892e66d37949425365db3180a10275353e",
+        "actorPlanSha256": "c641cae02701f97e4c221553cf6d72deb56883d6ad2ff21098ae9690dbe6e222",
+        "peerPlanSha256": "c641cae02701f97e4c221553cf6d72deb56883d6ad2ff21098ae9690dbe6e222",
+        "window": [
+          150000,
+          210000
+        ],
+        "settledSimMs": 210000,
+        "continuousOverlapMs": 60000,
+        "matchedPresenceActors": [
+          "an",
+          "neighbor-1"
+        ],
+        "epochs": [
+          1,
+          4
+        ],
+        "sourceSeq": 2,
+        "geometrySha256": "e1c162084899456b3bcbfa1387b6ca77689a1fe41af62d0e289e1b42458bf76f"
+      },
+      "eligibleForRuntimeReward": false,
+      "eligibleForP2P": false
+    },
+    {
+      "version": 1,
+      "source": "synthetic-ground-study-v1",
+      "rewardVersion": "rendezvous-delayed-v1",
+      "featureVersion": "ground-rendezvous-6d-v1",
+      "protocolSha256": "9f5fa1a55fefec850fba1d48131b1768458ad2a71dece020a763f543493c0122",
+      "id": "H3b:18202:0",
+      "seed": 18202,
+      "episode": 0,
+      "actorId": "an",
+      "peerId": "neighbor-1",
+      "actorScope": "synthetic-H3b:18202:an",
+      "context": [
+        1,
+        0.85,
+        0.5859729026464939,
+        0.6759129318436928,
+        1,
+        0.7142857142857143
+      ],
+      "offeredValue": 0.85,
+      "fulfilled": true,
+      "travelUnits": 1172.3031331775642,
+      "reward": -0.3223031331775642,
+      "proof": {
+        "worldBorn": "2026-07-30T16:06:40.000Z",
+        "sessionId": "027566ea-ce79-417e-8741-1dcec0cbd43e",
+        "goalSha256": "5bc90030f7f8a7758b15c532ce55a458b4204f34823da922f6e87006c029b95e",
+        "choiceSharedSha256": "53603f636037c190ba91871dd284bdf0b1be3018263964614b40a2a320c8a251",
+        "choiceSourceSha256": "f9bde370a1e13496a668d19eba0d27571e9d2616d84ef5f764fce8141911be5c",
+        "planSourceSha256": "d7b2c55fca4ea33663b5b59836e12dd06934489d446458d684419995e77a8378",
+        "finalSharedSha256": "dcda70e535b62da50177c88172116e149df07612760af14300b7e4eaaf1ff3c4",
+        "finalAuthoritySha256": "7aa92583f7b295fb6b7bc788deb4ff8dd758d115f7a298909a485d0c05279d06",
+        "recordsSha256": "f51439c32c1145bf98927cf184da8a13ffefd6c1ec0cd78d3df1f0564642d043",
+        "actorPlanSha256": "274e75badf6e79357581ed9011438ee26570363c656b8496cb4b5488e4c4264b",
+        "peerPlanSha256": "274e75badf6e79357581ed9011438ee26570363c656b8496cb4b5488e4c4264b",
+        "window": [
+          150000,
+          210000
+        ],
+        "settledSimMs": 210000,
+        "continuousOverlapMs": 60000,
+        "matchedPresenceActors": [
+          "an",
+          "neighbor-1"
+        ],
+        "epochs": [
+          1,
+          4
+        ],
+        "sourceSeq": 2,
+        "geometrySha256": "e1c162084899456b3bcbfa1387b6ca77689a1fe41af62d0e289e1b42458bf76f"
+      },
+      "eligibleForRuntimeReward": false,
+      "eligibleForP2P": false
+    },
+    {
+      "version": 1,
+      "source": "synthetic-ground-study-v1",
+      "rewardVersion": "rendezvous-delayed-v1",
+      "featureVersion": "ground-rendezvous-6d-v1",
+      "protocolSha256": "9f5fa1a55fefec850fba1d48131b1768458ad2a71dece020a763f543493c0122",
+      "id": "H3b:18202:1",
+      "seed": 18202,
+      "episode": 1,
+      "actorId": "an",
+      "peerId": "neighbor-1",
+      "actorScope": "synthetic-H3b:18202:an",
+      "context": [
+        1,
+        0.6,
+        0.1736098388282339,
+        0.7659621301396867,
+        0,
+        0.7142857142857143
+      ],
+      "offeredValue": 0.6,
+      "fulfilled": false,
+      "travelUnits": 350.1268424182297,
+      "reward": -0.8501268424182298,
+      "proof": {
+        "worldBorn": "2026-07-30T16:06:50.000Z",
+        "sessionId": "3d5bc13a-b199-4cf3-8fd9-ce669c7892b1",
+        "goalSha256": "2a315fdbd31fca5f2002e7e3dd6a6fb8db8d794bce04813c81a6d99f74530887",
+        "choiceSharedSha256": "9cfe0c7a35e2b6cf0352fcbb34d100b0b08dccdd143de0eaeba4662e5d620cc1",
+        "choiceSourceSha256": "255e9646cb5a23e666e44a8b0d72226e6bbb61f5293e03ed02f1bc38e5d7ddf8",
+        "planSourceSha256": "294474d42935a53c7f7bf088661e1f17ff1509d688320d8d485a2e528fc238ed",
+        "finalSharedSha256": "820ba1ab22c1982f316afdccaf9a4435b5f5fbe7dd219f8d338721fb6478b9ab",
+        "finalAuthoritySha256": "ea2b089558df27ae8c6476290d8bbca4c4cfdbb73e31c4811023b8533df31bd3",
+        "recordsSha256": "aa4bbdd3972d19552f9498401c19f6a8b3aea45958e52857605558142f9c87c8",
+        "actorPlanSha256": "56e8c20e9486936ae4465036a9356ac95cbc5540e08cabdc6b12f905af236089",
+        "peerPlanSha256": "5b8790ba56b503b42587c61726eb47c54abb5e4b2c6a3f1501bdb9bdda10f4b7",
+        "window": [
+          150000,
+          210000
+        ],
+        "settledSimMs": 210000,
+        "continuousOverlapMs": 0,
+        "matchedPresenceActors": [
+          "an"
+        ],
+        "epochs": [
+          1,
+          4
+        ],
+        "sourceSeq": 2,
+        "geometrySha256": "e1c162084899456b3bcbfa1387b6ca77689a1fe41af62d0e289e1b42458bf76f"
+      },
+      "eligibleForRuntimeReward": false,
+      "eligibleForP2P": false
+    },
+    {
+      "version": 1,
+      "source": "synthetic-ground-study-v1",
+      "rewardVersion": "rendezvous-delayed-v1",
+      "featureVersion": "ground-rendezvous-6d-v1",
+      "protocolSha256": "9f5fa1a55fefec850fba1d48131b1768458ad2a71dece020a763f543493c0122",
+      "id": "H3b:18202:2",
+      "seed": 18202,
+      "episode": 2,
+      "actorId": "an",
+      "peerId": "neighbor-1",
+      "actorScope": "synthetic-H3b:18202:an",
+      "context": [
+        1,
+        0.6,
+        0.4129031902690793,
+        0.5728010090751569,
+        0,
+        0.7142857142857143
+      ],
+      "offeredValue": 0.6,
+      "fulfilled": false,
+      "travelUnits": 825.7256310953344,
+      "reward": -1,
+      "proof": {
+        "worldBorn": "2026-07-30T16:07:00.000Z",
+        "sessionId": "42be886d-80c0-4a97-8462-8908a0ef51a3",
+        "goalSha256": "532ab462d21b82cfa1fb25171e7c402fac40953cb58677588e6081ee3b36a112",
+        "choiceSharedSha256": "8c45d2800d3454da9477f3d22dd01f51b1c4096ce440e67f3f59fb2962d1244c",
+        "choiceSourceSha256": "f06def4848b6a20de0a7d3383595f55a14c202bb66f229368a62a2409d530489",
+        "planSourceSha256": "e99fdd80885f23ecf1475aae2c2d42388fe1891e8289bbb103fc89a5bf38c108",
+        "finalSharedSha256": "e4893c78b94bb69afc364dda05dc43e9bfa8296aca72bc507bb266a4306b7ee6",
+        "finalAuthoritySha256": "b62828c2e283e5988731ef5ecd4080b67363d2895d573d01bb0d9e9c6f6ecc1a",
+        "recordsSha256": "04f4125e0f9370ff253286a2ef1068c00cced100317bb286784bae441f728f89",
+        "actorPlanSha256": "e7d93ad3c377aca1bcbb1df5654253e009702cb24f4b378e85ac9b3e94278eb7",
+        "peerPlanSha256": "4dafc068d38418400a31a3726aa1919ff57c8436ca2c2e0d3ff78d484a042748",
+        "window": [
+          150000,
+          210000
+        ],
+        "settledSimMs": 210000,
+        "continuousOverlapMs": 0,
+        "matchedPresenceActors": [],
+        "epochs": [
+          1,
+          4
+        ],
+        "sourceSeq": 2,
+        "geometrySha256": "e1c162084899456b3bcbfa1387b6ca77689a1fe41af62d0e289e1b42458bf76f"
+      },
+      "eligibleForRuntimeReward": false,
+      "eligibleForP2P": false
+    },
+    {
+      "version": 1,
+      "source": "synthetic-ground-study-v1",
+      "rewardVersion": "rendezvous-delayed-v1",
+      "featureVersion": "ground-rendezvous-6d-v1",
+      "protocolSha256": "9f5fa1a55fefec850fba1d48131b1768458ad2a71dece020a763f543493c0122",
+      "id": "H3b:18202:3",
+      "seed": 18202,
+      "episode": 3,
+      "actorId": "an",
+      "peerId": "neighbor-1",
+      "actorScope": "synthetic-H3b:18202:an",
+      "context": [
+        1,
+        0.35,
+        0.1632207094703365,
+        0.7490452179483259,
+        0,
+        0.7142857142857143
+      ],
+      "offeredValue": 0.35,
+      "fulfilled": false,
+      "travelUnits": 326.3861718749999,
+      "reward": -0.8263861718749999,
+      "proof": {
+        "worldBorn": "2026-07-30T16:07:10.000Z",
+        "sessionId": "c6cc7832-20fe-47b9-8468-805eb8a7b705",
+        "goalSha256": "858f1d72ee3f178fe708126d1080d469e2b7a098aa0c8cae0d64c76a5cf9004f",
+        "choiceSharedSha256": "bbb151eb3030243553a87495f627e3b280545893ff8648a4c31599d881b60e3b",
+        "choiceSourceSha256": "8012ef9680c13e8c52e94b497aa81eb2af5fa3c78d7088869da74ae742a894a8",
+        "planSourceSha256": "f542ae37a74885c5464d644d5191d0883b093ef29f21c3682d94234882d15502",
+        "finalSharedSha256": "59a66b13dbdb7eb8e5725243d5ade30f39e4a1b7f88749a72407a4119e251f35",
+        "finalAuthoritySha256": "34276f9456b95663f54f514254c137278eeedb0bb888b8f3dde162c7fab1ccfe",
+        "recordsSha256": "a624d35f097c4654ab6269d61739e47456970d186fa622346ab3b1c38d1f2ebc",
+        "actorPlanSha256": "f614fd3b5e24037cc5315a21cbe33197724572ba00eb4dc4d905c5d39b721421",
+        "peerPlanSha256": "81ee567f713d98fb01aaa945f1db365452521620aab27ddf19c523ed1387897a",
+        "window": [
+          150000,
+          210000
+        ],
+        "settledSimMs": 210000,
+        "continuousOverlapMs": 0,
+        "matchedPresenceActors": [],
+        "epochs": [
+          1,
+          4
+        ],
+        "sourceSeq": 2,
+        "geometrySha256": "e1c162084899456b3bcbfa1387b6ca77689a1fe41af62d0e289e1b42458bf76f"
+      },
+      "eligibleForRuntimeReward": false,
+      "eligibleForP2P": false
+    },
+    {
+      "version": 1,
+      "source": "synthetic-ground-study-v1",
+      "rewardVersion": "rendezvous-delayed-v1",
+      "featureVersion": "ground-rendezvous-6d-v1",
+      "protocolSha256": "9f5fa1a55fefec850fba1d48131b1768458ad2a71dece020a763f543493c0122",
+      "id": "H3b:18203:0",
+      "seed": 18203,
+      "episode": 0,
+      "actorId": "an",
+      "peerId": "neighbor-1",
+      "actorScope": "synthetic-H3b:18203:an",
+      "context": [
+        1,
+        0.85,
+        0.6549905118424547,
+        0.302499814526264,
+        1,
+        0.7142857142857143
+      ],
+      "offeredValue": 0.85,
+      "fulfilled": true,
+      "travelUnits": 1309.9810236849066,
+      "reward": -0.45998102368490656,
+      "proof": {
+        "worldBorn": "2026-07-30T16:23:20.000Z",
+        "sessionId": "8fdcaa74-7de1-4d91-8e80-a08bab224c8a",
+        "goalSha256": "52ed3ebd4eb3106927635006db160274c43281a58d4f703251a40b38c889a771",
+        "choiceSharedSha256": "a5d525e44219f766cf96d080edd3ee12014225709955758f732ec98a68139d1c",
+        "choiceSourceSha256": "933be94ec7a68c42019c32185adcb0e01a0be904fee55c5d2e363c9f85630986",
+        "planSourceSha256": "74f34fc7f1c161b0438fde4bace345b73a6445097062ba1c36a082b7074cdf81",
+        "finalSharedSha256": "fd102bb762b254ba4d5f6088b80f9a9abeef09b5dece3a653984c24dcf7ce80d",
+        "finalAuthoritySha256": "1144a528035240f4ff17a9a6adbe1732aeada1de2e5fd63799e6440553425407",
+        "recordsSha256": "353814ba20774717b65b05487103689a1e342ac866bc125ef23d5f40b4fcfdf1",
+        "actorPlanSha256": "2f49b499e9b9efef7db4befe11cb2045a7b2f0ea1bcab201863d08e9934212bb",
+        "peerPlanSha256": "2f49b499e9b9efef7db4befe11cb2045a7b2f0ea1bcab201863d08e9934212bb",
+        "window": [
+          150000,
+          210000
+        ],
+        "settledSimMs": 210000,
+        "continuousOverlapMs": 60000,
+        "matchedPresenceActors": [
+          "an",
+          "neighbor-1"
+        ],
+        "epochs": [
+          1,
+          4
+        ],
+        "sourceSeq": 2,
+        "geometrySha256": "e1c162084899456b3bcbfa1387b6ca77689a1fe41af62d0e289e1b42458bf76f"
+      },
+      "eligibleForRuntimeReward": false,
+      "eligibleForP2P": false
+    },
+    {
+      "version": 1,
+      "source": "synthetic-ground-study-v1",
+      "rewardVersion": "rendezvous-delayed-v1",
+      "featureVersion": "ground-rendezvous-6d-v1",
+      "protocolSha256": "9f5fa1a55fefec850fba1d48131b1768458ad2a71dece020a763f543493c0122",
+      "id": "H3b:18203:1",
+      "seed": 18203,
+      "episode": 1,
+      "actorId": "an",
+      "peerId": "neighbor-1",
+      "actorScope": "synthetic-H3b:18203:an",
+      "context": [
+        1,
+        0.35,
+        0.42024591090559804,
+        0.5962929229833271,
+        0,
+        0.7142857142857143
+      ],
+      "offeredValue": 0.35,
+      "fulfilled": false,
+      "travelUnits": 840.4859860195929,
+      "reward": -1,
+      "proof": {
+        "worldBorn": "2026-07-30T16:23:30.000Z",
+        "sessionId": "2c979185-5b7f-4aad-89ce-b70eb441945f",
+        "goalSha256": "ed593cc8380c4eecbd0091c549d69e36e5adb27d5d2022fdfd7392ab1a05bf87",
+        "choiceSharedSha256": "08e3302cd0c1bdd26a6b86d3cebe9a8bdf98a56fac3db7c6a8cc36b776215524",
+        "choiceSourceSha256": "100096a2937ef4ec154b8a028455d6afc6a772fc6e6180fc4ef390da127ea051",
+        "planSourceSha256": "3620673c409b4e0ae70050417585e9454172e5154231e51bf53639b0f9f2c2f2",
+        "finalSharedSha256": "70e28176d3c8c8a7f5f576e6f46d217e9116b2916f3941c37d1f1fbe77195d85",
+        "finalAuthoritySha256": "6980f12b1af45d2d90fbd950d9187cf16cbcf1d1a61dde48d5d3f72224a57c44",
+        "recordsSha256": "11612e5ff76e6a1f7eec365a5a65b113c4b29f2e6fbc20276d39bf8dfe40d92d",
+        "actorPlanSha256": "000a10c4cc5c33d81ded26bfcd93859c8ba9b53b706e5e9ddb948ce67dd08172",
+        "peerPlanSha256": "19dcdb96dcbfe7f6d1467581a09c2418a00b0de6d8e8f1684b8c86b0ea90467a",
+        "window": [
+          150000,
+          210000
+        ],
+        "settledSimMs": 210000,
+        "continuousOverlapMs": 0,
+        "matchedPresenceActors": [
+          "an"
+        ],
+        "epochs": [
+          1,
+          4
+        ],
+        "sourceSeq": 2,
+        "geometrySha256": "e1c162084899456b3bcbfa1387b6ca77689a1fe41af62d0e289e1b42458bf76f"
+      },
+      "eligibleForRuntimeReward": false,
+      "eligibleForP2P": false
+    },
+    {
+      "version": 1,
+      "source": "synthetic-ground-study-v1",
+      "rewardVersion": "rendezvous-delayed-v1",
+      "featureVersion": "ground-rendezvous-6d-v1",
+      "protocolSha256": "9f5fa1a55fefec850fba1d48131b1768458ad2a71dece020a763f543493c0122",
+      "id": "H3b:18203:2",
+      "seed": 18203,
+      "episode": 2,
+      "actorId": "an",
+      "peerId": "neighbor-1",
+      "actorScope": "synthetic-H3b:18203:an",
+      "context": [
+        1,
+        0.6,
+        0.4165623909220909,
+        0.5208408634149356,
+        0,
+        0.7142857142857143
+      ],
+      "offeredValue": 0.6,
+      "fulfilled": false,
+      "travelUnits": 833.1247818441781,
+      "reward": -1,
+      "proof": {
+        "worldBorn": "2026-07-30T16:23:40.000Z",
+        "sessionId": "d70862be-b034-4965-832f-04f6d95b2e6b",
+        "goalSha256": "4e48537509daf08f7a45c784ff2359af19c376a3b8020900d63e823f21e1b720",
+        "choiceSharedSha256": "a278ce1fac509b5b21f81d2097685973c2e36d97691c840c78e881a00554f763",
+        "choiceSourceSha256": "bb4eb56214109d11aed888774c6cf7219c184d6e577f3ce1fd0675c23cefb531",
+        "planSourceSha256": "52d215888972b8f5331130654c3e30e72e6d75994ed31e2fb1d0fdc2a6f32029",
+        "finalSharedSha256": "6af26adb91f54d5a7cf1fe881e22c455f2fe179c0a8b7308e03733dadde2c7e2",
+        "finalAuthoritySha256": "f93542c267933a008820eb4302f91bb53c503bc61d201d0f539bb3d09c4ee747",
+        "recordsSha256": "446641deb520467f4a92ac78b688913ec97684609c791ebb29cda3e7cfb55861",
+        "actorPlanSha256": "7f4eef4055bd6103edd23b6f292666a2ab5247f4d66a0af95a25ea921eb82a1e",
+        "peerPlanSha256": "06854542c8a3f656a73b31bc1ba67b0223c8862125792dbd980f89f4d574e5c1",
+        "window": [
+          150000,
+          210000
+        ],
+        "settledSimMs": 210000,
+        "continuousOverlapMs": 0,
+        "matchedPresenceActors": [
+          "an"
+        ],
+        "epochs": [
+          1,
+          4
+        ],
+        "sourceSeq": 2,
+        "geometrySha256": "e1c162084899456b3bcbfa1387b6ca77689a1fe41af62d0e289e1b42458bf76f"
+      },
+      "eligibleForRuntimeReward": false,
+      "eligibleForP2P": false
+    },
+    {
+      "version": 1,
+      "source": "synthetic-ground-study-v1",
+      "rewardVersion": "rendezvous-delayed-v1",
+      "featureVersion": "ground-rendezvous-6d-v1",
+      "protocolSha256": "9f5fa1a55fefec850fba1d48131b1768458ad2a71dece020a763f543493c0122",
+      "id": "H3b:18203:3",
+      "seed": 18203,
+      "episode": 3,
+      "actorId": "an",
+      "peerId": "neighbor-1",
+      "actorScope": "synthetic-H3b:18203:an",
+      "context": [
+        1,
+        0.85,
+        0.6251274270387788,
+        0.46593613719864413,
+        1,
+        0.7142857142857143
+      ],
+      "offeredValue": 0.85,
+      "fulfilled": true,
+      "travelUnits": 1251.0742871257603,
+      "reward": -0.4010742871257603,
+      "proof": {
+        "worldBorn": "2026-07-30T16:23:50.000Z",
+        "sessionId": "ce40c378-e542-42e2-8c62-2f19ac30b2c6",
+        "goalSha256": "1d47e016d1e4f50dc4187b07a1aa9412f93d532920bee16498250d048c4439ef",
+        "choiceSharedSha256": "a79d3e2278f31615dd808f78517ad92c93f90191b4237225c8cb84ba049f4c4e",
+        "choiceSourceSha256": "9402b99fd1be06c70997688dcb07691db6310b7afb45d0583b21a623bcfd2c5d",
+        "planSourceSha256": "2c89573cc9824dc724372079a6b94497a26e286f8f8250d91c9a414bf3e478ca",
+        "finalSharedSha256": "7833d767ae41b99a4f9576ac9977a1265bc41c4249e1cebdb275323ca4f52bd3",
+        "finalAuthoritySha256": "98a6ba4ef7c2731a267af85744e0b6df2f9c78be78d0864bbe39891378cb2ba0",
+        "recordsSha256": "c19f8ea9ed737c804b016597228e7efdc9174186647980c8e0ad473e1b0a5a51",
+        "actorPlanSha256": "5d9a3e4cf25e5c5d4d9000d4918f0eff3186164050f2024e5fba8096ed7657b6",
+        "peerPlanSha256": "5d9a3e4cf25e5c5d4d9000d4918f0eff3186164050f2024e5fba8096ed7657b6",
+        "window": [
+          150000,
+          210000
+        ],
+        "settledSimMs": 210000,
+        "continuousOverlapMs": 60000,
+        "matchedPresenceActors": [
+          "an",
+          "neighbor-1"
+        ],
+        "epochs": [
+          1,
+          4
+        ],
+        "sourceSeq": 2,
+        "geometrySha256": "e1c162084899456b3bcbfa1387b6ca77689a1fe41af62d0e289e1b42458bf76f"
+      },
+      "eligibleForRuntimeReward": false,
+      "eligibleForP2P": false
+    },
+    {
+      "version": 1,
+      "source": "synthetic-ground-study-v1",
+      "rewardVersion": "rendezvous-delayed-v1",
+      "featureVersion": "ground-rendezvous-6d-v1",
+      "protocolSha256": "9f5fa1a55fefec850fba1d48131b1768458ad2a71dece020a763f543493c0122",
+      "id": "H3b:18204:0",
+      "seed": 18204,
+      "episode": 0,
+      "actorId": "an",
+      "peerId": "neighbor-1",
+      "actorScope": "synthetic-H3b:18204:an",
+      "context": [
+        1,
+        0.85,
+        0.6251274270387788,
+        0.46593613719864413,
+        0,
+        0.7142857142857143
+      ],
+      "offeredValue": 0.85,
+      "fulfilled": false,
+      "travelUnits": 1250.2548540775606,
+      "reward": -1,
+      "proof": {
+        "worldBorn": "2026-07-30T16:40:00.000Z",
+        "sessionId": "cb8c11e6-d3e4-418e-8865-65588aca09fb",
+        "goalSha256": "da819ced7281ba48caadba724dc6a8a7e69f3146067be60b2c6566085f3fb638",
+        "choiceSharedSha256": "4f56c535a88637c0852d5aa8f35fdf238935ec13862f0bc6aabe072ddbaf6996",
+        "choiceSourceSha256": "de03cc72775b38371e794ec1fccc2793a6e1b197eab314ab09e8fbc73bf162d4",
+        "planSourceSha256": "3a462c86b3c45c0a14521e202b54db529543e020489ab421811999989578174c",
+        "finalSharedSha256": "8ba38d72b353b37d050fbf7e5dfc291b98ee778c0b0f18727118c5cb08a62d85",
+        "finalAuthoritySha256": "b0bc92ef5be406d3168d9ef68b8d6bbe01a7b8dd7e10c73e5272dabf76b60d18",
+        "recordsSha256": "da5e59b3033b734680e369d400ed3a411138479007b191fb77cc918a2a5e1e95",
+        "actorPlanSha256": "62af8514e889ac3f5319e6460695da578babb681d26352b7a1cef7c8bf6b79f3",
+        "peerPlanSha256": "9463e6db7559bd7446a027689e466f2899a008b4dc8a3f44a2e22924a9c86f24",
+        "window": [
+          150000,
+          210000
+        ],
+        "settledSimMs": 210000,
+        "continuousOverlapMs": 0,
+        "matchedPresenceActors": [
+          "an"
+        ],
+        "epochs": [
+          1,
+          4
+        ],
+        "sourceSeq": 2,
+        "geometrySha256": "e1c162084899456b3bcbfa1387b6ca77689a1fe41af62d0e289e1b42458bf76f"
+      },
+      "eligibleForRuntimeReward": false,
+      "eligibleForP2P": false
+    },
+    {
+      "version": 1,
+      "source": "synthetic-ground-study-v1",
+      "rewardVersion": "rendezvous-delayed-v1",
+      "featureVersion": "ground-rendezvous-6d-v1",
+      "protocolSha256": "9f5fa1a55fefec850fba1d48131b1768458ad2a71dece020a763f543493c0122",
+      "id": "H3b:18204:1",
+      "seed": 18204,
+      "episode": 1,
+      "actorId": "an",
+      "peerId": "neighbor-1",
+      "actorScope": "synthetic-H3b:18204:an",
+      "context": [
+        1,
+        0.6,
+        0.4165623909220909,
+        0.5208408634149356,
+        1,
+        0.7142857142857143
+      ],
+      "offeredValue": 0.6,
+      "fulfilled": true,
+      "travelUnits": 833.1247818441781,
+      "reward": -0.23312478184417806,
+      "proof": {
+        "worldBorn": "2026-07-30T16:40:10.000Z",
+        "sessionId": "b9f14d17-4fc8-4fef-8565-1c2e475c6119",
+        "goalSha256": "b14e2abe949e500fb7cec887391e07f5d7ca1b891813360101c5e87a082b5d24",
+        "choiceSharedSha256": "3e8d2408e25f68d0aa06fd51e3dfa00ff56cc2271731a12a7faa10e4c701b950",
+        "choiceSourceSha256": "334499d3f6729e2738740ae78e930c6a34c3903ed06875833b24bfa5fbae9e51",
+        "planSourceSha256": "0c1b98c8946d201d93f4a58bb946678b91286cf261f24355eeb4e3bbc6536514",
+        "finalSharedSha256": "f2288d4464800202b8f4a9ea665b1d01a3b120376380eda83727f070dd91f181",
+        "finalAuthoritySha256": "45a283f121ff3d9d35e9743df80dc56393ab1d9b2b35fa27ef9013d8660d338c",
+        "recordsSha256": "0667e56c5f31f7df76c10c99eabec80e66bf43e651684076db92eb2e3534788b",
+        "actorPlanSha256": "ebe5e3ac0a854abbf38732d33e8955863368d3c295c0df258d17e41a1d19620b",
+        "peerPlanSha256": "ebe5e3ac0a854abbf38732d33e8955863368d3c295c0df258d17e41a1d19620b",
+        "window": [
+          150000,
+          210000
+        ],
+        "settledSimMs": 210000,
+        "continuousOverlapMs": 60000,
+        "matchedPresenceActors": [
+          "an",
+          "neighbor-1"
+        ],
+        "epochs": [
+          1,
+          4
+        ],
+        "sourceSeq": 2,
+        "geometrySha256": "e1c162084899456b3bcbfa1387b6ca77689a1fe41af62d0e289e1b42458bf76f"
+      },
+      "eligibleForRuntimeReward": false,
+      "eligibleForP2P": false
+    },
+    {
+      "version": 1,
+      "source": "synthetic-ground-study-v1",
+      "rewardVersion": "rendezvous-delayed-v1",
+      "featureVersion": "ground-rendezvous-6d-v1",
+      "protocolSha256": "9f5fa1a55fefec850fba1d48131b1768458ad2a71dece020a763f543493c0122",
+      "id": "H3b:18204:2",
+      "seed": 18204,
+      "episode": 2,
+      "actorId": "an",
+      "peerId": "neighbor-1",
+      "actorScope": "synthetic-H3b:18204:an",
+      "context": [
+        1,
+        0.35,
+        0.42024591090559804,
+        0.5962929229833271,
+        0,
+        0.7142857142857143
+      ],
+      "offeredValue": 0.35,
+      "fulfilled": false,
+      "travelUnits": 840.4859860195929,
+      "reward": -1,
+      "proof": {
+        "worldBorn": "2026-07-30T16:40:20.000Z",
+        "sessionId": "ed430c85-1927-46b3-8403-82d90993225b",
+        "goalSha256": "0e55ca8d1d6c588cc1b3dd48575b3760e13a5d865424043d569a40a8277a37d1",
+        "choiceSharedSha256": "c96744f6d4507d7794bc288117916fd691109e8159d8265cc8f231087c0aec52",
+        "choiceSourceSha256": "f23a574eb59e0d87d48da3b740febf0081a96772de0efe12940c4dfe579aa2d4",
+        "planSourceSha256": "806b87504c0de4ee80f063e8151c46c979c3ed0daec67ddbd4322712b091c59f",
+        "finalSharedSha256": "a2627d2dd7c650a8902e765b2ddf099aea091d620fc1ecf38e4437e6c2edae4c",
+        "finalAuthoritySha256": "28757060e164ee13362e1f8656d71eefb91fff5827114a0e6b547aac0865ba1a",
+        "recordsSha256": "38adeba32d62aed9e8c80699ba37e9f158903368c0e052460f3a8a7c7b187ebf",
+        "actorPlanSha256": "16a40ae196d476170012850e931898f0a1a0624f7d1f8f5314c9b47e587d78a4",
+        "peerPlanSha256": "70f5419c104b5fd33ef78e7b918a3cd3f9b6cef0a211a75ea560ec0c0a1bf5a2",
+        "window": [
+          150000,
+          210000
+        ],
+        "settledSimMs": 210000,
+        "continuousOverlapMs": 0,
+        "matchedPresenceActors": [
+          "an"
+        ],
+        "epochs": [
+          1,
+          4
+        ],
+        "sourceSeq": 2,
+        "geometrySha256": "e1c162084899456b3bcbfa1387b6ca77689a1fe41af62d0e289e1b42458bf76f"
+      },
+      "eligibleForRuntimeReward": false,
+      "eligibleForP2P": false
+    },
+    {
+      "version": 1,
+      "source": "synthetic-ground-study-v1",
+      "rewardVersion": "rendezvous-delayed-v1",
+      "featureVersion": "ground-rendezvous-6d-v1",
+      "protocolSha256": "9f5fa1a55fefec850fba1d48131b1768458ad2a71dece020a763f543493c0122",
+      "id": "H3b:18204:3",
+      "seed": 18204,
+      "episode": 3,
+      "actorId": "an",
+      "peerId": "neighbor-1",
+      "actorScope": "synthetic-H3b:18204:an",
+      "context": [
+        1,
+        0.6,
+        0.6549905118424547,
+        0.302499814526264,
+        1,
+        0.7142857142857143
+      ],
+      "offeredValue": 0.6,
+      "fulfilled": true,
+      "travelUnits": 1309.9810236849066,
+      "reward": -0.7099810236849066,
+      "proof": {
+        "worldBorn": "2026-07-30T16:40:30.000Z",
+        "sessionId": "f132c30e-a737-405f-83b9-fa029bedc17c",
+        "goalSha256": "f5369d3852272efa9edc61587e54ec6c9b2d67793b62759b48982357fbbb15b2",
+        "choiceSharedSha256": "53a171ab9fb73eeeefeb35e580b68c0d72b9884357a64854e8d97bd21c0035ed",
+        "choiceSourceSha256": "4ab39927460d3c29b840c24cf35dbc378f922b5d1751e2351ccafc6d034de6f2",
+        "planSourceSha256": "aefba53e84959f9628193dd66cbfb48f0889e6b406ecbfb8de4a6587655c90ed",
+        "finalSharedSha256": "088d1247a3a6c70a1ab0ae64de481b97c1c3770c8629c9d2d2d8e397a5611db4",
+        "finalAuthoritySha256": "7306761a33eff2fde887f21730c98658911c953cb4c9ae7673a05a3b9f1d991e",
+        "recordsSha256": "9d700a61b55b58cfb15fe36683f8fd00b9c0f62c480fd150d8a8cb32c4f714ef",
+        "actorPlanSha256": "3f1aea7622773b28e6f550ce1fdffc4c67626a992557db2f418fc8a1aaa82cf9",
+        "peerPlanSha256": "3f1aea7622773b28e6f550ce1fdffc4c67626a992557db2f418fc8a1aaa82cf9",
+        "window": [
+          150000,
+          210000
+        ],
+        "settledSimMs": 210000,
+        "continuousOverlapMs": 60000,
+        "matchedPresenceActors": [
+          "an",
+          "neighbor-1"
+        ],
+        "epochs": [
+          1,
+          4
+        ],
+        "sourceSeq": 2,
+        "geometrySha256": "e1c162084899456b3bcbfa1387b6ca77689a1fe41af62d0e289e1b42458bf76f"
+      },
+      "eligibleForRuntimeReward": false,
+      "eligibleForP2P": false
+    },
+    {
+      "version": 1,
+      "source": "synthetic-ground-study-v1",
+      "rewardVersion": "rendezvous-delayed-v1",
+      "featureVersion": "ground-rendezvous-6d-v1",
+      "protocolSha256": "9f5fa1a55fefec850fba1d48131b1768458ad2a71dece020a763f543493c0122",
+      "id": "H3b:18205:0",
+      "seed": 18205,
+      "episode": 0,
+      "actorId": "an",
+      "peerId": "neighbor-1",
+      "actorScope": "synthetic-H3b:18205:an",
+      "context": [
+        1,
+        0.6,
+        0.1632207094703365,
+        0.7490452179483259,
+        0,
+        0.7142857142857143
+      ],
+      "offeredValue": 0.6,
+      "fulfilled": false,
+      "travelUnits": 326.3861718749999,
+      "reward": -0.8263861718749999,
+      "proof": {
+        "worldBorn": "2026-07-30T16:56:40.000Z",
+        "sessionId": "320d4d1c-a05d-4a2c-8f52-9e39044d37ac",
+        "goalSha256": "2ce9de2038e06a53df036737b740a08188d7b914fe70646f472e18ada7ecbc13",
+        "choiceSharedSha256": "d37c594442c763e34fa9119b53d46b1a7b6f275e8c53f4f0567ac201dc81cfb0",
+        "choiceSourceSha256": "ec0fd22fb7752fb3e1f87a507df62f6eac0570c737902eecfeb659f04f82aaeb",
+        "planSourceSha256": "0556078856218ab158a753488c1ab137b6aad4375f782689d271a2c3e6b7af0e",
+        "finalSharedSha256": "daf8799f8b6a83f5069f6707c67f52d0a0b843863ac2dd1c52aac15d6d9bef91",
+        "finalAuthoritySha256": "b254e8bb361ab7962ab51df09290cb61ee4d2a6c9aae94401dd4fe9e4be40513",
+        "recordsSha256": "9b8d0f41339c786e542065fd9490940599df742ef792a0af52b2787c6034e1da",
+        "actorPlanSha256": "e92ed82aba45cef3c46a81b9b7765612992823b876b0d181d76d51760a86e79d",
+        "peerPlanSha256": "cac189edf609bfd5cc1b731022f3a2cf832b1bd878f83a8d003f8f27aa3cc005",
+        "window": [
+          150000,
+          210000
+        ],
+        "settledSimMs": 210000,
+        "continuousOverlapMs": 0,
+        "matchedPresenceActors": [],
+        "epochs": [
+          1,
+          4
+        ],
+        "sourceSeq": 2,
+        "geometrySha256": "e1c162084899456b3bcbfa1387b6ca77689a1fe41af62d0e289e1b42458bf76f"
+      },
+      "eligibleForRuntimeReward": false,
+      "eligibleForP2P": false
+    },
+    {
+      "version": 1,
+      "source": "synthetic-ground-study-v1",
+      "rewardVersion": "rendezvous-delayed-v1",
+      "featureVersion": "ground-rendezvous-6d-v1",
+      "protocolSha256": "9f5fa1a55fefec850fba1d48131b1768458ad2a71dece020a763f543493c0122",
+      "id": "H3b:18205:1",
+      "seed": 18205,
+      "episode": 1,
+      "actorId": "an",
+      "peerId": "neighbor-1",
+      "actorScope": "synthetic-H3b:18205:an",
+      "context": [
+        1,
+        0.85,
+        0.4129031902690793,
+        0.5728010090751569,
+        1,
+        0.7142857142857143
+      ],
+      "offeredValue": 0.85,
+      "fulfilled": false,
+      "travelUnits": 825.7256310953344,
+      "reward": -1,
+      "proof": {
+        "worldBorn": "2026-07-30T16:56:50.000Z",
+        "sessionId": "b6145126-9a03-41b3-80b5-11349e756629",
+        "goalSha256": "e799332c2b6ffe32bee61fe2dd264781948e63cd817867eef5873f6c2864d47a",
+        "choiceSharedSha256": "ec622443f0b03c0a69ba8bd9336849cd51d8f43f4892f36cbbed02b41852e9ad",
+        "choiceSourceSha256": "e9f76da0b3afd92096d7b2dc70f09911000a3ac709c25f3c4ec151d53840b4f9",
+        "planSourceSha256": "24feb27bd47ba536094386641c66904fac80152a8396e8c01d64a6d9c64ce0a7",
+        "finalSharedSha256": "c70e685c3b290040c3371eb3a77532a13d3ed032353bec1c504bd117d7fa4fa5",
+        "finalAuthoritySha256": "39ef25e60382aa8ad24f044df2ca0cbabf427bcb370cfb76737897459176506a",
+        "recordsSha256": "bbb430a8ad042ad088416be929d427664a4c69433e498ca2caa161fafc3213d7",
+        "actorPlanSha256": "c73884db422d6b1fcb52d709732f70323e932e6b23aac06c6302e057da72a3af",
+        "peerPlanSha256": "c73884db422d6b1fcb52d709732f70323e932e6b23aac06c6302e057da72a3af",
+        "window": [
+          150000,
+          210000
+        ],
+        "settledSimMs": 210000,
+        "continuousOverlapMs": 60000,
+        "matchedPresenceActors": [
+          "neighbor-1"
+        ],
+        "epochs": [
+          1,
+          4
+        ],
+        "sourceSeq": 2,
+        "geometrySha256": "e1c162084899456b3bcbfa1387b6ca77689a1fe41af62d0e289e1b42458bf76f"
+      },
+      "eligibleForRuntimeReward": false,
+      "eligibleForP2P": false
+    },
+    {
+      "version": 1,
+      "source": "synthetic-ground-study-v1",
+      "rewardVersion": "rendezvous-delayed-v1",
+      "featureVersion": "ground-rendezvous-6d-v1",
+      "protocolSha256": "9f5fa1a55fefec850fba1d48131b1768458ad2a71dece020a763f543493c0122",
+      "id": "H3b:18205:2",
+      "seed": 18205,
+      "episode": 2,
+      "actorId": "an",
+      "peerId": "neighbor-1",
+      "actorScope": "synthetic-H3b:18205:an",
+      "context": [
+        1,
+        0.6,
+        0.1736098388282339,
+        0.7659621301396867,
+        0,
+        0.7142857142857143
+      ],
+      "offeredValue": 0.6,
+      "fulfilled": false,
+      "travelUnits": 350.1268424182297,
+      "reward": -0.8501268424182298,
+      "proof": {
+        "worldBorn": "2026-07-30T16:57:00.000Z",
+        "sessionId": "1bd1aac9-9a1f-442c-83d4-714ccf2e4a25",
+        "goalSha256": "4dbd36625fd2ea819be04c1b756965c9ad083e68dfd542a6d88dcd53c2dcf9e3",
+        "choiceSharedSha256": "5e905340468db1e4b785e4327415299d7a09c4597b8d7b4675eb699c25031f45",
+        "choiceSourceSha256": "eec34f613d1203956b2fd31b8ad09503cfe41617c6dc7ff4abdcacfc253fcde0",
+        "planSourceSha256": "cb9353a6a4a6fe6ef31389b67434977576b75dcd70ff877ca5003ff37f9778c4",
+        "finalSharedSha256": "a48c556f2a31bc1ae1f03d78e3382d5215e4034ab159e019f160a2f5f4963dcb",
+        "finalAuthoritySha256": "e880f39a85164e26969220c1c9acc253de1990ffadee9218cc0b8697d177129e",
+        "recordsSha256": "8fdfa7f122006fb3e5d16ede0500b8b62e8502c34c4a53b4478b6c1519385c28",
+        "actorPlanSha256": "260ad5232218778f2e7276c76a75955a7787e79f71ff27293a200c4eacc9692e",
+        "peerPlanSha256": "fd66cf083745ba6cdb66375ba64781e97e31383889f78160b737978b65267db0",
+        "window": [
+          150000,
+          210000
+        ],
+        "settledSimMs": 210000,
+        "continuousOverlapMs": 0,
+        "matchedPresenceActors": [
+          "an"
+        ],
+        "epochs": [
+          1,
+          4
+        ],
+        "sourceSeq": 2,
+        "geometrySha256": "e1c162084899456b3bcbfa1387b6ca77689a1fe41af62d0e289e1b42458bf76f"
+      },
+      "eligibleForRuntimeReward": false,
+      "eligibleForP2P": false
+    },
+    {
+      "version": 1,
+      "source": "synthetic-ground-study-v1",
+      "rewardVersion": "rendezvous-delayed-v1",
+      "featureVersion": "ground-rendezvous-6d-v1",
+      "protocolSha256": "9f5fa1a55fefec850fba1d48131b1768458ad2a71dece020a763f543493c0122",
+      "id": "H3b:18205:3",
+      "seed": 18205,
+      "episode": 3,
+      "actorId": "an",
+      "peerId": "neighbor-1",
+      "actorScope": "synthetic-H3b:18205:an",
+      "context": [
+        1,
+        0.85,
+        0.5859729026464939,
+        0.6759129318436928,
+        1,
+        0.7142857142857143
+      ],
+      "offeredValue": 0.85,
+      "fulfilled": true,
+      "travelUnits": 1172.3031331775642,
+      "reward": -0.3223031331775642,
+      "proof": {
+        "worldBorn": "2026-07-30T16:57:10.000Z",
+        "sessionId": "d2582066-de70-4a6f-8d5d-4cea722e65a6",
+        "goalSha256": "279393ec456c2a61354646f21b75c2ab5d625d60627ffa47d2b71596177855f0",
+        "choiceSharedSha256": "4e1ef46ef16fcb328192e2dde23b89b87e97487e99dc0cc78ee3e0988977e32d",
+        "choiceSourceSha256": "e65ce72a44b2178081bfab005cb18d98bf3a12c47bd0adff25d9d070104bade3",
+        "planSourceSha256": "f6d5f3a6a7f69305d88dc28d5120140660896d7d1b181a02a4a69ab1e7f9133c",
+        "finalSharedSha256": "85451a1b6181cd8bbeab55cc3699ed64269025db85f496b713298899612264bd",
+        "finalAuthoritySha256": "48e0056bbff0c671d7b6a33d67f466b73bef945d4c3921ce41c67cd75e563fff",
+        "recordsSha256": "e7d850aa3dcf2d9c9d606be2a7e1edd1ede2c50dac0faca9b9571cbd2196552e",
+        "actorPlanSha256": "3b924248a852e5c37c70299f5f37f4bf6b74eb7210b0abb8efb9dc0e05ae4d57",
+        "peerPlanSha256": "3b924248a852e5c37c70299f5f37f4bf6b74eb7210b0abb8efb9dc0e05ae4d57",
+        "window": [
+          150000,
+          210000
+        ],
+        "settledSimMs": 210000,
+        "continuousOverlapMs": 60000,
+        "matchedPresenceActors": [
+          "an",
+          "neighbor-1"
+        ],
+        "epochs": [
+          1,
+          4
+        ],
+        "sourceSeq": 2,
+        "geometrySha256": "e1c162084899456b3bcbfa1387b6ca77689a1fe41af62d0e289e1b42458bf76f"
+      },
+      "eligibleForRuntimeReward": false,
+      "eligibleForP2P": false
+    },
+    {
+      "version": 1,
+      "source": "synthetic-ground-study-v1",
+      "rewardVersion": "rendezvous-delayed-v1",
+      "featureVersion": "ground-rendezvous-6d-v1",
+      "protocolSha256": "9f5fa1a55fefec850fba1d48131b1768458ad2a71dece020a763f543493c0122",
+      "id": "H3b:18206:0",
+      "seed": 18206,
+      "episode": 0,
+      "actorId": "an",
+      "peerId": "neighbor-1",
+      "actorScope": "synthetic-H3b:18206:an",
+      "context": [
+        1,
+        0.35,
+        0.42024591090559804,
+        0.5962929229833271,
+        1,
+        0.7142857142857143
+      ],
+      "offeredValue": 0.35,
+      "fulfilled": true,
+      "travelUnits": 840.4859860195929,
+      "reward": -0.4904859860195929,
+      "proof": {
+        "worldBorn": "2026-07-30T17:13:20.000Z",
+        "sessionId": "8b67d095-5b6f-4aaf-8db9-e7594768be5a",
+        "goalSha256": "e5d415b45deceb3c549b498054a024118029c3755ef29a3334d3f060480b23ae",
+        "choiceSharedSha256": "91b9d730d1f6a09d4d28163405e20bbd6f697a801100c46a1964692bba9e228b",
+        "choiceSourceSha256": "b51be8da2feb85ee9ba95c7f7bbae3fc3662cb7b53eff9f631029982e219e61d",
+        "planSourceSha256": "a1b55dfbeb9f4b31c0f0952bda8d1cc6015cc5c7b543a8209335ce8b011664b0",
+        "finalSharedSha256": "90331212b7e8a7d67c35de982e4c8be55b8d98b2cd88b32009ae9af0c6e3e025",
+        "finalAuthoritySha256": "828db7e6043c004d488a18379cab7094f3d5c08c14fb2b7ac2da062ec1518939",
+        "recordsSha256": "4850e3841bf3a7ac2a817df52dde857ff78edb02ef2449b42ebf1df8a16f52ec",
+        "actorPlanSha256": "95b7cbf54dbb12c95974752ad5c0e9a4a25fbaec51bc9f785c1894a904f97fcb",
+        "peerPlanSha256": "95b7cbf54dbb12c95974752ad5c0e9a4a25fbaec51bc9f785c1894a904f97fcb",
+        "window": [
+          150000,
+          210000
+        ],
+        "settledSimMs": 210000,
+        "continuousOverlapMs": 60000,
+        "matchedPresenceActors": [
+          "an",
+          "neighbor-1"
+        ],
+        "epochs": [
+          1,
+          4
+        ],
+        "sourceSeq": 2,
+        "geometrySha256": "e1c162084899456b3bcbfa1387b6ca77689a1fe41af62d0e289e1b42458bf76f"
+      },
+      "eligibleForRuntimeReward": false,
+      "eligibleForP2P": false
+    },
+    {
+      "version": 1,
+      "source": "synthetic-ground-study-v1",
+      "rewardVersion": "rendezvous-delayed-v1",
+      "featureVersion": "ground-rendezvous-6d-v1",
+      "protocolSha256": "9f5fa1a55fefec850fba1d48131b1768458ad2a71dece020a763f543493c0122",
+      "id": "H3b:18206:1",
+      "seed": 18206,
+      "episode": 1,
+      "actorId": "an",
+      "peerId": "neighbor-1",
+      "actorScope": "synthetic-H3b:18206:an",
+      "context": [
+        1,
+        0.85,
+        0.6549905118424547,
+        0.302499814526264,
+        0,
+        0.7142857142857143
+      ],
+      "offeredValue": 0.85,
+      "fulfilled": false,
+      "travelUnits": 1312.1632632428173,
+      "reward": -1,
+      "proof": {
+        "worldBorn": "2026-07-30T17:13:30.000Z",
+        "sessionId": "e078076a-41a3-47de-8d65-e2dc45115a3a",
+        "goalSha256": "b1258130d840e10566d27ae09f1245f767acdf3347893ed64771ece5ac353298",
+        "choiceSharedSha256": "c7c1c0dd45392e1dd0d14e503780798fe602592beebb42a57adad0dae8a31142",
+        "choiceSourceSha256": "a98e1b7f0880484afa295099f8f619645f9cd7d7f7144faf3ecbaf784f854785",
+        "planSourceSha256": "578cf276ea5b1d4750ab42e78be4d6195ba20bc6fe7f5c98e5a5c6925e8a7d78",
+        "finalSharedSha256": "2c17afa4bf29a1efdf34ea427552c2b4ea72f29d0da5b3e19c0a75c619cbec00",
+        "finalAuthoritySha256": "f79a366a714c56dc495468cad11ce84840112df0d9105561c24aa9e473d5210c",
+        "recordsSha256": "75225f358b429ab40c522d7d17b8566d138781e073334fa2b1a62a671c43500c",
+        "actorPlanSha256": "f6a90f0490e37cbcbe0107478cc720936649d4a0dc41a2015d1013a33cff9f86",
+        "peerPlanSha256": "b2312d9a731cacc49b9441bf686329c48ab4489a152f20eb1a882997e8cd2a2a",
+        "window": [
+          150000,
+          210000
+        ],
+        "settledSimMs": 210000,
+        "continuousOverlapMs": 0,
+        "matchedPresenceActors": [
+          "an"
+        ],
+        "epochs": [
+          1,
+          4
+        ],
+        "sourceSeq": 2,
+        "geometrySha256": "e1c162084899456b3bcbfa1387b6ca77689a1fe41af62d0e289e1b42458bf76f"
+      },
+      "eligibleForRuntimeReward": false,
+      "eligibleForP2P": false
+    },
+    {
+      "version": 1,
+      "source": "synthetic-ground-study-v1",
+      "rewardVersion": "rendezvous-delayed-v1",
+      "featureVersion": "ground-rendezvous-6d-v1",
+      "protocolSha256": "9f5fa1a55fefec850fba1d48131b1768458ad2a71dece020a763f543493c0122",
+      "id": "H3b:18206:2",
+      "seed": 18206,
+      "episode": 2,
+      "actorId": "an",
+      "peerId": "neighbor-1",
+      "actorScope": "synthetic-H3b:18206:an",
+      "context": [
+        1,
+        0.85,
+        0.6251274270387788,
+        0.46593613719864413,
+        1,
+        0.7142857142857143
+      ],
+      "offeredValue": 0.85,
+      "fulfilled": true,
+      "travelUnits": 1251.0742871257603,
+      "reward": -0.4010742871257603,
+      "proof": {
+        "worldBorn": "2026-07-30T17:13:40.000Z",
+        "sessionId": "ca505a57-59d9-48be-85ce-b17d2c3e5f5b",
+        "goalSha256": "533bfe0cd97fa7c2c7246df1dbcde20e8f52a1ee6684ec5aba8cd83a2ebcfba0",
+        "choiceSharedSha256": "e4275e23be88d84698063bd959e791276ea5a935a87a26b35ffeec2a99087e8f",
+        "choiceSourceSha256": "52823bad101e32581bb0c0ab6bba3a2fbf70e9343d64b9a5a59bc17dcb1cf35a",
+        "planSourceSha256": "05d0a60f410ed93944d65d137fbe5c55dfbadec7c9ce8504e759fc486234e426",
+        "finalSharedSha256": "b3c82721cb16a84fedd243f34361de326b06d909542a1c7c0ce72909939b1293",
+        "finalAuthoritySha256": "4d97f4f00f41e4ecf3d60dcfeed574f8f8a2e7991efec7b7db691cee8fbb2b86",
+        "recordsSha256": "4f1b6d4909debf77433224398d882844e0d044b7ee752702244868f1e6c4c9b2",
+        "actorPlanSha256": "8cd429290f4fa6cde9dae411697ba8002fdf9b1bee8c4d39cb1fa2a832d0d977",
+        "peerPlanSha256": "8cd429290f4fa6cde9dae411697ba8002fdf9b1bee8c4d39cb1fa2a832d0d977",
+        "window": [
+          150000,
+          210000
+        ],
+        "settledSimMs": 210000,
+        "continuousOverlapMs": 60000,
+        "matchedPresenceActors": [
+          "an",
+          "neighbor-1"
+        ],
+        "epochs": [
+          1,
+          4
+        ],
+        "sourceSeq": 2,
+        "geometrySha256": "e1c162084899456b3bcbfa1387b6ca77689a1fe41af62d0e289e1b42458bf76f"
+      },
+      "eligibleForRuntimeReward": false,
+      "eligibleForP2P": false
+    },
+    {
+      "version": 1,
+      "source": "synthetic-ground-study-v1",
+      "rewardVersion": "rendezvous-delayed-v1",
+      "featureVersion": "ground-rendezvous-6d-v1",
+      "protocolSha256": "9f5fa1a55fefec850fba1d48131b1768458ad2a71dece020a763f543493c0122",
+      "id": "H3b:18206:3",
+      "seed": 18206,
+      "episode": 3,
+      "actorId": "an",
+      "peerId": "neighbor-1",
+      "actorScope": "synthetic-H3b:18206:an",
+      "context": [
+        1,
+        0.6,
+        0.4165623909220909,
+        0.5208408634149356,
+        0,
+        0.7142857142857143
+      ],
+      "offeredValue": 0.6,
+      "fulfilled": false,
+      "travelUnits": 833.1247818441781,
+      "reward": -1,
+      "proof": {
+        "worldBorn": "2026-07-30T17:13:50.000Z",
+        "sessionId": "4bfff045-79d1-4932-8a1e-f4d679acab08",
+        "goalSha256": "912c4675bdf23b6937b86c74e5a553f7a63fd8028880dd9e9cca4521778e8cab",
+        "choiceSharedSha256": "22b9ec878aab35c7ef6c120318f0419bb18babb8ee729839cdc4991c77e9c15a",
+        "choiceSourceSha256": "14c1b167b85dcd8a3305fc6380cccd3024b810af5c987eff275e17ca178bed9b",
+        "planSourceSha256": "be58509c92a3738f0fec1ece950b0bb3cf404065c6de4beb2d7dc433b755decf",
+        "finalSharedSha256": "ff41b0b7520f15f8030a555f75d65751a4bf54929d86163b4b924b2e197c4eb5",
+        "finalAuthoritySha256": "9b2c0bdbfca62740b53d05f8a9f434856aa4dd3b2b0392999546cea07813ee1f",
+        "recordsSha256": "0788ea8fb935ec6e3ad1dbfe172cafaad8d0aae94dd3351b43e9d0a71d4ed661",
+        "actorPlanSha256": "ab1f4edf0cd7c419a4199e1fd6eb4beb17c3769b2f81db24f08f1b1eed3c10c3",
+        "peerPlanSha256": "830e02e9d1c74681d9d11dd9d5499b71fe7888a03fe7b2c553a6e7de9763f18c",
+        "window": [
+          150000,
+          210000
+        ],
+        "settledSimMs": 210000,
+        "continuousOverlapMs": 0,
+        "matchedPresenceActors": [
+          "an"
+        ],
+        "epochs": [
+          1,
+          4
+        ],
+        "sourceSeq": 2,
+        "geometrySha256": "e1c162084899456b3bcbfa1387b6ca77689a1fe41af62d0e289e1b42458bf76f"
+      },
+      "eligibleForRuntimeReward": false,
+      "eligibleForP2P": false
+    },
+    {
+      "version": 1,
+      "source": "synthetic-ground-study-v1",
+      "rewardVersion": "rendezvous-delayed-v1",
+      "featureVersion": "ground-rendezvous-6d-v1",
+      "protocolSha256": "9f5fa1a55fefec850fba1d48131b1768458ad2a71dece020a763f543493c0122",
+      "id": "H3b:18207:0",
+      "seed": 18207,
+      "episode": 0,
+      "actorId": "an",
+      "peerId": "neighbor-1",
+      "actorScope": "synthetic-H3b:18207:an",
+      "context": [
+        1,
+        0.35,
+        0.1736098388282339,
+        0.7659621301396867,
+        0,
+        0.7142857142857143
+      ],
+      "offeredValue": 0.35,
+      "fulfilled": false,
+      "travelUnits": 350.1268424182297,
+      "reward": -0.8501268424182298,
+      "proof": {
+        "worldBorn": "2026-07-30T17:30:00.000Z",
+        "sessionId": "dd506cc3-1da6-4e7d-8395-9a3cb910c84a",
+        "goalSha256": "66e73c4cf48e4cf889ac9ea3e78fddf6143ca0d4a8e091c08d3a7416866da259",
+        "choiceSharedSha256": "63c92f4b61a4bd58695ce3cb757bd584889b52b34fc4526c835afeb5f6f52d1f",
+        "choiceSourceSha256": "34597e52b9d71bdc079265b1c5fa9a9d8d24b49813782993d0c79f2bcbc1ce02",
+        "planSourceSha256": "22ada6cd6214080287f92aa372218a7019a1332db069786bb935b3b5a16998e5",
+        "finalSharedSha256": "5b145525abd0e65556aed7b0e13d0bcdd61ae16025f7fa3d510d4391d30ccb2e",
+        "finalAuthoritySha256": "9cf239b1bba596bb338706d83f9d79146870e014205f67607d0eafdaac9705c2",
+        "recordsSha256": "8fc7d26c8e0e04e9ce2dcb8265a116fd49deac899f0065f027edde426a0420ce",
+        "actorPlanSha256": "614d6ccfa7516fced6ce2881eb74d7319da681a261fcc89bccf0791a9737a6a3",
+        "peerPlanSha256": "bdeb6222e121ea99eed386a73704ffb2b8882009fd91574065969eb54daa68d6",
+        "window": [
+          150000,
+          210000
+        ],
+        "settledSimMs": 210000,
+        "continuousOverlapMs": 0,
+        "matchedPresenceActors": [
+          "an"
+        ],
+        "epochs": [
+          1,
+          4
+        ],
+        "sourceSeq": 2,
+        "geometrySha256": "e1c162084899456b3bcbfa1387b6ca77689a1fe41af62d0e289e1b42458bf76f"
+      },
+      "eligibleForRuntimeReward": false,
+      "eligibleForP2P": false
+    },
+    {
+      "version": 1,
+      "source": "synthetic-ground-study-v1",
+      "rewardVersion": "rendezvous-delayed-v1",
+      "featureVersion": "ground-rendezvous-6d-v1",
+      "protocolSha256": "9f5fa1a55fefec850fba1d48131b1768458ad2a71dece020a763f543493c0122",
+      "id": "H3b:18207:1",
+      "seed": 18207,
+      "episode": 1,
+      "actorId": "an",
+      "peerId": "neighbor-1",
+      "actorScope": "synthetic-H3b:18207:an",
+      "context": [
+        1,
+        0.6,
+        0.5859729026464939,
+        0.6759129318436928,
+        1,
+        0.7142857142857143
+      ],
+      "offeredValue": 0.6,
+      "fulfilled": true,
+      "travelUnits": 1172.3031331775642,
+      "reward": -0.5723031331775642,
+      "proof": {
+        "worldBorn": "2026-07-30T17:30:10.000Z",
+        "sessionId": "55a29bf7-e3a3-44e0-8e83-d4b4e897069c",
+        "goalSha256": "33157ad49bc3adcfe1d02e8a7765d965af490074188fed05f58201c684fbfc6e",
+        "choiceSharedSha256": "184c1114ec0ff53526d46754ff0ccba84225cabf68fe7c5011c9826d5f395f07",
+        "choiceSourceSha256": "56c8e3ab9e05779164bf978c2450302687bbfa7bb1d384f68b4077fce7b7dee6",
+        "planSourceSha256": "e237a54a98d6d45c013d04948e6294ce84a044a7479ab864165c7d0a82a8eccd",
+        "finalSharedSha256": "f58b12cdac80433b3858ae07ebddb302c3e885d7fb931832a1ee66cbc5533dcd",
+        "finalAuthoritySha256": "871131e0a3d40a1c73df9b5b89962d2d74ccdf0d6a58992301f28ec7ef59700c",
+        "recordsSha256": "4104ea4a531e5b9586a0f6bb043168fb146b01e86fcce5ce39f3b95fe67604be",
+        "actorPlanSha256": "feede060ff7860da1065fe0c7fdda1e523af80674858889a5f432109e2fd74b9",
+        "peerPlanSha256": "feede060ff7860da1065fe0c7fdda1e523af80674858889a5f432109e2fd74b9",
+        "window": [
+          150000,
+          210000
+        ],
+        "settledSimMs": 210000,
+        "continuousOverlapMs": 60000,
+        "matchedPresenceActors": [
+          "an",
+          "neighbor-1"
+        ],
+        "epochs": [
+          1,
+          4
+        ],
+        "sourceSeq": 2,
+        "geometrySha256": "e1c162084899456b3bcbfa1387b6ca77689a1fe41af62d0e289e1b42458bf76f"
+      },
+      "eligibleForRuntimeReward": false,
+      "eligibleForP2P": false
+    },
+    {
+      "version": 1,
+      "source": "synthetic-ground-study-v1",
+      "rewardVersion": "rendezvous-delayed-v1",
+      "featureVersion": "ground-rendezvous-6d-v1",
+      "protocolSha256": "9f5fa1a55fefec850fba1d48131b1768458ad2a71dece020a763f543493c0122",
+      "id": "H3b:18207:2",
+      "seed": 18207,
+      "episode": 2,
+      "actorId": "an",
+      "peerId": "neighbor-1",
+      "actorScope": "synthetic-H3b:18207:an",
+      "context": [
+        1,
+        0.85,
+        0.1632207094703365,
+        0.7490452179483259,
+        0,
+        0.7142857142857143
+      ],
+      "offeredValue": 0.85,
+      "fulfilled": false,
+      "travelUnits": 326.3861718749999,
+      "reward": -0.8263861718749999,
+      "proof": {
+        "worldBorn": "2026-07-30T17:30:20.000Z",
+        "sessionId": "29f4bf8d-6a9f-4479-8697-6ecd69f48b68",
+        "goalSha256": "bc3d1abd8d4e52ae6fa4ab90377c918d86bc628bf12d2acd558a567d4a960951",
+        "choiceSharedSha256": "ed36903bad17644cb52418e460b7017d601c6974a9258dda8d47319213ecc794",
+        "choiceSourceSha256": "513335c84325204255374b722da951bb75841f64bcff34e500dd626a8e0bc1ca",
+        "planSourceSha256": "ce608a533e59838af44c91ddf63e5790dcafbb64b699ba116c5502ccc2aadb02",
+        "finalSharedSha256": "041dd311e1ceab59a47468b806bc056c37acfbd966aaf5bbba423a345c195380",
+        "finalAuthoritySha256": "90431888b0cc4a7c44e3b4f8461a431adaaa50d4803d2eb60a8f6787ce955160",
+        "recordsSha256": "88bc5fc43dfbba6f7eb766c5833e7e35a4264d309c33eab32f0152cc27cf79d5",
+        "actorPlanSha256": "6f444b2a4ba1eb7635d60ba78bcab1370da4b1049d332a3e00a6bb1f0f4a1d69",
+        "peerPlanSha256": "c45eb2d37339e394bf80d221fe4ba22e7658669a800cd2e5616c060c3b9242ec",
+        "window": [
+          150000,
+          210000
+        ],
+        "settledSimMs": 210000,
+        "continuousOverlapMs": 0,
+        "matchedPresenceActors": [],
+        "epochs": [
+          1,
+          4
+        ],
+        "sourceSeq": 2,
+        "geometrySha256": "e1c162084899456b3bcbfa1387b6ca77689a1fe41af62d0e289e1b42458bf76f"
+      },
+      "eligibleForRuntimeReward": false,
+      "eligibleForP2P": false
+    },
+    {
+      "version": 1,
+      "source": "synthetic-ground-study-v1",
+      "rewardVersion": "rendezvous-delayed-v1",
+      "featureVersion": "ground-rendezvous-6d-v1",
+      "protocolSha256": "9f5fa1a55fefec850fba1d48131b1768458ad2a71dece020a763f543493c0122",
+      "id": "H3b:18207:3",
+      "seed": 18207,
+      "episode": 3,
+      "actorId": "an",
+      "peerId": "neighbor-1",
+      "actorScope": "synthetic-H3b:18207:an",
+      "context": [
+        1,
+        0.35,
+        0.4129031902690793,
+        0.5728010090751569,
+        0,
+        0.7142857142857143
+      ],
+      "offeredValue": 0.35,
+      "fulfilled": false,
+      "travelUnits": 825.7256310953344,
+      "reward": -1,
+      "proof": {
+        "worldBorn": "2026-07-30T17:30:30.000Z",
+        "sessionId": "7b778910-06cb-40e4-830e-8f560a252520",
+        "goalSha256": "5ab777c4616f2e8983f7ead533564e8a659230deaa1348cc555fafca92f663f3",
+        "choiceSharedSha256": "2b6dda3bcd57806f0d19fcdf4a3ff1ea05bd1555215c19f098dc7d5f227e31e0",
+        "choiceSourceSha256": "5f66da4345cf76c44badba1c72f315e9a81d5b1a4546d7678c698c42d130e4fa",
+        "planSourceSha256": "dc55a2102cc60a99f461a09b685633237d62e958fd15f5dab7358f62ad525272",
+        "finalSharedSha256": "c82a9569c6c72160156b513dfbe94a940afcb861dd5a3cdab6280ec5eb0b3d3e",
+        "finalAuthoritySha256": "50d85c00737970dc0cd8fb4b8f59f1f84f907b4e7b4faa73d021bb7ea4b4a728",
+        "recordsSha256": "4596711e69905070f85d43cb50f5c03548ef91661aa0ad626152e30834c0f824",
+        "actorPlanSha256": "38f17398b657fbb89cffca5d9ba08e5f24d6d2f0fbf50ae9f0e754aa10d8405b",
+        "peerPlanSha256": "be99e42c65fd25c51055166b3cfb3558c65bc2446c7d9c3e461c1fe5d10c0bf3",
+        "window": [
+          150000,
+          210000
+        ],
+        "settledSimMs": 210000,
+        "continuousOverlapMs": 0,
+        "matchedPresenceActors": [],
+        "epochs": [
+          1,
+          4
+        ],
+        "sourceSeq": 2,
+        "geometrySha256": "e1c162084899456b3bcbfa1387b6ca77689a1fe41af62d0e289e1b42458bf76f"
+      },
+      "eligibleForRuntimeReward": false,
+      "eligibleForP2P": false
+    },
+    {
+      "version": 1,
+      "source": "synthetic-ground-study-v1",
+      "rewardVersion": "rendezvous-delayed-v1",
+      "featureVersion": "ground-rendezvous-6d-v1",
+      "protocolSha256": "9f5fa1a55fefec850fba1d48131b1768458ad2a71dece020a763f543493c0122",
+      "id": "H3b:18208:0",
+      "seed": 18208,
+      "episode": 0,
+      "actorId": "an",
+      "peerId": "neighbor-1",
+      "actorScope": "synthetic-H3b:18208:an",
+      "context": [
+        1,
+        0.6,
+        0.4129031902690793,
+        0.5728010090751569,
+        1,
+        0.7142857142857143
+      ],
+      "offeredValue": 0.6,
+      "fulfilled": false,
+      "travelUnits": 825.7256310953344,
+      "reward": -1,
+      "proof": {
+        "worldBorn": "2026-07-30T17:46:40.000Z",
+        "sessionId": "07c21af1-3802-4636-862f-228ee4c720db",
+        "goalSha256": "f1fecc110fb7fafff82ce6c504f23d618adbd243e0f09bd8706fa329e0e3a9de",
+        "choiceSharedSha256": "669912027bc092c3f201fadc0e1f62ccc2567802ff4871a435c8cf5a1baddd7f",
+        "choiceSourceSha256": "3be60c4d99bca9af916048c8e71920f3eb3348d874dae896b96bdd48c6c15306",
+        "planSourceSha256": "c9a4aa841830f3dea10a27a2cf44e1dd1560c71860970447c1661b92f04839b2",
+        "finalSharedSha256": "637a2c784e35cfd6cab72a7a5ff8d2f7342a55e09517637401751e8fc3559327",
+        "finalAuthoritySha256": "bc3eed2bc39d728d909b1cc8048204b9d21b36bb56f0c35bcc35dc163e580bfa",
+        "recordsSha256": "b012d0dd4ffbd30451959031998f0593499a468780e3f6d83fbac49d33dfc423",
+        "actorPlanSha256": "cb5fc6fe6467d7ee73b8d6709497289d0f4e05f776eb8954d491040a5c97861f",
+        "peerPlanSha256": "cb5fc6fe6467d7ee73b8d6709497289d0f4e05f776eb8954d491040a5c97861f",
+        "window": [
+          150000,
+          210000
+        ],
+        "settledSimMs": 210000,
+        "continuousOverlapMs": 60000,
+        "matchedPresenceActors": [
+          "neighbor-1"
+        ],
+        "epochs": [
+          1,
+          4
+        ],
+        "sourceSeq": 2,
+        "geometrySha256": "e1c162084899456b3bcbfa1387b6ca77689a1fe41af62d0e289e1b42458bf76f"
+      },
+      "eligibleForRuntimeReward": false,
+      "eligibleForP2P": false
+    },
+    {
+      "version": 1,
+      "source": "synthetic-ground-study-v1",
+      "rewardVersion": "rendezvous-delayed-v1",
+      "featureVersion": "ground-rendezvous-6d-v1",
+      "protocolSha256": "9f5fa1a55fefec850fba1d48131b1768458ad2a71dece020a763f543493c0122",
+      "id": "H3b:18208:1",
+      "seed": 18208,
+      "episode": 1,
+      "actorId": "an",
+      "peerId": "neighbor-1",
+      "actorScope": "synthetic-H3b:18208:an",
+      "context": [
+        1,
+        0.85,
+        0.1632207094703365,
+        0.7490452179483259,
+        0,
+        0.7142857142857143
+      ],
+      "offeredValue": 0.85,
+      "fulfilled": false,
+      "travelUnits": 326.3861718749999,
+      "reward": -0.8263861718749999,
+      "proof": {
+        "worldBorn": "2026-07-30T17:46:50.000Z",
+        "sessionId": "cf14a20e-bca2-48c4-841b-cec6f300a1ca",
+        "goalSha256": "ee5128b07691bfc498fcb5211c9fc5fd781d74e72097ed4ad298aa411768f495",
+        "choiceSharedSha256": "468a8412b33d94d9a68fa2a7a989c85fdb9131af8d53c0ecd8969a740ad0b47d",
+        "choiceSourceSha256": "3eb8b50826bc68fdde16282acfff839c642e5b189fe4e10d0dde03ff4356a0c7",
+        "planSourceSha256": "e3c609c52c84f2c6a3a6152e35bb18dca779645371717f14bef2adf84f245d99",
+        "finalSharedSha256": "e6e9944bad1e86cd37a9ad59c7c0bb5a962d2d65cbbf70793f0bcf28278dcce2",
+        "finalAuthoritySha256": "162514fa19082465dfd948c39d35aa14a9deecf109441bc3f121a7f7a9d385a2",
+        "recordsSha256": "2ce8207bf47985cf11f797ad7e7a0852646005a10be8d58eb5e0c8a3c09ce8e6",
+        "actorPlanSha256": "bde79a79b6e0bf36dbbf9c2d1e7347301a7ae2f4d54f18f2eda3aab88bc6ea98",
+        "peerPlanSha256": "f9f0206ae6c45eea1ec63617dc8298752f10923267be67a06c655ef8a58e0334",
+        "window": [
+          150000,
+          210000
+        ],
+        "settledSimMs": 210000,
+        "continuousOverlapMs": 0,
+        "matchedPresenceActors": [],
+        "epochs": [
+          1,
+          4
+        ],
+        "sourceSeq": 2,
+        "geometrySha256": "e1c162084899456b3bcbfa1387b6ca77689a1fe41af62d0e289e1b42458bf76f"
+      },
+      "eligibleForRuntimeReward": false,
+      "eligibleForP2P": false
+    },
+    {
+      "version": 1,
+      "source": "synthetic-ground-study-v1",
+      "rewardVersion": "rendezvous-delayed-v1",
+      "featureVersion": "ground-rendezvous-6d-v1",
+      "protocolSha256": "9f5fa1a55fefec850fba1d48131b1768458ad2a71dece020a763f543493c0122",
+      "id": "H3b:18208:2",
+      "seed": 18208,
+      "episode": 2,
+      "actorId": "an",
+      "peerId": "neighbor-1",
+      "actorScope": "synthetic-H3b:18208:an",
+      "context": [
+        1,
+        0.6,
+        0.5859729026464939,
+        0.6759129318436928,
+        1,
+        0.7142857142857143
+      ],
+      "offeredValue": 0.6,
+      "fulfilled": true,
+      "travelUnits": 1172.3031331775642,
+      "reward": -0.5723031331775642,
+      "proof": {
+        "worldBorn": "2026-07-30T17:47:00.000Z",
+        "sessionId": "8bd65940-fe84-409c-8a67-1f2617619a0c",
+        "goalSha256": "4584ea04f6b2c0bc3d3c9cd660112889bf96e0c7a4e0e78e4fe86429858e003f",
+        "choiceSharedSha256": "08cc5a9c8ea3f54f3bcc165c17f7a395111c5baa64facafa74fc405e5f73e3ea",
+        "choiceSourceSha256": "9af80795a0cca38954a5baa02d749783dc147ac4a815e6ec99afbfcd664a5e0f",
+        "planSourceSha256": "81ed9afb2448bbae7f535ae086458aee4aa00a945ebe9efdb93347e849d5d0a6",
+        "finalSharedSha256": "3c2282c43502bddb9215e4ac77051f877b600e36fa48bd1c1dc4c4cd047b5a0c",
+        "finalAuthoritySha256": "f2f35ad995e4f1d2d19e9e7f5fcca0686603b0a8b5524e659a060dcef724893a",
+        "recordsSha256": "32cf6668beec45a08b09d0c5790d10ef06b3b98bb0dec59476ee882ce5d49529",
+        "actorPlanSha256": "49e9d52c3f780c70fabc40111499639b90a31753c0598683756085b191be043b",
+        "peerPlanSha256": "49e9d52c3f780c70fabc40111499639b90a31753c0598683756085b191be043b",
+        "window": [
+          150000,
+          210000
+        ],
+        "settledSimMs": 210000,
+        "continuousOverlapMs": 60000,
+        "matchedPresenceActors": [
+          "an",
+          "neighbor-1"
+        ],
+        "epochs": [
+          1,
+          4
+        ],
+        "sourceSeq": 2,
+        "geometrySha256": "e1c162084899456b3bcbfa1387b6ca77689a1fe41af62d0e289e1b42458bf76f"
+      },
+      "eligibleForRuntimeReward": false,
+      "eligibleForP2P": false
+    },
+    {
+      "version": 1,
+      "source": "synthetic-ground-study-v1",
+      "rewardVersion": "rendezvous-delayed-v1",
+      "featureVersion": "ground-rendezvous-6d-v1",
+      "protocolSha256": "9f5fa1a55fefec850fba1d48131b1768458ad2a71dece020a763f543493c0122",
+      "id": "H3b:18208:3",
+      "seed": 18208,
+      "episode": 3,
+      "actorId": "an",
+      "peerId": "neighbor-1",
+      "actorScope": "synthetic-H3b:18208:an",
+      "context": [
+        1,
+        0.35,
+        0.1736098388282339,
+        0.7659621301396867,
+        0,
+        0.7142857142857143
+      ],
+      "offeredValue": 0.35,
+      "fulfilled": false,
+      "travelUnits": 350.1268424182297,
+      "reward": -0.8501268424182298,
+      "proof": {
+        "worldBorn": "2026-07-30T17:47:10.000Z",
+        "sessionId": "be2212d3-c319-4759-8474-68f722050561",
+        "goalSha256": "64684df7aa57a2fe0e584c508f18f5e5f026b990d6ab8ae040a5014ba807a9c4",
+        "choiceSharedSha256": "7eb8be3383b4ff45b29a95e206b0bee7d4bac08b7a302e0d04728692a44d6882",
+        "choiceSourceSha256": "a88eae555f160f0addd06ef7739faec67f4edd574f04dfd5530185bf7c559fb6",
+        "planSourceSha256": "c3a03b5d231c445976e67e5711ce27d5e98b051edab42d0dc4c4d213e5e58cee",
+        "finalSharedSha256": "418ccf0523a9e10078e63fa972906e1b0d72988f31b936dc771c656b24bb7411",
+        "finalAuthoritySha256": "49f13e93e3e89f1dcabbb9fa0e96bccc65b08f5a3e90c0835d598d65c184755f",
+        "recordsSha256": "8cc21f3769eeeafe474190c724a1d9e952885a9c4d2a42b0e87c24d783e4db51",
+        "actorPlanSha256": "7dad83da72df171ac41367e42b7b7db859e9ea95a0b209cd92a766cb9468ec8f",
+        "peerPlanSha256": "29b411d606da514d2bc1fafc28732aad6d9e2ae204186cacdfbbe90f70c0e3fd",
+        "window": [
+          150000,
+          210000
+        ],
+        "settledSimMs": 210000,
+        "continuousOverlapMs": 0,
+        "matchedPresenceActors": [
+          "an"
+        ],
+        "epochs": [
+          1,
+          4
+        ],
+        "sourceSeq": 2,
+        "geometrySha256": "e1c162084899456b3bcbfa1387b6ca77689a1fe41af62d0e289e1b42458bf76f"
+      },
+      "eligibleForRuntimeReward": false,
+      "eligibleForP2P": false
+    },
+    {
+      "version": 1,
+      "source": "synthetic-ground-study-v1",
+      "rewardVersion": "rendezvous-delayed-v1",
+      "featureVersion": "ground-rendezvous-6d-v1",
+      "protocolSha256": "9f5fa1a55fefec850fba1d48131b1768458ad2a71dece020a763f543493c0122",
+      "id": "H3b:18209:0",
+      "seed": 18209,
+      "episode": 0,
+      "actorId": "an",
+      "peerId": "neighbor-1",
+      "actorScope": "synthetic-H3b:18209:an",
+      "context": [
+        1,
+        0.6,
+        0.4165623909220909,
+        0.5208408634149356,
+        1,
+        0.7142857142857143
+      ],
+      "offeredValue": 0.6,
+      "fulfilled": true,
+      "travelUnits": 833.1247818441781,
+      "reward": -0.23312478184417806,
+      "proof": {
+        "worldBorn": "2026-07-30T18:03:20.000Z",
+        "sessionId": "bef50ea0-3771-482a-828e-b20b7de36f94",
+        "goalSha256": "4ca11cab3c5ab2de9f7d5fc0ebcc6380271e735933ab61dd1e53bb68b3a2f4ba",
+        "choiceSharedSha256": "284118327dbd19cc5ab3975b985db10b349a6d321d96f63dd8ecba0a853a4a4e",
+        "choiceSourceSha256": "36deddc971171d8294bdbf8dc889a57bcfb2da8b4f34084be8844a72dfc33115",
+        "planSourceSha256": "81aa0e28310d1f6f029f8146c7ed9952d754190cff1bb3160657aefd3c5f06a0",
+        "finalSharedSha256": "6d3ee9968868a1ec96e13104ca447d646238af505e68fb6f548ac1456ecd4972",
+        "finalAuthoritySha256": "9311c556e016a8b9d2862a6837c066ab76f8997107f1a037c54ca4096cd6c1fa",
+        "recordsSha256": "9631e81762b9da321125c4b13c8bd4757f6da1ca6a1efbefc4b25346b89dd283",
+        "actorPlanSha256": "ab3cab8b1109c0f8ec7ef764736860c7122a7732757a96f23f09b07ea297a5fe",
+        "peerPlanSha256": "ab3cab8b1109c0f8ec7ef764736860c7122a7732757a96f23f09b07ea297a5fe",
+        "window": [
+          150000,
+          210000
+        ],
+        "settledSimMs": 210000,
+        "continuousOverlapMs": 60000,
+        "matchedPresenceActors": [
+          "an",
+          "neighbor-1"
+        ],
+        "epochs": [
+          1,
+          4
+        ],
+        "sourceSeq": 2,
+        "geometrySha256": "e1c162084899456b3bcbfa1387b6ca77689a1fe41af62d0e289e1b42458bf76f"
+      },
+      "eligibleForRuntimeReward": false,
+      "eligibleForP2P": false
+    },
+    {
+      "version": 1,
+      "source": "synthetic-ground-study-v1",
+      "rewardVersion": "rendezvous-delayed-v1",
+      "featureVersion": "ground-rendezvous-6d-v1",
+      "protocolSha256": "9f5fa1a55fefec850fba1d48131b1768458ad2a71dece020a763f543493c0122",
+      "id": "H3b:18209:1",
+      "seed": 18209,
+      "episode": 1,
+      "actorId": "an",
+      "peerId": "neighbor-1",
+      "actorScope": "synthetic-H3b:18209:an",
+      "context": [
+        1,
+        0.85,
+        0.6251274270387788,
+        0.46593613719864413,
+        0,
+        0.7142857142857143
+      ],
+      "offeredValue": 0.85,
+      "fulfilled": false,
+      "travelUnits": 1250.2548540775606,
+      "reward": -1,
+      "proof": {
+        "worldBorn": "2026-07-30T18:03:30.000Z",
+        "sessionId": "b4c4ae7f-f1b7-48b7-81a3-bc2e02f81665",
+        "goalSha256": "1e5ae3a199a26a7cedd85c9209e1d117d3e868b52742f70ee0923067f1c9b235",
+        "choiceSharedSha256": "c11427a817da614d3396940ada9e840cf8d8167f3082332710827839c4ae28db",
+        "choiceSourceSha256": "ccd973e650dcfa7dabddd4aeaf1d7eae2f4c68a86d9d4a3e6dde2193cd88337a",
+        "planSourceSha256": "ef246dddb6da9bc8e68d238fa773ce99bf28fb574ca0434b7372a01f5558c30b",
+        "finalSharedSha256": "2a6b1e3249a551174b06832f04fd8657bda3705301e1eea2ed1252f18c980bc2",
+        "finalAuthoritySha256": "14a43543383c2c3ed7ae5eac83893591b9fa6b77e9d16ffe01569d06518a5ac1",
+        "recordsSha256": "be7e7401df4902558eda5176b7c2c81ba6317ccf4fd177ba1a4410821b8c5adb",
+        "actorPlanSha256": "c0812716560da6d7d87af4a6073d8c3a1b7d198aa9c36931daf7bce10d089aba",
+        "peerPlanSha256": "5d3bd198f8caef7f3c5bc471c0dd67363bd2f90f9af0ff4bebab71cb406ccd95",
+        "window": [
+          150000,
+          210000
+        ],
+        "settledSimMs": 210000,
+        "continuousOverlapMs": 0,
+        "matchedPresenceActors": [
+          "an"
+        ],
+        "epochs": [
+          1,
+          4
+        ],
+        "sourceSeq": 2,
+        "geometrySha256": "e1c162084899456b3bcbfa1387b6ca77689a1fe41af62d0e289e1b42458bf76f"
+      },
+      "eligibleForRuntimeReward": false,
+      "eligibleForP2P": false
+    },
+    {
+      "version": 1,
+      "source": "synthetic-ground-study-v1",
+      "rewardVersion": "rendezvous-delayed-v1",
+      "featureVersion": "ground-rendezvous-6d-v1",
+      "protocolSha256": "9f5fa1a55fefec850fba1d48131b1768458ad2a71dece020a763f543493c0122",
+      "id": "H3b:18209:2",
+      "seed": 18209,
+      "episode": 2,
+      "actorId": "an",
+      "peerId": "neighbor-1",
+      "actorScope": "synthetic-H3b:18209:an",
+      "context": [
+        1,
+        0.85,
+        0.6549905118424547,
+        0.302499814526264,
+        0,
+        0.7142857142857143
+      ],
+      "offeredValue": 0.85,
+      "fulfilled": false,
+      "travelUnits": 1312.1632632428173,
+      "reward": -1,
+      "proof": {
+        "worldBorn": "2026-07-30T18:03:40.000Z",
+        "sessionId": "16ed176d-36da-4408-87df-4e621025c8e0",
+        "goalSha256": "f5f1ba00c539e0610486be3a7a86db2c2d1c26c60e407671af81a66c720d4b32",
+        "choiceSharedSha256": "822c16bc9f3f0f664a2d983ab29f2b56fb4a43b6bc7a342594fba16263d9464c",
+        "choiceSourceSha256": "a89a0c7398a85f33750c3d258eabf3ea31d61d96d6f2a9ab61a87db60d001ab4",
+        "planSourceSha256": "26e598ddf2ef356226ef2e6c7c8da8770c6b68654e3181910a9f8563f23ce2a6",
+        "finalSharedSha256": "297eb6956b9f41a64337372e6da7ec07cde166124f5a567d82a203fe7e118b90",
+        "finalAuthoritySha256": "5acb487e3e693a5b4fb2b05fd52a4a4c0f6b558ca69de2a8b872a129a53ca1f4",
+        "recordsSha256": "f91db141ae2dbcf51e9c4db111733d943e268fb48b9b59b5fb2d224efc0584d1",
+        "actorPlanSha256": "8eb7ea3d5d69867aeadbac15e2099d3e43fc7bff11051f2e7a9f0a1058c8e19c",
+        "peerPlanSha256": "527cfb87a8863ef5475f79c33901b25ec1cf31a20fce1b76979ee82aa30c720e",
+        "window": [
+          150000,
+          210000
+        ],
+        "settledSimMs": 210000,
+        "continuousOverlapMs": 0,
+        "matchedPresenceActors": [
+          "an"
+        ],
+        "epochs": [
+          1,
+          4
+        ],
+        "sourceSeq": 2,
+        "geometrySha256": "e1c162084899456b3bcbfa1387b6ca77689a1fe41af62d0e289e1b42458bf76f"
+      },
+      "eligibleForRuntimeReward": false,
+      "eligibleForP2P": false
+    },
+    {
+      "version": 1,
+      "source": "synthetic-ground-study-v1",
+      "rewardVersion": "rendezvous-delayed-v1",
+      "featureVersion": "ground-rendezvous-6d-v1",
+      "protocolSha256": "9f5fa1a55fefec850fba1d48131b1768458ad2a71dece020a763f543493c0122",
+      "id": "H3b:18209:3",
+      "seed": 18209,
+      "episode": 3,
+      "actorId": "an",
+      "peerId": "neighbor-1",
+      "actorScope": "synthetic-H3b:18209:an",
+      "context": [
+        1,
+        0.35,
+        0.42024591090559804,
+        0.5962929229833271,
+        1,
+        0.7142857142857143
+      ],
+      "offeredValue": 0.35,
+      "fulfilled": true,
+      "travelUnits": 840.4859860195929,
+      "reward": -0.4904859860195929,
+      "proof": {
+        "worldBorn": "2026-07-30T18:03:50.000Z",
+        "sessionId": "632cebed-20e3-4be9-8e75-2089a2b22657",
+        "goalSha256": "62b375eb5b90c097e81d6a4655f21d1edb7ef86914987daf6a3c6a8d27ab5c1c",
+        "choiceSharedSha256": "2cf8a599bf983b683a2b12795c4d8a9aee540e760e15930191d7a4253504de65",
+        "choiceSourceSha256": "13c127c90465272861848c8e921dfd339b67628084fb7cafdec362f70751db6f",
+        "planSourceSha256": "5775fb6b8ada69954f86d02c5c16ea73a9a4347cc3cd131683f444ead81a6f75",
+        "finalSharedSha256": "49f0700ca50f630d50ae26fbb181e9a33b4b512183e0b9f54d89ace282d7306b",
+        "finalAuthoritySha256": "e2c9c20e8e531f662d28d4ae0b5628c576270cc4cce999d930299a1163c4a4ff",
+        "recordsSha256": "ce4570ee15815d58fd51c3c4e6ca654728c3b621b07935bfa6ad935621bf9199",
+        "actorPlanSha256": "1f73d1379ef8a15b820243343a678125145a99fd3fe220dd7e03ccc54fe6045b",
+        "peerPlanSha256": "1f73d1379ef8a15b820243343a678125145a99fd3fe220dd7e03ccc54fe6045b",
+        "window": [
+          150000,
+          210000
+        ],
+        "settledSimMs": 210000,
+        "continuousOverlapMs": 60000,
+        "matchedPresenceActors": [
+          "an",
+          "neighbor-1"
+        ],
+        "epochs": [
+          1,
+          4
+        ],
+        "sourceSeq": 2,
+        "geometrySha256": "e1c162084899456b3bcbfa1387b6ca77689a1fe41af62d0e289e1b42458bf76f"
+      },
+      "eligibleForRuntimeReward": false,
+      "eligibleForP2P": false
+    },
+    {
+      "version": 1,
+      "source": "synthetic-ground-study-v1",
+      "rewardVersion": "rendezvous-delayed-v1",
+      "featureVersion": "ground-rendezvous-6d-v1",
+      "protocolSha256": "9f5fa1a55fefec850fba1d48131b1768458ad2a71dece020a763f543493c0122",
+      "id": "H3b:18210:0",
+      "seed": 18210,
+      "episode": 0,
+      "actorId": "an",
+      "peerId": "neighbor-1",
+      "actorScope": "synthetic-H3b:18210:an",
+      "context": [
+        1,
+        0.6,
+        0.1736098388282339,
+        0.7659621301396867,
+        1,
+        0.7142857142857143
+      ],
+      "offeredValue": 0.6,
+      "fulfilled": true,
+      "travelUnits": 350.1268424182297,
+      "reward": 0.24987315758177026,
+      "proof": {
+        "worldBorn": "2026-07-30T18:20:00.000Z",
+        "sessionId": "08bfa193-4c1a-4cb3-8b02-610310955b05",
+        "goalSha256": "65a10e116360ad6f066c847c0aee0aa563b7f2e0f9759d61be6a56ac9ec1843e",
+        "choiceSharedSha256": "af4c8f92ce035d6b42067b698a6a9aa91bd5ca00bf873b9eb13007c46c32548f",
+        "choiceSourceSha256": "048286292e44a43303c1b1251b4986007bc5788cab796913952aca5b2e726153",
+        "planSourceSha256": "8cfddf09de05c68735bb75444dfc26a3567792e104a1d4893bef746b2a0357db",
+        "finalSharedSha256": "19b85424cd903ee037401116551dfcfbe9dbf4bac3f85a080553549ac014ca25",
+        "finalAuthoritySha256": "6763917bbc4c1088567980b5b6e43c3ef9a64099859c45445132641eb76e89af",
+        "recordsSha256": "4473d8ea58ffa7487319a20c137bf8aac2e49b50bd6f74c4645c1af6e157af81",
+        "actorPlanSha256": "3b5f98e343f859188acdabf8667f55d3fa9146867121705b6140e27c3485b05f",
+        "peerPlanSha256": "3b5f98e343f859188acdabf8667f55d3fa9146867121705b6140e27c3485b05f",
+        "window": [
+          150000,
+          210000
+        ],
+        "settledSimMs": 210000,
+        "continuousOverlapMs": 60000,
+        "matchedPresenceActors": [
+          "an",
+          "neighbor-1"
+        ],
+        "epochs": [
+          1,
+          4
+        ],
+        "sourceSeq": 2,
+        "geometrySha256": "e1c162084899456b3bcbfa1387b6ca77689a1fe41af62d0e289e1b42458bf76f"
+      },
+      "eligibleForRuntimeReward": false,
+      "eligibleForP2P": false
+    },
+    {
+      "version": 1,
+      "source": "synthetic-ground-study-v1",
+      "rewardVersion": "rendezvous-delayed-v1",
+      "featureVersion": "ground-rendezvous-6d-v1",
+      "protocolSha256": "9f5fa1a55fefec850fba1d48131b1768458ad2a71dece020a763f543493c0122",
+      "id": "H3b:18210:1",
+      "seed": 18210,
+      "episode": 1,
+      "actorId": "an",
+      "peerId": "neighbor-1",
+      "actorScope": "synthetic-H3b:18210:an",
+      "context": [
+        1,
+        0.85,
+        0.5859729026464939,
+        0.6759129318436928,
+        0,
+        0.7142857142857143
+      ],
+      "offeredValue": 0.85,
+      "fulfilled": false,
+      "travelUnits": 1172.3031331775642,
+      "reward": -1,
+      "proof": {
+        "worldBorn": "2026-07-30T18:20:10.000Z",
+        "sessionId": "9278625a-af44-4669-8712-12dbd8c433d8",
+        "goalSha256": "78c92d3a6dc1d34aad8ef79c9763f244ef0572f699a4a63745af034ebacc1d47",
+        "choiceSharedSha256": "a954fda056bf0e537a1640a18828d72c26491e5ad65fa3b5b59747adca6cadf2",
+        "choiceSourceSha256": "1bffbcffcd3c27cad632af9b59cb90a5a9cfc951f2a66088d8c2133fcf050711",
+        "planSourceSha256": "cde7f752e6dcacab1ecabbf655597e89963a45daece8d2d45c3b30d51aa353ae",
+        "finalSharedSha256": "e3fb4358e0768995074d2199a18dd24f3b1977a61cb5c479f8d2699cfed4d09d",
+        "finalAuthoritySha256": "7ff65e5e25da6b62451a993318ee72a66c8f5eb3dbed93266fe0a56ec0a565ce",
+        "recordsSha256": "f5b63ee575e9df043294eb411d0c7038aa852e1ca0fc8a514f76c4b14eb6b0a5",
+        "actorPlanSha256": "ba02a825e8e867ef23a076976652096a5b54205d5e2a69429a4b3e0670706bcd",
+        "peerPlanSha256": "83ebe3e6359cab89027b8d08e9a7c07458c94dacf4402d4630521997883495a6",
+        "window": [
+          150000,
+          210000
+        ],
+        "settledSimMs": 210000,
+        "continuousOverlapMs": 0,
+        "matchedPresenceActors": [
+          "an"
+        ],
+        "epochs": [
+          1,
+          4
+        ],
+        "sourceSeq": 2,
+        "geometrySha256": "e1c162084899456b3bcbfa1387b6ca77689a1fe41af62d0e289e1b42458bf76f"
+      },
+      "eligibleForRuntimeReward": false,
+      "eligibleForP2P": false
+    },
+    {
+      "version": 1,
+      "source": "synthetic-ground-study-v1",
+      "rewardVersion": "rendezvous-delayed-v1",
+      "featureVersion": "ground-rendezvous-6d-v1",
+      "protocolSha256": "9f5fa1a55fefec850fba1d48131b1768458ad2a71dece020a763f543493c0122",
+      "id": "H3b:18210:2",
+      "seed": 18210,
+      "episode": 2,
+      "actorId": "an",
+      "peerId": "neighbor-1",
+      "actorScope": "synthetic-H3b:18210:an",
+      "context": [
+        1,
+        0.6,
+        0.1632207094703365,
+        0.7490452179483259,
+        1,
+        0.7142857142857143
+      ],
+      "offeredValue": 0.6,
+      "fulfilled": false,
+      "travelUnits": 326.3861718749999,
+      "reward": -0.8263861718749999,
+      "proof": {
+        "worldBorn": "2026-07-30T18:20:20.000Z",
+        "sessionId": "f21bb343-ae61-41a8-85ad-5351c829bea8",
+        "goalSha256": "b457e2f44229c59e31ed5357530161a3988911428dd3e2e34a2bc89c7bef5af3",
+        "choiceSharedSha256": "eed5af173297e52ced7551ed2fdc44987d6324e5755a3c986913c7a1e73ac36c",
+        "choiceSourceSha256": "998343e71d5003981a0f9a01f1c107fc4adc5f0ae7628085af52a3cffe6b8f2d",
+        "planSourceSha256": "c029257496f20a431aeaf50b99fdcd32f3ffa71d0d5c974d24aef390b3fb1291",
+        "finalSharedSha256": "1d6fec2294e34d86595d00dd06bce9c2903138aa6e3d84c516c63c08df352cf8",
+        "finalAuthoritySha256": "d1f5d241ecde5ee2778d4b221e500744a6853af4893352908f00910ee565d4f1",
+        "recordsSha256": "203881d699d68adad5f13aeceff4cdef34293d0b6e79422b5f14a2a37c58a471",
+        "actorPlanSha256": "92d56e00ef32ac91bb16204ffff80536b626b13100018e66da969fa035cbdda6",
+        "peerPlanSha256": "92d56e00ef32ac91bb16204ffff80536b626b13100018e66da969fa035cbdda6",
+        "window": [
+          150000,
+          210000
+        ],
+        "settledSimMs": 210000,
+        "continuousOverlapMs": 60000,
+        "matchedPresenceActors": [
+          "neighbor-1"
+        ],
+        "epochs": [
+          1,
+          4
+        ],
+        "sourceSeq": 2,
+        "geometrySha256": "e1c162084899456b3bcbfa1387b6ca77689a1fe41af62d0e289e1b42458bf76f"
+      },
+      "eligibleForRuntimeReward": false,
+      "eligibleForP2P": false
+    },
+    {
+      "version": 1,
+      "source": "synthetic-ground-study-v1",
+      "rewardVersion": "rendezvous-delayed-v1",
+      "featureVersion": "ground-rendezvous-6d-v1",
+      "protocolSha256": "9f5fa1a55fefec850fba1d48131b1768458ad2a71dece020a763f543493c0122",
+      "id": "H3b:18210:3",
+      "seed": 18210,
+      "episode": 3,
+      "actorId": "an",
+      "peerId": "neighbor-1",
+      "actorScope": "synthetic-H3b:18210:an",
+      "context": [
+        1,
+        0.85,
+        0.4129031902690793,
+        0.5728010090751569,
+        0,
+        0.7142857142857143
+      ],
+      "offeredValue": 0.85,
+      "fulfilled": false,
+      "travelUnits": 825.7256310953344,
+      "reward": -1,
+      "proof": {
+        "worldBorn": "2026-07-30T18:20:30.000Z",
+        "sessionId": "c374b98e-f815-446f-83cb-07a515e9fc2f",
+        "goalSha256": "086874447f33dd48640863019cb10e86258166188ab77c8b2ad44b59b5c3aeed",
+        "choiceSharedSha256": "1e3216e416ffe7da64c159d4be08defbac54fe722c259e9e52ede890acbff662",
+        "choiceSourceSha256": "439d1917a925c8e1b25d7cebf469eca47917343e509eb91231242b698e3ba83a",
+        "planSourceSha256": "57c061fef8dc3b7933eba975e51556961c3307bad7bd495f8c05d8a67b29517d",
+        "finalSharedSha256": "bf010f49eff99f5a85b2fadf08aecc4318999f6dcaf64ffc0e5e4c70b50d19f2",
+        "finalAuthoritySha256": "18d1351cd76e0960eca3206cea1c50342c609d5a3c335b5d538fedcd1ce84748",
+        "recordsSha256": "5dc4329c9f8795b217296566a1fb5a6da9c0dfcb0f9d30b64766eaca186675db",
+        "actorPlanSha256": "033864a856ef1f94aff040c2bad1433deb20355e941955cff79128ee7ce2ce5d",
+        "peerPlanSha256": "6f64f0f35f26615da0f2008191bb581560e88356ebf1d6e9f6294b1b73437e40",
+        "window": [
+          150000,
+          210000
+        ],
+        "settledSimMs": 210000,
+        "continuousOverlapMs": 0,
+        "matchedPresenceActors": [],
+        "epochs": [
+          1,
+          4
+        ],
+        "sourceSeq": 2,
+        "geometrySha256": "e1c162084899456b3bcbfa1387b6ca77689a1fe41af62d0e289e1b42458bf76f"
+      },
+      "eligibleForRuntimeReward": false,
+      "eligibleForP2P": false
+    },
+    {
+      "version": 1,
+      "source": "synthetic-ground-study-v1",
+      "rewardVersion": "rendezvous-delayed-v1",
+      "featureVersion": "ground-rendezvous-6d-v1",
+      "protocolSha256": "9f5fa1a55fefec850fba1d48131b1768458ad2a71dece020a763f543493c0122",
+      "id": "H3b:18211:0",
+      "seed": 18211,
+      "episode": 0,
+      "actorId": "an",
+      "peerId": "neighbor-1",
+      "actorScope": "synthetic-H3b:18211:an",
+      "context": [
+        1,
+        0.6,
+        0.42024591090559804,
+        0.5962929229833271,
+        1,
+        0.7142857142857143
+      ],
+      "offeredValue": 0.6,
+      "fulfilled": true,
+      "travelUnits": 840.4859860195929,
+      "reward": -0.24048598601959292,
+      "proof": {
+        "worldBorn": "2026-07-30T18:36:40.000Z",
+        "sessionId": "3a12f104-fc00-4abd-87cd-358846866256",
+        "goalSha256": "999b237be7185669f64ce6788bfdd3a2cb732d1384ed24cb4dd393c3216a4337",
+        "choiceSharedSha256": "f0af8c846e9858bc6f62f3a810f479604f21916aac69e10a259ff9977a7c8359",
+        "choiceSourceSha256": "167374eb51eeab345c859798bdb072efa34cc57d6bfbfab9007cd20cfea1317a",
+        "planSourceSha256": "eb26fb4609302c829ab4d08bd68edc981f38cadd8fe7709de03d32051f3bc205",
+        "finalSharedSha256": "3d8c67ff2ba3c3525ed1742fb5dcb7ba3f45331584f0242718addbf3e7707e83",
+        "finalAuthoritySha256": "520fb38765d9ffe0c0dcdcfe554ff592b5b05a844dbf369360cc88c2b9210dd0",
+        "recordsSha256": "10bc0d6c124e98b3dd9b8b4962b4c9cd4460192071d71bc7ecec7cdf3e4ee2ec",
+        "actorPlanSha256": "1ea9868fb4d4e91bd3bab889c879dd7a737098ef58473299996833a7a03ead65",
+        "peerPlanSha256": "1ea9868fb4d4e91bd3bab889c879dd7a737098ef58473299996833a7a03ead65",
+        "window": [
+          150000,
+          210000
+        ],
+        "settledSimMs": 210000,
+        "continuousOverlapMs": 60000,
+        "matchedPresenceActors": [
+          "an",
+          "neighbor-1"
+        ],
+        "epochs": [
+          1,
+          4
+        ],
+        "sourceSeq": 2,
+        "geometrySha256": "e1c162084899456b3bcbfa1387b6ca77689a1fe41af62d0e289e1b42458bf76f"
+      },
+      "eligibleForRuntimeReward": false,
+      "eligibleForP2P": false
+    },
+    {
+      "version": 1,
+      "source": "synthetic-ground-study-v1",
+      "rewardVersion": "rendezvous-delayed-v1",
+      "featureVersion": "ground-rendezvous-6d-v1",
+      "protocolSha256": "9f5fa1a55fefec850fba1d48131b1768458ad2a71dece020a763f543493c0122",
+      "id": "H3b:18211:1",
+      "seed": 18211,
+      "episode": 1,
+      "actorId": "an",
+      "peerId": "neighbor-1",
+      "actorScope": "synthetic-H3b:18211:an",
+      "context": [
+        1,
+        0.35,
+        0.6549905118424547,
+        0.302499814526264,
+        0,
+        0.7142857142857143
+      ],
+      "offeredValue": 0.35,
+      "fulfilled": false,
+      "travelUnits": 1312.1632632428173,
+      "reward": -1,
+      "proof": {
+        "worldBorn": "2026-07-30T18:36:50.000Z",
+        "sessionId": "2c48602a-1635-4448-80fd-8127ab60163e",
+        "goalSha256": "d6d4df1f2a54c43b9c19d19ef3c71c01384d0b3de54fa7804eefdb4e3384ef16",
+        "choiceSharedSha256": "43f204b3c090de4e8d5f7701658275a8d4b19b3f0817518cd6232ba834ee7f7b",
+        "choiceSourceSha256": "731e68c9d26c7dae9d70311669ed67b5b4252fc51e8ba515b3a0e1bdb9eeb864",
+        "planSourceSha256": "3fcbbfc7a0a9c21d30c5c342641c265706d77bad4d871ad022770d1d02a5c932",
+        "finalSharedSha256": "d4c62f32603647b34ea0b683edb62377ccc6d8fff8694f65c8ba6f3c265a6d0a",
+        "finalAuthoritySha256": "f924daa953224c6f4f68fd8a0979b35cdd811d4e0835201f39c6043b2ddae89d",
+        "recordsSha256": "9f2610da5e4614eebad2ffb9c40cda7c48d6cbc94ca4b0b3a70abb8d4e87ab9e",
+        "actorPlanSha256": "53e26ab0149a17d52c7a3d287563aeedff2b4c4fa0825875e183485d1257a46f",
+        "peerPlanSha256": "f545e47d72b89b8b8a9e3c3a99b0beb592c633e7bdbdd0746c9b32d53cdc1454",
+        "window": [
+          150000,
+          210000
+        ],
+        "settledSimMs": 210000,
+        "continuousOverlapMs": 0,
+        "matchedPresenceActors": [
+          "an"
+        ],
+        "epochs": [
+          1,
+          4
+        ],
+        "sourceSeq": 2,
+        "geometrySha256": "e1c162084899456b3bcbfa1387b6ca77689a1fe41af62d0e289e1b42458bf76f"
+      },
+      "eligibleForRuntimeReward": false,
+      "eligibleForP2P": false
+    },
+    {
+      "version": 1,
+      "source": "synthetic-ground-study-v1",
+      "rewardVersion": "rendezvous-delayed-v1",
+      "featureVersion": "ground-rendezvous-6d-v1",
+      "protocolSha256": "9f5fa1a55fefec850fba1d48131b1768458ad2a71dece020a763f543493c0122",
+      "id": "H3b:18211:2",
+      "seed": 18211,
+      "episode": 2,
+      "actorId": "an",
+      "peerId": "neighbor-1",
+      "actorScope": "synthetic-H3b:18211:an",
+      "context": [
+        1,
+        0.35,
+        0.6251274270387788,
+        0.46593613719864413,
+        0,
+        0.7142857142857143
+      ],
+      "offeredValue": 0.35,
+      "fulfilled": false,
+      "travelUnits": 1250.2548540775606,
+      "reward": -1,
+      "proof": {
+        "worldBorn": "2026-07-30T18:37:00.000Z",
+        "sessionId": "b1710d13-12f5-42ba-8207-ac06b0ac3387",
+        "goalSha256": "1b17bb71d960c523ecb6e0e936e225fa101b41dcd7bef78dcaae12182531cd53",
+        "choiceSharedSha256": "7129f764c04c39b0818e1f91e084a8da73a47c5e953586a45d7e2bc856250c9f",
+        "choiceSourceSha256": "630c7d54a762d3b71acb3cf0f6fd223ce5cad259ac461da80731218a28daedff",
+        "planSourceSha256": "4622d93117c78d680f3bccb6f3ca7a4f663c09bfdbb6d7659f0042f1c2300573",
+        "finalSharedSha256": "745f4151b0e786bc2fc331673f2b1a0f80a7e14fe29e3f0e92558b5741be03be",
+        "finalAuthoritySha256": "fd32a9da461ca2f173f493c8ccd9e6300a63087ad1da477483a4f45fbbbc9777",
+        "recordsSha256": "51f4365909550f4c4cf6a1f91b336c7413c5c90ae8258daf0dd2a6475f6bc751",
+        "actorPlanSha256": "9aacfba9b5cda007b75ef23aad68cfb68d27ff30ead18404f6aa613d86317e24",
+        "peerPlanSha256": "9fdcbc12b4d571041acc57c3d4798f23f18bde3cee90eaf8af5d5e154b9477fd",
+        "window": [
+          150000,
+          210000
+        ],
+        "settledSimMs": 210000,
+        "continuousOverlapMs": 0,
+        "matchedPresenceActors": [
+          "an"
+        ],
+        "epochs": [
+          1,
+          4
+        ],
+        "sourceSeq": 2,
+        "geometrySha256": "e1c162084899456b3bcbfa1387b6ca77689a1fe41af62d0e289e1b42458bf76f"
+      },
+      "eligibleForRuntimeReward": false,
+      "eligibleForP2P": false
+    },
+    {
+      "version": 1,
+      "source": "synthetic-ground-study-v1",
+      "rewardVersion": "rendezvous-delayed-v1",
+      "featureVersion": "ground-rendezvous-6d-v1",
+      "protocolSha256": "9f5fa1a55fefec850fba1d48131b1768458ad2a71dece020a763f543493c0122",
+      "id": "H3b:18211:3",
+      "seed": 18211,
+      "episode": 3,
+      "actorId": "an",
+      "peerId": "neighbor-1",
+      "actorScope": "synthetic-H3b:18211:an",
+      "context": [
+        1,
+        0.85,
+        0.4165623909220909,
+        0.5208408634149356,
+        1,
+        0.7142857142857143
+      ],
+      "offeredValue": 0.85,
+      "fulfilled": true,
+      "travelUnits": 833.1247818441781,
+      "reward": 0.016875218155821936,
+      "proof": {
+        "worldBorn": "2026-07-30T18:37:10.000Z",
+        "sessionId": "08855cc1-3278-4bcb-86d6-a0ee9337158a",
+        "goalSha256": "09f58381fa0f7ab78ee6fe27c2c11389d75e4a4b55fb0858a8542cb8f4bd8419",
+        "choiceSharedSha256": "11d78de1e6210b5d38250456f305ceb2226dc353ead87cc819022aca6e8483a8",
+        "choiceSourceSha256": "23213215ea91a6e0993c7d596543aa48e2e83c9b1ec5b5ae9db4aa1b7802e328",
+        "planSourceSha256": "174a042992af9e386f288255f59f3e94e31a0ee8e036a74343813dc236de0227",
+        "finalSharedSha256": "1bb27d6a67031ee5b04cd9390f7b395b662f60d546d435899f7ee86e669e10c5",
+        "finalAuthoritySha256": "9e1f28f72bd953dc273c1fb8b97435696758e4106b9c9243737df88e429a5ef8",
+        "recordsSha256": "2cf9a9d29a83a969ef78c8816f2a523f207c0bbaeeaeb9bf107b092df90c762f",
+        "actorPlanSha256": "8c2479b54d0139a255bef332fc28747acc609778c82fc82d3f0623f3c86f470f",
+        "peerPlanSha256": "8c2479b54d0139a255bef332fc28747acc609778c82fc82d3f0623f3c86f470f",
+        "window": [
+          150000,
+          210000
+        ],
+        "settledSimMs": 210000,
+        "continuousOverlapMs": 60000,
+        "matchedPresenceActors": [
+          "an",
+          "neighbor-1"
+        ],
+        "epochs": [
+          1,
+          4
+        ],
+        "sourceSeq": 2,
+        "geometrySha256": "e1c162084899456b3bcbfa1387b6ca77689a1fe41af62d0e289e1b42458bf76f"
+      },
+      "eligibleForRuntimeReward": false,
+      "eligibleForP2P": false
+    }
+  ],
+  "rows": [
+    {
+      "seed": 18200,
+      "episode": 0,
+      "attendReward": -1,
+      "fulfilled": false,
+      "candidate": "decline",
+      "heuristic": "decline"
+    },
+    {
+      "seed": 18200,
+      "episode": 1,
+      "attendReward": -0.8263861718749999,
+      "fulfilled": false,
+      "candidate": "decline",
+      "heuristic": "attend"
+    },
+    {
+      "seed": 18200,
+      "episode": 2,
+      "attendReward": -1,
+      "fulfilled": false,
+      "candidate": "decline",
+      "heuristic": "decline"
+    },
+    {
+      "seed": 18200,
+      "episode": 3,
+      "attendReward": 0.24987315758177026,
+      "fulfilled": true,
+      "candidate": "decline",
+      "heuristic": "attend"
+    },
+    {
+      "seed": 18201,
+      "episode": 0,
+      "attendReward": -1,
+      "fulfilled": false,
+      "candidate": "decline",
+      "heuristic": "decline"
+    },
+    {
+      "seed": 18201,
+      "episode": 1,
+      "attendReward": -0.9010742871257603,
+      "fulfilled": true,
+      "candidate": "decline",
+      "heuristic": "decline"
+    },
+    {
+      "seed": 18201,
+      "episode": 2,
+      "attendReward": -1,
+      "fulfilled": false,
+      "candidate": "decline",
+      "heuristic": "decline"
+    },
+    {
+      "seed": 18201,
+      "episode": 3,
+      "attendReward": -0.24048598601959292,
+      "fulfilled": true,
+      "candidate": "decline",
+      "heuristic": "decline"
+    },
+    {
+      "seed": 18202,
+      "episode": 0,
+      "attendReward": -0.3223031331775642,
+      "fulfilled": true,
+      "candidate": "decline",
+      "heuristic": "decline"
+    },
+    {
+      "seed": 18202,
+      "episode": 1,
+      "attendReward": -0.8501268424182298,
+      "fulfilled": false,
+      "candidate": "decline",
+      "heuristic": "decline"
+    },
+    {
+      "seed": 18202,
+      "episode": 2,
+      "attendReward": -1,
+      "fulfilled": false,
+      "candidate": "decline",
+      "heuristic": "decline"
+    },
+    {
+      "seed": 18202,
+      "episode": 3,
+      "attendReward": -0.8263861718749999,
+      "fulfilled": false,
+      "candidate": "decline",
+      "heuristic": "decline"
+    },
+    {
+      "seed": 18203,
+      "episode": 0,
+      "attendReward": -0.45998102368490656,
+      "fulfilled": true,
+      "candidate": "decline",
+      "heuristic": "decline"
+    },
+    {
+      "seed": 18203,
+      "episode": 1,
+      "attendReward": -1,
+      "fulfilled": false,
+      "candidate": "decline",
+      "heuristic": "decline"
+    },
+    {
+      "seed": 18203,
+      "episode": 2,
+      "attendReward": -1,
+      "fulfilled": false,
+      "candidate": "decline",
+      "heuristic": "decline"
+    },
+    {
+      "seed": 18203,
+      "episode": 3,
+      "attendReward": -0.4010742871257603,
+      "fulfilled": true,
+      "candidate": "decline",
+      "heuristic": "decline"
+    },
+    {
+      "seed": 18204,
+      "episode": 0,
+      "attendReward": -1,
+      "fulfilled": false,
+      "candidate": "decline",
+      "heuristic": "decline"
+    },
+    {
+      "seed": 18204,
+      "episode": 1,
+      "attendReward": -0.23312478184417806,
+      "fulfilled": true,
+      "candidate": "decline",
+      "heuristic": "decline"
+    },
+    {
+      "seed": 18204,
+      "episode": 2,
+      "attendReward": -1,
+      "fulfilled": false,
+      "candidate": "decline",
+      "heuristic": "decline"
+    },
+    {
+      "seed": 18204,
+      "episode": 3,
+      "attendReward": -0.7099810236849066,
+      "fulfilled": true,
+      "candidate": "decline",
+      "heuristic": "decline"
+    },
+    {
+      "seed": 18205,
+      "episode": 0,
+      "attendReward": -0.8263861718749999,
+      "fulfilled": false,
+      "candidate": "decline",
+      "heuristic": "decline"
+    },
+    {
+      "seed": 18205,
+      "episode": 1,
+      "attendReward": -1,
+      "fulfilled": false,
+      "candidate": "decline",
+      "heuristic": "attend"
+    },
+    {
+      "seed": 18205,
+      "episode": 2,
+      "attendReward": -0.8501268424182298,
+      "fulfilled": false,
+      "candidate": "decline",
+      "heuristic": "decline"
+    },
+    {
+      "seed": 18205,
+      "episode": 3,
+      "attendReward": -0.3223031331775642,
+      "fulfilled": true,
+      "candidate": "decline",
+      "heuristic": "decline"
+    },
+    {
+      "seed": 18206,
+      "episode": 0,
+      "attendReward": -0.4904859860195929,
+      "fulfilled": true,
+      "candidate": "decline",
+      "heuristic": "decline"
+    },
+    {
+      "seed": 18206,
+      "episode": 1,
+      "attendReward": -1,
+      "fulfilled": false,
+      "candidate": "decline",
+      "heuristic": "decline"
+    },
+    {
+      "seed": 18206,
+      "episode": 2,
+      "attendReward": -0.4010742871257603,
+      "fulfilled": true,
+      "candidate": "decline",
+      "heuristic": "decline"
+    },
+    {
+      "seed": 18206,
+      "episode": 3,
+      "attendReward": -1,
+      "fulfilled": false,
+      "candidate": "decline",
+      "heuristic": "decline"
+    },
+    {
+      "seed": 18207,
+      "episode": 0,
+      "attendReward": -0.8501268424182298,
+      "fulfilled": false,
+      "candidate": "decline",
+      "heuristic": "decline"
+    },
+    {
+      "seed": 18207,
+      "episode": 1,
+      "attendReward": -0.5723031331775642,
+      "fulfilled": true,
+      "candidate": "decline",
+      "heuristic": "decline"
+    },
+    {
+      "seed": 18207,
+      "episode": 2,
+      "attendReward": -0.8263861718749999,
+      "fulfilled": false,
+      "candidate": "decline",
+      "heuristic": "decline"
+    },
+    {
+      "seed": 18207,
+      "episode": 3,
+      "attendReward": -1,
+      "fulfilled": false,
+      "candidate": "decline",
+      "heuristic": "decline"
+    },
+    {
+      "seed": 18208,
+      "episode": 0,
+      "attendReward": -1,
+      "fulfilled": false,
+      "candidate": "decline",
+      "heuristic": "decline"
+    },
+    {
+      "seed": 18208,
+      "episode": 1,
+      "attendReward": -0.8263861718749999,
+      "fulfilled": false,
+      "candidate": "decline",
+      "heuristic": "decline"
+    },
+    {
+      "seed": 18208,
+      "episode": 2,
+      "attendReward": -0.5723031331775642,
+      "fulfilled": true,
+      "candidate": "decline",
+      "heuristic": "decline"
+    },
+    {
+      "seed": 18208,
+      "episode": 3,
+      "attendReward": -0.8501268424182298,
+      "fulfilled": false,
+      "candidate": "decline",
+      "heuristic": "decline"
+    },
+    {
+      "seed": 18209,
+      "episode": 0,
+      "attendReward": -0.23312478184417806,
+      "fulfilled": true,
+      "candidate": "decline",
+      "heuristic": "decline"
+    },
+    {
+      "seed": 18209,
+      "episode": 1,
+      "attendReward": -1,
+      "fulfilled": false,
+      "candidate": "decline",
+      "heuristic": "decline"
+    },
+    {
+      "seed": 18209,
+      "episode": 2,
+      "attendReward": -1,
+      "fulfilled": false,
+      "candidate": "decline",
+      "heuristic": "decline"
+    },
+    {
+      "seed": 18209,
+      "episode": 3,
+      "attendReward": -0.4904859860195929,
+      "fulfilled": true,
+      "candidate": "decline",
+      "heuristic": "decline"
+    },
+    {
+      "seed": 18210,
+      "episode": 0,
+      "attendReward": 0.24987315758177026,
+      "fulfilled": true,
+      "candidate": "decline",
+      "heuristic": "attend"
+    },
+    {
+      "seed": 18210,
+      "episode": 1,
+      "attendReward": -1,
+      "fulfilled": false,
+      "candidate": "decline",
+      "heuristic": "decline"
+    },
+    {
+      "seed": 18210,
+      "episode": 2,
+      "attendReward": -0.8263861718749999,
+      "fulfilled": false,
+      "candidate": "decline",
+      "heuristic": "attend"
+    },
+    {
+      "seed": 18210,
+      "episode": 3,
+      "attendReward": -1,
+      "fulfilled": false,
+      "candidate": "decline",
+      "heuristic": "decline"
+    },
+    {
+      "seed": 18211,
+      "episode": 0,
+      "attendReward": -0.24048598601959292,
+      "fulfilled": true,
+      "candidate": "decline",
+      "heuristic": "decline"
+    },
+    {
+      "seed": 18211,
+      "episode": 1,
+      "attendReward": -1,
+      "fulfilled": false,
+      "candidate": "decline",
+      "heuristic": "decline"
+    },
+    {
+      "seed": 18211,
+      "episode": 2,
+      "attendReward": -1,
+      "fulfilled": false,
+      "candidate": "decline",
+      "heuristic": "decline"
+    },
+    {
+      "seed": 18211,
+      "episode": 3,
+      "attendReward": 0.016875218155821936,
+      "fulfilled": true,
+      "candidate": "decline",
+      "heuristic": "attend"
+    }
+  ],
+  "comparison": {
+    "offeredTasks": 48,
+    "seeds": 12,
+    "perSeed": [
+      {
+        "seed": 18200,
+        "offers": 4,
+        "alwaysAttend": -0.6441282535733074,
+        "candidate": 0,
+        "heuristic": -0.14412825357330739,
+        "candidateOpportunityLoss": 0.062468289395442564,
+        "alwaysAttendOpportunityLoss": 0.70659654296875,
+        "candidateFailedOfferRate": 0,
+        "alwaysAttendFailedOfferRate": 0.75
+      },
+      {
+        "seed": 18201,
+        "offers": 4,
+        "alwaysAttend": -0.7853900682863384,
+        "candidate": 0,
+        "heuristic": 0,
+        "candidateOpportunityLoss": 0,
+        "alwaysAttendOpportunityLoss": 0.7853900682863384,
+        "candidateFailedOfferRate": 0,
+        "alwaysAttendFailedOfferRate": 0.5
+      },
+      {
+        "seed": 18202,
+        "offers": 4,
+        "alwaysAttend": -0.7497040368676985,
+        "candidate": 0,
+        "heuristic": 0,
+        "candidateOpportunityLoss": 0,
+        "alwaysAttendOpportunityLoss": 0.7497040368676985,
+        "candidateFailedOfferRate": 0,
+        "alwaysAttendFailedOfferRate": 0.75
+      },
+      {
+        "seed": 18203,
+        "offers": 4,
+        "alwaysAttend": -0.7152638277026667,
+        "candidate": 0,
+        "heuristic": 0,
+        "candidateOpportunityLoss": 0,
+        "alwaysAttendOpportunityLoss": 0.7152638277026667,
+        "candidateFailedOfferRate": 0,
+        "alwaysAttendFailedOfferRate": 0.5
+      },
+      {
+        "seed": 18204,
+        "offers": 4,
+        "alwaysAttend": -0.7357764513822711,
+        "candidate": 0,
+        "heuristic": 0,
+        "candidateOpportunityLoss": 0,
+        "alwaysAttendOpportunityLoss": 0.7357764513822711,
+        "candidateFailedOfferRate": 0,
+        "alwaysAttendFailedOfferRate": 0.5
+      },
+      {
+        "seed": 18205,
+        "offers": 4,
+        "alwaysAttend": -0.7497040368676985,
+        "candidate": 0,
+        "heuristic": -0.25,
+        "candidateOpportunityLoss": 0,
+        "alwaysAttendOpportunityLoss": 0.7497040368676985,
+        "candidateFailedOfferRate": 0,
+        "alwaysAttendFailedOfferRate": 0.75
+      },
+      {
+        "seed": 18206,
+        "offers": 4,
+        "alwaysAttend": -0.7228900682863383,
+        "candidate": 0,
+        "heuristic": 0,
+        "candidateOpportunityLoss": 0,
+        "alwaysAttendOpportunityLoss": 0.7228900682863383,
+        "candidateFailedOfferRate": 0,
+        "alwaysAttendFailedOfferRate": 0.5
+      },
+      {
+        "seed": 18207,
+        "offers": 4,
+        "alwaysAttend": -0.8122040368676985,
+        "candidate": 0,
+        "heuristic": 0,
+        "candidateOpportunityLoss": 0,
+        "alwaysAttendOpportunityLoss": 0.8122040368676985,
+        "candidateFailedOfferRate": 0,
+        "alwaysAttendFailedOfferRate": 0.75
+      },
+      {
+        "seed": 18208,
+        "offers": 4,
+        "alwaysAttend": -0.8122040368676985,
+        "candidate": 0,
+        "heuristic": 0,
+        "candidateOpportunityLoss": 0,
+        "alwaysAttendOpportunityLoss": 0.8122040368676985,
+        "candidateFailedOfferRate": 0,
+        "alwaysAttendFailedOfferRate": 0.75
+      },
+      {
+        "seed": 18209,
+        "offers": 4,
+        "alwaysAttend": -0.6809026919659427,
+        "candidate": 0,
+        "heuristic": 0,
+        "candidateOpportunityLoss": 0,
+        "alwaysAttendOpportunityLoss": 0.6809026919659427,
+        "candidateFailedOfferRate": 0,
+        "alwaysAttendFailedOfferRate": 0.5
+      },
+      {
+        "seed": 18210,
+        "offers": 4,
+        "alwaysAttend": -0.6441282535733074,
+        "candidate": 0,
+        "heuristic": -0.14412825357330739,
+        "candidateOpportunityLoss": 0.062468289395442564,
+        "alwaysAttendOpportunityLoss": 0.70659654296875,
+        "candidateFailedOfferRate": 0,
+        "alwaysAttendFailedOfferRate": 0.75
+      },
+      {
+        "seed": 18211,
+        "offers": 4,
+        "alwaysAttend": -0.5559026919659427,
+        "candidate": 0,
+        "heuristic": 0.004218804538955484,
+        "candidateOpportunityLoss": 0.004218804538955484,
+        "alwaysAttendOpportunityLoss": 0.5601214965048982,
+        "candidateFailedOfferRate": 0,
+        "alwaysAttendFailedOfferRate": 0.5
+      }
+    ],
+    "utilityDelta": {
+      "mean": 0.717349871183909,
+      "ci95": [
+        0.6691860014294563,
+        0.7655137409383618
+      ],
+      "n": 12
+    },
+    "heuristicDelta": {
+      "mean": 0.04450314188397161,
+      "ci95": [
+        -0.00978233812008824,
+        0.09878862188803145
+      ],
+      "n": 12
+    },
+    "failedDelta": {
+      "mean": -0.625,
+      "ci95": [
+        -0.7079533086769572,
+        -0.5420466913230428
+      ],
+      "n": 12
+    },
+    "alwaysAttendMean": -0.717349871183909,
+    "candidateMean": 0,
+    "heuristicMean": -0.04450314188397161,
+    "candidateOpportunityLoss": 0.01076294861082005,
+    "alwaysAttendOpportunityLoss": 0.728112819794729,
+    "positiveOpportunities": 3,
+    "retainedPositiveOpportunities": 0,
+    "attendShare": 0,
+    "gates": {
+      "enoughSeeds": true,
+      "utilityImproved": true,
+      "failedAcceptedOffersDoNotIncrease": true,
+      "positiveOpportunitiesRetained": false,
+      "noActionCollapse": false
+    },
+    "offlineGatesPassed": false,
+    "runtimePromotion": false
+  },
+  "physicsSteps": 103680,
+  "productionAccess": false,
+  "runtimeImportAllowed": false,
+  "sha256": "02a00612ee00df4c44799f5d2daeedc774135b75592971620cc8b0407886caf2"
+}

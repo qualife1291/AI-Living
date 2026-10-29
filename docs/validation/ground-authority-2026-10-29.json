@@ -1,0 +1,550 @@
+{
+  "phase": "GND3",
+  "status": "passed-local-functional-gates",
+  "closedAt": "2026-10-29T02:51:14.430694+00:00",
+  "verifiedApplicationSource": "761917d1838663f9fa21b4ed56eb9fb24d566ab8",
+  "registeredContract": "docs/validation/ground-authority-contract-v1.json",
+  "registeredContractFileSha256": "145e2bf19cbcf8647e5147d3a60e28c2403c1ee6398e151ce5b5f142b9a13b06",
+  "scope": "server-ground-authority-v1",
+  "production": false,
+  "activation": "Explicit owner+local-admin+loopback on existing shared session only. No real database migration/start or new scheduler.",
+  "verification": {
+    "units": {
+      "suite": "unit-summary",
+      "total": 69,
+      "passed": 69,
+      "failed": [],
+      "workers": 4,
+      "seconds": 57.35
+    },
+    "typecheck": true,
+    "lint": true,
+    "assets": true,
+    "releaseBuild": true,
+    "accounting": {
+      "suite": "ground-authority",
+      "mode": "real-GND2-replay plus separate synthetic geometry negatives",
+      "counts": {
+        "arrivals": 8,
+        "presence": 6,
+        "encounters": 2,
+        "heard": 4
+      },
+      "records": 24,
+      "chunkResumeEquivalent": true,
+      "baselineNotArrivalOrSpeech": true,
+      "plannedPartialCancelledNotHeard": true,
+      "pauseNoCredit": true,
+      "rawClockMismatchRejected": true,
+      "legacyTransitNoCompletion": true,
+      "thirdPartyNotHeard": true,
+      "entryBaselineFreshEpoch": true,
+      "staticWallAndDurationGate": true,
+      "projectedRootsRejected": true,
+      "corruptStateRejected": true,
+      "worldWrites": false,
+      "eligibleForReward": false,
+      "eligibleForP2P": false
+    },
+    "nativeSQLite": {
+      "suite": "ground-authority-store",
+      "nativeSQLite": true,
+      "optionalInactiveSchema": true,
+      "explicitCoupledStart": true,
+      "baselineNotCredited": true,
+      "lostAckNoCredit": true,
+      "actualReplayCounts": {
+        "arrivals": 8,
+        "presence": 6,
+        "encounters": 2,
+        "heard": 2
+      },
+      "exactParentBinding": true,
+      "immutableLedger": true,
+      "ignoredWriteRollback": 4,
+      "concurrentOneCommit": true,
+      "preflightBeforeWorldWrites": true,
+      "serviceNoBootstrap": true,
+      "cliStrictLoopbackBodyAckAnd32KiB": true,
+      "worldReset": false,
+      "training": false
+    },
+    "population": {
+      "suite": "ground-authority-all-actors",
+      "mode": "real-GND2-replay",
+      "humans": 243,
+      "bodies": 246,
+      "encounters": 381,
+      "pairs": 388,
+      "offscreenAccounted": true,
+      "baselineNotArrival": true,
+      "physicsSteps": 60,
+      "worldWrites": false,
+      "training": false
+    },
+    "viewUnit": {
+      "suite": "ground-authority-view",
+      "source": "real GND2 replay; synthetic presentation heads, not durable receipts",
+      "plannedNotShown": true,
+      "onlyEmittedAtSampleTime": true,
+      "parentSourceEnvelope": true,
+      "pausedNoHearingCredit": true,
+      "cancelAndEndedHidden": true,
+      "recipientBodyRequired": true,
+      "pauseResumeDeliveredLines": 4,
+      "rootWrites": false,
+      "rewardOrP2P": false
+    },
+    "compiledD1": {
+      "suite": "ground-authority-api",
+      "compiledWorker": true,
+      "ephemeralD1": true,
+      "ownerLocalRemoteAndOriginGuards": true,
+      "bodyUtf8And2KiB": true,
+      "noBootstrapOrClientPositions": true,
+      "optionalInactive0011": true,
+      "explicitStartBaseline": true,
+      "coupledCAS": true,
+      "concurrentOneCommit": true,
+      "actualReplayCounts": {
+        "arrivals": 8,
+        "presence": 6,
+        "encounters": 1,
+        "heard": 2
+      },
+      "immutableReceipts": true,
+      "silentIgnoreRollback": 4,
+      "lostAckNoCredit": true,
+      "worldViewParentBound": true,
+      "reusedPulse": true,
+      "preflightBeforeWorldWrite": true,
+      "userMemoryPreserved": true,
+      "productionAccess": false,
+      "eligibleForReward": false,
+      "eligibleForP2P": false
+    },
+    "apiRegressions": {
+      "local": {
+        "suite": "local-diagnostics-http",
+        "ownerReadGuard": true,
+        "ownerWriteGuard": true,
+        "streamByteLimit": true,
+        "schema": true,
+        "origin": true,
+        "ack": true,
+        "jsonlReadback": true,
+        "rateLimit": true,
+        "retention": true,
+        "diagnosticsReadOnly": true,
+        "pulsePersistence": true,
+        "pulseRetry": true,
+        "pulseConcurrentViewers": 12,
+        "pulseNoDuplicateAudit": true,
+        "pulsePause": true,
+        "healthSchemaBatch": true,
+        "bulkReplay": true,
+        "memoryBackfill": true,
+        "productionAccess": false
+      },
+      "ground": {
+        "suite": "ground-api-compiled-d1",
+        "localOwnerOnly": true,
+        "remoteVerifiedOwnerDenied": true,
+        "bodySchemaUtf8Bytes": true,
+        "missingMigrationNoBootstrap": true,
+        "previewZeroWrites": true,
+        "serverPlanOnlyNoClientPoseTime": true,
+        "fixed600StepMotion": true,
+        "arrivalReceipts": 1,
+        "concurrentSameOperationOneCommit": true,
+        "checkpointCAS": true,
+        "silentReceiptIgnoreD1Rollback": true,
+        "committedReadersAgree": true,
+        "pause": true,
+        "userWorldPoliciesHistoryMemoriesPreserved": true,
+        "eligibleForReward": false,
+        "eligibleForP2P": false,
+        "productionAccess": false
+      },
+      "shared": {
+        "suite": "shared-ground-api",
+        "ownerLocalAndRemoteDenied": true,
+        "strictBodyOriginUtf8": true,
+        "missingSchemaNoBootstrap": true,
+        "worldAtomicImmutableJournal": true,
+        "allActorAndTrafficFrame": true,
+        "zeroStepDurableRetry": true,
+        "concurrentOneCommit": true,
+        "sourceTriggerAbortWorldRollback": true,
+        "silentReceiptD1Rollback": true,
+        "sharedWorldReadback": true,
+        "pulseReused": true,
+        "userHistoryMemoryPreserved": true,
+        "productionAccess": false,
+        "eligibleForReward": false,
+        "eligibleForP2P": false
+      },
+      "legacy": {
+        "kind": "legacy-compiled-http-acceptance",
+        "isolated": true,
+        "productionAccess": false,
+        "results": [
+          {
+            "name": "world",
+            "exitCode": 0
+          },
+          {
+            "name": "living",
+            "exitCode": 0
+          },
+          {
+            "name": "learning",
+            "exitCode": 0
+          },
+          {
+            "name": "liveness",
+            "exitCode": 0
+          },
+          {
+            "name": "appearance",
+            "exitCode": 0
+          },
+          {
+            "name": "proposal",
+            "exitCode": 0
+          }
+        ]
+      }
+    },
+    "twoActualViewers": {
+      "source": "real GND2 replay/accounting with synthetic browser transport heads; not durable D1 receipts",
+      "production": false,
+      "renderer": "Chromium SwiftShader",
+      "viewports": 2,
+      "plannedNotShown": true,
+      "sameAuthoritativeLineAndRoots": true,
+      "cosmeticPosePreservesRoots": true,
+      "cameraAndReloadIndependent": true,
+      "mismatchedParentRejected": true,
+      "pauseNoCredit": true,
+      "cancelledAndEndedHidden": true,
+      "presentationAckNoMemoryWrites": true,
+      "speech": {
+        "id": "browser-ground-turn:2:0",
+        "speaker": "an",
+        "listener": "neighbor-1",
+        "text": "Chào bạn, mình đã tới công viên rồi.",
+        "fromSimMs": 120194.23828125,
+        "untilSimMs": 132194.23828125
+      },
+      "worldControlPosts": [
+        {
+          "path": "/api/world",
+          "body": {
+            "revision": 1,
+            "paused": true
+          }
+        },
+        {
+          "path": "/api/world",
+          "body": {
+            "revision": 2,
+            "paused": false
+          }
+        }
+      ],
+      "errors": []
+    },
+    "sharedGND2Regression": {
+      "production": false,
+      "browser": "Chromium SwiftShader",
+      "source": "synthetic shared frames; D1 separate",
+      "cases": [
+        {
+          "viewport": "desktop",
+          "checkpoint": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "sampledRealMs": 1793241499765,
+          "actors": 30,
+          "cars": 12
+        },
+        {
+          "viewport": "mobile",
+          "checkpoint": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "sampledRealMs": 1793241499765,
+          "actors": 30,
+          "cars": 12
+        }
+      ],
+      "lateOpenSameTimeSameRoots": true,
+      "cameraIndependent": true,
+      "reloadNoRespawn": true,
+      "pauseStable": true,
+      "noExtrapolation": true,
+      "noHorizontalOverflow": true,
+      "errors": []
+    },
+    "defaultSocialRegression": {
+      "desktop": {
+        "passed": true,
+        "scope": "Full six-line dialogue, camera controls and reload anti-repeat before the later mobile preview failure; recorded in initial run stdout."
+      },
+      "mobile": {
+        "passed": true,
+        "fullDialogueLines": 6,
+        "reloadAntiRepeat": true,
+        "cameraControls": "select Bình → follow An; zoom exits follow; follow resumes"
+      },
+      "source": "Synthetic world responses; actual browser rendering. Desktop and mobile passed in separate executions."
+    },
+    "defaultUXRegression": {
+      "production": false,
+      "renderer": "Chromium SwiftShader",
+      "fixture": "Synthetic world; all APIs mocked. Compiled local D1 persistence tested separately.",
+      "cases": [
+        {
+          "viewport": "desktop",
+          "initial": {
+            "canvas": [
+              1788,
+              1118
+            ],
+            "css": [
+              1440,
+              900
+            ],
+            "quality": "balanced",
+            "pixelRatio": 1.2422599874998832
+          },
+          "pauseErrors": [
+            403,
+            409,
+            503,
+            "network",
+            "invalid-ack"
+          ],
+          "noDuplicateWrite": true,
+          "pausedMotionFrozen": true,
+          "chatFocusDraftAndNoSteal": true,
+          "keyboard": true,
+          "metadata": true,
+          "responsive320": true,
+          "presetsAndResize": true,
+          "dynamicDPR": true,
+          "pollKeepsCanvas": true,
+          "OSMRemount": true,
+          "hiddenResume": true,
+          "contextLossRetry": true,
+          "pageErrors": []
+        },
+        {
+          "viewport": "mobile",
+          "initial": {
+            "canvas": [
+              585,
+              1266
+            ],
+            "css": [
+              390,
+              844
+            ],
+            "quality": "balanced",
+            "pixelRatio": 1.5
+          },
+          "pauseErrors": [
+            403,
+            409,
+            503,
+            "network",
+            "invalid-ack"
+          ],
+          "noDuplicateWrite": true,
+          "pausedMotionFrozen": true,
+          "chatFocusDraftAndNoSteal": true,
+          "keyboard": true,
+          "metadata": true,
+          "responsive320": true,
+          "presetsAndResize": true,
+          "dynamicDPR": true,
+          "pollKeepsCanvas": true,
+          "OSMRemount": true,
+          "hiddenResume": true,
+          "contextLossRetry": true,
+          "pageErrors": []
+        },
+        {
+          "reducedMotion": true,
+          "preferenceChange": true,
+          "worldNotPaused": true,
+          "pageErrors": []
+        },
+        {
+          "transportFallback": "unsupported",
+          "pageErrors": []
+        },
+        {
+          "transportFallback": "corrupt",
+          "pageErrors": []
+        },
+        {
+          "transportFallback": "core-failure",
+          "pageErrors": []
+        }
+      ]
+    }
+  },
+  "resolvedImplementationDefects": [
+    "Close stationary presence at the exact window end despite floating timestep overshoot; do not discard the valid final interval.",
+    "Freeze capture mapping using the registered arithmetic order; use the same sequential sums for step validation.",
+    "Bind each emitted utterance to its own supported plan window; preserve goal/requested/epoch across the entire delivery.",
+    "Interrupt at the last valid physics boundary when motion invalidates speech; planned, partial and cancelled lines never become heard.",
+    "Guard authority and shared state/receipt writes with coupled CAS and SQL postasserts; silent ignore rolls both back."
+  ],
+  "retryFailures": [
+    {
+      "run": "default-social-regression.log",
+      "result": "Desktop passed; mobile F5 timed out waiting for canvas readiness.",
+      "observation": "Owned Wrangler preview exited with status1 and an empty error message during the run. Exact cause not established."
+    },
+    {
+      "run": "default-social-mobile-diagnostic.log",
+      "result": "ERR_CONNECTION_REFUSED at first navigation; preview was confirmed stopped.",
+      "disposition": "Restarted only the owned preview with the same isolated DB, without changing application code. Full mobile retest and all six default UX cases passed. Added failure screenshot/console/telemetry capture to qa-social.py.",
+      "remainingLimit": "No long-session or host reliability claim."
+    }
+  ],
+  "screenshots": "docs/screenshots/gnd3/manifest.json",
+  "relatedStudioAcceptance": "docs/validation/studio-quality-v2-2026-10-29.json",
+  "localLogIndex": [
+    {
+      "file": "work/acceptance-2026-10-29/gnd3-final-unit.log",
+      "sha256": "a17d891c68bea6e31415c81c97495b7e348dd213210bca88a5e296d3aa9bb8ab",
+      "bytes": 3178
+    },
+    {
+      "file": "work/acceptance-2026-10-29/gnd3-final-type.log",
+      "sha256": "7221a45908fd614e50740555b80013f82555e49102f1f3d4d719a531ed487e4b",
+      "bytes": 59
+    },
+    {
+      "file": "work/acceptance-2026-10-29/gnd3-final-lint.log",
+      "sha256": "9d4ed79a683eccf54173b6034d4187b97e629a26e9f9dbedc55bc19d45839445",
+      "bytes": 99
+    },
+    {
+      "file": "work/acceptance-2026-10-29/gnd3-assets.log",
+      "sha256": "5021aba97621a5746c5cdf289a79766e2ab64b1d169a113ee3272e95eaa320d9",
+      "bytes": 947
+    },
+    {
+      "file": "work/acceptance-2026-10-29/gnd3-build-761917d.log",
+      "sha256": "8fe0904e4af6c39c6f9728b25b192a8f94e5859397dcdda5b7e3836d72c33c25",
+      "bytes": 3189
+    },
+    {
+      "file": "work/acceptance-2026-10-29/gnd3-accounting-final-metrics.log",
+      "sha256": "4b424210ac2173ac28a996cfa472ace0c876d03bef36259e85ac39e3a8fd08a4",
+      "bytes": 578
+    },
+    {
+      "file": "work/acceptance-2026-10-29/gnd3-store-final-metrics.log",
+      "sha256": "86dd0cd12a3fd08d1d0a3d85f8785ad2da9caaf4b735f1e8b6371b26dce7f40b",
+      "bytes": 474
+    },
+    {
+      "file": "work/acceptance-2026-10-29/gnd3-population-final-metrics.log",
+      "sha256": "6a56f80003339c124631b972083f4c8789b9db73dba0c67237c78e1cbdce6426",
+      "bytes": 228
+    },
+    {
+      "file": "work/acceptance-2026-10-29/gnd3-view-final-metrics.log",
+      "sha256": "edd2241cb65bfd21b6840207bbad07e974c7287435293e4d5d66ffdcfc9edaab",
+      "bytes": 351
+    },
+    {
+      "file": "work/acceptance-2026-10-29/gnd3-api-761917d.log",
+      "sha256": "08d170f2f99aa8f7e2e9de2ed47d3d0fca3f8139c5789bc1a4ed01b33639a4e1",
+      "bytes": 704
+    },
+    {
+      "file": "work/acceptance-2026-10-29/gnd3-regression-api-local.log",
+      "sha256": "47d19794f30dc9e1f44a0b9f834cfb5ef4f979ea8930adc6da004e6abde46282",
+      "bytes": 2239
+    },
+    {
+      "file": "work/acceptance-2026-10-29/gnd3-regression-api-ground.log",
+      "sha256": "11f63ae7515da7a7993ad2cbb085b7f3577c82c3306d26fab85987252910d746",
+      "bytes": 613
+    },
+    {
+      "file": "work/acceptance-2026-10-29/gnd3-regression-api-shared.log",
+      "sha256": "76832a808dbe3def8d67d5cf25c922d79010f765b5d2f0b827a348d25f20f483",
+      "bytes": 571
+    },
+    {
+      "file": "work/acceptance-2026-10-29/gnd3-regression-api-legacy.log",
+      "sha256": "298b241369ee5de889950a1c1944332a665164ed38e409ee8f357a37b97ea983",
+      "bytes": 1339
+    },
+    {
+      "file": "work/acceptance-2026-10-29/gnd3-browser-761917d.log",
+      "sha256": "d07daf7ef8be7a923dfb252678278d44d048a8a205adb6538a25c004fedfad32",
+      "bytes": 821
+    },
+    {
+      "file": "work/acceptance-2026-10-29/gnd2-regression.log",
+      "sha256": "5bba61a19a4c9b4c7eddeeed5cd6c0f5c900878e7d05c7df590f8ff20189e70d",
+      "bytes": 624
+    },
+    {
+      "file": "work/acceptance-2026-10-29/default-social-regression.log",
+      "sha256": "0dcfbd0034e33bd97b1716ab2c29ad67c05e913617fd027959c2ca10238ac888",
+      "bytes": 1833
+    },
+    {
+      "file": "work/acceptance-2026-10-29/default-social-mobile-diagnostic.log",
+      "sha256": "e5f92adf9ba318037bc66392170531d98b698b31784cb5c810b7371406c77e04",
+      "bytes": 1941
+    },
+    {
+      "file": "work/acceptance-2026-10-29/default-social-mobile-retest.log",
+      "sha256": "4d537e7a66ef4bd0c17eac8d581f5887a755ee56e2a7e315b2224dedd4d9797e",
+      "bytes": 128
+    },
+    {
+      "file": "work/acceptance-2026-10-29/default-ux-regression.log",
+      "sha256": "51cb0c46515cafd28a2e76cfb2bbaf2aba0eafee3b4e599ba4e6219ee5ef3114",
+      "bytes": 1067
+    }
+  ],
+  "consumerPolicy": {
+    "eligibleForReward": false,
+    "eligibleForP2P": false,
+    "automaticMemoryImport": false,
+    "policyOrModelTraining": false,
+    "defaultPolicyChanged": false
+  },
+  "limits": [
+    "Arrival/presence receipts certify simulated presence, not economic work, medical effects or understanding. Heard text is hearsay, not witnessed truth.",
+    "Browser transport/checkpoint heads are fixtures; durable D1 semantics were tested separately on the compiled Worker. No production endpoint was exercised.",
+    "All-actor test covers243humans/246bodies but is a short deterministic local fixture, not crowd throughput or liveness.",
+    "GND2 bounded catch-up may retain backlog at scale60. No long-session,24h soak, hardware GPU/mobile FPS or human listening/MOS result.",
+    "No native Sites/Cloudflare tools or current authenticated remote QA readback; no deploy/migrate/activation on user DB, main/staging/prod promotion or model/policy promotion.",
+    "H1/H2/H4/H6/H10 negatives remain; H3b/H5 need their own protocol, namespace and measured admission."
+  ],
+  "candidateBuildAndPackage": {
+    "source_commit": "77d1d1fe93de225293f7ac92747c78fa33cae5ad",
+    "built_at": "2026-10-29T02:53:03.813Z",
+    "archive_local_path": "work/production-77d1d1f.tar.gz",
+    "archive_sha256": "f2b4fd268c61a6de593249c358992bfeaa46498319c8b438f9a99d75c6577d04",
+    "archive_bytes": 20638983,
+    "entries": 856,
+    "files": 774,
+    "migration0011Exact": true,
+    "allMigrationSqlExact": true,
+    "voices": 21,
+    "voiceLicenseManifestAndBytesExact": true,
+    "losslessDerivativesExact": 26,
+    "secretsDbCacheAndFixtureCodeExcluded": true,
+    "productionDeployment": false
+  }
+}

@@ -1,65 +1,42 @@
-# Bốn kịch bản studio — hợp đồng và phạm vi kiểm chứng
+# Bốn kịch bản Studio — hợp đồng hiện hành
 
-Nguồn: file người dùng `Kịch Bản.md`, SHA-256 `787b96e54aaab31c567170074702b3e082184807071e596d126d6eb20954f327`. Nội dung được dùng làm đặc tả cảnh và tiêu chí. Các điểm 94–97/100, câu “hoàn hảo”, lệnh `--auto-patch=true` và `--render-mode=webgpu-ultra` trong file là ví dụ của tài liệu, không phải bằng chứng phần mềm đã chạy hay lệnh đã được thực thi.
+Nguồn đặc tả: [living-scenarios-request](specs/living-scenarios-request.md), file người dùng `Kịch Bản.md`, SHA256 `787b96e54aaab31c567170074702b3e082184807071e596d126d6eb20954f327`. Chỉ tra cứu micro-spec khi sửa cảnh. Các điểm94–97, tự patch/weights và WebGPU-ultra trong đặc tả không phải kết quả nghiệm thu.
 
-Đặc tả gốc dài chỉ tra cứu khi sửa micro-spec: [living-scenarios-request](specs/living-scenarios-request.md). Không cần đọc file đó khi tiếp nhận dự án.
+## Chạy và nguồn dữ liệu
 
-## API và cách chạy
+Mở `/studio`. Bốn ID `wallet-return`, `sanitation-gratitude`, `kitten-care`, `bakery-courtesy`, mỗi cảnh120giây/năm shot,10world units/m. `lib/city/scenarios/index.ts` xuất `scenarioDefinitions`, `scenarioFrame(id,seconds)` và types. Frame có cast, chuyển động, đạo cụ/custody, camera, thoại và ledger biên tập; seek/pause/replay tuyệt đối. Studio không đọc/ghi worldDB, memory/policy hoặc lịch sử live.
 
-`lib/city/scenarios/index.ts` xuất `scenarioDefinitions`, `scenarioFrame(id, seconds)`, `walletDropHeight` và các type. Bốn ID: `wallet-return`, `sanitation-gratitude`, `kitten-care`, `bakery-courtesy`. Mỗi cảnh dài 120 giây, dùng 10 world units/m. Đây là projection studio có thể seek/pause bằng thời gian truyền vào, không gọi API, đọc/ghi DB, đổi ký ức hoặc giả tạo lịch sử live.
+V2 dùng cùng Gobkit Human002 đã có trong city, giữ tỷ lệ, bỏ tay nguyên khối khỏi instance rồi dựng tay hai đoạn/khuỷu/palm và contact targets. Absolute rig sampling giữ seek tương đương; kernel chuyển động nhân quả0,6s nối các hành động, prop theo tay hiện tại. Mèo có khớp/chuyển động thở/tai/đuôi, khăn gấp cong theo thân. Camera fit người/đạo cụ theo aspect và shot, nền không lộ mép trong portrait. Renderer giữ dưới25.000triangle/150drawcall theo contract local. Đây là điều khiển kinematic, chưa vật lý toàn thân hoặc finger/foot locking đầy đủ.
 
-Frame gồm nhân vật có tên/tuổi/chiều cao/trang phục, vị trí/hướng/action/clip, tốc độ/quãng đường, phase hoạt ảnh và biểu cảm chuyển dần; đạo cụ có ID duy nhất, chủ sở hữu pháp lý, người đang cầm, vị trí và điểm nắm; năm shot với lens/FOV/khẩu độ/movement/focus; bầu trời/ánh sáng/mặt nền; thoại và ledger sự kiện đã xảy ra.
+Studio đã bỏ đường render/preload Kenney character cũ và factory mèo placeholder. Catalog Kenney còn dùng ở city fallback, environment và gallery nên vẫn giữ model/texture/license đó; không xóa tài nguyên đang có consumer.
 
-Clip tham chiếu đúng tên có trong gói Kenney Blocky Characters: `idle`, `walk`, `sprint`, `pick-up`, `holding-right`, `holding-both`, `interact-right`, `emote-yes`, `emote-no`, `sit`. Locomotion phase dựa quãng đường, không thay đổi vị trí root để giả chuyển động. Biểu cảm có pha chuyển 450ms; camera chuyển góc theo cung với easing 2,4 giây, giữ khoảng cách tới điểm nhìn.
+## Hợp đồng câu chuyện
+
+| Cảnh | Điều kiện chính |
+|---|---|
+| Trả ví | Một ID ví, chủ sở hữu luôn Minh; rơi→Tuấn nhặt/kiểm tra→xác nhận chủ→trao Minh, không nhận tiền thưởng. Rơi75cm/restitution0,15 cho nảy khoảng1,69cm. |
+| Tri ân lao công | Mời trước nhận/uống; Hạnh cất chổi, Lan chuyển ly; Hoàng dùng chổi phụ rồi cất; tám lá bảo toàn. |
+| Chăm mèo | Trẻ gọi người lớn và chờ hỗ trợ; chuẩn bị khăn trước giữ ấm/bế, người lớn đỡ bụng; không trình diễn cắt dây sát da hoặc cho uống sữa. |
+| Quầy bánh | Ba được mở lối tới quầy; Nam trở về cuối hàng, giữ FIFO bốn người khác; một lần giao ổ bánh/năm ổ bảo toàn. Kết cảnh không có nghĩa mọi người đã mua xong. |
+
+Cast/tuổi/địa điểm là hư cấu riêng của Studio. Khoảng tâm tối thiểu trong logic v2: ví0,8m, lao công0,8m, hai người chăm mèo1,4066m, hàng bánh1m; không là khoảng hở bề mặt da. Mèo được phép gần người lớn khi đang đỡ.
+
+## Âm thanh
+
+Mặc định off, chỉ tạo AudioContext sau gesture.21clip tiếng Việt dựng offline, hash/duration/license/model revision tại `public/audio/studio/manifest.json` và `LICENSE.txt`; Piper/VAIS1000medium CC BY4.0 chỉ là công cụ authoring, model/venv không được đóng gói. Runtime tải OGG cùng Site, không gọi TTS/API ngoài, không clone danh tính. Có nền, bước chân và foley theo timeline; pause/seek/hidden/mute hủy hoặc phát lại đúng offset, dispose idempotent.
+
+Browser đã đo AudioContext phát voice/steps và điều khiển, không phải human listening/MOS hay lip-sync. Navigation tạo document mới và không autoplay; lời gọi close trong document đang unload không quan sát được từ browser harness. Contract dispose/stop-order được kiểm riêng bằng mocked WebAudio unit.
+
+## Bằng chứng và giới hạn
+
+[Contract v2](validation/studio-quality-contract-v2.json), [report](validation/studio-quality-v2-2026-10-29.json), [12ảnh thật gồm before](screenshots/studio-v2/manifest.json). Logic11/11case/28.804frame, không static/swept-human overlap; rig test bốn cảnh seek tương đương, gap tiếp xúc tối đa0,2231unit. Browser8case desktop/mobile qua40shot/framing, play/pause/seek/end/replay, thêm hai retest khăn; audio bốn cảnh có output thật. Nguồn build cho từng nhóm được tách rõ trong report, không gọi tất cả là một lần chạy cùng SHA. Mốc GND3 sau đó chạy đầy đủ69suite, gồm cả hai suite Studio.
 
 ```bash
-node scripts/test-scenario-benchmarks.mjs --suite=all --record-metrics
+npm run simulate:living
+node scripts/test-studio-quality.mjs
+node --experimental-transform-types scripts/test-studio-sound.mjs
+QA_BASE=http://127.0.0.1:PORT QA_OUT=work/studio python3 scripts/qa-studio.py
+QA_BASE=http://127.0.0.1:PORT QA_OUT=work/studio-sound python3 scripts/qa-studio-sound.py
 ```
 
-`--suite=<id>` chọn một cảnh. `--record-metrics` ghi JSON ở `work/scenario-benchmarks.json` (gitignored). CLI đo logic headless; nó từ chối cờ tự sửa code hoặc render GPU/video chưa được triển khai. Không xuất video vì yêu cầu dự án trước đó vẫn tạm hoãn video.
-
-## Những gì đo được
-
-Lượt kiểm tra cuối của engine: **11/11 trường hợp đạt**, **28.804 frame** (7.201 frame/cảnh, bao gồm hai đầu 0 và 120 giây). Số dưới đây là kết quả tính từ chạy test, không phải điểm tự đánh giá nội dung.
-
-| Cảnh | Khoảng tâm người nhỏ nhất | Tốc độ người lớn nhất | Giao nhau giữa hai frame / vật cản tĩnh |
-| --- | ---: | ---: | ---: |
-| Trả ví | 0,80m | 2,266m/s | 0 / 0 |
-| Tri ân lao công | 1,166m | 0,406m/s | 0 / 0 |
-| Chăm mèo con | 1,476m giữa hai người | 0,402m/s | 0 / 0 |
-| Nhường lượt ở quầy bánh | 1,00m | 1,144m/s | 0 / 0 |
-
-Kiểm tra dùng swept-disc độc lập trên đoạn di chuyển giữa hai mẫu, bán kính thân người trong cast, footprint tĩnh và giới hạn bước/tốc độ; không chỉ kiểm tra một ảnh. Riêng cảnh tiếp xúc mèo, khoảng cách người–mèo được cho phép giảm khi người lớn đỡ thân mèo; trẻ giữ khoảng cách trước lúc hỗ trợ. Các kiểm tra khác gồm hữu hạn hình học/camera, clip hợp lệ, đạo cụ không xuyên mặt sàn, expression blend trong giới hạn, pause/seek lặp lại giống nhau và sửa một snapshot không làm hỏng frame tiếp theo.
-
-| Yêu cầu câu chuyện | Triển khai có đo | Kết quả engine |
-| --- | --- | --- |
-| Ví rơi, nhặt, tìm đúng người, trả lại | Một ID ví; chủ sở hữu luôn Minh; custody rơi → Tuấn → Minh; inspection bắt đầu sau nhận thấy 350ms; xác định chủ trước đề nghị trao; không nhận tiền thưởng | Đạt logic/thời gian/bảo toàn |
-| Ví rơi 75cm, restitution 0,15 | Công thức trọng lực và một lần nảy; không chui dưới sàn; đỉnh nảy khoảng 1,69cm | Đạt mô hình nảy đơn giản |
-| Mời nước và giúp gom lá | Một ly chuyển từ quầy → Lan → Hạnh; lời mời trước nhận, nhận trước uống; Hạnh cất chổi trước khi nhận; Hoàng dùng chổi phụ rồi cất; tám lá bảo toàn; fatigue/cường độ quét thay đổi dần | Đạt logic/bảo toàn |
-| Hỗ trợ mèo nhẹ nhàng | Mai gọi người lớn, đi chậm; gọi hỗ trợ trước chăm; khăn sẵn trước giữ ấm/bế; mèo và khăn theo người đỡ; hướng khi được bế được easing | Đạt trình tự và liên tục |
-| Xếp hàng, nhường người dùng nạng | Nam trở về cuối hàng; cả hàng đồng ý rồi mở lối; Ba đến quầy sau đó; một ổ bánh giao đúng một lần; năm ổ bảo toàn; thứ tự bốn người chờ trước Nam giữ nguyên | Đạt logic/khoảng cách |
-| Camera, tuổi, màu trời, diễn biến 120 giây | Năm shot/cảnh, lens 24–105mm, khẩu độ metadata, thông số theme; nhân vật có tuổi/chiều cao/phụ kiện; mọi frame seek được | Đạt dữ liệu và projection; cần QA ảnh render |
-
-Trong lúc triển khai, sampler phát hiện lỗi tuyến đi của Ba cắt qua quầy khi rời cảnh và vị trí đầu cảnh của Ba quá gần Nam; các điểm đường/làn đã được sửa và chạy lại đến 0 giao nhau. Test còn phát hiện mèo đổi hướng đột ngột khi bắt đầu được bế; đã thêm easing trước khi đo lại. Không tự sửa trọng số LLM hoặc gọi các chỉnh sửa kinematic này là fine-tune.
-
-## Những khác biệt được chọn rõ ràng
-
-- Tài liệu đồng thời yêu cầu ví nảy 3cm và restitution 0,15 khi rơi 75cm. Hai giá trị không khớp trong mô hình đơn giản: 0,15 cho (75×0,15²≈1,69)cm. Engine ưu tiên hệ số 0,15 và báo đúng kết quả.
-- Hàng chờ dùng khoảng tâm 1m, có dư địa cho model/nạng, thay khoảng 0,6m đồng thời mâu thuẫn với buffer 0,65m trong bảng cuối tài liệu. Người trao ví cách nhau 0,8m theo phân cảnh. Khoảng tâm không đồng nghĩa khoảng hở bề mặt da 0,65m.
-- Cảnh mèo chuyển thành giữ ấm, gọi người hỗ trợ và làm theo hướng dẫn; không trình diễn người chưa có chuyên môn cắt dây sát da hoặc cho mèo uống sữa. Không mô tả đây là hướng dẫn thú y.
-- Sau lượt ưu tiên của Ba, Nam chờ theo thứ tự gốc, không vượt bốn người còn lại để được phục vụ ngay. Cảnh kết thúc khi anh bình thản tiến lên trong hàng; “cảnh hoàn tất” không có nghĩa mọi khách đều đã mua xong.
-- Các nhân vật/tuổi của kịch bản thuộc studio hư cấu, không được chèn thành người thật mới hoặc lịch sử đã xảy ra trong xóm live.
-
-## Chưa được chứng minh hoặc chưa triển khai đầy đủ
-
-| Phần đặc tả vi mô | Trạng thái cần giữ trung thực |
-| --- | --- |
-| Pixel nhìn thấy nhân vật/đạo cụ, occlusion, tỷ lệ model và bố cục mobile | Cần browser QA với renderer/asset thật; test headless không chấm thay |
-| Ngón tay/IK tiếp xúc mesh ví, cốc, nạng; weight transfer và foot locking đầy đủ | Engine có kinematic hand targets và bảo toàn vị trí đạo cụ; không chứng minh mesh tiếp xúc từng ngón hoặc vật lý cơ thể |
-| Pores, nếp nhăn 1,2mm, tóc rời, giọt mồ hôi, vải dệt, lông ướt | Các model low-poly đính kèm không cung cấp đầy đủ những chi tiết này |
-| DOF thật theo f-number, Rayleigh/Mie, heat haze, volumetric dust, puddle reflection | Metadata có yêu cầu lens/aperture/theme; cần shader/postprocess và kiểm ngân sách GPU riêng |
-| Tần số động vật 4Hz, mỏ/miệng phát âm, tiếng đồ vật, SFX/TTS | Chưa có bằng chứng audio hoặc facial/lip sync vi mô |
-| WebGPU-ultra, FPS điện thoại/GPU thật, soak 24 giờ | Chưa được benchmark bằng engine headless hoặc SwiftShader |
-| Tự biên dịch weights, tự fine-tune toàn mạng, tự patch code theo điểm dưới 85, xuất video | Không được dựng giả. Các giá trị cảm xúc/trật tự trong cảnh là tham số mô phỏng, không phải weights LLM; video còn tạm hoãn |
-
-Chỉ các mục đo được ở trên có thể nhận trạng thái đạt từ script. Bản render và release ledger bổ sung bằng chứng riêng; không gọi toàn bộ đặc tả siêu vi mô đã đạt chỉ vì 11 test logic xanh.
+SwiftShader/local fixture chưa chứng minh GPU/mobile FPS,24h soak, tiếp xúc từng ngón, weight transfer toàn thân, pores/tóc/vải/lông vi mô, DOF/volumetrics/reflection hoặc chất lượng model LLM. Không fine-tune weights, auto-patch hoặc xuất video từ cảnh; video/public/multi-user vẫn tạm hoãn.

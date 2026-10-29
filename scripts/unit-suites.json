@@ -188,5 +188,27 @@
   ],
   [
     "scripts/test-shared-ground.mjs"
+  ],
+  [
+    "scripts/test-studio-quality.mjs"
+  ],
+  [
+    "--experimental-transform-types",
+    "scripts/test-studio-sound.mjs"
+  ],
+  [
+    "scripts/test-ground-authority.mjs"
+  ],
+  [
+    "scripts/test-ground-authority-store.mjs"
+  ],
+  [
+    "scripts/test-ground-authority-view.mjs"
+  ],
+  [
+    "scripts/test-ground-authority-all-actors.mjs"
+  ],
+  [
+    "scripts/test-ground-learning.mjs"
   ]
 ]

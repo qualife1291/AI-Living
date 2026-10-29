@@ -1,0 +1,337 @@
+{
+  "phase": "Studio-v2",
+  "status": "passed-local-functional-quality-gates",
+  "registeredContract": "docs/validation/studio-quality-contract-v2.json",
+  "closedAt": "2026-10-29T01:11:51.349546+00:00",
+  "sources": {
+    "finalPreview": "20396b13aba5e3c38a2097a72c2edb9823720431",
+    "fullEightBrowserCases": "862ee2c4bce5022ce4fbe992ca3f85e0a6bf638f",
+    "audioOutputAndNavigation": "235fe4fa570fdb38a4f4f665de71fc82e3859a91",
+    "finalClothChange": "82478af",
+    "base64UnitSuites": "98da12d"
+  },
+  "verification": {
+    "baseUnits": {
+      "total": 64,
+      "passed": 64,
+      "workers": 2,
+      "seconds": 52.6
+    },
+    "additionalLifecycleUnit": {
+      "suite": "studio-sound-lifecycle",
+      "voicesVerifiedByHash": 21,
+      "sourceOrdering": true,
+      "footsteps": true,
+      "pauseHiddenMute": true,
+      "idempotentDispose": true,
+      "scope": "mocked WebAudio API contract; not an audio output or quality measurement"
+    },
+    "timelineLogic": {
+      "suite": "scenario-benchmarks",
+      "mode": "headless-logic",
+      "scenarioCount": 4,
+      "caseCount": 11,
+      "passed": 11,
+      "failed": 0,
+      "elapsedMs": 947,
+      "metrics": {
+        "wallet-return": {
+          "frames": 7201,
+          "minimumHumanGapUnits": 8,
+          "maximumSpeedMps": 2.25,
+          "maximumActorStepUnits": 0.375,
+          "maximumPropStepUnits": 0.6131,
+          "maximumCameraStepUnits": 0.8362,
+          "minimumFocusDistanceUnits": 35.6651,
+          "staticOverlaps": 0,
+          "sweptHumanOverlaps": 0
+        },
+        "sanitation-gratitude": {
+          "frames": 7201,
+          "minimumHumanGapUnits": 8,
+          "maximumSpeedMps": 0.4546,
+          "maximumActorStepUnits": 0.0758,
+          "maximumPropStepUnits": 0.1355,
+          "maximumCameraStepUnits": 0.76,
+          "minimumFocusDistanceUnits": 44.0908,
+          "staticOverlaps": 0,
+          "sweptHumanOverlaps": 0
+        },
+        "kitten-care": {
+          "frames": 7201,
+          "minimumHumanGapUnits": 14.0656,
+          "maximumSpeedMps": 0.4088,
+          "maximumActorStepUnits": 0.0681,
+          "maximumPropStepUnits": 0.1175,
+          "maximumCameraStepUnits": 1.0043,
+          "minimumFocusDistanceUnits": 34.1608,
+          "staticOverlaps": 0,
+          "sweptHumanOverlaps": 0
+        },
+        "bakery-courtesy": {
+          "frames": 7201,
+          "minimumHumanGapUnits": 10,
+          "maximumSpeedMps": 1.1444,
+          "maximumActorStepUnits": 0.1907,
+          "maximumPropStepUnits": 0.1477,
+          "maximumCameraStepUnits": 3.0327,
+          "minimumFocusDistanceUnits": 69.152,
+          "staticOverlaps": 0,
+          "sweptHumanOverlaps": 0
+        }
+      },
+      "unverified": [
+        "pixel-level visibility/occlusion",
+        "actual model finger IK and contact",
+        "millimetre skin/hair/fabric detail",
+        "DOF/volumetrics/WebGPU ultra",
+        "physical GPU/mobile FPS",
+        "audio and rendered video",
+        "LLM weights or model fine-tuning"
+      ]
+    },
+    "rigContactsAndSeek": {
+      "suite": "studio-quality",
+      "report": [
+        {
+          "scenario": "wallet-return",
+          "maxHandStep": 0.3341849829243343,
+          "maximumContactGap": 0,
+          "seekEquivalent": true
+        },
+        {
+          "scenario": "sanitation-gratitude",
+          "maxHandStep": 0.5583385563937372,
+          "maximumContactGap": 0,
+          "seekEquivalent": true
+        },
+        {
+          "scenario": "kitten-care",
+          "maxHandStep": 0.3410434067548179,
+          "maximumContactGap": 0,
+          "seekEquivalent": true
+        },
+        {
+          "scenario": "bakery-courtesy",
+          "maxHandStep": 0.24597156105132467,
+          "maximumContactGap": 0.2230989912013066,
+          "seekEquivalent": true
+        }
+      ],
+      "voices": 21,
+      "scope": "actual rig/arm surfaces and local asset integrity; browser/audio output separate"
+    },
+    "browser": {
+      "fullCases": 8,
+      "scenarioCount": 4,
+      "viewports": [
+        "1440x900",
+        "390x844"
+      ],
+      "shotControls": 40,
+      "settledHeadFootFramingProbes": 40,
+      "controls": "play/pause/seek/end120/replay-after-completion/restart; paused unchanged stops draws",
+      "clothRetestCases": 2,
+      "limits": {
+        "pixelBudget": 2000000,
+        "triangles": 25000,
+        "drawCalls": 150
+      },
+      "cases": [
+        {
+          "viewport": "desktop",
+          "scenario": "wallet-return",
+          "controls": "play/pause/restart/seek/end/replay-after-completion"
+        },
+        {
+          "viewport": "desktop",
+          "scenario": "sanitation-gratitude",
+          "controls": "play/pause/restart/seek/end/replay-after-completion"
+        },
+        {
+          "viewport": "desktop",
+          "scenario": "kitten-care",
+          "controls": "play/pause/restart/seek/end/replay-after-completion"
+        },
+        {
+          "viewport": "desktop",
+          "scenario": "bakery-courtesy",
+          "controls": "play/pause/restart/seek/end/replay-after-completion"
+        },
+        {
+          "viewport": "mobile",
+          "scenario": "wallet-return",
+          "controls": "play/pause/restart/seek/end/replay-after-completion"
+        },
+        {
+          "viewport": "mobile",
+          "scenario": "sanitation-gratitude",
+          "controls": "play/pause/restart/seek/end/replay-after-completion"
+        },
+        {
+          "viewport": "mobile",
+          "scenario": "kitten-care",
+          "controls": "play/pause/restart/seek/end/replay-after-completion"
+        },
+        {
+          "viewport": "mobile",
+          "scenario": "bakery-courtesy",
+          "controls": "play/pause/restart/seek/end/replay-after-completion"
+        }
+      ]
+    },
+    "audio": {
+      "renderer": "Chromium SwiftShader",
+      "production": false,
+      "cases": [
+        {
+          "scenario": "wallet-return",
+          "audible": {
+            "status": "ready",
+            "voices": 1,
+            "effects": 0,
+            "active": 2,
+            "offset": 0.29999999999999716,
+            "voiceId": "wallet-return-54",
+            "rms": 0.01119304213878967,
+            "decoded": 21,
+            "failures": 0
+          },
+          "pauseStopsAllSources": true,
+          "seekDropsOldVoice": true
+        },
+        {
+          "scenario": "sanitation-gratitude",
+          "audible": {
+            "status": "ready",
+            "voices": 2,
+            "effects": 2,
+            "active": 2,
+            "offset": 0.3000000000000007,
+            "voiceId": "sanitation-gratitude-31",
+            "rms": 0.13001040546849876,
+            "decoded": 21,
+            "failures": 0
+          },
+          "pauseStopsAllSources": true,
+          "seekDropsOldVoice": true
+        },
+        {
+          "scenario": "kitten-care",
+          "audible": {
+            "status": "ready",
+            "voices": 3,
+            "effects": 3,
+            "active": 2,
+            "offset": 0.3000000000000007,
+            "voiceId": "kitten-care-25",
+            "rms": 0.005460852195281646,
+            "decoded": 21,
+            "failures": 0
+          },
+          "pauseStopsAllSources": true,
+          "seekDropsOldVoice": true
+        },
+        {
+          "scenario": "bakery-courtesy",
+          "audible": {
+            "status": "ready",
+            "voices": 4,
+            "effects": 3,
+            "active": 2,
+            "offset": 0.29999999999999716,
+            "voiceId": "bakery-courtesy-60",
+            "rms": 0.16737851939057014,
+            "decoded": 21,
+            "failures": 0
+          },
+          "pauseStopsAllSources": true,
+          "seekDropsOldVoice": true
+        }
+      ],
+      "footsteps": true,
+      "hiddenStops": true,
+      "visibilityFixture": "document.hidden override exercises real visibilitychange handler",
+      "navigationDestroysOldDocument": true,
+      "explicitDispose": "separate strict API lifecycle unit test",
+      "navigationDestination": "intercepted local HTML fixture; unload callbacks are not reliably observable",
+      "partialFetch": {
+        "status": "partial",
+        "voices": 0,
+        "effects": 0,
+        "active": 0,
+        "offset": 0,
+        "voiceId": "",
+        "rms": 0,
+        "decoded": 20,
+        "failures": 1
+      },
+      "unsupportedGraceful": true,
+      "unverified": [
+        "human listening/MOS",
+        "device speaker volume"
+      ]
+    },
+    "typecheck": true,
+    "lint": true,
+    "assets": "280 approved catalog models, 239 resource models/hash+local dependencies, 26 lossless transfers verified",
+    "build": "clean source release build; not a deployment"
+  },
+  "graphicsCleanup": {
+    "removed": [
+      "Studio legacy AssetAvatar path and character-a/b/e preloads",
+      "old rigid kitten sphere/cone function",
+      "unused old arm aimHands methods in legacy and rigged classes",
+      "raised feline stripe placeholder geometry",
+      "Studio rigid cloth-box rendering path"
+    ],
+    "retained": "Kenney originals still used by city fallback/environment and approved gallery; no unreferenced runtime model file identified for deletion. Historical QA images are audit evidence."
+  },
+  "corrections": [
+    {
+      "failure": "Skin/prop height disagreement and unreachable rigid one-joint arms",
+      "fix": "One stage-height transform; articulated Studio shoulder/elbow/palms, genuine contact with prop OBB; changed approach/handoff/counter geometry."
+    },
+    {
+      "failure": "Seek pose drift and discontinuous release/left-hand reach",
+      "fix": "Absolute mixer reset; per-hand causal smoothing in actor-relative coordinates; anticipatory reaches."
+    },
+    {
+      "failure": "Paused automatic camera kept drawing",
+      "fix": "Absolute timeline camera; paused draw updates only for manual orbit."
+    },
+    {
+      "failure": "Queue shadows exceeded rendering budget (observed52916tri/184calls)",
+      "fix": "Lower arm mesh complexity; background houses omit shadows; queue primary body shadow plus 3D contact ellipses."
+    },
+    {
+      "failure": "Sound effects stopped a source before it started; browser host disappeared",
+      "fix": "Start source before scheduling stop; strict lifecycle unit and actual browser footsteps now pass. Old failure did not preserve an InvalidStateError stack."
+    },
+    {
+      "failure": "Compiled vinext Link threw TypeError e is not a function",
+      "fix": "Native Studio home anchor and pagehide cleanup; verified actual navigation with a destination fixture."
+    },
+    {
+      "failure": "Top-down kitten camera too close; portrait queue clipped a subject atNDCx=-1.05885",
+      "fix": "Fit actual subjects/head/feet and allow required portrait distance; enlarge floor below wide shots."
+    },
+    {
+      "failure": "Cloth remained a rigid wide tray while carrying cat",
+      "fix": "Continuous unfold/fold dimensions with a curved 3D sheet; floor-safe positions and focused desktop/mobile retest."
+    },
+    {
+      "failure": "Unload callback observation via Playwright binding/beacon did not survive document teardown",
+      "fix": "Browser proves document replacement/no new autoplay; explicit dispose/stop order verified separately by the strict mocked API lifecycle unit. No claim that an unload callback was observed."
+    }
+  ],
+  "screenshots": "docs/screenshots/studio-v2/manifest.json",
+  "gnd3Gate": "Local Studio gate satisfied; implement frozen GND3 next. No GND3 runtime/schema in this report.",
+  "preservedLimits": [
+    "Fictional editorial Studio does not write live world/history/policies or produce training receipts.",
+    "SwiftShader/local synthetic acceptance; not physical GPU/mobile FPS, long-session soak, rendered video or human voice/MOS review.",
+    "64 suites ran together before the final portrait/floor/cloth edits; impacted logic/rig/browser/audio checks reran as separately attributed above.",
+    "H1/H2/H4/H6/H10 research negatives and unobserved holdout remain unpromoted.",
+    "Remote QA/authenticated smoke/production migration and deploy remain separate unverified gates. QA cron in runbook402df57 must not be duplicated."
+  ]
+}

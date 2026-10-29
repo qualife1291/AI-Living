@@ -5,7 +5,7 @@ from urllib.parse import urlparse
 from playwright.sync_api import sync_playwright
 root=Path(__file__).resolve().parent.parent
 base=os.environ.get('QA_BASE','http://127.0.0.1:5182');assert urlparse(base).hostname in ['127.0.0.1','localhost']
-out=root/'docs/screenshots/three-only-pets';out.mkdir(parents=True,exist_ok=True)
+out=Path(os.environ.get('QA_OUT',str(root/'docs/screenshots/three-only-pets')));out.mkdir(parents=True,exist_ok=True)
 report=[]
 with sync_playwright() as p:
  b=p.chromium.launch(executable_path='/usr/bin/chromium',headless=True,args=['--no-sandbox','--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader'])
@@ -40,11 +40,16 @@ with sync_playwright() as p:
    page.set_viewport_size({'width':width,'height':height})
    page.wait_for_function('JSON.parse(document.querySelector(".three-canvas")?.dataset.petWalks??"[]").some(a=>a.id==="cun"&&a.ownerId==="an")',timeout=30000)
    samples=page.evaluate('''async()=>{const s=[],end=performance.now()+12000;let prev='';while(performance.now()<end){await new Promise(requestAnimationFrame);const e=document.querySelector('.three-canvas');if(e?.dataset.frame!==prev){prev=e.dataset.frame;s.push({owner:e.dataset.position.split(',').map(Number),pets:JSON.parse(e.dataset.petWalks??'[]')})}}return s}''')
+   (out/f'pet-samples-{name}.json').write_text(json.dumps(samples,indent=2))
+   page.screenshot(path=str(out/f'pet-framing-{name}-preview.png'))
    assert len(samples)>=10;assert any(a['walking'] for s in samples for a in s['pets'])
-   assert sum(all(a['onScreen'] for a in s['pets']) for s in samples)/len(samples)>.8,'Camera must keep the companion in view'
+   assert sum(all(a['onScreen'] and a['clearSightline'] for a in s['pets']) for s in samples)/len(samples)>.8,('Camera must keep the companion in view',sum(all(a['onScreen'] and a['clearSightline'] for a in s['pets']) for s in samples),len(samples))
+   gaps=[]
    for row in samples:
     dog=next(a for a in row['pets'] if a['id']=='cun');gap=sum((dog['position'][i]-row['owner'][i])**2 for i in [0,1])**.5
-    assert gap>=9.9,'Pet overlaps its caretaker';assert gap<55,('Companion stays with caretaker',gap)
+    assert gap>=9.9,'Pet overlaps its caretaker';assert gap<120,('Bounded bootstrap catch-up',gap);gaps.append(gap)
+   assert gaps[-1]<55,('Companion catches up within the sampled walk',gaps[0],gaps[-1])
+   assert gaps[-1]<gaps[0] or max(gaps)<55,('Catch-up must close the seed gap',gaps)
    for a,c in zip(samples,samples[1:]):
     assert sum((a['pets'][0]['position'][i]-c['pets'][0]['position'][i])**2 for i in [0,1])**.5<=2.401,'Pet never teleports'
    page.screenshot(path=str(out/f'walk-{name}-preview.png'))
@@ -68,7 +73,7 @@ with sync_playwright() as p:
    page.get_by_role('button',name='Thử lại 3D',exact=True).click();host.wait_for(timeout=90000)
    assert page.locator('.urban-map').count()==0;assert not errors,errors
    assert page.evaluate('document.documentElement.scrollWidth<=innerWidth')
-   report.append({'viewport':name,'frames':len(samples),'petFollow':True,'pause':True,'persistedAssignmentMock':True,'wardrobe3D':True,'OSM3D':True,'contextRetry':True,'hideReveal':True,'resize320':True,'no2D':True,'errors':errors})
+   report.append({'viewport':name,'frames':len(samples),'petFollow':True,'initialGap':gaps[0],'finalGap':gaps[-1],'visibleAndClearFraction':sum(all(a['onScreen'] and a['clearSightline'] for a in s['pets']) for s in samples)/len(samples),'pause':True,'persistedAssignmentMock':True,'wardrobe3D':True,'OSM3D':True,'contextRetry':True,'hideReveal':True,'resize320':True,'no2D':True,'errors':errors})
    print(name,'PASS',report[-1],flush=True);page.close()
   page=b.new_page(viewport={'width':800,'height':600});page.add_init_script('''window.allowGL=false;const original=HTMLCanvasElement.prototype.getContext;HTMLCanvasElement.prototype.getContext=function(t,...a){if(t.includes('webgl')&&!window.allowGL)return null;return original.call(this,t,...a)}''')
   page.route('**/api/world*',world_route);page.route('**/api/living/pulse',lambda r:r.fulfill(status=200,content_type='application/json',body='{"ok":true,"duplicate":true}'))

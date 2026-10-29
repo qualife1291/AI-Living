@@ -24,6 +24,7 @@ export class RiggedAvatar {
  private current='';private requested='';private previous='';private changedAt=0;private lastTime=NaN;
  private feet:THREE.Object3D[]=[];private footOffset=0;private tintKey='';
  private attachments=new Map<string,{mesh:THREE.SkinnedMesh;indices:number[]}[]>();
+ private rest:{bone:THREE.Bone;position:THREE.Vector3;quaternion:THREE.Quaternion;scale:THREE.Vector3}[]=[];
  private colors={shirt:new THREE.Color('white'),trousers:new THREE.Color('white')};
  private wardrobeEnabled={value:0};
  constructor(source:GLTF,height=17.5,radius=4.4,dailyHuman=false) {
@@ -31,6 +32,7 @@ export class RiggedAvatar {
   this.model.traverse(o=>{const mesh=o as THREE.Mesh;if(mesh.isMesh)mesh.geometry=dailyHuman?dailyHumanGeometry(mesh.geometry):mesh.geometry.clone();});
   const bones:THREE.Bone[]=[];
   this.model.traverse(object=>{if((object as THREE.Bone).isBone)bones.push(object as THREE.Bone);});
+  this.rest=bones.map(bone=>({bone,position:bone.position.clone(),quaternion:bone.quaternion.clone(),scale:bone.scale.clone()}));
   const roots=new Set(bones.filter(b=>!(b.parent as THREE.Bone)?.isBone).map(b=>b.name));
   this.mixer=new THREE.AnimationMixer(this.model);
   for(const original of source.animations) {
@@ -136,6 +138,23 @@ export class RiggedAvatar {
   const bottom=contacts.length?Math.min(...contacts):this.feet.length?Math.min(...this.feet.map(b=>b.getWorldPosition(scratch).y))-this.footOffset:0;
   this.group.position.y=floor-bottom;this.group.updateMatrixWorld(true);return true;
  }
+ /** Absolute, seekable mixing for the editorial Studio. No accumulated pose/clock. */
+ poseTimeline(layers:{clip:string;time:number;weight:number}[],position:readonly number[],yaw:number,bend=0) {
+  this.mixer.stopAllAction();
+  for(const rest of this.rest){rest.bone.position.copy(rest.position);rest.bone.quaternion.copy(rest.quaternion);rest.bone.scale.copy(rest.scale);}
+  const weights=new Map<string,{weight:number;time:number}>();
+  for(const layer of layers){const name=this.findClip(layer.clip);if(!name||layer.weight<=0)continue;const v=weights.get(name)??{weight:0,time:layer.time};v.weight+=layer.weight;weights.set(name,v);}
+  const total=[...weights.values()].reduce((s,v)=>s+v.weight,0)||1;
+  for(const [name,action] of this.actions){const v=weights.get(name);action.enabled=!!v;action.setEffectiveWeight((v?.weight??0)/total);if(v){action.play();const duration=Math.max(.001,action.getClip().duration);action.time=((v.time%duration)+duration)%duration;}}
+  this.mixer.update(0);
+  this.group.position.set(position[0],0,position[2]);this.group.rotation.set(0,yaw,0);
+  // A squat precedes low reaches; keep both feet grounded after bending knees.
+  for(const side of ['left','right']){const leg=this.joint(`leg-${side}`);if(!leg)continue;leg.rotateX(-.65*bend);const knee=leg.children.find(o=>(o as THREE.Bone).isBone);knee?.rotateX(1.3*bend);}
+  this.joint('torso')?.rotateX(.45*bend);
+  this.group.updateMatrixWorld(true);
+  const feet=['foot-left','foot-right'].map(k=>this.surface(k,'min')?.y).filter((y):y is number=>y!==undefined);
+  this.group.position.y=position[1]-(feet.length?Math.min(...feet):0);this.group.updateMatrixWorld(true);
+ }
  tint(colors:Colors) {
   const key=colors.shirt+'/'+colors.trousers;if(key===this.tintKey)return;this.tintKey=key;
   this.wardrobeEnabled.value=1;
@@ -144,12 +163,6 @@ export class RiggedAvatar {
  assignId(id:string){this.model.traverse(o=>{if((o as THREE.Mesh).isMesh)o.userData.actorId=id;});}
  hand(side='right'){return this.surface(`hand-${side}`)??this.joint(`hand-${side}`)?.getWorldPosition(new THREE.Vector3())??this.group.position.clone().add(new THREE.Vector3(0,10,0));}
  head(){return this.surface('head','max')??this.group.position.clone().add(new THREE.Vector3(0,17.5,0));}
- aimHands(targets:{right?:readonly number[];left?:readonly number[]}) {
-  for(const side of ['left','right'] as const){const goal=targets[side],arm=this.joint(`arm-${side}`),hand=this.joint(`hand-${side}`);if(!goal||!arm?.parent||!hand)continue;
-   const origin=arm.getWorldPosition(new THREE.Vector3()),direction=hand.getWorldPosition(new THREE.Vector3()).sub(origin).normalize(),target=new THREE.Vector3(...goal).sub(origin).normalize();
-   const turn=new THREE.Quaternion().setFromUnitVectors(direction,target),parent=arm.parent.getWorldQuaternion(new THREE.Quaternion());arm.quaternion.premultiply(parent.clone().invert().multiply(turn).multiply(parent));arm.updateMatrixWorld(true);
-  }
- }
  snapshot(){return{clip:this.requested,resolvedClip:this.current,leg:this.joint('leg-left')?.quaternion.toArray(),position:this.group.position.toArray(),skinned:true};}
  dispose(){this.mixer.stopAllAction();this.mixer.uncacheRoot(this.model);this.model.traverse(o=>{const mesh=o as THREE.SkinnedMesh;if(!mesh.isMesh)return;mesh.geometry.dispose();for(const m of Array.isArray(mesh.material)?mesh.material:[mesh.material])m.dispose();if(mesh.isSkinnedMesh)mesh.skeleton.dispose();});this.group.removeFromParent();}
 }

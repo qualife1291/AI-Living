@@ -16,11 +16,17 @@
 - [ ] D1 QA revision & learning sample count before/after where relevant
 - [ ] No mutation/cron on Site A or Cloudflare staging
 
-**Source SHA under test:**  
-**QA Build / Version / Deployment ID:**  
-**Browser screenshot or artifact:**  
-**Independent QA agent:**  
-**Result:** PASS / FAIL / BLOCKED  
-**Outstanding risks:**  
+**Source SHA under test:**
+
+**QA Build / Version / Deployment ID:**
+
+**Browser screenshot or artifact:**
+
+**Independent QA agent:**
+
+**Result:** PASS / FAIL / BLOCKED
+
+**Outstanding risks:**
+
 
 See [Cloudflare multi-agent QA runbook](../docs/CLOUDFLARE_AGENT_QA.md). Do not mark remote QA passed based only on build success, and do not auto-promote QA to production.

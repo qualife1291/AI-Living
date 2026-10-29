@@ -1,7 +1,9 @@
 import assert from 'node:assert/strict';
 const origin=process.env.TEST_ORIGIN;if(!origin||!['127.0.0.1','localhost'].includes(new URL(origin).hostname))throw Error('Isolated local fixture only');
-const get=async path=>{const r=await fetch(origin+path);assert.equal(r.status,200);return r.json();};
-const post=async(path,body)=>{const r=await fetch(origin+path,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(body)});return {status:r.status,data:await r.json()};};
+// Dedicated HTTP connections avoid Miniflare's stale pooled socket after a 400;
+// 16/8 parallel requests and durable retry assertions still exercise real HTTP.
+const get=async path=>{const r=await fetch(origin+path,{headers:{connection:'close'}});assert.equal(r.status,200);return r.json();};
+const post=async(path,body)=>{try{const r=await fetch(origin+path,{method:'POST',headers:{'content-type':'application/json',connection:'close'},body:JSON.stringify(body)});return {status:r.status,data:await r.json()};}catch(cause){throw new Error(`Local fixture request failed at ${path}`,{cause});}};
 const start=await get('/api/visits'),session=crypto.randomUUID();
 const repeats=await Promise.all(Array.from({length:16},()=>post('/api/visits',{session})));assert.ok(repeats.every(x=>x.status===200));assert.equal((await get('/api/visits')).views,start.views+1);
 await Promise.all(Array.from({length:8},()=>post('/api/visits',{session:crypto.randomUUID()})));assert.equal((await get('/api/visits')).views,start.views+9);

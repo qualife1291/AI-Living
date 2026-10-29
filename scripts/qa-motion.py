@@ -5,7 +5,7 @@ from urllib.parse import urlparse
 from playwright.sync_api import sync_playwright
 root=Path(__file__).resolve().parent.parent
 base=os.environ.get('QA_BASE','http://127.0.0.1:5177');assert urlparse(base).hostname in ['127.0.0.1','localhost']
-out=root/'docs/screenshots/motion';out.mkdir(parents=True,exist_ok=True)
+out=Path(os.environ.get('QA_OUT',str(root/'docs/screenshots/motion')));out.mkdir(parents=True,exist_ok=True)
 fixture=json.loads(subprocess.check_output(['node','scripts/social-preview-fixture.mjs','--motion'],cwd=root,text=True))
 with sync_playwright() as p:
  b=p.chromium.launch(executable_path='/usr/bin/chromium',headless=True,args=['--no-sandbox','--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader'])

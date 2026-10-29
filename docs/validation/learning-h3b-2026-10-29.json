@@ -1,0 +1,476 @@
+{
+  "phase": "H3b-v1",
+  "status": "offline-implementation-accepted-candidate-not-promoted",
+  "closedAt": "2026-10-29T03:23:08.375698+00:00",
+  "protocol": "docs/validation/learning-h3b-protocol-v1.json",
+  "protocolSha256": "9f5fa1a55fefec850fba1d48131b1768458ad2a71dece020a763f543493c0122",
+  "registeredBeforeImplementation": true,
+  "implementationSource": "3e4fbee",
+  "fixtureClockFixSource": "88c60c4",
+  "productionAccess": false,
+  "scope": "Synthetic one-step decision utility with a210s delayed, physically verified two-party rendezvous objective. Not an end-to-end living society rollout.",
+  "artifacts": {
+    "train": {
+      "path": "docs/validation/h3b-v1/train.json",
+      "sha256": "5fc80952e89722596f75f9b45f00e72e997a4a1796593cc26c974d6852c9072f",
+      "bytes": 82481,
+      "offeredTasks": 32,
+      "fulfilled": 15,
+      "positiveUtility": 9,
+      "acceptedPhysicsSteps": 69120
+    },
+    "validation": {
+      "path": "docs/validation/h3b-v1/validation.json",
+      "sha256": "bc30d9469d1d82c9edfc46be049bfd8eb7c91d5adae6e8c54af53dbdab1d70c8",
+      "bytes": 40367,
+      "offeredTasks": 16,
+      "fulfilled": 7,
+      "positiveUtility": 4,
+      "acceptedPhysicsSteps": 34560
+    },
+    "holdout": {
+      "path": "docs/validation/h3b-v1/holdout.json",
+      "sha256": "02a00612ee00df4c44799f5d2daeedc774135b75592971620cc8b0407886caf2",
+      "bytes": 117319,
+      "offeredTasks": 48,
+      "fulfilled": 18,
+      "positiveUtility": 3,
+      "acceptedPhysicsSteps": 103680
+    }
+  },
+  "training": {
+    "samples": 32,
+    "dimensions": 6,
+    "featureVersion": "ground-rendezvous-6d-v1",
+    "rewardVersion": "rendezvous-delayed-v1",
+    "fullTrainRepeatByteIdentical": true,
+    "modelPayloadSha256": "5fc80952e89722596f75f9b45f00e72e997a4a1796593cc26c974d6852c9072f",
+    "epochsPerUniqueOutcome": 1,
+    "duplicateFits": 0,
+    "oldPolicySampleChanges": 0,
+    "knownDeclineUtility": 0,
+    "rawGroundReceiptsRelabelled": false
+  },
+  "validation": {
+    "offeredTasks": 16,
+    "seeds": 4,
+    "perSeed": [
+      {
+        "seed": 18100,
+        "offers": 4,
+        "alwaysAttend": -0.4767866021032549,
+        "candidate": -0.007666951305246347,
+        "heuristic": 0.018864862091552637,
+        "candidateOpportunityLoss": 0.026531813396798984,
+        "alwaysAttendOpportunityLoss": 0.49565146419480755,
+        "candidateFailedOfferRate": 0,
+        "alwaysAttendFailedOfferRate": 0.5
+      },
+      {
+        "seed": 18101,
+        "offers": 4,
+        "alwaysAttend": -0.7694815710970567,
+        "candidate": 0,
+        "heuristic": 0,
+        "candidateOpportunityLoss": 0,
+        "alwaysAttendOpportunityLoss": 0.7694815710970567,
+        "candidateFailedOfferRate": 0,
+        "alwaysAttendFailedOfferRate": 0.75
+      },
+      {
+        "seed": 18102,
+        "offers": 4,
+        "alwaysAttend": -0.4706514641948075,
+        "candidate": 0.05588034920199146,
+        "heuristic": 0.05588034920199146,
+        "candidateOpportunityLoss": 0,
+        "alwaysAttendOpportunityLoss": 0.526531813396799,
+        "candidateFailedOfferRate": 0,
+        "alwaysAttendFailedOfferRate": 0.5
+      },
+      {
+        "seed": 18103,
+        "offers": 4,
+        "alwaysAttend": -0.4484289984462765,
+        "candidate": 0.022488434723464013,
+        "heuristic": 0.03355257265078018,
+        "candidateOpportunityLoss": 0.01106413792731617,
+        "alwaysAttendOpportunityLoss": 0.4819815710970567,
+        "candidateFailedOfferRate": 0,
+        "alwaysAttendFailedOfferRate": 0.5
+      }
+    ],
+    "utilityDelta": {
+      "mean": 0.5590126171154012,
+      "ci95": [
+        0.33178407952382827,
+        0.7862411547069741
+      ],
+      "n": 4
+    },
+    "heuristicDelta": {
+      "mean": -0.009398987831028788,
+      "ci95": [
+        -0.029376195698724124,
+        0.010578220036666548
+      ],
+      "n": 4
+    },
+    "failedDelta": {
+      "mean": -0.5625,
+      "ci95": [
+        -0.761375,
+        -0.363625
+      ],
+      "n": 4
+    },
+    "alwaysAttendMean": -0.541337158960349,
+    "candidateMean": 0.01767545815505228,
+    "heuristicMean": 0.02707444598608107,
+    "candidateOpportunityLoss": 0.009398987831028788,
+    "alwaysAttendOpportunityLoss": 0.56841160494643,
+    "positiveOpportunities": 4,
+    "retainedPositiveOpportunities": 3,
+    "attendShare": 0.25,
+    "gates": {
+      "enoughSeeds": false,
+      "utilityImproved": true,
+      "failedAcceptedOffersDoNotIncrease": true,
+      "positiveOpportunitiesRetained": false,
+      "noActionCollapse": true
+    },
+    "offlineGatesPassed": false,
+    "runtimePromotion": false
+  },
+  "holdout": {
+    "offeredTasks": 48,
+    "seeds": 12,
+    "perSeed": [
+      {
+        "seed": 18200,
+        "offers": 4,
+        "alwaysAttend": -0.6441282535733074,
+        "candidate": 0,
+        "heuristic": -0.14412825357330739,
+        "candidateOpportunityLoss": 0.062468289395442564,
+        "alwaysAttendOpportunityLoss": 0.70659654296875,
+        "candidateFailedOfferRate": 0,
+        "alwaysAttendFailedOfferRate": 0.75
+      },
+      {
+        "seed": 18201,
+        "offers": 4,
+        "alwaysAttend": -0.7853900682863384,
+        "candidate": 0,
+        "heuristic": 0,
+        "candidateOpportunityLoss": 0,
+        "alwaysAttendOpportunityLoss": 0.7853900682863384,
+        "candidateFailedOfferRate": 0,
+        "alwaysAttendFailedOfferRate": 0.5
+      },
+      {
+        "seed": 18202,
+        "offers": 4,
+        "alwaysAttend": -0.7497040368676985,
+        "candidate": 0,
+        "heuristic": 0,
+        "candidateOpportunityLoss": 0,
+        "alwaysAttendOpportunityLoss": 0.7497040368676985,
+        "candidateFailedOfferRate": 0,
+        "alwaysAttendFailedOfferRate": 0.75
+      },
+      {
+        "seed": 18203,
+        "offers": 4,
+        "alwaysAttend": -0.7152638277026667,
+        "candidate": 0,
+        "heuristic": 0,
+        "candidateOpportunityLoss": 0,
+        "alwaysAttendOpportunityLoss": 0.7152638277026667,
+        "candidateFailedOfferRate": 0,
+        "alwaysAttendFailedOfferRate": 0.5
+      },
+      {
+        "seed": 18204,
+        "offers": 4,
+        "alwaysAttend": -0.7357764513822711,
+        "candidate": 0,
+        "heuristic": 0,
+        "candidateOpportunityLoss": 0,
+        "alwaysAttendOpportunityLoss": 0.7357764513822711,
+        "candidateFailedOfferRate": 0,
+        "alwaysAttendFailedOfferRate": 0.5
+      },
+      {
+        "seed": 18205,
+        "offers": 4,
+        "alwaysAttend": -0.7497040368676985,
+        "candidate": 0,
+        "heuristic": -0.25,
+        "candidateOpportunityLoss": 0,
+        "alwaysAttendOpportunityLoss": 0.7497040368676985,
+        "candidateFailedOfferRate": 0,
+        "alwaysAttendFailedOfferRate": 0.75
+      },
+      {
+        "seed": 18206,
+        "offers": 4,
+        "alwaysAttend": -0.7228900682863383,
+        "candidate": 0,
+        "heuristic": 0,
+        "candidateOpportunityLoss": 0,
+        "alwaysAttendOpportunityLoss": 0.7228900682863383,
+        "candidateFailedOfferRate": 0,
+        "alwaysAttendFailedOfferRate": 0.5
+      },
+      {
+        "seed": 18207,
+        "offers": 4,
+        "alwaysAttend": -0.8122040368676985,
+        "candidate": 0,
+        "heuristic": 0,
+        "candidateOpportunityLoss": 0,
+        "alwaysAttendOpportunityLoss": 0.8122040368676985,
+        "candidateFailedOfferRate": 0,
+        "alwaysAttendFailedOfferRate": 0.75
+      },
+      {
+        "seed": 18208,
+        "offers": 4,
+        "alwaysAttend": -0.8122040368676985,
+        "candidate": 0,
+        "heuristic": 0,
+        "candidateOpportunityLoss": 0,
+        "alwaysAttendOpportunityLoss": 0.8122040368676985,
+        "candidateFailedOfferRate": 0,
+        "alwaysAttendFailedOfferRate": 0.75
+      },
+      {
+        "seed": 18209,
+        "offers": 4,
+        "alwaysAttend": -0.6809026919659427,
+        "candidate": 0,
+        "heuristic": 0,
+        "candidateOpportunityLoss": 0,
+        "alwaysAttendOpportunityLoss": 0.6809026919659427,
+        "candidateFailedOfferRate": 0,
+        "alwaysAttendFailedOfferRate": 0.5
+      },
+      {
+        "seed": 18210,
+        "offers": 4,
+        "alwaysAttend": -0.6441282535733074,
+        "candidate": 0,
+        "heuristic": -0.14412825357330739,
+        "candidateOpportunityLoss": 0.062468289395442564,
+        "alwaysAttendOpportunityLoss": 0.70659654296875,
+        "candidateFailedOfferRate": 0,
+        "alwaysAttendFailedOfferRate": 0.75
+      },
+      {
+        "seed": 18211,
+        "offers": 4,
+        "alwaysAttend": -0.5559026919659427,
+        "candidate": 0,
+        "heuristic": 0.004218804538955484,
+        "candidateOpportunityLoss": 0.004218804538955484,
+        "alwaysAttendOpportunityLoss": 0.5601214965048982,
+        "candidateFailedOfferRate": 0,
+        "alwaysAttendFailedOfferRate": 0.5
+      }
+    ],
+    "utilityDelta": {
+      "mean": 0.717349871183909,
+      "ci95": [
+        0.6691860014294563,
+        0.7655137409383618
+      ],
+      "n": 12
+    },
+    "heuristicDelta": {
+      "mean": 0.04450314188397161,
+      "ci95": [
+        -0.00978233812008824,
+        0.09878862188803145
+      ],
+      "n": 12
+    },
+    "failedDelta": {
+      "mean": -0.625,
+      "ci95": [
+        -0.7079533086769572,
+        -0.5420466913230428
+      ],
+      "n": 12
+    },
+    "alwaysAttendMean": -0.717349871183909,
+    "candidateMean": 0,
+    "heuristicMean": -0.04450314188397161,
+    "candidateOpportunityLoss": 0.01076294861082005,
+    "alwaysAttendOpportunityLoss": 0.728112819794729,
+    "positiveOpportunities": 3,
+    "retainedPositiveOpportunities": 0,
+    "attendShare": 0,
+    "gates": {
+      "enoughSeeds": true,
+      "utilityImproved": true,
+      "failedAcceptedOffersDoNotIncrease": true,
+      "positiveOpportunitiesRetained": false,
+      "noActionCollapse": false
+    },
+    "offlineGatesPassed": false,
+    "runtimePromotion": false
+  },
+  "decision": {
+    "promote": false,
+    "reason": [
+      "Validation retained only3of4 positive-utility opportunities(75%<80%).",
+      "On holdout the model declined all48offers, retaining0of3 positive opportunities and failing the attend-share gate.",
+      "Utility improves versus always-attend because all tasks are declined; that is not sufficient evidence of useful learning.",
+      "Candidate-minus-heuristic95%interval contains0; no clear advantage over the causal rule."
+    ],
+    "runtimeRewardOrMemoryImporter": false,
+    "P2PEnabled": false,
+    "liveActorLearningFromH3b": false,
+    "defaultV1LearningUnchanged": true,
+    "newTuningRequires": "New preregistered protocol/train-validation-holdout; do not retune on these observed cohorts, or touch old H10 holdout12000-12019."
+  },
+  "verification": {
+    "units": {
+      "suite": "unit-summary",
+      "total": 70,
+      "passed": 70,
+      "failed": [],
+      "workers": 4,
+      "seconds": 59.53
+    },
+    "dedicatedUnit": {
+      "suite": "ground-learning",
+      "realAcceptedPhysics": true,
+      "delayedWindowAndTwoPartyPresence": true,
+      "continuousOverlapAndActualTravel": true,
+      "chunkProofByteIdentical": true,
+      "partialAndPauseNoSettlement": true,
+      "cancelBaselineTransitClockAndRetirementNoPositive": true,
+      "plannedOrHeardTextNotRewarded": true,
+      "exactOnceAndImmutableContext": true,
+      "namespaceAndPartitionIsolation": true,
+      "modelRebuiltFromOnePassLedger": true,
+      "CLIExclusiveUtf8BytesSymlinkHardlinkAndChecksum": true,
+      "CLIActualSmoke": true,
+      "worldOrOldPolicyWrites": false,
+      "runtimePromotion": false
+    },
+    "typecheck": true,
+    "lint": true,
+    "clockFixtureTargetLint": true,
+    "assets": true,
+    "buildSource": "3e4fbeeddc3b9e5bed9a02dc40ebf547b1b223d0",
+    "experimentExcludedFrom155CompiledJSModules": true,
+    "oldH1Golden": {
+      "outcomes": 15375,
+      "decisions": 1500,
+      "byteIdentity": "test-learning-policy passed in the full70suite run"
+    },
+    "UIRuntimeAndSchemaChanges": false,
+    "newBrowserOrCompiledApiRun": "Not required: no UI, application imports, runtime behavior or DB schema changed; existing acceptance remains attributed to its original source.",
+    "ownerDatabaseOrProductionMigration": false,
+    "uniquePhysicalTasks": 96,
+    "uniqueTaskPhysicsSteps": 207360,
+    "includingTrainRepeatPhysicsSteps": 276480
+  },
+  "failuresAndCorrections": [
+    {
+      "run": "unit-initial.log",
+      "failure": "model-rebuild compared JSON objects with different key order after Zod parsing.",
+      "fix": "Compare exact sample/vector/matrix entries instead; no tolerance change, numeric tampering still rejected.",
+      "retake": "Dedicated H3b unit passed; then full70 passed."
+    },
+    {
+      "run": "full-unit.log",
+      "failure": "69/70: native GND3 store fixture used a past fixed server anchor with real SQLite julianday(now); once wall time passed the anchor it became a clock-mismatch case and correctly earned no credit.",
+      "fix": "Override the SQLite fixture clock to the same injected time. No production SQL or runtime clock change.",
+      "retake": "Native suite and the full70suite rerun passed."
+    }
+  ],
+  "limitations": [
+    "Four humans/seven bodies plus12ambient cars in reset synthetic tasks;8locations/3values with repeated geometry, not96independent stories or real resident histories.",
+    "Only3positive holdout opportunities; seed-level intervals describe this small fixed generator, not general social intelligence.",
+    "Frozen model evaluation uses the common replayed attend potential outcome and known decline utility0. It is not a trajectory of a city in which the candidate actually chose each action.",
+    "Goal values are precommitted editorial utility; verified presence does not prove productive/economic/medical effects or understanding.",
+    "No runtime installation, new agent memory/skills, long-term needs gain, TTS/LLM training, GPU/24h-soak or remote QA result.",
+    "Native Sites/Cloudflare auth/tools still absent; work remains unpromoted and production candidate77d1d1f remains a local archive."
+  ],
+  "logIndex": [
+    {
+      "path": "work/h3b-2026-10-29/unit-initial.log",
+      "sha256": "bb37e1318fca1be9553f21d75f3c9b01be262036256bf821931c52b4a983c4b3",
+      "bytes": 379
+    },
+    {
+      "path": "work/h3b-2026-10-29/unit-second.log",
+      "sha256": "327fe5251b24618b9cd220ca91c1b0dcd01a9b0d5df3cd853ca1118243943123",
+      "bytes": 539
+    },
+    {
+      "path": "work/h3b-2026-10-29/full-unit.log",
+      "sha256": "40d9195342f55f70775aee4a3223f0aa8aa756b8cc3055c6f3418122cd6d07be",
+      "bytes": 4239
+    },
+    {
+      "path": "work/h3b-2026-10-29/full-unit-retake.log",
+      "sha256": "9b841d33a796489d1c93015e23249a691ee63f8e725c4e5142d2cc4fb3585c5d",
+      "bytes": 3223
+    },
+    {
+      "path": "work/h3b-2026-10-29/native-clock-retake.log",
+      "sha256": "86dd0cd12a3fd08d1d0a3d85f8785ad2da9caaf4b735f1e8b6371b26dce7f40b",
+      "bytes": 474
+    },
+    {
+      "path": "work/h3b-2026-10-29/final-type.log",
+      "sha256": "7221a45908fd614e50740555b80013f82555e49102f1f3d4d719a531ed487e4b",
+      "bytes": 59
+    },
+    {
+      "path": "work/h3b-2026-10-29/final-lint.log",
+      "sha256": "9d4ed79a683eccf54173b6034d4187b97e629a26e9f9dbedc55bc19d45839445",
+      "bytes": 99
+    },
+    {
+      "path": "work/h3b-2026-10-29/clock-fixture-lint.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "work/h3b-2026-10-29/assets.log",
+      "sha256": "5021aba97621a5746c5cdf289a79766e2ab64b1d169a113ee3272e95eaa320d9",
+      "bytes": 947
+    },
+    {
+      "path": "work/h3b-2026-10-29/build-3e4fbee.log",
+      "sha256": "753902c9ccd091fd5d7829aa3464a6fde84d038309bd160334f8e894066f2f42",
+      "bytes": 3852
+    },
+    {
+      "path": "work/h3b-2026-10-29/train.log",
+      "sha256": "d3ec0928fe329a324a6b982cf489a125eb99176f26ceabac440fbb3bf4a53298",
+      "bytes": 667
+    },
+    {
+      "path": "work/h3b-2026-10-29/train-repeat.log",
+      "sha256": "902575f5f91c18e715dc38fd726bb1037a080659377f9b1eeb29c934669aad72",
+      "bytes": 674
+    },
+    {
+      "path": "work/h3b-2026-10-29/validation.log",
+      "sha256": "56d3071cb31510dd1387afdc967e48c53ae59556fb75d7fe0accfa3cc7f9b2b3",
+      "bytes": 2699
+    },
+    {
+      "path": "work/h3b-2026-10-29/holdout.log",
+      "sha256": "23092610f3d2468e27e0ad55ee070509adf6e3f7c13c154c864edc404b9683c1",
+      "bytes": 5078
+    }
+  ]
+}

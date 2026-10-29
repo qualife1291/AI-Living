@@ -4,7 +4,7 @@ import { WalkDirector } from "@/lib/city/walkability";
 import { TrafficDirector, TRAFFIC_COUNT, trafficJunctions, type TrafficVehicle } from "@/lib/city/traffic";
 import { venueGeometry, openVenue, segmentHits } from "@/lib/city/footprints";
 import { sceneryTrees, sceneryLamps, streetProps, venueSceneryPose } from "@/lib/city/scenery";
-import { characterShot } from "@/lib/city/cinematography";
+import { characterShot, cameraRayBlocked } from "@/lib/city/cinematography";
 import { groundElevation } from "@/lib/city/ground";
 import {HOME_ANCHORS,homeAnchor,homeCameraOffset} from "../../../lib/city/homes";
 import {gardenPlot,gardenCameraOffset} from "../../../lib/city/garden-plots";
@@ -36,6 +36,7 @@ import {
   pedestrianSegments,
 } from "@/lib/city/three-layout";
 import type { World, EpisodeEvent } from "@/lib/world";
+import {sampleAuthoritySpeech,type AuthorityView} from '@/lib/living/ground-authority-view';
 import {sampleSharedGround,type SharedGroundView} from '@/lib/living/shared-ground-view';
 
 export type SceneInput = {
@@ -46,6 +47,7 @@ export type SceneInput = {
   clockOffsetMs?: number;
   sharedGroundRequested?:boolean;
   sharedGround?:SharedGroundView;
+  sharedAuthority?:AuthorityView;
   target?: { x: number; y: number; key: number; homeId?:string;gardenId?:string } | null;
 };
 export type SceneStatus = {
@@ -640,6 +642,14 @@ export function createCity(
   let lastStatus = 0;
   const viewOffset = new THREE.Vector3(48, 34, 62);
   const cameraBuildings = [...venues.filter(v => !openVenue(v)).map(venueGeometry), ...buildings.map(b => ({ x:b.x,z:b.z,width:b.width,depth:b.depth }))];
+  // Render-only crown/trunk bounds, separate from walkable ground footprints.
+  const cameraFoliage=sceneryTrees.flatMap(t=>{
+    const ground=groundElevation(t.x,t.z);
+    return [{x:t.x,z:t.z,width:3,depth:3,minY:ground,maxY:ground+34+t.seed%7},
+      ...[-1,0,1].map(side=>({x:t.x+side*6,z:t.z+(side===0?0:2),width:side===0?22:18,depth:20,
+        minY:ground+36+t.seed%7+(side===0?4:0)-(side===0?13:10),
+        maxY:ground+36+t.seed%7+(side===0?4:0)+(side===0?13:10)}))];
+  });
   function focus(x: number, z: number, offset = viewOffset,targetY=15) {
     scene.fog = fog;
     controls.minPolarAngle=Math.hypot(offset.x,offset.z)<.1?0:.22;
@@ -809,15 +819,19 @@ export function createCity(
       if(shared&&shared.worldBorn===world.born){
         const sampled=sampleSharedGround(shared,now-1500);
         const animals=new Set(['muop','cun','se']),allHumans=sampled.actors.filter(a=>!animals.has(a.id));
-        const preferred=new Set([selected,world.livingTurn?.residentId]);
-        actors=[...allHumans.slice(0,capacity-2),...allHumans.filter(a=>preferred.has(a.id)&&!allHumans.slice(0,capacity-2).some(p=>p.id===a.id))].slice(0,capacity);
+        const serverLines=sampleAuthoritySpeech(state.sharedAuthority,shared,sampled.simMs,sampled.actors);
+        const preferred=new Set([selected,...(serverLines.length?serverLines.flatMap(u=>[u.speakerId,u.listenerId]):[world.livingTurn?.residentId])]);
+        const reserved=serverLines.length?preferred.size:2;
+        actors=[...allHumans.slice(0,capacity-reserved),...allHumans.filter(a=>preferred.has(a.id)&&!allHumans.slice(0,capacity-reserved).some(p=>p.id===a.id))].slice(0,capacity);
         groundAnimals=animalsAt(world,0).flatMap(base=>{const actor=sampled.actors.find(a=>a.id===base.id);return actor?[{...base,...actor}]:[];});cars=sampled.cars;seconds=sampled.simMs/1000;
         socialPoses=new Map();exchanges=[];
+        for(const line of serverLines){const source=line.generator==='local-llm'?'ai':'script';socialPoses.set(line.speakerId,{peerId:line.listenerId,gesture:'explain',speaking:true,source});socialPoses.set(line.listenerId,{peerId:line.speakerId,gesture:'listen',speaking:false,source});exchanges.push({a:line.speakerId,b:line.listenerId,title:'Trò chuyện trong xóm',source,speech:{speaker:line.speakerId,text:line.text,source:source==='ai'?'ai':'routine',key:`ground:${line.id}`}});}
+        host.dataset.sharedAuthority=JSON.stringify({checkpoint:state.sharedAuthority?.checkpoint??null,parentCheckpoint:shared.checkpoint,simMs:sampled.simMs,utterances:serverLines.map(u=>({id:u.id,speaker:u.speakerId,listener:u.listenerId,text:u.text,fromSimMs:u.fromSimMs,untilSimMs:u.untilSimMs}))});
         host.dataset.sharedGround=JSON.stringify({checkpoint:shared.checkpoint,sequence:shared.sequence,realMs:sampled.realMs,simMs:sampled.simMs,positions:sampled.actors.map(a=>({id:a.id,position:a.position})),cars:cars.map(c=>({id:c.id,position:c.position})),backlogMs:shared.backlogMs});
-      }else{actors=[];groundAnimals=[];cars=[];socialPoses=new Map();exchanges=[];host.dataset.sharedGround='waiting';}
+      }else{actors=[];groundAnimals=[];cars=[];socialPoses=new Map();exchanges=[];host.dataset.sharedGround='waiting';delete host.dataset.sharedAuthority;}
       current=actors.find(a=>a.id===selected)??actors[0];
     }else{
-      delete host.dataset.sharedGround;
+      delete host.dataset.sharedGround;delete host.dataset.sharedAuthority;
       const rawActors = [
         ...actorsAt(world, lastTime),
         ...(world.living
@@ -842,7 +856,7 @@ export function createCity(
         if (current) {
           const peer = actors.find(a => a.id === socialPoses.get(current!.id)?.peerId) ?? groundAnimals.find(a => a.petOwnerId === current!.id);
           const height = Math.max(modelActors.height(current.id), peer && modelActors.ids.has(peer.id) ? modelActors.height(peer.id) : peer && actors.some(a => a.id === peer.id) ? 20 : 0);
-          const shot = characterShot(current, peer, heading.get(current.id) ?? .35, cameraBuildings, camera.aspect, height);
+          const shot = characterShot(current, peer, heading.get(current.id) ?? .35, cameraBuildings, camera.aspect, height, {boxes:cameraFoliage,peerHeight:peer && groundAnimals.some(a=>a.id===peer.id) ? 5 : height,elevation:p=>groundElevation(p[0],p[1])});
           scene.fog = fog;
           controls.target.set(...shot.target);
           camera.position.set(...shot.position);
@@ -909,10 +923,19 @@ export function createCity(
         const partnerId = socialPoses.get(current.id)?.peerId;
         const peer = actors.find(a => a.id === partnerId) ?? groundAnimals.find(a => a.petOwnerId === current!.id);
         const height = Math.max(modelActors.height(current.id), peer && modelActors.ids.has(peer.id) ? modelActors.height(peer.id) : peer && actors.some(a => a.id === peer.id) ? 20 : 0);
-        const shot = characterShot(current, peer, heading.get(current.id) ?? .35, cameraBuildings, camera.aspect, height);
-        const alpha = 1 - Math.exp(-2.8 * dt);
-        controls.target.lerp(new THREE.Vector3(...shot.target), alpha);
-        camera.position.lerp(new THREE.Vector3(...shot.position), alpha);
+        const shot = characterShot(current, peer, heading.get(current.id) ?? .35, cameraBuildings, camera.aspect, height, {boxes:cameraFoliage,peerHeight:peer && groundAnimals.some(a=>a.id===peer.id) ? 5 : height,elevation:p=>groundElevation(p[0],p[1])});
+        const sightClear=(position:THREE.Vector3)=>[{actor:current!,height},...(peer?[{actor:peer,height:groundAnimals.some(a=>a.id===peer.id)?5:height}]:[])].every(({actor,height:h})=>
+          !cameraFoliage.some(box=>cameraRayBlocked(box,[actor.position[0],groundElevation(...actor.position)+Math.max(2,h*.8),actor.position[1]],position.toArray()))&&
+          !cameraBuildings.some(box=>segmentHits(box,actor.position,[position.x,position.z],2)));
+        const desired=new THREE.Vector3(...shot.position),target=new THREE.Vector3(...shot.target);
+        if(!sightClear(camera.position)&&sightClear(desired)){
+          // Easing through an opaque crown hides the companion even when the
+          // chosen endpoint is clear. Make an explicit deterministic correction.
+          controls.target.copy(target);camera.position.copy(desired);
+        }else{
+          const alpha = 1 - Math.exp(-2.8 * dt);
+          controls.target.lerp(target, alpha);camera.position.lerp(desired, alpha);
+        }
       }
     }
     controls.update();
@@ -1007,7 +1030,8 @@ export function createCity(
     host.dataset.tagCast = JSON.stringify(actors.filter(a => a.tagGame).map(a => ({ id: a.id, position: a.position, walking: a.walking, ...a.tagGame })));
     host.dataset.petWalks = JSON.stringify(groundAnimals.filter(a => a.petOwnerId).map(a => {
       const screen = new THREE.Vector3(a.position[0], 2, a.position[1]).project(camera);
-      return { id: a.id, ownerId: a.petOwnerId, position: a.position, walking: a.walking, onScreen: screen.z > -1 && screen.z < 1 && Math.abs(screen.x) < .95 && Math.abs(screen.y) < .95 };
+      const clearSightline=!cameraFoliage.some(box=>cameraRayBlocked(box,[a.position[0],groundElevation(...a.position)+4,a.position[1]],camera.position.toArray()))&&!cameraBuildings.some(box=>segmentHits(box,a.position,[camera.position.x,camera.position.z],2));
+      return { id: a.id, ownerId: a.petOwnerId, position: a.position, walking: a.walking, clearSightline, onScreen: screen.z > -1 && screen.z < 1 && Math.abs(screen.x) < .95 && Math.abs(screen.y) < .95 };
     }));
     host.dataset.selected = current?.id ?? "";
     host.dataset.humanBatches = String(people.stats().batches);
@@ -1024,7 +1048,7 @@ export function createCity(
   }
   frame = requestAnimationFrame(tick);
   return {
-    presentSpeech(key) { socialDirector.presented(key, Date.now() + (input().clockOffsetMs ?? 0)); },
+    presentSpeech(key) { if(!input().sharedGroundRequested)socialDirector.presented(key, Date.now() + (input().clockOffsetMs ?? 0)); },
     zoom(factor) {
       following = false;
       host.dataset.view = "orbit";

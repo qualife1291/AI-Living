@@ -34,6 +34,8 @@ G0 dùng26 gzip transport GLB trong `public/models/derivatives`, manifest `data/
 - Fit model/animation envelope trong footprint/navigation clearance, đáy theo `groundElevation`. Bounds tĩnh không tự bao hết clip. Material đổi phải giữ UV/map/color space; một số model có `KHR_materials_unlit`.
 - Clone dispose mixer/geometry/material/skeleton riêng; giữ cached source/textures đến khi library đóng. Gallery phải xử lý selection race/load retry/context loss/pause/unmount. Tài sản ở gallery chưa chứng minh đang sống trong phố.
 
+Studio v2 dùng Human002 với tay hai đoạn/contact targets, mèo articulated và khăn cong; đã bỏ renderer/preload character Kenney cũ khỏi Studio. Catalog Kenney vẫn có consumer city fallback/environment/gallery, không xóa model/texture/license còn dùng.21OGG Việt offline có hash/license/model provenance riêng ở `public/audio/studio/manifest.json` và `LICENSE.txt`; không tải model TTS lúc runtime. Chi tiết và ảnh nghiệm thu tại [SCENARIOS](SCENARIOS.md).
+
 ## OSM và nguồn bối cảnh
 
 © [OpenStreetMap contributors](https://www.openstreetmap.org/copyright), [ODbL1.0](https://opendatacommons.org/licenses/odbl/1-0/). Giữ attribution và `source/license/fetchedAt/osmBaseTime`; ODbL của dataset không tự áp lên toàn bộ app. Chỉ chạy `python3 scripts/import-osm.py` khi chủ đích cập nhật snapshot, không fetch mỗi frame.

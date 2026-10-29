@@ -1,0 +1,135 @@
+{
+  "phase": "H3b",
+  "version": 1,
+  "scope": "offline-ground-rendezvous-v1",
+  "registeredBeforeImplementation": true,
+  "date": "2026-10-29",
+  "baselineSource": "01f497150e4df432b7b62122f92ef63bfaeb6557",
+  "authorityProtocol": "docs/validation/ground-authority-contract-v1.json",
+  "objective": "An owner-authored synthetic appointment: two named actors attend the named place in a precommitted window. Certifies simulated rendezvous presence only, never productive work, understanding, money or medical effects.",
+  "boundary": {
+    "offlineOnly": true,
+    "sourceKind": "synthetic-ground-study-v1",
+    "networkOrUserDatabaseAccess": false,
+    "runtimeImporter": false,
+    "defaultPolicyOrOldRewardsChanged": false,
+    "GND3ReceiptEligibilityChanged": false,
+    "P2P": false,
+    "newSchedulerOrMigration": false
+  },
+  "decision": {
+    "actions": [
+      "attend",
+      "decline"
+    ],
+    "commitment": "The offer and causal features are frozen before either plan is written; accept binds the exact new plan SHAs, actor epochs, source sequence and step2. Decline has known utility0 and produces no ground success claim.",
+    "features": {
+      "version": "ground-rendezvous-6d-v1",
+      "ordered": [
+        "bias1",
+        "offeredValue",
+        "actorRouteUnitsAtChoice/2000 clipped01",
+        "peerRouteUnitsAtChoice/2000 clipped01",
+        "precommittedPeerIntentAvailable01",
+        "windowLeadMs/210000 clipped01"
+      ]
+    },
+    "rewardVersion": "rendezvous-delayed-v1",
+    "windowMs": [
+      150000,
+      210000
+    ],
+    "minimumContinuousOverlapMs": 30000,
+    "maxSimulationMs": 216000,
+    "simScale": 60,
+    "capture": "Actual accepted root poses and static A* route estimates at choice; no final pose, final reward or future physical completion enters context."
+  },
+  "settlement": {
+    "positive": "Only after the whole step2 window closes: matching presence-completed receipts for both actors and one continuous GND3 LOS/contact pair overlapping the window for>=30000ms; exact offered location, plan/source/epoch bindings.",
+    "travelCost": "Sum accepted actor root displacements from decision until window closure, cost=units/1000. No reward for distance, arrival, planned/emitted/heard text or unbound generic presence.",
+    "formula": "attend: clip((fulfilled ? offeredValue : -0.5) - acceptedTravelUnits/1000, -1, 1); decline:0",
+    "uniqueness": "At most one trained sample per goal ID and physical episode; duplicate/tampered/cross-partition outcomes cannot fit again. Cancel/clock mismatch/unsupported/baseline is no fulfillment.",
+    "interruption": "No positive credit before deadline; source cancellation, retirement or goal mismatch invalidates fulfillment. Pause gives no duration."
+  },
+  "generator": {
+    "seedNamespace": "H3b-ground-v1",
+    "locations": [
+      "Công viên",
+      "Quán cà phê",
+      "Thư viện",
+      "Nhà văn hóa",
+      "Nhà hàng",
+      "Bưu điện",
+      "Phố đi bộ",
+      "Sân thể thao"
+    ],
+    "values": [
+      0.35,
+      0.6,
+      0.85
+    ],
+    "offerHash": "hashSeed(H3b-ground-v1:seed:episode); location=hash%8, available=((hash>>>4)&1)===1, value=values[(hash>>>12)%3]",
+    "world": "Fresh isolated synthetic GND2/GND3 fixture per physical episode; three core actors+one resident+three animals+12ambient cars. This is not a live actor history or a long-horizon society rollout.",
+    "plans": "Existing meetingSteps at offered place; unavailable peer gets a different place. No speech is needed for fulfillment.",
+    "splits": {
+      "train": {
+        "seeds": [
+          18000,
+          18001,
+          18002,
+          18003
+        ],
+        "episodesPerSeed": 8
+      },
+      "validation": {
+        "seeds": [
+          18100,
+          18101,
+          18102,
+          18103
+        ],
+        "episodesPerSeed": 4
+      },
+      "holdout": {
+        "seeds": [
+          18200,
+          18201,
+          18202,
+          18203,
+          18204,
+          18205,
+          18206,
+          18207,
+          18208,
+          18209,
+          18210,
+          18211
+        ],
+        "episodesPerSeed": 4
+      }
+    },
+    "smokeSeeds": "17900-17999 only; debugging correctness, never selection. H1/H2/H4/H6/H10 cohorts and holdout12000-12019 remain untouched."
+  },
+  "learning": {
+    "algorithm": "One-pass ridge6D using existing pure LinUCB algebra; new tagged artifact/reward/features/source namespace, alpha0 at frozen evaluation, attend if predicted mean>0 else decline. Decline utility0 is structural, not an invented observed sample.",
+    "trainingData": "32 actual replayed attend outcomes, one per distinct synthetic offer. No reweighting/epochs/relabelled user history. Artifact stores only numeric data/provenance, no raw world, dialogue or memories.",
+    "evaluation": "Frozen model, no fitting validation/holdout. Always-attend baseline and causal route/value/availability heuristic evaluated on the same independently replayed attend potential outcome; declining utility0. This is paired one-step utility on reset synthetic tasks, not a counterfactual city trajectory.",
+    "heuristic": "attend iff peer intent available and actorRouteUnitsAtChoice/1000 < offeredValue",
+    "selection": "No parameter search, no tuning after observing validation/holdout. A failure is recorded and keeps runtime unchanged."
+  },
+  "gates": {
+    "functional": "Real GND2 replay, exact delayed evidence and causal features; no positive text/unbound/baseline/cancel credit; cap/exact-once; actor/goal/partition/hash validation; deterministic repeat.",
+    "promotion": "No runtime installation in this phase, even if offline gates pass.",
+    "offlineComparison": "Holdout12 seed means, paired Student-t95(df11,t=2.201) delta mean utility lower>0 vs always-attend; failed accepted offers per offered task does not increase; retain>=80% positive-utility opportunities; attend share between0.1 and0.9. Report heuristic comparison, oracle one-step opportunity loss, intervals and all negatives.",
+    "existingRegressions": "Full unit/type/lint/assets/build, old H1 golden byte identity. No browser rerun needed if UI/runtime/schema remain unchanged."
+  },
+  "limits": {
+    "physicsStepsPerBatch": 120,
+    "sourcePage": 8,
+    "maximumEpisodes": 96,
+    "artifactBytes": 1000000,
+    "reportBytes": 8000000,
+    "stdout": "Only aggregate metrics and hashes; no private source text.",
+    "output": "Exclusive local artifact files; reject traversal symlink/hardlink/overwrite and invalid ACK-like or unrelated artifacts; no runtime loader."
+  }
+}

@@ -1,5 +1,19 @@
 # Cloudflare độc lập — môi trường staging AI–Living
 
+## 0. Cập nhật phát hành staging — 28/10/2026 (thay thế trạng thái cũ ở phần dưới)
+
+**ĐÃ DEPLOY CÓ ACCESS nhưng chưa được chủ tài khoản QA browser thực tế.** Các dòng "DISABLED", "not_enabled", "build-only" bên dưới là lịch sử lúc tạo staging, không còn phản ánh trạng thái hiện tại. Kiểm API trước mọi thay đổi.
+
+- Zero Trust Access đã Enabled. Access application owner-only ID `11d13139-7e00-4096-8ee7-7fa6cf57e871`, scope **worker-level** trên script tag `f7adf57198b64b6cb65dc92a2a11ee4d`, policy `allow` **một email owner duy nhất** (không ghi email trong Git). IdP hiện có: Cloudflare account login. Không tạo bypass.
+- URL owner test: `https://ai-living-staging.hoanglonglea1mtl.workers.dev/`. `workers.dev enabled=true`, `previews_enabled=false`. Bật URL chỉ sau khi xác minh Access worker-level owner-only.
+- Cloudflare Builds đã clone, build Vinext và `wrangler versions upload` thành công. Build ID `6d77c1f6-6009-4eeb-bfb4-5ae35604154d`, source commit `2c51d4c935df09ac0a1a28bc2e766b55ceee1c1f` từ `cloudflare-staging`, outcome `success`.
+- Uploaded Worker version `01929deb-da4e-42db-b043-2c462f812e74` (650 compiled assets), D1 `DB` → `ai_living_staging` đúng UUID. Version 2 đã **promote 100%** bằng Deployments API: deployment `75a4ac0f-fb71-4e71-8e86-1d5a9fa16576`.
+- Verification: Access application và policy qua API OK; GET Worker deployment ghi 100% version 2; Worker URL enabled; D1 binding OK. **Không thể thử trình duyệt đã đăng nhập từ tool** (container DNS unavailable), vì vậy chưa xác nhận giao diện/REST/CPU end-to-end.
+- Read-only D1 check tại thời điểm deploy: `worlds=0`, `episodes=0`, `memories=0`, `learning_policies=0`, `agent_experiences=0`. Đây là DB staging **trống**, chưa có import từ ChatGPT Sites. `readWorld()` của app tạo seed world khi GET lần đầu, sau đó cần xác minh health/world/pulse bằng session owner.
+- **Chưa cron, chưa automatic learning 24/7**, chưa backup/di chuyển production A. Client `/api/living/pulse` chỉ chạy khi tab mở và không bị hidden. Học LinUCB từ simulated outcomes khác với huấn luyện LLM. Cần browser QA Access + CPU D1 trước scheduler; không tự tạo cron cạnh tranh.
+- Pipeline hiện theo `cloudflare-staging`, command là `node scripts/configure-cloudflare-staging.mjs && npx wrangler versions upload --config dist/server/wrangler.json --message staging-private-not-live` (**upload-only**, không auto promote). Lưu ý script cố ý `workers_dev=false`, `preview_urls=false` cho version uploads; public route đã enable sau deployment qua API. Không mặc định một build mới đã được deploy.
+- Nếu kiểm thử thất bại: disable `workers.dev` lại, giữ nguyên Site A; không reset data, không bypass Access. Đối chiếu build log, deployment ID, policy, D1 và browser error.
+
 > Cập nhật: 28/10/2026 (Asia/Ho_Chi_Minh). Đây là **runbook môi trường Cloudflare staging**, KHÔNG phải xác nhận đã di chuyển production. Đọc cùng [AGENTS](../AGENTS.md), [CODEX_HANDOFF](../CODEX_HANDOFF.md), [PRODUCTION_RUNBOOK](PRODUCTION_RUNBOOK.md). Các trạng thái có thể thay đổi: gọi API kiểm tra lại trước khi thao tác.
 
 ## 1. Mục tiêu và ranh giới

@@ -22,6 +22,8 @@ Pause chỉ xác nhận từ `{ok:true}` rồi đọc lại snapshot;403 hướn
 
 Tag/vai/đường đi/pet-follow là trạng thái **viewer**. Backend completion vẫn theo simtime+plan matching; chưa chứng nhận arrival/physical meeting nhiều viewer. Đồ thị nhiều làn, bus/tram boarding và indoor còn ở [ROADMAP](../ROADMAP.md).
 
+Đoạn trên mô tả chế độ mặc định. Local opt-in GND2 `?ground=shared` chỉ sample server frames; GND3 active bổ sung caption emitted ở đúng parent/time, Talk/Listen không sửa root và ACK không ghi memory. Authority/receipt/giới hạn ở [ARCHITECTURE](ARCHITECTURE.md), không đổi reward namespace của mặc định hoặc tự bật production.
+
 ## Rigs, tên và thoại
 
 Batched crowd/procedural rigs, core/focused NPC model theo [ASSETS](ASSETS.md). Reset base pose trước offset pedal/exercise; clip không key mọi limb không được tích lũy xoay. Pause giữ transform. Đạo cụ theo tay/step thật, không tồn tại sau actor đổi activity; chưa inventory hay finger contact/IK đầy đủ.

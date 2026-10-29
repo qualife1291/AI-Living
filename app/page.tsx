@@ -42,6 +42,7 @@ import type { World, EpisodeEvent } from "@/lib/world";
 import type { WeatherState } from "@/lib/clock";
 import {worldTime} from "@/lib/clock";
 import {PauseRequestError, requestPause} from "@/lib/city/pause-request";
+import {validateAuthorityView,type AuthorityView} from '@/lib/living/ground-authority-view';
 import {validateSharedView,type SharedGroundView} from '@/lib/living/shared-ground-view';
 
 type Snapshot = {
@@ -51,6 +52,7 @@ type Snapshot = {
   events: EpisodeEvent[];
   weatherState: WeatherState;
   sharedGround?:SharedGroundView;
+  sharedAuthority?:AuthorityView;
 };
 type Panel = "people" | "context" | "places" | "learning" | "sources" | null;
 export default function Page() {
@@ -92,7 +94,7 @@ export default function Page() {
       const response = await fetch(shared?"/api/world?compact=1&ground=shared":"/api/world?compact=1", { signal: AbortSignal.timeout(10000) });
       if (!response.ok) throw Error("Chưa kết nối được với thành phố.");
       const snapshot = (await response.json()) as Snapshot;
-      if(shared){snapshot.sharedGround=validateSharedView(snapshot.sharedGround);if(snapshot.sharedGround.sequence<newestShared.current)return;newestShared.current=snapshot.sharedGround.sequence;}
+      if(shared){snapshot.sharedGround=validateSharedView(snapshot.sharedGround);if(snapshot.sharedAuthority)snapshot.sharedAuthority=validateAuthorityView(snapshot.sharedAuthority,snapshot.sharedGround);if(snapshot.sharedGround.sequence<newestShared.current)return;newestShared.current=snapshot.sharedGround.sequence;}
       const serverMs=Date.parse(snapshot.serverNow);
       if(snapshot.revision < newest.current.revision || (snapshot.revision === newest.current.revision && serverMs < newest.current.serverMs))return;
       newest.current={revision:snapshot.revision,serverMs};
@@ -219,6 +221,7 @@ export default function Page() {
           clockOffsetMs={clockOffset}
           sharedGroundRequested={sharedRequested}
           sharedGround={data?.sharedGround}
+          sharedAuthority={data?.sharedAuthority}
         />
       ) : (
         <div className="live-loading">

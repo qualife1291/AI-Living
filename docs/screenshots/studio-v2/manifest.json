@@ -1,0 +1,90 @@
+{
+  "renderer": "Chromium SwiftShader",
+  "production": false,
+  "shots": [
+    {
+      "file": "wallet-return-desktop.png",
+      "source": "235fe4fa570fdb38a4f4f665de71fc82e3859a91",
+      "time": 86,
+      "kind": "actual-local-render",
+      "sha256": "59d6f7fca0de59620b3429bea7789f3c6bf89a3fa9244f6b010040d2f0ba64e5"
+    },
+    {
+      "file": "sanitation-gratitude-desktop.png",
+      "source": "235fe4fa570fdb38a4f4f665de71fc82e3859a91",
+      "time": 83,
+      "kind": "actual-local-render",
+      "sha256": "b14cc1f99a964e38f1f41da500196e6f081bd1605efa0b9e871ae0ce975f71c2"
+    },
+    {
+      "file": "kitten-before-cloth-desktop.png",
+      "source": "235fe4fa570fdb38a4f4f665de71fc82e3859a91",
+      "time": 93,
+      "kind": "before-cloth-correction",
+      "sha256": "895819ed479ea1264a4c7940390d1a25a002f605e6d43c78a38886e02356ecaa"
+    },
+    {
+      "file": "bakery-courtesy-desktop.png",
+      "source": "235fe4fa570fdb38a4f4f665de71fc82e3859a91",
+      "time": 102.5,
+      "kind": "actual-local-render",
+      "sha256": "0bfbc20b71ce53f377dcd65e66b070ff868f8536207a4da792335ff895f8d140"
+    },
+    {
+      "file": "wallet-return-mobile.png",
+      "source": "235fe4fa570fdb38a4f4f665de71fc82e3859a91",
+      "time": 86,
+      "kind": "actual-local-render",
+      "sha256": "6adccfb0a08de9f0401a8e33781e744404f9063c1844ddccdb584bd91f1f5caf"
+    },
+    {
+      "file": "sanitation-gratitude-mobile.png",
+      "source": "235fe4fa570fdb38a4f4f665de71fc82e3859a91",
+      "time": 83,
+      "kind": "actual-local-render",
+      "sha256": "8f688d6a585d02c0b70e5ab4f0cef48c794b1700a4d58a61eb649f5283eac9ee"
+    },
+    {
+      "file": "kitten-before-cloth-mobile.png",
+      "source": "235fe4fa570fdb38a4f4f665de71fc82e3859a91",
+      "time": 93,
+      "kind": "before-cloth-correction",
+      "sha256": "e45ad84ca95ebccbe1d954edf6294574c236d70454d0617804f0d1ef11160bd9"
+    },
+    {
+      "file": "bakery-courtesy-mobile.png",
+      "source": "235fe4fa570fdb38a4f4f665de71fc82e3859a91",
+      "time": 102.5,
+      "kind": "actual-local-render",
+      "sha256": "90d576db85dfd98149b41e8ed5e07af419c1c04d7855601cf814c9b54437bde8"
+    },
+    {
+      "file": "bakery-courtesy-mobile-wide.png",
+      "source": "235fe4fa570fdb38a4f4f665de71fc82e3859a91",
+      "time": 52.5,
+      "kind": "actual-local-render",
+      "sha256": "e4f3b42ac99d2ee2362b70436f9dc65b6f2990793648364b1e2a1c14a854998b"
+    },
+    {
+      "file": "kitten-before-camera-desktop.png",
+      "source": "e7d2b40df5e954cc4a4d092c89c2dcc04dce7a68",
+      "time": 75.1,
+      "kind": "before-camera-correction",
+      "sha256": "12daed4b8f908149590f4c62b018fa69ceb5ecb0f226156c3ba4be2378de99ea"
+    },
+    {
+      "file": "kitten-care-desktop.png",
+      "source": "20396b13aba5e3c38a2097a72c2edb9823720431",
+      "time": 93,
+      "kind": "actual-local-render-after-cloth",
+      "sha256": "c47d8fe261c9454d51e1c732cd0d9987275ce28225cbee41b770786b98c103ec"
+    },
+    {
+      "file": "kitten-care-mobile.png",
+      "source": "20396b13aba5e3c38a2097a72c2edb9823720431",
+      "time": 93,
+      "kind": "actual-local-render-after-cloth",
+      "sha256": "93d490a737b2e9b322b2217e34a0949b3dddc28443b754ba88d71d10a64a2dd1"
+    }
+  ]
+}

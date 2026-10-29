@@ -1,12 +1,18 @@
 import { fileURLToPath } from "node:url";
+import {cityBuildings} from "../lib/city/three-layout.ts";
+import {venues} from "../lib/city/world.ts";
+import {openVenue} from "../lib/city/footprints.ts";
 import { mkdir } from "node:fs/promises";
+import { execFileSync } from "node:child_process";
 const { chromium } = await import(
   process.env.PLAYWRIGHT_MODULE ?? "playwright-core"
 );
-const shots = fileURLToPath(new URL("../docs/screenshots/", import.meta.url));
+const shots = process.env.QA_OUT ?? fileURLToPath(new URL("../docs/screenshots/", import.meta.url));
 await mkdir(shots, { recursive: true });
 import assert from "node:assert/strict";
 const base = process.env.QA_BASE ?? "http://127.0.0.1:5173";
+assert.ok(["127.0.0.1", "localhost"].includes(new URL(base).hostname), "Local fixture only");
+const fixture = JSON.parse(execFileSync(process.execPath, ["scripts/social-preview-fixture.mjs"], {encoding:"utf8"}));
 const b = await chromium.launch({
   executablePath: process.env.CHROMIUM_BIN ?? "/usr/bin/chromium",
   headless: true,
@@ -29,6 +35,8 @@ try {
       }),
       errors = [];
     p.on("pageerror", (e) => errors.push(e.message));
+    await p.route("**/api/**", route => route.fulfill({status:200, contentType:"application/json", body:JSON.stringify({ok:true,views:1})}));
+    await p.route("**/api/world*", route => { fixture.serverNow = new Date().toISOString(); return route.fulfill({status:200,contentType:"application/json",body:JSON.stringify(fixture)}); });
     await p.goto(base, { waitUntil: "domcontentloaded" });
     const host = p.locator('.three-canvas[data-ready="true"]');
     await host.waitFor({ timeout: 90000 });
@@ -41,9 +49,12 @@ try {
       true,
     );
     const stats = await host.evaluate((e) => ({ ...e.dataset }));
-    assert.ok(
-      +stats.buildings >= 280 && +stats.towers >= 150 && +stats.actors > 10,
-    );
+    // Compare the compiled scene with the canonical collision-safe layout.
+    // The old >=280 fixture predates the current venue/route clearances.
+    const layout=cityBuildings();
+    assert.equal(+stats.buildings,layout.length+venues.filter(v=>!openVenue(v)).length);
+    assert.equal(+stats.towers,layout.filter(b=>b.tower).length);
+    assert.ok(+stats.actors>10);
     assert.ok(+stats.drawCalls < 85);
     const box = await host.boundingBox();
     assert.equal(box.width, width);
@@ -125,6 +136,9 @@ try {
         .getAttribute("aria-pressed"),
       "false",
     );
+    // Venue details intentionally keep the native modal open. Close it before
+    // using global navigation; do not force a click through the dialog.
+    await p.keyboard.press("Escape");
     await p.getByRole("button", { name: "Học hỏi", exact: true }).click();
     await p.getByText("Trải nghiệm & thói quen", { exact: true }).waitFor();
     await p.keyboard.press("Escape");
@@ -190,6 +204,8 @@ try {
       return original.call(this, type, ...args);
     };
   });
+  await p.route("**/api/**", route => route.fulfill({status:200,contentType:"application/json",body:JSON.stringify({ok:true,views:1})}));
+  await p.route("**/api/world*", route => {fixture.serverNow=new Date().toISOString();return route.fulfill({status:200,contentType:"application/json",body:JSON.stringify(fixture)});});
   await p.goto(base, { waitUntil: "domcontentloaded" });
   await p
     .getByText("Chưa mở được không gian 3D", { exact: true })

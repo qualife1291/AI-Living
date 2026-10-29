@@ -6,7 +6,7 @@ from playwright.sync_api import sync_playwright
 root=Path(__file__).resolve().parent.parent
 base=os.environ.get('QA_BASE','http://127.0.0.1:5180')
 assert urlparse(base).hostname in ['127.0.0.1','localhost']
-out=root/'docs/screenshots/tag';out.mkdir(parents=True,exist_ok=True)
+out=Path(os.environ.get('QA_OUT',str(root/'docs/screenshots/tag')));out.mkdir(parents=True,exist_ok=True)
 report=[]
 with sync_playwright() as p:
  browser=p.chromium.launch(executable_path='/usr/bin/chromium',headless=True,args=['--no-sandbox','--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader'])
@@ -35,7 +35,7 @@ with sync_playwright() as p:
    page.goto(base,wait_until='domcontentloaded',timeout=60000)
    host=page.locator('.three-canvas[data-ready="true"]');host.wait_for(timeout=90000)
    page.wait_for_function('JSON.parse(document.querySelector(".three-canvas")?.dataset.tagCast??"[]").length===2',timeout=60000)
-   samples=page.evaluate('''async()=>{const s=[],end=performance.now()+14000;let prev='';while(performance.now()<end){await new Promise(requestAnimationFrame);const e=document.querySelector('.three-canvas');if(e?.dataset.frame!==prev){prev=e.dataset.frame;s.push(JSON.parse(e.dataset.tagCast??'[]'))}}return s}''')
+   samples=page.evaluate('''async()=>{const s=[],start=performance.now();let prev='';while(performance.now()-start<14000||s.length<15&&performance.now()-start<30000){await new Promise(requestAnimationFrame);const e=document.querySelector('.three-canvas');if(e?.dataset.frame!==prev){prev=e.dataset.frame;s.push(JSON.parse(e.dataset.tagCast??'[]'))}}return s}''')
    assert len(samples)>=15,len(samples)
    by_id=lambda row:{a['id']:a for a in row}
    assert all(len(row)==2 and {a['id'] for a in row}=={'an','binh'} for row in samples),'Stable pair through polling'

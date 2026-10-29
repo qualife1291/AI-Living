@@ -5,8 +5,8 @@ from urllib.parse import urlparse
 from playwright.sync_api import sync_playwright
 root=Path(__file__).resolve().parent.parent
 base=os.environ.get('QA_BASE','http://127.0.0.1:5177');assert urlparse(base).hostname in ['127.0.0.1','localhost']
-out=root/'docs/screenshots/social';out.mkdir(parents=True,exist_ok=True)
-report=[]
+out=Path(os.environ.get('QA_OUT',str(root/'docs/screenshots/social')));out.mkdir(parents=True,exist_ok=True)
+report=[];diagnostics=[];console=[];errors=[]
 with sync_playwright() as p:
  b=p.chromium.launch(executable_path='/usr/bin/chromium',headless=True,args=['--no-sandbox','--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader'])
  try:
@@ -16,6 +16,9 @@ with sync_playwright() as p:
    page=b.new_page(viewport={'width':width,'height':height},device_scale_factor=dpr,is_mobile=name=='mobile',has_touch=name=='mobile')
    page.add_init_script('''window.__socialQA={lines:[],firstAt:null};new MutationObserver(()=>{const e=document.querySelector('.three-speech');if(e&&/^(An → Bình|Bình → An)/.test(e.innerText)&&!window.__socialQA.lines.includes(e.innerText)){window.__socialQA.lines.push(e.innerText);window.__socialQA.firstAt??=performance.now()}}).observe(document,{subtree:true,childList:true,characterData:true})''')
    errors=[];page.on('pageerror',lambda e:errors.append(str(e)))
+   page.on('console',lambda m:console.append({'type':m.type,'text':m.text[:1000]}) if m.type in ('error','warning') else None)
+   page.route('**/api/diagnostics',lambda r:(diagnostics.extend(r.request.post_data_json.get('logs',[])),r.fulfill(status=200,content_type='application/json',body='{"ok":true}')))
+   page.route('**/api/visits',lambda r:r.fulfill(status=200,content_type='application/json',body='{"ok":true,"views":1}'))
    def respond(route):
     fixture['serverNow']=datetime.datetime.now(datetime.timezone.utc).isoformat()
     route.fulfill(status=200,content_type='application/json',body=json.dumps(fixture))
@@ -67,4 +70,15 @@ with sync_playwright() as p:
    print(name,'PASS complete dialogue through polling, paired speakers, 1.4m personal space, source label, responsive/no errors',len(lines),'lines',flush=True)
    page.close()
   (out/'metrics.json').write_text(json.dumps(report,indent=2,ensure_ascii=False))
+ except BaseException:
+  states=[]
+  for context in b.contexts:
+   for i,page in enumerate(context.pages):
+    try:
+     page.screenshot(path=str(out/f'failure-{i}.png'),timeout=10000)
+     states.append(page.evaluate('()=>({text:document.body.innerText.slice(-1000),canvas:document.querySelector(".three-canvas")?.dataset})'))
+    except Exception as error:states.append({'captureError':str(error)[:300]})
+  (out/'failure.json').write_text(json.dumps({'states':states,'errors':errors,'console':console[-30:],'diagnostics':diagnostics[-30:]},ensure_ascii=False,indent=2))
+  print(json.dumps({'failureStates':states,'errors':errors,'console':console[-10:],'diagnostics':diagnostics[-10:]},ensure_ascii=False),flush=True)
+  raise
  finally:b.close()
