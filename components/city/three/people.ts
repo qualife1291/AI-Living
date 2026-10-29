@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import {createHumanGeometry,HumanMotion} from './humans.ts';
+import {createSharedPrimitives,HumanMotion} from './humans.ts';
 import {CrowdBatch} from './crowd-batch.ts';
 import type {AssetLibrary} from './assets.ts';
 import {CORE_MODELS,CITIZEN_FALLBACK,residentModel} from '../../../lib/city/character-models.ts';
@@ -16,19 +16,19 @@ import {createBicycle,spinBicycle} from './activity-props.ts';
 /** Distant residents share the same approved skin/palette as the close cast.
  * Eight interpolated samples replace per-resident skeletal controllers. */
 export function createPeople(scene:THREE.Scene,capacity:number,library:Pick<AssetLibrary,'get'|'load'|'failures'>){
- const geometry=createHumanGeometry(),motion=new HumanMotion(),batches=new Map<string,{batch:CrowdBatch;used:number}>(),bicycles=new Map<string,THREE.Group>();
+ const geometry=createSharedPrimitives(),motion=new HumanMotion(),batches=new Map<string,{batch:CrowdBatch;used:number}>(),bicycles=new Map<string,THREE.Group>();
  const props=new Map<string,{kind:string;group:THREE.Group}>();
  const release=(group:THREE.Group)=>{group.removeFromParent();group.traverse(o=>{const m=o as THREE.Mesh;m.geometry?.dispose();if(m.material)for(const material of Array.isArray(m.material)?m.material:[m.material])material.dispose();});};
  const heads=new Map<string,THREE.Vector3>(),assignments=new Map<string,string>();
- let built=false,clock=0;
+ let built=false,clock=0,quality:Quality='balanced';
  function batchFor(modelId:string,kind:string){
   const key=modelId+'/'+kind,existing=batches.get(key);if(existing){existing.used=clock;return existing.batch;}
   if(built||!library.get(modelId))return;
-  built=true;const batch=new CrowdBatch(library.get(modelId)!,modelId,kind,capacity);scene.add(batch.mesh);batches.set(key,{batch,used:clock});return batch;
+  built=true;const batch=new CrowdBatch(library.get(modelId)!,modelId,kind,capacity);batch.mesh.receiveShadow=quality!=='eco';scene.add(batch.mesh);batches.set(key,{batch,used:clock});return batch;
  }
  return {
   geometry,
-  setQuality(_quality:Quality='balanced'){},
+  setQuality(next:Quality='balanced'){quality=next;for(const {batch} of batches.values())batch.mesh.receiveShadow=quality!=='eco';},
   collectGeometry(target:Set<THREE.BufferGeometry>){for(const g of Object.values(geometry))target.add(g);},
   head:(id:string)=>heads.get(id)?.clone(),
   phase:(id:string)=>motion.phase(id),
@@ -42,12 +42,13 @@ export function createPeople(scene:THREE.Scene,capacity:number,library:Pick<Asse
     const core=world.people.find(p=>p.id===actor.id),npc=world.living?.residents.find(p=>p.id===actor.id),wanted=CORE_MODELS[actor.id]??residentModel(npc?.roleId??'',actor.id);
     if(!library.get(wanted)&&!library.failures.has(wanted))void library.load(wanted).catch(()=>{});
     const modelId=library.get(wanted)?wanted:library.get(CITIZEN_FALLBACK)?CITIZEN_FALLBACK:undefined;if(!modelId)continue;
-    const clip=resolveActorClip(actor,poses.get(actor.id)?.speaking),kind=actor.bicycle?'cycle':actor.walking?clip:actorActionKind(actor),batch=batchFor(modelId,kind)??batchFor(modelId,'idle');
+    const clip=resolveActorClip(actor,poses.get(actor.id)?.speaking),kind=actor.bicycle?'cycle':actor.walking?clip:poses.has(actor.id)?poses.get(actor.id)?.speaking?'talk':'listen':actorActionKind(actor),batch=batchFor(modelId,kind)??batchFor(modelId,'idle');
     const appearance=world.living?.appearances?.[actor.id]??defaultAppearance(actor.id,core?.role??npc?.roleId);
     if(batch){const time=kind==='cycle'?(actor.bicycle?.distance??0)/3:actor.walking?motion.phase(actor.id)/(Math.PI*2)*batch.period:seconds;batch.add(actor.id,actor.position,yaw,time,appearance);heads.set(actor.id,batch.head(time,actor.position,yaw));assignments.set(actor.id,modelId);
-     if(_camera.position.distanceTo(new THREE.Vector3(actor.position[0],groundElevation(...actor.position)+8,actor.position[1]))<300&&!actor.walking&&!actor.bicycle&&(hasHandProp(actor.kind)||['cook','soccer','swim','lantern'].includes(kind))){
-      let prop=props.get(actor.id);if(prop?.kind!==kind){if(prop)release(prop.group);const group=simpleProp(kind);group.traverse(o=>{if((o as THREE.Mesh).isMesh)o.userData.actorId=actor.id;});scene.add(group);prop={kind,group};props.set(actor.id,prop);}
-      prop.group.visible=true;placeActionProp(prop.group,kind,batch.height,yaw,new THREE.Vector3(actor.position[0],groundElevation(...actor.position),actor.position[1]),{left:batch.hand('left',time,actor.position,yaw),right:batch.hand('right',time,actor.position,yaw)},time);
+     const propKind=actorActionKind(actor);
+     if(_camera.position.distanceTo(new THREE.Vector3(actor.position[0],groundElevation(...actor.position)+8,actor.position[1]))<300&&!actor.walking&&!actor.bicycle&&(hasHandProp(actor.kind)||['cook','soccer','swim','lantern'].includes(propKind))){
+      let prop=props.get(actor.id);if(prop?.kind!==propKind){if(prop)release(prop.group);const group=simpleProp(propKind);group.traverse(o=>{if((o as THREE.Mesh).isMesh)o.userData.actorId=actor.id;});scene.add(group);prop={kind:propKind,group};props.set(actor.id,prop);}
+      prop.group.visible=true;placeActionProp(prop.group,propKind,batch.height,yaw,new THREE.Vector3(actor.position[0],groundElevation(...actor.position),actor.position[1]),{left:batch.hand('left',time,actor.position,yaw),right:batch.hand('right',time,actor.position,yaw)},time);
      }
     }
     if(actor.bicycle&&!bicycles.has(actor.id)){const bike=createBicycle();bike.traverse(o=>{if((o as THREE.Mesh).isMesh)o.userData.actorId=actor.id;});scene.add(bike);bicycles.set(actor.id,bike);}

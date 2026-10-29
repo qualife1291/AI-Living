@@ -9,7 +9,6 @@ import { streetProps } from '../lib/city/scenery.ts';
 import { seed } from '../lib/world.ts';
 import { initializeLiving } from '../lib/living/engine.ts';
 import { defaultAppearance } from '../lib/city/appearance.ts';
-import { groundElevation } from '../lib/city/ground.ts';
 import { WalkDirector, walkable, PERSONAL_SPACE } from '../lib/city/walkability.ts';
 
 const actor={id:'an',name:'An',position:[0,0],path:[[0,0],[100,0]],from:'Sân chung',location:'Sân chung',activity:'Đi dạo',kind:'social',walking:true,transport:'walk',progress:0,source:'routine'};
@@ -17,11 +16,11 @@ const motion=new HumanMotion(), poses=new Map();let old;
 for(let frame=0;frame<600;frame++) {
  const walking=frame<300, position=[Math.min(frame,299)*16/60,0];
  const state=motion.frame([{...actor,position,walking}],poses,frame/60,1/60,false).get('an');
- assert.ok(Object.values(state.pose).every(Number.isFinite));
- if(old)for(const key of ['leftArm','rightArm','leftLeg','rightLeg','leftKnee','rightKnee'])assert.ok(Math.abs(state.pose[key]-old.pose[key])<.15,`${key} jerked`);
+ assert.ok(Object.values(state).every(Number.isFinite));
+ if(old)assert(Math.abs(Math.atan2(Math.sin(state.yaw-old.yaw),Math.cos(state.yaw-old.yaw)))<.15,'Heading must turn smoothly');
  old=state;
 }
-assert.ok(Math.abs(old.pose.leftLeg)<1e-8&&Math.abs(old.pose.rightLeg)<1e-8,'Settles after actual travel stops');
+assert.ok(old.weight<1e-8,'Settles after actual travel stops');
 const frozen=motion.frame([actor],poses,10,1/60,true).get('an');
 for(let n=0;n<10;n++)assert.deepEqual(motion.frame([actor],poses,10+n,1/60,true).get('an'),frozen,'Pause freezes all joints and heading');
 const reordered=new HumanMotion(), other={...actor,id:'binh'};

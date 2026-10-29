@@ -21,21 +21,17 @@ function unitBounds<T extends BufferGeometry>(geometry: T): T {
 }
 
 /** Allocate once per city; share between all people and dispose with the scene. */
-export function createHumanGeometry(sharp = true): {
+export function createSharedPrimitives(sharp = true): {
   box: BufferGeometry;
   round: BufferGeometry;
   head: BufferGeometry;
-  hair: BufferGeometry;
   limb: BufferGeometry;
-  shoe: BufferGeometry;
 } {
   return {
     box: new BoxGeometry(1, 1, 1),
     round: unitBounds(new RoundedBoxGeometry(1, 1, 1, sharp ? 2 : 1, 0.16)),
     head: unitBounds(new SphereGeometry(0.5, sharp ? 14 : 12, sharp ? 10 : 8)),
-    hair: unitBounds(new SphereGeometry(0.5, sharp ? 14 : 12, sharp ? 8 : 6, 0, Math.PI * 2, 0, Math.PI / 2)),
     limb: unitBounds(new CapsuleGeometry(0.25, 0.5, sharp ? 3 : 1, sharp ? 10 : 6)),
-    shoe: unitBounds(new RoundedBoxGeometry(1, 1, 1, sharp ? 2 : 1, 0.2)),
   };
 }
 
@@ -47,117 +43,14 @@ function actorPhase(id: string): number {
   return (hash >>> 0) / 4294967296;
 }
 
-/**
- * Restrained animation from the simulation clock, with no runtime randomness.
- * Angles use radians; hand offsets/breath use pre-HUMAN_SCALE body units.
- * blink is an eye-height multiplier. Keep seconds frozen while paused.
- */
-export function humanPose(
-  actor: Actor,
-  seconds: number,
-  _index: number,
-  social?: { gesture: string; speaking: boolean },
-  gait?: { phase: number; weight: number },
-): {
-  headTilt: number;
-  headTurn: number;
-  breath: number;
-  blink: number;
-  leftArm: number;
-  rightArm: number;
-  leftHandY: number;
-  rightHandY: number;
-  leftHandZ: number;
-  rightHandZ: number;
-  leftLeg: number;
-  rightLeg: number;
-  leftKnee: number;
-  rightKnee: number;
-  sway: number;
-  mouth: number;
-} {
-  const time = Number.isFinite(seconds) ? seconds : 0;
-  const phase = actorPhase(actor.id);
-  const angle = phase * Math.PI * 2;
-  const riding = actor.walking && actor.transport && actor.transport !== "walk";
-  const walk = actor.walking && !riding;
-  const exercising = ["run", "exercise"].includes(actor.kind) && !actor.walking;
-  const stridePhase = exercising ? time*9+angle : (gait?.phase ?? time * 7 + angle) * (["run", "tag"].includes(actor.kind) ? 1.4 : 1);
-  const weight = exercising ? .7 : gait?.weight ?? (walk ? 1 : 0);
-  const swing = Math.sin(stridePhase) * .48 * weight + Math.sin(time * 1.3 + angle) * .025 * (1 - weight);
-  const act = `${actor.kind} ${actor.activity ?? ""}`.toLowerCase();
-  const swimming = !walk && /swim|bơi/.test(act);
-  const soccer = !walk && /soccer|football|đá bóng|thể thao/.test(act);
-  const cooking = !walk && /cook|nấu ăn|bếp/.test(act);
-  const jumping = actor.kind === "jump" || !walk && /jump|nhảy|cheer|lễ hội/.test(act);
-  const driving = !!actor.bicycle || riding || /drive|lái xe|taxi|scooter/.test(act);
-  const usingProp = !actor.bicycle && !actor.walking && (["read", "study", "drink", "shop", "garden", "eat", "work"].includes(actor.kind) || cooking);
-
-  const swimCycle = Math.sin(time * 4.2 + angle);
-  const kickCycle = Math.sin(time * 3.6 + angle);
-  const cookStir = Math.sin(time * 3.0 + angle) * 0.18;
-
-  let leftArm = swimming ? -0.65 + swimCycle * 0.45 : jumping ? -1.05 - Math.abs(Math.sin(time * 3 + angle)) * 0.18 : driving ? -0.68 : soccer ? -0.35 - kickCycle * 0.25 : usingProp ? -0.55 : -swing;
-  let rightArm = swimming ? -0.65 - swimCycle * 0.45 : jumping ? -1.05 - Math.abs(Math.cos(time * 3 + angle)) * 0.18 : driving ? -0.68 : cooking ? -0.62 + cookStir : soccer ? 0.35 + kickCycle * 0.25 : usingProp ? -0.6 : swing;
-  let headTilt = swimming ? -0.08 : usingProp ? 0.06 : Math.sin(time * 0.8 + angle) * 0.012;
-  let headTurn = swimming ? Math.sin(time * 2.1 + angle) * 0.06 : Math.sin(time * 0.48 + angle) * 0.025;
-
-  if (actor.kind === "exercise" && !social) { leftArm = -.4 - Math.sin(time*2)*.6; rightArm = -.4 + Math.sin(time*2)*.6; }
-
-  if (social && !walk && !riding) {
-    // Short gestures separated by quiet intervals; listeners do not mirror speech.
-    const beat = Math.max(0, Math.sin(time * 1.6 + angle));
-    if (social.speaking) {
-      const gesture = social.gesture.toLowerCase();
-      const wave = /wave|greet|hello|cheer/.test(gesture);
-      const point = /point|show|direct/.test(gesture);
-      const open = /open|offer|explain|hand|give|share/.test(gesture);
-      const bow = /bow|thank|respect/.test(gesture);
-      rightArm = wave ? -1.05 - beat * 0.16 : point ? -0.85 : bow ? -0.22 : -0.3 - beat * 0.2;
-      leftArm = open ? -0.35 - beat * 0.1 : bow ? -0.22 : -0.12;
-      headTilt = bow ? 0.09 + beat * 0.03 : Math.sin(time * 2.1 + angle) * 0.035;
-      headTurn = Math.sin(time * 0.9 + angle) * 0.025;
-    } else {
-      // A small nod about once per four seconds leaves time to simply listen.
-      const nod = Math.max(0, Math.sin(time * 1.5 + angle) - 0.75) * 4;
-      headTilt = 0.015 + nod * 0.065;
-      leftArm = -0.04;
-      rightArm = 0.04;
-    }
-  }
-
-  const pedal = actor.bicycle ? Math.sin(actor.bicycle.distance / 3) : 0;
-  const blinkTime = ((time + phase * 5) % (4.4 + phase) + 4.4 + phase) % (4.4 + phase);
-  const blink = blinkTime < 0.16 ? 1 - Math.sin((blinkTime / 0.16) * Math.PI) * 0.92 : 1;
-  return {
-    headTilt,
-    headTurn,
-    breath: Math.sin(time * 1.7 + angle) * 0.12,
-    blink,
-    leftArm,
-    rightArm,
-    leftHandY: (1 - Math.cos(leftArm)) * 6,
-    rightHandY: (1 - Math.cos(rightArm)) * 6,
-    leftHandZ: -Math.sin(leftArm) * 6,
-    rightHandZ: -Math.sin(rightArm) * 6,
-    leftLeg: actor.bicycle ? -.4 + pedal * .5 : swimming ? swimCycle * 0.32 : soccer ? -kickCycle * 0.38 : jumping ? -0.25 * Math.abs(Math.sin(time * 3 + angle)) : Math.sin(stridePhase) * .48 * weight,
-    rightLeg: actor.bicycle ? -.4 - pedal * .5 : swimming ? -swimCycle * 0.32 : soccer ? Math.max(-0.45, kickCycle * 0.62) : jumping ? -0.25 * Math.abs(Math.sin(time * 3 + angle)) : -Math.sin(stridePhase) * .48 * weight,
-    leftKnee: actor.bicycle ? .8 - pedal * .25 : swimming ? Math.max(0, -swimCycle) * 0.35 : soccer ? Math.max(0, kickCycle) * 0.45 : jumping ? 0.45 * Math.abs(Math.sin(time * 3 + angle)) : Math.max(0, -Math.sin(stridePhase)) * .72 * weight,
-    rightKnee: actor.bicycle ? .8 + pedal * .25 : swimming ? Math.max(0, swimCycle) * 0.35 : soccer ? Math.max(0, -kickCycle) * 0.55 : jumping ? 0.45 * Math.abs(Math.sin(time * 3 + angle)) : Math.max(0, Math.sin(stridePhase)) * .72 * weight,
-    sway: Math.sin(stridePhase) * .025 * weight,
-    mouth: social?.speaking ? .3 + Math.sin(time * 12 + angle) ** 2 * .8 : .16,
-  };
-}
-
-export type HumanPose = ReturnType<typeof humanPose>;
-type MotionState = { position: [number, number]; phase: number; weight: number; yaw: number; pose: HumanPose };
+type MotionState = { position: [number, number]; phase: number; weight: number; yaw: number };
 /** Gait follows distance actually travelled, never the requested schedule.
  * Joint transitions ease without moving the collision-safe root position. */
 export class HumanMotion {
   private states = new Map<string, MotionState>();
   phase(id:string){return this.states.get(id)?.phase??0;}
   frame(actors: Actor[], poses: Map<string, { peerId: string; gesture: string; speaking: boolean }>, seconds: number, dt: number, paused: boolean) {
-    const output = new Map<string, { yaw: number; pose: HumanPose }>();
+    const output = new Map<string, { yaw: number; phase:number; weight:number }>();
     const active = new Set(actors.map(a => a.id));
     for (const id of this.states.keys()) if (!active.has(id)) this.states.delete(id);
     const step = Math.max(0, Math.min(.15, Number.isFinite(dt) ? dt : 0));
@@ -165,7 +58,7 @@ export class HumanMotion {
       let state = this.states.get(actor.id);
       const social = poses.get(actor.id), peer = social?.gesture !== "idle" ? actors.find(a => a.id === social?.peerId) : undefined;
       if (!state) {
-        state = { position: [...actor.position], phase: actorPhase(actor.id) * Math.PI * 2, weight: 0, yaw: peer ? Math.atan2(peer.position[0] - actor.position[0], peer.position[1] - actor.position[1]) : .35, pose: humanPose({ ...actor, walking: false }, seconds, 0, social) };
+        state = { position: [...actor.position], phase: actorPhase(actor.id) * Math.PI * 2, weight: 0, yaw: peer ? Math.atan2(peer.position[0] - actor.position[0], peer.position[1] - actor.position[1]) : .35 };
         this.states.set(actor.id, state);
       }
       if (!paused) {
@@ -175,11 +68,9 @@ export class HumanMotion {
         state.phase = (state.phase + Math.min(3, distance) * Math.PI * 2 / 14) % (Math.PI * 2);
         const wantedYaw = actor.bicycle ? actor.bicycle.yaw : peer ? Math.atan2(peer.position[0] - actor.position[0], peer.position[1] - actor.position[1]) : walking ? Math.atan2(dx, dz) : state.yaw;
         state.yaw += Math.atan2(Math.sin(wantedYaw - state.yaw), Math.cos(wantedYaw - state.yaw)) * (1 - Math.exp(-7 * step));
-        const wanted = humanPose({ ...actor, walking: state.weight > .05 }, seconds, 0, social?.gesture === "idle" ? undefined : social, { phase: state.phase, weight: state.weight });
-        for (const key of Object.keys(wanted) as (keyof HumanPose)[]) state.pose[key] = key === "blink" ? wanted[key] : state.pose[key] + (wanted[key] - state.pose[key]) * (1 - Math.exp(-14 * step));
         state.position = [...actor.position];
       }
-      output.set(actor.id, { yaw: state.yaw, pose: { ...state.pose } });
+      output.set(actor.id, { yaw: state.yaw, phase:state.phase, weight:state.weight });
     }
     return output;
   }

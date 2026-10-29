@@ -157,7 +157,7 @@ export function createModelActors(scene: THREE.Scene, library: AssetLibrary) {
         const speaking = social.get(id)?.speaking;
         const clip = !actor.walking && social.has(id)
           ? speaking ? "talk" : "listen" : resolveActorClip(actor, speaking);
-        const animationTime = actor.bicycle ? seconds : actor.walking ? (gait?gait(id)/(Math.PI*2):(distance+walked)/14)*avatar.duration(clip) : seconds;
+        const animationTime = actor.bicycle ? 0 : actor.walking ? (gait?gait(id)/(Math.PI*2):(distance+walked)/14)*avatar.duration(clip) : seconds;
         const motionKey=actor.bicycle?'cycle':actor.walking?'walk':actor.kind;
         let vertical=verticalMotion.get(id);if(!vertical){vertical={key:motionKey,start:seconds,from:0,last:0};verticalMotion.set(id,vertical);}if(vertical.key!==motionKey){vertical={key:motionKey,start:seconds,from:vertical.last,last:vertical.last};verticalMotion.set(id,vertical);}
         const phase=seconds-vertical.start,t=THREE.MathUtils.clamp(phase/.4,0,1),ease=t*t*(3-2*t),lift=actor.walking?0:activityLift(actor.kind,phase);vertical.last=vertical.from*(1-ease)+lift*ease;

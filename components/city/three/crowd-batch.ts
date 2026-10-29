@@ -33,7 +33,7 @@ export class CrowdBatch {
   const data=new Float32Array(WIDTH*Math.ceil(count*FRAMES*2/WIDTH)*4),p=new THREE.Vector3();
   for(let f=0;f<FRAMES;f++){
    const time=f/FRAMES*this.period,actor={id:'bake',kind,walking:['walk','sprint'].includes(kind),position:[0,0],...(kind==='cycle'?{bicycle:{distance:time*3}}:{})} as Actor;
-   rig.pose(clip,time,10+f*2,[0,0],0,floor+(kind==='cycle'?4:0));
+   rig.pose(clip,kind==='cycle'?0:time,10+f*2,[0,0],0,floor+(kind==='cycle'?4:0));
    actions.apply(rig,actor,kind,time);
    this.heads.push(rig.head().sub(new THREE.Vector3(0,floor,0)));
    this.hands.push({left:rig.hand('left').sub(new THREE.Vector3(0,floor,0)),right:rig.hand('right').sub(new THREE.Vector3(0,floor,0))});

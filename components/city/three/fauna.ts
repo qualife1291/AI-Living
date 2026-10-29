@@ -1,11 +1,11 @@
 import * as THREE from "three";
 import type { animalsAt } from "../../../lib/life.ts";
 import { groundElevation } from "../../../lib/city/ground.ts";
-import type { createHumanGeometry } from "./humans.ts";
+import type { createSharedPrimitives } from "./humans.ts";
 
 type Animal = ReturnType<typeof animalsAt>[number];
 /** Recognizable animal silhouettes, pooled across the three existing policies. */
-export function createFauna(scene: THREE.Scene, geometry: ReturnType<typeof createHumanGeometry>) {
+export function createFauna(scene: THREE.Scene, geometry: ReturnType<typeof createSharedPrimitives>) {
   const material = new THREE.MeshPhongMaterial({ shininess: 10 });
   const shapes = { round: geometry.round, head: geometry.head, limb: geometry.limb, box: geometry.box, cone: new THREE.ConeGeometry(.5, 1, 4) };
   type Shape = keyof typeof shapes;
