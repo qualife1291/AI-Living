@@ -1,0 +1,14 @@
+{
+  "schema": "xom-progress-v1",
+  "environment": "qa",
+  "observedAt": "2026-10-29T13:17:29.866Z",
+  "version": "9a27dabf-1d97-4339-ae73-ae7d854a2896",
+  "worldBorn": "2026-10-28T17:30:05.083Z",
+  "paused": false,
+  "revision": 695,
+  "turns": 225,
+  "experiences": 3140,
+  "policies": 27,
+  "completedTicks": 225,
+  "lastTickFinishedAt": "2026-10-29T13:15:52.707Z"
+}
