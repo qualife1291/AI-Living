@@ -4,9 +4,11 @@ Môi trường QA riêng, không phải Sites A production hoặc Cloudflare sta
 
 ## Nguồn và trạng thái hiện tại
 
-Đợt observability29/10 đang nghiệm thu trên `feat/qa-observability-20261029` và QA worktree `deploy/qa-observability-20261029`. [Evidence](validation/qa-observability-2026-10-29.json) ghi exact source/build/deployment/version/readback sau khi kiểm; [OBSERVABILITY](OBSERVABILITY.md) giữ hợp đồng log và phase Ops read-only. Nghiệm thu chat/H5a trước đó ở [phase verification](validation/phase-verification-2026-10-29.json).
+Đợt observability29/10 đã deploy source`5749ce4b8cb833cbdc12c0513500b92bcfbf55b2`: Build`d344afb0-639b-426f-bc72-c3e65c9d9250` success, deployment`b25456fe-12dc-47da-833d-f84468f272b7`, version`d58255ac-a4e9-437b-9f84-c69ffa5e2627`100%. Native log14:00UTC xác nhận scheduled outcomeok, cron_result/status200/updated10/non-coalesced và3stage cùng version/requestId. Work78/QA82suite/type/lint/assets/build/compiled API và13browser local đạt; authenticated remote HTTP/browser vẫn chưa chạy. [Evidence](validation/qa-observability-2026-10-29.json) là ledger exact source/readback; [OBSERVABILITY](OBSERVABILITY.md) giữ contract log/Ops. Evidence hậu deploy cập nhật ở work, QA ref giữ nguyên source vừa nghiệm thu để không redeploy chỉ vì ghi nhận kết quả.
 
-Native readback29/10 12:59UTC trên version`9a27dabf-1d97-4339-ae73-ae7d854a2896`/deployment`fea1c25f-cc95-42b3-85aa-124e003c7620`: revision683,221turn/completed tick,3113experience,27policy.13:17UTC revision695/225turn/3140experience/27policy; born giữ nguyên. Native scheduled logs trước rollout mới có outcome=ok, qa_cron_pulse/status200, updated10–13 và non-coalesced trên cùng version. Đây là cửa sổ quan sát thật, chưa authenticated browser acceptance, model quality hoặc soak24giờ. Số mới và đối chiếu sau deploy nằm trong evidence; không dùng các số này làm current health vô thời hạn.
+Native readback29/10 12:59UTC trên version`9a27dabf-1d97-4339-ae73-ae7d854a2896`/deployment`fea1c25f-cc95-42b3-85aa-124e003c7620`: revision683,221turn/completed tick,3113experience,27policy.13:17UTC revision695/225turn/3140experience/27policy;14:03UTC revision722/234turn/3199experience/27policy, born giữ nguyên. Khoảng này đi qua hai version; counter delta không tự chứng minh nguồn Cron/model gain. Native scheduled logs trước rollout mới có outcome=ok, qa_cron_pulse/status200, updated10–13 và non-coalesced trên cùng version. Đây là cửa sổ quan sát thật, chưa authenticated browser acceptance, model quality hoặc soak24giờ. Số mới và đối chiếu sau deploy nằm trong evidence; không dùng các số này làm current health vô thời hạn.
+
+Sau đó agent graphics/H6 đã push`4377ed75be7d844d5970167cefab6b81d799261b`: Build`efa85b42-162f-4840-bc6d-64476790254a` success, deployment`55bdb507-2c4f-4219-a6a3-0f67fc7f316c`, version`f77411ba-338f-48e8-a1d2-2eeffc474e91`100%. Phần Worker/log/progress/config byte-identical với5749; native Cron14:10UTC được kiểm lại riêng: outcomeok/status200/updated10/non-coalesced,3stage cùng request/version. Đây là readback mới hơn, không gán full78/82 của source cũ thành full run cho mã graphics/H6 mới.
 
 ## Môi trường và ranh giới
 
@@ -25,7 +27,7 @@ QA có DB riêng và không import history Sites A. Không thay owner-private, s
 
 ## Build và deploy
 
-Luồng Builds hiện có chạy install frozen + Access JWT/scheduler/config/log/progress tests và typecheck trước build, rồi configure/deploy. Khi cập nhật trigger phải giữ repository/branch/deploy command, không tạo trigger mới.
+Luồng Builds hiện có chạy install frozen + Access JWT/scheduler/config/log/progress tests và typecheck trước build, compiled progress/private-alias/chat tests sau build, rồi configure/deploy. Khi cập nhật trigger phải giữ repository/branch/deploy command, không tạo trigger mới.
 
 ```bash
 npm run install:ci

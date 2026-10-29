@@ -2,7 +2,7 @@
   "kind": "qa-observability-acceptance-v1",
   "date": "2026-10-29",
   "timezone": "Asia/Ho_Chi_Minh",
-  "status": "LOCAL_WORK_HARDENED_PASS_QA_FINAL_UNIT_AND_REMOTE_PENDING",
+  "status": "LOCAL_PASS_QA_DEPLOYED_NATIVE_SCHEDULED_PIPELINE_VERIFIED",
   "appSource": "9e91409dc3ab977c81427b473dbafb093dfbb23a",
   "qaSource": "30429bd513adb9f91a13cac40f51ea9809511b36",
   "scope": [
@@ -19,8 +19,8 @@
       "workers": 2,
       "seconds": 344.91
     },
-    "typecheck": "PASS",
-    "lint": "PASS",
+    "typecheck": "PASS9e91409",
+    "lint": "PASS9e91409",
     "build": "PASS",
     "assets": "PASS",
     "logger": {
@@ -148,10 +148,17 @@
       "singleExistingCron": true,
       "network": false
     },
-    "typecheck": "PASS",
-    "lint": "PASS",
-    "build": "PASS",
-    "unit": "PENDING after private alias hardening",
+    "typecheck": "PASS da33cf2",
+    "lint": "PASS30429bd",
+    "build": "PASSda33cf2, runtime equivalent5749ce4",
+    "unit": {
+      "suite": "unit-summary",
+      "total": 82,
+      "passed": 82,
+      "failed": [],
+      "workers": 1,
+      "seconds": 451.64
+    },
     "compiledProgress": {
       "suite": "progress-compiled-http",
       "concurrentReaders": 12,
@@ -256,15 +263,19 @@
       "environment": "local Chromium SwiftShader"
     },
     "browserRealChat": {
-      "source": "ac9d68e",
+      "source": "da33cf2 (runtime-equivalent5749ce4)",
       "metrics": "docs/screenshots/qa-observability/chat-metrics.json",
       "viewports": 3,
       "actualExchanges": 18,
       "status": "PASS",
       "protectedStateUnchanged": true,
-      "environment": "local browser -> compiled Worker -> dedicated D1"
+      "environment": "local browser -> compiled Worker -> dedicated D1",
+      "afterPrivateAliasHardening": true,
+      "previewOverrides": "Loopback-only local-admin fixture, QA AUD cleared and scheduler disabled via local CLI flags; remote config and Access unchanged"
     },
-    "privateReaderAliasCases": 9
+    "privateReaderAliasCases": 9,
+    "assets": "PASS work assets:check; QA public/data/importer inputs byte-identical",
+    "unitSource": "da33cf2; subsequent changes only test-handle refresh and documentation, runtime equivalent5749ce4"
   },
   "dispositions": [
     {
@@ -320,14 +331,121 @@
     {
       "failure": "Miniflare setOptions invalidated a test D1 handle after alias tests",
       "fix": "Reacquire fixture handle and compare full protected state; all cases PASS with unchanged assertions"
+    },
+    {
+      "failure": "Browser/regression builds initially overlapped a source merge",
+      "fix": "Accepted only after completed build: hardening compiled API suites and final browser real chat passed on runtime-equivalent5749ce4. Scene renderer browser sourceac9d68e unchanged by later worker-only alias hardening."
     }
   ],
   "remote": {
+    "build": {
+      "id": "d344afb0-639b-426f-bc72-c3e65c9d9250",
+      "status": "stopped",
+      "outcome": "success",
+      "source": "5749ce4b8cb833cbdc12c0513500b92bcfbf55b2",
+      "stoppedOn": "2026-10-29T13:57:56.328Z",
+      "criticalGuardsInNativeBuildLogs": {
+        "systemLog": true,
+        "progressWatch": true,
+        "compiledPrivateProgress": true,
+        "compiledChat": true
+      }
+    },
+    "deployment": {
+      "id": "b25456fe-12dc-47da-833d-f84468f272b7",
+      "version": "d58255ac-a4e9-437b-9f84-c69ffa5e2627",
+      "trafficPercent": 100,
+      "createdOn": "2026-10-29T13:57:50.336168Z",
+      "matchesVersionInDeployLog": true
+    },
+    "configReadback": {
+      "d1": "21347bba-caaf-4ba5-9d80-d849958192d1",
+      "systemLogs": true,
+      "versionMetadataBinding": "CF_VERSION_METADATA",
+      "observabilityEnabled": true,
+      "logSamplingRate": 1,
+      "platformInvocationQueryRedaction": false,
+      "cron": [
+        "*/5 * * * *"
+      ],
+      "ruleScheduler": true,
+      "accessOwnerAllow": true,
+      "accessQaScopedTokenOnly": true,
+      "accessEveryone": false,
+      "accessAnyToken": false,
+      "accessPolicyModified": false
+    },
+    "scheduledProof": {
+      "observedAt": "2026-10-29T14:01:28.232Z",
+      "version": "d58255ac-a4e9-437b-9f84-c69ffa5e2627",
+      "nativeRequestId": "2e2652b934e9031065488f97e1b9513f",
+      "customRequestId": "e0844526-18c1-4f80-869a-53fb263d6e7a",
+      "nativeCompletionTimestamp": 1793282453473,
+      "outcome": "ok",
+      "cpuTimeMs": 180,
+      "wallTimeMs": 11063,
+      "result": {
+        "schema": "xom-system-log-v1",
+        "event": "cron_result",
+        "status": 200,
+        "updated": 10,
+        "duplicate": false,
+        "coalesced": false,
+        "durationMs": 11057
+      },
+      "stages": [
+        {
+          "stage": "learning",
+          "status": 200,
+          "updated": 10,
+          "durationMs": 3721,
+          "timestamp": 1793282446622
+        },
+        {
+          "stage": "social",
+          "status": 200,
+          "durationMs": 2393,
+          "timestamp": 1793282449015
+        },
+        {
+          "stage": "tick",
+          "status": 200,
+          "durationMs": 4247,
+          "timestamp": 1793282453262
+        }
+      ],
+      "allCustomRecordsSameRequestAndVersion": true
+    },
     "preDeploySnapshot": "docs/validation/qa-progress-before-2026-10-29.json",
-    "nativeApiAvailable": true,
-    "authenticatedHttpBrowser": "NOT_RUN: no current Access service credential",
-    "postDeploy": "PENDING",
-    "preDeploySnapshotVersion": "null: native D1 query is not a Worker invocation; observed deployments recorded separately"
+    "postDeploySnapshot": "docs/validation/qa-progress-after-2026-10-29.json",
+    "comparison": {
+      "schema": "xom-progress-comparison-v1",
+      "status": "ticks_progressing",
+      "elapsedMs": 2782334,
+      "deltas": {
+        "revision": 27,
+        "turns": 9,
+        "experiences": 59,
+        "policies": 0,
+        "completedTicks": 9
+      },
+      "learningRowsIncreased": true,
+      "modelQualityGainProven": false,
+      "cronAttributionProven": false,
+      "mutationPerformed": false,
+      "automaticRecovery": false
+    },
+    "snapshotReadRowsWritten": 0,
+    "snapshotVersionAttribution": "Native D1 snapshots intentionally have null version; interval crosses1eaf1958 to d58255ac. Pure comparison cannot attribute all row deltas to Cron or one version. Native scheduled proof above is separate.",
+    "authenticatedHttpBrowser": "NOT_RUN: current Access service credential absent",
+    "unauthenticatedHead": {
+      "status": 403,
+      "accessVsNetworkAttribution": "not established by this status alone",
+      "noWrites": true
+    },
+    "productionOrStagingChanged": false,
+    "newScheduler": false,
+    "newPaidService": false
   },
   "schemaChanged": false,
   "productionChanged": false,
@@ -340,7 +458,7 @@
     "Read-only snapshots do not prove Cron attribution or learning quality; compare requires native scheduled evidence",
     "15min stall is a diagnostic warning; intermediate pause/restart history is not visible",
     "No authenticated remote HTTP/browser, physical GPU or24h soak acceptance",
-    "No new graphics/H6 WIP imported into work; QA preserves already deployed f39287c from concurrent63d1086"
+    "Accepted concurrent graphics and H6 shadow-only work preserved; Ops did not rerun their trainer or promote models."
   ],
   "ci": {
     "existingTrigger": "24a32899-c5bf-474f-b31e-29ba7581ba24",
@@ -349,11 +467,191 @@
     "branchIncludes": [
       "cloudflare-qa"
     ],
-    "newTriggerOrCron": false
+    "newTriggerOrCron": false,
+    "criticalCompiledAfterBuild": [
+      "scripts/test-progress-api.mjs",
+      "scripts/test-chat-admission-api.mjs"
+    ]
   },
   "proofLimits": {
     "sqlSnapshotVersion": null,
     "preDeployNativeVersion": "1eaf1958-1c76-4ed1-bc2c-69338b44bc10",
     "localCronRuntime": "Not asserted by direct Miniflare scheduled probe; final Cron proof must come from native scheduled records on new version"
+  },
+  "qaCompiledSource": "da33cf2",
+  "qaRuntimeEquivalentSource": "30429bd513adb9f91a13cac40f51ea9809511b36",
+  "qaDeployedSource": "5749ce4b8cb833cbdc12c0513500b92bcfbf55b2",
+  "workCodeSource": "9e91409",
+  "screenshots": [
+    {
+      "path": "docs/screenshots/qa-observability/city-desktop-preview.png",
+      "sha256": "92d5ae1e9b0489792a4d82d00bd462d810a97c7d1a29f72db889e0012eca2bcf",
+      "environment": "local QA build, Chromium SwiftShader; not remote authenticated QA"
+    },
+    {
+      "path": "docs/screenshots/qa-observability/studio-mobile-preview.png",
+      "sha256": "be88c27814e627597fcc44af663543dad5388cc4b93f48112eb73182ed3ed41b",
+      "environment": "local QA build, Chromium SwiftShader; not remote authenticated QA"
+    }
+  ],
+  "artifactChecks": {
+    "nativeCounterComparisonRepeatable": true,
+    "worldBornPreserved": true,
+    "frozenLearningArtifacts": 76,
+    "frozenLearningComparisons": 42,
+    "noModelPromotion": true
+  },
+  "documentationOnlyFollowup": "Post-deploy evidence is pushed to work/feature only; cloudflare-qa remains the verified deployed source to avoid redeploying merely to record a deployment.",
+  "logDigests": [
+    {
+      "log": "qa-ops-hardening-unit.log",
+      "sha256": "f61e68f7eb0f1204581985f2277c8b7c1bada26be069a100228768699a956bf4"
+    },
+    {
+      "log": "qa-ops-qa-hardening-unit.log",
+      "sha256": "566f12600548120174b248a8e67da83d75aa4babcde9b2dfe4d6e609d47a2d71"
+    },
+    {
+      "log": "qa-ops-work-final-check.log",
+      "sha256": "7221a45908fd614e50740555b80013f82555e49102f1f3d4d719a531ed487e4b"
+    },
+    {
+      "log": "qa-ops-work-final-lint.log",
+      "sha256": "9d4ed79a683eccf54173b6034d4187b97e629a26e9f9dbedc55bc19d45839445"
+    },
+    {
+      "log": "qa-ops-qa-hardening-check.log",
+      "sha256": "7221a45908fd614e50740555b80013f82555e49102f1f3d4d719a531ed487e4b"
+    },
+    {
+      "log": "qa-ops-qa-final-lint.log",
+      "sha256": "9d4ed79a683eccf54173b6034d4187b97e629a26e9f9dbedc55bc19d45839445"
+    },
+    {
+      "log": "qa-ops-hardening-build.log",
+      "sha256": "71eda2b8ad0d1b18028395a706e718870bf6a95a809fb8099fd0732e34c7f774"
+    },
+    {
+      "log": "qa-ops-qa-hardening-build.log",
+      "sha256": "f6cca6f0716fef91aeb94823cd9292c6b7d28a6f02658e88f02de34bc344435d"
+    },
+    {
+      "log": "qa-ops-assets.log",
+      "sha256": "ffbac4128916c51be3da7528c956dddf3da5192e6b3e6b7015f274229bbc35b7"
+    },
+    {
+      "log": "qa-ops-alias-final.log",
+      "sha256": "c02e71ee12c09cb438c5c8d0d2c0cb62b41877c85b4479c802500af12ecf83af"
+    },
+    {
+      "log": "qa-ops-qa-alias-final.log",
+      "sha256": "56d8c0c282d4c20619beed5d53ae3c45b16dfebdcda4b095d59c51bff305441f"
+    },
+    {
+      "log": "qa-ops-hardening-api-local.log",
+      "sha256": "47d19794f30dc9e1f44a0b9f834cfb5ef4f979ea8930adc6da004e6abde46282"
+    },
+    {
+      "log": "qa-ops-qa-hardening-api-local.log",
+      "sha256": "47d19794f30dc9e1f44a0b9f834cfb5ef4f979ea8930adc6da004e6abde46282"
+    },
+    {
+      "log": "qa-ops-hardening-api-legacy.log",
+      "sha256": "298b241369ee5de889950a1c1944332a665164ed38e409ee8f357a37b97ea983"
+    },
+    {
+      "log": "qa-ops-qa-hardening-api-legacy.log",
+      "sha256": "298b241369ee5de889950a1c1944332a665164ed38e409ee8f357a37b97ea983"
+    },
+    {
+      "log": "qa-ops-final-browser-chat.log",
+      "sha256": "d303dfe9ce0675327f2008a677a57b7d8434952251d2d81d00ab626160c08c4f"
+    }
+  ],
+  "latestQaIntegration": {
+    "source": "4377ed75be7d844d5970167cefab6b81d799261b",
+    "build": "efa85b42-162f-4840-bc6d-64476790254a",
+    "buildOutcome": "success",
+    "deployment": "55bdb507-2c4f-4219-a6a3-0f67fc7f316c",
+    "version": "f77411ba-338f-48e8-a1d2-2eeffc474e91",
+    "trafficPercent": 100,
+    "deployedOn": "2026-10-29T14:10:30.572983Z",
+    "opsFilesByteIdenticalTo5749ce4": true,
+    "nativeScheduledProof": {
+      "observedAt": "2026-10-29T14:15:41.553Z",
+      "success": true,
+      "status": 200,
+      "events": [
+        {
+          "timestamp": 1793283043167,
+          "nativeVersion": "f77411ba-338f-48e8-a1d2-2eeffc474e91",
+          "nativeRequestId": "ddd6aad5167898a4b937a8c4b3d16e7c",
+          "outcome": "ok",
+          "cpuTimeMs": 162,
+          "wallTimeMs": 880
+        },
+        {
+          "timestamp": 1793283043167,
+          "nativeVersion": "f77411ba-338f-48e8-a1d2-2eeffc474e91",
+          "nativeRequestId": "ddd6aad5167898a4b937a8c4b3d16e7c",
+          "schema": "xom-system-log-v1",
+          "event": "cron_result",
+          "requestId": "f667ac86-ab45-4101-9e60-5492adbe866a",
+          "version": "f77411ba-338f-48e8-a1d2-2eeffc474e91",
+          "status": 200,
+          "updated": 10,
+          "duplicate": false,
+          "coalesced": false,
+          "durationMs": 738
+        },
+        {
+          "timestamp": 1793283043144,
+          "nativeVersion": "f77411ba-338f-48e8-a1d2-2eeffc474e91",
+          "nativeRequestId": "ddd6aad5167898a4b937a8c4b3d16e7c",
+          "schema": "xom-system-log-v1",
+          "event": "pulse_stage",
+          "requestId": "f667ac86-ab45-4101-9e60-5492adbe866a",
+          "version": "f77411ba-338f-48e8-a1d2-2eeffc474e91",
+          "stage": "tick",
+          "status": 200,
+          "durationMs": 332
+        },
+        {
+          "timestamp": 1793283042812,
+          "nativeVersion": "f77411ba-338f-48e8-a1d2-2eeffc474e91",
+          "nativeRequestId": "ddd6aad5167898a4b937a8c4b3d16e7c",
+          "schema": "xom-system-log-v1",
+          "event": "pulse_stage",
+          "requestId": "f667ac86-ab45-4101-9e60-5492adbe866a",
+          "version": "f77411ba-338f-48e8-a1d2-2eeffc474e91",
+          "stage": "social",
+          "status": 200,
+          "durationMs": 83
+        },
+        {
+          "timestamp": 1793283042729,
+          "nativeVersion": "f77411ba-338f-48e8-a1d2-2eeffc474e91",
+          "nativeRequestId": "ddd6aad5167898a4b937a8c4b3d16e7c",
+          "schema": "xom-system-log-v1",
+          "event": "pulse_stage",
+          "requestId": "f667ac86-ab45-4101-9e60-5492adbe866a",
+          "version": "f77411ba-338f-48e8-a1d2-2eeffc474e91",
+          "stage": "learning",
+          "status": 200,
+          "updated": 10,
+          "durationMs": 214
+        }
+      ]
+    },
+    "ownership": "Subsequent graphics/H6 integration published by other agents; preserved their accepted work, no local trainer or model promotion by Ops"
+  },
+  "finalWorkMerge": {
+    "otherAcceptedWork": "05a446c",
+    "merge": "049e71d",
+    "targetedSystemLog": "PASS",
+    "targetedProgressWatch": "PASS",
+    "typecheck": "PASS",
+    "lint": "PASS",
+    "fullSuiteLimits": "Own full78/QA82 refer to pinned sources above. Later graphics/H6 full acceptance stays in its own evidence; no relabeling these counts as a new full run."
   }
 }
