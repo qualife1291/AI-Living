@@ -38,7 +38,7 @@ for(const asset of catalog){
  // Constant animation tracks must overwrite prior IK offsets on each frame.
  const clean=new RiggedAvatar(source);rig.pose('idle',0,1000,[0,0],0,floor);clean.pose('idle',0,1000,[0,0],0,floor);
  for(const side of ['left','right'])assert(rig.hand(side).distanceTo(clean.hand(side))<1e-6,'No contact pose leaks into idle');
- rig.pose('drive',0,1000,[0,0],0,floor);assert.equal(rig.snapshot().resolvedClip,'Ride','Changing a clip at paused time still renders');clean.dispose();
+ const frozen=rig.snapshot();rig.pose('drive',0,1000,[0,0],0,floor);assert.deepEqual(rig.snapshot(),frozen,'Presentation time freezes clip/contacts while paused');clean.dispose();
  assert.equal(JSON.stringify(source.scene.toJSON()),baseline);rig.dispose();
 }
 console.log(JSON.stringify({suite:'city-actions',styles:5,actions:12,frames,radiusMax,gripMax,footMax,seatMax,limbLengthsPreserved:true,sourceImmutable:true,worldWrites:false,report}));

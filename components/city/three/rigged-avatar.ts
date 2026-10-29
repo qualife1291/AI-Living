@@ -21,7 +21,7 @@ export class RiggedAvatar {
  private mixer:THREE.AnimationMixer;
  private actions=new Map<string,THREE.AnimationAction>();
  private joints=new Map<string,THREE.Object3D>();
- private current='';private requested='';private previous='';private changedAt=0;private lastTime=NaN;private lastFloor=NaN;
+ private current='';private requested='';private previous='';private changedAt=0;private lastTime=NaN;
  private feet:THREE.Object3D[]=[];private footOffset=0;private tintKey='';
  private attachments=new Map<string,{mesh:THREE.SkinnedMesh;indices:number[]}[]>();
  private rest:{bone:THREE.Bone;position:THREE.Vector3;quaternion:THREE.Quaternion;scale:THREE.Vector3}[]=[];
@@ -138,8 +138,8 @@ export class RiggedAvatar {
  joint(name:string){return this.joints.get(name)??this.model.getObjectByName(name);}
  private findClip(requested:string){return [requested,...(clipAliases[requested]??[]),...clipAliases.idle].map(name=>[...this.actions.keys()].find(key=>key.toLowerCase()===name.toLowerCase())).find(Boolean);}
  pose(clip:string,animationTime:number,presentationTime:number,position:readonly number[],yaw:number,floor:number) {
-  if(this.current&&presentationTime===this.lastTime&&clip===this.requested&&this.group.position.x===position[0]&&this.group.position.z===(position.length>2?position[2]:position[1])&&this.group.rotation.y===yaw&&floor===this.lastFloor)return false;
-  const resolved=this.findClip(clip)??'',first=!this.current,seek=!Number.isFinite(this.lastTime)||Math.abs(presentationTime-this.lastTime)>1||presentationTime===this.lastTime&&clip!==this.requested;
+  if(this.current&&presentationTime===this.lastTime)return false;
+  const resolved=this.findClip(clip)??'',first=!this.current,seek=!Number.isFinite(this.lastTime)||Math.abs(presentationTime-this.lastTime)>1;
   if(resolved!==this.current||seek){this.previous=first||seek?'':this.current;this.current=resolved;this.changedAt=first||seek?presentationTime-.45:presentationTime;this.actions.get(resolved)?.reset().play();}
   const blend=Math.min(1,Math.max(0,(presentationTime-this.changedAt)/.45));
   // PropertyMixer skips unchanged constant tracks. Procedural contacts must not
@@ -147,7 +147,7 @@ export class RiggedAvatar {
   const previousTime=this.actions.get(this.previous)?.time??0;
   this.mixer.stopAllAction();for(const rest of this.rest){rest.bone.position.copy(rest.position);rest.bone.quaternion.copy(rest.quaternion);rest.bone.scale.copy(rest.scale);}
   for(const [name,action] of this.actions){action.enabled=name===resolved||name===this.previous&&blend<1;action.setEffectiveWeight(name===resolved?blend:name===this.previous?1-blend:0);if(action.enabled){action.play();const duration=Math.max(.001,action.getClip().duration),time=name===resolved?animationTime:previousTime;action.time=((time%duration)+duration)%duration;}}
-  this.mixer.update(0);this.lastTime=presentationTime;this.lastFloor=floor;this.requested=clip;
+  this.mixer.update(0);this.lastTime=presentationTime;this.requested=clip;
   this.group.position.set(position[0],0,position.length>2?position[2]:position[1]);this.group.rotation.set(0,yaw,0);this.group.updateMatrixWorld(true);
   const contacts=['foot-left','foot-right'].map(key=>this.surface(key,'min')?.y).filter((y):y is number=>y!==undefined);
   const bottom=contacts.length?Math.min(...contacts):this.feet.length?Math.min(...this.feet.map(b=>b.getWorldPosition(scratch).y))-this.footOffset:0;
