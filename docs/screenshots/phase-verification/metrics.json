@@ -1,0 +1,46 @@
+{
+  "productionAccess": false,
+  "uiWritesMocked": false,
+  "realWorkerD1": true,
+  "actualRows": 18,
+  "gateCount": 2,
+  "protectedStateUnchanged": true,
+  "results": [
+    {
+      "viewport": "desktop",
+      "lostAckStableUuid": true,
+      "noExtraStoredExchange": true,
+      "newIntentNewUuid": true,
+      "wrongAckRejected": true,
+      "deadlineMs": 10000,
+      "deadlineKeepsDraftAndUuid": true,
+      "inflightDuplicateBlocked": true,
+      "actorSwitchIsolated": true,
+      "pageErrors": []
+    },
+    {
+      "viewport": "mobile",
+      "lostAckStableUuid": true,
+      "noExtraStoredExchange": true,
+      "newIntentNewUuid": true,
+      "wrongAckRejected": true,
+      "deadlineMs": 10000,
+      "deadlineKeepsDraftAndUuid": true,
+      "inflightDuplicateBlocked": true,
+      "actorSwitchIsolated": true,
+      "pageErrors": []
+    },
+    {
+      "viewport": "narrow",
+      "lostAckStableUuid": true,
+      "noExtraStoredExchange": true,
+      "newIntentNewUuid": true,
+      "wrongAckRejected": true,
+      "deadlineMs": 10000,
+      "deadlineKeepsDraftAndUuid": true,
+      "inflightDuplicateBlocked": true,
+      "actorSwitchIsolated": true,
+      "pageErrors": []
+    }
+  ]
+}

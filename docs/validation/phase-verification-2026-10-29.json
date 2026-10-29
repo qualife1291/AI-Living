@@ -1,0 +1,314 @@
+{
+  "kind": "chat-h5a-deep-verification-v1",
+  "date": "2026-10-29",
+  "timezone": "Asia/Ho_Chi_Minh",
+  "status": "IN_PROGRESS: remaining G0 and broad compiled regression",
+  "scope": "Independent re-verification of bounded body/chat admission/UI retries and H5a offline advice; no graphics interaction phase, remote QA or deployment",
+  "baseline": "00be1c4a7ac0c72d6f68ddd450945c3d14b64c3e",
+  "productFix": "68194f1f75a8a3f0238ef02a29ebfd053b22ec7a",
+  "compiledSource": "c5c92d344cdc222b2314448fa899da4c06a69f52",
+  "browserHarnessSource": "0a2f7540b761b4ec4e37deb8aea444f1ad552105",
+  "documentationIntegrationSource": "db0534147f8c9e7fc351f2e85c55bd765104e1ba",
+  "compiledAppEquivalentOnIntegration": true,
+  "compiledServer": {
+    "jsModules": 109,
+    "manifestSha256": "1eb7e1aed948ee98d89c1b35d9950f423d8c373467522d0d71f380b91c6b624d"
+  },
+  "reproducedBeforeFix": [
+    {
+      "issue": "D1 postassert accepted altered/deleted counter or rewritten exchange; malformed active counters and stale-ID ignored update",
+      "native": {
+        "suite": "chat-adversarial",
+        "results": [
+          {
+            "name": "counter-deleted-after-insert",
+            "rejected": false,
+            "unchanged": false
+          },
+          {
+            "name": "exchange-rewritten-after-insert",
+            "rejected": false,
+            "unchanged": false
+          },
+          {
+            "name": "count-decremented-after-insert",
+            "rejected": false,
+            "unchanged": false
+          },
+          {
+            "name": "counter-fraction",
+            "rejected": false,
+            "unchanged": false
+          },
+          {
+            "name": "counter-boolean",
+            "rejected": false,
+            "unchanged": false
+          },
+          {
+            "name": "counter-stale-id-and-ignored-update",
+            "rejected": false,
+            "unchanged": false
+          }
+        ],
+        "productionAccess": false
+      },
+      "after": {
+        "suite": "chat-adversarial",
+        "results": [
+          {
+            "name": "counter-deleted-after-insert",
+            "rejected": true,
+            "unchanged": true
+          },
+          {
+            "name": "exchange-rewritten-after-insert",
+            "rejected": true,
+            "unchanged": true
+          },
+          {
+            "name": "count-decremented-after-insert",
+            "rejected": true,
+            "unchanged": true
+          },
+          {
+            "name": "counter-fraction",
+            "rejected": true,
+            "unchanged": true
+          },
+          {
+            "name": "counter-boolean",
+            "rejected": true,
+            "unchanged": true
+          },
+          {
+            "name": "counter-stale-id-and-ignored-update",
+            "rejected": true,
+            "unchanged": true
+          }
+        ],
+        "productionAccess": false
+      }
+    },
+    {
+      "issue": "Unresolved upstream cancellation blocked the intended 413",
+      "before": "Promise race reaches 500ms with blocked instead of 413",
+      "after": "Oversized body returns 413 without awaiting cancel; reader released; UTF8 and early stop preserved"
+    },
+    {
+      "issue": "UI manual lost-ACK retry generated a fresh UUID",
+      "before": "Baseline compiled preview failed assertion: Manual lost-ACK retry must reuse UUID",
+      "after": "Stable mounted-panel UUID with validated ACK, deadline and unmount abort; actual D1 readback"
+    },
+    {
+      "issue": "Huge finite inbox clock poisoned later valid admission",
+      "before": {
+        "source": "00be1c4",
+        "invalidTimeRejected": false,
+        "poisonedByUnsafeClock": true,
+        "productionAccess": false
+      },
+      "after": "Reject unsafe times before mutation; subsequent real proof accepted"
+    }
+  ],
+  "checks": {
+    "unit": {
+      "suite": "unit-summary",
+      "total": 76,
+      "passed": 76,
+      "failed": [],
+      "workers": 2,
+      "seconds": 172.03
+    },
+    "typecheck": "PASS",
+    "lint": "PASS",
+    "build": "PASS",
+    "assets": "PASS; approved297/bindings79/missing0;239resource models;27lossless derivatives",
+    "compiledChat": {
+      "suite": "chat-admission-compiled-http",
+      "concurrentUnique": 60,
+      "concurrentDuplicate": 16,
+      "workerIsolates": 2,
+      "sharedD1": true,
+      "limit": 30,
+      "windowMs": 60000,
+      "atomicRollbackCases": 6,
+      "originOwnerBodyPauseActorGuards": true,
+      "retryAfter": true,
+      "rejectedUuidReusable": true,
+      "historyPreserved": true,
+      "productionAccess": false
+    },
+    "legacyLiveness": {
+      "kind": "legacy-compiled-http-acceptance",
+      "isolated": true,
+      "productionAccess": false,
+      "results": [
+        {
+          "name": "liveness",
+          "exitCode": 0
+        }
+      ]
+    },
+    "h5Audit": {
+      "suite": "peer-sharing-audit",
+      "trialValues": 8,
+      "chunkSizes": 20,
+      "deliveryPermutations": 6,
+      "capacityValues": 32,
+      "defaultCapacityLiveEntriesExercised": 3,
+      "ttlBoundary": true,
+      "unsafeClockNoPoisoning": true,
+      "prototypeProxyAndInstructionForgeryRejected": true,
+      "worldOrPolicyWrites": false,
+      "runtimeImport": false
+    },
+    "h5RepeatedStudySha256": "1a91bf99f38413c873cf11c87d462446af14d302f4162df0d3617f00e10203fe",
+    "frozenLearning": {
+      "kind": "frozen-learning-evidence-acceptance-v1",
+      "artifacts": 76,
+      "comparisons": 42,
+      "holdout": {
+        "reserved12000to12019": "unobserved",
+        "plans": 0
+      }
+    },
+    "browserRealD1": {
+      "productionAccess": false,
+      "uiWritesMocked": false,
+      "realWorkerD1": true,
+      "actualRows": 18,
+      "gateCount": 2,
+      "protectedStateUnchanged": true,
+      "results": [
+        {
+          "viewport": "desktop",
+          "lostAckStableUuid": true,
+          "noExtraStoredExchange": true,
+          "newIntentNewUuid": true,
+          "wrongAckRejected": true,
+          "deadlineMs": 10000,
+          "deadlineKeepsDraftAndUuid": true,
+          "inflightDuplicateBlocked": true,
+          "actorSwitchIsolated": true,
+          "pageErrors": []
+        },
+        {
+          "viewport": "mobile",
+          "lostAckStableUuid": true,
+          "noExtraStoredExchange": true,
+          "newIntentNewUuid": true,
+          "wrongAckRejected": true,
+          "deadlineMs": 10000,
+          "deadlineKeepsDraftAndUuid": true,
+          "inflightDuplicateBlocked": true,
+          "actorSwitchIsolated": true,
+          "pageErrors": []
+        },
+        {
+          "viewport": "narrow",
+          "lostAckStableUuid": true,
+          "noExtraStoredExchange": true,
+          "newIntentNewUuid": true,
+          "wrongAckRejected": true,
+          "deadlineMs": 10000,
+          "deadlineKeepsDraftAndUuid": true,
+          "inflightDuplicateBlocked": true,
+          "actorSwitchIsolated": true,
+          "pageErrors": []
+        }
+      ]
+    },
+    "browser429": {
+      "productionAccess": false,
+      "uiWritesMocked": true,
+      "results": [
+        {
+          "viewport": "desktop",
+          "fixture": "synthetic local, mocked HTTP writes",
+          "renderer": "Chromium SwiftShader",
+          "http429DraftAndFocus": true,
+          "noAutomaticRetryMs": 2500,
+          "manualRetryAndClearDraft": true,
+          "overflow": false,
+          "pageErrors": []
+        },
+        {
+          "viewport": "mobile",
+          "fixture": "synthetic local, mocked HTTP writes",
+          "renderer": "Chromium SwiftShader",
+          "http429DraftAndFocus": true,
+          "noAutomaticRetryMs": 2500,
+          "manualRetryAndClearDraft": true,
+          "overflow": false,
+          "pageErrors": []
+        }
+      ]
+    },
+    "browserG0": "PENDING",
+    "compiledDiagnostics": "PENDING",
+    "compiledLegacyAll": "PENDING"
+  },
+  "browserD1Details": {
+    "uniqueExchanges": 18,
+    "requests": 27,
+    "freshFixture": true,
+    "sqlReadback": "read-only SQLite; compare full protected rows and exact quota data+expires_at per lost-ACK/deadline retry",
+    "finalGateCount": 2,
+    "finalGateCountMeaning": "Only active fixed window; windows expired during browser run, not total admitted rows",
+    "mocked": "world display and non-chat API transport only; interact requests forwarded to compiled Worker before deliberately losing/holding/altering ACK"
+  },
+  "harnessDispositions": [
+    {
+      "failure": "Protected snapshot assumed every table had id",
+      "disposition": "Use complete serialized rows sorted deterministically; happened before browser writes"
+    },
+    {
+      "failure": "Actor-switch test expected panel to stay open",
+      "disposition": "Verified UI intentionally closes panel on selecting resident; reopen for Bình before assertion. Fresh dedicated fixture; retain failed DB/screens locally. No application assertion weakened."
+    }
+  ],
+  "screenshots": [
+    {
+      "viewport": "desktop",
+      "size": [
+        1365,
+        900
+      ],
+      "path": "docs/screenshots/phase-verification/desktop-lost-ack-preview.png",
+      "sha256": "e2a5a8923aaedb91a1482e876896a959f30fd6e8bb9d2355e5adfb2ee620cebf",
+      "environment": "local preview, Chromium SwiftShader, synthetic world; chat uses actual Worker and dedicated D1"
+    },
+    {
+      "viewport": "mobile",
+      "size": [
+        390,
+        844
+      ],
+      "path": "docs/screenshots/phase-verification/mobile-lost-ack-preview.png",
+      "sha256": "85127d9e4b7287ae1f691e7c80a3a655d13fb5fc0f73addf1e17dfae1246671a",
+      "environment": "local preview, Chromium SwiftShader, synthetic world; chat uses actual Worker and dedicated D1"
+    },
+    {
+      "viewport": "narrow",
+      "size": [
+        320,
+        740
+      ],
+      "path": "docs/screenshots/phase-verification/narrow-lost-ack-preview.png",
+      "sha256": "6462bc952294a719dd2b98525677a3995a0ce98821d644ebf85fa1b8ef7a55eb",
+      "environment": "local preview, Chromium SwiftShader, synthetic world; chat uses actual Worker and dedicated D1"
+    }
+  ],
+  "productionAccess": false,
+  "schemaChanged": false,
+  "deployment": false,
+  "limits": [
+    "Local fixtures/Chromium SwiftShader only; no remote/GPU/24h soak or performance SLA",
+    "H5a remains offline, in-process capability only; no durable receipt authentication, live P2P, training or policy gain",
+    "H5 audit covers 8trial values and20chunk sizes on trial0 separately, not full8x20; capacity1..32 tested with3live proofs, not32entry stress",
+    "UI pending UUID lasts only the mounted actor panel; no draft persistence or cross-reload recovery",
+    "Native/D1 injected faults establish tested cases, not arbitrary database corruption immunity",
+    "Original graphics/camera/gesture fixes remain owned by independent graphics-interactions branch"
+  ]
+}
