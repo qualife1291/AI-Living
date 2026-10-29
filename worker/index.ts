@@ -24,11 +24,14 @@ const worker = {
   handleRequest(request: Request, env: Cloudflare.Env, ctx: ExecutionContext<{ CONNECTORS?: ConnectorBinding }>) {
     const settings = env as unknown as Record<string, string | undefined>;
     const url = new URL(request.url);
-    const mutation = url.pathname.startsWith("/api/") && !["GET", "HEAD", "OPTIONS"].includes(request.method);
-    const diagnostic = url.pathname === "/api/diagnostics";
-    const privateMemories = url.pathname === "/api/living/memories";
-    const privateSystem = url.pathname === "/api/system/progress";
-    const archive = url.pathname === "/api/living/learning" && url.searchParams.get("format") === "jsonl";
+    // Vinext accepts trailing-slash aliases without redirecting. Classify the
+    // canonical path before authorization, including existing private readers.
+    const path = url.pathname.replace(/\/+$/, "") || "/";
+    const mutation = path.startsWith("/api/") && !["GET", "HEAD", "OPTIONS"].includes(request.method);
+    const diagnostic = path === "/api/diagnostics";
+    const privateMemories = path === "/api/living/memories";
+    const privateSystem = path === "/api/system/progress";
+    const archive = path === "/api/living/learning" && url.searchParams.get("format") === "jsonl";
     if ((mutation || archive || diagnostic || privateMemories || privateSystem) && !adminAllowed(request, { ownerId: settings.XOM_ADMIN_USER_ID, localAdmin: settings.XOM_LOCAL_ADMIN, privateOrigin: settings.XOM_OWNER_PRIVATE_ORIGIN }))
       return Response.json({ error: "Thao tác này cần quyền chủ sở hữu." }, { status: 403 });
     let binding = ctx.props?.CONNECTORS;
