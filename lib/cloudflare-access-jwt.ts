@@ -12,7 +12,7 @@ const MAX_JWT_BYTES = 16_384;
 const JWKS_TTL_MS = 5 * 60 * 1000;
 let cached: { url: string; until: number; keys: AccessJwks } | undefined;
 
-function decodeBase64url(value: string): Uint8Array {
+function decodeBase64url(value: string): Uint8Array<ArrayBuffer> {
   if (!value || value.length > MAX_JWT_BYTES || !/^[A-Za-z0-9_-]+$/.test(value)) throw new Error("invalid jwt segment");
   const normalized = value.replace(/-/g, "+").replace(/_/g, "/");
   const binary = atob(normalized + "=".repeat((4 - normalized.length % 4) % 4));

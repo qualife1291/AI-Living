@@ -19,7 +19,9 @@ const worker = {
     // double-run learning/ticks; CAS and five-minute turn IDs stay authoritative.
     ctx.waitUntil((async () => {
       try {
-        const result = await runCoalescedPulse(env.DB, async () => {
+        const db = env.DB;
+        if (!db) throw new Error("QA D1 binding missing");
+        const result = await runCoalescedPulse(db, async () => {
           const learned = await learnCompleted();
           if (learned.status !== 200) return learned;
           const social = await advanceResidentSocial();

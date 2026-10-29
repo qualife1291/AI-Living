@@ -12,7 +12,8 @@ const location = resolve("dist/server/wrangler.json");
 if (!existsSync(location)) throw Error("Vinext build not found; run npm run build first.");
 const cfg = JSON.parse(readFileSync(location, "utf8"));
 
-if (!["ai-living-staging", "ai-living-qa"].includes(cfg.name)) throw Error(`Unexpected Vinext source Worker name: ${cfg.name}`);
+if (!["site-creator-vinext-starter", "ai-living-staging", "ai-living-qa"].includes(cfg.name)) throw Error(`Unexpected Vinext source Worker name: ${cfg.name}`);
+const alreadyQa = cfg.name === "ai-living-qa";
 cfg.name = "ai-living-qa";
 if (cfg.main !== "index.js" || !existsSync(resolve(dirname(location), cfg.main))) {
   throw Error("Unexpected/missing Vinext Worker entrypoint.");
@@ -27,7 +28,8 @@ if (!Array.isArray(cfg.d1_databases) || cfg.d1_databases.length !== 1 ||
     cfg.d1_databases[0]?.binding !== "DB") {
   throw Error("Unexpected D1 binding layout. Refusing to deploy.");
 }
-if (cfg.route || cfg.routes || cfg.triggers?.crons?.length) {
+const existingCrons = cfg.triggers?.crons ?? [];
+if (cfg.route || cfg.routes || existingCrons.length && !(alreadyQa && existingCrons.length === 1 && existingCrons[0] === QA_LIVING_CRON)) {
   throw Error("Unexpected existing route or cron; refusing to overwrite.");
 }
 
