@@ -1,0 +1,74 @@
+{
+  "kind": "neighborhood-upgrade-acceptance-v1",
+  "date": "2026-10-29",
+  "timezone": "Asia/Ho_Chi_Minh",
+  "status": "TARGETED_PASS_FULL_AND_BROWSER_PENDING",
+  "native": {
+    "suite": "neighborhood",
+    "legacyInitializationStable": true,
+    "residents": 48,
+    "humanModels": 51,
+    "trainedHumans": 51,
+    "animalPolicies": 9,
+    "trainedAnimals": 9,
+    "oldIdentityHomeMemoryPetOwnersPreserved": true,
+    "slowClockPendingRetained": true,
+    "fullDurationAndExactlyOnce": true,
+    "cancelledPlanNoReward": true,
+    "rainShelter": true,
+    "pauseNoReward": true,
+    "selectedDenseTailRetained": true,
+    "placements": 487,
+    "newPlants": 338,
+    "reviewedProps": 11,
+    "actualAnimatedAnimalMaxRadius": 3.6099152689769025,
+    "pausedModelsFreeze": true,
+    "physicalFootprintsUnchanged": true,
+    "modelPromotion": false,
+    "productionAccess": false
+  },
+  "assets": {
+    "models": 11,
+    "bytes": 802928,
+    "triangles": 6059,
+    "selection": "data/assets/supplied-props-selection.json",
+    "license": "LicenseRef-Owner-Confirmed-Free",
+    "transports": 42,
+    "canonicalBytes": 5964264,
+    "transferBytes": 2215748
+  },
+  "rollout": {
+    "adoption": "Next committed living turn; no viewer or frozen initialization mutation",
+    "defaultResidentTarget": 48,
+    "animalPolicyGroups": 9,
+    "sharedBodiesAtMaximumPopulation": 252,
+    "viewerHumanBudget": 72,
+    "skeletalHumanBudget": 8,
+    "customPopulationCapsPreserved": true,
+    "newDatabaseMigration": false,
+    "productionReadback": false
+  },
+  "behavior": {
+    "human": "existing personal LinUCB, 41 live scenarios",
+    "animals": "independent UCB, retain incomplete plan, full-duration exactly-once and cancellation/pause guards",
+    "sampleScope": "completed simulation plans; not physical productive-effect receipts or LLM fine-tuning",
+    "H2H3bH4H6H10Promotion": false,
+    "peerSharingLive": false,
+    "modelQualityLimits": "Previously rejected experiments remain frozen; no retuning or automatic promotion."
+  },
+  "gates": {
+    "fullUnit": "PENDING",
+    "check": "PASS",
+    "assets": "PASS",
+    "lint": "PASS: zero errors, one existing H6 warning",
+    "build": "PENDING",
+    "browser": "PENDING",
+    "compiledApi": "PENDING"
+  },
+  "limitations": [
+    "Only appropriate reviewed portable models are imported; raw ZIP2–4, static construction poses and UE-only files are not live actors.",
+    "Browser proof will be loopback synthetic transport/SwiftShader, not remote authenticated or physical GPU/24h soak.",
+    "No runtime prior/LLM weight promotion, no own experience inferred from graphics.",
+    "Original ZIP backup outside workspace remains a separate blocked task."
+  ]
+}

@@ -1,0 +1,463 @@
+{
+  "version": 1,
+  "packs": [
+    {
+      "id": "supplied-props",
+      "license": "LicenseRef-Owner-Confirmed-Free",
+      "licenseUrl": "/models/supplied/props/LICENSE.txt"
+    }
+  ],
+  "assets": [
+    {
+      "id": "supplied/props/book",
+      "archive": "1.zip",
+      "member": "Chess_Pack_Free_glb/Props/Book_01.glb",
+      "sourceSha256": "ff69bc4c22cc7e4cc7e3c50c32bdf5ad0864c5bf3dcad89745ab2feba7068d74",
+      "sourceBytes": 592656,
+      "nested": "chess_pack_free_glb.zip",
+      "name": "book",
+      "url": "/models/supplied/props/book.glb",
+      "bytes": 113180,
+      "sha256": "9913d756156175a19570df50ffc1ee8e8cd83edfb571d1932c2cf13226cc7b38",
+      "pack": "supplied-props",
+      "genre": "daily-life",
+      "kind": "prop",
+      "license": "LicenseRef-Owner-Confirmed-Free",
+      "skins": 0,
+      "clips": [],
+      "triangles": 330,
+      "primitives": 2,
+      "atlasSize": [
+        512,
+        256
+      ],
+      "bounds": {
+        "min": [
+          -0.13548925518989563,
+          -2.415630362406773e-9,
+          -0.172002911567688
+        ],
+        "max": [
+          0.14522363245487213,
+          0.07891596853733063,
+          0.172002911567688
+        ],
+        "size": [
+          0.28071288764476776,
+          0.07891597095296099,
+          0.344005823135376
+        ]
+      }
+    },
+    {
+      "id": "supplied/props/books",
+      "archive": "1.zip",
+      "member": "Chess_Pack_Free_glb/Props/Books_01.glb",
+      "sourceSha256": "37e9ffa249a88919f2a7587d3d70afcf71d022fd67193ceceb65e26ffee69433",
+      "sourceBytes": 280296,
+      "nested": "chess_pack_free_glb.zip",
+      "name": "books",
+      "url": "/models/supplied/props/books.glb",
+      "bytes": 56340,
+      "sha256": "7d58e3437ea7127780aa6b5d862af95195d8070202cf0ec7daa7697e404f80e3",
+      "pack": "supplied-props",
+      "genre": "daily-life",
+      "kind": "prop",
+      "license": "LicenseRef-Owner-Confirmed-Free",
+      "skins": 0,
+      "clips": [],
+      "triangles": 730,
+      "primitives": 1,
+      "atlasSize": [
+        256,
+        256
+      ],
+      "bounds": {
+        "min": [
+          -0.11617529392242432,
+          -0.0036172368563711643,
+          -0.1237185001373291
+        ],
+        "max": [
+          0.22119274735450745,
+          0.3190876245498657,
+          0.13057813048362732
+        ],
+        "size": [
+          0.33736804127693176,
+          0.3227048614062369,
+          0.2542966306209564
+        ]
+      }
+    },
+    {
+      "id": "supplied/props/chair",
+      "archive": "1.zip",
+      "member": "Chess_Pack_Free_glb/Props/Chair_01.glb",
+      "sourceSha256": "9fe20ff123dcf0d013937a102ac78b51ff302d9726d1b27d33b699ca722e312e",
+      "sourceBytes": 275640,
+      "nested": "chess_pack_free_glb.zip",
+      "name": "chair",
+      "url": "/models/supplied/props/chair.glb",
+      "bytes": 51684,
+      "sha256": "9b0df14e726d7376e35293501ad379321606c5b7eaa9d94d807c92b61e65c0de",
+      "pack": "supplied-props",
+      "genre": "daily-life",
+      "kind": "prop",
+      "license": "LicenseRef-Owner-Confirmed-Free",
+      "skins": 0,
+      "clips": [],
+      "triangles": 642,
+      "primitives": 1,
+      "atlasSize": [
+        256,
+        256
+      ],
+      "bounds": {
+        "min": [
+          -0.46664196252822876,
+          -0.0000637955017737113,
+          -0.43181005120277405
+        ],
+        "max": [
+          0.4666421115398407,
+          0.9188787341117859,
+          0.43181148171424866
+        ],
+        "size": [
+          0.9332840740680695,
+          0.9189425296135596,
+          0.8636215329170227
+        ]
+      }
+    },
+    {
+      "id": "supplied/props/chessboard",
+      "archive": "1.zip",
+      "member": "Chess_Pack_Free_glb/Props/Chesspad_01.glb",
+      "sourceSha256": "dcf7eb7aa78a64a3a48439c7b4c860ddfaa27a91f5b205079175bbaa45e8d925",
+      "sourceBytes": 494296,
+      "nested": "chess_pack_free_glb.zip",
+      "name": "chessboard",
+      "url": "/models/supplied/props/chessboard.glb",
+      "bytes": 94344,
+      "sha256": "13880e25df0d2fab3767f35cb142ad3b8eccd5f1e1756e9a4f7f4a330fa308ae",
+      "pack": "supplied-props",
+      "genre": "daily-life",
+      "kind": "prop",
+      "license": "LicenseRef-Owner-Confirmed-Free",
+      "skins": 0,
+      "clips": [],
+      "triangles": 728,
+      "primitives": 4,
+      "atlasSize": [
+        512,
+        256
+      ],
+      "bounds": {
+        "min": [
+          -0.2406323403120041,
+          -0.0012481381418183446,
+          -0.2406323403120041
+        ],
+        "max": [
+          0.2406323403120041,
+          0.044327009469270706,
+          0.2406323403120041
+        ],
+        "size": [
+          0.4812646806240082,
+          0.04557514761108905,
+          0.4812646806240082
+        ]
+      }
+    },
+    {
+      "id": "supplied/props/lamp",
+      "archive": "1.zip",
+      "member": "Chess_Pack_Free_glb/Props/Night_Lamp_01.glb",
+      "sourceSha256": "5ba8258b0d03e8bd30e25751850876aec43073647e49dd7973afd9d50ba89703",
+      "sourceBytes": 284484,
+      "nested": "chess_pack_free_glb.zip",
+      "name": "lamp",
+      "url": "/models/supplied/props/lamp.glb",
+      "bytes": 60336,
+      "sha256": "45d622b0eb744e39f4028551b29d4916b04ca9984e45fd110cc001a328dbfe41",
+      "pack": "supplied-props",
+      "genre": "daily-life",
+      "kind": "prop",
+      "license": "LicenseRef-Owner-Confirmed-Free",
+      "skins": 0,
+      "clips": [],
+      "triangles": 1054,
+      "primitives": 2,
+      "atlasSize": [
+        256,
+        256
+      ],
+      "bounds": {
+        "min": [
+          -0.06293250620365143,
+          -3.9365031234694925e-9,
+          -0.06293056160211563
+        ],
+        "max": [
+          0.0629286840558052,
+          0.15275226533412933,
+          0.0629306212067604
+        ],
+        "size": [
+          0.12586119025945663,
+          0.15275226927063246,
+          0.12586118280887604
+        ]
+      }
+    },
+    {
+      "id": "supplied/props/plant",
+      "archive": "1.zip",
+      "member": "Chess_Pack_Free_glb/Props/Plant_001.glb",
+      "sourceSha256": "b3fd23155d6a84891325491f1a589cc820550f5a14a86495e8e3ccc72c94df8c",
+      "sourceBytes": 668864,
+      "nested": "chess_pack_free_glb.zip",
+      "name": "plant",
+      "url": "/models/supplied/props/plant.glb",
+      "bytes": 73088,
+      "sha256": "82a69a079251a975bc1bf793a31c6c31c4ff208396f83ec80dc56d34bd45ed8f",
+      "pack": "supplied-props",
+      "genre": "daily-life",
+      "kind": "prop",
+      "license": "LicenseRef-Owner-Confirmed-Free",
+      "skins": 0,
+      "clips": [],
+      "triangles": 1399,
+      "primitives": 1,
+      "atlasSize": [
+        256,
+        256
+      ],
+      "bounds": {
+        "min": [
+          -0.5966508388519287,
+          0.005068862810730934,
+          -0.5859721302986145
+        ],
+        "max": [
+          0.527524471282959,
+          2.3623266220092773,
+          0.6746429204940796
+        ],
+        "size": [
+          1.1241753101348877,
+          2.3572577591985464,
+          1.260615050792694
+        ]
+      }
+    },
+    {
+      "id": "supplied/props/shelf",
+      "archive": "1.zip",
+      "member": "Chess_Pack_Free_glb/Props/Shelving_01.glb",
+      "sourceSha256": "3eb122060e52a7c872cfd51a123889da735dca1b2b20f4c01e67fd09b25059dd",
+      "sourceBytes": 270164,
+      "nested": "chess_pack_free_glb.zip",
+      "name": "shelf",
+      "url": "/models/supplied/props/shelf.glb",
+      "bytes": 46208,
+      "sha256": "8bf434de715e41c408f13b427b768118ffd36f9b8ae1f26150b181625ef13818",
+      "pack": "supplied-props",
+      "genre": "daily-life",
+      "kind": "prop",
+      "license": "LicenseRef-Owner-Confirmed-Free",
+      "skins": 0,
+      "clips": [],
+      "triangles": 486,
+      "primitives": 1,
+      "atlasSize": [
+        256,
+        256
+      ],
+      "bounds": {
+        "min": [
+          -0.49967366456985474,
+          -0.0010152757167816162,
+          -0.3177363872528076
+        ],
+        "max": [
+          0.4996727705001831,
+          0.8551499843597412,
+          0.20315799117088318
+        ],
+        "size": [
+          0.9993464350700378,
+          0.8561652600765228,
+          0.5208943784236908
+        ]
+      }
+    },
+    {
+      "id": "supplied/props/table",
+      "archive": "1.zip",
+      "member": "Casino_Free_glb/Casino_Free_Assets_glb/Table_06.glb",
+      "sourceSha256": "a1a383de9c3405f296d39ba5f8155b510a78ed717023a54e4fed99647d02cad5",
+      "sourceBytes": 420984,
+      "nested": "casino_free_glb.zip",
+      "name": "table",
+      "url": "/models/supplied/props/table.glb",
+      "bytes": 59760,
+      "sha256": "c976bcbb3f2f9b681ca329ae8e46378b82f28aec3f6311bdaca26a5a085e263b",
+      "pack": "supplied-props",
+      "genre": "daily-life",
+      "kind": "prop",
+      "license": "LicenseRef-Owner-Confirmed-Free",
+      "skins": 0,
+      "clips": [],
+      "triangles": 158,
+      "primitives": 1,
+      "atlasSize": [
+        256,
+        256
+      ],
+      "bounds": {
+        "min": [
+          -1.352806806564331,
+          0,
+          -0.7293654084205627
+        ],
+        "max": [
+          1.352806568145752,
+          0.7969180941581726,
+          0.7293959259986877
+        ],
+        "size": [
+          2.705613374710083,
+          0.7969180941581726,
+          1.4587613344192505
+        ]
+      }
+    },
+    {
+      "id": "supplied/props/monitor",
+      "archive": "1.zip",
+      "member": "Casino_Free_glb/Casino_Free_Assets_glb/Monitor_02.glb",
+      "sourceSha256": "6c35fb4613b5c7338c1ac8415f6acd826828bec2ac2dbae85419d7f37cfc67d3",
+      "sourceBytes": 1482716,
+      "nested": "casino_free_glb.zip",
+      "name": "monitor",
+      "url": "/models/supplied/props/monitor.glb",
+      "bytes": 121244,
+      "sha256": "a9731349b89023daf8c7753595623069b997d00101351f4b808eb18e7c29ed7c",
+      "pack": "supplied-props",
+      "genre": "daily-life",
+      "kind": "prop",
+      "license": "LicenseRef-Owner-Confirmed-Free",
+      "skins": 0,
+      "clips": [],
+      "triangles": 178,
+      "primitives": 2,
+      "atlasSize": [
+        512,
+        256
+      ],
+      "bounds": {
+        "min": [
+          -0.35489529371261597,
+          -3.91155481338501e-8,
+          -0.11502253264188766
+        ],
+        "max": [
+          0.35473763942718506,
+          0.520758867263794,
+          0.1148531511425972
+        ],
+        "size": [
+          0.709632933139801,
+          0.5207589063793421,
+          0.22987568378448486
+        ]
+      }
+    },
+    {
+      "id": "supplied/props/keyboard",
+      "archive": "1.zip",
+      "member": "Casino_Free_glb/Casino_Free_Assets_glb/Keyboard_01.glb",
+      "sourceSha256": "bd96a3730061ef8ada281c5c89162eb6696864974c2b037310a6b95e96ff6ac4",
+      "sourceBytes": 434592,
+      "nested": "casino_free_glb.zip",
+      "name": "keyboard",
+      "url": "/models/supplied/props/keyboard.glb",
+      "bytes": 73360,
+      "sha256": "0f9b23f5cfdb40bb7ef80bb78274fdcc82b198b19bf9117e1c736983ea05f863",
+      "pack": "supplied-props",
+      "genre": "daily-life",
+      "kind": "prop",
+      "license": "LicenseRef-Owner-Confirmed-Free",
+      "skins": 0,
+      "clips": [],
+      "triangles": 308,
+      "primitives": 1,
+      "atlasSize": [
+        256,
+        256
+      ],
+      "bounds": {
+        "min": [
+          -0.25289976596832275,
+          -4.120283847441897e-8,
+          -0.1182899922132492
+        ],
+        "max": [
+          0.2529032230377197,
+          0.06970133632421494,
+          0.11830931156873703
+        ],
+        "size": [
+          0.5058029890060425,
+          0.06970137752705341,
+          0.23659930378198624
+        ]
+      }
+    },
+    {
+      "id": "supplied/props/mouse",
+      "archive": "1.zip",
+      "member": "Casino_Free_glb/Casino_Free_Assets_glb/Mouse_01.glb",
+      "sourceSha256": "601491c0e67112749b01fdcc596e76625f77221b83d06796bae249c0a489340e",
+      "sourceBytes": 414604,
+      "nested": "casino_free_glb.zip",
+      "name": "mouse",
+      "url": "/models/supplied/props/mouse.glb",
+      "bytes": 53384,
+      "sha256": "c5c06e4d2ec7bd84652fc5a1597dcd8d2fb23e3687ae0218c71fab60cd772330",
+      "pack": "supplied-props",
+      "genre": "daily-life",
+      "kind": "prop",
+      "license": "LicenseRef-Owner-Confirmed-Free",
+      "skins": 0,
+      "clips": [],
+      "triangles": 46,
+      "primitives": 1,
+      "atlasSize": [
+        256,
+        256
+      ],
+      "bounds": {
+        "min": [
+          -0.05937744677066803,
+          -9.778887033462524e-9,
+          -0.07911687344312668
+        ],
+        "max": [
+          0.059340789914131165,
+          0.05519307777285576,
+          0.07909677922725677
+        ],
+        "size": [
+          0.1187182366847992,
+          0.05519308755174279,
+          0.15821365267038345
+        ]
+      }
+    }
+  ]
+}

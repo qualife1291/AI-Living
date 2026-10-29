@@ -507,6 +507,17 @@ export const animals = [
   },
 ] as const;
 
+export type AnimalDefinition={id:string;name:string;species:'cat'|'dog'|'bird';description:string;modelId?:string};
+const neighborhoodAnimals:readonly AnimalDefinition[]=[
+ {id:'me-trang',name:'Mè Trắng',species:'cat',description:'Khám phá vườn và nghỉ trong bóng mát.'},
+ {id:'me-vang',name:'Mè Vàng',species:'cat',description:'Chơi nhẹ và quan sát quanh sân.'},
+ {id:'cho-dom',name:'Đốm',species:'dog',description:'Đánh hơi và nghỉ theo nhịp riêng.'},
+ {id:'cho-bong',name:'Bông',species:'dog',description:'Khám phá lối đi và uống nước.'},
+ {id:'cut-nau',name:'Cút Nâu',species:'bird',modelId:'gobkit-animal007/quail',description:'Chim cút đi trên đất, tìm hạt trong vườn.'},
+ {id:'ga-con',name:'Gà Vàng',species:'bird',modelId:'gobkit-animal007/chick',description:'Gà con tìm hạt và nghỉ trong vườn, không bay.'},
+];
+export function animalRoster(world:Pick<World,'living'>):readonly AnimalDefinition[]{return world.living?.ecologyVersion===1?[...animals,...neighborhoodAnimals]:animals;}
+
 export function animalsAt(world: World, now: number) {
   const t = simulationTime(world, now) / 1000;
   const lists: Step[][] = [
@@ -528,7 +539,8 @@ export function animalsAt(world: World, now: number) {
       step("Quảng trường", "Đậu quan sát cùng đàn", "rest", 60),
     ],
   ];
-  return animals.map((a, i) => {
+  return animalRoster(world).map((a, i) => {
+    const routine=lists[a.species==='cat'?0:a.species==='dog'?1:2];
     const plan = world.living?.animalLearning?.[a.id]?.plan;
     const elapsed =
       plan?.simStartedAt !== undefined
@@ -549,7 +561,7 @@ export function animalsAt(world: World, now: number) {
         : project(
             a.id,
             a.name,
-            lists[i],
+            routine,
             plan ? Math.max(0, elapsed - total) : t + i * 28,
             "routine",
             plan?.steps.at(-1)?.location,

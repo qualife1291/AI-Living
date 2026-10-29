@@ -15,7 +15,7 @@ import {createBicycle,spinBicycle} from './activity-props.ts';
 
 /** Distant residents share the same approved skin/palette as the close cast.
  * Eight interpolated samples replace per-resident skeletal controllers. */
-export function createPeople(scene:THREE.Scene,capacity:number,library:Pick<AssetLibrary,'get'|'load'|'failures'>){
+export function createPeople(scene:THREE.Scene,capacity:number,library:Pick<AssetLibrary,'get'|'load'|'failures'>&Partial<Pick<AssetLibrary,'compile'>>){
  const geometry=createSharedPrimitives(),motion=new HumanMotion(),batches=new Map<string,{batch:CrowdBatch;used:number}>(),bicycles=new Map<string,THREE.Group>();
  const props=new Map<string,{kind:string;group:THREE.Group}>();
  const release=(group:THREE.Group)=>{group.removeFromParent();group.traverse(o=>{const m=o as THREE.Mesh;m.geometry?.dispose();if(m.material)for(const material of Array.isArray(m.material)?m.material:[m.material])material.dispose();});};
@@ -50,7 +50,7 @@ export function createPeople(scene:THREE.Scene,capacity:number,library:Pick<Asse
     if(batch){const time=kind==='cycle'?(actor.bicycle?.distance??0)/3:actor.walking?motion.phase(actor.id)/(Math.PI*2)*batch.period:seconds;batch.add(actor.id,actor.position,yaw,time,appearance,motion.lift(actor.id));heads.set(actor.id,batch.head(time,actor.position,yaw).add(new THREE.Vector3(0,motion.lift(actor.id),0)));assignments.set(actor.id,batch.modelId);
      const propKind=actorActionKind(actor);
      if(_camera.position.distanceTo(new THREE.Vector3(actor.position[0],groundElevation(...actor.position)+8,actor.position[1]))<300&&!actor.walking&&!actor.bicycle&&(hasHandProp(actor.kind)||['cook','soccer','swim','lantern'].includes(propKind))){
-      let prop=props.get(actor.id);if(prop?.kind!==propKind){if(prop)release(prop.group);const group=simpleProp(propKind);group.traverse(o=>{if((o as THREE.Mesh).isMesh)o.userData.actorId=actor.id;});scene.add(group);prop={kind:propKind,group};props.set(actor.id,prop);}
+      let prop=props.get(actor.id);if(prop?.kind!==propKind){if(prop)release(prop.group);const group=simpleProp(propKind,library);group.traverse(o=>{if((o as THREE.Mesh).isMesh)o.userData.actorId=actor.id;});scene.add(group);prop={kind:propKind,group};props.set(actor.id,prop);}
       prop.group.visible=true;placeActionProp(prop.group,propKind,batch.height,yaw,new THREE.Vector3(actor.position[0],groundElevation(...actor.position),actor.position[1]),{left:batch.hand('left',time,actor.position,yaw).add(new THREE.Vector3(0,motion.lift(actor.id),0)),right:batch.hand('right',time,actor.position,yaw).add(new THREE.Vector3(0,motion.lift(actor.id),0))},time);
      }
     }

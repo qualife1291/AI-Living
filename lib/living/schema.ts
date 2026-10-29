@@ -67,6 +67,8 @@ export type LivingState = {
   animalLearning?: Record<string, import("./animal-learning").AnimalPolicy>;
   petOwners?: Record<string, string>;
   flora?: import("./flora").FloraState;
+  /** Adopted by a committed living turn; never by a viewer/GET or old study. */
+  ecologyVersion?: 1;
 };
 export type RealContext = {
   date: string;

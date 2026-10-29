@@ -4,7 +4,7 @@ import { groundElevation } from "../../../lib/city/ground.ts";
 import type { createSharedPrimitives } from "./humans.ts";
 
 type Animal = ReturnType<typeof animalsAt>[number];
-/** Recognizable animal silhouettes, pooled across the three existing policies. */
+/** Sparrow flock and transport-failure fallback; never replaces a loaded rig. */
 export function createFauna(scene: THREE.Scene, geometry: ReturnType<typeof createSharedPrimitives>) {
   const material = new THREE.MeshPhongMaterial({ shininess: 10 });
   const shapes = { round: geometry.round, head: geometry.head, limb: geometry.limb, box: geometry.box, cone: new THREE.ConeGeometry(.5, 1, 4) };
@@ -32,14 +32,15 @@ export function createFauna(scene: THREE.Scene, geometry: ReturnType<typeof crea
           const alpha = 1 - Math.exp(-8 * Math.max(0, Math.min(.15, dt)));
           state.yaw += Math.atan2(Math.sin(wanted - state.yaw), Math.cos(wanted - state.yaw)) * alpha;
           state.weight += ((moving ? 1 : 0) - state.weight) * alpha;
-          state.altitude += ((animal.species === "bird" && moving ? 24 : 0) - state.altitude) * alpha;
+          // Ground-foraging birds: a walk clip never implies flight.
+          state.altitude = 0;
           state.phase = (state.phase + Math.min(3, distance) * Math.PI * 2 / 9) % (Math.PI * 2);
           state.x = animal.position[0]; state.z = animal.position[1];
         }
         const floor = groundElevation(...animal.position), bird = animal.species === "bird", dog = animal.species === "dog";
         dummy.position.set(animal.position[0], floor + state.altitude + .05, animal.position[1]); dummy.rotation.set(0, state.yaw, 0); dummy.scale.setScalar(bird ? .55 : dog ? .65 : .55); dummy.updateMatrix(); root.copy(dummy.matrix);
         if (bird) {
-          for (let n = 0; n < 3; n++) {
+          for (let n = 0; n < (animal.id==='se'?3:1); n++) {
             const x = (n - 1) * 3, z = n % 2 * 3;
             put("head", x, 1.5, z, 1.8, 2.2, 3, "#ad9576"); put("head", x, 2.7, z + 1, 1.7, 1.7, 1.8, "#9a8269");
             put("cone", x, 2.6, z + 2.1, .7, 1.2, .7, "#ddb36b", Math.PI / 2);

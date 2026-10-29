@@ -146,6 +146,12 @@ export function planLivingTurn(
   now: number,
 ): { state: LivingState; turn: LivingTurn; world: World; newExperiences: import("./learning").Experience[] } {
   const state = structuredClone(world.living ?? initializeLiving(now));
+  // Versioned expansion on a durable turn, not a GET or initialization used by
+  // frozen studies. Preserve custom population caps, identities and old data.
+  if(!world.paused&&state.ecologyVersion===undefined){
+    state.ecologyVersion=1;
+    if(state.catalog.initialPopulation===24&&state.catalog.newResidentsPerDay===3&&state.catalog.maxPopulation===240)state.catalog.initialPopulation=48;
+  }
   // Add new built-in content without overwriting user roles or erasing residents.
   for (const role of defaultCatalog.roles)
     if (

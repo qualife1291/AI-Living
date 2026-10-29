@@ -2,7 +2,9 @@
 import json,hashlib,zipfile,stat,sys
 from pathlib import Path,PurePosixPath
 repo=Path(__file__).resolve().parent.parent
-selection=json.loads((repo/'data/assets/supplied-selection.json').read_text());registry=json.loads((repo/'data/assets/source-archives.json').read_text());vault=repo/registry['localDirectory'];out=repo/'work/supplied-inputs';out.mkdir(exist_ok=True,parents=True);results=[]
+if sys.argv[1:] not in ([],['--props']):raise ValueError('Unsupported selection')
+props=sys.argv[1:]==['--props']
+selection=json.loads((repo/('data/assets/supplied-props-selection.json' if props else 'data/assets/supplied-selection.json')).read_text());registry=json.loads((repo/'data/assets/source-archives.json').read_text());vault=repo/registry['localDirectory'];out=repo/('work/environment-inputs' if props else 'work/supplied-inputs');out.mkdir(exist_ok=True,parents=True);results=[]
 for archive in sorted(set(a['archive'] for a in selection['assets'])):
  entry=next(a for a in registry['archives'] if a['file']==archive);path=vault/archive
  if not stat.S_ISREG(path.lstat().st_mode) or path.stat().st_size!=entry['bytes']:raise ValueError('Invalid source archive')
@@ -20,5 +22,5 @@ for archive in sorted(set(a['archive'] for a in selection['assets'])):
      name=a['member'];assert not PurePosixPath(name).is_absolute() and '..' not in PurePosixPath(name).parts and '\\' not in name
      matches=[i for i in n.infolist() if i.filename==name];assert len(matches)==1
      i=matches[0];assert i.file_size<=16*1024**2 and not i.flag_bits&1 and ((i.external_attr>>16)&0o170000)!=0o120000
-     data=n.read(i);assert hashlib.sha256(data).hexdigest()==a['sourceSha256'];target=out/(a['id'].split('/')[1]+'.glb');assert not target.is_symlink();target.write_bytes(data);results.append({'id':a['id'],'bytes':len(data)})
+     data=n.read(i);assert hashlib.sha256(data).hexdigest()==a['sourceSha256'];target=out/(a['id'].split('/')[-1]+'.glb');assert not target.is_symlink();target.write_bytes(data);results.append({'id':a['id'],'bytes':len(data)})
 print(json.dumps({'selected':results,'codeExecuted':False}))

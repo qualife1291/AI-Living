@@ -246,5 +246,8 @@
   ],
   [
     "scripts/test-peer-offer-store.mjs"
+  ],
+  [
+    "scripts/test-neighborhood.mjs"
   ]
 ]

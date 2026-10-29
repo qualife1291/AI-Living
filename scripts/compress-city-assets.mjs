@@ -8,7 +8,7 @@ import {cityAssetIds} from '../lib/city/city-assets.ts';
 const root=resolve(import.meta.dirname,'..'),write=process.argv.includes('--write');
 const manifestPath=resolve(root,'data/assets/city-transfer-manifest.json'),output=resolve(root,'public/models/derivatives');
 const hash=b=>createHash('sha256').update(b).digest('hex');
-const assets=['kenney','resources','citizens','supplied'].flatMap(pack=>JSON.parse(readFileSync(resolve(root,`public/models/${pack}/catalog.json`),'utf8')).assets);
+const assets=['kenney','resources','citizens','supplied','supplied/props'].flatMap(pack=>JSON.parse(readFileSync(resolve(root,`public/models/${pack}/catalog.json`),'utf8')).assets);
 const entries=[...cityAssetIds].sort().map(id=>{
   const a=assets.find(x=>x.id===id);
   if(!a||!reviewedAssetLicense(a)||!/^\/models\/(kenney|resources|citizens|supplied)\/[\w/-]+\.glb$/.test(a.url))throw Error(`Unapproved canonical GLB: ${id}`);
@@ -23,7 +23,7 @@ const entries=[...cityAssetIds].sort().map(id=>{
   if(hash(actual)!==e.sha256||!actual.equals(compressed)||!gunzipSync(actual).equals(raw))throw Error(`Derivative mismatch: ${id}`);
   return e;
 });
-const manifest={version:1,kind:'lossless-city-transport-v1',canonicalCatalogs:['/models/kenney/catalog.json','/models/resources/catalog.json','/models/citizens/catalog.json','/models/supplied/catalog.json'],assets:entries};
+const manifest={version:1,kind:'lossless-city-transport-v1',canonicalCatalogs:['/models/kenney/catalog.json','/models/resources/catalog.json','/models/citizens/catalog.json','/models/supplied/catalog.json','/models/supplied/props/catalog.json'],assets:entries};
 const expected=JSON.stringify(manifest,null,2)+'\n';
 if(write)writeFileSync(manifestPath,expected);
 if(readFileSync(manifestPath,'utf8')!==expected)throw Error('Stale transport manifest');
