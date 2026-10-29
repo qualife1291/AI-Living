@@ -2,7 +2,7 @@
   "kind": "chat-h5a-deep-verification-v1",
   "date": "2026-10-29",
   "timezone": "Asia/Ho_Chi_Minh",
-  "status": "IN_PROGRESS: remaining G0 and broad compiled regression",
+  "status": "PASS within declared local chat/H5a scope",
   "scope": "Independent re-verification of bounded body/chat admission/UI retries and H5a offline advice; no graphics interaction phase, remote QA or deployment",
   "baseline": "00be1c4a7ac0c72d6f68ddd450945c3d14b64c3e",
   "productFix": "68194f1f75a8a3f0238ef02a29ebfd053b22ec7a",
@@ -245,9 +245,185 @@
         }
       ]
     },
-    "browserG0": "PENDING",
-    "compiledDiagnostics": "PENDING",
-    "compiledLegacyAll": "PENDING"
+    "browserG0": {
+      "production": false,
+      "renderer": "Chromium SwiftShader",
+      "fixture": "Synthetic world; all APIs mocked. Compiled local D1 persistence tested separately.",
+      "cases": [
+        {
+          "viewport": "desktop",
+          "initial": {
+            "canvas": [
+              1788,
+              1118
+            ],
+            "css": [
+              1440,
+              900
+            ],
+            "quality": "balanced",
+            "pixelRatio": 1.2422599874998832
+          },
+          "pauseErrors": [
+            403,
+            409,
+            503,
+            "network",
+            "invalid-ack"
+          ],
+          "noDuplicateWrite": true,
+          "pausedMotionFrozen": true,
+          "chatFocusDraftAndNoSteal": true,
+          "keyboard": true,
+          "metadata": true,
+          "responsive320": true,
+          "presetsAndResize": true,
+          "dynamicDPR": true,
+          "pollKeepsCanvas": true,
+          "OSMRemount": true,
+          "hiddenResume": true,
+          "contextLossRetry": true,
+          "pageErrors": []
+        },
+        {
+          "viewport": "mobile",
+          "initial": {
+            "canvas": [
+              585,
+              1266
+            ],
+            "css": [
+              390,
+              844
+            ],
+            "quality": "balanced",
+            "pixelRatio": 1.5
+          },
+          "pauseErrors": [
+            403,
+            409,
+            503,
+            "network",
+            "invalid-ack"
+          ],
+          "noDuplicateWrite": true,
+          "pausedMotionFrozen": true,
+          "chatFocusDraftAndNoSteal": true,
+          "keyboard": true,
+          "metadata": true,
+          "responsive320": true,
+          "presetsAndResize": true,
+          "dynamicDPR": true,
+          "pollKeepsCanvas": true,
+          "OSMRemount": true,
+          "hiddenResume": true,
+          "contextLossRetry": true,
+          "pageErrors": []
+        },
+        {
+          "reducedMotion": true,
+          "preferenceChange": true,
+          "worldNotPaused": true,
+          "pageErrors": []
+        },
+        {
+          "transportFallback": "unsupported",
+          "pageErrors": []
+        },
+        {
+          "transportFallback": "corrupt",
+          "pageErrors": []
+        },
+        {
+          "transportFallback": "core-failure",
+          "pageErrors": []
+        },
+        {
+          "transportFallback": "late-core",
+          "pageErrors": []
+        }
+      ]
+    },
+    "compiledDiagnostics": {
+      "suite": "local-diagnostics-http",
+      "ownerReadGuard": true,
+      "ownerWriteGuard": true,
+      "streamByteLimit": true,
+      "schema": true,
+      "origin": true,
+      "ack": true,
+      "jsonlReadback": true,
+      "rateLimit": true,
+      "retention": true,
+      "diagnosticsReadOnly": true,
+      "pulsePersistence": true,
+      "pulseRetry": true,
+      "pulseConcurrentViewers": 12,
+      "pulseNoDuplicateAudit": true,
+      "pulsePause": true,
+      "healthSchemaBatch": true,
+      "bulkReplay": true,
+      "memoryBackfill": true,
+      "productionAccess": false
+    },
+    "compiledLegacyAll": {
+      "kind": "legacy-compiled-http-acceptance",
+      "isolated": true,
+      "productionAccess": false,
+      "results": [
+        {
+          "name": "world",
+          "exitCode": 0
+        },
+        {
+          "name": "living",
+          "exitCode": 0
+        },
+        {
+          "name": "learning",
+          "exitCode": 0
+        },
+        {
+          "name": "liveness",
+          "exitCode": 0
+        },
+        {
+          "name": "appearance",
+          "exitCode": 0
+        },
+        {
+          "name": "proposal",
+          "exitCode": 0
+        }
+      ]
+    },
+    "finalTypecheck": "PASS on c91e494",
+    "finalLint": "PASS on c91e494 including new helper scripts",
+    "browserExperience": {
+      "status": "PASS",
+      "viewports": [
+        "desktop",
+        "mobile"
+      ],
+      "checks": [
+        "movement",
+        "person-car proportions",
+        "DPR pixel budgets",
+        "conversation ACK",
+        "pause/resume",
+        "offline recovery",
+        "responsive overflow",
+        "context loss",
+        "unavailable WebGL/reduced-motion fallback"
+      ],
+      "productionAccess": false,
+      "apiTransport": "synthetic mocked; persistence verified separately by real chat and compiled D1 suites",
+      "hardwarePerformanceClaim": false
+    },
+    "documentation": {
+      "localMarkdownTargets": 91,
+      "diffCheck": "PASS"
+    }
   },
   "browserD1Details": {
     "uniqueExchanges": 18,
@@ -310,5 +486,76 @@
     "UI pending UUID lasts only the mounted actor panel; no draft persistence or cross-reload recovery",
     "Native/D1 injected faults establish tested cases, not arbitrary database corruption immunity",
     "Original graphics/camera/gesture fixes remain owned by independent graphics-interactions branch"
+  ],
+  "verifiedSource": "c91e494dd09942806d33c43fecd7595f7f016fcf",
+  "h5AuditLimit": "Independent parameter axes only. Constructor capacity1..32, three live proofs; not32live-entry load or full8x20 trial/chunk product.",
+  "concurrencyOwnership": {
+    "remoteWorkBeforeFinalDocumentation": "c91e494dd09942806d33c43fecd7595f7f016fcf",
+    "graphicsBranch": "fix/graphics-interactions-20261029",
+    "graphicsCheckpoint": "f39287c",
+    "newIndependentCiBranch": "test/ci-install-exec-boundary-20261029",
+    "qaBranch": "cloudflare-qa",
+    "mergedGraphicsOrCiWip": false,
+    "modifiedQaAuthCron": false
+  },
+  "cleanup": {
+    "ownedPreviewStopped": true,
+    "temporaryFixtureDatabasesRetained": true,
+    "baselineDetachedWorktreeRemoved": true,
+    "productionMigrationOrRequest": false
+  },
+  "logDigests": [
+    {
+      "log": "verify-full-unit.log",
+      "sha256": "b7440b4ef667f0fdafdfe538820bee6d02c9256181bcb6f7c6fa63e743f92012"
+    },
+    {
+      "log": "verify-final-check-2.log",
+      "sha256": "7221a45908fd614e50740555b80013f82555e49102f1f3d4d719a531ed487e4b"
+    },
+    {
+      "log": "verify-final-lint-2.log",
+      "sha256": "9d4ed79a683eccf54173b6034d4187b97e629a26e9f9dbedc55bc19d45839445"
+    },
+    {
+      "log": "verify-final-assets.log",
+      "sha256": "ffbac4128916c51be3da7528c956dddf3da5192e6b3e6b7015f274229bbc35b7"
+    },
+    {
+      "log": "verify-build.log",
+      "sha256": "82c02d40e6456542467de8f80de28f22a35885f464b3981c15f34b5d3f399e58"
+    },
+    {
+      "log": "verify-api.log",
+      "sha256": "eeab55220361af91b2da19e9c5b0292fde53e998426c566bb87f34c3b43cad19"
+    },
+    {
+      "log": "verify-ui-real-2.log",
+      "sha256": "d303dfe9ce0675327f2008a677a57b7d8434952251d2d81d00ab626160c08c4f"
+    },
+    {
+      "log": "verify-ui-429.log",
+      "sha256": "131b865c69f13581226f2627a97e85640cd90931fa092b4fde5c32377274456d"
+    },
+    {
+      "log": "verify-ui-g0.log",
+      "sha256": "50291587487d70d8917efaa71461f49a909bc7f8cc81b6f1873d01a0590b8331"
+    },
+    {
+      "log": "verify-ui-experience.log",
+      "sha256": "4291090419484eacca3229671cd61702c66749d387652078752ae7c9aee186db"
+    },
+    {
+      "log": "verify-api-local-final.log",
+      "sha256": "47d19794f30dc9e1f44a0b9f834cfb5ef4f979ea8930adc6da004e6abde46282"
+    },
+    {
+      "log": "verify-api-legacy-final.log",
+      "sha256": "298b241369ee5de889950a1c1944332a665164ed38e409ee8f357a37b97ea983"
+    },
+    {
+      "log": "verify-final-evidence.log",
+      "sha256": "4de924f07bea77ae708eed99892f1aae959394d9e350a74d77b0fbbf651dd24e"
+    }
   ]
 }
