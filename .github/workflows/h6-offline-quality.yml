@@ -42,9 +42,11 @@ jobs:
       - name: Production build
         run: npm run build
       - name: Upload immutable shadow-only models and evaluation
-        if: success()
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: h6-offline-models-${{ github.sha }}
           path: .h6-offline-results/
+          include-hidden-files: true
+          if-no-files-found: error
           retention-days: 14
