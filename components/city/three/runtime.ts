@@ -921,6 +921,7 @@ export function createCity(
     contactShadows.instanceMatrix.needsUpdate = true;
     fauna.draw(groundAnimals, poseClock, dt, world.paused);
     host.dataset.animalModels=JSON.stringify(fauna.snapshots());
+    host.dataset.animalDraws=JSON.stringify(fauna.rendered());
     host.dataset.animalPositions = JSON.stringify(groundAnimals.map(a => ({ id: a.id, species: a.species, position: a.position })));
     host.dataset.homeTargets=JSON.stringify(actors.filter(a=>a.homeAnchor).map(a=>({id:a.id,target:a.homeAnchor,position:a.position})));
     if (current) {
