@@ -23,7 +23,7 @@ JSON qua helper `json()` đặt `Cache-Control: private,no-store` và `X-Content
 | GET/POST `/api/living/appearance` | GET id, POST id/revision/appearance; actor phải tồn tại, giữ dữ liệu tạo hình khác. |
 | POST `/api/living/pets` | `{pet,owner,revision}`, body stream≤2KiB; owner có thể null để unassign, ID hợp lệ/CAS, chỉ metadata petOwners. |
 | POST `/api/living/flora` | `{id,revision}`, stream≤2KiB; paused/stale/invalid data từ chối. Đủ nước là no-op, chỉ flora thay đổi, không actor reward. |
-| POST `/api/living/interact` | UUIDid/actorId/message≤280 ký tự, body≤2000B; resolve actor404, pause409, lưu exchange idempotent. Reply rules có nhãn, chưa freeformLLM production. |
+| POST `/api/living/interact` | UUIDid/actorId/message≤280 ký tự, body stream≤2000B (dừng/hủy ngay khi vượt, không tin Content-Length; UTF-8 lỗi trả400); resolve actor404, pause409, lưu exchange idempotent. Reply rules có nhãn, chưa freeformLLM production. |
 | POST `/api/visits` | Sessionnonce/30 phút, aggregate lượt mở, không phải uniquehumans hoặc online users. |
 | GET `/api/health` |200ready;503unavailable khi worldDB lỗi hoặc schema_or_query_error khi probes lỗi; lastTick=null khi chưa có tick. Schema8 table+latest tick một D1 batch, world read riêng. |
 | GET/POST `/api/diagnostics` | Owner-only; GET JSONL chỉSELECT trong7 ngày, tối đa500 client+500 tick rows. POST≤16KiB/32 logs, admission20 batch/phút toànSite, allowlist fields; POST giữ telemetry retention7 ngày. Không xóa chat/tick/history theo retention đó. |
