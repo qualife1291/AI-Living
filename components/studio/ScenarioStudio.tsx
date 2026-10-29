@@ -5,6 +5,11 @@ import { scenarioDefinitions, scenarioFrame, type ScenarioId } from "@/lib/city/
 import {StudioSound} from "./sound";
 import type { StudioRuntime } from "./runtime";
 
+function StudioHomeLink(){
+  // eslint-disable-next-line @next/next/no-html-link-for-pages -- vinext Link click throws in the compiled preview; native navigation also runs pagehide cleanup.
+  return <a href="/" aria-label="Trở về xóm"><ArrowLeft size={19} /></a>;
+}
+
 export function ScenarioStudio() {
   const [id, setId] = useState<ScenarioId>("wallet-return"), [time, setTime] = useState(0), [playing, setPlaying] = useState(false), [ready, setReady] = useState(false), [error, setError] = useState("");
   const [soundOn,setSoundOn]=useState(false),[soundStatus,setSoundStatus]=useState("off");
@@ -37,7 +42,7 @@ export function ScenarioStudio() {
   const stamp = (t: number) => `${Math.floor(t / 60)}:${String(Math.floor(t % 60)).padStart(2, "0")}`;
   return <main className="scenario-studio">
     <div ref={host} className="studio-canvas" aria-label="Trường quay kịch bản 3D" />
-    <header className="studio-top"><a href="/" aria-label="Trở về xóm"><ArrowLeft size={19} /></a><div><b><Clapperboard size={16} />Chuyện trong xóm</b><small>Trường quay mô phỏng · Không thay đổi cuộc sống đang chạy</small></div><label><span className="sr-only">Chọn kịch bản</span><select aria-label="Chọn kịch bản" value={id} onChange={e => { setPlaying(false); setTime(0); setId(e.target.value as ScenarioId); }}>{scenarioDefinitions.map(s => <option value={s.id} key={s.id}>{s.title}</option>)}</select></label></header>
+    <header className="studio-top"><StudioHomeLink/><div><b><Clapperboard size={16} />Chuyện trong xóm</b><small>Trường quay mô phỏng · Không thay đổi cuộc sống đang chạy</small></div><label><span className="sr-only">Chọn kịch bản</span><select aria-label="Chọn kịch bản" value={id} onChange={e => { setPlaying(false); setTime(0); setId(e.target.value as ScenarioId); }}>{scenarioDefinitions.map(s => <option value={s.id} key={s.id}>{s.title}</option>)}</select></label></header>
     {!ready && <p className="studio-loading">{error || "Đang dựng trường quay và tải model…"}</p>}
     <aside className="studio-cast"><strong>{definition.subtitle}</strong><div>{definition.cast.map(a => <span key={a.id}><b>{a.name}</b><small>{a.age} {a.ageUnit === "months" ? "tháng" : "tuổi"} · {a.role}</small></span>)}</div></aside>
     {line && <div className="studio-dialogue"><b>{frame.actors.find(a => a.id === line.speaker)?.name}</b><span>{line.text}</span></div>}
