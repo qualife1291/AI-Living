@@ -1,0 +1,65 @@
+{
+  "version": 1,
+  "license": "LicenseRef-Owner-Confirmed-Free",
+  "permission": "Owner confirmed all supplied files were free and authorized filtering and application in chat. No CC0 claim.",
+  "assets": [
+    {
+      "id": "supplied/jacket",
+      "name": "Áo khoác và kính",
+      "kind": "human",
+      "archive": "1.zip",
+      "nested": "casino_free_glb.zip",
+      "member": "Casino_Free_glb/Casino_Free_Characters_glb/18_Security.glb",
+      "sourceSha256": "88090507e0276fa0fa72910338aaab85b81a87cc3f09d9f641ca58c888e071d0",
+      "triangles": 8376
+    },
+    {
+      "id": "supplied/service",
+      "name": "Áo sơ mi và gile",
+      "kind": "human",
+      "archive": "1.zip",
+      "nested": "casino_free_glb.zip",
+      "member": "Casino_Free_glb/Casino_Free_Characters_glb/1_Cashier.glb",
+      "sourceSha256": "b6e8862896996fb2b1fbd9f5b30eace8665bfae86a6362dd659ab4b24249d216",
+      "triangles": 8655
+    },
+    {
+      "id": "supplied/leisure",
+      "name": "Trang phục thư giãn",
+      "kind": "human",
+      "archive": "1.zip",
+      "nested": "casino_free_glb.zip",
+      "member": "Casino_Free_glb/Casino_Free_Characters_glb/75.glb",
+      "sourceSha256": "3b3281398c10af9a398d7dcf780263524b6d734ea0fac461d8d785183418e768",
+      "triangles": 11243
+    },
+    {
+      "id": "supplied/office",
+      "name": "Trang phục công sở",
+      "kind": "human",
+      "archive": "1.zip",
+      "nested": "chess_pack_free_glb.zip",
+      "member": "Chess_Pack_Free_glb/Characters/Chess_Player_01.glb",
+      "sourceSha256": "540c08928bee56008aeb9627c3f7516ff35ce4199e52e8220459cc0894627391",
+      "triangles": 7730
+    },
+    {
+      "id": "supplied/waistcoat",
+      "name": "Áo gile thường ngày",
+      "kind": "human",
+      "archive": "1.zip",
+      "nested": "chess_pack_free_glb.zip",
+      "member": "Chess_Pack_Free_glb/Characters/Chess_Player_02.glb",
+      "sourceSha256": "0661ae70f499386d1e935844c27ce5b6db9c5c943e2c5ba28a87d1a0cef25d17",
+      "triangles": 9172
+    }
+  ],
+  "pipeline": {
+    "version": 2,
+    "humanoidCanonicalBones": true,
+    "fps": 24,
+    "targetTriangles": 2000,
+    "maxRelativeSimplificationError": 0.012,
+    "geometryProfile": "xom-supplied-v1"
+  }
+}

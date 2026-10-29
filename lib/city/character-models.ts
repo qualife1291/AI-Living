@@ -1,12 +1,9 @@
 import {hashSeed} from '../clock.ts';
-/** Original civilian rigs; stable selection never derives age/gender from a model. */
-export const CORE_MODELS:Record<string,string>={an:'citizens/an',binh:'citizens/binh',chi:'citizens/chi'};
-export const CITIZEN_MODELS=['linen','cardigan','field','courier','coat','senior','workshop','denim','summer'].map(id=>`citizens/${id}`);
-export const CITIZEN_FALLBACK='citizens/linen';
+/** Stable cosmetic selection; mesh filenames never change identity, age or knowledge. */
+export const CORE_MODELS:Record<string,string>={an:'supplied/office',binh:'supplied/waistcoat',chi:'supplied/service'};
+export const CITIZEN_MODELS=['jacket','service','leisure','office','waistcoat'].map(id=>`supplied/${id}`);
+export const CITIZEN_FALLBACK='supplied/jacket';
 export function residentModel(roleId:string,actorId=roleId){
- if(/doctor|nurse|medic/.test(roleId))return 'citizens/coat';
- if(/delivery|courier/.test(roleId))return 'citizens/courier';
- if(/garden|farmer/.test(roleId))return 'citizens/field';
- if(/worker|mechanic|colleague/.test(roleId))return 'citizens/workshop';
+ if(/security|police/.test(roleId))return 'supplied/jacket';
  return CITIZEN_MODELS[hashSeed(actorId)%CITIZEN_MODELS.length];
 }

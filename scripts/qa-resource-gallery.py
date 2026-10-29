@@ -4,7 +4,7 @@ from urllib.parse import urlparse
 from pathlib import Path
 from playwright.sync_api import sync_playwright
 base=os.environ.get('QA_BASE','http://127.0.0.1:5191');assert urlparse(base).hostname in ['127.0.0.1','localhost']
-catalog=json.loads(Path('public/models/resources/catalog.json').read_text());citizens=json.loads(Path('public/models/citizens/catalog.json').read_text());catalog['assets']+=citizens['assets'];samples=['citizens/an','citizens/binh','citizens/chi','citizens/senior','citizens/cardigan']
+catalog=json.loads(Path('public/models/resources/catalog.json').read_text());citizens=json.loads(Path('public/models/citizens/catalog.json').read_text());supplied=json.loads(Path('public/models/supplied/catalog.json').read_text());catalog['assets']+=citizens['assets']+supplied['assets'];samples=[a['id'] for a in supplied['assets']]
 for pack in catalog['packs']:
  sample=next(a for a in catalog['assets'] if a['pack']==pack['id'] and a['kind']!='animation-library');samples.append(sample['id'])
 for id in ['gobkit-human002/it-engineer','gobkit-human002/receptionist','gobkit-animal/corgi','gobkit-birds/eagle','kaykit-adventurers/knight']:
@@ -48,18 +48,18 @@ with sync_playwright() as p:
   # A failed fetch is retryable without navigating away or resetting any world data.
   # A recoverable load failure must reject compressed and canonical transports.
   transfer=json.loads((Path(__file__).resolve().parent.parent/'data/assets/city-transfer-manifest.json').read_text())
-  target=next(a for a in transfer['assets'] if a['id']=='citizens/an')
+  target=next(a for a in transfer['assets'] if a['id']=='supplied/office')
   failed=[False];rejecting=[True]
   def fail_once(route):
    if rejecting[0]:failed[0]=True;route.abort()
    else:route.continue_()
   page.route('**'+target['url'],fail_once)
-  page.route('**/citizens/an.glb*',fail_once)
-  page.locator('[data-model-id="citizens/an"]').click()
+  page.route('**/supplied/office.glb*',fail_once)
+  page.locator('[data-model-id="supplied/office"]').click()
   page.get_by_role('button',name='Thử lại 3D',exact=True).wait_for(timeout=20000)
   rejecting[0]=False
   page.get_by_role('button',name='Thử lại 3D',exact=True).click()
-  page.wait_for_function('document.querySelector(".asset-canvas")?.dataset.renderedModel==="citizens/an"&&document.querySelector(".asset-canvas")?.dataset.ready==="true"',timeout=60000)
+  page.wait_for_function('document.querySelector(".asset-canvas")?.dataset.renderedModel==="supplied/office"&&document.querySelector(".asset-canvas")?.dataset.ready==="true"',timeout=60000)
   assert failed[0] and not page.locator('.asset-error').count()
   page.set_viewport_size({'width':390,'height':844});assert page.evaluate('document.documentElement.scrollWidth<=innerWidth');page.screenshot(path=str(out/'gallery-mobile-preview.png'))
   (out/'metrics.json').write_text(json.dumps({'production':False,'renderer':'Chromium SwiftShader','cases':report,'pageErrors':errors,'bindingWarnings':warnings,'pauseStopsDraws':True,'pausedClipChange':True,'selectionRace':True,'contextLossRetry':True,'loadFailureRetry':True},indent=2))

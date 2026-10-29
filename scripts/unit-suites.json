@@ -212,6 +212,15 @@
     "scripts/test-ground-learning.mjs"
   ],
   [
+    "scripts/test-supplied-assets.mjs"
+  ],
+  [
+    "scripts/test-bounded-json.mjs"
+  ],
+  [
+    "scripts/test-chat-admission.mjs"
+  ],
+  [
     "scripts/test-cloudflare-access.mjs"
   ],
   [

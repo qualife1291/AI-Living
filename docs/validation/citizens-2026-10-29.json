@@ -2,7 +2,7 @@
   "version": 1,
   "testedAt": "2026-10-29T14:18:07.678742+07:00",
   "appSource": "130f710c2addacbdc85e4a22f4185a0fa0443dd2",
-  "qaBuildSource": "ac52c74cb53c8a350679e07b7a364cd34b5bfabe",
+  "qaBuildSource": "b1579687fa89c492dce89ea07feb778cbd5488e8",
   "scope": "Local isolated preview/fixtures and compiled QA build only; remote Access/D1/deployment not yet verified",
   "changes": [
     "Twelve original CC0 civilians; stable3core+≤5near model assignment and modern fallback, late primary upgrade",
@@ -255,9 +255,32 @@
   "sourceAssetReview": "docs/validation/asset-review-2026-10-29.json",
   "sourceArchives": "data/assets/source-archives.json",
   "remote": {
-    "qaPush": "pending",
+    "qaPush": {
+      "branch": "cloudflare-qa",
+      "sha": "b1579687fa89c492dce89ea07feb778cbd5488e8",
+      "remoteRefVerified": true
+    },
+    "cloudflareBuild": {
+      "id": "1774e31b-a671-4efc-81ad-5647e09e516a",
+      "source": "b1579687fa89c492dce89ea07feb778cbd5488e8",
+      "status": "completed",
+      "conclusion": "success",
+      "readback": "GitHub Cloudflare Workers Builds check-run",
+      "checks": [
+        {
+          "conclusion": "success",
+          "details_url": "https://dash.cloudflare.com/966c7ceee358485648b935a07877ec45/workers/services/view/ai-living-qa/production/builds/1774e31b-a671-4efc-81ad-5647e09e516a",
+          "name": "Workers Builds: ai-living-qa",
+          "status": "completed"
+        }
+      ]
+    },
+    "unauthenticatedHead": {
+      "status": 403,
+      "scope": "HEAD only; no authenticated app/runtime verification"
+    },
     "authenticatedQa": "blocked-no-current-access-credentials",
-    "cloudflareApi": "not-available",
+    "cloudflareNativeVersionDeploymentReadback": "unavailable",
     "prodMigrationOrDeployment": false
   },
   "stillUnverified": [
@@ -265,5 +288,8 @@
     "Remote authenticated QA deployment/D1/scheduled progress",
     "New imported Fab/ZIP candidates in city, semantic/human music review",
     "H3b promotion: previous holdout failure stays rejected"
-  ]
+  ],
+  "qaRuntimeIdenticalTo73SuiteSource": "ac52c74cb53c8a350679e07b7a364cd34b5bfabe",
+  "qaRuntimeDiffVerifiedEmpty": true,
+  "remoteReadbackAt": "2026-10-29T14:27:22.186200+07:00"
 }

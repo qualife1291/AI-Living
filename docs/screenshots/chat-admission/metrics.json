@@ -1,0 +1,26 @@
+{
+  "productionAccess": false,
+  "uiWritesMocked": true,
+  "results": [
+    {
+      "viewport": "desktop",
+      "fixture": "synthetic local, mocked HTTP writes",
+      "renderer": "Chromium SwiftShader",
+      "http429DraftAndFocus": true,
+      "noAutomaticRetryMs": 2500,
+      "manualRetryAndClearDraft": true,
+      "overflow": false,
+      "pageErrors": []
+    },
+    {
+      "viewport": "mobile",
+      "fixture": "synthetic local, mocked HTTP writes",
+      "renderer": "Chromium SwiftShader",
+      "http429DraftAndFocus": true,
+      "noAutomaticRetryMs": 2500,
+      "manualRetryAndClearDraft": true,
+      "overflow": false,
+      "pageErrors": []
+    }
+  ]
+}

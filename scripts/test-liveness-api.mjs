@@ -14,6 +14,22 @@ const body={id:crypto.randomUUID(),actorId:'an',message:'Bạn có dự định 
 const [a,b]=await Promise.all([post('/api/living/interact',body),post('/api/living/interact',body)]);assert.equal(a.status,200);assert.equal(b.status,200);assert.deepEqual(a.data.reply,b.data.reply);assert.match(a.data.reply,/quầy nước/);assert.equal(a.data.source,'rules');
 assert.equal((await post('/api/living/interact',{...body,id:crypto.randomUUID(),actorId:'missing'})).status,404);
 assert.equal((await post('/api/living/interact',{...body,message:'x'.repeat(281)})).status,400);
+// Raw HTTP guards must reject before any exchange write; do not rely on Content-Length.
+const rawPost=async(raw,headers={})=>fetch(origin+'/api/living/interact',{method:'POST',headers:{'content-type':'application/json',connection:'close',...headers},body:raw});
+const beforeOversize=JSON.stringify((await get('/api/world')).world);
+const oversizedId=crypto.randomUUID();
+const oversized=JSON.stringify({...body,id:oversizedId,message:'ệ'.repeat(700)});
+assert.equal((await rawPost(oversized)).status,413);
+assert.equal((await rawPost(oversized,{origin:'https://invalid.example'})).status,403,'Origin rejected before body admission');
+assert.equal((await rawPost(new Uint8Array([34,0xff,34]))).status,400);
+assert.equal((await rawPost('{')).status,400);
+assert.equal(JSON.stringify((await get('/api/world')).world),beforeOversize,'Rejected bodies leave world/history unchanged');
+const admitted={...body,id:oversizedId};
+const admittedJson=JSON.stringify(admitted);
+const exact=admittedJson+' '.repeat(2000-new TextEncoder().encode(admittedJson).length);
+const accepted=await rawPost(exact);assert.equal(accepted.status,200);
+assert.equal((await accepted.json()).message,admitted.message,'Rejected UUID was not persisted');
+const retried=await post('/api/living/interact',admitted);assert.equal(retried.status,200);assert.equal(retried.data.duplicate,true);
 const paused=await post('/api/world',{revision:(await get('/api/world')).revision,paused:true});assert.equal(paused.status,200);assert.equal((await post('/api/living/interact',{...body,id:crypto.randomUUID()})).status,409);assert.equal((await post('/api/living/pulse',{})).status,409);
 await post('/api/world',{revision:(await get('/api/world')).revision,paused:false});
 console.log('PASS: 16-way view dedupe, 8 unique sessions, atomic pulse/turn, durable exchange retry, unknown actor/length/pause guards and resume.');

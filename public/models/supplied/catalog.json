@@ -1,0 +1,524 @@
+{
+  "version": 1,
+  "profile": "xom-supplied-v1",
+  "license": "LicenseRef-Owner-Confirmed-Free",
+  "packs": [
+    {
+      "id": "supplied-civilians",
+      "licenseUrl": "/models/supplied/LICENSE.txt",
+      "license": "LicenseRef-Owner-Confirmed-Free"
+    }
+  ],
+  "assets": [
+    {
+      "id": "supplied/jacket",
+      "name": "Áo khoác và kính",
+      "kind": "human",
+      "archive": "1.zip",
+      "nested": "casino_free_glb.zip",
+      "member": "Casino_Free_glb/Casino_Free_Characters_glb/18_Security.glb",
+      "sourceSha256": "88090507e0276fa0fa72910338aaab85b81a87cc3f09d9f641ca58c888e071d0",
+      "triangles": 2447,
+      "url": "/models/supplied/jacket.glb",
+      "bytes": 637584,
+      "sha256": "62fdf4f03da6e7f251ce1249465919357367b5abe9f2ecd88f13a2f6f84a09f8",
+      "license": "LicenseRef-Owner-Confirmed-Free",
+      "pack": "supplied-civilians",
+      "genre": "daily-life",
+      "skins": 1,
+      "primitives": 1,
+      "hiddenBodyTrianglesRemoved": 2183,
+      "relativeSimplificationError": 0.011991176754236221,
+      "clips": [
+        "Idle",
+        "Walk",
+        "Run",
+        "Talk",
+        "Listen",
+        "Sit",
+        "Ride",
+        "Think",
+        "Nod",
+        "PickUp",
+        "Wave"
+      ],
+      "clipOrigins": {
+        "Idle": {
+          "nativeClip": "Adult_TalkGestureListen",
+          "authoredAdditionalMotion": false,
+          "inPlace": true
+        },
+        "Walk": {
+          "nativeClip": "Adult_Walk",
+          "authoredAdditionalMotion": false,
+          "inPlace": true
+        },
+        "Run": {
+          "nativeClip": "Adult_WalkFast",
+          "authoredAdditionalMotion": false,
+          "inPlace": true
+        },
+        "Talk": {
+          "nativeClip": "Adult_TalkGestureActive",
+          "sourceSegment": [
+            0,
+            2
+          ],
+          "cosinePingPongSeconds": 4,
+          "authoredAdditionalMotion": false,
+          "inPlace": true
+        },
+        "Listen": {
+          "nativeClip": "Adult_TalkGestureListen",
+          "authoredAdditionalMotion": false,
+          "inPlace": true
+        },
+        "Sit": {
+          "nativeClip": "Adult_Male_Sit_01",
+          "authoredAdditionalMotion": true,
+          "inPlace": true
+        },
+        "Ride": {
+          "nativeClip": "Adult_Male_Sit_01",
+          "authoredAdditionalMotion": false,
+          "inPlace": true
+        },
+        "Think": {
+          "nativeClip": "Adult_TalkGestureListen",
+          "authoredAdditionalMotion": false,
+          "inPlace": true
+        },
+        "Nod": {
+          "nativeClip": "Adult_TalkGestureListen",
+          "authoredAdditionalMotion": true,
+          "inPlace": true
+        },
+        "PickUp": {
+          "nativeClip": "Adult_TalkGestureListen",
+          "authoredAdditionalMotion": true,
+          "inPlace": true
+        },
+        "Wave": {
+          "nativeClip": "Adult_TalkGestureListen",
+          "authoredAdditionalMotion": true,
+          "inPlace": true
+        }
+      },
+      "resources": [
+        {
+          "url": "/models/supplied/palette-16d7c8e6b570eef0f0f28bb6.png",
+          "bytes": 411887,
+          "sha256": "16d7c8e6b570eef0f0f28bb601098bea0965e5e6bb39bf0f6b8678099ec20026"
+        }
+      ]
+    },
+    {
+      "id": "supplied/service",
+      "name": "Áo sơ mi và gile",
+      "kind": "human",
+      "archive": "1.zip",
+      "nested": "casino_free_glb.zip",
+      "member": "Casino_Free_glb/Casino_Free_Characters_glb/1_Cashier.glb",
+      "sourceSha256": "b6e8862896996fb2b1fbd9f5b30eace8665bfae86a6362dd659ab4b24249d216",
+      "triangles": 2551,
+      "url": "/models/supplied/service.glb",
+      "bytes": 644156,
+      "sha256": "9e5c8942c1122a4c0f7d50e691e74f33558e9beb6a3726c44264b6655ef0bf7d",
+      "license": "LicenseRef-Owner-Confirmed-Free",
+      "pack": "supplied-civilians",
+      "genre": "daily-life",
+      "skins": 1,
+      "primitives": 1,
+      "hiddenBodyTrianglesRemoved": 2278,
+      "relativeSimplificationError": 0.011897078715264797,
+      "clips": [
+        "Idle",
+        "Walk",
+        "Run",
+        "Talk",
+        "Listen",
+        "Sit",
+        "Ride",
+        "Think",
+        "Nod",
+        "PickUp",
+        "Wave"
+      ],
+      "clipOrigins": {
+        "Idle": {
+          "nativeClip": "Adult_TalkGestureListen",
+          "authoredAdditionalMotion": false,
+          "inPlace": true
+        },
+        "Walk": {
+          "nativeClip": "Adult_Walk",
+          "authoredAdditionalMotion": false,
+          "inPlace": true
+        },
+        "Run": {
+          "nativeClip": "Adult_WalkFast",
+          "authoredAdditionalMotion": false,
+          "inPlace": true
+        },
+        "Talk": {
+          "nativeClip": "Adult_TalkGestureActive",
+          "sourceSegment": [
+            0,
+            2
+          ],
+          "cosinePingPongSeconds": 4,
+          "authoredAdditionalMotion": false,
+          "inPlace": true
+        },
+        "Listen": {
+          "nativeClip": "Adult_TalkGestureListen",
+          "authoredAdditionalMotion": false,
+          "inPlace": true
+        },
+        "Sit": {
+          "nativeClip": "Adult_Male_Sit_01",
+          "authoredAdditionalMotion": true,
+          "inPlace": true
+        },
+        "Ride": {
+          "nativeClip": "Adult_Male_Sit_01",
+          "authoredAdditionalMotion": false,
+          "inPlace": true
+        },
+        "Think": {
+          "nativeClip": "Adult_TalkGestureListen",
+          "authoredAdditionalMotion": false,
+          "inPlace": true
+        },
+        "Nod": {
+          "nativeClip": "Adult_TalkGestureListen",
+          "authoredAdditionalMotion": true,
+          "inPlace": true
+        },
+        "PickUp": {
+          "nativeClip": "Adult_TalkGestureListen",
+          "authoredAdditionalMotion": true,
+          "inPlace": true
+        },
+        "Wave": {
+          "nativeClip": "Adult_TalkGestureListen",
+          "authoredAdditionalMotion": true,
+          "inPlace": true
+        }
+      },
+      "resources": [
+        {
+          "url": "/models/supplied/palette-16d7c8e6b570eef0f0f28bb6.png",
+          "bytes": 411887,
+          "sha256": "16d7c8e6b570eef0f0f28bb601098bea0965e5e6bb39bf0f6b8678099ec20026"
+        }
+      ]
+    },
+    {
+      "id": "supplied/leisure",
+      "name": "Trang phục thư giãn",
+      "kind": "human",
+      "archive": "1.zip",
+      "nested": "casino_free_glb.zip",
+      "member": "Casino_Free_glb/Casino_Free_Characters_glb/75.glb",
+      "sourceSha256": "3b3281398c10af9a398d7dcf780263524b6d734ea0fac461d8d785183418e768",
+      "triangles": 2414,
+      "url": "/models/supplied/leisure.glb",
+      "bytes": 549852,
+      "sha256": "ebbb94d2520244263ae85ac9dcf445d28372e7470288bfe226325a898d9789cd",
+      "license": "LicenseRef-Owner-Confirmed-Free",
+      "pack": "supplied-civilians",
+      "genre": "daily-life",
+      "skins": 1,
+      "primitives": 1,
+      "hiddenBodyTrianglesRemoved": 1189,
+      "relativeSimplificationError": 0.011980473063886166,
+      "clips": [
+        "Idle",
+        "Walk",
+        "Run",
+        "Talk",
+        "Listen",
+        "Sit",
+        "Ride",
+        "Think",
+        "Nod",
+        "PickUp",
+        "Wave"
+      ],
+      "clipOrigins": {
+        "Idle": {
+          "nativeClip": "Plus-sizeAdult_TalkGestureListen",
+          "authoredAdditionalMotion": false,
+          "inPlace": true
+        },
+        "Walk": {
+          "nativeClip": "Plus-sizeAdult_Walk",
+          "authoredAdditionalMotion": false,
+          "inPlace": true
+        },
+        "Run": {
+          "nativeClip": "Plus-sizeAdult_WalkFast",
+          "authoredAdditionalMotion": false,
+          "inPlace": true
+        },
+        "Talk": {
+          "nativeClip": "Plus-sizeAdult_TalkGestureActive",
+          "sourceSegment": [
+            0,
+            2
+          ],
+          "cosinePingPongSeconds": 4,
+          "authoredAdditionalMotion": false,
+          "inPlace": true
+        },
+        "Listen": {
+          "nativeClip": "Plus-sizeAdult_TalkGestureListen",
+          "authoredAdditionalMotion": false,
+          "inPlace": true
+        },
+        "Sit": {
+          "nativeClip": "Plus-size_Male_Sit_01",
+          "authoredAdditionalMotion": true,
+          "inPlace": true
+        },
+        "Ride": {
+          "nativeClip": "Plus-size_Male_Sit_01",
+          "authoredAdditionalMotion": false,
+          "inPlace": true
+        },
+        "Think": {
+          "nativeClip": "Plus-sizeAdult_TalkGestureListen",
+          "authoredAdditionalMotion": false,
+          "inPlace": true
+        },
+        "Nod": {
+          "nativeClip": "Plus-sizeAdult_TalkGestureListen",
+          "authoredAdditionalMotion": true,
+          "inPlace": true
+        },
+        "PickUp": {
+          "nativeClip": "Plus-sizeAdult_TalkGestureListen",
+          "authoredAdditionalMotion": true,
+          "inPlace": true
+        },
+        "Wave": {
+          "nativeClip": "Plus-sizeAdult_TalkGestureListen",
+          "authoredAdditionalMotion": true,
+          "inPlace": true
+        }
+      },
+      "resources": [
+        {
+          "url": "/models/supplied/palette-16d7c8e6b570eef0f0f28bb6.png",
+          "bytes": 411887,
+          "sha256": "16d7c8e6b570eef0f0f28bb601098bea0965e5e6bb39bf0f6b8678099ec20026"
+        }
+      ]
+    },
+    {
+      "id": "supplied/office",
+      "name": "Trang phục công sở",
+      "kind": "human",
+      "archive": "1.zip",
+      "nested": "chess_pack_free_glb.zip",
+      "member": "Chess_Pack_Free_glb/Characters/Chess_Player_01.glb",
+      "sourceSha256": "540c08928bee56008aeb9627c3f7516ff35ce4199e52e8220459cc0894627391",
+      "triangles": 2401,
+      "url": "/models/supplied/office.glb",
+      "bytes": 640956,
+      "sha256": "26fe3acfb8bae82a26a4beeedd4812a858175bdd6114584df67afe25df9d00b2",
+      "license": "LicenseRef-Owner-Confirmed-Free",
+      "pack": "supplied-civilians",
+      "genre": "daily-life",
+      "skins": 1,
+      "primitives": 1,
+      "hiddenBodyTrianglesRemoved": 1881,
+      "relativeSimplificationError": 0.011757399886846542,
+      "clips": [
+        "Idle",
+        "Walk",
+        "Run",
+        "Talk",
+        "Listen",
+        "Sit",
+        "Ride",
+        "Think",
+        "Nod",
+        "PickUp",
+        "Wave"
+      ],
+      "clipOrigins": {
+        "Idle": {
+          "nativeClip": "Idle",
+          "authoredAdditionalMotion": false,
+          "inPlace": true
+        },
+        "Walk": {
+          "nativeClip": "Adult_Walk",
+          "authoredAdditionalMotion": false,
+          "inPlace": true
+        },
+        "Run": {
+          "nativeClip": "Adult_Run",
+          "authoredAdditionalMotion": false,
+          "inPlace": true
+        },
+        "Talk": {
+          "nativeClip": "Adult_TalkGestureActive",
+          "sourceSegment": [
+            0,
+            2
+          ],
+          "cosinePingPongSeconds": 4,
+          "authoredAdditionalMotion": false,
+          "inPlace": true
+        },
+        "Listen": {
+          "nativeClip": "Idle",
+          "authoredAdditionalMotion": false,
+          "inPlace": true
+        },
+        "Sit": {
+          "nativeClip": "Adult_Male_Sit_02",
+          "authoredAdditionalMotion": true,
+          "inPlace": true
+        },
+        "Ride": {
+          "nativeClip": "Adult_Male_Sit_02",
+          "authoredAdditionalMotion": false,
+          "inPlace": true
+        },
+        "Think": {
+          "nativeClip": "Idle",
+          "authoredAdditionalMotion": false,
+          "inPlace": true
+        },
+        "Nod": {
+          "nativeClip": "Idle",
+          "authoredAdditionalMotion": true,
+          "inPlace": true
+        },
+        "PickUp": {
+          "nativeClip": "Idle",
+          "authoredAdditionalMotion": true,
+          "inPlace": true
+        },
+        "Wave": {
+          "nativeClip": "Idle",
+          "authoredAdditionalMotion": true,
+          "inPlace": true
+        }
+      },
+      "resources": [
+        {
+          "url": "/models/supplied/palette-fad5135aa39449c63d23f505.png",
+          "bytes": 256634,
+          "sha256": "fad5135aa39449c63d23f505d39fbd0c8a43c32f1cf38d71b86d9d23f7f27a9c"
+        }
+      ]
+    },
+    {
+      "id": "supplied/waistcoat",
+      "name": "Áo gile thường ngày",
+      "kind": "human",
+      "archive": "1.zip",
+      "nested": "chess_pack_free_glb.zip",
+      "member": "Chess_Pack_Free_glb/Characters/Chess_Player_02.glb",
+      "sourceSha256": "0661ae70f499386d1e935844c27ce5b6db9c5c943e2c5ba28a87d1a0cef25d17",
+      "triangles": 2452,
+      "url": "/models/supplied/waistcoat.glb",
+      "bytes": 647540,
+      "sha256": "c142d47fbece24984f96ed26c5ff0b0a1c20b3636db1d0f8a2b6ec58edf87f8b",
+      "license": "LicenseRef-Owner-Confirmed-Free",
+      "pack": "supplied-civilians",
+      "genre": "daily-life",
+      "skins": 1,
+      "primitives": 1,
+      "hiddenBodyTrianglesRemoved": 1518,
+      "relativeSimplificationError": 0.01198437251150608,
+      "clips": [
+        "Idle",
+        "Walk",
+        "Run",
+        "Talk",
+        "Listen",
+        "Sit",
+        "Ride",
+        "Think",
+        "Nod",
+        "PickUp",
+        "Wave"
+      ],
+      "clipOrigins": {
+        "Idle": {
+          "nativeClip": "Idle",
+          "authoredAdditionalMotion": false,
+          "inPlace": true
+        },
+        "Walk": {
+          "nativeClip": "Adult_Walk",
+          "authoredAdditionalMotion": false,
+          "inPlace": true
+        },
+        "Run": {
+          "nativeClip": "Adult_Run",
+          "authoredAdditionalMotion": false,
+          "inPlace": true
+        },
+        "Talk": {
+          "nativeClip": "Adult_TalkGestureActive",
+          "sourceSegment": [
+            0,
+            2
+          ],
+          "cosinePingPongSeconds": 4,
+          "authoredAdditionalMotion": false,
+          "inPlace": true
+        },
+        "Listen": {
+          "nativeClip": "Idle",
+          "authoredAdditionalMotion": false,
+          "inPlace": true
+        },
+        "Sit": {
+          "nativeClip": "Adult_Male_Sit_02",
+          "authoredAdditionalMotion": true,
+          "inPlace": true
+        },
+        "Ride": {
+          "nativeClip": "Adult_Male_Sit_02",
+          "authoredAdditionalMotion": false,
+          "inPlace": true
+        },
+        "Think": {
+          "nativeClip": "Idle",
+          "authoredAdditionalMotion": false,
+          "inPlace": true
+        },
+        "Nod": {
+          "nativeClip": "Idle",
+          "authoredAdditionalMotion": true,
+          "inPlace": true
+        },
+        "PickUp": {
+          "nativeClip": "Idle",
+          "authoredAdditionalMotion": true,
+          "inPlace": true
+        },
+        "Wave": {
+          "nativeClip": "Idle",
+          "authoredAdditionalMotion": true,
+          "inPlace": true
+        }
+      },
+      "resources": [
+        {
+          "url": "/models/supplied/palette-fad5135aa39449c63d23f505.png",
+          "bytes": 256634,
+          "sha256": "fad5135aa39449c63d23f505d39fbd0c8a43c32f1cf38d71b86d9d23f7f27a9c"
+        }
+      ]
+    }
+  ]
+}

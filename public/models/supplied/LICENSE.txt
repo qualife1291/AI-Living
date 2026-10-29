@@ -1,0 +1,3 @@
+Free — owner supplied and confirmed. NOT CC0.
+The project owner confirmed these downloads were free and authorized their use, filtering and adaptation. Formal author/license information was not included in the supplied Casino Free/Chess Free archives.
+Preserve the original source archive and SHA256 from data/assets/source-archives.json. Selected source members, SHA256 and adaptation history are in catalog.json and data/assets/supplied-selection.json. Do not infer a public-domain grant from a free price.

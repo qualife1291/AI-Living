@@ -21,6 +21,7 @@ npm run test:api:local
 npm run test:api:ground
 npm run test:api:shared-ground
 npm run test:api:legacy
+node scripts/test-chat-admission-api.mjs
 npm run audit:learning-evidence
 ```
 
@@ -36,6 +37,7 @@ Restart Worker từ `dist/server/wrangler.json` sau build. `QA_BASE` bắt buộ
 
 | Harness trong scripts/ | Điều phải giữ |
 |---|---|
+| qa-chat-admission.py | HTTP429 giữ draft/focus, không tự retry, hồi phục khi chủ động gửi lại; desktop/mobile, không overflow. Mock UI writes; quota/rollback kiểm riêng trên compiled D1. |
 | qa-g0-ux.py | Gzip/canonical fallback, pause403/409/5xx/network/ACK, chat focus/draft, keyboard,320px, presets/resize/hidden/context loss/retry và reduced-motion. |
 | qa-shared-ground.py | Hai shared viewer desktop/mobile mở lệch giờ, cùng absolute sample roots, camera/F5/pause, no extrapolation, ảnh thật; synthetic source và D1 riêng. |
 | qa-loading.py | Compiled loopback build,3 cold-page repeat/viewport, network profile cố định, bytes/first-frame và asset completeness; `QA_BEFORE` tùy chọn phải là build khác nếu so sánh. Một build không chứng minh cải thiện/SLA thiết bị thật. |
@@ -89,4 +91,6 @@ GND3: `test-ground-authority.mjs` chạy observer trên GND2 physics thật, ki�
 
 H3b `test-ground-learning.mjs` chạy appointment thật qua GND2/GND3: đủ hai presence receipt/plan/epoch và overlap cửa sổ mới có reward, actual root distance là cost; partial/pause/cancel/baseline/transit/clock jump/retirement không nhận positive credit. Context/outcome bất biến, chunk/resume cùng proof, duplicate không fit lại, raw JSON/partition/namespace sai bị loại. Matrix artifact rebuild từ one-pass ledger; CLI smoke process thật và guards SHA/UTF8/bytes/exclusive/symlink/hardlink/traversal/overwrite. `test-ground-authority-store.mjs` inject cùng clock cho SQLite julianday và server, không phụ thuộc giờ thật đã vượt fixed fixture anchor. [H3b evidence](validation/learning-h3b-2026-10-29.json) giữ70/70full suite và hai lỗi đã sửa;96study task/32train repeat byte-identical, holdout action collapse **không promote**. UI/runtime/schema không đổi; kiểm build loại experimental code thay vì chạy browser lại để nhận một bằng chứng không liên quan.
 
-Citizens29/10: [evidence](validation/citizens-2026-10-29.json) giữ70work/73QA suite,12style/radius/late upgrade/source immutability và8Studio case ảnh thật. G0 dùng manifest27transport hiện tại,4fallback gồm delayed primary; `QA_G0_ONLY_FALLBACKS=1` hoặc `QA_G0_VIEWPORT=mobile` chạy phần bị ảnh hưởng, report chỉ nhận phần đã chạy. Harness ghi screenshot/body/errors/canvas telemetry khi lỗi; một mobile OSM timeout rồi retest đạt chưa là soak PASS. Source-vault check chỉ đọc/hash3ZIP ngoài app, không tải hoặc deploy.
+Citizens29/10: [evidence](validation/citizens-2026-10-29.json) giữ70work/73QA suite,12style/radius/late upgrade/source immutability và8Studio case ảnh thật. G0 dùng manifest27transport hiện tại,4fallback gồm delayed primary; `QA_G0_ONLY_FALLBACKS=1` hoặc `QA_G0_VIEWPORT=mobile` chạy phần bị ảnh hưởng, report chỉ nhận phần đã chạy. Harness ghi screenshot/body/errors/canvas telemetry khi lỗi; một mobile OSM timeout rồi retest đạt chưa là soak PASS. Source-vault check chỉ đọc/hash các ZIP trong registry ngoài app, không tải hoặc deploy.
+
+Supplied29/10: [evidence](validation/supplied-civilians-2026-10-29.json) giữ73suite và browser source68060d6; `test-supplied-assets.mjs` kiểm5member/SHA/license chính xác, cấm đổi CC0, một mesh/material/44bone/11clip và2palette. G0 giữ4fallback + delayed upgrade; Studio thêm mức chiều cao≥93% và đường nhìn qua scenery trang trí. Authoring --write cần vault/Pillow/dev tools; CI --check chỉ đọc derivative. Bốn ZIP gốc ngoài app đã kiểm bytes/SHA, ZIP4 có250GLB tĩnh/50mẫu×5LOD chứ không có rig/clip.

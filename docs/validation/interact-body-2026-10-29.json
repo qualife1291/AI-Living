@@ -1,0 +1,32 @@
+{
+  "date": "2026-10-29",
+  "timezone": "Asia/Ho_Chi_Minh",
+  "base": "dcecc55",
+  "fixSource": "f3d4a15",
+  "scope": "Visitor interaction body streaming only; no asset/QA auth/scheduler/learning changes",
+  "checks": {
+    "boundedJson": "PASS: exact 2000 bytes, multibyte chunk splits, early cancel/no further reads, false Content-Length, upstream cancel/read errors, malformed UTF8/JSON, released reader",
+    "typecheck": "PASS",
+    "lint": "PASS",
+    "build": "PASS",
+    "compiledHttpD1": "PASS: isolated legacy liveness API plus byte/origin/UTF8 guards, unchanged world, rejected UUID reusable and durable duplicate retry",
+    "unit": {
+      "total": 71,
+      "passed": 69,
+      "failed": [
+        "test-city-rigs.mjs: supplied/jacket/Sit radius 4.80494656388497 > 4.801",
+        "test-g0-ux.mjs: owner-confirmed-free license differs from test CC0 assumption"
+      ],
+      "baselineReproduction": "Both identical failures independently reproduced in detached dcecc55 worktree with current installed dependencies"
+    }
+  },
+  "productionAccess": false,
+  "schemaChanged": false,
+  "browserRun": false,
+  "deployment": false,
+  "remaining": [
+    "Asset agent owns Sit normalization and G0 license assertions",
+    "Chat rate admission not implemented",
+    "Full suite and independent remote QA required before promotion"
+  ]
+}

@@ -25,7 +25,7 @@
     "release:package": "python3 scripts/package-production.py",
     "living:direct": "node scripts/direct-social.mjs",
     "assets:maintain": "node scripts/maintain-assets.mjs --write",
-    "assets:check": "node scripts/build-citizen-models.mjs && python3 scripts/import-kenney.py --check && python3 scripts/import-kenney.py --self-test && node scripts/maintain-assets.mjs --self-test && python3 scripts/import-resource-packs.py --check && node scripts/compress-city-assets.mjs --check",
+    "assets:check": "node scripts/build-citizen-models.mjs && node scripts/build-supplied-models.mjs --check && python3 scripts/import-kenney.py --check && python3 scripts/import-kenney.py --self-test && node scripts/maintain-assets.mjs --self-test && python3 scripts/import-resource-packs.py --check && node scripts/compress-city-assets.mjs --check",
     "simulate:living": "node scripts/test-scenario-benchmarks.mjs",
     "benchmark:policies": "node scripts/benchmark-policies.mjs",
     "prebuild": "node scripts/precompute-home-anchors.mjs && node scripts/precompute-garden-plots.mjs && node scripts/precompute-walk-routes.mjs",
@@ -55,7 +55,8 @@
     "ground:authority": "node scripts/ground-authority.mjs",
     "test:api:authority": "node scripts/test-ground-authority-api.mjs",
     "learning:ground-study": "node scripts/ground-study.mjs",
-    "assets:build:citizens": "node scripts/build-citizen-models.mjs --write"
+    "assets:build:citizens": "node scripts/build-citizen-models.mjs --write",
+    "assets:import:supplied": "node scripts/build-supplied-models.mjs --write"
   },
   "dependencies": {
     "@base-ui/react": "^1.7.0",
@@ -87,6 +88,9 @@
   "devDependencies": {
     "@cloudflare/vite-plugin": "1.37.1",
     "@cloudflare/workers-types": "4.20260515.1",
+    "@gltf-transform/core": "4.2.1",
+    "@gltf-transform/extensions": "4.2.1",
+    "@gltf-transform/functions": "4.2.1",
     "@tailwindcss/postcss": "4.2.1",
     "@types/node": "22.19.19",
     "@types/react": "19.2.14",
@@ -98,6 +102,7 @@
     "eslint": "9.39.4",
     "eslint-config-next": "16.4.1",
     "json-rpc-2.0": "1.7.1",
+    "meshoptimizer": "0.25.0",
     "raw-body": "3.0.2",
     "react-server-dom-webpack": "19.2.6",
     "tailwindcss": "4.2.1",

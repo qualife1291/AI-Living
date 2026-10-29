@@ -4,6 +4,12 @@ Chỉ ghi mốc sản phẩm. Chi tiết commit/review nằm trong Git; số ver
 
 ## 29/10/2026
 
+- Áp dụng5rig đời thường Casino/Chess do chủ dự án cung cấp vào city/Studio/gallery, dùng2palette chung và LOD có skin weights; sửa da xuyên quần áo/giày, khớp vai và tỷ lệ Studio. Camera tự cutaway mái/tán cây chắn cảnh, giữ render budget;73suite và browser/audio bốn cảnh đạt. Review đủ4ZIP/593GLB entries/25bản nhạc; ZIP4 gồm50mẫu công trường tĩnh có5LOD, giữ cho phase phù hợp. [Bằng chứng](docs/validation/supplied-civilians-2026-10-29.json).
+
+- Chat có quota chung30 tin mới/cửa sổ60giây, counter và exchange ghi cùng transaction D1. Retry UUID không mất quota;429 có Retry-After, UI giữ bản nháp, lỗi lưu rollback. Không quét/xóa lịch sử hoặc đổi world/policy/schema.
+
+- API trò chuyện kiểm giới hạn2.000byte ngay khi đọc stream, hủy phần dư trước khi truy cập DB; giữ UUID retry/paused/origin guards, từ chối UTF-8 lỗi. Không thay history, reply rules hoặc schema.
+
 - Bộ12rig Citizens nguyên bản cho core/NPC gần/Studio, tải trễ tự đổi về model chính, fallback cùng phong cách; bỏ renderer Kenney character không còn dùng. Studio chung tỷ lệ với đạo cụ, sửa tư thế cúi/đỡ mèo. Review343GLB+25bản nhạc ZIP1–3/Fab với hash/texture/ảnh thật và kế hoạch nhập chọn lọc A1–A5; giữ ZIP gốc ở source-vault riêng, không đưa ZIP hoặc asset thừa vào app.
 
 - H3b offline thêm goal/context trước plan, delayed rendezvous reward từ hai GND3 presence receipt/contact và actual travel cost; trainer/CLI có namespace/partition/exact-once/file guards.96task physics, train lặp cùng hash,70suite và H1 golden đạt. Holdout model từ chối48/48 nên **không promote**, giữ nguyên runtime; [evidence](docs/validation/learning-h3b-2026-10-29.json).

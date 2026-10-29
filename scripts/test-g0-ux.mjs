@@ -6,13 +6,17 @@ import {requestPause,PauseRequestError} from '../lib/city/pause-request.ts';
 import {decodeAssetTransfer} from '../lib/city/asset-transfer.ts';
 import {pixelRatio} from '../lib/city/scale.ts';
 import {AssetLibrary} from '../components/city/three/assets.ts';
+import {reviewedAssetLicense} from '../lib/city/asset-policy.ts';
 const json=raw=>JSON.parse(readFileSync(raw,'utf8'));
 const manifest=json('data/assets/city-transfer-manifest.json');
+const catalog=manifest.canonicalCatalogs.flatMap(url=>json('public'+url).assets);
 const ab=b=>b.buffer.slice(b.byteOffset,b.byteOffset+b.byteLength);
 const hash=b=>createHash('sha256').update(b).digest('hex');
 for(const a of manifest.assets){
  const raw=readFileSync('public'+a.url),canonical=readFileSync('public'+a.sourceUrl);
- assert.equal(a.license,'CC0-1.0');assert.equal(hash(canonical),a.sourceSha256);
+ const entry=catalog.find(entry=>entry.id===a.id);
+ assert(entry&&reviewedAssetLicense(entry),'Transport must refer to an approved canonical asset');
+ assert.equal(a.license,entry.license);assert.equal(a.sourceSha256,entry.sha256);assert.equal(a.sourceUrl,entry.url);assert.equal(hash(canonical),a.sourceSha256);
  assert.deepEqual(Buffer.from(await decodeAssetTransfer(ab(raw),a)),canonical,'Transport must restore exact canonical GLB bytes, including clips/rigs/materials');
 }
 const a=manifest.assets[0],good=readFileSync('public'+a.url),bad=Buffer.from(good);bad[20]^=1;

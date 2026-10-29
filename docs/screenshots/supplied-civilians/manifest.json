@@ -1,0 +1,71 @@
+{
+  "source": {
+    "commit_sha": "68060d648e540e2b1b3fffacad1b1dbd1e200aeb",
+    "built_at": "2026-10-29T09:24:10.193Z"
+  },
+  "renderer": "Chromium SwiftShader",
+  "production": false,
+  "scenarios": "editorial simulation; city world transport synthetic",
+  "screenshots": [
+    {
+      "file": "docs/screenshots/supplied-civilians/wallet-return-desktop.png",
+      "kind": "Studio settled at77.5s; real rendered frame",
+      "sha256": "d1ddb859220a963d1270d35f67babfa255f2b2a545647121e641657c39face55"
+    },
+    {
+      "file": "docs/screenshots/supplied-civilians/wallet-return-mobile.png",
+      "kind": "Studio settled at77.5s; real rendered frame",
+      "sha256": "24cddd6eef87106e231c7da24f2fdd1952970c159b496d8957a4a12ea6fdf119"
+    },
+    {
+      "file": "docs/screenshots/supplied-civilians/sanitation-gratitude-desktop.png",
+      "kind": "Studio settled at77.5s; real rendered frame",
+      "sha256": "e32ec3a944a0ae0978f4b77e766b0b6b9dfa2ed2e2f84f7dd2be3524c316c568"
+    },
+    {
+      "file": "docs/screenshots/supplied-civilians/sanitation-gratitude-mobile.png",
+      "kind": "Studio settled at77.5s; real rendered frame",
+      "sha256": "fe7c12644547c6342ca64db7b0bac4ca187cb056f4d2d0c846ca409a57d4e09d"
+    },
+    {
+      "file": "docs/screenshots/supplied-civilians/kitten-care-desktop.png",
+      "kind": "Studio settled at77.5s; real rendered frame",
+      "sha256": "5d3d0ceeedacdac3e6e3d6951429565910c4ae1dab8a8a313e89ae47bad401c5"
+    },
+    {
+      "file": "docs/screenshots/supplied-civilians/kitten-care-mobile.png",
+      "kind": "Studio settled at77.5s; real rendered frame",
+      "sha256": "d3c5dd0c558e8a5f3dd95a597ed274577e2081ec78c9316829ef5d5226b9cb9b"
+    },
+    {
+      "file": "docs/screenshots/supplied-civilians/bakery-courtesy-desktop.png",
+      "kind": "Studio settled at77.5s; real rendered frame",
+      "sha256": "94baa5221ccbe07f1afcd2bd7f4ff25ca50ee8089df21753a77dd5cdac0f80a9"
+    },
+    {
+      "file": "docs/screenshots/supplied-civilians/bakery-courtesy-mobile.png",
+      "kind": "Studio settled at77.5s; real rendered frame",
+      "sha256": "1fb46fced6cd12ab83f599505f315d2e409cc01130d3a73de31f82c76f20c06e"
+    },
+    {
+      "file": "docs/screenshots/supplied-civilians/five-models.jpg",
+      "kind": "Five actual gallery renders, assembled without generated pixels",
+      "sha256": "513756d7adf034b25fc3d5eb92409359a13c206ac6b5c21c97d40ad1d2017edb"
+    },
+    {
+      "file": "docs/screenshots/supplied-civilians/city-desktop.png",
+      "kind": "Synthetic city fixture with actual rig assets",
+      "sha256": "336c870a171da7ab535e4cadd677b3e202759c5fc36dea72c20fc4d4c3178199"
+    },
+    {
+      "file": "docs/screenshots/supplied-civilians/city-mobile.png",
+      "kind": "Synthetic city fixture with actual rig assets",
+      "sha256": "150300e244c6d5b8e4c3ffb7873ff3320e910ebebeb64b22963a69a3c63d6bf8"
+    },
+    {
+      "file": "docs/screenshots/supplied-civilians/before-skin-intersections.jpg",
+      "kind": "Rejected before image on a9a6759, not an accepted result",
+      "sha256": "c4f1466b39c252969b8cd5eaf4da63500d1a067370a9d668fd692388fceef184"
+    }
+  ]
+}

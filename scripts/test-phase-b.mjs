@@ -25,7 +25,7 @@ assert.equal(anPlan.steps.at(-1).kind,followup(anPlan.steps[0].location).kind);
 const sim=computeSimMs(planned.born,planned.clock,now);assert(hasUnfinishedLearning({...planned.living.learning.an,pending:undefined},anPlan,sim+300000),'follow-up remains busy even after first learning task');
 assert.equal(followup('Chợ nhỏ').kind,'shop');assert.equal(followup('Thư viện').kind,'study');assert.equal(followup('Công viên').kind,'run');
 const duration=meetingSteps('Công viên','Nói chuyện').reduce((s,v)=>s+v.duration,0);assert.equal(duration,360);
-const gltf=await loadLocalGLTF('/models/citizens/an.glb'),clipProbe=new RiggedAvatar(gltf);
+const gltf=await loadLocalGLTF('/models/'+CORE_MODELS.an+'.glb'),clipProbe=new RiggedAvatar(gltf);
 const clips=new Set(gltf.animations.map(c=>c.name));let probeTime=1;
 for(const kind of added){const actor={id:'fixture',name:'Test',from:'Công viên',location:'Công viên',activity:kind,kind,position:[0,0],walking:false,progress:1,path:[[0,0]],source:'plan'};
  clipProbe.pose(resolveActorClip(actor),0,probeTime++,[0,0],0,0);assert(clips.has(clipProbe.snapshot().resolvedClip),`unsupported clip for ${kind}`);

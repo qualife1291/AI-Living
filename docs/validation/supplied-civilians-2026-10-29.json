@@ -1,0 +1,1153 @@
+{
+  "version": 1,
+  "date": "2026-10-29",
+  "timezone": "Asia/Ho_Chi_Minh",
+  "source": {
+    "commit_sha": "68060d648e540e2b1b3fffacad1b1dbd1e200aeb",
+    "built_at": "2026-10-29T09:24:10.193Z"
+  },
+  "scope": "Five selected owner-supplied Casino/Chess civilian rigs applied to core/near-NPC/Studio/gallery; ZIP4 review and original retention. No live DB or learning changes from assets.",
+  "status": "LOCAL_PASS_QA_PUSH_PENDING",
+  "license": "LicenseRef-Owner-Confirmed-Free; exact selected member hashes, never CC0",
+  "implementation": {
+    "core": {
+      "an": "supplied/office",
+      "binh": "supplied/waistcoat",
+      "chi": "supplied/service"
+    },
+    "nearNpcBudget": 5,
+    "stableIdentityMapping": true,
+    "worldIdentityMemoryHistoryPolicyUnchanged": true,
+    "meshAndMaterialPerRig": 1,
+    "bones": 44,
+    "clips": 11,
+    "palettes": 2,
+    "models": [
+      {
+        "id": "supplied/jacket",
+        "triangles": 2447,
+        "bytes": 637584,
+        "sha256": "62fdf4f03da6e7f251ce1249465919357367b5abe9f2ecd88f13a2f6f84a09f8",
+        "sourceSha256": "88090507e0276fa0fa72910338aaab85b81a87cc3f09d9f641ca58c888e071d0",
+        "removedHiddenBodyTriangles": 2183,
+        "simplificationError": 0.011991176754236221
+      },
+      {
+        "id": "supplied/service",
+        "triangles": 2551,
+        "bytes": 644156,
+        "sha256": "9e5c8942c1122a4c0f7d50e691e74f33558e9beb6a3726c44264b6655ef0bf7d",
+        "sourceSha256": "b6e8862896996fb2b1fbd9f5b30eace8665bfae86a6362dd659ab4b24249d216",
+        "removedHiddenBodyTriangles": 2278,
+        "simplificationError": 0.011897078715264797
+      },
+      {
+        "id": "supplied/leisure",
+        "triangles": 2414,
+        "bytes": 549852,
+        "sha256": "ebbb94d2520244263ae85ac9dcf445d28372e7470288bfe226325a898d9789cd",
+        "sourceSha256": "3b3281398c10af9a398d7dcf780263524b6d734ea0fac461d8d785183418e768",
+        "removedHiddenBodyTriangles": 1189,
+        "simplificationError": 0.011980473063886166
+      },
+      {
+        "id": "supplied/office",
+        "triangles": 2401,
+        "bytes": 640956,
+        "sha256": "26fe3acfb8bae82a26a4beeedd4812a858175bdd6114584df67afe25df9d00b2",
+        "sourceSha256": "540c08928bee56008aeb9627c3f7516ff35ce4199e52e8220459cc0894627391",
+        "removedHiddenBodyTriangles": 1881,
+        "simplificationError": 0.011757399886846542
+      },
+      {
+        "id": "supplied/waistcoat",
+        "triangles": 2452,
+        "bytes": 647540,
+        "sha256": "c142d47fbece24984f96ed26c5ff0b0a1c20b3636db1d0f8a2b6ec58edf87f8b",
+        "sourceSha256": "0661ae70f499386d1e935844c27ce5b6db9c5c943e2c5ba28a87d1a0cef25d17",
+        "removedHiddenBodyTriangles": 1518,
+        "simplificationError": 0.01198437251150608
+      }
+    ],
+    "sharedPaletteBytes": 668521,
+    "glbTransferBytes": 1191371,
+    "transportCount": 27,
+    "losslessTransport": true,
+    "sourceAuthoringRebuild": "byte-identical final repeat;9 output files; raw ZIP needed only for --write",
+    "adapter": "neutral canonical rebind, exact joints, fixed bone lengths/in-place XZ,24fps, curated bounded Talk and authored Sit/Nod/PickUp/Wave; skin-aware simplification, preserved face/UV, body coverage and hair clearance",
+    "studio": "two-segment contact arms/shoulder caps, torso-based scale;2cast all shadows/3cast hero shadow/larger queues contact geometry; cosmetic roof/canopy cutaway and readable sign back face"
+  },
+  "gates": {
+    "unit": {
+      "suite": "unit-summary",
+      "total": 73,
+      "passed": 73,
+      "failed": [],
+      "workers": 4,
+      "seconds": 82.17
+    },
+    "typecheck": "PASS",
+    "lint": "PASS",
+    "assets": "PASS",
+    "exactReleaseBuild": "PASS",
+    "cityRigs": {
+      "suite": "city-rigs",
+      "coreModels": 3,
+      "frames": 180,
+      "maxRadius": 8.189608574515123,
+      "maxGroundError": 0.004536896945368629,
+      "actualTalkListen": true,
+      "focusedNpcBudget": 5,
+      "lateLoadUpgrade": true,
+      "styles": 5,
+      "gaitRadius": 4.567127863960855,
+      "headSurface": true,
+      "pause": true,
+      "sourceImmutable": true,
+      "worldWrites": false,
+      "disposed": true
+    },
+    "studioRigContacts": {
+      "suite": "studio-quality",
+      "report": [
+        {
+          "scenario": "wallet-return",
+          "maxHandStep": 0.6802435889239066,
+          "maximumContactGap": 0,
+          "seekEquivalent": true
+        },
+        {
+          "scenario": "sanitation-gratitude",
+          "maxHandStep": 0.5547269612427581,
+          "maximumContactGap": 0,
+          "seekEquivalent": true
+        },
+        {
+          "scenario": "kitten-care",
+          "maxHandStep": 0.8121904887385765,
+          "maximumContactGap": 0,
+          "seekEquivalent": true
+        },
+        {
+          "scenario": "bakery-courtesy",
+          "maxHandStep": 0.33471491776391304,
+          "maximumContactGap": 0,
+          "seekEquivalent": true
+        }
+      ],
+      "voices": 21,
+      "scope": "actual rig/arm surfaces and local asset integrity; browser/audio output separate"
+    },
+    "compiledChatD1": {
+      "suite": "chat-admission-compiled-http",
+      "concurrentUnique": 60,
+      "concurrentDuplicate": 16,
+      "limit": 30,
+      "windowMs": 60000,
+      "atomicRollbackCases": 2,
+      "originOwnerBodyPauseActorGuards": true,
+      "retryAfter": true,
+      "rejectedUuidReusable": true,
+      "historyPreserved": true,
+      "productionAccess": false
+    }
+  },
+  "browser": {
+    "studio": {
+      "renderer": "Chromium SwiftShader",
+      "production": false,
+      "cases": [
+        {
+          "viewport": "desktop",
+          "scenario": "wallet-return",
+          "shots": 5,
+          "controls": "play/pause/restart/seek/end/replay-after-completion",
+          "renderedTimeProbes": [
+            0,
+            24,
+            48,
+            72,
+            96,
+            119.9,
+            120,
+            37.5
+          ],
+          "stats": {
+            "audio": "{\"status\":\"off\",\"voices\":0,\"effects\":0,\"active\":0,\"offset\":0,\"voiceId\":\"\",\"rms\":0,\"decoded\":0,\"failures\":0}",
+            "cameraSubjects": "[\"minh\"]",
+            "sceneryCutaways": "0",
+            "sceneryBlockedSubjects": "0",
+            "triangles": "13638",
+            "drawCalls": "59",
+            "frames": "35",
+            "framing": "[{\"id\":\"minh\",\"head\":[0.004301875513733888,0.6071219610227904,0.9969099989917232],\"feet\":[-0.006219672364689057,-0.47628551447723305,0.9970072367350412]},{\"id\":\"tuan\",\"head\":[-1.9760078419062639,0.6612052851845276,0.9959765259999784],\"feet\":[-1.9722658265275381,-0.6792650402215533,0.9960610955239814]}]",
+            "contacts": "[{\"id\":\"minh\",\"skinned\":true,\"height\":16.599999999999998,\"head\":[-24.038800878716955,16.599999999417054,0.8057010293239784],\"hands\":{\"right\":[-27,14,1],\"left\":[-25.028117352613087,7.82107685398717,-3.1328481606785044]},\"targets\":{\"right\":[-27,14,1]},\"reach\":1},{\"id\":\"tuan\",\"skinned\":true,\"height\":15.8,\"head\":[-44.260473793498655,15.799999999453206,34.809023208594894],\"hands\":{\"right\":[-42.99941054177316,7.234577601297951,37.191863087830015],\"left\":[-46.896693353320366,7.2356243326311125,32.67460908534079]},\"targets\":{},\"reach\":0}]",
+            "modelGeneration": "supplied-civilians-v1",
+            "shadows": "true",
+            "ready": "true",
+            "scenario": "wallet-return",
+            "time": "0.000",
+            "beat": "0",
+            "assets": "11",
+            "assetFailures": "0",
+            "state": "{\"walletOwner\":\"minh\",\"walletHolder\":\"minh\",\"walletStage\":\"pocket\",\"walletCount\":1,\"ownerIdentified\":false,\"returned\":false,\"rewardAccepted\":false,\"restitution\":0.15,\"decisionLatencyMs\":350}",
+            "cast": "[{\"id\":\"minh\",\"age\":62,\"clip\":\"holding-right\",\"position\":[-25,0,0]},{\"id\":\"tuan\",\"age\":15,\"clip\":\"idle\",\"position\":[-45,0,35]}]",
+            "props": "[{\"id\":\"wallet\",\"holder\":\"minh\",\"stage\":\"pocket\",\"position\":[-25,7.8,-2.5]},{\"id\":\"phone\",\"holder\":\"minh\",\"stage\":\"phone-call\",\"position\":[-27,14,1]},{\"id\":\"reward-note\",\"holder\":\"minh\",\"stage\":\"offered\",\"position\":[-22,9.88095238095238,1.8369701987210297e-16]}]"
+          }
+        },
+        {
+          "viewport": "desktop",
+          "scenario": "sanitation-gratitude",
+          "shots": 5,
+          "controls": "play/pause/restart/seek/end/replay-after-completion",
+          "renderedTimeProbes": [
+            0,
+            24,
+            48,
+            72,
+            96,
+            119.9,
+            120,
+            37.5
+          ],
+          "stats": {
+            "audio": "{\"status\":\"off\",\"voices\":0,\"effects\":0,\"active\":0,\"offset\":0,\"voiceId\":\"\",\"rms\":0,\"decoded\":0,\"failures\":0}",
+            "cameraSubjects": "[\"hanh\"]",
+            "sceneryCutaways": "0",
+            "sceneryBlockedSubjects": "0",
+            "triangles": "14626",
+            "drawCalls": "70",
+            "frames": "67",
+            "framing": "[{\"id\":\"hanh\",\"head\":[-0.07031538196834301,0.6085539314794615,0.9981187790088483],\"feet\":[0.0019987309029086985,-0.48572500363894483,0.9981481158580618]},{\"id\":\"hoang\",\"head\":[-2.027989551977369,0.7460418080627985,0.9978719537359376],\"feet\":[-1.9839997206057638,-0.5761522313519553,0.9979044939568454]},{\"id\":\"lan\",\"head\":[0.7144999413910117,0.9260196604376625,0.9965897405467596],\"feet\":[0.6930394106712928,-1.0575549877488368,0.9966075366384539]}]",
+            "contacts": "[{\"id\":\"hanh\",\"skinned\":true,\"height\":15.96624819519112,\"head\":[-0.9511329164910374,15.742067288146204,1.670939604392977],\"hands\":{\"right\":[0,8.000000000000002,3],\"left\":[2.976007157835843,7.600098158594103,0.48578830768466275]},\"targets\":{\"right\":[0,8,2.9999999999999996]},\"reach\":1},{\"id\":\"hoang\",\"skinned\":true,\"height\":16.9,\"head\":[-29.883154018421273,16.899999999415133,30.808563320474455],\"hands\":{\"right\":[-32.56371325165983,7.738250725438943,31.871609392941107],\"left\":[-27.30642506813339,7.739370330472515,28.25442462199226]},\"targets\":{},\"reach\":0},{\"id\":\"lan\",\"skinned\":true,\"height\":16,\"head\":[30.07861642480161,15.999999997216987,34.66986035232706],\"hands\":{\"right\":[32.0852020529029,7.484124458413208,34.45070710361071],\"left\":[27.84132892476429,7.820755415327426,34.45102445211696]},\"targets\":{},\"reach\":0}]",
+            "modelGeneration": "supplied-civilians-v1",
+            "shadows": "true",
+            "ready": "true",
+            "scenario": "sanitation-gratitude",
+            "time": "0.000",
+            "beat": "0",
+            "assets": "11",
+            "assetFailures": "0",
+            "state": "{\"cupCount\":1,\"cupHolder\":null,\"cupOwner\":\"vendor\",\"cupStage\":\"counter\",\"leavesTotal\":8,\"leavesGathered\":0,\"helping\":false,\"workerFatigue\":0,\"sweepIntensity\":0.75}",
+            "cast": "[{\"id\":\"hanh\",\"age\":48,\"clip\":\"interact-right\",\"position\":[0,0,0]},{\"id\":\"hoang\",\"age\":17,\"clip\":\"idle\",\"position\":[-30,0,30]},{\"id\":\"lan\",\"age\":17,\"clip\":\"idle\",\"position\":[30,0,35]}]",
+            "props": "[{\"id\":\"cup\",\"holder\":null,\"stage\":\"counter\",\"position\":[34.5,6.1,19]},{\"id\":\"hanh-broom\",\"holder\":\"hanh\",\"stage\":\"sweeping\",\"position\":[0,8.000000000000002,3]},{\"id\":\"spare-broom\",\"holder\":null,\"stage\":\"available\",\"position\":[-12,8,3]},{\"id\":\"leaf-0\",\"holder\":null,\"stage\":\"being-gathered\",\"position\":[-18,0.06,8]},{\"id\":\"leaf-1\",\"holder\":null,\"stage\":\"being-gathered\",\"position\":[-14,0.06,8]},{\"id\":\"leaf-2\",\"holder\":null,\"stage\":\"being-gathered\",\"position\":[-10,0.06,8]},{\"id\":\"leaf-3\",\"holder\":null,\"stage\":\"being-gathered\",\"position\":[-6,0.06,8]},{\"id\":\"leaf-4\",\"holder\":null,\"stage\":\"being-gathered\",\"position\":[-18,0.06,12]},{\"id\":\"leaf-5\",\"holder\":null,\"stage\":\"being-gathered\",\"position\":[-14,0.06,12]},{\"id\":\"leaf-6\",\"holder\":null,\"stage\":\"being-gathered\",\"position\":[-10,0.06,12]},{\"id\":\"leaf-7\",\"holder\":null,\"stage\":\"being-gathered\",\"position\":[-6,0.06,12]}]"
+          }
+        },
+        {
+          "viewport": "desktop",
+          "scenario": "kitten-care",
+          "shots": 5,
+          "controls": "play/pause/restart/seek/end/replay-after-completion",
+          "renderedTimeProbes": [
+            0,
+            24,
+            48,
+            72,
+            96,
+            119.9,
+            120,
+            37.5
+          ],
+          "stats": {
+            "audio": "{\"status\":\"off\",\"voices\":0,\"effects\":0,\"active\":0,\"offset\":0,\"voiceId\":\"\",\"rms\":0,\"decoded\":0,\"failures\":0}",
+            "cameraSubjects": "[\"miu\"]",
+            "sceneryCutaways": "0",
+            "sceneryBlockedSubjects": "0",
+            "triangles": "19310",
+            "drawCalls": "86",
+            "frames": "101",
+            "framing": "[{\"id\":\"thanh\",\"head\":[-8.796944585243212,5.248781321437007,0.983994041883342],\"feet\":[-8.039981616418418,-0.39042514209651075,0.9857405979135183]},{\"id\":\"mai\",\"head\":[-134.3612882043438,62.91850085857455,0.7069236495987047],\"feet\":[-73.7983855181203,-6.277114593514901,0.8402459209051013]},{\"id\":\"miu\",\"head\":[-0.01942282608838233,0.30177555364780156,0.9885022600996746],\"feet\":[-0.01930011928015064,-0.27572425191424876,0.9885755307067923]}]",
+            "contacts": "[{\"id\":\"thanh\",\"skinned\":true,\"height\":17,\"head\":[-33.71856663793202,16.99999999940301,25.087805643114354],\"hands\":{\"right\":[-33.065360649078755,7.9331697387912765,27.554732902672978],\"left\":[-36.911391265731886,8.00953653721578,22.423015648925833]},\"targets\":{},\"reach\":0},{\"id\":\"mai\",\"skinned\":true,\"height\":12.2,\"head\":[-21.772342590260788,12.199999997877953,31.876978666949512],\"hands\":{\"right\":[-20.62831535053823,5.706644899540068,32.90658608032484],\"left\":[-22.784533859401858,5.963326004187159,30.49368009193323]},\"targets\":{},\"reach\":0}]",
+            "modelGeneration": "supplied-civilians-v1",
+            "shadows": "true",
+            "ready": "true",
+            "scenario": "kitten-care",
+            "time": "0.000",
+            "beat": "0",
+            "assets": "11",
+            "assetFailures": "0",
+            "state": "{\"careMode\":\"warm-and-call-rescue\",\"childRushed\":false,\"rescueContacted\":false,\"rescueGuidance\":false,\"clothReady\":false,\"warmed\":false,\"kittenHolder\":null,\"medicalProcedureSimulated\":false,\"milkGiven\":false}",
+            "cast": "[{\"id\":\"thanh\",\"age\":68,\"clip\":\"idle\",\"position\":[-35,0,25]},{\"id\":\"mai\",\"age\":8,\"clip\":\"idle\",\"position\":[-22,0,32]},{\"id\":\"miu\",\"age\":2,\"clip\":\"idle\",\"position\":[0,0.15,0]}]",
+            "props": "[{\"id\":\"warm-cloth\",\"holder\":\"mai\",\"stage\":\"folded\",\"position\":[-19.76288436346984,5.809523809523809,30.001171936160528]}]"
+          }
+        },
+        {
+          "viewport": "desktop",
+          "scenario": "bakery-courtesy",
+          "shots": 5,
+          "controls": "play/pause/restart/seek/end/replay-after-completion",
+          "renderedTimeProbes": [
+            0,
+            24,
+            48,
+            72,
+            96,
+            119.9,
+            120,
+            37.5
+          ],
+          "stats": {
+            "audio": "{\"status\":\"off\",\"voices\":0,\"effects\":0,\"active\":0,\"offset\":0,\"voiceId\":\"\",\"rms\":0,\"decoded\":0,\"failures\":0}",
+            "cameraSubjects": "[\"office\",\"teacher\"]",
+            "sceneryCutaways": "0",
+            "sceneryBlockedSubjects": "0",
+            "triangles": "24148",
+            "drawCalls": "127",
+            "frames": "132",
+            "framing": "[{\"id\":\"ba\",\"head\":[0.5977440050838301,0.18386332804780298,0.9979979455211154],\"feet\":[0.568217789392553,-0.5191780033437274,0.998047415651056]},{\"id\":\"office\",\"head\":[0.16795084128423893,0.22950993750056295,0.9980627769298709],\"feet\":[0.14735327359637745,-0.49210447134461377,0.9980992274600429]},{\"id\":\"seller\",\"head\":[0.03746802066510666,0.34813036458866287,0.9989728486248618],\"feet\":[0.04024074145355451,-0.02778020550912627,0.9989878252303754]},{\"id\":\"teacher\",\"head\":[-0.09410265046927625,0.3249726077092162,0.9988599820191256],\"feet\":[-0.09660987961516485,-0.08717837471039053,0.9988741523414105]},{\"id\":\"guest-2\",\"head\":[-0.1731963384008279,0.33043256574350893,0.9987845656998274],\"feet\":[-0.18051151803513082,-0.12359475102065895,0.9988044607203305]},{\"id\":\"guest-3\",\"head\":[-0.26440759871052494,0.29188674677679766,0.9987016927856281],\"feet\":[-0.27452808162865855,-0.16440137439174013,0.9987263672903496]},{\"id\":\"guest-4\",\"head\":[-0.3815738868213139,0.30206243067988175,0.9986171708736478],\"feet\":[-0.38060603714840735,-0.2104430825058908,0.9986382552484367]}]",
+            "contacts": "[{\"id\":\"ba\",\"skinned\":true,\"height\":16.5,\"head\":[55.56886153673142,16.49999999711514,59.83914637029481],\"hands\":{\"right\":[57.2638540342838,7.429796363673048,59.565466720291624],\"left\":[51.19999999999998,6.999999999999999,59.99999999999999]},\"targets\":{\"left\":[51.19999999999998,7,59.99999999999999]},\"reach\":1},{\"id\":\"office\",\"skinned\":true,\"height\":17.3,\"head\":[40.368635405080376,17.299999999401287,64.24933118629477],\"hands\":{\"right\":[43.24780782027258,7.921404588762936,64.90057703234976],\"left\":[36.715324412226224,7.922550693323931,64.91788025953205]},\"targets\":{},\"reach\":0},{\"id\":\"seller\",\"skinned\":true,\"height\":16.200000000000003,\"head\":[-0.07959913011163079,16.1999999971822,-4.66573360673116],\"hands\":{\"right\":[-2.11126705799043,7.57767601414337,-4.443840921789738],\"left\":[2.1856544863072833,7.918514858019015,-4.444162235090717]},\"targets\":{},\"reach\":0},{\"id\":\"teacher\",\"skinned\":true,\"height\":16.1,\"head\":[0.07910777745662075,16.09999999719959,13.667796979529115],\"hands\":{\"right\":[2.098234545286785,7.53090023627829,13.447274008636265],\"left\":[-2.1721627919473625,7.869635136673223,13.447593339133492]},\"targets\":{},\"reach\":0},{\"id\":\"guest-2\",\"skinned\":true,\"height\":16.8,\"head\":[0.5792044737628974,16.799999997062688,23.83622175884564],\"hands\":{\"right\":[2.3050147385703212,7.564883570285282,23.55756593097347],\"left\":[-2.460445985508795,7.7982327105395814,23.603207785058693]},\"targets\":{},\"reach\":0},{\"id\":\"guest-3\",\"skinned\":true,\"height\":15.96624819519112,\"head\":[0.9511329164910373,15.966248193109314,34.0331179040975],\"hands\":{\"right\":[3.0273902126127865,7.151607099674988,33.72450473392932],\"left\":[-2.9760071578358436,7.761235181579691,33.42155756829609]},\"targets\":{},\"reach\":0},{\"id\":\"guest-4\",\"skinned\":true,\"height\":16.8,\"head\":[0.08254724604169124,16.799999997077833,43.653353369943424],\"hands\":{\"right\":[2.189462134212297,7.858330681333868,43.423242463701854],\"left\":[-2.2666046524668126,8.211793186093795,43.42357568012449]},\"targets\":{},\"reach\":0}]",
+            "modelGeneration": "supplied-civilians-v1",
+            "shadows": "true",
+            "ready": "true",
+            "scenario": "bakery-courtesy",
+            "time": "0.000",
+            "beat": "0",
+            "assets": "11",
+            "assetFailures": "0",
+            "state": "{\"queueOrder\":[\"teacher\",\"guest-2\",\"guest-3\",\"guest-4\"],\"courtesyConsented\":false,\"priorityId\":null,\"servedIds\":[],\"currentServiceId\":null,\"breadTotal\":5,\"breadStock\":5,\"officeCutQueue\":false,\"officeJoinedAtTail\":false}",
+            "cast": "[{\"id\":\"ba\",\"age\":55,\"clip\":\"idle\",\"position\":[55,0,60]},{\"id\":\"office\",\"age\":26,\"clip\":\"idle\",\"position\":[39.99997975099348,0,64.99997107284783]},{\"id\":\"seller\",\"age\":35,\"clip\":\"interact-right\",\"position\":[0,0,-5]},{\"id\":\"teacher\",\"age\":44,\"clip\":\"idle\",\"position\":[0,0,14]},{\"id\":\"guest-2\",\"age\":32,\"clip\":\"idle\",\"position\":[0,0,24]},{\"id\":\"guest-3\",\"age\":41,\"clip\":\"idle\",\"position\":[0,0,34]},{\"id\":\"guest-4\",\"age\":29,\"clip\":\"idle\",\"position\":[0,0,44]}]",
+            "props": "[{\"id\":\"loaf-0\",\"holder\":null,\"stage\":\"stock\",\"position\":[0,6.55,0]},{\"id\":\"loaf-1\",\"holder\":null,\"stage\":\"stock\",\"position\":[-8,6.55,-1]},{\"id\":\"loaf-2\",\"holder\":null,\"stage\":\"stock\",\"position\":[-3,6.55,-1]},{\"id\":\"loaf-3\",\"holder\":null,\"stage\":\"stock\",\"position\":[2,6.55,-1]},{\"id\":\"loaf-4\",\"holder\":null,\"stage\":\"stock\",\"position\":[7,6.55,-1]},{\"id\":\"ba-crutch\",\"holder\":\"ba\",\"stage\":\"support\",\"position\":[51.2,7,60]}]"
+          }
+        },
+        {
+          "viewport": "mobile",
+          "scenario": "wallet-return",
+          "shots": 5,
+          "controls": "play/pause/restart/seek/end/replay-after-completion",
+          "renderedTimeProbes": [
+            0,
+            24,
+            48,
+            72,
+            96,
+            119.9,
+            120,
+            37.5
+          ],
+          "stats": {
+            "audio": "{\"status\":\"off\",\"voices\":0,\"effects\":0,\"active\":0,\"offset\":0,\"voiceId\":\"\",\"rms\":0,\"decoded\":0,\"failures\":0}",
+            "cameraSubjects": "[\"minh\"]",
+            "sceneryCutaways": "0",
+            "sceneryBlockedSubjects": "0",
+            "triangles": "13594",
+            "drawCalls": "58",
+            "frames": "37",
+            "framing": "[{\"id\":\"minh\",\"head\":[0.011748221809868746,0.47884220182957044,0.9975840204056566],\"feet\":[-0.01709574239636068,-0.37808548807773645,0.9976449003129991]},{\"id\":\"tuan\",\"head\":[-5.082160389877554,0.49113196102505363,0.9970371554238376],\"feet\":[-5.099437412767511,-0.5072222044200219,0.9970840621109505]}]",
+            "contacts": "[{\"id\":\"minh\",\"skinned\":true,\"height\":16.599999999999998,\"head\":[-24.038800878716955,16.599999999417054,0.8057010293239784],\"hands\":{\"right\":[-27,14,1],\"left\":[-25.028117352613087,7.82107685398717,-3.1328481606785044]},\"targets\":{\"right\":[-27,14,1]},\"reach\":1},{\"id\":\"tuan\",\"skinned\":true,\"height\":15.8,\"head\":[-44.260473793498655,15.799999999453206,34.809023208594894],\"hands\":{\"right\":[-42.99941054177316,7.234577601297951,37.191863087830015],\"left\":[-46.896693353320366,7.2356243326311125,32.67460908534079]},\"targets\":{},\"reach\":0}]",
+            "modelGeneration": "supplied-civilians-v1",
+            "shadows": "true",
+            "ready": "true",
+            "scenario": "wallet-return",
+            "time": "0.000",
+            "beat": "0",
+            "assets": "11",
+            "assetFailures": "0",
+            "state": "{\"walletOwner\":\"minh\",\"walletHolder\":\"minh\",\"walletStage\":\"pocket\",\"walletCount\":1,\"ownerIdentified\":false,\"returned\":false,\"rewardAccepted\":false,\"restitution\":0.15,\"decisionLatencyMs\":350}",
+            "cast": "[{\"id\":\"minh\",\"age\":62,\"clip\":\"holding-right\",\"position\":[-24.99999959654983,0,0]},{\"id\":\"tuan\",\"age\":15,\"clip\":\"idle\",\"position\":[-45,0,35]}]",
+            "props": "[{\"id\":\"wallet\",\"holder\":\"minh\",\"stage\":\"pocket\",\"position\":[-24.99999959654983,7.8,-2.5]},{\"id\":\"phone\",\"holder\":\"minh\",\"stage\":\"phone-call\",\"position\":[-26.99999959654983,14,1]},{\"id\":\"reward-note\",\"holder\":\"minh\",\"stage\":\"offered\",\"position\":[-21.99999959654983,9.88095238095238,1.8369701987210297e-16]}]"
+          }
+        },
+        {
+          "viewport": "mobile",
+          "scenario": "sanitation-gratitude",
+          "shots": 5,
+          "controls": "play/pause/restart/seek/end/replay-after-completion",
+          "renderedTimeProbes": [
+            0,
+            24,
+            48,
+            72,
+            96,
+            119.9,
+            120,
+            37.5
+          ],
+          "stats": {
+            "audio": "{\"status\":\"off\",\"voices\":0,\"effects\":0,\"active\":0,\"offset\":0,\"voiceId\":\"\",\"rms\":0,\"decoded\":0,\"failures\":0}",
+            "cameraSubjects": "[\"hanh\"]",
+            "sceneryCutaways": "0",
+            "sceneryBlockedSubjects": "0",
+            "triangles": "13406",
+            "drawCalls": "54",
+            "frames": "73",
+            "framing": "[{\"id\":\"hanh\",\"head\":[-0.19160546212182222,0.4789153921691617,0.9985408340318838],\"feet\":[0.005463663816033732,-0.38346195285344054,0.9985590606045336]},{\"id\":\"hoang\",\"head\":[-5.383288396804803,0.5719357939196473,0.9983919207414641],\"feet\":[-5.284529200740152,-0.4432044591970749,0.9984111105871016]},{\"id\":\"lan\",\"head\":[1.6720723132457003,0.6258571863133399,0.9977275669971097],\"feet\":[1.624519991863703,-0.715932806580412,0.9977357093322995]}]",
+            "contacts": "[{\"id\":\"hanh\",\"skinned\":true,\"height\":15.96624819519112,\"head\":[-0.9511329164910374,15.742067288146204,1.670939604392977],\"hands\":{\"right\":[0,8.000000000000002,3],\"left\":[2.976007157835843,7.600098158594103,0.48578830768466275]},\"targets\":{\"right\":[0,8,2.9999999999999996]},\"reach\":1},{\"id\":\"hoang\",\"skinned\":true,\"height\":16.9,\"head\":[-29.883154018421273,16.899999999415133,30.808563320474455],\"hands\":{\"right\":[-32.56371325165983,7.738250725438943,31.871609392941107],\"left\":[-27.30642506813339,7.739370330472515,28.25442462199226]},\"targets\":{},\"reach\":0},{\"id\":\"lan\",\"skinned\":true,\"height\":16,\"head\":[30.07861642480161,15.999999997216987,34.66986035232706],\"hands\":{\"right\":[32.0852020529029,7.484124458413208,34.45070710361071],\"left\":[27.84132892476429,7.820755415327426,34.45102445211696]},\"targets\":{},\"reach\":0}]",
+            "modelGeneration": "supplied-civilians-v1",
+            "shadows": "true",
+            "ready": "true",
+            "scenario": "sanitation-gratitude",
+            "time": "0.000",
+            "beat": "0",
+            "assets": "11",
+            "assetFailures": "0",
+            "state": "{\"cupCount\":1,\"cupHolder\":null,\"cupOwner\":\"vendor\",\"cupStage\":\"counter\",\"leavesTotal\":8,\"leavesGathered\":0,\"helping\":false,\"workerFatigue\":0.00025846153846155527,\"sweepIntensity\":0.7499483076923077}",
+            "cast": "[{\"id\":\"hanh\",\"age\":48,\"clip\":\"interact-right\",\"position\":[0,0,0]},{\"id\":\"hoang\",\"age\":17,\"clip\":\"idle\",\"position\":[-30,0,30]},{\"id\":\"lan\",\"age\":17,\"clip\":\"idle\",\"position\":[30,0,35]}]",
+            "props": "[{\"id\":\"cup\",\"holder\":null,\"stage\":\"counter\",\"position\":[34.5,6.1,19]},{\"id\":\"hanh-broom\",\"holder\":\"hanh\",\"stage\":\"sweeping\",\"position\":[0.0000027952001400872342,8.000000000000002,3.000027715131495]},{\"id\":\"spare-broom\",\"holder\":null,\"stage\":\"available\",\"position\":[-12,8,3]},{\"id\":\"leaf-0\",\"holder\":null,\"stage\":\"being-gathered\",\"position\":[-18,0.06,8]},{\"id\":\"leaf-1\",\"holder\":null,\"stage\":\"being-gathered\",\"position\":[-14,0.06,8]},{\"id\":\"leaf-2\",\"holder\":null,\"stage\":\"being-gathered\",\"position\":[-10,0.06,8]},{\"id\":\"leaf-3\",\"holder\":null,\"stage\":\"being-gathered\",\"position\":[-6,0.06,8]},{\"id\":\"leaf-4\",\"holder\":null,\"stage\":\"being-gathered\",\"position\":[-18,0.06,12]},{\"id\":\"leaf-5\",\"holder\":null,\"stage\":\"being-gathered\",\"position\":[-14,0.06,12]},{\"id\":\"leaf-6\",\"holder\":null,\"stage\":\"being-gathered\",\"position\":[-10,0.06,12]},{\"id\":\"leaf-7\",\"holder\":null,\"stage\":\"being-gathered\",\"position\":[-6,0.06,12]}]"
+          }
+        },
+        {
+          "viewport": "mobile",
+          "scenario": "kitten-care",
+          "shots": 5,
+          "controls": "play/pause/restart/seek/end/replay-after-completion",
+          "renderedTimeProbes": [
+            0,
+            24,
+            48,
+            72,
+            96,
+            119.9,
+            120,
+            37.5
+          ],
+          "stats": {
+            "audio": "{\"status\":\"off\",\"voices\":0,\"effects\":0,\"active\":0,\"offset\":0,\"voiceId\":\"\",\"rms\":0,\"decoded\":0,\"failures\":0}",
+            "cameraSubjects": "[\"miu\"]",
+            "sceneryCutaways": "0",
+            "sceneryBlockedSubjects": "0",
+            "triangles": "19310",
+            "drawCalls": "86",
+            "frames": "107",
+            "framing": "[{\"id\":\"thanh\",\"head\":[-22.51565373189047,3.879835940804022,0.9881946710311953],\"feet\":[-21.177168947092323,-0.2969975046285793,0.9891767636080472]},{\"id\":\"mai\",\"head\":[-62.67759942763089,8.476542414589028,0.9606025316402],\"feet\":[-56.76022774935923,-1.394310517510008,0.9645922526085592]},{\"id\":\"miu\",\"head\":[-0.053627457119032364,0.24063623050854965,0.9908519476889829],\"feet\":[-0.0533569512862795,-0.22014466166050847,0.9908985964315997]}]",
+            "contacts": "[{\"id\":\"thanh\",\"skinned\":true,\"height\":17,\"head\":[-33.71856663793202,16.99999999940301,25.087805643114354],\"hands\":{\"right\":[-33.065360649078755,7.9331697387912765,27.554732902672978],\"left\":[-36.911391265731886,8.00953653721578,22.423015648925833]},\"targets\":{},\"reach\":0},{\"id\":\"mai\",\"skinned\":true,\"height\":12.2,\"head\":[-21.772342590260788,12.199999997877953,31.876978666949512],\"hands\":{\"right\":[-20.62831535053823,5.706644899540068,32.90658608032484],\"left\":[-22.784533859401858,5.963326004187159,30.49368009193323]},\"targets\":{},\"reach\":0}]",
+            "modelGeneration": "supplied-civilians-v1",
+            "shadows": "true",
+            "ready": "true",
+            "scenario": "kitten-care",
+            "time": "0.000",
+            "beat": "0",
+            "assets": "11",
+            "assetFailures": "0",
+            "state": "{\"careMode\":\"warm-and-call-rescue\",\"childRushed\":false,\"rescueContacted\":false,\"rescueGuidance\":false,\"clothReady\":false,\"warmed\":false,\"kittenHolder\":null,\"medicalProcedureSimulated\":false,\"milkGiven\":false}",
+            "cast": "[{\"id\":\"thanh\",\"age\":68,\"clip\":\"idle\",\"position\":[-35,0,25]},{\"id\":\"mai\",\"age\":8,\"clip\":\"idle\",\"position\":[-22,0,32]},{\"id\":\"miu\",\"age\":2,\"clip\":\"idle\",\"position\":[0,0.15,0]}]",
+            "props": "[{\"id\":\"warm-cloth\",\"holder\":\"mai\",\"stage\":\"folded\",\"position\":[-19.76288436346984,5.809523809523809,30.001171936160528]}]"
+          }
+        },
+        {
+          "viewport": "mobile",
+          "scenario": "bakery-courtesy",
+          "shots": 5,
+          "controls": "play/pause/restart/seek/end/replay-after-completion",
+          "renderedTimeProbes": [
+            0,
+            24,
+            48,
+            72,
+            96,
+            119.9,
+            120,
+            37.5
+          ],
+          "stats": {
+            "audio": "{\"status\":\"off\",\"voices\":0,\"effects\":0,\"active\":0,\"offset\":0,\"voiceId\":\"\",\"rms\":0,\"decoded\":0,\"failures\":0}",
+            "cameraSubjects": "[\"office\",\"teacher\"]",
+            "sceneryCutaways": "0",
+            "sceneryBlockedSubjects": "0",
+            "triangles": "24148",
+            "drawCalls": "127",
+            "frames": "144",
+            "framing": "[{\"id\":\"ba\",\"head\":[0.5207635506348487,0.046261812584293786,0.9995711062649923],\"feet\":[0.5039151795078203,-0.13297226802034598,0.9995742942434018]},{\"id\":\"office\",\"head\":[0.14977844137534932,0.059111338806883386,0.9995753075513878],\"feet\":[0.13317869022230822,-0.12845009792988893,0.9995777580264046]},{\"id\":\"seller\",\"head\":[0.04999586470149059,0.13415825961130734,0.9996656351405263],\"feet\":[0.05413780012929129,-0.010793747693999305,0.9996678776057116]},{\"id\":\"teacher\",\"head\":[-0.11828687574088866,0.1179732757030767,0.9996498452958319],\"feet\":[-0.12232889157481458,-0.031880009746194725,0.9996517264582259]},{\"id\":\"guest-2\",\"head\":[-0.20958810157498117,0.11548163871722925,0.9996402770503005],\"feet\":[-0.22061082153937875,-0.043623860725750994,0.9996427311859128]},{\"id\":\"guest-3\",\"head\":[-0.30736784181947663,0.09799435294105287,0.9996305533989197],\"feet\":[-0.3229178204488997,-0.05584867305689096,0.9996333675184002]},{\"id\":\"guest-4\",\"head\":[-0.4264480808305309,0.097495912626278,0.9996213944490436],\"feet\":[-0.42950232335704364,-0.06858461057190143,0.999623612351521]}]",
+            "contacts": "[{\"id\":\"ba\",\"skinned\":true,\"height\":16.5,\"head\":[55.56886153673142,16.49999999711514,59.83914637029481],\"hands\":{\"right\":[57.2638540342838,7.429796363673048,59.565466720291624],\"left\":[51.19999999999998,6.999999999999999,59.99999999999999]},\"targets\":{\"left\":[51.19999999999998,7,59.99999999999999]},\"reach\":1},{\"id\":\"office\",\"skinned\":true,\"height\":17.3,\"head\":[40.368635405080376,17.299999999401287,64.24933118629477],\"hands\":{\"right\":[43.24780782027258,7.921404588762936,64.90057703234976],\"left\":[36.715324412226224,7.922550693323931,64.91788025953205]},\"targets\":{},\"reach\":0},{\"id\":\"seller\",\"skinned\":true,\"height\":16.200000000000003,\"head\":[-0.07959913011163079,16.1999999971822,-4.66573360673116],\"hands\":{\"right\":[-2.11126705799043,7.57767601414337,-4.443840921789738],\"left\":[2.1856544863072833,7.918514858019015,-4.444162235090717]},\"targets\":{},\"reach\":0},{\"id\":\"teacher\",\"skinned\":true,\"height\":16.1,\"head\":[0.07910777745662075,16.09999999719959,13.667796979529115],\"hands\":{\"right\":[2.098234545286785,7.53090023627829,13.447274008636265],\"left\":[-2.1721627919473625,7.869635136673223,13.447593339133492]},\"targets\":{},\"reach\":0},{\"id\":\"guest-2\",\"skinned\":true,\"height\":16.8,\"head\":[0.5792044737628974,16.799999997062688,23.83622175884564],\"hands\":{\"right\":[2.3050147385703212,7.564883570285282,23.55756593097347],\"left\":[-2.460445985508795,7.7982327105395814,23.603207785058693]},\"targets\":{},\"reach\":0},{\"id\":\"guest-3\",\"skinned\":true,\"height\":15.96624819519112,\"head\":[0.9511329164910373,15.966248193109314,34.0331179040975],\"hands\":{\"right\":[3.0273902126127865,7.151607099674988,33.72450473392932],\"left\":[-2.9760071578358436,7.761235181579691,33.42155756829609]},\"targets\":{},\"reach\":0},{\"id\":\"guest-4\",\"skinned\":true,\"height\":16.8,\"head\":[0.08254724604169124,16.799999997077833,43.653353369943424],\"hands\":{\"right\":[2.189462134212297,7.858330681333868,43.423242463701854],\"left\":[-2.2666046524668126,8.211793186093795,43.42357568012449]},\"targets\":{},\"reach\":0}]",
+            "modelGeneration": "supplied-civilians-v1",
+            "shadows": "true",
+            "ready": "true",
+            "scenario": "bakery-courtesy",
+            "time": "0.000",
+            "beat": "0",
+            "assets": "11",
+            "assetFailures": "0",
+            "state": "{\"queueOrder\":[\"teacher\",\"guest-2\",\"guest-3\",\"guest-4\"],\"courtesyConsented\":false,\"priorityId\":null,\"servedIds\":[],\"currentServiceId\":null,\"breadTotal\":5,\"breadStock\":5,\"officeCutQueue\":false,\"officeJoinedAtTail\":false}",
+            "cast": "[{\"id\":\"ba\",\"age\":55,\"clip\":\"idle\",\"position\":[55,0,60]},{\"id\":\"office\",\"age\":26,\"clip\":\"idle\",\"position\":[39.99999746091871,0,64.99999637274102]},{\"id\":\"seller\",\"age\":35,\"clip\":\"interact-right\",\"position\":[0,0,-5]},{\"id\":\"teacher\",\"age\":44,\"clip\":\"idle\",\"position\":[0,0,14]},{\"id\":\"guest-2\",\"age\":32,\"clip\":\"idle\",\"position\":[0,0,24]},{\"id\":\"guest-3\",\"age\":41,\"clip\":\"idle\",\"position\":[0,0,34]},{\"id\":\"guest-4\",\"age\":29,\"clip\":\"idle\",\"position\":[0,0,44]}]",
+            "props": "[{\"id\":\"loaf-0\",\"holder\":null,\"stage\":\"stock\",\"position\":[0,6.55,0]},{\"id\":\"loaf-1\",\"holder\":null,\"stage\":\"stock\",\"position\":[-8,6.55,-1]},{\"id\":\"loaf-2\",\"holder\":null,\"stage\":\"stock\",\"position\":[-3,6.55,-1]},{\"id\":\"loaf-3\",\"holder\":null,\"stage\":\"stock\",\"position\":[2,6.55,-1]},{\"id\":\"loaf-4\",\"holder\":null,\"stage\":\"stock\",\"position\":[7,6.55,-1]},{\"id\":\"ba-crutch\",\"holder\":\"ba\",\"stage\":\"support\",\"position\":[51.2,7,60]}]"
+          }
+        }
+      ]
+    },
+    "gallery": {
+      "production": false,
+      "source": {
+        "commit_sha": "68060d648e540e2b1b3fffacad1b1dbd1e200aeb",
+        "built_at": "2026-10-29T09:24:10.193Z"
+      },
+      "renderer": "Chromium SwiftShader",
+      "worldWrites": false,
+      "models": [
+        {
+          "id": "supplied/jacket",
+          "data": {
+            "loading": "false",
+            "ready": "true",
+            "renderedModel": "supplied/jacket",
+            "frames": "25",
+            "triangles": "2495",
+            "clip": "Walk",
+            "pose": "{\"clip\":\"Walk\",\"resolvedClip\":\"Walk\",\"leg\":[-0.05621416173883797,-0.01649591466864217,-0.09837091506299361,0.9934238853021976],\"position\":[0,0.07844931662446375,0],\"skinned\":true,\"height\":18,\"profile\":\"xom-supplied-v1\"}",
+            "model": "supplied/jacket",
+            "skinned": "true"
+          }
+        },
+        {
+          "id": "supplied/service",
+          "data": {
+            "loading": "false",
+            "ready": "true",
+            "renderedModel": "supplied/service",
+            "frames": "44",
+            "triangles": "2599",
+            "clip": "Walk",
+            "pose": "{\"clip\":\"Walk\",\"resolvedClip\":\"Walk\",\"leg\":[-0.09525546822782628,-0.013583839637781031,-0.08848862042145415,0.9914190028082478],\"position\":[0,0.07369001838720579,0],\"skinned\":true,\"height\":18,\"profile\":\"xom-supplied-v1\"}",
+            "model": "supplied/service",
+            "skinned": "true"
+          }
+        },
+        {
+          "id": "supplied/leisure",
+          "data": {
+            "loading": "false",
+            "ready": "true",
+            "renderedModel": "supplied/leisure",
+            "frames": "65",
+            "triangles": "2462",
+            "clip": "Walk",
+            "pose": "{\"clip\":\"Walk\",\"resolvedClip\":\"Walk\",\"leg\":[-0.1326063508336559,-0.013260644271014466,-0.09174442009206533,0.9868245398317118],\"position\":[0,0.1845681478210449,0],\"skinned\":true,\"height\":18,\"profile\":\"xom-supplied-v1\"}",
+            "model": "supplied/leisure",
+            "skinned": "true"
+          }
+        },
+        {
+          "id": "supplied/office",
+          "data": {
+            "loading": "false",
+            "ready": "true",
+            "renderedModel": "supplied/office",
+            "frames": "88",
+            "triangles": "2449",
+            "clip": "Walk",
+            "pose": "{\"clip\":\"Walk\",\"resolvedClip\":\"Walk\",\"leg\":[-0.0662661365575971,0.0035511884544434085,-0.022682582748541694,0.9975378131410091],\"position\":[0,0.24752280298555407,0],\"skinned\":true,\"height\":18,\"profile\":\"xom-supplied-v1\"}",
+            "model": "supplied/office",
+            "skinned": "true"
+          }
+        },
+        {
+          "id": "supplied/waistcoat",
+          "data": {
+            "loading": "false",
+            "ready": "true",
+            "renderedModel": "supplied/waistcoat",
+            "frames": "111",
+            "triangles": "2500",
+            "clip": "Walk",
+            "pose": "{\"clip\":\"Walk\",\"resolvedClip\":\"Walk\",\"leg\":[-0.02880291424857648,0.0038381709579067896,-0.02151240645186291,0.9993462247605366],\"position\":[0,0.12997012670783364,0],\"skinned\":true,\"height\":18,\"profile\":\"xom-supplied-v1\"}",
+            "model": "supplied/waistcoat",
+            "skinned": "true"
+          }
+        }
+      ],
+      "errors": []
+    },
+    "g0": {
+      "production": false,
+      "renderer": "Chromium SwiftShader",
+      "fixture": "Synthetic world; all APIs mocked. Compiled local D1 persistence tested separately.",
+      "cases": [
+        {
+          "viewport": "desktop",
+          "initial": {
+            "canvas": [
+              1788,
+              1118
+            ],
+            "css": [
+              1440,
+              900
+            ],
+            "quality": "balanced",
+            "pixelRatio": 1.2422599874998832
+          },
+          "pauseErrors": [
+            403,
+            409,
+            503,
+            "network",
+            "invalid-ack"
+          ],
+          "noDuplicateWrite": true,
+          "pausedMotionFrozen": true,
+          "chatFocusDraftAndNoSteal": true,
+          "keyboard": true,
+          "metadata": true,
+          "responsive320": true,
+          "presetsAndResize": true,
+          "dynamicDPR": true,
+          "pollKeepsCanvas": true,
+          "OSMRemount": true,
+          "hiddenResume": true,
+          "contextLossRetry": true,
+          "pageErrors": []
+        },
+        {
+          "viewport": "mobile",
+          "initial": {
+            "canvas": [
+              585,
+              1266
+            ],
+            "css": [
+              390,
+              844
+            ],
+            "quality": "balanced",
+            "pixelRatio": 1.5
+          },
+          "pauseErrors": [
+            403,
+            409,
+            503,
+            "network",
+            "invalid-ack"
+          ],
+          "noDuplicateWrite": true,
+          "pausedMotionFrozen": true,
+          "chatFocusDraftAndNoSteal": true,
+          "keyboard": true,
+          "metadata": true,
+          "responsive320": true,
+          "presetsAndResize": true,
+          "dynamicDPR": true,
+          "pollKeepsCanvas": true,
+          "OSMRemount": true,
+          "hiddenResume": true,
+          "contextLossRetry": true,
+          "pageErrors": []
+        },
+        {
+          "reducedMotion": true,
+          "preferenceChange": true,
+          "worldNotPaused": true,
+          "pageErrors": []
+        },
+        {
+          "transportFallback": "unsupported",
+          "pageErrors": []
+        },
+        {
+          "transportFallback": "corrupt",
+          "pageErrors": []
+        },
+        {
+          "transportFallback": "core-failure",
+          "pageErrors": []
+        },
+        {
+          "transportFallback": "late-core",
+          "pageErrors": []
+        }
+      ]
+    },
+    "sound": {
+      "renderer": "Chromium SwiftShader",
+      "production": false,
+      "cases": [
+        {
+          "scenario": "wallet-return",
+          "audible": {
+            "status": "ready",
+            "voices": 1,
+            "effects": 0,
+            "active": 2,
+            "offset": 0.29999999999999716,
+            "voiceId": "wallet-return-54",
+            "rms": 0.1230042971920019,
+            "decoded": 21,
+            "failures": 0
+          },
+          "pauseStopsAllSources": true,
+          "seekDropsOldVoice": true
+        },
+        {
+          "scenario": "sanitation-gratitude",
+          "audible": {
+            "status": "ready",
+            "voices": 2,
+            "effects": 3,
+            "active": 3,
+            "offset": 0.3000000000000007,
+            "voiceId": "sanitation-gratitude-31",
+            "rms": 0.1552771187137832,
+            "decoded": 21,
+            "failures": 0
+          },
+          "pauseStopsAllSources": true,
+          "seekDropsOldVoice": true
+        },
+        {
+          "scenario": "kitten-care",
+          "audible": {
+            "status": "ready",
+            "voices": 3,
+            "effects": 4,
+            "active": 2,
+            "offset": 0.3000000000000007,
+            "voiceId": "kitten-care-25",
+            "rms": 0.004328570004971647,
+            "decoded": 21,
+            "failures": 0
+          },
+          "pauseStopsAllSources": true,
+          "seekDropsOldVoice": true
+        },
+        {
+          "scenario": "bakery-courtesy",
+          "audible": {
+            "status": "ready",
+            "voices": 4,
+            "effects": 4,
+            "active": 2,
+            "offset": 0.29999999999999716,
+            "voiceId": "bakery-courtesy-60",
+            "rms": 0.005174166571815721,
+            "decoded": 21,
+            "failures": 0
+          },
+          "pauseStopsAllSources": true,
+          "seekDropsOldVoice": true
+        }
+      ],
+      "footsteps": true,
+      "hiddenStops": true,
+      "visibilityFixture": "document.hidden override exercises real visibilitychange handler",
+      "navigationDestroysOldDocument": true,
+      "explicitDispose": "separate strict API lifecycle unit test",
+      "navigationDestination": "intercepted local HTML fixture; unload callbacks are not reliably observable",
+      "partialFetch": {
+        "status": "partial",
+        "voices": 0,
+        "effects": 0,
+        "active": 0,
+        "offset": 0,
+        "voiceId": "",
+        "rms": 0,
+        "decoded": 20,
+        "failures": 1
+      },
+      "unsupportedGraceful": true,
+      "unverified": [
+        "human listening/MOS",
+        "device speaker volume"
+      ]
+    },
+    "resourceGalleryCompatibility": {
+      "source": "a9f7385527e6dd71e2d428e78750c50e80b96f7d",
+      "report": {
+        "production": false,
+        "renderer": "Chromium SwiftShader",
+        "cases": [
+          {
+            "id": "supplied/jacket",
+            "stats": {
+              "loading": "false",
+              "ready": "true",
+              "renderedModel": "supplied/jacket",
+              "frames": "11",
+              "triangles": "2047",
+              "clip": "Walk",
+              "pose": "{\"clip\":\"Walk\",\"resolvedClip\":\"Walk\",\"leg\":[-0.15821328655176897,-0.006573001754628601,-0.05991724063816855,0.9855634306734039],\"position\":[0,-0.03784516957989778,0],\"skinned\":true,\"height\":18,\"profile\":\"xom-supplied-v1\"}",
+              "model": "supplied/jacket",
+              "skinned": "true"
+            }
+          },
+          {
+            "id": "supplied/service",
+            "stats": {
+              "loading": "false",
+              "ready": "true",
+              "renderedModel": "supplied/service",
+              "frames": "17",
+              "triangles": "2047",
+              "clip": "Walk",
+              "pose": "{\"clip\":\"Walk\",\"resolvedClip\":\"Walk\",\"leg\":[-0.15821328655176897,-0.006573001754628601,-0.05991724063816855,0.9855634306734039],\"position\":[0,-0.03768666800220055,0],\"skinned\":true,\"height\":18,\"profile\":\"xom-supplied-v1\"}",
+              "model": "supplied/service",
+              "skinned": "true"
+            }
+          },
+          {
+            "id": "supplied/leisure",
+            "stats": {
+              "loading": "false",
+              "ready": "true",
+              "renderedModel": "supplied/leisure",
+              "frames": "24",
+              "triangles": "2031",
+              "clip": "Walk",
+              "pose": "{\"clip\":\"Walk\",\"resolvedClip\":\"Walk\",\"leg\":[-0.14202005184846844,-0.009328937186244522,-0.0640155877742748,0.9877475792558782],\"position\":[0,0.004296505446611976,0],\"skinned\":true,\"height\":18,\"profile\":\"xom-supplied-v1\"}",
+              "model": "supplied/leisure",
+              "skinned": "true"
+            }
+          },
+          {
+            "id": "supplied/office",
+            "stats": {
+              "loading": "false",
+              "ready": "true",
+              "renderedModel": "supplied/office",
+              "frames": "31",
+              "triangles": "2047",
+              "clip": "Walk",
+              "pose": "{\"clip\":\"Walk\",\"resolvedClip\":\"Walk\",\"leg\":[-0.17480229947063172,0.007030118396104699,0.017026742670288742,0.9844312183028108],\"position\":[0,0.056290192912470394,0],\"skinned\":true,\"height\":18,\"profile\":\"xom-supplied-v1\"}",
+              "model": "supplied/office",
+              "skinned": "true"
+            }
+          },
+          {
+            "id": "supplied/waistcoat",
+            "stats": {
+              "loading": "false",
+              "ready": "true",
+              "renderedModel": "supplied/waistcoat",
+              "frames": "38",
+              "triangles": "2044",
+              "clip": "Walk",
+              "pose": "{\"clip\":\"Walk\",\"resolvedClip\":\"Walk\",\"leg\":[-0.17480229947063172,0.007030118396104699,0.017026742670288742,0.9844312183028108],\"position\":[0,0.05687684348705766,0],\"skinned\":true,\"height\":18,\"profile\":\"xom-supplied-v1\"}",
+              "model": "supplied/waistcoat",
+              "skinned": "true"
+            }
+          },
+          {
+            "id": "gobkit-animal/anglerfish",
+            "stats": {
+              "loading": "false",
+              "ready": "true",
+              "renderedModel": "gobkit-animal/anglerfish",
+              "frames": "44",
+              "triangles": "314",
+              "clip": "walk",
+              "pose": "{\"clip\":\"walk\",\"resolvedClip\":\"walk\",\"leg\":[-7.608030714491808e-8,-0.005813713220736337,0.9999628738659934,0.006363771820205894],\"position\":[0,7.665916346155655e-8,0],\"skinned\":true,\"height\":18,\"profile\":\"imported\"}",
+              "model": "gobkit-animal/anglerfish",
+              "skinned": "true"
+            }
+          },
+          {
+            "id": "gobkit-animal007/chick",
+            "stats": {
+              "loading": "false",
+              "ready": "true",
+              "renderedModel": "gobkit-animal007/chick",
+              "frames": "50",
+              "triangles": "364",
+              "clip": "walk",
+              "pose": "{\"clip\":\"walk\",\"resolvedClip\":\"walk\",\"leg\":[-6.65976509517384e-8,-0.005784270776638906,0.9999630432245391,0.006360377087617481],\"position\":[0,0.1289248767252081,0],\"skinned\":true,\"height\":18,\"profile\":\"imported\"}",
+              "model": "gobkit-animal007/chick",
+              "skinned": "true"
+            }
+          },
+          {
+            "id": "gobkit-animalB/bee",
+            "stats": {
+              "loading": "false",
+              "ready": "true",
+              "renderedModel": "gobkit-animalB/bee",
+              "frames": "57",
+              "triangles": "376",
+              "clip": "walk",
+              "pose": "{\"clip\":\"walk\",\"resolvedClip\":\"walk\",\"leg\":[-7.459603545653077e-8,-0.0019093814136005615,0.9999792602048583,0.006150887964834829],\"position\":[0,9.769962616701378e-15,0],\"skinned\":true,\"height\":18,\"profile\":\"imported\"}",
+              "model": "gobkit-animalB/bee",
+              "skinned": "true"
+            }
+          },
+          {
+            "id": "gobkit-birds/eagle",
+            "stats": {
+              "loading": "false",
+              "ready": "true",
+              "renderedModel": "gobkit-birds/eagle",
+              "frames": "72",
+              "triangles": "488",
+              "clip": "walk",
+              "pose": "{\"clip\":\"walk\",\"resolvedClip\":\"walk\",\"leg\":[-6.541475701042189e-8,-0.009659742978735173,0.999931759737752,0.00657002536852519],\"position\":[0,0.13397499961530357,0],\"skinned\":true,\"height\":18,\"profile\":\"imported\"}",
+              "model": "gobkit-birds/eagle",
+              "skinned": "true"
+            }
+          },
+          {
+            "id": "gobkit-farm/black-sheep",
+            "stats": {
+              "loading": "false",
+              "ready": "true",
+              "renderedModel": "gobkit-farm/black-sheep",
+              "frames": "80",
+              "triangles": "888",
+              "clip": "walk",
+              "pose": "{\"clip\":\"walk\",\"resolvedClip\":\"walk\",\"leg\":[-6.541475701042067e-8,-0.009659742978734344,0.999931759737752,0.006570025368525145],\"position\":[0,0.07455616752192232,0],\"skinned\":true,\"height\":18,\"profile\":\"imported\"}",
+              "model": "gobkit-farm/black-sheep",
+              "skinned": "true"
+            }
+          },
+          {
+            "id": "gobkit-human001/cashier",
+            "stats": {
+              "loading": "false",
+              "ready": "true",
+              "renderedModel": "gobkit-human001/cashier",
+              "frames": "87",
+              "triangles": "2376",
+              "clip": "Walk",
+              "pose": "{\"clip\":\"Walk\",\"resolvedClip\":\"Walk\",\"leg\":[0.19663542836464776,0,0,0.9804766740274098],\"position\":[0,-0.053761932965952226,0],\"skinned\":true,\"height\":18,\"profile\":\"imported\"}",
+              "model": "gobkit-human001/cashier",
+              "skinned": "true"
+            }
+          },
+          {
+            "id": "gobkit-human002/accountant",
+            "stats": {
+              "loading": "false",
+              "ready": "true",
+              "renderedModel": "gobkit-human002/accountant",
+              "frames": "93",
+              "triangles": "2256",
+              "clip": "Walk",
+              "pose": "{\"clip\":\"Walk\",\"resolvedClip\":\"Walk\",\"leg\":[0.18721238763469447,0,0,0.9823194602145051],\"position\":[0,-0.056474315569180145,0],\"skinned\":true,\"height\":18,\"profile\":\"imported\"}",
+              "model": "gobkit-human002/accountant",
+              "skinned": "true"
+            }
+          },
+          {
+            "id": "gobkit-human003/archer",
+            "stats": {
+              "loading": "false",
+              "ready": "true",
+              "renderedModel": "gobkit-human003/archer",
+              "frames": "99",
+              "triangles": "2360",
+              "clip": "Walk",
+              "pose": "{\"clip\":\"Walk\",\"resolvedClip\":\"Walk\",\"leg\":[0.18721238763469447,0,0,0.9823194602145051],\"position\":[0,-0.038667787996824854,0],\"skinned\":true,\"height\":18,\"profile\":\"imported\"}",
+              "model": "gobkit-human003/archer",
+              "skinned": "true"
+            }
+          },
+          {
+            "id": "gobkit-human004/army-general",
+            "stats": {
+              "loading": "false",
+              "ready": "true",
+              "renderedModel": "gobkit-human004/army-general",
+              "frames": "106",
+              "triangles": "2612",
+              "clip": "Walk",
+              "pose": "{\"clip\":\"Walk\",\"resolvedClip\":\"Walk\",\"leg\":[0.18781553006462137,0,0,0.9822043202239263],\"position\":[0,-0.033154752989531085,0],\"skinned\":true,\"height\":18,\"profile\":\"imported\"}",
+              "model": "gobkit-human004/army-general",
+              "skinned": "true"
+            }
+          },
+          {
+            "id": "gobkit-human005/chief-surgeon",
+            "stats": {
+              "loading": "false",
+              "ready": "true",
+              "renderedModel": "gobkit-human005/chief-surgeon",
+              "frames": "112",
+              "triangles": "2272",
+              "clip": "Walk",
+              "pose": "{\"clip\":\"Walk\",\"resolvedClip\":\"Walk\",\"leg\":[0.18721238763469447,0,0,0.9823194602145051],\"position\":[0,-0.04336924083709422,0],\"skinned\":true,\"height\":18,\"profile\":\"imported\"}",
+              "model": "gobkit-human005/chief-surgeon",
+              "skinned": "true"
+            }
+          },
+          {
+            "id": "gobkit-human007/extinguisher-operator",
+            "stats": {
+              "loading": "false",
+              "ready": "true",
+              "renderedModel": "gobkit-human007/extinguisher-operator",
+              "frames": "119",
+              "triangles": "5506",
+              "clip": "Walk",
+              "pose": "{\"clip\":\"Walk\",\"resolvedClip\":\"Walk\",\"leg\":[0.18721238763349804,0,0,0.9823194602147333],\"position\":[0,-0.04628495834699786,0],\"skinned\":true,\"height\":18,\"profile\":\"imported\"}",
+              "model": "gobkit-human007/extinguisher-operator",
+              "skinned": "true"
+            }
+          },
+          {
+            "id": "gobkit-human008/air-traveller",
+            "stats": {
+              "loading": "false",
+              "ready": "true",
+              "renderedModel": "gobkit-human008/air-traveller",
+              "frames": "126",
+              "triangles": "4800",
+              "clip": "Walk",
+              "pose": "{\"clip\":\"Walk\",\"resolvedClip\":\"Walk\",\"leg\":[0.18721238763349804,0,0,0.9823194602147333],\"position\":[0,-0.050835571958495515,0],\"skinned\":true,\"height\":18,\"profile\":\"imported\"}",
+              "model": "gobkit-human008/air-traveller",
+              "skinned": "true"
+            }
+          },
+          {
+            "id": "kaykit-adventurers/arrow_bow",
+            "stats": {
+              "loading": "false",
+              "ready": "true",
+              "renderedModel": "kaykit-adventurers/arrow_bow",
+              "frames": "129",
+              "triangles": "100",
+              "clip": "static",
+              "pose": "null",
+              "model": "kaykit-adventurers/arrow_bow",
+              "skinned": "false"
+            }
+          },
+          {
+            "id": "kaykit-furniture/armchair",
+            "stats": {
+              "loading": "false",
+              "ready": "true",
+              "renderedModel": "kaykit-furniture/armchair",
+              "frames": "131",
+              "triangles": "576",
+              "clip": "static",
+              "pose": "null",
+              "model": "kaykit-furniture/armchair",
+              "skinned": "false"
+            }
+          },
+          {
+            "id": "kaykit-city/base",
+            "stats": {
+              "loading": "false",
+              "ready": "true",
+              "renderedModel": "kaykit-city/base",
+              "frames": "133",
+              "triangles": "108",
+              "clip": "static",
+              "pose": "null",
+              "model": "kaykit-city/base",
+              "skinned": "false"
+            }
+          },
+          {
+            "id": "gobkit-human002/it-engineer",
+            "stats": {
+              "loading": "false",
+              "ready": "true",
+              "renderedModel": "gobkit-human002/it-engineer",
+              "frames": "145",
+              "triangles": "2906",
+              "clip": "Walk",
+              "pose": "{\"clip\":\"Walk\",\"resolvedClip\":\"Walk\",\"leg\":[0.19663544271895542,0,0,0.9804766711486411],\"position\":[0,-0.01881920384937731,0],\"skinned\":true,\"height\":18,\"profile\":\"imported\"}",
+              "model": "gobkit-human002/it-engineer",
+              "skinned": "true"
+            }
+          },
+          {
+            "id": "gobkit-human002/receptionist",
+            "stats": {
+              "loading": "false",
+              "ready": "true",
+              "renderedModel": "gobkit-human002/receptionist",
+              "frames": "159",
+              "triangles": "2403",
+              "clip": "Walk",
+              "pose": "{\"clip\":\"Walk\",\"resolvedClip\":\"Walk\",\"leg\":[0.19663544271895542,0,0,0.9804766711486411],\"position\":[0,-0.05803072005913001,0],\"skinned\":true,\"height\":18,\"profile\":\"imported\"}",
+              "model": "gobkit-human002/receptionist",
+              "skinned": "true"
+            }
+          },
+          {
+            "id": "gobkit-animal/corgi",
+            "stats": {
+              "loading": "false",
+              "ready": "true",
+              "renderedModel": "gobkit-animal/corgi",
+              "frames": "174",
+              "triangles": "556",
+              "clip": "walk",
+              "pose": "{\"clip\":\"walk\",\"resolvedClip\":\"walk\",\"leg\":[-7.608030539645447e-8,-0.005813713087089338,0.9999628508850804,0.006363771673914019],\"position\":[0,0.15247424546539343,0],\"skinned\":true,\"height\":18,\"profile\":\"imported\"}",
+              "model": "gobkit-animal/corgi",
+              "skinned": "true"
+            }
+          },
+          {
+            "id": "kaykit-adventurers/knight",
+            "stats": {
+              "loading": "false",
+              "ready": "true",
+              "renderedModel": "kaykit-adventurers/knight",
+              "frames": "189",
+              "triangles": "5848",
+              "clip": "Walking_A",
+              "pose": "{\"clip\":\"Walking_A\",\"resolvedClip\":\"Walking_A\",\"leg\":[0.9997755533996241,-1.7400992968192064e-7,-2.9407888592769828e-8,0.02118592742030367],\"position\":[0,0.24456734236905958,0],\"skinned\":true,\"height\":18,\"profile\":\"imported\"}",
+              "model": "kaykit-adventurers/knight",
+              "skinned": "true"
+            }
+          }
+        ],
+        "pageErrors": [],
+        "bindingWarnings": [],
+        "pauseStopsDraws": true,
+        "pausedClipChange": true,
+        "selectionRace": true,
+        "contextLossRetry": true,
+        "loadFailureRetry": true
+      },
+      "note": "Gallery/runtime loader code unchanged; five final supplied models rendered again on68060d6."
+    },
+    "screenshots": "docs/screenshots/supplied-civilians/manifest.json",
+    "manualReview": "Actual before/after images inspected; rejected body/hair/shoulder/shoe intersections and roof-obscured bakery corrected. Final desktop/mobile settled shots and five-model contact sheet retained."
+  },
+  "failuresFixed": [
+    {
+      "source": "dcecc55",
+      "finding": "Sit radius exceeded4.8; G0 test assumed CC0 for every asset",
+      "disposition": "bounded authored Sit; scoped owner permission admission with relabel/tamper rejection"
+    },
+    {
+      "source": "a9a6759",
+      "finding": "simplified garments cut through complete underlying body; Studio cast budget overflow",
+      "disposition": "body coverage removal, separate exposed calves and shoes; skin-aware attribute error and scene shadow budget"
+    },
+    {
+      "source": "a9f7385",
+      "finding": "visual head/shoulder skin intersections despite mathematical gates",
+      "disposition": "preserved skin boundaries/face; hair clearance and correct shoulder cap; keep torso bridge triangles"
+    },
+    {
+      "source": "ea84ccb",
+      "finding": "8Studio mathematical cases passed but roof hid bakery in real screenshot; shoe skin showed",
+      "disposition": "decorative scenery cutaway and new per-shot sightline assertion; cull skin inside shoes"
+    },
+    {
+      "source": "a9f7385",
+      "finding": "Wrangler preview exited1 with blank SDK error; later browser saw connection refused",
+      "disposition": "retain DB, restart correct compiled preview; final entire browser sequence run sequentially and passed. Root cause unresolved; no long-session/soak claim"
+    }
+  ],
+  "sourceArchives": {
+    "registry": "data/assets/source-archives.json",
+    "localCount": 4,
+    "bytes": 8437107889,
+    "verification": "all4 regular files, exact bytes/SHA256 verified read-only",
+    "externalBackup": {
+      "provider": "GitHub draft release",
+      "releaseId": 427551403,
+      "tag": "asset-source-backup-2026-10-29",
+      "isDraft": true,
+      "assetsUploaded": 0,
+      "status": "BLOCKED_HTTP_401",
+      "reason": "Current GitHub integration can create/read the draft but uploads.github.com rejects asset uploads as Bad credentials. No external backup success claimed."
+    },
+    "zip4": "250 static GLBs/50characters×5LOD; all fully CRC/SHA checked,8real previews; no skeleton/clip. Deferred to supported worksite/authoring phase, not live civilian import.",
+    "review": "docs/validation/asset-review-2026-10-29.json"
+  },
+  "cloudflareQa": {
+    "status": "PENDING_LOCAL_BRANCH_GATES_AND_PUSH",
+    "previous": "b1579687fa89c492dce89ea07feb778cbd5488e8",
+    "authenticatedRemote": "BLOCKED_NO_ACCESS_CREDENTIALS",
+    "nativeWorkerReadback": "BLOCKED_NO_NATIVE_TOOLS_OR_API_CREDENTIALS",
+    "prodMigrationOrPromotion": false
+  },
+  "limitations": [
+    "Local Chromium SwiftShader and synthetic transport are not remote QA or hardware FPS/soak proof",
+    "Editorial kinematic animation is not whole-body physics, observed facts or training gain",
+    "No human listening/MOS claim; actual AudioContext output/lifecycle tested",
+    "No production migration/deploy or runtime H3b promotion",
+    "Original ZIPs remain local-only while GitHub upload returns401"
+  ]
+}

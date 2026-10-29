@@ -6,12 +6,14 @@ import citizens from "../../../public/models/citizens/catalog.json" with {type:"
 import resources from "../../../public/models/resources/catalog.json" with { type: "json" };
 import { CORE_MODELS, CITIZEN_FALLBACK } from "../../../lib/city/character-models.ts";
 import {cityAssetIds} from '../../../lib/city/city-assets.ts';
+import supplied from '../../../public/models/supplied/catalog.json' with {type:'json'};
+import {reviewedAssetLicense} from '../../../lib/city/asset-policy.ts';
 import transfers from '../../../data/assets/city-transfer-manifest.json' with {type:'json'};
 import {decodeAssetTransfer} from '../../../lib/city/asset-transfer.ts';
 
 export {cityAssetIds};
 
-export const approvedAssets = [...catalog.assets, ...resources.assets, ...citizens.assets];
+export const approvedAssets = [...catalog.assets, ...resources.assets, ...citizens.assets,...supplied.assets];
 export type AssetPlacement = { id: string; x: number; y: number; z: number; width: number; depth: number; height: number; yaw?: number; stretch?: boolean };
 type Compiled = { geometry: THREE.BufferGeometry; material: THREE.MeshPhongMaterial; size: THREE.Vector3 };
 export type ResourceSets = { geometries: Set<THREE.BufferGeometry>; materials: Set<THREE.Material>; textures: Set<THREE.Texture> };
@@ -19,7 +21,7 @@ export function collectAssetResources(root: THREE.Object3D, sets: ResourceSets) 
   root.traverse(o => { const mesh = o as THREE.Mesh; if (mesh.geometry) sets.geometries.add(mesh.geometry); if (mesh.material) for (const material of Array.isArray(mesh.material) ? mesh.material : [mesh.material]) { sets.materials.add(material); const map = (material as THREE.MeshStandardMaterial).map; if (map) sets.textures.add(map); } });
 }
 
-/** Only checked-in CC0 entries can load; no provider requests from a live viewer. */
+/** Only checked-in, reviewed entries can load; no provider requests from a live viewer. */
 export class AssetLibrary {
   private manager = new THREE.LoadingManager();
   private loader = new GLTFLoader(this.manager);
@@ -35,7 +37,7 @@ export class AssetLibrary {
     const cached = this.loaded.get(id); if (cached) return cached;
     const request = this.pending.get(id); if (request) return request;
     const metadata = approvedAssets.find(a => a.id === id);
-    if (!metadata || metadata.license !== "CC0-1.0" || !["/models/kenney/", "/models/resources/", "/models/citizens/"].some(prefix => metadata.url.startsWith(prefix)) || metadata.url.includes("..")) throw new Error(`Unapproved asset: ${id}`);
+    if (!metadata || !reviewedAssetLicense(metadata) || !["/models/kenney/", "/models/resources/", "/models/citizens/", "/models/supplied/"].some(prefix => metadata.url.startsWith(prefix)) || metadata.url.includes("..")) throw new Error(`Unapproved asset: ${id}`);
     const canonical = `${metadata.url}?v=${metadata.sha256.slice(0, 12)}`;
     const transfer = transfers.assets.find(a=>a.id===id&&a.sourceSha256===metadata.sha256&&a.sourceUrl===metadata.url);
     const requestModel = transfer && typeof DecompressionStream !== 'undefined' && globalThis.crypto?.subtle
