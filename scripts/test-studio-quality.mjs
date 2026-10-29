@@ -13,6 +13,7 @@ const equivalent=(a,b)=>{if(typeof a==='number'&&typeof b==='number'){assert(Mat
 const gap=(a,b)=>Math.hypot(...a.map((v,i)=>v-b[i]));
 for(const d of scenarioDefinitions){
  const actors=new Map();for(const s of d.cast.filter(s=>s.species==='human')){assert(s.modelHint.startsWith('supplied/'));if(!models.has(s.modelHint))models.set(s.modelHint,await loadLocalGLTF(catalog.find(a=>a.id===s.modelHint).url));actors.set(s.id,new StudioAvatar(models.get(s.modelHint),s.heightMeters*10*STAGE_Y,s.radius*.9,s.wardrobe.shirt));}
+ for(const s of d.cast.filter(s=>s.species==='human'))assert(actors.get(s.id).height>=s.heightMeters*10*STAGE_Y*.93,`${d.id}/${s.id}: a source hand pose must not shrink the actor body`);
  const sample=t=>poseStudioActors(actors,scenarioFrame(d.id,t));
  // Playing, seeking backwards and replaying must give identical deformed pose.
  const snapshot=t=>{const contacts=sample(t);return {contacts,rigs:[...actors].map(([id,a])=>[id,a.model.toJSON().object,a.group.position.toArray()])};};

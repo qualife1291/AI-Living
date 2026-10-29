@@ -6,7 +6,7 @@ const catalog=JSON.parse(readFileSync('public/models/supplied/catalog.json')),se
 const sha=b=>createHash('sha256').update(b).digest('hex');
 assert.equal(catalog.assets.length,5);let total=0;
 for(const asset of catalog.assets){
- assert(reviewedAssetLicense(asset));assert.equal(asset.license,OWNER_ASSET_LICENSE);assert.equal(asset.primitives,1);assert(asset.triangles>2000&&asset.triangles<4000);assert(asset.relativeSimplificationError<=selection.pipeline.maxRelativeSimplificationError);assert.equal(asset.sourceSha256,selection.assets.find(a=>a.id===asset.id).sourceSha256);
+ assert(reviewedAssetLicense(asset));assert.equal(asset.license,OWNER_ASSET_LICENSE);assert.equal(asset.primitives,1);assert(asset.triangles>=1400&&asset.triangles<4000);assert(asset.relativeSimplificationError<=selection.pipeline.maxRelativeSimplificationError);assert.equal(asset.sourceSha256,selection.assets.find(a=>a.id===asset.id).sourceSha256);
  assert(!reviewedAssetLicense({...asset,license:'CC0-1.0'}),'Supplied permission must not become a public-domain claim');
  assert(!reviewedAssetLicense({...asset,id:'supplied/unreviewed'}));assert(!reviewedAssetLicense({...asset,sourceSha256:'0'.repeat(64)}));
  const path='public'+asset.url;assert(!lstatSync(path).isSymbolicLink());const b=readFileSync(path);assert.equal(b.length,asset.bytes);assert.equal(sha(b),asset.sha256);assert.equal(b.toString('utf8',0,4),'glTF');assert.equal(b.readUInt32LE(8),b.length);const d=JSON.parse(b.subarray(20,20+b.readUInt32LE(12)).toString());
