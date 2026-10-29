@@ -38,11 +38,13 @@ const worker = {
   async handleRequest(request: Request, env: Cloudflare.Env, ctx: ExecutionContext<{ CONNECTORS?: ConnectorBinding }>) {
     const settings = env as unknown as Record<string, string | undefined>;
     const url = new URL(request.url);
-    const mutation = url.pathname.startsWith("/api/") && !["GET", "HEAD", "OPTIONS"].includes(request.method);
-    const diagnostic = url.pathname === "/api/diagnostics";
-    const privateMemories = url.pathname === "/api/living/memories";
-    const privateSystem = url.pathname === "/api/system/progress";
-    const archive = url.pathname === "/api/living/learning" && url.searchParams.get("format") === "jsonl";
+    // Match the canonical private readers before Vinext accepts slash aliases.
+    const path = url.pathname.replace(/\/+$/, "") || "/";
+    const mutation = path.startsWith("/api/") && !["GET", "HEAD", "OPTIONS"].includes(request.method);
+    const diagnostic = path === "/api/diagnostics";
+    const privateMemories = path === "/api/living/memories";
+    const privateSystem = path === "/api/system/progress";
+    const archive = path === "/api/living/learning" && url.searchParams.get("format") === "jsonl";
     // Worker-level Cloudflare Access is the only QA authorization source.
     // ctx.access is provided by Cloudflare after Access verification; request
     // headers like Origin, cf-access-jwt-assertion, and oai-* are NOT evidence.

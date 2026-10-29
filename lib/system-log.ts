@@ -37,10 +37,11 @@ export function safeErrorType(error: unknown) {
 export function runSystemTask<T>(trigger: 'http'|'cron', enabled: boolean, run: () => T, metadata?: unknown, request?: Request): T {
   if (!enabled) return run();
   const url = request ? new URL(request.url) : undefined;
+  const path = url ? url.pathname.replace(/\/+$/, '') || '/' : undefined;
   const id = metadata && typeof metadata === 'object' && 'id' in metadata ? metadata.id : undefined;
   const context: Context = {
     requestId: crypto.randomUUID(), trigger,
-    route: url ? routes.has(url.pathname) ? url.pathname : url.pathname.startsWith('/api/') ? '/api/other' : '/page' : '/scheduled',
+    route: path ? routes.has(path) ? path : path.startsWith('/api/') ? '/api/other' : '/page' : '/scheduled',
     method: request ? ['GET','HEAD','POST','PUT','PATCH','DELETE','OPTIONS'].includes(request.method) ? request.method : 'OTHER' : 'SCHEDULED',
     ...(typeof id === 'string' && uuid.test(id) ? { version: id } : {}),
   };
