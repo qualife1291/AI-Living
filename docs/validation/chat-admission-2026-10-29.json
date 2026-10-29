@@ -129,5 +129,89 @@
       "fix": "Fixture accepts optional time; unit uses explicit 2026-10-29T02:00:00Z. Browser/default callers retain Date.now; assertions unchanged",
       "verification": "Isolated fixed-fixture run and repeat PASS; full 73/73 PASS"
     }
+  },
+  "lastAssetIntegrationSmoke": {
+    "source": "d286e1b",
+    "assetCommit": "4acbc29",
+    "chatRuntimeDiffFromTestedSource": "empty (interact route, interaction-store, bounded-json)",
+    "typecheck": "PASS",
+    "results": {
+      "chatAdmission": {
+        "suite": "chat-admission",
+        "limit": 30,
+        "windowMs": 60000,
+        "burstRequests": 50,
+        "duplicateRequests": 40,
+        "globalActors": true,
+        "exactBoundary": true,
+        "fixedWindow": true,
+        "rollbackTriggers": 3,
+        "corruptionFailsClosed": true,
+        "historyPreserved": true,
+        "productionAccess": false
+      },
+      "cityRigs": {
+        "suite": "city-rigs",
+        "coreModels": 3,
+        "frames": 180,
+        "maxRadius": 8.377660788915872,
+        "maxGroundError": 7.47794359767795e-09,
+        "actualTalkListen": true,
+        "focusedNpcBudget": 5,
+        "lateLoadUpgrade": true,
+        "styles": 5,
+        "gaitRadius": 4.699929056196941,
+        "headSurface": true,
+        "pause": true,
+        "sourceImmutable": true,
+        "worldWrites": false,
+        "disposed": true
+      },
+      "studioQuality": {
+        "suite": "studio-quality",
+        "report": [
+          {
+            "scenario": "wallet-return",
+            "maxHandStep": 0.6964711321261946,
+            "maximumContactGap": 0,
+            "seekEquivalent": true
+          },
+          {
+            "scenario": "sanitation-gratitude",
+            "maxHandStep": 0.5635500298500522,
+            "maximumContactGap": 0,
+            "seekEquivalent": true
+          },
+          {
+            "scenario": "kitten-care",
+            "maxHandStep": 0.8177402450806178,
+            "maximumContactGap": 0,
+            "seekEquivalent": true
+          },
+          {
+            "scenario": "bakery-courtesy",
+            "maxHandStep": 0.3382115033354362,
+            "maximumContactGap": 0,
+            "seekEquivalent": true
+          }
+        ],
+        "voices": 21,
+        "scope": "actual rig/arm surfaces and local asset integrity; browser/audio output separate"
+      },
+      "suppliedAssets": {
+        "suite": "supplied-assets-admission",
+        "models": 5,
+        "bytes": 2979920,
+        "drawsPerRig": 1,
+        "sharedPalettes": 2,
+        "joints": 44,
+        "exactSourceHashes": true,
+        "ownerPermissionScoped": true,
+        "noRelabelCC0": true,
+        "noExternalUris": true,
+        "requiresSourceVault": false
+      }
+    },
+    "scope": "Targeted smoke after concurrent asset merge; full 73-suite verification remains de93850, UI screenshots remain cdd8996. Asset agent retains latest broad browser/remote acceptance."
   }
 }
