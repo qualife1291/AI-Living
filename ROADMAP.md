@@ -1,6 +1,6 @@
 # Việc chưa hoàn tất
 
-Backlog duy nhất của dự án, đối chiếu `work` 5989cff, `main` 402df57 và `cloudflare-qa` 7157c32 ngày 29/10/2026 (Asia/Saigon). Đây là mốc đối chiếu tài liệu, không phải một lượt test/deploy mới. Context hiện tại ở [handoff](CODEX_HANDOFF.md); số liệu/SHA test ở validation và release ledger.
+Backlog duy nhất của dự án: H5b1 nghiệm thu trên `work`13999b2; đối chiếu `main`402df57 và `cloudflare-qa`7157c32 ngày29/10/2026 (Asia/Saigon). Local test/build không thay runtime readback hoặc deployment. Context hiện tại ở [handoff](CODEX_HANDOFF.md); số liệu/SHA test ở validation và release ledger.
 
 **Trạng thái:** *Chưa có* = thiếu implementation; *Một phần* = có nền tảng nhưng thiếu phần được nêu; *Chờ nghiệm thu* = có code/bằng chứng ở phạm vi hẹp hơn; *Nhánh riêng* = chưa hợp nhất vào work/main; *Chưa đạt* = đã nghiên cứu nhưng chưa đủ gates để bật; *Hoãn* = ngoài phạm vi đang triển khai.
 
