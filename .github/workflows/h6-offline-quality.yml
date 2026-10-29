@@ -7,6 +7,7 @@ on:
       - 'scripts/test-h6-scenario-scale.mjs'
       - 'scripts/h6-train-and-audit.mjs'
       - 'scripts/h6-shadow-worker.mjs'
+      - 'docs/H6_OFFLINE_POLICY_SCALE.md'
       - '.github/workflows/h6-offline-quality.yml'
   workflow_dispatch:
     inputs:
