@@ -228,5 +228,11 @@
   ],
   [
     "scripts/test-peer-sharing-audit.mjs"
+  ],
+  [
+    "scripts/test-system-log.mjs"
+  ],
+  [
+    "scripts/test-progress-watch.mjs"
   ]
 ]
