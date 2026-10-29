@@ -2,9 +2,9 @@
   "kind": "qa-observability-acceptance-v1",
   "date": "2026-10-29",
   "timezone": "Asia/Ho_Chi_Minh",
-  "status": "WORK_LOCAL_PASS_QA_PENDING",
-  "appSource": "0f1d7b486052921ab6031e8f9b03f5765d4d93ea",
-  "qaSource": "00966c7",
+  "status": "LOCAL_WORK_HARDENED_PASS_QA_FINAL_UNIT_AND_REMOTE_PENDING",
+  "appSource": "9e91409dc3ab977c81427b473dbafb093dfbb23a",
+  "qaSource": "30429bd513adb9f91a13cac40f51ea9809511b36",
   "scope": [
     "privacy-bounded structured logs",
     "Ops phase: read-only progress snapshot and bounded offline comparison",
@@ -17,7 +17,7 @@
       "passed": 78,
       "failed": [],
       "workers": 2,
-      "seconds": 226.39
+      "seconds": 344.91
     },
     "typecheck": "PASS",
     "lint": "PASS",
@@ -138,15 +138,133 @@
   "qaGates": {
     "accessJwt": "PASS",
     "schedulerGuards": "PASS",
-    "generatedConfig": "PASS",
+    "generatedConfig": {
+      "suite": "cloudflare-qa-config",
+      "acceptedNames": 3,
+      "rejectedCases": 14,
+      "idempotent": true,
+      "isolatedQaD1": true,
+      "accessConfig": true,
+      "singleExistingCron": true,
+      "network": false
+    },
     "typecheck": "PASS",
     "lint": "PASS",
     "build": "PASS",
-    "unit": "PENDING",
-    "compiledProgress": "PASS",
-    "compiledChat": "PASS",
-    "compiledDiagnostics": "PASS",
-    "compiledLegacy": "PASS"
+    "unit": "PENDING after private alias hardening",
+    "compiledProgress": {
+      "suite": "progress-compiled-http",
+      "concurrentReaders": 12,
+      "ownerGate": true,
+      "loopbackGate": true,
+      "noBootstrap": true,
+      "noWrites": true,
+      "noPrivatePayloads": true,
+      "missingSchema503": true,
+      "requestCorrelation": true,
+      "productionAccess": false
+    },
+    "compiledChat": {
+      "suite": "chat-admission-compiled-http",
+      "concurrentUnique": 60,
+      "concurrentDuplicate": 16,
+      "workerIsolates": 2,
+      "sharedD1": true,
+      "limit": 30,
+      "windowMs": 60000,
+      "atomicRollbackCases": 6,
+      "originOwnerBodyPauseActorGuards": true,
+      "retryAfter": true,
+      "rejectedUuidReusable": true,
+      "historyPreserved": true,
+      "productionAccess": false
+    },
+    "compiledDiagnostics": {
+      "suite": "local-diagnostics-http",
+      "ownerReadGuard": true,
+      "ownerWriteGuard": true,
+      "streamByteLimit": true,
+      "schema": true,
+      "origin": true,
+      "ack": true,
+      "jsonlReadback": true,
+      "rateLimit": true,
+      "retention": true,
+      "diagnosticsReadOnly": true,
+      "pulsePersistence": true,
+      "pulseRetry": true,
+      "pulseConcurrentViewers": 12,
+      "pulseNoDuplicateAudit": true,
+      "pulsePause": true,
+      "healthSchemaBatch": true,
+      "bulkReplay": true,
+      "memoryBackfill": true,
+      "productionAccess": false
+    },
+    "compiledLegacy": {
+      "kind": "legacy-compiled-http-acceptance",
+      "isolated": true,
+      "productionAccess": false,
+      "results": [
+        {
+          "name": "world",
+          "exitCode": 0
+        },
+        {
+          "name": "living",
+          "exitCode": 0
+        },
+        {
+          "name": "learning",
+          "exitCode": 0
+        },
+        {
+          "name": "liveness",
+          "exitCode": 0
+        },
+        {
+          "name": "appearance",
+          "exitCode": 0
+        },
+        {
+          "name": "proposal",
+          "exitCode": 0
+        }
+      ]
+    },
+    "preConcurrentMergeUnit": {
+      "suite": "unit-summary",
+      "total": 81,
+      "passed": 81,
+      "failed": [],
+      "workers": 2,
+      "seconds": 237.57
+    },
+    "preservedGraphicsUnit": {
+      "suite": "unit-summary",
+      "total": 82,
+      "passed": 82,
+      "failed": [],
+      "workers": 2,
+      "seconds": 276.32
+    },
+    "rendererBrowser": {
+      "source": "ac9d68e",
+      "sceneMetrics": "docs/screenshots/qa-observability/scene-metrics.json",
+      "cases": 10,
+      "status": "PASS",
+      "environment": "local Chromium SwiftShader"
+    },
+    "browserRealChat": {
+      "source": "ac9d68e",
+      "metrics": "docs/screenshots/qa-observability/chat-metrics.json",
+      "viewports": 3,
+      "actualExchanges": 18,
+      "status": "PASS",
+      "protectedStateUnchanged": true,
+      "environment": "local browser -> compiled Worker -> dedicated D1"
+    },
+    "privateReaderAliasCases": 9
   },
   "dispositions": [
     {
@@ -160,13 +278,56 @@
     {
       "failure": "New CLI entry detection depended on a file URL identity through workspace paths",
       "fix": "CLI executes directly; native SQL and subprocess UTF8/bounds/symlink cases PASS"
+    },
+    {
+      "failure": "Private progress route trailing slash bypassed exact Worker classification before Vinext canonical routing",
+      "baseline": {
+        "suite": "progress-private-aliases",
+        "results": [
+          {
+            "path": "/api/system/progress",
+            "status": 403
+          },
+          {
+            "path": "/api/system/progress/",
+            "status": 200
+          },
+          {
+            "path": "//api/system/progress",
+            "status": 404
+          },
+          {
+            "path": "/api/%73ystem/progress",
+            "status": 404
+          },
+          {
+            "path": "/api/system/%70rogress",
+            "status": 404
+          },
+          {
+            "path": "/api/system%2Fprogress",
+            "status": 404
+          }
+        ]
+      },
+      "fix": "Canonicalize slash aliases before all private-reader classification, including diagnostics/memories/learning JSONL; QA signed Access remains unchanged",
+      "source": "deaa106; QA merge da33cf2"
+    },
+    {
+      "failure": "One intermediate compiled diagnostics run overlapped a rebuild and saw missing dist/server/index.js",
+      "fix": "Discarded intermediate result; reran all compiled suites after the build completed on exact merged source"
+    },
+    {
+      "failure": "Miniflare setOptions invalidated a test D1 handle after alias tests",
+      "fix": "Reacquire fixture handle and compare full protected state; all cases PASS with unchanged assertions"
     }
   ],
   "remote": {
     "preDeploySnapshot": "docs/validation/qa-progress-before-2026-10-29.json",
     "nativeApiAvailable": true,
     "authenticatedHttpBrowser": "NOT_RUN: no current Access service credential",
-    "postDeploy": "PENDING"
+    "postDeploy": "PENDING",
+    "preDeploySnapshotVersion": "null: native D1 query is not a Worker invocation; observed deployments recorded separately"
   },
   "schemaChanged": false,
   "productionChanged": false,
@@ -179,6 +340,20 @@
     "Read-only snapshots do not prove Cron attribution or learning quality; compare requires native scheduled evidence",
     "15min stall is a diagnostic warning; intermediate pause/restart history is not visible",
     "No authenticated remote HTTP/browser, physical GPU or24h soak acceptance",
-    "No graphics/H6 WIP merged"
-  ]
+    "No new graphics/H6 WIP imported into work; QA preserves already deployed f39287c from concurrent63d1086"
+  ],
+  "ci": {
+    "existingTrigger": "24a32899-c5bf-474f-b31e-29ba7581ba24",
+    "changed": "Added Access/scheduler/config/log/progress/type/compiled progress+chat guards to existing build command",
+    "deployCommandUnchanged": true,
+    "branchIncludes": [
+      "cloudflare-qa"
+    ],
+    "newTriggerOrCron": false
+  },
+  "proofLimits": {
+    "sqlSnapshotVersion": null,
+    "preDeployNativeVersion": "1eaf1958-1c76-4ed1-bc2c-69338b44bc10",
+    "localCronRuntime": "Not asserted by direct Miniflare scheduled probe; final Cron proof must come from native scheduled records on new version"
+  }
 }

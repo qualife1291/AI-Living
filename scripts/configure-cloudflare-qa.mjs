@@ -64,8 +64,8 @@ if (cfg.vars.XOM_OWNER_PRIVATE_ORIGIN || cfg.vars.XOM_ADMIN_USER_ID || cfg.vars.
   throw Error("Unsafe Sites authorization variables must not be used in QA");
 
 // QA only: capture HTTP statuses and uncaught errors. Do not enable on Sites A.
-cfg.version_metadata = { binding: "CF_VERSION_METADATA" };
 cfg.observability = { enabled: true, logs: { invocation_logs: true, head_sampling_rate: 1 } };
+cfg.version_metadata = { binding: "CF_VERSION_METADATA" };
 writeFileSync(location, JSON.stringify(cfg, null, 2) + "\n");
 console.log(JSON.stringify({
   worker: cfg.name,
