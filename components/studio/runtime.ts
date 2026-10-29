@@ -57,12 +57,13 @@ export async function createStudio(host: HTMLDivElement, input: () => { id: Scen
       if (id && library.get(id)) staticModels.push({ id, x: environment.position[0], y: environmentStage.position[1], z: environment.position[2], width: environment.size[0], height: environmentStage.size[1], depth: environment.size[2], yaw: Math.PI, stretch: environment.kind === "counter" });
       else group.add(makeEnvironment(environmentStage));
     }
-    library.addBatches(group, staticModels);
-    if (library.get("suburban/building-type-a")) library.addBatches(group, [{ id: "suburban/building-type-a", x: -90, y: 0, z: -70, width: 48, height: 38, depth: 40, yaw: Math.PI }, { id: "suburban/building-type-a", x: 88, y: 0, z: -75, width: 48, height: 40, depth: 40, yaw: Math.PI }]);
+    for(const [id,mesh] of library.addBatches(group, staticModels))mesh.castShadow=id.includes("tree");
+    if (library.get("suburban/building-type-a")) for(const mesh of library.addBatches(group, [{ id: "suburban/building-type-a", x: -90, y: 0, z: -70, width: 48, height: 38, depth: 40, yaw: Math.PI }, { id: "suburban/building-type-a", x: 88, y: 0, z: -75, width: 48, height: 40, depth: 40, yaw: Math.PI }]).values())mesh.castShadow=false;
     for (const actor of frame.actors) {
       if (actor.species === "cat") { cat = new StudioFeline(); group.add(cat.group); continue; }
       const source = library.get(modelFor(actor.modelHint)); if (!source) throw Error(`Studio actor asset unavailable: ${actor.modelHint}`);
       const avatar = new StudioAvatar(source, actor.heightMeters * 10, actor.radius * .9, actor.wardrobe.shirt); avatar.tint({ shirt: actor.wardrobe.shirt, trousers: actor.wardrobe.trousers, skin: "#e6c69e" }); actors.set(actor.id, avatar); group.add(avatar.group);
+      const contact=new THREE.Mesh(new THREE.CircleGeometry(actor.radius*.7,16),new THREE.MeshBasicMaterial({color:"#4b5145",transparent:true,opacity:.13,depthWrite:false}));contact.rotation.x=-Math.PI/2;contact.position.set(actor.position[0],.025,actor.position[2]);contact.name=`contact-${actor.id}`;group.add(contact);
     }
     scene.add(group); const stage = { group, actors, props, kitten: cat }; stages.set(frame.id, stage); return stage;
   }
@@ -87,7 +88,12 @@ export async function createStudio(host: HTMLDivElement, input: () => { id: Scen
       scene.background = sky; sun.position.set(-60, Math.tan(frame.theme.sunElevation * Math.PI / 180) * 80, 80); sun.color.set(frame.theme.kelvin < 5000 ? "#ffe1b1" : "#e8f2ff");
     }
     const contacts=poseStudioActors(stage.actors,frame);
+    // Large queues retain the primary subject's real shadow; all cast have
+    // inexpensive ground contact geometry. Small casts retain all body shadows.
+    const focused=frame.dialogue[0]?.speaker??scenarioDefinitions.find(d=>d.id===frame.id)!.shots[frame.beat.index].targetId;
+    for(const [id,avatar] of stage.actors)avatar.group.traverse(o=>{if((o as THREE.Mesh).isMesh)o.castShadow=stage.actors.size<=3||id===(stage.actors.has(focused)?focused:'ba');});
     for(const actor of frame.actors)if(actor.species==='cat'&&stage.kitten)stage.kitten.pose(frame.time,stagePoint(actor.position),actor.yaw,frame.time>=55,!!actor.carrierId);
+    for(const actor of frame.actors){const shadow=stage.group.getObjectByName(`contact-${actor.id}`);if(shadow)shadow.position.set(actor.position[0],.025,actor.position[2]);}
     for (const prop of frame.props) {
       let group = stage.props.get(prop.id);
       if (!group) {
@@ -101,7 +107,7 @@ export async function createStudio(host: HTMLDivElement, input: () => { id: Scen
     }
     if (!manual) {
       target.set(...stagePoint(frame.camera.target)); eye.set(...stagePoint(frame.camera.position));
-      eye.sub(target).multiplyScalar(.72).add(target);
+      eye.sub(target).multiplyScalar(.6).add(target);
       // Portrait keeps both participants readable with the same cinematic lens.
       if (camera.aspect < .85) eye.sub(target).multiplyScalar(.85 / Math.max(.35, camera.aspect)).add(target);
       camera.position.copy(eye); controls.target.copy(target);

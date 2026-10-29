@@ -26,7 +26,7 @@ with sync_playwright() as p:
    page.get_by_role('button',name='Tạm dừng kịch bản',exact=True).click();page.wait_for_function('JSON.parse(document.querySelector(".studio-canvas").dataset.audio).active===0');paused=state();assert paused['rms']==0 and paused['voiceId']==''
    # Seeking to silence and replaying must not deliver the old line.
    seek(15);page.get_by_role('button',name='Phát kịch bản',exact=True).click();page.wait_for_timeout(350);assert state()['voiceId']=='',state()
-   page.get_by_role('button',name='Tạm dừng kịch bản',exact=True).click();report.append({'scenario':scenario,'audible':audible,'pauseStopsAllSources':True,'seekDropsOldVoice':True})
+   page.get_by_role('button',name='Tạm dừng kịch bản',exact=True).click();print('voice/seek/pause PASS',scenario,flush=True);report.append({'scenario':scenario,'audible':audible,'pauseStopsAllSources':True,'seekDropsOldVoice':True})
   page.get_by_label('Chọn kịch bản',exact=True).select_option('wallet-return');seek(25);before=state()['effects'];page.get_by_role('button',name='Phát kịch bản',exact=True).click()
   page.wait_for_function('(n)=>JSON.parse(document.querySelector(".studio-canvas").dataset.audio).effects>n',arg=before,timeout=15000)
   page.evaluate("Object.defineProperty(document,'hidden',{configurable:true,get:()=>true});document.dispatchEvent(new Event('visibilitychange'))")
@@ -40,4 +40,11 @@ with sync_playwright() as p:
   partial=b.new_page();partial.route('**/audio/studio/wallet-return-54.ogg',lambda r:r.abort());partial.goto(base+'/studio',wait_until='domcontentloaded');partial.locator('.studio-canvas[data-ready="true"]').wait_for(timeout=90000);partial.get_by_role('button',name='Bật âm thanh',exact=True).click();partial.wait_for_function('JSON.parse(document.querySelector(".studio-canvas").dataset.audio||"{}").status==="partial"',timeout=90000);a=partial.locator('.studio-canvas').get_attribute('data-audio');assert json.loads(a)['failures']==1;assert json.loads(a)['decoded']==20;partial.close()
   unsupported=b.new_page();unsupported.add_init_script('window.AudioContext=undefined');unsupported.goto(base+'/studio',wait_until='domcontentloaded');unsupported.locator('.studio-canvas[data-ready="true"]').wait_for(timeout=90000);unsupported.get_by_role('button',name='Bật âm thanh',exact=True).click();unsupported.wait_for_function('JSON.parse(document.querySelector(".studio-canvas").dataset.audio||"{}").status==="unavailable"');assert unsupported.get_by_role('button',name='Bật âm thanh',exact=True).count()==1;unsupported.close()
   (out/'sound-metrics.json').write_text(json.dumps({'renderer':'Chromium SwiftShader','production':False,'cases':report,'footsteps':True,'hiddenStops':True,'unmountClosesContext':True,'partialFetch':json.loads(a),'unsupportedGraceful':True,'unverified':['human listening/MOS','device speaker volume']},ensure_ascii=False,indent=2));print('PASS all four actual voice outputs, footsteps, seek/pause/hidden/mute/teardown and failures',flush=True)
+ except Exception:
+  print('PAGE ERRORS',errors,flush=True)
+  try:
+   page.screenshot(path=str(out/'failure.png'),timeout=5000)
+   print('BODY',page.locator('body').inner_text(timeout=5000)[:2500],flush=True)
+  except Exception as e:print('FAILURE CAPTURE',str(e)[:150],flush=True)
+  raise
  finally:b.close()

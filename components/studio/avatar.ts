@@ -9,16 +9,16 @@ export class StudioAvatar extends RiggedAvatar {
  constructor(source:GLTF,height:number,radius:number,shirt:string){
   super(source,height,radius,true);
   const armBones=new Set(['arm-left','arm-right','hand-left','hand-right'].map(k=>this.joint(k)));
-  this.model.traverse(o=>{const mesh=o as THREE.SkinnedMesh;if(!mesh.isSkinnedMesh)return;const skin=mesh.geometry.getAttribute('skinIndex'),weights=mesh.geometry.getAttribute('skinWeight'),indices=mesh.geometry.index?Array.from(mesh.geometry.index.array):Array.from({length:skin.count},(_,i)=>i),kept:number[]=[];
+  this.model.traverse(o=>{const mesh=o as THREE.SkinnedMesh;if(!mesh.isSkinnedMesh)return;const mask=mesh.geometry.getAttribute('wardrobe');for(let i=0;i<mask.count;i++){const p=mesh.getVertexPosition(i,new THREE.Vector3()).applyMatrix4(mesh.matrixWorld);const y=p.y/this.height;mask.setX(i,y>.04&&y<.18?2:y>=.18&&y<.365?1:0);}mask.needsUpdate=true;const skin=mesh.geometry.getAttribute('skinIndex'),weights=mesh.geometry.getAttribute('skinWeight'),indices=mesh.geometry.index?Array.from(mesh.geometry.index.array):Array.from({length:skin.count},(_,i)=>i),kept:number[]=[];
    const isArm=(v:number)=>{let w=0;for(let n=0;n<4;n++)if(armBones.has(mesh.skeleton.bones[skin.getComponent(v,n)]))w+=weights.getComponent(v,n);return w>.45;};
    for(let i=0;i<indices.length;i+=3)if(!indices.slice(i,i+3).some(isArm))kept.push(...indices.slice(i,i+3));mesh.geometry.setIndex(kept);
   });
   for(const side of ['left','right']){
    const cloth=new THREE.MeshPhongMaterial({color:shirt,shininess:12}),skin=new THREE.MeshPhongMaterial({color:'#e7c19c',shininess:15});
-   const upper=new THREE.Mesh(new THREE.CapsuleGeometry(.29,1,4,8),cloth),lower=new THREE.Mesh(new THREE.CapsuleGeometry(.23,1,4,8),skin),elbow=new THREE.Mesh(new THREE.SphereGeometry(.27,8,6),cloth),hand=new THREE.Group();
-   const palm=new THREE.Mesh(new THREE.SphereGeometry(1,10,6),skin);palm.scale.set(.29,.15,.34);hand.add(palm);
-   for(let i=0;i<4;i++){const finger=new THREE.Mesh(new THREE.CapsuleGeometry(.055,.22,2,5),skin);finger.position.set((i-1.5)*.13,0,.31);finger.rotation.x=Math.PI/2;hand.add(finger);}
-   const thumb=new THREE.Mesh(new THREE.CapsuleGeometry(.075,.18,2,5),skin);thumb.rotation.z=-.6;thumb.position.set(.3,0,.04);hand.add(thumb);
+   const upper=new THREE.Mesh(new THREE.CapsuleGeometry(.29,1,2,6),cloth),lower=new THREE.Mesh(new THREE.CapsuleGeometry(.23,1,2,6),skin),elbow=new THREE.Mesh(new THREE.SphereGeometry(.27,6,4),cloth),hand=new THREE.Group();
+   const palm=new THREE.Mesh(new THREE.SphereGeometry(1,8,4),skin);palm.scale.set(.29,.15,.34);hand.add(palm);
+   for(let i=0;i<4;i++){const finger=new THREE.Mesh(new THREE.CapsuleGeometry(.055,.22,1,4),skin);finger.position.set((i-1.5)*.13,0,.31);finger.rotation.x=Math.PI/2;hand.add(finger);}
+   const thumb=new THREE.Mesh(new THREE.CapsuleGeometry(.075,.18,1,4),skin);thumb.rotation.z=-.6;thumb.position.set(.3,0,.04);hand.add(thumb);
    hand.updateMatrixWorld(true);const pieces=hand.children.map(o=>{const mesh=o as THREE.Mesh;return mesh.geometry.clone().applyMatrix4(mesh.matrix);});const merged=mergeGeometries(pieces);pieces.forEach(g=>g.dispose());for(const child of [...hand.children]){(child as THREE.Mesh).geometry.dispose();child.removeFromParent();}if(merged)hand.add(new THREE.Mesh(merged,skin));
    for(const m of [upper,lower,elbow,...hand.children])(m as THREE.Mesh).castShadow=true;this.group.add(upper,lower,elbow);
    // Arm geometry is in stage units and follows the root via world/local transforms.
