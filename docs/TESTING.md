@@ -38,7 +38,7 @@ Restart Worker từ `dist/server/wrangler.json` sau build. `QA_BASE` bắt buộ
 
 | Harness trong scripts/ | Điều phải giữ |
 |---|---|
-| qa-scene-interactions.py | City follow giữ ID, native skin/instance picking/occlusion, drag/pinch không thành tap;4Studio×desktop/mobile focus/zoom/orbit/shot/restart/reset và mèo trên đất/được bế. |
+| qa-scene-interactions.py | City follow giữ ID, native skin/instance picking/occlusion, drag/pinch không thành tap;4Studio×desktop/mobile focus/zoom/orbit/shot/restart/reset và mèo trên đất/được bế phải có cả người hỗ trợ trong khung; dimensions khăn phải khớp mesh sau chuyển stage. |
 | qa-jump-lod.py | Pause khi NPC đang nhảy rồi chuyển native→crowd→native: cùng model/độ cao/clock desktop-mobile, không reset pha khi select/zoom. |
 | qa-city-activities.py, qa-wardrobe-lod.py |15ca hoạt động/2ca wardrobe desktop-mobile; shader errors, đủ cư dân khi action atlas warm, model preview/city trùng, màu khi pause, một preview canvas và zoom giữ identity. API writes synthetic; contact/clearance kiểm actual skin trong city-actions/crowd-skins. |
 | qa-chat-admission.py | HTTP429 giữ draft/focus, không tự retry, hồi phục khi chủ động gửi lại; desktop/mobile, không overflow. Mock UI writes; quota/rollback kiểm riêng trên compiled D1. |
@@ -54,6 +54,8 @@ Restart Worker từ `dist/server/wrangler.json` sau build. `QA_BASE` bắt buộ
 | qa-domain-skills.py | 8 domain/4 gate/legacy/no overflow. |
 | qa-soundscape.py | Gesture opt-in, signal thật, pause/hidden/OSM/off/unmount/unsupported. |
 | qa-resource-gallery.py | 19 mẫu/15 pack, texture/clip, selection race/load retry/pause/dispose. |
+
+Framing metadata đạt vẫn phải mở ảnh cận cảnh: trường hợp mèo từng đạt head/feet nhưng camera lọt vào tay người bế và khăn giữ kích thước cũ. Giữ ảnh lỗi như baseline, sửa cả kiểm tra envelope/mesh dimensions trước khi chốt.
 
 Ảnh và metrics ở [screenshots](screenshots/), bằng chứng máy đọc ở [validation](validation/). Browser có thể mock mutations; persistence phải kiểm D1 riêng. Gửi ảnh QA thực cho người dùng, ghi preview local hay production. Ảnh AI/asset preview không thay QA; SwiftShader và synthetic 240 không chứng minh hardware FPS/pin/nhiệt/density live hoặc soak 24 giờ.
 

@@ -1,6 +1,5 @@
 {
   "kind": "actual-graphics-browser-screenshots-v1",
-  "appSource": "3b3b3dbedf901cec9db36d84abe79039ba8a6eea",
   "production": false,
   "renderer": "Chromium SwiftShader",
   "fixtures": "Synthetic API projection/wardrobe writes; actual compiled meshes/materials/native input/audio.",
@@ -69,13 +68,28 @@
       ]
     },
     {
-      "file": "docs/screenshots/graphics-interactions/studio-kitten-mobile.png",
+      "file": "docs/screenshots/graphics-interactions/studio-kitten-mobile-before.png",
       "sha256": "28c0635715dae0dccb8acacf9de07aabed2e9a0069cdf6fcce8ed2c019fe9d3b",
       "bytes": 73866,
       "pixels": [
         390,
         844
-      ]
+      ],
+      "result": "BEFORE: carrier/cloth clipping exposed by visual inspection",
+      "appSource": "3b3b3dbedf901cec9db36d84abe79039ba8a6eea"
+    },
+    {
+      "file": "docs/screenshots/graphics-interactions/studio-kitten-mobile.png",
+      "bytes": 77198,
+      "sha256": "72d6b74da9afc1ff23f8bd4055c37531b8260dd8cfbd4109dabec88e76f07b0b",
+      "pixels": [
+        390,
+        844
+      ],
+      "appSource": "a404bf449eb53dddb0610ac04406633359548c47",
+      "result": "AFTER: cat and supporting adult framed; animated cloth leaves head clear"
     }
-  ]
+  ],
+  "baselineAppSource": "3b3b3dbedf901cec9db36d84abe79039ba8a6eea",
+  "followupAppSource": "a404bf449eb53dddb0610ac04406633359548c47"
 }
