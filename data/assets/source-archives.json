@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "description": "Original owner-supplied ZIPs, retained independently of their future runtime selections. Do not publish raw assets or label unknown licenses CC0.",
+  "localDirectory": "../AI-Living-assets/source-archives",
+  "externalBackup": {
+    "provider": "GitHub draft release",
+    "releaseId": 427551403,
+    "tag": "asset-source-backup-2026-10-29",
+    "isDraft": true,
+    "assetsUploaded": 0,
+    "status": "BLOCKED_HTTP_401",
+    "reason": "Current GitHub integration can create/read the draft but uploads.github.com rejects asset uploads as Bad credentials. No external backup success claimed."
+  },
+  "archives": [
+    {
+      "file": "1.zip",
+      "bytes": 1801221785,
+      "sha256": "ed0d6dca78da9141a6ce53557bcca4df5511c8044ff3a6f38527b42bfce4c1ee",
+      "source": "https://drive.google.com/file/d/1XdUcjW2Fze9RrAJ1zDtWWg-eZN3XM7Qb/view"
+    },
+    {
+      "file": "2.zip",
+      "bytes": 1030419882,
+      "sha256": "307c567b5981eceabd89dbf2defccd47f2b6843b35f8d58652249dede91fb2a0",
+      "source": "https://drive.google.com/file/d/1VjJegTYYRxmV-o1Okf78JPc7qCIsKIjQ/view"
+    },
+    {
+      "file": "3.zip",
+      "bytes": 986471574,
+      "sha256": "49d88559ac8aaa01b661da17c45a1864ad17e1ab6fb88bd6ed15d9c5b706929a",
+      "source": "https://drive.google.com/file/d/1MhFUsF3TguEmUiaYozMaCygNJINCWNsr/view"
+    }
+  ],
+  "pending": [
+    "4.zip"
+  ]
+}

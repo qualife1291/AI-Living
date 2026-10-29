@@ -9,6 +9,7 @@ assert urlparse(base).hostname in ('127.0.0.1','localhost')
 out=Path(os.environ.get('QA_OUT',str(root/'docs/screenshots/g0')));out.mkdir(parents=True,exist_ok=True)
 report=[]
 only_fallbacks=os.environ.get('QA_G0_ONLY_FALLBACKS')=='1'
+viewport_filter=os.environ.get('QA_G0_VIEWPORT','all');assert viewport_filter in ('all','desktop','mobile')
 flags=['--no-sandbox','--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader']
 def setup(browser,width=1440,height=900,dpr=2,motion='no-preference',fallback=None):
  fixture=json.loads(subprocess.check_output(['node','scripts/social-preview-fixture.mjs','--motion'],cwd=root,text=True))
@@ -40,6 +41,9 @@ def setup(browser,width=1440,height=900,dpr=2,motion='no-preference',fallback=No
   manifest=json.loads((root/'data/assets/city-transfer-manifest.json').read_text());asset=next(a for a in manifest['assets'] if a['id']=='citizens/an')
   page.route('**'+asset['url'],lambda r:r.fulfill(status=200,body=b'bad gzip'))
   if fallback=='core-failure':page.route('**/models/citizens/an.glb*',lambda r:r.fulfill(status=503,body='unavailable'))
+ if fallback=='late-core':
+  manifest=json.loads((root/'data/assets/city-transfer-manifest.json').read_text());primary=next(a for a in manifest['assets'] if a['id']=='citizens/an')
+  page.route('**'+primary['url'],lambda route:state.update(heldModel=route))
  page.add_init_script('''new MutationObserver(()=>{const h=document.querySelector('.three-canvas[data-ready="true"]');if(h&&!window.__firstReady)window.__firstReady=performance.now()}).observe(document,{childList:true,subtree:true,attributes:true,attributeFilter:['data-ready']});''')
  page.goto(base,wait_until='domcontentloaded',timeout=60000)
  host=page.locator('.three-canvas[data-ready="true"]');host.wait_for(timeout=90000)
@@ -55,7 +59,7 @@ def check_pixels(page):
 with sync_playwright() as p:
  browser=p.chromium.launch(executable_path='/usr/bin/chromium',headless=True,args=flags)
  try:
-  for name,w,h,dpr in ([] if only_fallbacks else [('desktop',1440,900,2),('mobile',390,844,3)]):
+  for name,w,h,dpr in ([] if only_fallbacks else [v for v in [('desktop',1440,900,2),('mobile',390,844,3)] if viewport_filter in ('all',v[0])]):
    page,host,state,fixture=setup(browser,w,h,dpr);initial=check_pixels(page)
    assert page.title()=='Xóm AI · Thành phố nhỏ, nhiều cuộc đời'
    assert 'thành phố 3D' in page.locator('meta[name="description"]').get_attribute('content')
@@ -149,7 +153,7 @@ with sync_playwright() as p:
    page.emulate_media(reduced_motion='no-preference');page.wait_for_function('document.querySelector(".three-canvas").dataset.reducedMotion==="false"');page.get_by_role('button',name='Theo nhân vật',exact=True).click();page.wait_for_function('document.querySelector(".urban-camera button[title]").getAttribute("aria-pressed")==="true"')
    page.emulate_media(reduced_motion='reduce');page.wait_for_function('document.querySelector(".urban-camera button[title]").getAttribute("aria-pressed")==="false"');page.wait_for_timeout(200);camera=host.get_attribute('data-camera');page.wait_for_timeout(500);assert camera==host.get_attribute('data-camera')
    page.screenshot(path=str(out/'mobile-reduced-motion-preview.png'));assert not state['errors'];report.append({'reducedMotion':True,'preferenceChange':True,'worldNotPaused':True,'pageErrors':[]});page.close()
-  for mode in ['unsupported','corrupt','core-failure']:
+  for mode in ['unsupported','corrupt','core-failure','late-core']:
    page,host,state,fixture=setup(browser,390,844,1,fallback=mode)
    models=json.loads(host.get_attribute('data-model-actors'));assert 3<=len(models)<=8;assert all(id in models for id in ['an','binh','chi'])
    if mode=='unsupported':assert not any('/derivatives/' in x for x in state['modelRequests'])
@@ -158,6 +162,18 @@ with sync_playwright() as p:
     assert models['an']['modelId']=='citizens/linen'
     fallback=next(a for a in json.loads((root/'data/assets/city-transfer-manifest.json').read_text())['assets'] if a['id']=='citizens/linen')
     assert any(fallback['url'] in x or '/citizens/linen.glb' in x for x in state['modelRequests'])
+   if mode=='late-core':
+    assert models['an']['modelId']=='citizens/linen';assert state.get('heldModel') is not None
+    state['heldModel'].continue_();state['heldModel']=None
+    page.wait_for_function('JSON.parse(document.querySelector(".three-canvas").dataset.modelActors).an.modelId==="citizens/an"',timeout=30000)
+    models=json.loads(host.get_attribute('data-model-actors'));assert models['an']['height']>16
+    assert state['posts']==0,'Model replacement never writes world state'
    assert all(m['profile']=='xom-citizen-v1' for m in models.values());assert not any('/gobkit-human' in x or '/characters/character-' in x for x in state['modelRequests']);assert not state['errors'],state['errors'];report.append({'transportFallback':mode,'pageErrors':[]});print('PASS fallback',mode,flush=True);page.close()
   (out/'metrics.json').write_text(json.dumps({'production':False,'renderer':'Chromium SwiftShader','fixture':'Synthetic world; all APIs mocked. Compiled local D1 persistence tested separately.','cases':report},ensure_ascii=False,indent=2)+'\n')
+ except Exception:
+  try:
+   page.screenshot(path=str(out/'failure.png'),timeout=5000)
+   (out/'failure.json').write_text(json.dumps({'errors':state.get('errors',[]),'body':page.locator('body').inner_text(timeout=5000)[:4000],'canvases':page.locator('.three-canvas,.osm-three').evaluate_all('(els)=>els.map(e=>({...e.dataset}))')},ensure_ascii=False,indent=2))
+  except Exception as capture_error:print('Failure diagnostics unavailable:',type(capture_error).__name__,flush=True)
+  raise
  finally:browser.close()

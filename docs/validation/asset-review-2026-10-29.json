@@ -369,17 +369,12 @@
   ],
   "remainingArchives": [
     {
-      "name": "3.zip",
-      "status": "not-reviewed",
-      "reason": "Attached Sediment file exceeds32MiB transfer limit; need downloadable Drive link"
-    },
-    {
       "name": "4.zip",
       "status": "not-provided"
     }
   ],
   "implementationOrder": [
-    "A1 inventories ZIP1+2 complete:341GLB,7rigs; compare ZIP3/4 before common final style/dedup/import selection",
+    "A1 ZIP1/2/3 reviewed:343GLB+25music; preserve originals in asset vault, await ZIP4 before final common-style/import choice",
     "A2 character adapter/normalization/LOD and city+Studio regression on isolated preview",
     "A3 selected ordinary props/palette and semantic bindings; no gameplay effect claimed from visuals",
     "A4 modular vegetation/indoor/market assets in existing dependent phases, preserving colliders and ownership journals",
@@ -12517,5 +12512,1513 @@
       }
     ]
   },
-  "totalModelsReviewed": 341
+  "totalModelsReviewed": 343,
+  "zip3Review": {
+    "name": "3.zip",
+    "source": "https://drive.google.com/file/d/1MhFUsF3TguEmUiaYozMaCygNJINCWNsr/view",
+    "bytes": 986471574,
+    "sha256": "49d88559ac8aaa01b661da17c45a1864ad17e1ab6fb88bd6ed15d9c5b706929a",
+    "models": 2,
+    "audioTracks": 25,
+    "audioSeconds": 5379.319475,
+    "binaryAssetsImported": 0,
+    "metadataHashCRCRead": true,
+    "decisions": [
+      {
+        "asset": "bicicleta_base_segura_1.glb",
+        "decision": "technical-reference-not-current-bike-replacement",
+        "reason": "75736 canonical triangles,30primitives/167joints/13clips. Browser draws101410 triangles/34calls because nodes can reuse meshes. Mechanical assembly/translation clips need mapping to actual ground distance, not wall time or cosmetic travel. Existing bicycle is cheaper and tested.",
+        "provenance": "Embedded author UDD-CID, source Sketchfab, notice COPYRIGHT TO UDD-CID. Keep that exact notice/source and owner-confirmed-free record; never label CC0."
+      },
+      {
+        "asset": "source.glb",
+        "decision": "future-retarget-reference",
+        "reason": "UE mannequin with four LODs all present,58905 total triangles/8skins, one Unreal Take7.2s. Choose one LOD and explicit rig/clip semantics before retarget; not an extra daily civilian. No facial/personality/learning inference from its mesh."
+      },
+      {
+        "asset": "ext_wav.zip",
+        "decision": "future-opt-in-music-only",
+        "reason": "25 music tracks named Enchanted Forest Music,48kHz stereo PCM,89.655min total. This is authored music, not footsteps/real street ambience/speech. Mean volume is dBFS from volumedetect, not LUFS; many rounded peaks near0dBFS do not alone prove clipping.",
+        "gates": [
+          "Human listening/style check before choosing1–3tracks; existing Vietnamese voices stay intact",
+          "Convert selected tracks to OGG/Opus or Vorbis, measure true/integrated loudness and peak headroom; verify loop/crossfade",
+          "Reuse one opt-in audio lifecycle, duck music during dialogue, mute/pause/seek/hidden/unmount and no autoplay",
+          "Keep original25WAVs only in source vault; no970MB WAV preload or blanket runtime import"
+        ]
+      }
+    ],
+    "browser": {
+      "stats": [
+        {
+          "label": "ZIP3 bicycle rig — review only",
+          "size": [
+            0.22499999497085812,
+            0.394360734114286,
+            0.6873794113230418
+          ],
+          "clips": 13,
+          "drawCalls": 34,
+          "triangles": 101410,
+          "textures": 9
+        },
+        {
+          "label": "ZIP3 UE mannequin — all LODs in source",
+          "size": [
+            0.6529594181492037,
+            1.775212316404522,
+            0.7985117132433833
+          ],
+          "clips": 1,
+          "drawCalls": 8,
+          "triangles": 58905,
+          "textures": 10
+        }
+      ],
+      "errors": [],
+      "scope": "quarantined local GLTFLoader PBR; SwiftShader, no runtime import"
+    },
+    "contactSheet": "docs/screenshots/asset-review/zip-3-contact-sheet.jpg",
+    "inventory": [
+      {
+        "path": "3/bicicleta_base_segura_1.glb",
+        "bytes": 21926444,
+        "sha256": "ca2b2ef4edfcad7c9907e60562f4c9ec360b5e55b044255c8a0d9bdbe0faea4d",
+        "assetMetadata": {
+          "extras": {
+            "author": "UDD-CID (https://sketchfab.com/UDD-CID)",
+            "license": "COPYRIGHT TO UDD-CID",
+            "source": "https://sketchfab.com/3d-models/bicicleta-base-segura-ed83485ef33e42e19e85fce5ae7596e1",
+            "title": "Bicicleta Base Segura"
+          },
+          "generator": "Sketchfab-15.55.0",
+          "version": "2.0"
+        },
+        "triangles": 75736,
+        "primitives": 30,
+        "materials": 4,
+        "skins": [
+          {
+            "joints": 167
+          }
+        ],
+        "clips": [
+          {
+            "name": "Frenos",
+            "channels": 28,
+            "duration": 3.799999952316284
+          },
+          {
+            "name": "Giros",
+            "channels": 32,
+            "duration": 9.166666984558105
+          },
+          {
+            "name": "Cambios",
+            "channels": 15,
+            "duration": 12.066666603088379
+          },
+          {
+            "name": "Ruedas",
+            "channels": 18,
+            "duration": 16.03333282470703
+          },
+          {
+            "name": "Desamable de rueda delantera ",
+            "channels": 29,
+            "duration": 24.0
+          },
+          {
+            "name": "Pedales",
+            "channels": 15,
+            "duration": 27.633333206176758
+          },
+          {
+            "name": "Cadena Trasera",
+            "channels": 187,
+            "duration": 42.266666412353516
+          },
+          {
+            "name": "Maniobra rueda trasera ",
+            "channels": 193,
+            "duration": 49.20000076293945
+          },
+          {
+            "name": "Maniobra rueda delantera",
+            "channels": 193,
+            "duration": 56.46666717529297
+          },
+          {
+            "name": "Movimiento completo",
+            "channels": 202,
+            "duration": 63.33333206176758
+          },
+          {
+            "name": "Pinon",
+            "channels": 147,
+            "duration": 31.700000762939453
+          },
+          {
+            "name": "Sillin",
+            "channels": 138,
+            "duration": 35.93333435058594
+          },
+          {
+            "name": "Traslacion",
+            "channels": 177,
+            "duration": 63.29999923706055
+          }
+        ],
+        "textures": [
+          {
+            "name": null,
+            "uri": "",
+            "mimeType": "image/jpeg",
+            "bytes": 960648,
+            "dimensions": [
+              2048,
+              2048
+            ],
+            "sha256": "96820fcf843a24f145173d3e6c65ec989b500f86ea7b1bab5ee797ca0a97d7b2"
+          },
+          {
+            "name": null,
+            "uri": "",
+            "mimeType": "image/png",
+            "bytes": 3649111,
+            "dimensions": [
+              2048,
+              2048
+            ],
+            "sha256": "eeb315c76a4498b1af1fb6d1512425e019c7ed8559d3059b0f30461223a2149a"
+          },
+          {
+            "name": null,
+            "uri": "",
+            "mimeType": "image/jpeg",
+            "bytes": 3299185,
+            "dimensions": [
+              2048,
+              2048
+            ],
+            "sha256": "97e21a486dfbcae502406128bb5c93b09fc86782cb716c3fc2497db2327c7d87"
+          },
+          {
+            "name": null,
+            "uri": "",
+            "mimeType": "image/png",
+            "bytes": 90287,
+            "dimensions": [
+              2048,
+              2048
+            ],
+            "sha256": "3ff9e5a1b13c9e56b65a53b0be6377655812ced12247dd363a32c1487112b64e"
+          },
+          {
+            "name": null,
+            "uri": "",
+            "mimeType": "image/png",
+            "bytes": 423875,
+            "dimensions": [
+              2048,
+              2048
+            ],
+            "sha256": "74ebbe54e6e6e9caabcb1ae2882bd12d85c3bca3fdb3312953e4e95b77e80097"
+          },
+          {
+            "name": null,
+            "uri": "",
+            "mimeType": "image/png",
+            "bytes": 626159,
+            "dimensions": [
+              2048,
+              2048
+            ],
+            "sha256": "fcaeec727b722a533bcea6218f68a1371c39f8dd628640956920bcb9e241af6d"
+          },
+          {
+            "name": null,
+            "uri": "",
+            "mimeType": "image/png",
+            "bytes": 946462,
+            "dimensions": [
+              2048,
+              2048
+            ],
+            "sha256": "e85f89cad08e2de33c87701640d779a6fbf853392707858903a37446d769f828"
+          }
+        ],
+        "perMeshTriangles": null,
+        "externalDependencies": []
+      },
+      {
+        "path": "3/source.glb",
+        "bytes": 3504440,
+        "sha256": "b055bf6ba23f01c1ea51903f344264a973f66cf899277c8ae1407487467d661c",
+        "assetMetadata": {
+          "generator": "fab-model-conversion",
+          "version": "2.0"
+        },
+        "triangles": 58905,
+        "primitives": 8,
+        "materials": 2,
+        "skins": [
+          {
+            "joints": 60
+          },
+          {
+            "joints": 4
+          },
+          {
+            "joints": 60
+          },
+          {
+            "joints": 4
+          },
+          {
+            "joints": 60
+          },
+          {
+            "joints": 4
+          },
+          {
+            "joints": 60
+          },
+          {
+            "joints": 4
+          }
+        ],
+        "clips": [
+          {
+            "name": "Unreal Take",
+            "channels": 194,
+            "duration": 7.199999809265137
+          }
+        ],
+        "textures": [],
+        "perMeshTriangles": [
+          {
+            "name": "SK_Mannequin_LOD0_M_MannequinUE4_Body_XENO_0",
+            "triangles": 41004
+          },
+          {
+            "name": "SK_Mannequin_LOD0_M_MannequinUE4_ChestLogo_XENO_0",
+            "triangles": 48
+          },
+          {
+            "name": "SK_Mannequin_LOD1_M_MannequinUE4_Body_XENO_0",
+            "triangles": 10252
+          },
+          {
+            "name": "SK_Mannequin_LOD1_M_MannequinUE4_ChestLogo_XENO_0",
+            "triangles": 9
+          },
+          {
+            "name": "SK_Mannequin_LOD2_M_MannequinUE4_Body_XENO_0",
+            "triangles": 5112
+          },
+          {
+            "name": "SK_Mannequin_LOD2_M_MannequinUE4_ChestLogo_XENO_0",
+            "triangles": 18
+          },
+          {
+            "name": "SK_Mannequin_LOD3_M_MannequinUE4_Body_XENO_0",
+            "triangles": 2444
+          },
+          {
+            "name": "SK_Mannequin_LOD3_M_MannequinUE4_ChestLogo_XENO_0",
+            "triangles": 18
+          }
+        ],
+        "externalDependencies": []
+      }
+    ],
+    "audio": [
+      {
+        "name": "Enchanted Forest Music 001.wav",
+        "bytes": 30666686,
+        "sha256": "ecfa363818d1feb4e952b4bb88abb84fbbc64d4b010f3ab57a0e358b790abe60",
+        "duration": 159.719979,
+        "codec": "pcm_s16le",
+        "channels": 2,
+        "sampleRate": "48000",
+        "bitsPerSample": 16,
+        "tags": {
+          "comment": "Magical fantasy ambient instrumental BGM set in an enchanted forest world of elves and ancient spirits, with soft pads, airy choir, harp, flute and gentle bells.",
+          "copyright": "Copyright 2026 LoveMyCreation Studio. All rights reserved.",
+          "date": "2026",
+          "genre": "BGM",
+          "title": "Enchanted Forest Music 001",
+          "album": "Enchanted Forest Music Collection",
+          "encoder": "Lavf62.13.100",
+          "encoded_by": "LoveMyCreation Studio"
+        },
+        "mean_volume": -15.3,
+        "max_volume": -0.0
+      },
+      {
+        "name": "Enchanted Forest Music 002.wav",
+        "bytes": 33001406,
+        "sha256": "cebb7c81995ca1358f0425ade5ee2c2fc140982be292c1c57b78400d837a7f22",
+        "duration": 171.879979,
+        "codec": "pcm_s16le",
+        "channels": 2,
+        "sampleRate": "48000",
+        "bitsPerSample": 16,
+        "tags": {
+          "comment": "Magical fantasy ambient instrumental BGM set in an enchanted forest world of elves and ancient spirits, with soft pads, airy choir, harp, flute and gentle bells.",
+          "copyright": "Copyright 2026 LoveMyCreation Studio. All rights reserved.",
+          "date": "2026",
+          "genre": "BGM",
+          "title": "Enchanted Forest Music 002",
+          "album": "Enchanted Forest Music Collection",
+          "encoder": "Lavf62.13.100",
+          "encoded_by": "LoveMyCreation Studio"
+        },
+        "mean_volume": -14.3,
+        "max_volume": -0.0
+      },
+      {
+        "name": "Enchanted Forest Music 003.wav",
+        "bytes": 37187006,
+        "sha256": "bef32de066fa05d08af624557be0119b9e0d049ef1b0154f0d5735373379d318",
+        "duration": 193.679979,
+        "codec": "pcm_s16le",
+        "channels": 2,
+        "sampleRate": "48000",
+        "bitsPerSample": 16,
+        "tags": {
+          "comment": "Magical fantasy ambient instrumental BGM set in an enchanted forest world of elves and ancient spirits, with soft pads, airy choir, harp, flute and gentle bells.",
+          "copyright": "Copyright 2026 LoveMyCreation Studio. All rights reserved.",
+          "date": "2026",
+          "genre": "BGM",
+          "title": "Enchanted Forest Music 003",
+          "album": "Enchanted Forest Music Collection",
+          "encoder": "Lavf62.13.100",
+          "encoded_by": "LoveMyCreation Studio"
+        },
+        "mean_volume": -14.2,
+        "max_volume": 0.0
+      },
+      {
+        "name": "Enchanted Forest Music 004.wav",
+        "bytes": 42409406,
+        "sha256": "722d6a6af975f7cb59edab47342e0da911aef26873784d4ac94456eef7dd265b",
+        "duration": 220.879979,
+        "codec": "pcm_s16le",
+        "channels": 2,
+        "sampleRate": "48000",
+        "bitsPerSample": 16,
+        "tags": {
+          "comment": "Magical fantasy ambient instrumental BGM set in an enchanted forest world of elves and ancient spirits, with soft pads, airy choir, harp, flute and gentle bells.",
+          "copyright": "Copyright 2026 LoveMyCreation Studio. All rights reserved.",
+          "date": "2026",
+          "genre": "BGM",
+          "title": "Enchanted Forest Music 004",
+          "album": "Enchanted Forest Music Collection",
+          "encoder": "Lavf62.13.100",
+          "encoded_by": "LoveMyCreation Studio"
+        },
+        "mean_volume": -14.9,
+        "max_volume": -0.1
+      },
+      {
+        "name": "Enchanted Forest Music 005.wav",
+        "bytes": 37386686,
+        "sha256": "87ff6cf572241b90868dfcd56b7f0f44366d663b0d1ed7db1e5e887f9e9bee88",
+        "duration": 194.719979,
+        "codec": "pcm_s16le",
+        "channels": 2,
+        "sampleRate": "48000",
+        "bitsPerSample": 16,
+        "tags": {
+          "comment": "Magical fantasy ambient instrumental BGM set in an enchanted forest world of elves and ancient spirits, with soft pads, airy choir, harp, flute and gentle bells.",
+          "copyright": "Copyright 2026 LoveMyCreation Studio. All rights reserved.",
+          "date": "2026",
+          "genre": "BGM",
+          "title": "Enchanted Forest Music 005",
+          "album": "Enchanted Forest Music Collection",
+          "encoder": "Lavf62.13.100",
+          "encoded_by": "LoveMyCreation Studio"
+        },
+        "mean_volume": -15.2,
+        "max_volume": -0.0
+      },
+      {
+        "name": "Enchanted Forest Music 006.wav",
+        "bytes": 40059326,
+        "sha256": "4c7fc4d133f7828d5190727a6af50776453894da2262a245f079da1902d5dc08",
+        "duration": 208.639979,
+        "codec": "pcm_s16le",
+        "channels": 2,
+        "sampleRate": "48000",
+        "bitsPerSample": 16,
+        "tags": {
+          "comment": "Magical fantasy ambient instrumental BGM set in an enchanted forest world of elves and ancient spirits, with soft pads, airy choir, harp, flute and gentle bells.",
+          "copyright": "Copyright 2026 LoveMyCreation Studio. All rights reserved.",
+          "date": "2026",
+          "genre": "BGM",
+          "title": "Enchanted Forest Music 006",
+          "album": "Enchanted Forest Music Collection",
+          "encoder": "Lavf62.13.100",
+          "encoded_by": "LoveMyCreation Studio"
+        },
+        "mean_volume": -16.1,
+        "max_volume": -0.0
+      },
+      {
+        "name": "Enchanted Forest Music 007.wav",
+        "bytes": 43146686,
+        "sha256": "7ee26dde5b53ff4045317bfa35bed8d69a95e362286cdd8d0da86236c33738c5",
+        "duration": 224.719979,
+        "codec": "pcm_s16le",
+        "channels": 2,
+        "sampleRate": "48000",
+        "bitsPerSample": 16,
+        "tags": {
+          "comment": "Magical fantasy ambient instrumental BGM set in an enchanted forest world of elves and ancient spirits, with soft pads, airy choir, harp, flute and gentle bells.",
+          "copyright": "Copyright 2026 LoveMyCreation Studio. All rights reserved.",
+          "date": "2026",
+          "genre": "BGM",
+          "title": "Enchanted Forest Music 007",
+          "album": "Enchanted Forest Music Collection",
+          "encoder": "Lavf62.13.100",
+          "encoded_by": "LoveMyCreation Studio"
+        },
+        "mean_volume": -15.3,
+        "max_volume": 0.0
+      },
+      {
+        "name": "Enchanted Forest Music 008.wav",
+        "bytes": 39083966,
+        "sha256": "e4923b973161e8947270ed893403340d4a98011a3c8db18485d711dae133d786",
+        "duration": 203.559979,
+        "codec": "pcm_s16le",
+        "channels": 2,
+        "sampleRate": "48000",
+        "bitsPerSample": 16,
+        "tags": {
+          "comment": "Magical fantasy ambient instrumental BGM set in an enchanted forest world of elves and ancient spirits, with soft pads, airy choir, harp, flute and gentle bells.",
+          "copyright": "Copyright 2026 LoveMyCreation Studio. All rights reserved.",
+          "date": "2026",
+          "genre": "BGM",
+          "title": "Enchanted Forest Music 008",
+          "album": "Enchanted Forest Music Collection",
+          "encoder": "Lavf62.13.100",
+          "encoded_by": "LoveMyCreation Studio"
+        },
+        "mean_volume": -16.1,
+        "max_volume": -0.0
+      },
+      {
+        "name": "Enchanted Forest Music 009.wav",
+        "bytes": 41948606,
+        "sha256": "b8f6c2d4565155ce09ef445baae704c8d986301edf2e5be0ceccaa6986c1511e",
+        "duration": 218.479979,
+        "codec": "pcm_s16le",
+        "channels": 2,
+        "sampleRate": "48000",
+        "bitsPerSample": 16,
+        "tags": {
+          "comment": "Magical fantasy ambient instrumental BGM set in an enchanted forest world of elves and ancient spirits, with soft pads, airy choir, harp, flute and gentle bells.",
+          "copyright": "Copyright 2026 LoveMyCreation Studio. All rights reserved.",
+          "date": "2026",
+          "genre": "BGM",
+          "title": "Enchanted Forest Music 009",
+          "album": "Enchanted Forest Music Collection",
+          "encoder": "Lavf62.13.100",
+          "encoded_by": "LoveMyCreation Studio"
+        },
+        "mean_volume": -13.2,
+        "max_volume": -0.0
+      },
+      {
+        "name": "Enchanted Forest Music 010.wav",
+        "bytes": 39997886,
+        "sha256": "daad3f9c90ba8018e8a682c1eee1a75ee965ff6761dd4953ea9d7fffb3451f92",
+        "duration": 208.319979,
+        "codec": "pcm_s16le",
+        "channels": 2,
+        "sampleRate": "48000",
+        "bitsPerSample": 16,
+        "tags": {
+          "comment": "Magical fantasy ambient instrumental BGM set in an enchanted forest world of elves and ancient spirits, with soft pads, airy choir, harp, flute and gentle bells.",
+          "copyright": "Copyright 2026 LoveMyCreation Studio. All rights reserved.",
+          "date": "2026",
+          "genre": "BGM",
+          "title": "Enchanted Forest Music 010",
+          "album": "Enchanted Forest Music Collection",
+          "encoder": "Lavf62.13.100",
+          "encoded_by": "LoveMyCreation Studio"
+        },
+        "mean_volume": -14.2,
+        "max_volume": -0.0
+      },
+      {
+        "name": "Enchanted Forest Music 011.wav",
+        "bytes": 42785726,
+        "sha256": "e35da7e16e9131dee6d984c2f9eb519d4d616f2980e7d543db3e13446f3f4da5",
+        "duration": 222.839979,
+        "codec": "pcm_s16le",
+        "channels": 2,
+        "sampleRate": "48000",
+        "bitsPerSample": 16,
+        "tags": {
+          "comment": "Magical fantasy ambient instrumental BGM set in an enchanted forest world of elves and ancient spirits, with soft pads, airy choir, harp, flute and gentle bells.",
+          "copyright": "Copyright 2026 LoveMyCreation Studio. All rights reserved.",
+          "date": "2026",
+          "genre": "BGM",
+          "title": "Enchanted Forest Music 011",
+          "album": "Enchanted Forest Music Collection",
+          "encoder": "Lavf62.13.100",
+          "encoded_by": "LoveMyCreation Studio"
+        },
+        "mean_volume": -15.9,
+        "max_volume": -0.0
+      },
+      {
+        "name": "Enchanted Forest Music 012.wav",
+        "bytes": 41818046,
+        "sha256": "7587da8e626e27dda01f9776aa39b41edfeb8d18d19e1e48b8e88c24ebcefc0e",
+        "duration": 217.799979,
+        "codec": "pcm_s16le",
+        "channels": 2,
+        "sampleRate": "48000",
+        "bitsPerSample": 16,
+        "tags": {
+          "comment": "Magical fantasy ambient instrumental BGM set in an enchanted forest world of elves and ancient spirits, with soft pads, airy choir, harp, flute and gentle bells.",
+          "copyright": "Copyright 2026 LoveMyCreation Studio. All rights reserved.",
+          "date": "2026",
+          "genre": "BGM",
+          "title": "Enchanted Forest Music 012",
+          "album": "Enchanted Forest Music Collection",
+          "encoder": "Lavf62.13.100",
+          "encoded_by": "LoveMyCreation Studio"
+        },
+        "mean_volume": -16.8,
+        "max_volume": 0.0
+      },
+      {
+        "name": "Enchanted Forest Music 013.wav",
+        "bytes": 43914686,
+        "sha256": "43fe4598bd359d844293988c711fa11c00593a1d23ef2017dac659870bcb3302",
+        "duration": 228.719979,
+        "codec": "pcm_s16le",
+        "channels": 2,
+        "sampleRate": "48000",
+        "bitsPerSample": 16,
+        "tags": {
+          "comment": "Magical fantasy ambient instrumental BGM set in an enchanted forest world of elves and ancient spirits, with soft pads, airy choir, harp, flute and gentle bells.",
+          "copyright": "Copyright 2026 LoveMyCreation Studio. All rights reserved.",
+          "date": "2026",
+          "genre": "BGM",
+          "title": "Enchanted Forest Music 013",
+          "album": "Enchanted Forest Music Collection",
+          "encoder": "Lavf62.13.100",
+          "encoded_by": "LoveMyCreation Studio"
+        },
+        "mean_volume": -14.2,
+        "max_volume": -0.1
+      },
+      {
+        "name": "Enchanted Forest Music 014.wav",
+        "bytes": 40320446,
+        "sha256": "86e3fd673eb7f7cc448f45be36cafdf261c5e8a84d75a00ed2efa8756a4995c3",
+        "duration": 209.999979,
+        "codec": "pcm_s16le",
+        "channels": 2,
+        "sampleRate": "48000",
+        "bitsPerSample": 16,
+        "tags": {
+          "comment": "Magical fantasy ambient instrumental BGM set in an enchanted forest world of elves and ancient spirits, with soft pads, airy choir, harp, flute and gentle bells.",
+          "copyright": "Copyright 2026 LoveMyCreation Studio. All rights reserved.",
+          "date": "2026",
+          "genre": "BGM",
+          "title": "Enchanted Forest Music 014",
+          "album": "Enchanted Forest Music Collection",
+          "encoder": "Lavf62.13.100",
+          "encoded_by": "LoveMyCreation Studio"
+        },
+        "mean_volume": -16.7,
+        "max_volume": -0.0
+      },
+      {
+        "name": "Enchanted Forest Music 015.wav",
+        "bytes": 43154366,
+        "sha256": "dbcabb12f12ea91f41af191fccde2091e8e57f2acf9b20c205f272d855e37f92",
+        "duration": 224.759979,
+        "codec": "pcm_s16le",
+        "channels": 2,
+        "sampleRate": "48000",
+        "bitsPerSample": 16,
+        "tags": {
+          "comment": "Magical fantasy ambient instrumental BGM set in an enchanted forest world of elves and ancient spirits, with soft pads, airy choir, harp, flute and gentle bells.",
+          "copyright": "Copyright 2026 LoveMyCreation Studio. All rights reserved.",
+          "date": "2026",
+          "genre": "BGM",
+          "title": "Enchanted Forest Music 015",
+          "album": "Enchanted Forest Music Collection",
+          "encoder": "Lavf62.13.100",
+          "encoded_by": "LoveMyCreation Studio"
+        },
+        "mean_volume": -18.7,
+        "max_volume": 0.0
+      },
+      {
+        "name": "Enchanted Forest Music 016.wav",
+        "bytes": 43100606,
+        "sha256": "ca03ce446e04c3777037b9acabb4f1ba7be9a113893db1d565903660b6ec5e86",
+        "duration": 224.479979,
+        "codec": "pcm_s16le",
+        "channels": 2,
+        "sampleRate": "48000",
+        "bitsPerSample": 16,
+        "tags": {
+          "comment": "Magical fantasy ambient instrumental BGM set in an enchanted forest world of elves and ancient spirits, with soft pads, airy choir, harp, flute and gentle bells.",
+          "copyright": "Copyright 2026 LoveMyCreation Studio. All rights reserved.",
+          "date": "2026",
+          "genre": "BGM",
+          "title": "Enchanted Forest Music 016",
+          "album": "Enchanted Forest Music Collection",
+          "encoder": "Lavf62.13.100",
+          "encoded_by": "LoveMyCreation Studio"
+        },
+        "mean_volume": -13.4,
+        "max_volume": -0.0
+      },
+      {
+        "name": "Enchanted Forest Music 017.wav",
+        "bytes": 43100606,
+        "sha256": "510764e5b0bbb07a6254da9f82de46ce7c2cc072f75899dfc506c1401f31b9d5",
+        "duration": 224.479979,
+        "codec": "pcm_s16le",
+        "channels": 2,
+        "sampleRate": "48000",
+        "bitsPerSample": 16,
+        "tags": {
+          "comment": "Magical fantasy ambient instrumental BGM set in an enchanted forest world of elves and ancient spirits, with soft pads, airy choir, harp, flute and gentle bells.",
+          "copyright": "Copyright 2026 LoveMyCreation Studio. All rights reserved.",
+          "date": "2026",
+          "genre": "BGM",
+          "title": "Enchanted Forest Music 017",
+          "album": "Enchanted Forest Music Collection",
+          "encoder": "Lavf62.13.100",
+          "encoded_by": "LoveMyCreation Studio"
+        },
+        "mean_volume": -15.2,
+        "max_volume": -0.0
+      },
+      {
+        "name": "Enchanted Forest Music 018.wav",
+        "bytes": 43968446,
+        "sha256": "8796f1a3c36b2f044c31ad7797589b71d96a3d706978337e710a4b9fc6a42678",
+        "duration": 228.999979,
+        "codec": "pcm_s16le",
+        "channels": 2,
+        "sampleRate": "48000",
+        "bitsPerSample": 16,
+        "tags": {
+          "comment": "Magical fantasy ambient instrumental BGM set in an enchanted forest world of elves and ancient spirits, with soft pads, airy choir, harp, flute and gentle bells.",
+          "copyright": "Copyright 2026 LoveMyCreation Studio. All rights reserved.",
+          "date": "2026",
+          "genre": "BGM",
+          "title": "Enchanted Forest Music 018",
+          "album": "Enchanted Forest Music Collection",
+          "encoder": "Lavf62.13.100",
+          "encoded_by": "LoveMyCreation Studio"
+        },
+        "mean_volume": -13.8,
+        "max_volume": -0.6
+      },
+      {
+        "name": "Enchanted Forest Music 019.wav",
+        "bytes": 42171326,
+        "sha256": "a82bf92836a190bcbd35f62592bbba486a5ae3b2ef114e9fc48e2c18e20a315f",
+        "duration": 219.639979,
+        "codec": "pcm_s16le",
+        "channels": 2,
+        "sampleRate": "48000",
+        "bitsPerSample": 16,
+        "tags": {
+          "comment": "Magical fantasy ambient instrumental BGM set in an enchanted forest world of elves and ancient spirits, with soft pads, airy choir, harp, flute and gentle bells.",
+          "copyright": "Copyright 2026 LoveMyCreation Studio. All rights reserved.",
+          "date": "2026",
+          "genre": "BGM",
+          "title": "Enchanted Forest Music 019",
+          "album": "Enchanted Forest Music Collection",
+          "encoder": "Lavf62.13.100",
+          "encoded_by": "LoveMyCreation Studio"
+        },
+        "mean_volume": -14.1,
+        "max_volume": 0.0
+      },
+      {
+        "name": "Enchanted Forest Music 020.wav",
+        "bytes": 43054526,
+        "sha256": "f296f92e51694ab4b965e9918f18da224cf544dae7b8be61adcd4143b37a5bdc",
+        "duration": 224.239979,
+        "codec": "pcm_s16le",
+        "channels": 2,
+        "sampleRate": "48000",
+        "bitsPerSample": 16,
+        "tags": {
+          "comment": "Magical fantasy ambient instrumental BGM set in an enchanted forest world of elves and ancient spirits, with soft pads, airy choir, harp, flute and gentle bells.",
+          "copyright": "Copyright 2026 LoveMyCreation Studio. All rights reserved.",
+          "date": "2026",
+          "genre": "BGM",
+          "title": "Enchanted Forest Music 020",
+          "album": "Enchanted Forest Music Collection",
+          "encoder": "Lavf62.13.100",
+          "encoded_by": "LoveMyCreation Studio"
+        },
+        "mean_volume": -14.1,
+        "max_volume": -0.0
+      },
+      {
+        "name": "Enchanted Forest Music 021.wav",
+        "bytes": 42232766,
+        "sha256": "6d33f1621049ced86d6d2e1d555173503dc5fdaed44ec04ac03ce42190f7fd11",
+        "duration": 219.959979,
+        "codec": "pcm_s16le",
+        "channels": 2,
+        "sampleRate": "48000",
+        "bitsPerSample": 16,
+        "tags": {
+          "comment": "Magical fantasy ambient instrumental BGM set in an enchanted forest world of elves and ancient spirits, with soft pads, airy choir, harp, flute and gentle bells.",
+          "copyright": "Copyright 2026 LoveMyCreation Studio. All rights reserved.",
+          "date": "2026",
+          "genre": "BGM",
+          "title": "Enchanted Forest Music 021",
+          "album": "Enchanted Forest Music Collection",
+          "encoder": "Lavf62.13.100",
+          "encoded_by": "LoveMyCreation Studio"
+        },
+        "mean_volume": -15.7,
+        "max_volume": -0.0
+      },
+      {
+        "name": "Enchanted Forest Music 022.wav",
+        "bytes": 43837886,
+        "sha256": "0de99542513553997aa337961d59f99d8712dcdd8a1f997f3c893be988932c56",
+        "duration": 228.319979,
+        "codec": "pcm_s16le",
+        "channels": 2,
+        "sampleRate": "48000",
+        "bitsPerSample": 16,
+        "tags": {
+          "comment": "Magical fantasy ambient instrumental BGM set in an enchanted forest world of elves and ancient spirits, with soft pads, airy choir, harp, flute and gentle bells.",
+          "copyright": "Copyright 2026 LoveMyCreation Studio. All rights reserved.",
+          "date": "2026",
+          "genre": "BGM",
+          "title": "Enchanted Forest Music 022",
+          "album": "Enchanted Forest Music Collection",
+          "encoder": "Lavf62.13.100",
+          "encoded_by": "LoveMyCreation Studio"
+        },
+        "mean_volume": -15.8,
+        "max_volume": -0.0
+      },
+      {
+        "name": "Enchanted Forest Music 023.wav",
+        "bytes": 46986686,
+        "sha256": "9c4a1793dbfadd3c461295b73cc8aefeec245f1f47676230100c9a58c2ad46c9",
+        "duration": 244.719979,
+        "codec": "pcm_s16le",
+        "channels": 2,
+        "sampleRate": "48000",
+        "bitsPerSample": 16,
+        "tags": {
+          "comment": "Magical fantasy ambient instrumental BGM set in an enchanted forest world of elves and ancient spirits, with soft pads, airy choir, harp, flute and gentle bells.",
+          "copyright": "Copyright 2026 LoveMyCreation Studio. All rights reserved.",
+          "date": "2026",
+          "genre": "BGM",
+          "title": "Enchanted Forest Music 023",
+          "album": "Enchanted Forest Music Collection",
+          "encoder": "Lavf62.13.100",
+          "encoded_by": "LoveMyCreation Studio"
+        },
+        "mean_volume": -14.6,
+        "max_volume": -0.0
+      },
+      {
+        "name": "Enchanted Forest Music 024.wav",
+        "bytes": 43415486,
+        "sha256": "3b4fccb080f82c5fdf8c9179b660f215a85b3b1c813001207855d44d434083b2",
+        "duration": 226.119979,
+        "codec": "pcm_s16le",
+        "channels": 2,
+        "sampleRate": "48000",
+        "bitsPerSample": 16,
+        "tags": {
+          "comment": "Magical fantasy ambient instrumental BGM set in an enchanted forest world of elves and ancient spirits, with soft pads, airy choir, harp, flute and gentle bells.",
+          "copyright": "Copyright 2026 LoveMyCreation Studio. All rights reserved.",
+          "date": "2026",
+          "genre": "BGM",
+          "title": "Enchanted Forest Music 024",
+          "album": "Enchanted Forest Music Collection",
+          "encoder": "Lavf62.13.100",
+          "encoded_by": "LoveMyCreation Studio"
+        },
+        "mean_volume": -14.7,
+        "max_volume": -0.0
+      },
+      {
+        "name": "Enchanted Forest Music 025.wav",
+        "bytes": 44091326,
+        "sha256": "1a58998f298df174ccb6504bff1480235d474766cff369743632e1c697e2ea18",
+        "duration": 229.639979,
+        "codec": "pcm_s16le",
+        "channels": 2,
+        "sampleRate": "48000",
+        "bitsPerSample": 16,
+        "tags": {
+          "comment": "Magical fantasy ambient instrumental BGM set in an enchanted forest world of elves and ancient spirits, with soft pads, airy choir, harp, flute and gentle bells.",
+          "copyright": "Copyright 2026 LoveMyCreation Studio. All rights reserved.",
+          "date": "2026",
+          "genre": "BGM",
+          "title": "Enchanted Forest Music 025",
+          "album": "Enchanted Forest Music Collection",
+          "encoder": "Lavf62.13.100",
+          "encoded_by": "LoveMyCreation Studio"
+        },
+        "mean_volume": -14.5,
+        "max_volume": -0.0
+      }
+    ]
+  },
+  "rigReadinessAudit": {
+    "scope": "Direct current RiggedAvatar, material replaced only in Node; five temporal probes per native clip, no pack-specific adapter; readiness audit, not final animation-envelope certification",
+    "results": [
+      {
+        "name": "18_Security",
+        "height": 10.478245281909027,
+        "clips": 22,
+        "maxRadius": 5.096748481156684,
+        "minY": -0.06479019317388278,
+        "maxHeadGap": 1.0875318962955998,
+        "clipsOutsidePedestrianDisc": [
+          {
+            "clip": "Adult_ComputerWork",
+            "radius": 5.096748481156684
+          }
+        ],
+        "joints": {
+          "head": "Head",
+          "torso": "Spine1",
+          "arm-left": "LeftArm",
+          "arm-right": "RightArm",
+          "hand-left": "LeftHandIndex2",
+          "hand-right": "RightHandIndex2",
+          "leg-left": "LeftUpLeg",
+          "leg-right": "RightUpLeg",
+          "foot-left": "LeftToeBase",
+          "foot-right": "RightToeBase"
+        }
+      },
+      {
+        "name": "1_Cashier",
+        "height": 10.459886749482388,
+        "clips": 22,
+        "maxRadius": 5.1595299959250545,
+        "minY": -0.06454354412651853,
+        "maxHeadGap": 1.0494623451740832,
+        "clipsOutsidePedestrianDisc": [
+          {
+            "clip": "Adult_ComputerWork",
+            "radius": 5.1595299959250545
+          }
+        ],
+        "joints": {
+          "head": "Head",
+          "torso": "Spine1",
+          "arm-left": "LeftArm",
+          "arm-right": "RightArm",
+          "hand-left": "LeftHandIndex2",
+          "hand-right": "RightHandIndex2",
+          "leg-left": "LeftUpLeg",
+          "leg-right": "RightUpLeg",
+          "foot-left": "LeftToeBase",
+          "foot-right": "RightToeBase"
+        }
+      },
+      {
+        "name": "20_Showgirl",
+        "height": 10.892632264177974,
+        "clips": 22,
+        "maxRadius": 5.083497242022583,
+        "minY": -0.04737606723254184,
+        "maxHeadGap": 0.4954904973558527,
+        "clipsOutsidePedestrianDisc": [
+          {
+            "clip": "Adult_ComputerWork",
+            "radius": 5.083497242022583
+          }
+        ],
+        "joints": {
+          "head": "Head",
+          "torso": "Spine1",
+          "arm-left": "LeftArm",
+          "arm-right": "RightArm",
+          "hand-left": "LeftHandIndex2",
+          "hand-right": "RightHandIndex2",
+          "leg-left": "LeftUpLeg",
+          "leg-right": "RightUpLeg",
+          "foot-left": "LeftToeBase",
+          "foot-right": "RightToeBase"
+        }
+      },
+      {
+        "name": "36",
+        "height": 10.922172817731036,
+        "clips": 22,
+        "maxRadius": 5.098003235794805,
+        "minY": -0.064067742688124,
+        "maxHeadGap": 0.5641040884893016,
+        "clipsOutsidePedestrianDisc": [
+          {
+            "clip": "Adult_ComputerWork",
+            "radius": 5.098003235794805
+          }
+        ],
+        "joints": {
+          "head": "Head",
+          "torso": "Spine1",
+          "arm-left": "LeftArm",
+          "arm-right": "RightArm",
+          "hand-left": "LeftHandIndex2",
+          "hand-right": "RightHandIndex2",
+          "leg-left": "LeftUpLeg",
+          "leg-right": "RightUpLeg",
+          "foot-left": "LeftToeBase",
+          "foot-right": "RightToeBase"
+        }
+      },
+      {
+        "name": "75",
+        "height": 10.311851950423272,
+        "clips": 14,
+        "maxRadius": 4.469139114958276,
+        "minY": -0.05078978222431461,
+        "maxHeadGap": 0.5903353562873619,
+        "clipsOutsidePedestrianDisc": [],
+        "joints": {
+          "head": "Head",
+          "torso": "Spine1",
+          "arm-left": "LeftArm",
+          "arm-right": "RightArm",
+          "hand-left": "LeftHandIndex2",
+          "hand-right": "RightHandIndex2",
+          "leg-left": "LeftUpLeg",
+          "leg-right": "RightUpLeg",
+          "foot-left": "LeftToeBase",
+          "foot-right": "RightToeBase"
+        }
+      },
+      {
+        "name": "Chess_Player_01",
+        "height": 17.5,
+        "clips": 41,
+        "maxRadius": 8.109600298895426,
+        "minY": -0.4760170189949069,
+        "maxHeadGap": 0.1966268891673284,
+        "clipsOutsidePedestrianDisc": [
+          {
+            "clip": "Adult_SitBenchRelax_02",
+            "radius": 6.661299275619211
+          },
+          {
+            "clip": "Adult_SitTableIdle",
+            "radius": 7.437077836427204
+          },
+          {
+            "clip": "Adult_TalkGestureActive",
+            "radius": 7.251702333658878
+          },
+          {
+            "clip": "Adult_Run",
+            "radius": 6.9121553451907936
+          },
+          {
+            "clip": "Adult_Walk",
+            "radius": 5.365561259277075
+          },
+          {
+            "clip": "Adult_Sad",
+            "radius": 7.179555861000691
+          },
+          {
+            "clip": "Adult_Male_Sit_02",
+            "radius": 6.923631601754717
+          },
+          {
+            "clip": "Adult_Male_Sit_03",
+            "radius": 6.923631600665788
+          },
+          {
+            "clip": "AC_Run_B",
+            "radius": 4.813162643391292
+          },
+          {
+            "clip": "AC_Run_BR",
+            "radius": 4.804599925801345
+          },
+          {
+            "clip": "AC_Crouch_F",
+            "radius": 5.4718224573814505
+          },
+          {
+            "clip": "AC_Crouch_B",
+            "radius": 5.298445916025583
+          },
+          {
+            "clip": "AC_Crouch_FL",
+            "radius": 5.469618892552881
+          },
+          {
+            "clip": "AC_Crouch_FR",
+            "radius": 5.5030173188003575
+          },
+          {
+            "clip": "AC_Crouch_BL",
+            "radius": 5.403276753555652
+          },
+          {
+            "clip": "AC_Crouch_BR",
+            "radius": 5.313673072682717
+          },
+          {
+            "clip": "AC_Crouch_L",
+            "radius": 5.440633979612108
+          },
+          {
+            "clip": "AC_Crouch_R",
+            "radius": 5.441944673146207
+          },
+          {
+            "clip": "Jump_Idle",
+            "radius": 6.797261716226309
+          },
+          {
+            "clip": "Jump_FInish",
+            "radius": 8.109600298895426
+          }
+        ],
+        "joints": {
+          "head": "Head",
+          "torso": "Spine1",
+          "arm-left": "LeftArm",
+          "arm-right": "RightArm",
+          "hand-left": "LeftHandIndex2",
+          "hand-right": "RightHandIndex2",
+          "leg-left": "LeftUpLeg",
+          "leg-right": "RightUpLeg",
+          "foot-left": "LeftToeBase",
+          "foot-right": "RightToeBase"
+        }
+      },
+      {
+        "name": "Chess_Player_02",
+        "height": 17.5,
+        "clips": 41,
+        "maxRadius": 8.095017073235724,
+        "minY": -0.4796988020582385,
+        "maxHeadGap": 0.20943621814974023,
+        "clipsOutsidePedestrianDisc": [
+          {
+            "clip": "Adult_SitBenchRelax_02",
+            "radius": 6.6203966699333545
+          },
+          {
+            "clip": "Adult_SitTableIdle",
+            "radius": 7.394296365520299
+          },
+          {
+            "clip": "Adult_TalkGestureActive",
+            "radius": 7.245331756447166
+          },
+          {
+            "clip": "Adult_Run",
+            "radius": 6.866179112964328
+          },
+          {
+            "clip": "Adult_Walk",
+            "radius": 5.308467088128068
+          },
+          {
+            "clip": "Adult_Sad",
+            "radius": 7.082972866865924
+          },
+          {
+            "clip": "Adult_Male_Sit_02",
+            "radius": 6.877675863633135
+          },
+          {
+            "clip": "Adult_Male_Sit_03",
+            "radius": 6.87767586102437
+          },
+          {
+            "clip": "AC_Run_B",
+            "radius": 4.848201977263431
+          },
+          {
+            "clip": "AC_Run_BL",
+            "radius": 4.864334982040857
+          },
+          {
+            "clip": "AC_Run_BR",
+            "radius": 4.8947331385546535
+          },
+          {
+            "clip": "AC_Crouch_F",
+            "radius": 5.430148476270968
+          },
+          {
+            "clip": "AC_Crouch_B",
+            "radius": 5.256393959607287
+          },
+          {
+            "clip": "AC_Crouch_FL",
+            "radius": 5.41203548990778
+          },
+          {
+            "clip": "AC_Crouch_FR",
+            "radius": 5.445256142676412
+          },
+          {
+            "clip": "AC_Crouch_BL",
+            "radius": 5.345496449568407
+          },
+          {
+            "clip": "AC_Crouch_BR",
+            "radius": 5.306040106924196
+          },
+          {
+            "clip": "AC_Crouch_L",
+            "radius": 5.398350179462896
+          },
+          {
+            "clip": "AC_Crouch_R",
+            "radius": 5.397208191092754
+          },
+          {
+            "clip": "Jump_Idle",
+            "radius": 6.773833123791713
+          },
+          {
+            "clip": "Jump_FInish",
+            "radius": 8.095017073235724
+          }
+        ],
+        "joints": {
+          "head": "Head",
+          "torso": "Spine1",
+          "arm-left": "LeftArm",
+          "arm-right": "RightArm",
+          "hand-left": "LeftHandIndex2",
+          "hand-right": "RightHandIndex2",
+          "leg-left": "LeftUpLeg",
+          "leg-right": "RightUpLeg",
+          "foot-left": "LeftToeBase",
+          "foot-right": "RightToeBase"
+        }
+      }
+    ],
+    "conclusion": "Current generic adapter is insufficient: five Casino rigs shrink to10.31–10.92 units, hands resolve to index-finger joints, feet to toes; some Chess walk/run/talk poses exceed unchanged4.8 radius and soles sink up to~.48. Require exact pack joints/idle/clip/root-motion/envelope normalization before any replacement."
+  },
+  "fabReview": {
+    "date": "2026-10-29",
+    "categories": [
+      {
+        "url": "https://www.fab.com/category/3d-model?is_free=1",
+        "category": "3d-model",
+        "anonymous": true,
+        "listingsRead": 24,
+        "unrealOnly": 4
+      },
+      {
+        "url": "https://www.fab.com/category/animation?is_free=1",
+        "category": "animation",
+        "anonymous": true,
+        "listingsRead": 24,
+        "unrealOnly": 15
+      },
+      {
+        "url": "https://www.fab.com/category/audio?is_free=1",
+        "category": "audio",
+        "anonymous": true,
+        "listingsRead": 24,
+        "unrealOnly": 14
+      },
+      {
+        "url": "https://www.fab.com/category/vfx?is_free=1",
+        "category": "vfx",
+        "anonymous": true,
+        "listingsRead": 24,
+        "unrealOnly": 24
+      },
+      {
+        "url": "https://www.fab.com/category/ui?is_free=1",
+        "category": "ui",
+        "anonymous": true,
+        "listingsRead": 24,
+        "unrealOnly": 18
+      }
+    ],
+    "candidates": [
+      {
+        "uid": "6150cf8e-8105-4da0-9209-3edbc2afb673",
+        "title": "Stylized Library — 48 Cozy Interior Props",
+        "url": "https://www.fab.com/listings/6150cf8e-8105-4da0-9209-3edbc2afb673",
+        "category": "3d-model",
+        "formats": [
+          "unity",
+          "blender",
+          "fbx",
+          "unreal-engine",
+          "converted-files",
+          "additional-files"
+        ],
+        "priceZeroInFreeSearch": true,
+        "detailStatus": 200,
+        "addToLibraryPrompt": false,
+        "loginRequiredEvidence": true,
+        "seller": {
+          "name": "Daria Borovleva",
+          "url": "https://www.fab.com/sellers/Daria%20Borovleva"
+        },
+        "licenses": [
+          {
+            "name": "Personal",
+            "group": "standard",
+            "isCc0": false,
+            "currency": "VND",
+            "price": 0.0,
+            "discountedPrice": null
+          },
+          {
+            "name": "Professional",
+            "group": "standard",
+            "isCc0": false,
+            "currency": "VND",
+            "price": 258294.0,
+            "discountedPrice": null
+          }
+        ],
+        "canTreatAllTiersAsFree": false
+      },
+      {
+        "uid": "7bf0a63b-d530-450b-a11f-a7c3e6a44b72",
+        "title": "Look Through Window Animation Pack",
+        "url": "https://www.fab.com/listings/7bf0a63b-d530-450b-a11f-a7c3e6a44b72",
+        "category": "animation",
+        "formats": [
+          "unreal-engine",
+          "fbx"
+        ],
+        "priceZeroInFreeSearch": true,
+        "detailStatus": 200,
+        "addToLibraryPrompt": true,
+        "loginRequiredEvidence": true,
+        "seller": {
+          "name": "Animpacks",
+          "url": "https://www.fab.com/sellers/Animpacks"
+        },
+        "licenses": [
+          {
+            "name": "Personal",
+            "group": "standard",
+            "isCc0": false,
+            "currency": "VND",
+            "price": 0.0,
+            "discountedPrice": null
+          },
+          {
+            "name": "Professional",
+            "group": "standard",
+            "isCc0": false,
+            "currency": "VND",
+            "price": 0.0,
+            "discountedPrice": null
+          }
+        ],
+        "canTreatAllTiersAsFree": true
+      },
+      {
+        "uid": "db51ee37-e209-4834-a7f5-7e71c14011ad",
+        "title": "Free Interaction Animation",
+        "url": "https://www.fab.com/listings/db51ee37-e209-4834-a7f5-7e71c14011ad",
+        "category": "animation",
+        "formats": [
+          "unreal-engine"
+        ],
+        "priceZeroInFreeSearch": true,
+        "detailStatus": 200,
+        "addToLibraryPrompt": false,
+        "loginRequiredEvidence": true,
+        "seller": {
+          "name": "voxel vision",
+          "url": "https://www.fab.com/sellers/voxel%20vision"
+        },
+        "licenses": [
+          {
+            "name": "Personal",
+            "group": "standard",
+            "isCc0": false,
+            "currency": "VND",
+            "price": 0.0,
+            "discountedPrice": null
+          },
+          {
+            "name": "Professional",
+            "group": "standard",
+            "isCc0": false,
+            "currency": "VND",
+            "price": 258294.0,
+            "discountedPrice": null
+          }
+        ],
+        "canTreatAllTiersAsFree": false
+      },
+      {
+        "uid": "b8cc7270-5e0c-4ef7-a277-6a1d4b69358d",
+        "title": "50 Free Game Sounds Pack",
+        "url": "https://www.fab.com/listings/b8cc7270-5e0c-4ef7-a277-6a1d4b69358d",
+        "category": "audio",
+        "formats": [
+          "unreal-engine",
+          "additional-files"
+        ],
+        "priceZeroInFreeSearch": true,
+        "detailStatus": 200,
+        "addToLibraryPrompt": false,
+        "loginRequiredEvidence": true,
+        "seller": {
+          "name": "PlaceHolder Inc",
+          "url": "https://www.fab.com/sellers/PlaceHolder%20Inc"
+        },
+        "licenses": [
+          {
+            "name": "Personal",
+            "group": "standard",
+            "isCc0": false,
+            "currency": "VND",
+            "price": 0.0,
+            "discountedPrice": null
+          },
+          {
+            "name": "Professional",
+            "group": "standard",
+            "isCc0": false,
+            "currency": "VND",
+            "price": 129017.0,
+            "discountedPrice": null
+          }
+        ],
+        "canTreatAllTiersAsFree": false
+      },
+      {
+        "uid": "c4e9f60e-f1c1-433c-8b1b-fb5867da0d64",
+        "title": "Essential Ambience SFX",
+        "url": "https://www.fab.com/listings/c4e9f60e-f1c1-433c-8b1b-fb5867da0d64",
+        "category": "audio",
+        "formats": [
+          "unreal-engine",
+          "unity",
+          "additional-files"
+        ],
+        "priceZeroInFreeSearch": true,
+        "detailStatus": 200,
+        "addToLibraryPrompt": false,
+        "loginRequiredEvidence": true,
+        "seller": {
+          "name": "Sound Kajiya",
+          "url": "https://www.fab.com/sellers/Sound%20Kajiya"
+        },
+        "licenses": [
+          {
+            "name": "Personal",
+            "group": "standard",
+            "isCc0": false,
+            "currency": "VND",
+            "price": 0.0,
+            "discountedPrice": null
+          },
+          {
+            "name": "Professional",
+            "group": "standard",
+            "isCc0": false,
+            "currency": "VND",
+            "price": 129017.0,
+            "discountedPrice": null
+          }
+        ],
+        "canTreatAllTiersAsFree": false
+      },
+      {
+        "uid": "53a05236-81da-49b4-ab7f-d098dff5839a",
+        "title": "Flat Icons Free Sample Pack",
+        "url": "https://www.fab.com/listings/53a05236-81da-49b4-ab7f-d098dff5839a",
+        "category": "ui",
+        "formats": [
+          "unreal-engine",
+          "additional-files"
+        ],
+        "priceZeroInFreeSearch": true,
+        "detailStatus": 200,
+        "addToLibraryPrompt": true,
+        "loginRequiredEvidence": true,
+        "seller": {
+          "name": "OneLittleFeather",
+          "url": "https://www.fab.com/sellers/OneLittleFeather"
+        },
+        "licenses": [
+          {
+            "name": "Personal",
+            "group": "standard",
+            "isCc0": false,
+            "currency": "VND",
+            "price": 0.0,
+            "discountedPrice": null
+          },
+          {
+            "name": "Professional",
+            "group": "standard",
+            "isCc0": false,
+            "currency": "VND",
+            "price": 0.0,
+            "discountedPrice": null
+          }
+        ],
+        "canTreatAllTiersAsFree": true
+      }
+    ],
+    "eula": {
+      "error": "HTTP Error 403: Forbidden"
+    },
+    "downloadsAcquired": 0,
+    "method": "Public official listing/category metadata only, no account login/library purchase, EULA acceptance or authentication bypass",
+    "decisions": [
+      "Prefer GLB/glTF or exportable FBX, ordinary daily-life props and discrete footsteps/ambience",
+      "Native Unreal Niagara/UMG/Blueprint packs cannot drop into Three.js; keep current web UI and effects unless a portable asset is independently available",
+      "Confirm license and acquired entitlement on the exact selected file; free price is not CC0",
+      "Audio needs dialogue ducking, opt-in playback, OGG conversion, loop/loudness and browser lifecycle checks",
+      "Free search includes mixed-price tiers: Library Personal0/Professional258294VND, Ambience Personal0/Professional129017VND in this readback. Do not acquire a paid tier or infer eligibility. No Fab account/library entitlement is available in this session; no files acquired. EULA page itself returned403, so its text was not verified."
+    ]
+  },
+  "sourceArchivePreservation": {
+    "requestedByOwner": true,
+    "localDirectory": "/workspace/AI-Living-assets/source-archives",
+    "localCopies": 3,
+    "rawBytes": 3818113241,
+    "inRuntimeOrGitTree": false,
+    "registry": "data/assets/source-archives.json",
+    "externalBackup": {
+      "provider": "GitHub draft release",
+      "releaseId": 427551403,
+      "tag": "asset-source-backup-2026-10-29",
+      "isDraft": true,
+      "assetsUploaded": 0,
+      "status": "BLOCKED_HTTP_401",
+      "reason": "Current GitHub integration can create/read the draft but uploads.github.com rejects asset uploads as Bad credentials. No external backup success claimed."
+    }
+  }
 }

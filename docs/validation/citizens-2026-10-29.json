@@ -1,0 +1,269 @@
+{
+  "version": 1,
+  "testedAt": "2026-10-29T14:18:07.678742+07:00",
+  "appSource": "130f710c2addacbdc85e4a22f4185a0fa0443dd2",
+  "qaBuildSource": "ac52c74cb53c8a350679e07b7a364cd34b5bfabe",
+  "scope": "Local isolated preview/fixtures and compiled QA build only; remote Access/D1/deployment not yet verified",
+  "changes": [
+    "Twelve original CC0 civilians; stable3core+≤5near model assignment and modern fallback, late primary upgrade",
+    "Remove unused AssetAvatar legacy rendering; no Kenney/Gobkit human loads in city/Studio",
+    "Author wardrobe masks and per-instance skin/material, keep shape/proportions/identity and navigation footprint",
+    "Studio common vertical scale, grounded squat/contact, kitten under-belly support, connected neck/knee/ankle/shoulder surfaces",
+    "Preserve voices/opt-in audio and logical scenario custody/outcome; no world/history/memory/policy writes from graphics"
+  ],
+  "unit": {
+    "work": {
+      "total": 70,
+      "passed": 70,
+      "followup": "Studio sleeve geometry contact/seek test rerun after full work regression"
+    },
+    "cloudflareQa": {
+      "total": 73,
+      "passed": 73,
+      "exactSource": "ac52c74cb53c8a350679e07b7a364cd34b5bfabe",
+      "additionalSuites": [
+        "signed Access JWT",
+        "QA scheduler guard",
+        "actual QA config CLI14 rejection cases/idempotency"
+      ]
+    }
+  },
+  "staticChecks": {
+    "typecheck": true,
+    "lint": true,
+    "assets": true,
+    "originalModelsByteReproducible": true,
+    "workBuild": true,
+    "qaBuild": true,
+    "actualQaConfigCliTwice": true,
+    "qaD1": "ai_living_qa",
+    "qaCron": "*/5 * * * *",
+    "qaAccessPreserved": true,
+    "qaConfigTemplateNameFixed": true
+  },
+  "studio": {
+    "cases": 8,
+    "viewports": [
+      "1440x900",
+      "390x844"
+    ],
+    "allFourScenarios": true,
+    "shotsPerCase": 5,
+    "trianglesRequiredBelow": 25000,
+    "drawCallsRequiredBelow": 150,
+    "seekPauseRestartEnd": true,
+    "caseStats": [
+      {
+        "viewport": "desktop",
+        "scenario": "wallet-return",
+        "triangles": 11778,
+        "drawCalls": 59,
+        "modelGeneration": "citizens-v1"
+      },
+      {
+        "viewport": "desktop",
+        "scenario": "sanitation-gratitude",
+        "triangles": 17480,
+        "drawCalls": 88,
+        "modelGeneration": "citizens-v1"
+      },
+      {
+        "viewport": "desktop",
+        "scenario": "kitten-care",
+        "triangles": 17170,
+        "drawCalls": 86,
+        "modelGeneration": "citizens-v1"
+      },
+      {
+        "viewport": "desktop",
+        "scenario": "bakery-courtesy",
+        "triangles": 23182,
+        "drawCalls": 135,
+        "modelGeneration": "citizens-v1"
+      },
+      {
+        "viewport": "mobile",
+        "scenario": "wallet-return",
+        "triangles": 11734,
+        "drawCalls": 58,
+        "modelGeneration": "citizens-v1"
+      },
+      {
+        "viewport": "mobile",
+        "scenario": "sanitation-gratitude",
+        "triangles": 16284,
+        "drawCalls": 72,
+        "modelGeneration": "citizens-v1"
+      },
+      {
+        "viewport": "mobile",
+        "scenario": "kitten-care",
+        "triangles": 17170,
+        "drawCalls": 86,
+        "modelGeneration": "citizens-v1"
+      },
+      {
+        "viewport": "mobile",
+        "scenario": "bakery-courtesy",
+        "triangles": 23182,
+        "drawCalls": 135,
+        "modelGeneration": "citizens-v1"
+      }
+    ]
+  },
+  "cityBrowser": {
+    "desktop": {
+      "viewport": "desktop",
+      "initial": {
+        "canvas": [
+          1788,
+          1118
+        ],
+        "css": [
+          1440,
+          900
+        ],
+        "quality": "balanced",
+        "pixelRatio": 1.2422599874998832
+      },
+      "pauseErrors": [
+        403,
+        409,
+        503,
+        "network",
+        "invalid-ack"
+      ],
+      "noDuplicateWrite": true,
+      "pausedMotionFrozen": true,
+      "chatFocusDraftAndNoSteal": true,
+      "keyboard": true,
+      "metadata": true,
+      "responsive320": true,
+      "presetsAndResize": true,
+      "dynamicDPR": true,
+      "pollKeepsCanvas": true,
+      "OSMRemount": true,
+      "hiddenResume": true,
+      "contextLossRetry": true,
+      "pageErrors": []
+    },
+    "mobileReducedMotionAndFallbacks": {
+      "production": false,
+      "renderer": "Chromium SwiftShader",
+      "fixture": "Synthetic world; all APIs mocked. Compiled local D1 persistence tested separately.",
+      "cases": [
+        {
+          "viewport": "mobile",
+          "initial": {
+            "canvas": [
+              585,
+              1266
+            ],
+            "css": [
+              390,
+              844
+            ],
+            "quality": "balanced",
+            "pixelRatio": 1.5
+          },
+          "pauseErrors": [
+            403,
+            409,
+            503,
+            "network",
+            "invalid-ack"
+          ],
+          "noDuplicateWrite": true,
+          "pausedMotionFrozen": true,
+          "chatFocusDraftAndNoSteal": true,
+          "keyboard": true,
+          "metadata": true,
+          "responsive320": true,
+          "presetsAndResize": true,
+          "dynamicDPR": true,
+          "pollKeepsCanvas": true,
+          "OSMRemount": true,
+          "hiddenResume": true,
+          "contextLossRetry": true,
+          "pageErrors": []
+        },
+        {
+          "reducedMotion": true,
+          "preferenceChange": true,
+          "worldNotPaused": true,
+          "pageErrors": []
+        },
+        {
+          "transportFallback": "unsupported",
+          "pageErrors": []
+        },
+        {
+          "transportFallback": "corrupt",
+          "pageErrors": []
+        },
+        {
+          "transportFallback": "core-failure",
+          "pageErrors": []
+        },
+        {
+          "transportFallback": "late-core",
+          "pageErrors": []
+        }
+      ]
+    },
+    "fallbackCases": [
+      "unsupported gzip",
+      "corrupt gzip→canonical",
+      "failed core→modern linen",
+      "held primary past4second preload→late upgrade"
+    ],
+    "legacyHumanRequestsForbidden": true
+  },
+  "gallery": {
+    "newStyleModels": 12,
+    "currentModelErrors": [],
+    "referenceCatalogCases": 24,
+    "referenceCatalogIsNotCityCast": true,
+    "pauseDisposeContextLossRetry": true
+  },
+  "sound": {
+    "source": "2ee5cb4, identical audio/voice/lifecycle code and OGG files in130f710",
+    "allFourActualVoiceOutputCases": 4,
+    "voiceAssets": 21,
+    "pauseSeekHiddenMuteNavigationPartialUnsupported": true,
+    "humanListeningMOS": false
+  },
+  "failuresAndDisposition": [
+    {
+      "failure": "Generated rig seams visible despite logical gates passing",
+      "action": "Extended torso and added bounded joint/sleeve geometry; updated12model hashes/27gzip transports and actual screenshots",
+      "status": "fixed-and-retested"
+    },
+    {
+      "failure": "Fallback assertion incorrectly required canonical linen request although gzip succeeded",
+      "action": "Accept either verified gzip or canonical; all4fallbacks including real late loading now pass",
+      "status": "test-fixed-product-unchanged"
+    },
+    {
+      "failure": "One combined browser run timed out waiting for mobile OSM after desktop PASS on130f710",
+      "action": "Added failure screenshot/body/errors/canvas telemetry and viewport selection; isolated mobile full UX+OSM remount, reduced motion and4fallbacks passed on same build",
+      "status": "functional-retest-pass-cause-not-established",
+      "limits": "Not a long-session/reliability PASS; keep for remote/soak follow-up"
+    }
+  ],
+  "screenshots": "docs/screenshots/citizens/manifest.json",
+  "sourceAssetReview": "docs/validation/asset-review-2026-10-29.json",
+  "sourceArchives": "data/assets/source-archives.json",
+  "remote": {
+    "qaPush": "pending",
+    "authenticatedQa": "blocked-no-current-access-credentials",
+    "cloudflareApi": "not-available",
+    "prodMigrationOrDeployment": false
+  },
+  "stillUnverified": [
+    "Real GPU/mobile FPS, long-session/24h soak",
+    "Remote authenticated QA deployment/D1/scheduled progress",
+    "New imported Fab/ZIP candidates in city, semantic/human music review",
+    "H3b promotion: previous holdout failure stays rejected"
+  ]
+}
