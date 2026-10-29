@@ -22,3 +22,20 @@ Status: audit under review; see GitHub Actions for actual PASS/FAIL. A passing o
 ## Recorded regression and recovery
 
 Initial H6 candidate directly changed the 41-action runtime, causing `test-learning-policy.mjs` and `test-residual-policy.mjs` to fail golden/H1 baseline semantics (72/74 tests PASS). The issue was reported with evidence on H6 PR #4. H6 owner subsequently isolated 96 actions to a versioned shadow catalog and restored the 41-action runtime. Audit must follow that shadow isolation rather than reintroduce golden drift.
+
+## Measured results — GitHub PR #6 / 29 October 2026
+
+**Run [40879090478](https://github.com/qualife1291/AI-Living/actions/runs/40879090478): PASS.** Exact tested commit: `ac75233d5e8e71b04183c817de0f621da408e9f0`, H6 shadow 96 actions, original live 41 actions unmodified. 16,384 decisions, 13,956 forced-need cases, 8,192 rainy cases, 1,024 checked reward outcomes and 19 different selected actions. The random stress distribution was heavily forced, so 19/96 selection coverage is **not proof** that all 96 actions have satisfactory exploration. The separate H6 scenario test checks all 96 action schemas and outcomes; future holdout should include balanced voluntary-action cases.
+
+**Full-memory stress:** 4,096 actors × 96 posterior arms = **393,216** distinct synthetic LinUCB arms **all retained simultaneously**. Measured elapsed **1,702 ms**, peak RSS **391,868,416 bytes (~392 MB)**, safely below the configured 180,000 ms / 1,500,000,000 byte GitHub-runner limits. The measured process is not Cloudflare Worker CPU or D1 latency; **no paid upgrade justified by this benchmark alone**. No D1 writes, no model promotion or real resident rewards.
+
+**Quality:** independent PR #6 full workflow [40879090478](https://github.com/qualife1291/AI-Living/actions/runs/40879090478) and project workflow [40879090415](https://github.com/qualife1291/AI-Living/actions/runs/40879090415) passed at the above commit; full unit suite **74/74 PASS**. Earlier H6 runtime-catalog changes broke two frozen legacy tests (72/74), fixed by H6 owner moving 96 actions to an isolated sandbox; never weaken historical golden.
+
+**Model promotion BLOCKER:** H6's [CI training #40878609106](https://github.com/qualife1291/AI-Living/actions/runs/40878609106) fit two separately versioned hierarchical priors using **40,320 synthetic outcomes** and **744 rows per profile**. Their 6-seed holdout reports:
+
+| Profile | Baseline return | Candidate return | Candidate minus baseline 95% CI | Gate |
+| --- | ---: | ---: | ---: | --- |
+| ordinary-v1 | 1.804741 | 1.808567 | [+0.001193, +0.006460] | Insufficient full seeds |
+| cold-stress-v1 | 4.383110 | 4.368216 | [-0.021770, -0.008018] | **Regression** |
+
+`promotionAllowed=false`, `strictFullPromotionPassed=false` in both profiles, and `enoughSeeds=false`. No model can be installed in QA runtime, nor is a model upgrade recommended, until the 20-seed/24-agent/60-day independent holdout has demonstrated no regression under ordinary and cold-stress profiles and a compatible QA-only runtime importer/rollback path is separately reviewed. Full CI PASS proves test infrastructure and synthetic training implementation, **not model benefit**.
