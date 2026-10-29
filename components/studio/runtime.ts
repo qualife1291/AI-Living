@@ -114,7 +114,7 @@ export async function createStudio(host: HTMLDivElement, input: () => { id: Scen
     }
     controls.update(); render(); dirty = false;
     host.dataset.framing=JSON.stringify([...contacts,...frame.actors.filter(a=>a.species==='cat').map(a=>({id:a.id,head:[a.position[0],a.position[1]*STAGE_Y+2.25,a.position[2]]}))].map(c=>{const actor=frame.actors.find(a=>a.id===c.id)!;const head=new THREE.Vector3(...c.head).project(camera),feet=new THREE.Vector3(actor.position[0],0,actor.position[2]).project(camera);return{id:c.id,head:head.toArray(),feet:feet.toArray()};}));
-    host.dataset.contacts=JSON.stringify(contacts);host.dataset.modelGeneration="citizens-v1";host.dataset.shadows=String(sun.castShadow);
+    host.dataset.contacts=JSON.stringify(contacts);host.dataset.modelGeneration="supplied-civilians-v1";host.dataset.shadows=String(sun.castShadow);
     host.dataset.ready = "true"; host.dataset.scenario = frame.id; host.dataset.time = frame.time.toFixed(3); host.dataset.beat = String(frame.beat.index); host.dataset.assets = String(library.stats().loaded); host.dataset.assetFailures = String(library.stats().failed);
     if (stamp - lastStatus > 200 || seeking) { lastStatus = stamp; host.dataset.state = JSON.stringify(frame.state); host.dataset.cast = JSON.stringify(frame.actors.map(a => ({ id: a.id, age: a.age, clip: a.clip, position: a.position }))); host.dataset.props = JSON.stringify(frame.props.map(p => ({ id: p.id, holder: p.holderId, stage: p.stage, position: p.position }))); }
     lastId = state.id; lastTime = state.time;

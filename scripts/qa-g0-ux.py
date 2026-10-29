@@ -38,11 +38,11 @@ def setup(browser,width=1440,height=900,dpr=2,motion='no-preference',fallback=No
  page.route('**/api/world*',world);page.route('**/api/living/interact',chat)
  if fallback=='unsupported':page.add_init_script('window.DecompressionStream=undefined;')
  if fallback in ('corrupt','core-failure'):
-  manifest=json.loads((root/'data/assets/city-transfer-manifest.json').read_text());asset=next(a for a in manifest['assets'] if a['id']=='citizens/an')
+  manifest=json.loads((root/'data/assets/city-transfer-manifest.json').read_text());asset=next(a for a in manifest['assets'] if a['id']=='supplied/office')
   page.route('**'+asset['url'],lambda r:r.fulfill(status=200,body=b'bad gzip'))
-  if fallback=='core-failure':page.route('**/models/citizens/an.glb*',lambda r:r.fulfill(status=503,body='unavailable'))
+  if fallback=='core-failure':page.route('**/models/supplied/office.glb*',lambda r:r.fulfill(status=503,body='unavailable'))
  if fallback=='late-core':
-  manifest=json.loads((root/'data/assets/city-transfer-manifest.json').read_text());primary=next(a for a in manifest['assets'] if a['id']=='citizens/an')
+  manifest=json.loads((root/'data/assets/city-transfer-manifest.json').read_text());primary=next(a for a in manifest['assets'] if a['id']=='supplied/office')
   page.route('**'+primary['url'],lambda route:state.update(heldModel=route))
  page.add_init_script('''new MutationObserver(()=>{const h=document.querySelector('.three-canvas[data-ready="true"]');if(h&&!window.__firstReady)window.__firstReady=performance.now()}).observe(document,{childList:true,subtree:true,attributes:true,attributeFilter:['data-ready']});''')
  page.goto(base,wait_until='domcontentloaded',timeout=60000)
@@ -157,18 +157,18 @@ with sync_playwright() as p:
    page,host,state,fixture=setup(browser,390,844,1,fallback=mode)
    models=json.loads(host.get_attribute('data-model-actors'));assert 3<=len(models)<=8;assert all(id in models for id in ['an','binh','chi'])
    if mode=='unsupported':assert not any('/derivatives/' in x for x in state['modelRequests'])
-   if mode=='corrupt':assert models['an']['modelId']=='citizens/an';assert any('/citizens/an.glb?' in x for x in state['modelRequests'])
+   if mode=='corrupt':assert models['an']['modelId']=='supplied/office';assert any('/supplied/office.glb?' in x for x in state['modelRequests'])
    if mode=='core-failure':
-    assert models['an']['modelId']=='citizens/linen'
-    fallback=next(a for a in json.loads((root/'data/assets/city-transfer-manifest.json').read_text())['assets'] if a['id']=='citizens/linen')
-    assert any(fallback['url'] in x or '/citizens/linen.glb' in x for x in state['modelRequests'])
+    assert models['an']['modelId']=='supplied/jacket'
+    fallback=next(a for a in json.loads((root/'data/assets/city-transfer-manifest.json').read_text())['assets'] if a['id']=='supplied/jacket')
+    assert any(fallback['url'] in x or '/supplied/jacket.glb' in x for x in state['modelRequests'])
    if mode=='late-core':
-    assert models['an']['modelId']=='citizens/linen';assert state.get('heldModel') is not None
+    assert models['an']['modelId']=='supplied/jacket';assert state.get('heldModel') is not None
     state['heldModel'].continue_();state['heldModel']=None
-    page.wait_for_function('JSON.parse(document.querySelector(".three-canvas").dataset.modelActors).an.modelId==="citizens/an"',timeout=30000)
+    page.wait_for_function('JSON.parse(document.querySelector(".three-canvas").dataset.modelActors).an.modelId==="supplied/office"',timeout=30000)
     models=json.loads(host.get_attribute('data-model-actors'));assert models['an']['height']>16
     assert state['posts']==0,'Model replacement never writes world state'
-   assert all(m['profile']=='xom-citizen-v1' for m in models.values());assert not any('/gobkit-human' in x or '/characters/character-' in x for x in state['modelRequests']);assert not state['errors'],state['errors'];report.append({'transportFallback':mode,'pageErrors':[]});print('PASS fallback',mode,flush=True);page.close()
+   assert all(m['profile']=='xom-supplied-v1' for m in models.values());assert not any('/gobkit-human' in x or '/characters/character-' in x for x in state['modelRequests']);assert not state['errors'],state['errors'];report.append({'transportFallback':mode,'pageErrors':[]});print('PASS fallback',mode,flush=True);page.close()
   (out/'metrics.json').write_text(json.dumps({'production':False,'renderer':'Chromium SwiftShader','fixture':'Synthetic world; all APIs mocked. Compiled local D1 persistence tested separately.','cases':report},ensure_ascii=False,indent=2)+'\n')
  except Exception:
   try:
