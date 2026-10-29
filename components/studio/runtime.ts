@@ -90,10 +90,10 @@ export async function createStudio(host: HTMLDivElement, input: () => { id: Scen
       scene.background = sky; sun.position.set(-60, Math.tan(frame.theme.sunElevation * Math.PI / 180) * 80, 80); sun.color.set(frame.theme.kelvin < 5000 ? "#ffe1b1" : "#e8f2ff");
     }
     const contacts=poseStudioActors(stage.actors,frame);
-    // Large queues retain the primary subject's real shadow; all cast have
-    // inexpensive ground contact geometry. Small casts retain all body shadows.
+    // Casts of three or more retain the primary subject's real shadow; all cast
+    // have inexpensive ground contact geometry. Pairs retain both body shadows.
     const focused=frame.dialogue[0]?.speaker??scenarioDefinitions.find(d=>d.id===frame.id)!.shots[frame.beat.index].targetId;
-    for(const [id,avatar] of stage.actors)avatar.group.traverse(o=>{if((o as THREE.Mesh).isMesh)o.castShadow=stage.actors.size<=3||id===(stage.actors.has(focused)?focused:'ba');});
+    for(const [id,avatar] of stage.actors)avatar.group.traverse(o=>{if((o as THREE.Mesh).isMesh)o.castShadow=stage.actors.size<=2||id===(stage.actors.has(focused)?focused:'ba');});
     for(const actor of frame.actors)if(actor.species==='cat'&&stage.kitten)stage.kitten.pose(frame.time,stagePoint(actor.position),actor.yaw,frame.time>=55,!!actor.carrierId);
     for(const actor of frame.actors){const shadow=stage.group.getObjectByName(`contact-${actor.id}`);if(shadow)shadow.position.set(actor.position[0],.025,actor.position[2]);}
     for (const prop of frame.props) {
