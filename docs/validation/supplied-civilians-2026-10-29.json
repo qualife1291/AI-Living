@@ -7,7 +7,7 @@
     "built_at": "2026-10-29T09:24:10.193Z"
   },
   "scope": "Five selected owner-supplied Casino/Chess civilian rigs applied to core/near-NPC/Studio/gallery; ZIP4 review and original retention. No live DB or learning changes from assets.",
-  "status": "LOCAL_PASS_QA_PUSH_PENDING",
+  "status": "LOCAL_PASS_QA_BUILD_SUCCESS_REMOTE_ACCEPTANCE_BLOCKED",
   "license": "LicenseRef-Owner-Confirmed-Free; exact selected member hashes, never CC0",
   "implementation": {
     "core": {
@@ -1137,11 +1137,57 @@
     "review": "docs/validation/asset-review-2026-10-29.json"
   },
   "cloudflareQa": {
-    "status": "PENDING_LOCAL_BRANCH_GATES_AND_PUSH",
+    "status": "PUSHED_BUILD_SUCCESS",
     "previous": "b1579687fa89c492dce89ea07feb778cbd5488e8",
     "authenticatedRemote": "BLOCKED_NO_ACCESS_CREDENTIALS",
     "nativeWorkerReadback": "BLOCKED_NO_NATIVE_TOOLS_OR_API_CREDENTIALS",
-    "prodMigrationOrPromotion": false
+    "prodMigrationOrPromotion": false,
+    "source": "3c027c0db49f5bef6bbd4654940259edcaba2245",
+    "acceptedWork": "15e89fa",
+    "unit": {
+      "suite": "unit-summary",
+      "total": 76,
+      "passed": 76,
+      "failed": [],
+      "workers": 4,
+      "seconds": 105.08
+    },
+    "typecheck": "PASS",
+    "lint": "PASS",
+    "assets": "PASS",
+    "exactReleaseBuild": {
+      "commit_sha": "3c027c0db49f5bef6bbd4654940259edcaba2245",
+      "built_at": "2026-10-29T09:36:53.700Z"
+    },
+    "localGeneratedConfig": {
+      "worker": "ai-living-qa",
+      "D1": "ai_living_qa",
+      "cron": [
+        "*/5 * * * *"
+      ],
+      "idempotent": true,
+      "configSha256": "33a675c962000f8dae4c0e91534b7ddaede9e4c244689f027a15890a90fb2112"
+    },
+    "remoteRefMatches": true,
+    "githubCheck": {
+      "conclusion": "success",
+      "details_url": "https://dash.cloudflare.com/966c7ceee358485648b935a07877ec45/workers/services/view/ai-living-qa/production/builds/9cc5fe7e-822f-4ec8-ae34-390b2a687200",
+      "id": 123371625755,
+      "name": "Workers Builds: ai-living-qa",
+      "status": "completed"
+    },
+    "buildId": "9cc5fe7e-822f-4ec8-ae34-390b2a687200",
+    "unauthenticatedHead": {
+      "status": 302,
+      "redirectHost": "super-snow-e21e.cloudflareaccess.com",
+      "redirectPath": "/cdn-cgi/access/login/ai-living-qa.hoanglonglea1mtl.workers.dev",
+      "authenticated": false,
+      "note": "Final origin status; proxy CONNECT200 excluded. Query/cookie values intentionally discarded."
+    },
+    "workerVersionId": null,
+    "deploymentId": null,
+    "independentReview": "BLOCKED",
+    "note": "Cloudflare reports successful build/deploy pipeline. Local generated config is not native remote D1/cron/version readback; no authenticated runtime acceptance."
   },
   "limitations": [
     "Local Chromium SwiftShader and synthetic transport are not remote QA or hardware FPS/soak proof",
