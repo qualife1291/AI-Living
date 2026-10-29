@@ -13,6 +13,7 @@ const modules=[{type:'ESModule',path:resolve('dist/server/__chat_admission_fixtu
 const options={cf:false,outboundService:async()=>new Response('',{status:503}),log:new Log(LogLevel.WARN),modules,modulesRoot:resolve('dist/server'),compatibilityDate:'2026-05-15',compatibilityFlags:['nodejs_compat'],d1Databases:['DB'],inspectorPort:0};
 const workerOptions={...options,bindings:{XOM_LOCAL_ADMIN:'true'},d1Databases:{DB:'chat-admission-shared'}};
 const mf=new Miniflare({workers:[{...workerOptions,name:'chat-primary'},{...workerOptions,name:'chat-secondary'}]}),denied=new Miniflare({...options,bindings:{XOM_LOCAL_ADMIN:'false'}});
+const setTime=async now=>{await mf.dispatchFetch(`http://localhost/__chat/time?now=${now}`);await secondary.fetch(`http://localhost/__chat/time?now=${now}`);};
 const make=(actorId='an')=>({id:crypto.randomUUID(),actorId,message:'Chào bạn'});
 let secondary;let dispatches=0;
 const post=(body,headers={})=>(secondary&&++dispatches%2?secondary.fetch.bind(secondary):mf.dispatchFetch.bind(mf))('http://localhost/api/living/interact',{method:'POST',headers:{'content-type':'application/json',...headers},body:typeof body==='string'||body instanceof Uint8Array?body:JSON.stringify(body)});
@@ -51,8 +52,8 @@ try{
  const pending=make();assert.equal((await post(pending)).status,429);assert.deepEqual(await gate(),saturated);assert.equal(await history(),saved);
  await db.prepare("UPDATE worlds SET data=json_set(data,'$.paused',1) WHERE id='home'").run();assert.equal((await post(make())).status,409,'Pause precedence remains stable while quota is full');
  await db.prepare("UPDATE worlds SET data=? WHERE id='home'").bind(original.data).run();
- await mf.dispatchFetch(`http://localhost/__chat/time?now=${fixed+CHAT_WINDOW_MS-1}`);assert.equal((await post(pending)).headers.get('retry-after'),'1');
- await mf.dispatchFetch(`http://localhost/__chat/time?now=${fixed+CHAT_WINDOW_MS}`);assert.equal((await post(pending)).status,200);assert.equal(JSON.parse((await gate()).data).count,1);
+ await setTime(fixed+CHAT_WINDOW_MS-1);assert.equal((await post(pending)).headers.get('retry-after'),'1');
+ await setTime(fixed+CHAT_WINDOW_MS);assert.equal((await post(pending)).status,200);assert.equal(JSON.parse((await gate()).data).count,1);
  let rollbackCases=0;
  for(const [name,sql] of [
   ['chat_ignore_exchange',"CREATE TRIGGER chat_ignore_exchange BEFORE INSERT ON visitor_exchanges BEGIN SELECT RAISE(IGNORE); END"],
