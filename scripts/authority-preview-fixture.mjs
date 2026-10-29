@@ -11,8 +11,8 @@ import {groundHash} from '../lib/living/ground-timeline.ts';
 import {projectAuthorityView} from '../lib/living/ground-authority-view.ts';
 import {validateSharedView} from '../lib/living/shared-ground-view.ts';
 import {worldTime,weatherAt} from '../lib/clock.ts';
-export async function authorityPreviewFixture(){
- const base=Date.now()-5000,world={...structuredClone(seed),born:new Date(base).toISOString(),living:initializeLiving(base),clock:{pausedAt:null,pausedMs:0,scale:60,anchors:[{realMs:base,simMs:0,scale:60}]}};world.living.residents=world.living.residents.slice(0,1);
+export async function authorityPreviewFixture(now=Date.now()){
+ const base=now-5000,world={...structuredClone(seed),born:new Date(base).toISOString(),living:initializeLiving(base),clock:{pausedAt:null,pausedMs:0,scale:60,anchors:[{realMs:base,simMs:0,scale:60}]}};world.living.residents=world.living.residents.slice(0,1);
  const source=(seq,w,at=base)=>({seq,revision:seq-1,capturedAt:at,raw:JSON.stringify(w)}),first=source(1,world),initialShared=await bootstrapShared(first,crypto.randomUUID()),initialAuthority=await bootstrapAuthority(initialShared,first,'f'.repeat(64));
  const fresh=structuredClone(world),peer=fresh.living.residents[0],plan=()=>({createdAt:new Date(base).toISOString(),pausedMs:0,from:'Sân chung',simStartedAt:0,steps:meetingSteps('Công viên','Trò chuyện có nguồn')});fresh.people[0].plan=plan();peer.plan=plan();
  fresh.livingTurn={id:'browser-ground-turn',createdAt:new Date(base).toISOString(),date:'2026-10-29',title:'Gặp nhau ở công viên',summary:'Fixture kiểm tra emission, không là lịch sử người dùng',location:'Công viên',activity:'Trò chuyện',kind:'social',residentId:peer.id,simStartedAt:0,dialogue:[{speaker:'an',text:'Chào bạn, mình đã tới công viên rồi.'},{speaker:peer.id,text:'Mình nghe bạn. Chúng ta cùng nghỉ một chút nhé.'},{speaker:'an',text:'Mình sẽ chờ ở đây và giữ lời hẹn.'},{speaker:peer.id,text:'Cảm ơn bạn đã lắng nghe.'}],generator:'rules',context:{date:'2026-10-29'}};

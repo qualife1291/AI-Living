@@ -42,7 +42,7 @@
 | G1/G2 | Trời/IBL/emissive/AO, rồi wetroad/water/bloom optional theo preset. Phong không tự nhận IBL; thử Standard material thật, ảnh7pha và đo frame/drawcalls/dispose. |
 | G3/G4 | IK/look-at/LOD/interior, rồi bản sắc phố/xe máy/nước; giữ rig proportions/nav/footprints và routing/occupancy. |
 | Model A/B | Artifact/license/checksum, cùng prompt/context/schema; đo latency/tokens/acceptance và review ngữ nghĩa. Không hứa JSON 100%/<10s hoặc model lớn luôn tốt hơn. |
-| Ops/refactor | GPU/soak/telemetry phiên dài; chat rate admission (body stream đã giới hạn2.000B), tăng trưởng audit/history, GET living/context cost cần đo. Refactor runtime/supervisor loopback giữ regression, không sửa credential helper hay workflow read-only để autopush/deploy. |
+| Ops/refactor | GPU/soak/telemetry phiên dài; tăng trưởng audit/history, GET living/context cost cần đo. Refactor runtime/supervisor loopback giữ regression, không sửa credential helper hay workflow read-only để autopush/deploy. |
 
 ## Xã hội và model — phần bổ sung để làm sau
 

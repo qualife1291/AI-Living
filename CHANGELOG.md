@@ -4,6 +4,8 @@ Chỉ ghi mốc sản phẩm. Chi tiết commit/review nằm trong Git; số ver
 
 ## 29/10/2026
 
+- Chat có quota chung30 tin mới/cửa sổ60giây, counter và exchange ghi cùng transaction D1. Retry UUID không mất quota;429 có Retry-After, UI giữ bản nháp, lỗi lưu rollback. Không quét/xóa lịch sử hoặc đổi world/policy/schema.
+
 - API trò chuyện kiểm giới hạn2.000byte ngay khi đọc stream, hủy phần dư trước khi truy cập DB; giữ UUID retry/paused/origin guards, từ chối UTF-8 lỗi. Không thay history, reply rules hoặc schema.
 
 - Bộ12rig Citizens nguyên bản cho core/NPC gần/Studio, tải trễ tự đổi về model chính, fallback cùng phong cách; bỏ renderer Kenney character không còn dùng. Studio chung tỷ lệ với đạo cụ, sửa tư thế cúi/đỡ mèo. Review343GLB+25bản nhạc ZIP1–3/Fab với hash/texture/ảnh thật và kế hoạch nhập chọn lọc A1–A5; giữ ZIP gốc ở source-vault riêng, không đưa ZIP hoặc asset thừa vào app.
