@@ -4,6 +4,8 @@ Chỉ ghi mốc sản phẩm. Chi tiết commit/review nằm trong Git; số ver
 
 ## 29/10/2026
 
+- H3b offline thêm goal/context trước plan, delayed rendezvous reward từ hai GND3 presence receipt/contact và actual travel cost; trainer/CLI có namespace/partition/exact-once/file guards.96task physics, train lặp cùng hash,70suite và H1 golden đạt. Holdout model từ chối48/48 nên **không promote**, giữ nguyên runtime; [evidence](docs/validation/learning-h3b-2026-10-29.json).
+
 - GND3 local thêm receipt arrival/presence/co-presence/emitted/heard từ physics GND2, clock/plan/window/recipient binding và0011 ledger cùng CAS. Shared viewer chỉ phát caption server đúng checkpoint, ACK không ghi memory.69suite,5nhóm compiled D1 API và browser hai viewer/default regression đạt; [evidence](docs/validation/ground-authority-2026-10-29.json) ghi cả preview failure/retest. Chưa reward/P2P/training, remote QA hoặc rollout production.
 - Studio v2 thay đường render character cũ bằng daily rigs/tay có khuỷu, mèo articulated/khăn cong, nối chuyển động và camera portrait;21voice Việt offline+foley opt-in có provenance. Bốn cảnh desktop/mobile, contact/seek và AudioContext thật đã kiểm; [report/ảnh before-after](docs/validation/studio-quality-v2-2026-10-29.json). Giữ asset còn dùng ở city/gallery và license.
 - Nghiệm thu lại chức năng local:63suite,4nhóm compiled API và20harness browser, gồm4timeline120s+studio desktop/mobile. Sửa camera tán cây/companion/catch-up và prompt ví dụ lệch cảnh; từ chối output model bị cắt. Giữ negative learning/model quality,27lượt lỗi+disposition, ảnh thật và blocker production tại [acceptance](docs/validation/acceptance-2026-10-28.json); chưa deploy/migrate prod.

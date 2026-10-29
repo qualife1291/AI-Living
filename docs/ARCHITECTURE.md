@@ -32,6 +32,7 @@ Planner/rules hoặc local LLM sinh kế hoạch và hội thoại có nguồn r
 | lib/living/ground-timeline.ts, ground-store.ts | Ground GND1 local core/static fixed-step, independent session/CAS/receipts; chưa reward/P2P/renderer authority |
 | lib/living/shared-ground{,-store,-view}.ts, city/director-state.ts | GND2 journal replay/all-actor+traffic checkpoint và server-frame sampling; local opt-in, không reward/P2P |
 | lib/living/ground-authority{,-store,-service,-view}.ts | GND3 quan sát physics đã nhận, receipt arrival/presence/co-presence/emitted/heard; commit cùng shared head, không tự ghi memory hoặc học |
+| lib/living/ground-learning{,-study}.ts | H3b synthetic offline giữ hẹn/actual travel cost; namespace riêng, candidate trượt, không app importer/migration hoặc thay reward runtime |
 | lib/city/traffic.ts, tag-game.ts, pet-walk.ts | Giao thông/ghép cặp/mục tiêu companion; giữ collision chung |
 | lib/living/engine.ts, social-scheduler.ts, activities.ts | Population/routine/plan5 bước, schedulerNPC20s simulation/pulse, không sinh reward từ activity bị hủy |
 | identity.ts, households.ts, pets.ts | Metadata snapshot additive, ID/history ổn định, household mới tối đa4/người chăm thú có CAS |

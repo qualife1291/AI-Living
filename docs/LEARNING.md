@@ -115,6 +115,34 @@ Exporter chỉ instance local đã xác thực. Audit chỉ đọc JSONL local�
 
 H3 này hoàn thành nền provenance cho outcome hiện hành; [evidence](validation/learning-h3-2026-10-28.json) ghi54suite/check/lint/build/assets/API compiled/CAS và full H1 repeat byte/hash giữ nguyên. Reward dài hạn vẫn chờ authority và thí nghiệm chống reward hacking. H4 có thể nghiên cứu priors từ nguồn/version tương thích, tách earned samples; H6 archive replay chưa tự động được bật. [Review Society/NIM](validation/society-nim-review-2026-10-28.json) đã gộp vào ROADMAP; không gọi inference NIM, không thêm hosted trial vào production.
 
+## H3b — Học giữ hẹn từ ground, offline v1 (29/10)
+
+[Protocol](validation/learning-h3b-protocol-v1.json) được freeze trước triển khai; [evidence](validation/learning-h3b-2026-10-29.json) và [raw train](validation/h3b-v1/train.json)/[validation](validation/h3b-v1/validation.json)/[holdout](validation/h3b-v1/holdout.json) giữ cả kết quả âm.32train/16validation/48holdout là các offer synthetic trên8nơi, không là96câu chuyện độc lập hoặc lịch sử cư dân thật. Các cohort18000–18003/18100–18103/18200–18211 riêng; không dùng lại các seed H1/H2/H4/H6/H10.
+
+`ground-learning.ts` chốt offer/context từ accepted root và route estimate **trước khi ghi plan mới**. Sau đó chạy GND2/GND3 physics thật với3core+1resident+3thú+12xe; chỉ hết cửa sổ150–210s mới settlement. Cần hai receipt presence-completed đúng plan/source/epoch/step2/nơi và contact LOS liên tục≥30s trong cửa sổ. Reward attend=`clip((fulfilled?value:-0,5)−actualTravelUnits/1000,−1,1)`; quãng đường cộng từ accepted physics, không từ ETA/script. Decline có utility0 theo định nghĩa offer, không tạo claim đã thực hiện hẹn. Goal value là thang mục tiêu biên tập; hiện diện không là lao động/thu nhập/hiểu biết/y tế. Planned/emitted/heard text không cấp điểm.
+
+Feature `ground-rendezvous-6d-v1` gồm bias,value,route actor/peer,peer intent có sẵn và lead time; khác semantics `needs-6d-v1`. Reward `rendezvous-delayed-v1` và artifact `offline-ground-rendezvous-v1` tách namespace. One-pass ridge dùng lại đại số thuần LinUCB, không đổi posterior/samples/domain/skills/memory cũ. Trainer chỉ fit outcome do generator actual replay vừa tạo trong process, mỗi goal một lần; clone/JSON ngoài/partition sai không được nhận. Artifact rebuild ma trận từ ledger, checksum chỉ kiểm integrity, không xác thực file ngoài hoặc cho phép runtime import.
+
+Evaluation giữ model cố định, alpha0; mỗi offer dùng cùng attend potential outcome replay và decline0 để so luôn nhận hẹn/heuristic causal. Đây là **utility một quyết định trên task reset**, không phải trajectory thành phố trong đó model thực sự điều khiển mọi nhân vật. CI95 dùng seed means,4seed validation/12seed holdout; không chọn lại tham số sau khi xem kết quả.
+
+| Partition | Offer / đủ hiện diện | Cơ hội utility dương giữ lại | Tỷ lệ attend của model | Kết luận |
+|---|---:|---:|---:|---|
+| Train |32/15|9cơ hội dương dùng làm dữ liệu|Collection luôn attend|32mẫu replay synthetic, không bootstrap earned samples |
+| Validation |16/7|3/4=75%|25%|Trượt ngưỡng giữ≥80% |
+| Holdout |48/18|0/3|0%|Từ chối toàn bộ, trượt giữ cơ hội và action collapse |
+
+Holdout model utility0, baseline luôn attend−0,717350; paired Δ+0,717350, CI95[0,669186;0,765514]. Lợi ích số này do từ chối hết, **không đủ gates nhận policy tốt**. So heuristic Δ+0,044503, CI95[−0,009782;0,098789], chưa rõ lợi ích. Giữ kết luận **không promote v1**. Chỉ3cơ hội dương holdout và geometry lặp là giới hạn quan trọng; không suy thành social intelligence/nhu cầu dài hạn tốt hơn.
+
+```bash
+npm run learning:ground-study -- --stage=train --out=.sites-runtime/training/h3b-train.json
+npm run learning:ground-study -- --stage=validation --model=.sites-runtime/training/h3b-train.json --model-sha256=SHA_PAYLOAD --out=.sites-runtime/training/h3b-validation.json
+npm run learning:ground-study -- --stage=holdout --model=.sites-runtime/training/h3b-train.json --model-sha256=SHA_PAYLOAD --out=.sites-runtime/training/h3b-holdout.json
+```
+
+CLI chỉ fixed splits hoặc smoke17900, output JSON exclusive dưới`.sites-runtime/training`; pin model SHA từ stdout, giới hạn byte/UTF8 và chặn symlink/hardlink/traversal/overwrite. Full train lặp byte-identical SHA`5fc80952…`;96unique task=207.360physics step, không cộng32task repeat thành32sample mới.70suite/type/lint/assets/build đạt, H1 golden15.375outcome/1.500decision giữ byte identity. Experimental reward/features/trainer không vào155JS module compiled. Không UI/runtime/schema đổi nên không browser/API run mới; không migrate/deploy.
+
+H3b runtime/v2 còn cần protocol/split mới, capture owner offer/context tại decision, durable goal/settlement/receipt CAS và bằng chứng chống bỏ mọi lời hẹn. Không retune các cohort đã xem. Không importer, live actor training, P2P hoặc LLM fine-tune từ phase này; GND3 receipt eligibility vẫn false.
+
 ## H4 — Global/role-kind priors offline (28/10)
 
 [Protocol](validation/learning-h4-protocol-v1.json) đăng ký trước kết quả: hai profile ordinary/cold-stress v1, ba variant personal/global/role,24agent×60ngày và shift30. Train3000–3007, validation4000–4007, holdout5000–5019 theo hashSeed(H1-seed:index); không trùng H1/H2. Không chọn/thay tham số sau validation hoặc holdout; cả hai candidate đều được báo cáo.
