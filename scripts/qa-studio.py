@@ -19,6 +19,17 @@ with sync_playwright() as p:
      assert host.get_attribute('data-asset-failures')=='0';assert int(host.get_attribute('data-triangles'))<25000;assert int(host.get_attribute('data-draw-calls'))<150
     page.get_by_role('button',name='Phân cảnh 4',exact=True).click();page.wait_for_function('document.querySelector(".studio-canvas")?.dataset.beat==="3"')
     page.screenshot(path=str(out/f'{scenario}-{name}-preview.png'))
+    # Settle the authored 2.4s transition, then require selected heads/feet to fit.
+    for at in [0,25,50,75,105 if scenario=='wallet-return' else 100]:
+     slider=page.get_by_label('Thời gian kịch bản',exact=True)
+     slider.evaluate("(e,t)=>{Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,'value').set.call(e,String(t));e.dispatchEvent(new Event('input',{bubbles:true}));e.dispatchEvent(new Event('change',{bubbles:true}));}",at+2.5)
+     page.wait_for_function('(t)=>Math.abs(Number(document.querySelector(".studio-canvas").dataset.time)-t)<.001',arg=at+2.5)
+     subjects=json.loads(host.get_attribute('data-camera-subjects'));framing=json.loads(host.get_attribute('data-framing'))
+     for item in framing:
+      if item['id'] in subjects:
+       assert all(abs(v)<.95 for part in ['head','feet'] for v in item[part][:2]),(scenario,name,at,item)
+     page.screenshot(path=str(out/f'{scenario}-{name}-shot-{at}.png'))
+    page.get_by_role('button',name='Phân cảnh 4',exact=True).click();page.wait_for_function('document.querySelector(".studio-canvas")?.dataset.beat==="3"')
     before=float(host.get_attribute('data-time'));page.get_by_role('button',name='Phát kịch bản',exact=True).click();page.wait_for_function('(t)=>Number(document.querySelector(".studio-canvas")?.dataset.time)>t+.3',arg=before,timeout=15000);page.get_by_role('button',name='Tạm dừng kịch bản',exact=True).click();page.wait_for_timeout(500);paused=host.get_attribute('data-time');cast=host.get_attribute('data-cast');frozen_frames=host.get_attribute('data-frames');page.wait_for_timeout(500);assert host.get_attribute('data-frames')==frozen_frames,'A paused, unchanged studio must stop GPU draws';assert host.get_attribute('data-time')==paused;assert host.get_attribute('data-cast')==cast
     # Exercise actual rendering at the end and seek backward, not only shot buttons.
     slider=page.get_by_label('Thời gian kịch bản',exact=True)

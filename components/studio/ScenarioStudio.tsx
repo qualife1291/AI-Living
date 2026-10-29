@@ -1,6 +1,5 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
-import Link from "next/link";
 import { ArrowLeft, Play, Pause, RotateCcw, Clapperboard, Volume2, VolumeX } from "lucide-react";
 import { scenarioDefinitions, scenarioFrame, type ScenarioId } from "@/lib/city/scenarios";
 import {StudioSound} from "./sound";
@@ -31,13 +30,14 @@ export function ScenarioStudio() {
     document.addEventListener("visibilitychange", resetAnchor);
     handle = requestAnimationFrame(tick); return () => { cancelAnimationFrame(handle); document.removeEventListener("visibilitychange", resetAnchor); };
   }, [playing, ready]);
+  useEffect(()=>{const leave=(event:PageTransitionEvent)=>{setPlaying(false);setSoundOn(false);if(event.persisted)sound.current?.mute();else{sound.current?.dispose();runtime.current?.dispose();sound.current=null;runtime.current=null;}};window.addEventListener('pagehide',leave);return()=>window.removeEventListener('pagehide',leave);},[]);
   const definition = scenarioDefinitions.find(s => s.id === id)!, frame = scenarioFrame(id, time), line = frame.dialogue[0];
   useEffect(()=>{sound.current?.sync(frame,playing&&time<120);});
   useEffect(()=>{const hidden=()=>{if(document.hidden)sound.current?.sync(scenarioFrame(input.current.id,input.current.time),false);};document.addEventListener("visibilitychange",hidden);return()=>document.removeEventListener("visibilitychange",hidden);},[]);
   const stamp = (t: number) => `${Math.floor(t / 60)}:${String(Math.floor(t % 60)).padStart(2, "0")}`;
   return <main className="scenario-studio">
     <div ref={host} className="studio-canvas" aria-label="Trường quay kịch bản 3D" />
-    <header className="studio-top"><Link href="/" aria-label="Trở về xóm"><ArrowLeft size={19} /></Link><div><b><Clapperboard size={16} />Chuyện trong xóm</b><small>Trường quay mô phỏng · Không thay đổi cuộc sống đang chạy</small></div><label><span className="sr-only">Chọn kịch bản</span><select aria-label="Chọn kịch bản" value={id} onChange={e => { setPlaying(false); setTime(0); setId(e.target.value as ScenarioId); }}>{scenarioDefinitions.map(s => <option value={s.id} key={s.id}>{s.title}</option>)}</select></label></header>
+    <header className="studio-top"><a href="/" aria-label="Trở về xóm"><ArrowLeft size={19} /></a><div><b><Clapperboard size={16} />Chuyện trong xóm</b><small>Trường quay mô phỏng · Không thay đổi cuộc sống đang chạy</small></div><label><span className="sr-only">Chọn kịch bản</span><select aria-label="Chọn kịch bản" value={id} onChange={e => { setPlaying(false); setTime(0); setId(e.target.value as ScenarioId); }}>{scenarioDefinitions.map(s => <option value={s.id} key={s.id}>{s.title}</option>)}</select></label></header>
     {!ready && <p className="studio-loading">{error || "Đang dựng trường quay và tải model…"}</p>}
     <aside className="studio-cast"><strong>{definition.subtitle}</strong><div>{definition.cast.map(a => <span key={a.id}><b>{a.name}</b><small>{a.age} {a.ageUnit === "months" ? "tháng" : "tuổi"} · {a.role}</small></span>)}</div></aside>
     {line && <div className="studio-dialogue"><b>{frame.actors.find(a => a.id === line.speaker)?.name}</b><span>{line.text}</span></div>}

@@ -4,6 +4,7 @@ import { AssetLibrary, collectAssetResources, type AssetPlacement } from "../cit
 import { simpleProp } from "../city/three/model-actors.ts";
 import { scenarioFrame, scenarioDefinitions, type ScenarioId, type ScenarioFrame, type EnvironmentProp } from "../../lib/city/scenarios/index.ts";
 import {StudioAvatar} from "./avatar.ts";
+import {studioCamera} from "./camera.ts";
 import {poseStudioActors} from "./actors.ts";
 import {StudioFeline} from "./feline.ts";
 import {STAGE_Y,stagePoint} from "./motion.ts";
@@ -106,14 +107,12 @@ export async function createStudio(host: HTMLDivElement, input: () => { id: Scen
       group.visible = prop.visible; group.position.set(...stagePoint(prop.position)); group.rotation.set(...prop.rotation);
     }
     if (!manual) {
-      target.set(...stagePoint(frame.camera.target)); eye.set(...stagePoint(frame.camera.position));
-      eye.sub(target).multiplyScalar(.6).add(target);
-      // Portrait keeps both participants readable with the same cinematic lens.
-      if (camera.aspect < .85) eye.sub(target).multiplyScalar(.85 / Math.max(.35, camera.aspect)).add(target);
+      const shot=studioCamera(frame,contacts,camera.aspect);target.copy(shot.target);eye.copy(shot.eye);host.dataset.cameraSubjects=JSON.stringify(shot.subjects);
       camera.position.copy(eye); controls.target.copy(target);
       camera.fov = frame.camera.fov; camera.updateProjectionMatrix();
     }
     controls.update(); render(); dirty = false;
+    host.dataset.framing=JSON.stringify([...contacts,...frame.actors.filter(a=>a.species==='cat').map(a=>({id:a.id,head:[a.position[0],a.position[1]*STAGE_Y+2.25,a.position[2]]}))].map(c=>{const actor=frame.actors.find(a=>a.id===c.id)!;const head=new THREE.Vector3(...c.head).project(camera),feet=new THREE.Vector3(actor.position[0],0,actor.position[2]).project(camera);return{id:c.id,head:head.toArray(),feet:feet.toArray()};}));
     host.dataset.contacts=JSON.stringify(contacts);host.dataset.modelGeneration="daily-rig-v2";host.dataset.shadows=String(sun.castShadow);
     host.dataset.ready = "true"; host.dataset.scenario = frame.id; host.dataset.time = frame.time.toFixed(3); host.dataset.beat = String(frame.beat.index); host.dataset.assets = String(library.stats().loaded); host.dataset.assetFailures = String(library.stats().failed);
     if (stamp - lastStatus > 200 || seeking) { lastStatus = stamp; host.dataset.state = JSON.stringify(frame.state); host.dataset.cast = JSON.stringify(frame.actors.map(a => ({ id: a.id, age: a.age, clip: a.clip, position: a.position }))); host.dataset.props = JSON.stringify(frame.props.map(p => ({ id: p.id, holder: p.holderId, stage: p.stage, position: p.position }))); }
