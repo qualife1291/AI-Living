@@ -1,4 +1,4 @@
-import { saveVisitorExchange } from '@/lib/living/interaction-store';
+import { saveVisitorExchange, readVisitorExchange } from '@/lib/living/interaction-store';
 import { readBoundedJson } from '@/lib/bounded-json';
 import { z } from 'zod';
 import { database,readWorld,json,validOrigin } from '@/lib/store';
@@ -10,8 +10,8 @@ export async function POST(req:Request){
  if(!body.ok)return json({error:body.error},body.status);
  const parsed=schema.safeParse(body.value);if(!parsed.success)return json({error:'Tin nhắn không hợp lệ'},400);
  const db=database(),{id,actorId,message}=parsed.data;
- const exists=await db.prepare('SELECT data FROM visitor_exchanges WHERE id=?').bind(id).first<{data:string}>();
- if(exists)return json({...JSON.parse(exists.data),duplicate:true});
+ try{const exists=await readVisitorExchange(db,id);if(exists)return json({...exists,duplicate:true});}
+ catch{return json({error:'Chưa đọc được lời nhắn đã lưu. Hãy thử lại.'},503);}
  const current=await readWorld();
  if(current.world.paused)return json({error:'Xóm đang tạm nghỉ. Nhấn Tiếp tục để trò chuyện.'},409);
  const reply=replyToVisitor(current.world,actorId,message,Date.now());if(!reply)return json({error:'Không tìm thấy cư dân'},404);

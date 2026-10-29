@@ -24,7 +24,7 @@ with sync_playwright() as p:
     route.fulfill(status=200,content_type='application/json',body=json.dumps({'ok':True} if route.request.method=='POST' else fixture))
    page.route('**/api/world*',respond)
    page.route('**/api/living/pulse',lambda r:r.fulfill(status=200,content_type='application/json',body='{"ok":true,"duplicate":true}'))
-   page.route('**/api/living/interact',lambda r:r.fulfill(status=200,content_type='application/json',body=json.dumps({'id':r.request.post_data_json['id'],'reply':fixture['world']['people'][0]['goal'],'source':'rules'})))
+   page.route('**/api/living/interact',lambda r:r.fulfill(status=200,content_type='application/json',body=json.dumps({**r.request.post_data_json,'message':r.request.post_data_json['message'].strip(),'reply':fixture['world']['people'][0]['goal'],'source':'rules'})))
    page.goto(base,wait_until='domcontentloaded',timeout=60000);host=page.locator('.three-canvas[data-ready="true"]');host.wait_for(timeout=90000)
    before=host.get_attribute('data-position');page.wait_for_function('(p)=>document.querySelector(".three-canvas")?.dataset.position!==p',arg=before,timeout=20000)
    assert float(host.get_attribute('data-person-height'))<float(host.get_attribute('data-car-length'))/2
