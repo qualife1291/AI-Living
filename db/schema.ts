@@ -137,3 +137,11 @@ export const groundSharedSources = sqliteTable('ground_shared_sources', {
 export const groundSharedBatches = sqliteTable('ground_shared_batches', {
  id:text('id').primaryKey(),stateId:text('state_id').notNull().references(()=>groundSharedStates.id),operationId:text('operation_id').notNull(),sequence:integer('sequence').notNull(),data:text('data').notNull(),checksum:text('checksum').notNull(),createdAt:integer('created_at').notNull(),
 },t=>[uniqueIndex('idx_shared_batch_sequence').on(t.stateId,t.sequence),uniqueIndex('idx_shared_batch_operation').on(t.stateId,t.operationId)]);
+
+/** GND3 accounting: independent ledger coupled to the existing shared checkpoint. */
+export const groundAuthorityStates = sqliteTable('ground_authority_states', {
+ id:text('id').primaryKey().references(()=>groundSharedStates.id),sessionId:text('session_id').notNull(),data:text('data').notNull(),checksum:text('checksum').notNull(),updatedAt:integer('updated_at').notNull(),
+});
+export const groundAuthorityBatches = sqliteTable('ground_authority_batches', {
+ id:text('id').primaryKey(),stateId:text('state_id').notNull().references(()=>groundAuthorityStates.id),operationId:text('operation_id').notNull(),sequence:integer('sequence').notNull(),data:text('data').notNull(),checksum:text('checksum').notNull(),createdAt:integer('created_at').notNull(),
+},t=>[uniqueIndex('idx_authority_batch_sequence').on(t.stateId,t.sequence),uniqueIndex('idx_authority_batch_operation').on(t.stateId,t.operationId)]);
