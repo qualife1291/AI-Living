@@ -27,6 +27,7 @@ JSON qua helper `json()` đặt `Cache-Control: private,no-store` và `X-Content
 | POST `/api/visits` | Sessionnonce/30 phút, aggregate lượt mở, không phải uniquehumans hoặc online users. |
 | GET `/api/health` |200ready;503unavailable khi worldDB lỗi hoặc schema_or_query_error khi probes lỗi; lastTick=null khi chưa có tick. Schema8 table+latest tick một D1 batch, world read riêng. |
 | GET/POST `/api/diagnostics` | Owner-only; GET JSONL chỉSELECT trong7 ngày, tối đa500 client+500 tick rows. POST≤16KiB/32 logs, admission20 batch/phút toànSite, allowlist fields; POST giữ telemetry retention7 ngày. Không xóa chat/tick/history theo retention đó. |
+| GET `/api/system/progress` | Owner-only và QA/loopback fence; snapshot aggregate bằng một SELECT, không bootstrap/history payload/DB writes, thiếu world/schema503. So sánh offline theo [OBSERVABILITY](OBSERVABILITY.md); không gọi snapshot là Cron/learning-quality proof. |
 
 ## Nhịp pulse
 

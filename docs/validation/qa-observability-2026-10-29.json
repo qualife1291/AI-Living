@@ -1,0 +1,184 @@
+{
+  "kind": "qa-observability-acceptance-v1",
+  "date": "2026-10-29",
+  "timezone": "Asia/Ho_Chi_Minh",
+  "status": "WORK_LOCAL_PASS_QA_PENDING",
+  "appSource": "0f1d7b486052921ab6031e8f9b03f5765d4d93ea",
+  "qaSource": "00966c7",
+  "scope": [
+    "privacy-bounded structured logs",
+    "Ops phase: read-only progress snapshot and bounded offline comparison",
+    "QA-only hosting/auth/Cron preserved"
+  ],
+  "workGates": {
+    "unit": {
+      "suite": "unit-summary",
+      "total": 78,
+      "passed": 78,
+      "failed": [],
+      "workers": 2,
+      "seconds": 226.39
+    },
+    "typecheck": "PASS",
+    "lint": "PASS",
+    "build": "PASS",
+    "assets": "PASS",
+    "logger": {
+      "suite": "system-log",
+      "concurrentRequests": 20,
+      "isolatedCorrelation": true,
+      "privacyAllowlist": true,
+      "streamPreserved": true,
+      "noReadPollSpam": true,
+      "sinkFailureNonFatal": true,
+      "pipelineOrderAndShortCircuit": true
+    },
+    "watchdog": {
+      "suite": "progress-watch",
+      "readOnlySql": true,
+      "noBootstrap": true,
+      "boundaryMs": 900000,
+      "pauseAndDeployFence": true,
+      "regressionAndClockFence": true,
+      "quietLearningNotFailure": true,
+      "privateFieldsExcluded": true,
+      "cliBoundsUtf8AndSymlink": true,
+      "automaticMutation": false
+    },
+    "compiledProgress": {
+      "suite": "progress-compiled-http",
+      "concurrentReaders": 12,
+      "ownerGate": true,
+      "loopbackGate": true,
+      "noBootstrap": true,
+      "noWrites": true,
+      "noPrivatePayloads": true,
+      "missingSchema503": true,
+      "requestCorrelation": true,
+      "productionAccess": false
+    },
+    "compiledChat": {
+      "suite": "chat-admission-compiled-http",
+      "concurrentUnique": 60,
+      "concurrentDuplicate": 16,
+      "workerIsolates": 2,
+      "sharedD1": true,
+      "limit": 30,
+      "windowMs": 60000,
+      "atomicRollbackCases": 6,
+      "originOwnerBodyPauseActorGuards": true,
+      "retryAfter": true,
+      "rejectedUuidReusable": true,
+      "historyPreserved": true,
+      "productionAccess": false
+    },
+    "compiledDiagnostics": {
+      "suite": "local-diagnostics-http",
+      "ownerReadGuard": true,
+      "ownerWriteGuard": true,
+      "streamByteLimit": true,
+      "schema": true,
+      "origin": true,
+      "ack": true,
+      "jsonlReadback": true,
+      "rateLimit": true,
+      "retention": true,
+      "diagnosticsReadOnly": true,
+      "pulsePersistence": true,
+      "pulseRetry": true,
+      "pulseConcurrentViewers": 12,
+      "pulseNoDuplicateAudit": true,
+      "pulsePause": true,
+      "healthSchemaBatch": true,
+      "bulkReplay": true,
+      "memoryBackfill": true,
+      "productionAccess": false
+    },
+    "compiledLegacy": {
+      "kind": "legacy-compiled-http-acceptance",
+      "isolated": true,
+      "productionAccess": false,
+      "results": [
+        {
+          "name": "world",
+          "exitCode": 0
+        },
+        {
+          "name": "living",
+          "exitCode": 0
+        },
+        {
+          "name": "learning",
+          "exitCode": 0
+        },
+        {
+          "name": "liveness",
+          "exitCode": 0
+        },
+        {
+          "name": "appearance",
+          "exitCode": 0
+        },
+        {
+          "name": "proposal",
+          "exitCode": 0
+        }
+      ]
+    },
+    "frozenLearning": {
+      "kind": "frozen-learning-evidence-acceptance-v1",
+      "artifacts": 76,
+      "comparisons": 42,
+      "holdout": {
+        "reserved12000to12019": "unobserved",
+        "plans": 0
+      }
+    }
+  },
+  "qaGates": {
+    "accessJwt": "PASS",
+    "schedulerGuards": "PASS",
+    "generatedConfig": "PASS",
+    "typecheck": "PASS",
+    "lint": "PASS",
+    "build": "PASS",
+    "unit": "PENDING",
+    "compiledProgress": "PASS",
+    "compiledChat": "PASS",
+    "compiledDiagnostics": "PASS",
+    "compiledLegacy": "PASS"
+  },
+  "dispositions": [
+    {
+      "failure": "First unit run70/78 under restricted sandbox: loopback/spawn EPERM and child CLI empty output",
+      "fix": "Rerun unchanged business assertions with local networking permission;78/78 PASS"
+    },
+    {
+      "failure": "New compiled fixture accidentally selected Vite manifest as entry, returning500/no fetch handler",
+      "fix": "Explicit index.js entry first; compiled progress API PASS"
+    },
+    {
+      "failure": "New CLI entry detection depended on a file URL identity through workspace paths",
+      "fix": "CLI executes directly; native SQL and subprocess UTF8/bounds/symlink cases PASS"
+    }
+  ],
+  "remote": {
+    "preDeploySnapshot": "docs/validation/qa-progress-before-2026-10-29.json",
+    "nativeApiAvailable": true,
+    "authenticatedHttpBrowser": "NOT_RUN: no current Access service credential",
+    "postDeploy": "PENDING"
+  },
+  "schemaChanged": false,
+  "productionChanged": false,
+  "rawWorldOrMessagesLogged": false,
+  "newScheduler": false,
+  "automaticRepair": false,
+  "modelQualityGainClaim": false,
+  "limits": [
+    "Custom log allowlist does not claim to redact all platform invocation/uncaught logs",
+    "Read-only snapshots do not prove Cron attribution or learning quality; compare requires native scheduled evidence",
+    "15min stall is a diagnostic warning; intermediate pause/restart history is not visible",
+    "No authenticated remote HTTP/browser, physical GPU or24h soak acceptance",
+    "No graphics/H6 WIP merged"
+  ]
+}

@@ -3,6 +3,7 @@ import { tickLiving, learnCompleted, advanceResidentSocial } from "../lib/living
 import handler from "vinext/server/fetch-handler";
 import { runWithConnectorBinding } from "../lib/connector-context";
 import type { ConnectorBinding } from "../lib/connector-contract.mjs";
+import { observeHttp } from "../lib/system-log";
 
 const worker = {
   async scheduled(_event: ScheduledController, env: Cloudflare.Env, ctx: ExecutionContext) {
@@ -17,13 +18,18 @@ const worker = {
     })());
   },
   fetch(request: Request, env: Cloudflare.Env, ctx: ExecutionContext<{ CONNECTORS?: ConnectorBinding }>) {
+    const settings = env as unknown as Record<string, unknown>;
+    return observeHttp(request, settings.XOM_SYSTEM_LOGS === "true", () => worker.handleRequest(request, env, ctx), settings.CF_VERSION_METADATA);
+  },
+  handleRequest(request: Request, env: Cloudflare.Env, ctx: ExecutionContext<{ CONNECTORS?: ConnectorBinding }>) {
     const settings = env as unknown as Record<string, string | undefined>;
     const url = new URL(request.url);
     const mutation = url.pathname.startsWith("/api/") && !["GET", "HEAD", "OPTIONS"].includes(request.method);
     const diagnostic = url.pathname === "/api/diagnostics";
     const privateMemories = url.pathname === "/api/living/memories";
+    const privateSystem = url.pathname === "/api/system/progress";
     const archive = url.pathname === "/api/living/learning" && url.searchParams.get("format") === "jsonl";
-    if ((mutation || archive || diagnostic || privateMemories) && !adminAllowed(request, { ownerId: settings.XOM_ADMIN_USER_ID, localAdmin: settings.XOM_LOCAL_ADMIN, privateOrigin: settings.XOM_OWNER_PRIVATE_ORIGIN }))
+    if ((mutation || archive || diagnostic || privateMemories || privateSystem) && !adminAllowed(request, { ownerId: settings.XOM_ADMIN_USER_ID, localAdmin: settings.XOM_LOCAL_ADMIN, privateOrigin: settings.XOM_OWNER_PRIVATE_ORIGIN }))
       return Response.json({ error: "Thao tác này cần quyền chủ sở hữu." }, { status: 403 });
     let binding = ctx.props?.CONNECTORS;
     // Local preview emulates the same request-scoped capability. This branch and

@@ -6,6 +6,8 @@ Chỉ ghi mốc sản phẩm. Chi tiết commit/review nằm trong Git; số ver
 
 ## 29/10/2026
 
+- Thêm structured log opt-in với request ID/version/status/duration và các bước pulse, allowlist loại private payload và giữ streaming response. Phase Ops có owner-only QA/local snapshot tiến độ zero-write và CLI so sánh phát hiện stall/pause/đổi deployment/state/clock, không tự repair hoặc tạo scheduler. [Hợp đồng](docs/OBSERVABILITY.md).
+
 - Sửa chat mất ACK/timeout tạo tin trùng: giữ UUID khi chủ động gửi lại trong cùng panel, kiểm ACK đúng actor/nội dung và hủy request khi đóng panel. D1 postassert kiểm payload/counter chặt hơn và từ chối bản ghi hỏng; body quá lớn trả413 kể cả upstream cancel treo. H5a chặn clock vượt miền an toàn trước khi đổi watermark. [Bằng chứng đối kháng](docs/validation/phase-verification-2026-10-29.json).
 
 - H5a bổ sung thử nghiệm offline lời khuyên có nguồn: chỉ nhận sau GND3 nghe đủ, khóa world/session/người nhận, chống replay/giả receipt và tính decay/TTL khi đọc. Không ghi world/skill/policy/memory hoặc bật P2P live; artifact không được import runtime.
