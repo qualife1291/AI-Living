@@ -6,7 +6,7 @@ Log có cấu trúc là chẩn đoán vận hành, không phải history thế g
 
 `XOM_SYSTEM_LOGS=true` bật custom log; mặc định tắt ở app/Sites. Nhánh QA bật trong `configure-cloudflare-qa.mjs`, giữ Workers Logs và gắn `CF_VERSION_METADATA` để mỗi record có version ID khi runtime cung cấp. Cloudflare deployment/version metadata dùng để đối chiếu Git SHA; push Git không tự chứng minh deployment thành công.
 
-Schema `xom-system-log-v1`: `at`, `event`, `level`, `requestId`, `trigger`, `route`, `method`, optional `version` và các trường allowlist dưới đây. ID do server tạo cho từng invocation, bỏ qua request ID do client gửi. API response có `X-Request-Id` cùng ID với custom log của request. AsyncLocalStorage tách từng request và Cron; không lưu state request trong biến global.
+Schema `xom-system-log-v1`: `at`, `event`, `level`, `requestId`, `trigger`, `route`, `method`, optional `version` và các trường allowlist dưới đây. ID do server tạo cho từng invocation, bỏ qua request ID do client gửi. API response do wrapper trả về có `X-Request-Id` cùng ID với custom log của request; uncaught exception trả bởi platform không bảo đảm header này. AsyncLocalStorage tách từng request và Cron; không lưu state request trong biến global.
 
 | Event | Đọc như thế nào |
 |---|---|
@@ -28,11 +28,11 @@ QA dùng đúng một cron `*/5 * * * *` UTC và D1 lease chung với browser. X
 
 ## Phase Ops: snapshot và cảnh báo đình trệ
 
-GET `/api/system/progress` chỉ dành cho owner qua QA Access hoặc local-admin trên loopback. Worker gate bảo vệ cả GET này; route thêm fence QA/loopback. Không dùng `readWorld`, không bootstrap DB trống, hydrate policy, sửa clock/cache hoặc ghi client diagnostics. Một SELECT trả một snapshot nhất quán, chỉ aggregate:
+GET `/api/system/progress` chỉ dành cho owner qua QA Access hoặc local-admin trên loopback. Worker gate bảo vệ cả GET này và chuẩn hóa dấu / cuối trước phân quyền; diagnostics/memories/learning JSONL aliases cũng được chặn. Route thêm fence QA/loopback. Không dùng `readWorld`, không bootstrap DB trống, hydrate policy, sửa clock/cache hoặc ghi client diagnostics. Một SELECT trả một snapshot nhất quán, chỉ aggregate:
 
 `schema=xom-progress-v1`, environment, observedAt, version, worldBorn, paused, revision, turns, experiences, policies, completedTicks, lastTickFinishedAt. Không trả nhân vật, nội dung, ký ức hoặc model matrices; response private/no-store. Thiếu world/schema trả503 và giữ dữ liệu. Các COUNT phục vụ kiểm tra thủ công; chưa là endpoint poll tần suất cao hay SLA cho history lớn.
 
-Trong browser QA đã đăng nhập Access, đọc `await fetch('/api/system/progress',{cache:'no-store'}).then(r=>r.json())` và lưu hai JSON aggregate theo thứ tự thời gian. Có thể đọc cùng SELECT qua Cloudflare connector được cấp quyền; ghi rõ đây là native D1 readback, không thay authenticated HTTP acceptance.
+Trong browser QA đã đăng nhập Access, đọc `await fetch('/api/system/progress',{cache:'no-store'}).then(r=>r.json())` và lưu hai JSON aggregate theo thứ tự thời gian. Có thể đọc cùng SELECT qua Cloudflare connector được cấp quyền; ghi rõ đây là native D1 readback, không thay authenticated HTTP acceptance. Snapshot native SQL để version=null vì không chạy qua Worker; không suy hai null là deployment ổn định, phải đối chiếu deployment history riêng.
 
 ```bash
 node scripts/watch-qa-progress.mjs before.json after.json
