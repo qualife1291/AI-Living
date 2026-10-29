@@ -26,7 +26,7 @@ export function neighborhoodProps(available:ReadonlySet<string>){
  }
  for(const tree of sceneryTrees){
   // Canopy starts above people; a narrow shared-footprint trunk joins it below.
-  if(trees)placements.push({id:'suburban/tree-large',x:tree.x,y:groundElevation(tree.x,tree.z)+18,z:tree.z,width:36,height:32,depth:32,yaw:0,stretch:true});
+  if(trees)placements.push({id:'suburban/tree-large',x:tree.x,y:groundElevation(tree.x,tree.z)+26,z:tree.z,width:36,height:32,depth:32,yaw:0,stretch:true});
   if(planters)for(const side of [-1,1]){put('plant',tree.x+side*.8,tree.z+.7,.8,3,.8);plantCount++;}
  }
  return {placements,tables,planters,trees,replacedStreet,plantCount};
