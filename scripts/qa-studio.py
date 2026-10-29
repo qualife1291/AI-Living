@@ -5,6 +5,7 @@ from urllib.parse import urlparse
 from playwright.sync_api import sync_playwright
 base=os.environ.get('QA_BASE','http://127.0.0.1:5177');assert urlparse(base).hostname in ('localhost','127.0.0.1')
 out=Path(os.environ.get('QA_OUT',str(Path('docs/screenshots/assets'))));out.mkdir(parents=True,exist_ok=True)
+scenarios=["wallet-return","sanitation-gratitude","kitten-care","bakery-courtesy"];selected=os.environ.get("QA_SCENARIOS","").split(",") if os.environ.get("QA_SCENARIOS") else scenarios;assert selected and set(selected)<=set(scenarios)
 report=[]
 with sync_playwright() as p:
  b=p.chromium.launch(executable_path='/usr/bin/chromium',headless=True,args=['--no-sandbox','--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader'])
@@ -12,7 +13,7 @@ with sync_playwright() as p:
   for name,w,h in [('desktop',1440,900),('mobile',390,844)]:
    page=b.new_page(viewport={'width':w,'height':h},device_scale_factor=1.25);errors=[];failures=[];page.on('pageerror',lambda e:errors.append(str(e)));page.on('response',lambda r:failures.append(r.url) if '/models/' in r.url and r.status>=400 else None)
    page.goto(base+'/studio',wait_until='domcontentloaded',timeout=60000);host=page.locator('.studio-canvas[data-ready="true"]');host.wait_for(timeout=90000)
-   for scenario in ['wallet-return','sanitation-gratitude','kitten-care','bakery-courtesy']:
+   for scenario in selected:
     page.get_by_label('Chọn kịch bản',exact=True).select_option(scenario);page.wait_for_function('(id)=>document.querySelector(".studio-canvas")?.dataset.scenario===id',arg=scenario)
     for shot in range(1,6):
      page.get_by_role('button',name=f'Phân cảnh {shot}',exact=True).click();page.wait_for_function('(n)=>Number(document.querySelector(".studio-canvas")?.dataset.beat)===n',arg=shot-1)

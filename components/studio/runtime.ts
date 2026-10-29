@@ -4,6 +4,7 @@ import { AssetLibrary, collectAssetResources, type AssetPlacement } from "../cit
 import { simpleProp } from "../city/three/model-actors.ts";
 import { scenarioFrame, scenarioDefinitions, type ScenarioId, type ScenarioFrame, type EnvironmentProp } from "../../lib/city/scenarios/index.ts";
 import {StudioAvatar} from "./avatar.ts";
+import {studioCloth} from "./cloth.ts";
 import {studioCamera} from "./camera.ts";
 import {poseStudioActors} from "./actors.ts";
 import {StudioFeline} from "./feline.ts";
@@ -99,7 +100,7 @@ export async function createStudio(host: HTMLDivElement, input: () => { id: Scen
       let group = stage.props.get(prop.id);
       if (!group) {
         const compiled = library.compile(modelFor(prop.modelHint ?? prop.kind));
-        const model = compiled ? new THREE.Group().add(new THREE.Mesh(compiled.geometry, compiled.material)) : simpleProp(prop.kind), box = new THREE.Box3().setFromObject(model), size = box.getSize(new THREE.Vector3());
+        const model = compiled ? new THREE.Group().add(new THREE.Mesh(compiled.geometry, compiled.material)) : prop.kind==="cloth"?studioCloth():simpleProp(prop.kind), box = new THREE.Box3().setFromObject(model), size = box.getSize(new THREE.Vector3());
         model.position.sub(box.getCenter(new THREE.Vector3())); group = new THREE.Group(); group.add(model);
         group.scale.set(prop.size[0] / Math.max(.01, size.x), prop.size[1]*STAGE_Y / Math.max(.01, size.y), prop.size[2] / Math.max(.01, size.z));
         stage.props.set(prop.id, group); stage.group.add(group);

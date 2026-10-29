@@ -191,5 +191,9 @@
   ],
   [
     "scripts/test-studio-quality.mjs"
+  ],
+  [
+    "--experimental-transform-types",
+    "scripts/test-studio-sound.mjs"
   ]
 ]
