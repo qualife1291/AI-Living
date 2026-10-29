@@ -12,7 +12,7 @@ import {STAGE_Y,stagePoint} from "./motion.ts";
 import { resolveModel } from "../../lib/city/asset-bindings.ts";
 
 export type StudioRuntime = { dispose: () => void };
-type Stage = { group: THREE.Group; actors: Map<string, StudioAvatar>; kitten: StudioFeline | null; props: Map<string, THREE.Group> };
+type Stage = { group: THREE.Group; actors: Map<string, StudioAvatar>; kitten: StudioFeline | null; props: Map<string, THREE.Group>; occluders: THREE.Object3D[] };
 const modelFor = (hint = "") => resolveModel(hint) ?? "";
 
 function box(x: number, y: number, z: number, w: number, h: number, d: number, color: string) {
@@ -27,7 +27,7 @@ function makeEnvironment(prop: EnvironmentProp) {
     const canvas = document.createElement("canvas"); canvas.width = 768; canvas.height = 160; const ctx = canvas.getContext("2d")!;
     ctx.fillStyle = "#fbe7b5"; ctx.fillRect(0, 0, 768, 160); ctx.fillStyle = "#a65642"; ctx.font = "600 50px sans-serif"; ctx.textAlign = "center"; ctx.fillText("BÁNH MÌ · MỜI XẾP HÀNG", 384, 98, 735);
     const texture = new THREE.CanvasTexture(canvas); texture.colorSpace = THREE.SRGBColorSpace;
-    const sign = new THREE.Mesh(new THREE.PlaneGeometry(w, h), new THREE.MeshBasicMaterial({ map: texture, side: THREE.DoubleSide })); group.add(sign);
+    const sign = new THREE.Mesh(new THREE.PlaneGeometry(w, h), new THREE.MeshBasicMaterial({ map: texture })),back=new THREE.Mesh(sign.geometry,sign.material);sign.position.z=.01;back.position.z=-.01;back.rotation.y=Math.PI;group.add(sign,back);
   } else group.add(box(0, h / 2, 0, w, h, d, prop.color));
   group.position.set(...stagePoint(prop.position)); return group;
 }
@@ -47,7 +47,7 @@ export async function createStudio(host: HTMLDivElement, input: () => { id: Scen
   let manual = false; controls.addEventListener("start", () => { manual = true; });
   const stages = new Map<ScenarioId, Stage>(), skies = new Map<ScenarioId, THREE.CanvasTexture>();
   function build(frame: ScenarioFrame): Stage {
-    const group = new THREE.Group(), actors = new Map<string, StudioAvatar>(), props = new Map<string, THREE.Group>();
+    const group = new THREE.Group(), actors = new Map<string, StudioAvatar>(), props = new Map<string, THREE.Group>(),occluders:THREE.Object3D[]=[];
     const floor=box(0, -.6, 0, 3000, 1.2, 3000, frame.theme.groundHex);floor.receiveShadow=true;group.add(floor);
     // Pavement bands make distance and posture readable, without expensive textures.
     for (let n = -6; n <= 6; n++) group.add(box(n * 16, .005, 0, .12, .02, 180, "#b8b4a1"));
@@ -59,21 +59,27 @@ export async function createStudio(host: HTMLDivElement, input: () => { id: Scen
       if (id && library.get(id)) staticModels.push({ id, x: environment.position[0], y: environmentStage.position[1], z: environment.position[2], width: environment.size[0], height: environmentStage.size[1], depth: environment.size[2], yaw: Math.PI, stretch: environment.kind === "counter" });
       else group.add(makeEnvironment(environmentStage));
     }
-    for(const [id,mesh] of library.addBatches(group, staticModels))mesh.castShadow=id.includes("tree");
-    if (library.get("suburban/building-type-a")) for(const mesh of library.addBatches(group, [{ id: "suburban/building-type-a", x: -90, y: 0, z: -70, width: 48, height: 38, depth: 40, yaw: Math.PI }, { id: "suburban/building-type-a", x: 88, y: 0, z: -75, width: 48, height: 40, depth: 40, yaw: Math.PI }]).values())mesh.castShadow=false;
+    for(const [id,mesh] of library.addBatches(group, staticModels)){mesh.castShadow=id.includes("tree");if(id.includes("tree"))occluders.push(mesh);}
+    if (library.get("suburban/building-type-a")) for(const mesh of library.addBatches(group, [{ id: "suburban/building-type-a", x: -90, y: 0, z: -70, width: 48, height: 38, depth: 40, yaw: Math.PI }, { id: "suburban/building-type-a", x: 88, y: 0, z: -75, width: 48, height: 40, depth: 40, yaw: Math.PI }]).values()){mesh.castShadow=false;occluders.push(mesh);}
     for (const actor of frame.actors) {
       if (actor.species === "cat") { cat = new StudioFeline(); group.add(cat.group); continue; }
       const source = library.get(modelFor(actor.modelHint)); if (!source) throw Error(`Studio actor asset unavailable: ${actor.modelHint}`);
       const avatar = new StudioAvatar(source, actor.heightMeters * 10 * STAGE_Y, actor.radius * .9, actor.wardrobe.shirt); avatar.tint({ shirt: actor.wardrobe.shirt, trousers: actor.wardrobe.trousers, skin: "#e6c69e" }); actors.set(actor.id, avatar); group.add(avatar.group);
       const contact=new THREE.Mesh(new THREE.CircleGeometry(actor.radius*.7,16),new THREE.MeshBasicMaterial({color:"#4b5145",transparent:true,opacity:.13,depthWrite:false}));contact.rotation.x=-Math.PI/2;contact.position.set(actor.position[0],.025,actor.position[2]);contact.name=`contact-${actor.id}`;group.add(contact);
     }
-    scene.add(group); const stage = { group, actors, props, kitten: cat }; stages.set(frame.id, stage); return stage;
+    scene.add(group); const stage = { group, actors, props, kitten: cat,occluders }; stages.set(frame.id, stage); return stage;
   }
   let dirty = true;
   const resize = new ResizeObserver(() => { renderer.setSize(host.clientWidth, host.clientHeight); camera.aspect = host.clientWidth / Math.max(1, host.clientHeight); camera.updateProjectionMatrix(); dirty = true; }); resize.observe(host);
   let handle = 0, dead = false, lastDraw = 0, lastId = "", lastTime = -10, lastStatus = 0;
   const target = new THREE.Vector3(), eye = new THREE.Vector3();
+  let activeStage:Stage|undefined,subjectPoints:THREE.Vector3[]=[];
+  const sightRay=new THREE.Raycaster();sightRay.near=.01;
   function render() {
+    // Cosmetic cutaway of decorative roofs/canopies only. Preserve all actors,
+    // props, contacts and world geometry; an in-frame head must remain visible.
+    if(activeStage){let hidden=0;activeStage.group.updateMatrixWorld(true);for(const object of activeStage.occluders){object.visible=true;const blocks=subjectPoints.some(point=>{const delta=point.clone().sub(camera.position);sightRay.far=delta.length()-.2;sightRay.set(camera.position,delta.normalize());return sightRay.intersectObject(object,true).length>0;});object.visible=!blocks;if(blocks)hidden++;}host.dataset.sceneryCutaways=String(hidden);host.dataset.sceneryBlockedSubjects=String(subjectPoints.filter(point=>{const delta=point.clone().sub(camera.position);sightRay.far=delta.length()-.2;sightRay.set(camera.position,delta.normalize());return activeStage!.occluders.some(object=>object.visible&&sightRay.intersectObject(object,true).length>0);}).length);}
+
     renderer.render(scene, camera);
     host.dataset.triangles = String(renderer.info.render.triangles); host.dataset.drawCalls = String(renderer.info.render.calls); host.dataset.frames = String(Number(host.dataset.frames ?? 0) + 1);
   }
@@ -107,8 +113,10 @@ export async function createStudio(host: HTMLDivElement, input: () => { id: Scen
       }
       group.visible = prop.visible; group.position.set(...stagePoint(prop.position)); group.rotation.set(...prop.rotation);
     }
+    const shot=studioCamera(frame,contacts,camera.aspect);host.dataset.cameraSubjects=JSON.stringify(shot.subjects);activeStage=stage;
+    subjectPoints=shot.subjects.flatMap(id=>{const contact=contacts.find(c=>c.id===id),actor=frame.actors.find(a=>a.id===id)!;const head=contact?.head??[actor.position[0],actor.position[1]*STAGE_Y+2.25,actor.position[2]];return [new THREE.Vector3(...head),new THREE.Vector3(head[0],head[1]*.65,head[2])];});
     if (!manual) {
-      const shot=studioCamera(frame,contacts,camera.aspect);target.copy(shot.target);eye.copy(shot.eye);host.dataset.cameraSubjects=JSON.stringify(shot.subjects);
+      target.copy(shot.target);eye.copy(shot.eye);
       camera.position.copy(eye); controls.target.copy(target);
       camera.fov = frame.camera.fov; camera.updateProjectionMatrix();
     }
