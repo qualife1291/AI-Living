@@ -85,7 +85,7 @@ export class RiggedAvatar {
  /** Surface samples follow the deformed skin, including exporter bind offsets.
   * Bone origins alone are not necessarily inside the visible hand or head. */
  private findAttachments() {
-  for(const key of ['head','hand-left','hand-right','foot-left','foot-right']) {
+  for(const key of ['head','hips','hand-left','hand-right','foot-left','foot-right']) {
    const bone=this.joints.get(key);if(!bone)continue;
    const samples:{mesh:THREE.SkinnedMesh;indices:number[]}[]=[];
    this.model.traverse(object=>{
@@ -142,7 +142,11 @@ export class RiggedAvatar {
   const resolved=this.findClip(clip)??'',first=!this.current,seek=!Number.isFinite(this.lastTime)||Math.abs(presentationTime-this.lastTime)>1;
   if(resolved!==this.current||seek){this.previous=first||seek?'':this.current;this.current=resolved;this.changedAt=first||seek?presentationTime-.45:presentationTime;this.actions.get(resolved)?.reset().play();}
   const blend=Math.min(1,Math.max(0,(presentationTime-this.changedAt)/.45));
-  for(const [name,action] of this.actions){action.enabled=name===resolved||name===this.previous&&blend<1;action.setEffectiveWeight(name===resolved?blend:name===this.previous?1-blend:0);if(name===resolved){const duration=Math.max(.001,action.getClip().duration);action.time=((animationTime%duration)+duration)%duration;}}
+  // PropertyMixer skips unchanged constant tracks. Procedural contacts must not
+  // become the next frame's base when such a track is cached.
+  const previousTime=this.actions.get(this.previous)?.time??0;
+  this.mixer.stopAllAction();for(const rest of this.rest){rest.bone.position.copy(rest.position);rest.bone.quaternion.copy(rest.quaternion);rest.bone.scale.copy(rest.scale);}
+  for(const [name,action] of this.actions){action.enabled=name===resolved||name===this.previous&&blend<1;action.setEffectiveWeight(name===resolved?blend:name===this.previous?1-blend:0);if(action.enabled){action.play();const duration=Math.max(.001,action.getClip().duration),time=name===resolved?animationTime:previousTime;action.time=((time%duration)+duration)%duration;}}
   this.mixer.update(0);this.lastTime=presentationTime;this.requested=clip;
   this.group.position.set(position[0],0,position.length>2?position[2]:position[1]);this.group.rotation.set(0,yaw,0);this.group.updateMatrixWorld(true);
   const contacts=['foot-left','foot-right'].map(key=>this.surface(key,'min')?.y).filter((y):y is number=>y!==undefined);
@@ -172,6 +176,9 @@ export class RiggedAvatar {
   this.colors.shirt.set(colors.shirt);this.colors.trousers.set(colors.trousers);this.colors.skin.set(colors.skin);
  }
  assignId(id:string){this.group.traverse(o=>{if((o as THREE.Mesh).isMesh)o.userData.actorId=id;});}
+ foot(side='right'){return this.surface(`foot-${side}`)??this.joint(`foot-${side}`)?.getWorldPosition(new THREE.Vector3())??this.group.position.clone();}
+ seat(){return this.surface('hips','min')??this.joint('hips')?.getWorldPosition(new THREE.Vector3())??this.group.position.clone();}
+ duration(clip:string){return this.actions.get(this.findClip(clip)??'')?.getClip().duration??1;}
  hand(side='right'){return this.surface(`hand-${side}`)??this.joint(`hand-${side}`)?.getWorldPosition(new THREE.Vector3())??this.group.position.clone().add(new THREE.Vector3(0,10,0));}
  head(){return this.surface('head','max')??this.group.position.clone().add(new THREE.Vector3(0,17.5,0));}
  snapshot(){return{clip:this.requested,resolvedClip:this.current,leg:this.joint('leg-left')?.quaternion.toArray(),position:this.group.position.toArray(),skinned:true,height:this.height,profile:this.model.userData.profile??'imported'};}

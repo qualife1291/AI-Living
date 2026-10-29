@@ -26,7 +26,7 @@ with sync_playwright() as p:
     body=route.request.post_data_json
     assert body['message']=='Lời nhắn được giữ lại khi cần chờ'
     if state['mode']=='limited':route.fulfill(status=429,content_type='application/json',headers={'Retry-After':'60'},body=json.dumps({'error':'Bạn gửi lời nhắn hơi nhanh. Hãy chờ một chút rồi thử lại.','retryAfter':60}))
-    else:route.fulfill(status=200,content_type='application/json',body=json.dumps({'reply':'Mình vẫn ở đây, cảm ơn bạn đã đợi nhé.'}))
+    else:route.fulfill(status=200,content_type='application/json',body=json.dumps({**body,'message':body['message'].strip(),'reply':'Mình vẫn ở đây, cảm ơn bạn đã đợi nhé.'}))
    page.route('**/api/world*',world);page.route('**/api/living/interact',chat)
    try:
     page.goto(base,wait_until='domcontentloaded',timeout=60000)

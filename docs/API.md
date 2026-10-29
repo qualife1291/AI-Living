@@ -27,6 +27,7 @@ JSON qua helper `json()` đặt `Cache-Control: private,no-store` và `X-Content
 | POST `/api/visits` | Sessionnonce/30 phút, aggregate lượt mở, không phải uniquehumans hoặc online users. |
 | GET `/api/health` |200ready;503unavailable khi worldDB lỗi hoặc schema_or_query_error khi probes lỗi; lastTick=null khi chưa có tick. Schema8 table+latest tick một D1 batch, world read riêng. |
 | GET/POST `/api/diagnostics` | Owner-only; GET JSONL chỉSELECT trong7 ngày, tối đa500 client+500 tick rows. POST≤16KiB/32 logs, admission20 batch/phút toànSite, allowlist fields; POST giữ telemetry retention7 ngày. Không xóa chat/tick/history theo retention đó. |
+| GET `/api/system/progress` | Owner-only và QA/loopback fence; snapshot aggregate bằng một SELECT, không bootstrap/history payload/DB writes, thiếu world/schema503. So sánh offline theo [OBSERVABILITY](OBSERVABILITY.md); không gọi snapshot là Cron/learning-quality proof. |
 
 ## Nhịp pulse
 
@@ -39,3 +40,7 @@ Hạn khóa chỉ giảm tải; pipeline quá30s có thể chồng và vẫn ph�
 GND2 local active có thêm shared step sau base pulse, CAS/coalescing khoảng1s; nếu GND3 active thì authority cùng batch. Base gate9s không đổi; preflight active journal/authority trước world writes, shared page dùng loop sẵn ở1s và GET chỉ đọc. Source capture tự đi cùng world transaction sau explicit shared start, không do GET/viewer receipt. Default page giữ cadence cũ; production không bật shared mode/local-admin.
 
 Chat admission chỉ giới hạn exchange mới đã lưu, không giới hạn mọi request đọc hoặc mọi chi phí D1: route vẫn kiểm snapshot/actor trước transaction. Window dùng server time, không simulation time/pause/scale; không phải rolling-window hay quota theo IP. Counter TTL có thể tái tạo sau expiry; giữ toàn bộ visitor_exchanges. Không có process-local latch hoặc rate key lấy từ actorId/client header.
+
+Postassert kiểm cả payload/columns exchange và counter thuộc nonce của batch, count nguyên/previousCount nhất quán; trigger bỏ qua/sửa/xóa ghi không được ACK thành công. Counter hai trường phiên bản cũ vẫn giữ count trong TTL. Exchange lưu hỏng JSON hoặc lệch actor/time trả503, không tự sửa hay xóa lịch sử. [Rà soát đối kháng](validation/phase-verification-2026-10-29.json) kiểm hai Worker isolate dùng chung D1 và rollback thật.
+
+Trong panel trò chuyện đang mở, lỗi mạng/timeout/ACK sai giữ draft và UUID cho cùng actor+nội dung đã trim khi người xem chủ động gửi lại. Thành công mới xóa pending; gửi mới sau đó dùng UUID mới. ACK phải khớp id/actor/message và có reply. Deadline10giây, không tự retry write; đổi/đóng panel hủy request đang chờ. Pending không lưu xuống đĩa và không có bảo đảm giữ UUID qua reload/remount.

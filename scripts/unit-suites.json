@@ -227,6 +227,24 @@
     "scripts/test-scene-interactions.mjs"
   ],
   [
+    "scripts/test-city-actions.mjs"
+  ],
+  [
+    "scripts/test-crowd-skins.mjs"
+  ],
+  [
+    "scripts/test-chat-adversarial.mjs"
+  ],
+  [
+    "scripts/test-peer-sharing-audit.mjs"
+  ],
+  [
+    "scripts/test-system-log.mjs"
+  ],
+  [
+    "scripts/test-progress-watch.mjs"
+  ],
+  [
     "scripts/test-cloudflare-access.mjs"
   ],
   [

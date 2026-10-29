@@ -9,11 +9,13 @@ import { AppearancePreview } from "./AppearancePreview";
 export function Wardrobe({
   id,
   role,
+  modelId,
   initial,
   onSaved,
 }: {
   id: string;
   role: string;
+  modelId:string;
   initial?: Appearance;
   onSaved: () => Promise<void>;
 }) {
@@ -46,7 +48,7 @@ export function Wardrobe({
   return (
     <div className="wardrobe">
       <div className="wardrobe-preview">
-        <AppearancePreview appearance={appearance} />
+        <AppearancePreview appearance={appearance} modelId={modelId} />
       </div>
       <div className="wardrobe-controls">
         <label>
@@ -61,7 +63,6 @@ export function Wardrobe({
                 theme: t.id,
                 shirt: t.shirt,
                 trousers: t.trousers,
-                face: t.face as Appearance["face"],
               }));
             }}
           >
@@ -104,41 +105,7 @@ export function Wardrobe({
             />
           </label>
         </div>
-        <label>
-          Tóc
-          <select
-            aria-label="Tóc"
-            value={appearance.hair}
-            onChange={(e) =>
-              setAppearance((a) => ({
-                ...a,
-                hair: e.target.value as Appearance["hair"],
-              }))
-            }
-          >
-            <option value="black">Đen</option>
-            <option value="brown">Nâu</option>
-            <option value="gray">Bạc</option>
-            <option value="bald">Không tóc</option>
-          </select>
-        </label>
-        <label>
-          Nét mặt
-          <select
-            aria-label="Nét mặt"
-            value={appearance.face}
-            onChange={(e) =>
-              setAppearance((a) => ({
-                ...a,
-                face: e.target.value as Appearance["face"],
-              }))
-            }
-          >
-            <option value="smile">Nụ cười</option>
-            <option value="glasses">Đeo kính</option>
-            <option value="moustache">Râu mép</option>
-          </select>
-        </label>
+        <p>Kiểu tóc và nét mặt được giữ theo mẫu nhân vật.</p>
         <button disabled={busy} onClick={() => void save()}>
           {busy ? "Đang lưu…" : "Lưu tạo hình"}
         </button>

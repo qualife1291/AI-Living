@@ -21,6 +21,7 @@ import {
   VolumeX,
 } from "lucide-react";
 import { Conversation } from "@/components/city/Conversation";
+import {CORE_MODELS,residentModel} from "@/lib/city/character-models";
 import type { Quality } from "@/lib/city/scale";
 import { Osm3D } from "@/components/city/Osm3D";
 import { InteriorView } from "@/components/city/InteriorView";
@@ -363,6 +364,7 @@ export default function Page() {
                     key={person.id}
                     id={person.id}
                     role={person.role}
+                    modelId={CORE_MODELS[person.id]??residentModel(world?.living?.residents.find(r=>r.id===person.id)?.roleId??person.role,person.id)}
                     initial={world?.living?.appearances?.[person.id]}
                     onSaved={load}
                   />

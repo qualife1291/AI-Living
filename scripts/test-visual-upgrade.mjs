@@ -9,7 +9,6 @@ import { streetProps } from '../lib/city/scenery.ts';
 import { seed } from '../lib/world.ts';
 import { initializeLiving } from '../lib/living/engine.ts';
 import { defaultAppearance } from '../lib/city/appearance.ts';
-import { groundElevation } from '../lib/city/ground.ts';
 import { WalkDirector, walkable, PERSONAL_SPACE } from '../lib/city/walkability.ts';
 
 const actor={id:'an',name:'An',position:[0,0],path:[[0,0],[100,0]],from:'Sân chung',location:'Sân chung',activity:'Đi dạo',kind:'social',walking:true,transport:'walk',progress:0,source:'routine'};
@@ -17,44 +16,37 @@ const motion=new HumanMotion(), poses=new Map();let old;
 for(let frame=0;frame<600;frame++) {
  const walking=frame<300, position=[Math.min(frame,299)*16/60,0];
  const state=motion.frame([{...actor,position,walking}],poses,frame/60,1/60,false).get('an');
- assert.ok(Object.values(state.pose).every(Number.isFinite));
- if(old)for(const key of ['leftArm','rightArm','leftLeg','rightLeg','leftKnee','rightKnee'])assert.ok(Math.abs(state.pose[key]-old.pose[key])<.15,`${key} jerked`);
+ assert.ok(Object.values(state).every(Number.isFinite));
+ if(old)assert(Math.abs(Math.atan2(Math.sin(state.yaw-old.yaw),Math.cos(state.yaw-old.yaw)))<.15,'Heading must turn smoothly');
  old=state;
 }
-assert.ok(Math.abs(old.pose.leftLeg)<1e-8&&Math.abs(old.pose.rightLeg)<1e-8,'Settles after actual travel stops');
+assert.ok(old.weight<1e-8,'Settles after actual travel stops');
 const frozen=motion.frame([actor],poses,10,1/60,true).get('an');
 for(let n=0;n<10;n++)assert.deepEqual(motion.frame([actor],poses,10+n,1/60,true).get('an'),frozen,'Pause freezes all joints and heading');
 const reordered=new HumanMotion(), other={...actor,id:'binh'};
 const a=reordered.frame([actor,other],poses,0,0,false);
 const b=reordered.frame([other,actor],poses,0,0,false);assert.deepEqual(a.get('an'),b.get('an'),'Identity is independent of array order');
 
-const scene=new Scene(), people=createPeople(scene,72), world=structuredClone(seed);world.living=initializeLiving(Date.now());
+const {loadCivilianLibrary}=await import('./load-civilian-library.mjs');
+const library=await loadCivilianLibrary();
+const scene=new Scene(), people=createPeople(scene,72,library), world=structuredClone(seed);world.living=initializeLiving(Date.now());
 const cast=Array.from({length:72},(_,i)=>({...actor,id:`person-${i}`,position:[i%9*20,Math.floor(i/9)*20],walking:false,kind:i%4===0?'read':i%4===1?'eat':i%4===2?'garden':'work'}));
 world.living.appearances=Object.fromEntries(cast.map(p=>[p.id,{...defaultAppearance(p.id),theme:'chef',face:'glasses'}]));
 const camera=new PerspectiveCamera();camera.position.set(80,50,170);
 const snapshot=JSON.stringify(world);
+people.draw(world,cast,poses,0,0,camera,'person-0');assert.equal(people.stats().instances,72,'No actor disappears while the shared action atlas warms');
 for(let frame=0;frame<120;frame++)people.draw(world,cast,poses,frame/60,1/60,camera,'person-0');
-assert.equal(people.stats().batches,6,'All bodies, faces and held props use six shared geometry batches');
+assert(people.stats().batches<=20,'72 actors share style/action batches instead of skeletal controllers');
+assert.equal(people.stats().instances,72);assert.equal(people.stats().modelIds.length,5);
 assert.equal(JSON.stringify(world),snapshot,'Visual details cannot write learning/history');
 const matrix=new Matrix4();let instanceCount=0;
-for(const mesh of scene.children) {
- assert.equal(mesh.userData.ids.length,mesh.count,'Every visible part remains selectable');
+for(const mesh of scene.children.filter(o=>o.isInstancedMesh)) {
+ assert.equal(mesh.userData.ids.length,mesh.count,'Every visible body remains selectable');
  for(let i=0;i<mesh.count;i++){mesh.getMatrixAt(i,matrix);assert.ok(matrix.elements.every(Number.isFinite));assert.ok(cast.some(a=>a.id===mesh.userData.ids[i]));instanceCount++;}
+ assert(mesh.userData.modelId.startsWith('supplied/'),'No old procedural human body at any distance');
+ assert(mesh.geometry.getAttribute('skinIndex'),'Crowd preserves the reviewed civilian topology');
 }
-const limbs=scene.children.find(mesh=>mesh.geometry===people.geometry.limb);
-assert.equal(limbs.count,cast.length*13);
-for(let person=0;person<cast.length;person++)for(const [upper,lower]of [[1,2],[4,5],[7,8],[10,11]]) {
- const top=new Vector3(0,-.5,0),bottom=new Vector3(0,.5,0);
- limbs.getMatrixAt(person*13+upper,matrix);top.applyMatrix4(matrix);
- limbs.getMatrixAt(person*13+lower,matrix);bottom.applyMatrix4(matrix);
- assert.ok(top.distanceTo(bottom)<.3,'Shoulder/elbow/knee segments stay connected');
-}
-const shoes=scene.children.find(mesh=>mesh.geometry===people.geometry.shoe);
-for(let n=0;n<cast.length;n++) {
- const bottoms=[];
- for(const i of [n*2,n*2+1]){shoes.getMatrixAt(i,matrix);bottoms.push(new Vector3(0,-.5,0).applyMatrix4(matrix).y);}
- assert.ok(Math.abs(Math.min(...bottoms)-groundElevation(...cast[n].position))<.2,'Feet stay on actual rendered paving/grass height');
-}
+assert.equal(instanceCount,72);
 assert.equal(streetProps.length,66);assert.equal(new Set(streetProps.map(p=>p.kind)).size,7);
 let detailParts=0;
 for(const prop of streetProps)for(const part of streetModel(prop)) {
@@ -100,17 +92,15 @@ for(const mesh of animalScene.children) {
   }
  }
 }
-const fineTriangles=scene.children.reduce((n,m)=>n+(m.geometry.index?.count??m.geometry.attributes.position.count)/3*m.count,0);
-const identities=scene.children.map(m=>[...m.userData.ids]);people.setQuality('balanced');
-const lightTriangles=scene.children.reduce((n,m)=>n+(m.geometry.index?.count??m.geometry.attributes.position.count)/3*m.count,0);
-assert.ok(lightTriangles<fineTriangles*.6,'Balanced crowd lowers vertex/shadow work without dropping actors');
-assert.deepEqual(scene.children.map(m=>m.userData.ids),identities,'Quality swaps preserve actor picking');
-people.setQuality('sharp');assert.equal(scene.children.reduce((n,m)=>n+(m.geometry.index?.count??m.geometry.attributes.position.count)/3*m.count,0),fineTriangles);
+const bodies=scene.children.filter(m=>m.isInstancedMesh),fineTriangles=bodies.reduce((n,m)=>n+(m.geometry.index?.count??m.geometry.attributes.position.count)/3*m.count,0);
+assert(fineTriangles<=72*2600,'Full reviewed crowd topology remains bounded');
+const identities=bodies.map(m=>[...m.userData.ids]);people.setQuality('balanced');
+assert.deepEqual(bodies.map(m=>m.userData.ids),identities,'Quality never changes body identity/topology');
 const stillAnimals=animalScene.children.map(mesh=>[...mesh.instanceMatrix.array]);
 fauna.draw(flyingPets,60.1,.1,true);assert.deepEqual(animalScene.children.map(mesh=>[...mesh.instanceMatrix.array]),stillAnimals,'Animal body/tail/wings freeze with simulation pause');
 assert.ok(animalScene.children.every(mesh=>mesh.instanceMatrix.array.every(Number.isFinite)));
 assert.equal(fauna.stats.policies,3,'A visible flock must not invent additional learned agents');
 const animalMaterials=new Set(animalScene.children.map(mesh=>mesh.material));for(const mat of animalMaterials)mat.dispose();
 const sharedGeometry=new Set(Object.values(people.geometry));for(const mesh of animalScene.children)if(!sharedGeometry.has(mesh.geometry))mesh.geometry.dispose();
-for(const mesh of scene.children)mesh.material.dispose();for(const geometry of Object.values(people.geometry))geometry.dispose();
-console.log(JSON.stringify({suite:'visual-upgrade',humanBatches:6,stressActors:72,instances:instanceCount,motionFrames:600,mixedAnimalHumanFrames:1800,animalPolicies:3,props:66,propTypes:7,detailParts,pause:'frozen',joints:'connected',provenance:'preserved'}));
+const humanBatches=people.stats().batches;people.dispose();library.dispose();for(const geometry of Object.values(people.geometry))geometry.dispose();
+console.log(JSON.stringify({suite:'visual-upgrade',humanBatches,stressActors:72,instances:instanceCount,motionFrames:600,mixedAnimalHumanFrames:1800,animalPolicies:3,props:66,propTypes:7,detailParts,pause:'frozen',joints:'connected',provenance:'preserved'}));

@@ -6,7 +6,6 @@ import {scheduleResidentSocial} from '../lib/living/social-scheduler.ts';
 import {meetingSteps,followup,microActivity} from '../lib/living/activities.ts';
 import {hasUnfinishedLearning} from '../lib/living/learning.ts';
 import {activityLift} from '../lib/living/action-presentation.ts';
-import {humanPose} from '../components/city/three/humans.ts';
 import {resolveActorClip,createModelActors} from '../components/city/three/model-actors.ts';
 import {AssetLibrary} from '../components/city/three/assets.ts';
 import {computeSimMs} from '../lib/clock.ts';
@@ -30,8 +29,6 @@ const clips=new Set(gltf.animations.map(c=>c.name));let probeTime=1;
 for(const kind of added){const actor={id:'fixture',name:'Test',from:'Công viên',location:'Công viên',activity:kind,kind,position:[0,0],walking:false,progress:1,path:[[0,0]],source:'plan'};
  clipProbe.pose(resolveActorClip(actor),0,probeTime++,[0,0],0,0);assert(clips.has(clipProbe.snapshot().resolvedClip),`unsupported clip for ${kind}`);
  if (["run","tag"].includes(kind)) assert.equal(resolveActorClip({...actor,walking:true,transport:"walk"}),"sprint");
- const a=humanPose(actor,1,0),b=humanPose(actor,1.3,0);for(const v of Object.values(a))assert(Number.isFinite(v));
- if(['run','exercise'].includes(kind))assert.notDeepEqual([a.leftLeg,a.rightLeg,a.leftArm],[b.leftLeg,b.rightLeg,b.leftArm]);
  if(kind==='tag')assert.equal(resolveActorClip(actor),'idle','An unpaired or yielding tag actor waits instead of sprinting in place');
 }
 clipProbe.dispose();const library=new AssetLibrary();for(const id of Object.values(CORE_MODELS))library.loaded.set(id,await loadLocalGLTF('/models/'+id+'.glb'));

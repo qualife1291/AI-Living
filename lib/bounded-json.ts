@@ -13,7 +13,7 @@ export async function readBoundedJson(req: Request, maxBytes: number): Promise<
       bytes += value.byteLength;
       if (bytes > maxBytes) {
         // A broken upstream cancellation must not turn the intended 413 into a 500.
-        try { await reader.cancel(); } catch { /* upstream already failed */ }
+        void reader.cancel().catch(() => { /* upstream already failed */ });
         return { ok: false, status: 413, error: 'Dữ liệu quá lớn' };
       }
       chunks.push(value);

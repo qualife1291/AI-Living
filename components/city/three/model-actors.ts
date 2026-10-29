@@ -2,6 +2,7 @@ import { activityLift, hasHandProp, handProp } from "../../../lib/living/action-
 import { createBicycle, spinBicycle } from "./activity-props.ts";
 import * as THREE from "three";
 import { AssetLibrary } from "./assets.ts";
+import {ActorActions} from "./actor-actions.ts";
 import { RiggedAvatar } from "./rigged-avatar.ts";
 import { CORE_MODELS, CITIZEN_FALLBACK, residentModel } from "../../../lib/city/character-models.ts";
 import { defaultAppearance } from "../../../lib/city/appearance.ts";
@@ -36,6 +37,7 @@ export function simpleProp(kind: string) {
     const food = new THREE.Mesh(new THREE.CylinderGeometry(1.25, 1.1, .18, 14), new THREE.MeshPhongMaterial({ color: "#f2c15a", shininess: 20 }));
     food.position.y = .52; group.add(food);
     box(2.1, .42, 0, 1.8, .22, .32, "#8c583a");
+    const stirrer=new THREE.Group();stirrer.name='stirrer';const handle=new THREE.Mesh(new THREE.CylinderGeometry(.07,.07,1.4,5),new THREE.MeshPhongMaterial({color:'#b78d5c'}));handle.position.y=-.6;const bowl=new THREE.Mesh(new THREE.SphereGeometry(.24,6,4),new THREE.MeshPhongMaterial({color:'#a2afb0'}));bowl.position.y=-1.45;bowl.scale.y=.4;stirrer.add(handle,bowl);group.add(stirrer);
   }
   else if (/soccer|ball|football/.test(kind)) {
     const ball = new THREE.Mesh(new THREE.IcosahedronGeometry(1.15, 1), new THREE.MeshPhongMaterial({ color: "#f7f5eb", shininess: 22 }));
@@ -80,35 +82,52 @@ export function resolveActorClip(actor: Actor, speaking = false): string {
   if (actor.kind === "run") return "sprint";
   if (actor.kind === "tag") return "idle"; // Waiting/yielding is not running in place.
   if (/jump|nhảy|cheer|cổ vũ/.test(act)) return "idle";
-  if (/soccer|đá bóng|kick/.test(act)) return "attack-kick-right";
-  if (/swim|bơi/.test(act)) return "sprint";
-  if (/cook|nấu ăn|bếp/.test(act)) return "interact-right";
+  if (/soccer|đá bóng|kick/.test(act)) return "idle";
+  if (/swim|bơi/.test(act)) return "idle";
+  if (/cook|nấu ăn|bếp/.test(act)) return "holding-both";
   if (/sit|ngồi|nghỉ/.test(act) && actor.kind === "rest") return "sit";
   if (["read", "study", "eat", "drink", "garden", "work", "shop"].includes(actor.kind)) return ["read", "study"].includes(actor.kind) ? "holding-both" : "holding-right";
   if (speaking) return "emote-yes";
   return "idle";
 }
 
+export function placeActionProp(prop:THREE.Group,kind:string,height:number,yaw:number,origin:THREE.Vector3,hands:{left:THREE.Vector3;right:THREE.Vector3},seconds:number){
+ const scale=height/17.5;prop.scale.setScalar(scale*(kind==='swim'?1.4:1));prop.rotation.set(kind==='read'?-.2:0,yaw+(kind==='cook'?Math.PI:0),kind==='cup'?-.12:0);
+ if(kind==='soccer')prop.position.copy(new THREE.Vector3(0,0,3+Math.max(0,Math.sin(seconds*2))*.6).applyAxisAngle(new THREE.Vector3(0,1,0),yaw).add(origin));
+ else if(kind==='swim')prop.position.copy(origin).add(new THREE.Vector3(0,height*.44-.6*prop.scale.y,0));
+ else{
+  const anchor=kind==='read'?hands.right.clone().add(hands.left).multiplyScalar(.5):hands.right;
+  const grips:Record<string,number[]>={cook:[2.1,.42,0],garden:[0,1.35,-.2],can:[0,1.35,-.2],bag:[0,2.1,0],work:[0,.4,0],tool:[0,.4,0]};
+  prop.position.copy(anchor).sub(new THREE.Vector3(...(grips[kind]??[0,0,0])).multiplyScalar(scale).applyQuaternion(prop.quaternion));
+  const stirrer=prop.getObjectByName('stirrer');if(stirrer){prop.updateMatrixWorld(true);stirrer.position.copy(prop.worldToLocal(hands.left.clone()));}
+ }
+}
+
+export function actorActionKind(actor:Actor){
+ const act=`${actor.kind} ${actor.activity??''} ${actor.location??''}`.toLowerCase();
+ return ['drink','eat','study','shop'].includes(actor.kind)?handProp(actor.kind):/cook|nấu ăn/.test(act)?'cook':/soccer|đá bóng/.test(act)?'soccer':/swim|bơi/.test(act)?'swim':/lễ hội|festival|đèn lồng/.test(act)?'lantern':actor.kind;
+}
+
 export function createModelActors(scene: THREE.Scene, library: AssetLibrary) {
   const avatars = new Map<string, RiggedAvatar>(), props = new Map<string, { kind: string; group: THREE.Group }>(), travel = new Map<string, { x: number; z: number; distance: number }>();
   const ids = new Set<string>(), modelIds = new Map<string, string>();
   const posed = new Set<string>();
-  const poseTimes = new Map<string, number>();
-  const proceduralBases = new Map<string, Map<THREE.Object3D, THREE.Quaternion>>();
+  const verticalMotion=new Map<string,{key:string;start:number;from:number;last:number}>();
+  const actions=new ActorActions();
   const bicycles = new Map<string, THREE.Group>();
   const remove = (id: string) => {
     avatars.get(id)?.dispose(); avatars.delete(id); ids.delete(id); modelIds.delete(id);
     for (const group of [props.get(id)?.group, bicycles.get(id)]) if (group) {
       group.removeFromParent(); group.traverse(o => { const mesh = o as THREE.Mesh; mesh.geometry?.dispose(); if (mesh.material) for (const m of Array.isArray(mesh.material) ? mesh.material : [mesh.material]) m.dispose(); });
     }
-    props.delete(id); bicycles.delete(id); travel.delete(id); posed.delete(id); poseTimes.delete(id); proceduralBases.delete(id);
+    props.delete(id); bicycles.delete(id); travel.delete(id); posed.delete(id); verticalMotion.delete(id); actions.forget(id);
   };
   const request = (id:string) => {if(!library.get(id)&&!library.failures.has(id))void library.load(id).catch(()=>{});};
   const install = (id:string,wanted:string) => {
     request(wanted);
     const modelId=library.get(wanted)?wanted:library.get(CITIZEN_FALLBACK)?CITIZEN_FALLBACK:Object.values(CORE_MODELS).find(key=>library.get(key));
     if(!modelId||modelIds.get(id)===modelId)return;
-    const source=library.get(modelId)!;if(ids.has(id))remove(id);
+    const source=library.get(modelId)!,previousTravel=travel.get(id),previousMotion=verticalMotion.get(id);if(ids.has(id))remove(id);if(previousTravel)travel.set(id,previousTravel);if(previousMotion)verticalMotion.set(id,previousMotion);
     const avatar=new RiggedAvatar(source,17.5,4.4);avatar.assignId(id);scene.add(avatar.group);avatars.set(id,avatar);ids.add(id);modelIds.set(id,modelId);
   };
   for(const [id,model] of Object.entries(CORE_MODELS))install(id,model);
@@ -122,7 +141,7 @@ export function createModelActors(scene: THREE.Scene, library: AssetLibrary) {
       for(const id of [...ids])if(!CORE_MODELS[id]&&!wanted.includes(id))remove(id);
       for(const id of wanted){const resident=world.living!.residents.find(r=>r.id===id)!;install(id,residentModel(resident.roleId,resident.id));}
     },
-    draw(world: World, actors: Actor[], social: Map<string, SocialPose>, headings: Map<string, number>, seconds: number) {
+    draw(world: World, actors: Actor[], social: Map<string, SocialPose>, headings: Map<string, number>, seconds: number, gait?:(id:string)=>number,sharedLift?:(id:string)=>number) {
       for (const [id, avatar] of avatars) {
         const actor = actors.find(a => a.id === id); avatar.group.visible = !!actor;
         if (!actor) { const prop = props.get(id)?.group, bike = bicycles.get(id); if (prop) prop.visible = false; if (bike) bike.visible = false; continue; }
@@ -133,32 +152,17 @@ export function createModelActors(scene: THREE.Scene, library: AssetLibrary) {
         const person = world.people.find(p => p.id === id), appearance = world.living?.appearances?.[id] ?? defaultAppearance(id, person?.role);
         avatar.tint(appearance);
         if(world.paused&&posed.has(id))continue;
-        const act = `${actor.kind} ${actor.activity ?? ""} ${actor.location ?? ""}`.toLowerCase();
-        const propKind = ["drink", "study", "shop"].includes(actor.kind) ? handProp(actor.kind) : /cook|nấu ăn/.test(act) ? "cook" : /soccer|đá bóng/.test(act) ? "soccer" : /swim|bơi/.test(act) ? "swim" : /lễ hội|festival|đèn lồng/.test(act) ? "lantern" : actor.kind;
+        const propKind = actorActionKind(actor);
         const holding = !actor.bicycle && !actor.walking && (hasHandProp(actor.kind) || ["cook", "soccer", "swim", "lantern"].includes(propKind));
         const speaking = social.get(id)?.speaking;
         const clip = !actor.walking && social.has(id)
           ? speaking ? "talk" : "listen" : resolveActorClip(actor, speaking);
-        const animationTime = actor.bicycle ? actor.bicycle.distance / 14 : actor.walking ? (distance + walked) / 14 * (2 / 3) : seconds;
-        // Some authored clips do not key every limb. Restore the previous base
-        // before the mixer runs, so additive pedal/exercise poses never accumulate.
-        const bases = proceduralBases.get(id) ?? new Map<THREE.Object3D, THREE.Quaternion>();
-        proceduralBases.set(id, bases);
-        if (poseTimes.get(id) !== seconds) { for (const [bone, rotation] of bases) bone.quaternion.copy(rotation); bases.clear(); }
-        const changed = avatar.pose(clip, animationTime, seconds, actor.position, headings.get(id) ?? .35, groundElevation(...actor.position) + activityLift(actor.kind, seconds) + (actor.bicycle ? 4 : 0));
-        if (changed) poseTimes.set(id, seconds);
-        // Procedural offsets add missing exercise/jump/drink motions to authored clips.
-        if (changed && (actor.bicycle || !actor.walking && ["exercise", "jump", "drink"].includes(actor.kind))) {
-          for (const side of ["left", "right"]) {
-            const arm=avatar.joint(`arm-${side}`),leg=avatar.joint(`leg-${side}`),sign=side==="left"?1:-1;
-            if (arm) bases.set(arm, arm.quaternion.clone());
-            if (leg) bases.set(leg, leg.quaternion.clone());
-            if(arm && actor.kind === "exercise") arm.rotation.z += sign*(.25+.2*Math.sin(seconds*2));
-            if(arm && side === "right" && actor.kind === "drink") arm.rotation.x -= .3+.35*(1+Math.sin(seconds*1.6));
-            if(leg && actor.bicycle) leg.rotation.x += sign*Math.sin(actor.bicycle.distance/3)*.6;
-          }
-          avatar.group.updateMatrixWorld(true);
-        }
+        const animationTime = actor.bicycle ? 0 : actor.walking ? (gait?gait(id)/(Math.PI*2):(distance+walked)/14)*avatar.duration(clip) : seconds;
+        const motionKey=actor.bicycle?'cycle':actor.walking?'walk':actor.kind;
+        let vertical=verticalMotion.get(id);if(!vertical){vertical={key:motionKey,start:seconds,from:0,last:0};verticalMotion.set(id,vertical);}if(vertical.key!==motionKey){vertical={key:motionKey,start:seconds,from:vertical.last,last:vertical.last};verticalMotion.set(id,vertical);}
+        const phase=seconds-vertical.start,t=THREE.MathUtils.clamp(phase/.4,0,1),ease=t*t*(3-2*t),lift=actor.walking?0:activityLift(actor.kind,phase);vertical.last=vertical.from*(1-ease)+lift*ease;
+        const changed=avatar.pose(clip,animationTime,seconds,actor.position,headings.get(id)??.35,groundElevation(...actor.position)+(sharedLift?sharedLift(id):vertical.last)+(actor.bicycle?4:0));
+        if(changed)actions.apply(avatar,actor,holding?propKind:actor.kind,seconds,sharedLift?sharedLift(id):vertical.last);
         const cycling=!!actor.bicycle;
         if(cycling && !bicycles.has(id)){const bike=createBicycle();bike.traverse(o=>{if((o as THREE.Mesh).isMesh)o.userData.actorId=id;});scene.add(bike);bicycles.set(id,bike);}
         const bike=bicycles.get(id);if(bike){bike.visible=cycling;bike.position.set(actor.position[0],groundElevation(...actor.position),actor.position[1]);bike.rotation.y=headings.get(id)??.35;if(actor.bicycle)spinBicycle(bike,actor.bicycle.distance);}
@@ -169,7 +173,8 @@ export function createModelActors(scene: THREE.Scene, library: AssetLibrary) {
           const group = simpleProp(propKind);group.traverse(o=>{if((o as THREE.Mesh).isMesh)o.userData.actorId=id;}); group.scale.setScalar(avatar.height / 17.5); scene.add(group); props.set(id, { kind: propKind, group });
         }
         const prop = props.get(id)?.group;
-        if (prop) { prop.visible = holding; const right = avatar.hand(); prop.position.copy(actor.kind === "read" ? right.add(avatar.hand("left")).multiplyScalar(.5) : right); prop.rotation.set(0, headings.get(id) ?? .35, 0); }
+        if(prop){prop.visible=holding;placeActionProp(prop,propKind,avatar.height,headings.get(id)??.35,new THREE.Vector3(actor.position[0],groundElevation(...actor.position),actor.position[1]),{left:avatar.hand('left'),right:avatar.hand('right')},seconds);}
+
       }
     },
     head: (id: string) => avatars.get(id)?.head(),

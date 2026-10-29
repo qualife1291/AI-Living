@@ -11,11 +11,15 @@ const fixed=Date.parse('2026-10-29T02:00:00Z');
 const files=readdirSync('dist/server',{recursive:true}).filter(p=>p.endsWith('.js')&&!p.split('/').includes('.wrangler'));
 const modules=[{type:'ESModule',path:resolve('dist/server/__chat_admission_fixture.mjs'),contents:`import worker from './index.js';const NativeDate=Date;let now=${fixed};globalThis.Date=class extends NativeDate{constructor(...a){super(...(a.length?a:[now]))}static now(){return now}};export default {fetch(req,env,ctx){const u=new URL(req.url);if(u.pathname==='/__chat/time'){now=Number(u.searchParams.get('now'));return Response.json({ok:true});}return worker.fetch(req,env,ctx)}};`},...files.map(p=>({type:'ESModule',path:resolve('dist/server',p)}))];
 const options={cf:false,outboundService:async()=>new Response('',{status:503}),log:new Log(LogLevel.WARN),modules,modulesRoot:resolve('dist/server'),compatibilityDate:'2026-05-15',compatibilityFlags:['nodejs_compat'],d1Databases:['DB'],inspectorPort:0};
-const mf=new Miniflare({...options,bindings:{XOM_LOCAL_ADMIN:'true'}}),denied=new Miniflare({...options,bindings:{XOM_LOCAL_ADMIN:'false'}});
+const workerOptions={...options,bindings:{XOM_LOCAL_ADMIN:'true'},d1Databases:{DB:'chat-admission-shared'}};
+const mf=new Miniflare({workers:[{...workerOptions,name:'chat-primary'},{...workerOptions,name:'chat-secondary'}]}),denied=new Miniflare({...options,bindings:{XOM_LOCAL_ADMIN:'false'}});
+const setTime=async now=>{await mf.dispatchFetch(`http://localhost/__chat/time?now=${now}`);await secondary.fetch(`http://localhost/__chat/time?now=${now}`);};
 const make=(actorId='an')=>({id:crypto.randomUUID(),actorId,message:'Chào bạn'});
-const post=(body,headers={})=>mf.dispatchFetch('http://localhost/api/living/interact',{method:'POST',headers:{'content-type':'application/json',...headers},body:typeof body==='string'||body instanceof Uint8Array?body:JSON.stringify(body)});
+let secondary;let dispatches=0;
+const post=(body,headers={})=>(secondary&&++dispatches%2?secondary.fetch.bind(secondary):mf.dispatchFetch.bind(mf))('http://localhost/api/living/interact',{method:'POST',headers:{'content-type':'application/json',...headers},body:typeof body==='string'||body instanceof Uint8Array?body:JSON.stringify(body)});
 try{
- const db=await mf.getD1Database('DB');for(const m of readMigrationFiles({migrationsFolder:'drizzle'}))for(const sql of m.sql)await db.prepare(sql).run();
+ secondary=await mf.getWorker('chat-secondary');
+ const db=await mf.getD1Database('DB','chat-primary');for(const m of readMigrationFiles({migrationsFolder:'drizzle'}))for(const sql of m.sql)await db.prepare(sql).run();
  assert.equal((await denied.dispatchFetch('http://localhost/api/living/interact',{method:'POST',body:JSON.stringify(make())})).status,403);
  assert.equal((await mf.dispatchFetch('http://localhost/api/world')).status,200);
  const original=await db.prepare("SELECT * FROM worlds WHERE id='home'").first();
@@ -48,19 +52,38 @@ try{
  const pending=make();assert.equal((await post(pending)).status,429);assert.deepEqual(await gate(),saturated);assert.equal(await history(),saved);
  await db.prepare("UPDATE worlds SET data=json_set(data,'$.paused',1) WHERE id='home'").run();assert.equal((await post(make())).status,409,'Pause precedence remains stable while quota is full');
  await db.prepare("UPDATE worlds SET data=? WHERE id='home'").bind(original.data).run();
- await mf.dispatchFetch(`http://localhost/__chat/time?now=${fixed+CHAT_WINDOW_MS-1}`);assert.equal((await post(pending)).headers.get('retry-after'),'1');
- await mf.dispatchFetch(`http://localhost/__chat/time?now=${fixed+CHAT_WINDOW_MS}`);assert.equal((await post(pending)).status,200);assert.equal(JSON.parse((await gate()).data).count,1);
+ await setTime(fixed+CHAT_WINDOW_MS-1);assert.equal((await post(pending)).headers.get('retry-after'),'1');
+ await setTime(fixed+CHAT_WINDOW_MS);assert.equal((await post(pending)).status,200);assert.equal(JSON.parse((await gate()).data).count,1);
  let rollbackCases=0;
  for(const [name,sql] of [
   ['chat_ignore_exchange',"CREATE TRIGGER chat_ignore_exchange BEFORE INSERT ON visitor_exchanges BEGIN SELECT RAISE(IGNORE); END"],
   ['chat_ignore_counter',"CREATE TRIGGER chat_ignore_counter BEFORE UPDATE ON context_cache WHEN OLD.id='internal:visitor-chat:v1' BEGIN SELECT RAISE(IGNORE); END"],
+  ['chat_delete_counter',"CREATE TRIGGER chat_delete_counter AFTER INSERT ON visitor_exchanges BEGIN DELETE FROM context_cache WHERE id='internal:visitor-chat:v1'; END"],
+  ['chat_rewrite_reply',"CREATE TRIGGER chat_rewrite_reply AFTER INSERT ON visitor_exchanges BEGIN UPDATE visitor_exchanges SET data='{}' WHERE id=NEW.id; END"],
+  ['chat_abort_exchange',"CREATE TRIGGER chat_abort_exchange BEFORE INSERT ON visitor_exchanges BEGIN SELECT RAISE(ABORT,'private fixture detail'); END"],
+  ['chat_decrement_counter',"CREATE TRIGGER chat_decrement_counter AFTER INSERT ON visitor_exchanges BEGIN UPDATE context_cache SET data=json_set(data,'$.count',json_extract(data,'$.count')-1) WHERE id='internal:visitor-chat:v1'; END"],
  ]){
   const next=make(),beforeGate=await gate(),beforeHistory=await history();await db.prepare(sql).run();
   const failed=await post(next);assert.equal(failed.status,503);assert.equal((await failed.json()).error,'Chưa lưu được lời nhắn. Hãy thử lại.');assert.deepEqual(await gate(),beforeGate);assert.equal(await history(),beforeHistory);
   await db.prepare(`DROP TRIGGER ${name}`).run();assert.equal((await post(next)).status,200,'Failed write UUID is immediately retryable');rollbackCases++;
  }
+ const goodGate=await gate();
+ for(const data of [{count:.5,lastId:crypto.randomUUID()},{count:true,lastId:crypto.randomUUID()},{count:5,lastId:crypto.randomUUID(),nonce:crypto.randomUUID(),previousCount:3}]){
+  await db.prepare('UPDATE context_cache SET data=? WHERE id=?').bind(JSON.stringify(data),CHAT_GATE_KEY).run();const badGate=await gate(),beforeHistory=await history();
+  assert.equal((await post(make())).status,503,'Malformed active counter fails closed');assert.deepEqual(await gate(),badGate);assert.equal(await history(),beforeHistory);
+  assert.equal((await post(same)).status,200,'Valid historic UUID does not depend on counter health');
+ }
+ await db.prepare('UPDATE context_cache SET data=? WHERE id=?').bind(JSON.stringify({count:1,lastId:same.id}),CHAT_GATE_KEY).run();
+ assert.equal((await post(make())).status,200,'Prior two-field counter format upgrades without migration');assert.equal(JSON.parse((await gate()).data).count,2);assert.equal(JSON.parse((await gate()).data).previousCount,1);
+ await db.prepare('UPDATE context_cache SET data=?,expires_at=? WHERE id=?').bind(goodGate.data,goodGate.expires_at,CHAT_GATE_KEY).run();
+ const savedSame=await db.prepare('SELECT * FROM visitor_exchanges WHERE id=?').bind(same.id).first();
+ const beforeCorruptGate=await gate();
+ for(const sql of ["UPDATE visitor_exchanges SET data='{}' WHERE id=?","UPDATE visitor_exchanges SET actor_id='chi' WHERE id=?","UPDATE visitor_exchanges SET created_at='2000-01-01T00:00:00Z' WHERE id=?"]){
+  await db.prepare(sql).bind(same.id).run();const corrupted=await history();assert.equal((await post(same)).status,503,'Never ACK an invalid stored response');assert.equal(await history(),corrupted);assert.deepEqual(await gate(),beforeCorruptGate);
+  await db.prepare('UPDATE visitor_exchanges SET data=?,actor_id=?,created_at=? WHERE id=?').bind(savedSame.data,savedSame.actor_id,savedSame.created_at,same.id).run();
+ }
  assert.equal((await db.prepare("SELECT data FROM context_cache WHERE id='unrelated-chat-test'").first()).data,'keep-provider-cache');
  assert.equal(await protectedSnapshot(),unchanged,'World revision, IDs, born, memory, episodes and learned policy unchanged');
- await db.prepare('DROP TABLE context_cache').run();assert.equal((await post(make())).status,503,'Storage failures do not admit unguarded exchanges');assert.equal(await protectedSnapshot(),unchanged);
- console.log(JSON.stringify({suite:'chat-admission-compiled-http',concurrentUnique:60,concurrentDuplicate:16,limit:30,windowMs:60000,atomicRollbackCases:rollbackCases,originOwnerBodyPauseActorGuards:true,retryAfter:true,rejectedUuidReusable:true,historyPreserved:true,productionAccess:false}));
+ await db.prepare('DROP TABLE context_cache').run();assert.equal((await post(same)).status,200,'Historic retry remains available without coordination storage');assert.equal((await post(make())).status,503,'Storage failures do not admit unguarded exchanges');assert.equal(await protectedSnapshot(),unchanged);
+ console.log(JSON.stringify({suite:'chat-admission-compiled-http',concurrentUnique:60,concurrentDuplicate:16,workerIsolates:2,sharedD1:true,limit:30,windowMs:60000,atomicRollbackCases:rollbackCases,originOwnerBodyPauseActorGuards:true,retryAfter:true,rejectedUuidReusable:true,historyPreserved:true,productionAccess:false}));
 }finally{await mf.dispose();await denied.dispose();}

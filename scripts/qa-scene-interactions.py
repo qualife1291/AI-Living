@@ -17,7 +17,7 @@ with sync_playwright() as p:
  b=p.chromium.launch(executable_path='/usr/bin/chromium',headless=True,args=flags)
  try:
   for viewport,w,h in [('desktop',1440,900),('mobile',390,844)]:
-   page=b.new_page(viewport={'width':w,'height':h},is_mobile=w<700,has_touch=True);errors=[];page.on('pageerror',lambda e:errors.append(str(e)))
+   page=b.new_page(viewport={'width':w,'height':h},is_mobile=w<700,has_touch=True);errors=[];page.on('pageerror',lambda e:errors.append(str(e)));page.on('console',lambda m:errors.append(m.text) if m.type=='error' and 'THREE.WebGL' in m.text else None)
    fixture=json.loads(subprocess.check_output(['node','scripts/social-preview-fixture.mjs','--motion'],text=True))
    page.route('**/api/**',lambda r:r.fulfill(status=200,content_type='application/json',body='{"ok":true,"views":1,"duplicate":true}'))
    def world(r):fixture['serverNow']=datetime.datetime.now(datetime.timezone.utc).isoformat();r.fulfill(status=200,content_type='application/json',body=json.dumps(fixture))
@@ -30,7 +30,7 @@ with sync_playwright() as p:
    before=host.get_attribute('data-last-pick');page.mouse.move(w*.55,h*.55);page.mouse.down();page.mouse.move(w*.55+55,h*.55,steps=5);page.mouse.move(w*.55,h*.55,steps=5);page.mouse.up();assert host.get_attribute('data-last-pick')==before
    cdp=page.context.new_cdp_session(page);x,y=w*.5,h*.55;cdp.send('Input.dispatchTouchEvent',{'type':'touchStart','touchPoints':[{'x':x-20,'y':y,'id':1},{'x':x+20,'y':y,'id':2}]});cdp.send('Input.dispatchTouchEvent',{'type':'touchMove','touchPoints':[{'x':x-65,'y':y,'id':1},{'x':x+65,'y':y,'id':2}]});cdp.send('Input.dispatchTouchEvent',{'type':'touchEnd','touchPoints':[]});page.wait_for_timeout(250);assert host.get_attribute('data-selected')=='binh';assert host.get_attribute('data-last-pick')==before
    page.get_by_role('button',name='Theo nhân vật',exact=True).click();page.screenshot(path=str(out/f'city-{viewport}.png'));report.append({'viewport':viewport,'scene':'city','followKeepsSelection':True,'nativeBodyPicking':True,'dragAndPinchDoNotSelect':True,'errors':errors.copy()});assert not errors,errors;page.close()
-   page=b.new_page(viewport={'width':w,'height':h},is_mobile=w<700,has_touch=True);errors=[];page.on('pageerror',lambda e:errors.append(str(e)));page.goto(base+'/studio',wait_until='domcontentloaded');host=page.locator('.studio-canvas[data-ready="true"]');host.wait_for(timeout=90000)
+   page=b.new_page(viewport={'width':w,'height':h},is_mobile=w<700,has_touch=True);errors=[];page.on('pageerror',lambda e:errors.append(str(e)));page.on('console',lambda m:errors.append(m.text) if m.type=='error' and 'THREE.WebGL' in m.text else None);page.goto(base+'/studio',wait_until='domcontentloaded');host=page.locator('.studio-canvas[data-ready="true"]');host.wait_for(timeout=90000)
    for scenario in ['wallet-return','sanitation-gratitude','kitten-care','bakery-courtesy']:
     page.get_by_label('Chọn kịch bản',exact=True).select_option(scenario);page.wait_for_function('(id)=>document.querySelector(".studio-canvas").dataset.scenario===id',arg=scenario)
     focus=page.locator('.studio-person').first;focus.click();page.wait_for_function('JSON.parse(document.querySelector(".studio-canvas").dataset.camera).mode==="actor"');id=data(host,'camera')['focused'];assert_frame(host,[id]);pick(page,host,id)
@@ -39,6 +39,11 @@ with sync_playwright() as p:
     page.get_by_role('button',name='Phân cảnh 5',exact=True).click();page.wait_for_function('document.querySelector(".studio-canvas").dataset.beat==="4"&&JSON.parse(document.querySelector(".studio-canvas").dataset.camera).mode==="script"');assert_frame(host,data(host,'camera-subjects'))
     page.mouse.move(w*.5,h*.5);page.mouse.wheel(0,-650);page.wait_for_timeout(200);page.get_by_role('button',name='Xem lại từ đầu',exact=True).click();page.wait_for_function('document.querySelector(".studio-canvas").dataset.time==="0.000"&&JSON.parse(document.querySelector(".studio-canvas").dataset.camera).mode==="script"');assert_frame(host,data(host,'camera-subjects'))
     page.mouse.wheel(0,300);page.wait_for_timeout(150);page.get_by_role('button',name='Góc quay theo kịch bản',exact=True).click();page.wait_for_function('JSON.parse(document.querySelector(".studio-canvas").dataset.camera).mode==="script"');assert_frame(host,data(host,'camera-subjects'))
+    if scenario=='kitten-care':
+     page.get_by_role('button',name='Theo dõi Bé Miu',exact=True).click();page.wait_for_function('JSON.parse(document.querySelector(".studio-canvas").dataset.camera).focused==="miu"');assert_frame(host,['miu']);pick(page,host,'miu')
+     slider=page.get_by_label('Thời gian kịch bản',exact=True)
+     slider.evaluate("(e)=>{Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,'value').set.call(e,'95');e.dispatchEvent(new Event('input',{bubbles:true}));e.dispatchEvent(new Event('change',{bubbles:true}));}")
+     page.wait_for_function('document.querySelector(".studio-canvas").dataset.time==="95.000"');page.get_by_role('button',name='Theo dõi Bé Miu',exact=True).click();page.wait_for_function('JSON.parse(document.querySelector(".studio-canvas").dataset.camera).focused==="miu"');assert_frame(host,['miu'])
     assert page.evaluate('document.documentElement.scrollWidth<=innerWidth');page.screenshot(path=str(out/f'{scenario}-{viewport}.png'));report.append({'viewport':viewport,'scene':scenario,'clickFocusAndWheel':True,'nativeBodyPicking':True,'shotAfterManualZoom':True,'restartAndResetCamera':True,'framing':data(host,'framing'),'errors':errors.copy()});print('PASS',viewport,scenario,flush=True)
    assert not errors,errors;page.close()
   (out/'metrics.json').write_text(json.dumps({'production':False,'renderer':'Chromium SwiftShader','fixture':'City APIs synthetic; actual compiled renderer and native input','cases':report},indent=2,ensure_ascii=False))

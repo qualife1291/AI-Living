@@ -1,0 +1,57 @@
+{
+  "kind": "graphics-interactions-acceptance-v1",
+  "date": "2026-10-29",
+  "timezone": "Asia/Ho_Chi_Minh",
+  "status": "IN_PROGRESS",
+  "appSource": "c0b51d4de517e026e4b7d4ec744db484bee8f24e",
+  "production": false,
+  "unit": {
+    "total": 79,
+    "passed": 79,
+    "failed": []
+  },
+  "typecheck": "PASS",
+  "lint": "PASS",
+  "assets": "PASS",
+  "exactBuild": "PASS",
+  "compiledChat": "PASS: two Worker isolates, shared D1, 60 unique/16 duplicate/6 rollback",
+  "browser": {
+    "controls": {
+      "cases": 10,
+      "status": "PASS",
+      "catGroundAndCarried": true
+    },
+    "activities": {
+      "cases": 15,
+      "status": "PASS",
+      "allActorAccounting": true,
+      "shaderErrors": 0
+    },
+    "wardrobe": {
+      "cases": 2,
+      "status": "PASS",
+      "previewMatchesCity": true,
+      "saveWhilePaused": true
+    },
+    "studio": {
+      "cases": 8,
+      "shots": 40,
+      "status": "PASS"
+    },
+    "sound": {
+      "scenarios": 4,
+      "decodedVoiceClips": 21,
+      "status": "PASS"
+    },
+    "g0": "RUNNING"
+  },
+  "pending": [
+    "Shared near/crowd jump lift correction: direct motion/crowd/action/phaseB/rig/type/lint pass; not yet compiled/browser accepted.",
+    "Merge latest reviewed observability work; final combined gates, QA branch build/readback and screenshots."
+  ],
+  "limits": [
+    "Loopback fixture/Chromium SwiftShader; not hardware FPS or soak.",
+    "Native Sites and authenticated Cloudflare acceptance unavailable in this session.",
+    "Cosmetic animation/IK is not a physics receipt or training gain."
+  ]
+}

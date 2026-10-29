@@ -58,11 +58,13 @@ cfg.vars = {
   XOM_QA_HOSTNAME: "ai-living-qa.hoanglonglea1mtl.workers.dev",
   XOM_QA_ACCESS_TEAM_DOMAIN: "super-snow-e21e.cloudflareaccess.com",
   XOM_RULE_SCHEDULER: "true",
+  XOM_SYSTEM_LOGS: "true",
 };
 if (cfg.vars.XOM_OWNER_PRIVATE_ORIGIN || cfg.vars.XOM_ADMIN_USER_ID || cfg.vars.XOM_LOCAL_ADMIN === "true")
   throw Error("Unsafe Sites authorization variables must not be used in QA");
 
 // QA only: capture HTTP statuses and uncaught errors. Do not enable on Sites A.
+cfg.version_metadata = { binding: "CF_VERSION_METADATA" };
 cfg.observability = { enabled: true, logs: { invocation_logs: true, head_sampling_rate: 1 } };
 writeFileSync(location, JSON.stringify(cfg, null, 2) + "\n");
 console.log(JSON.stringify({

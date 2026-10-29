@@ -14,7 +14,7 @@ export const PEER_HALF_LIFE_MS=protocol.retention.halfLifeSimulationMs;
 export const PEER_CAPACITY=protocol.retention.maximumPerRecipient;
 export const PEER_TOPICS=['gardening','cooking','repair'] as const;
 export type PeerTopic=typeof PEER_TOPICS[number];
-const time=z.number().finite().nonnegative();
+const time=z.number().finite().nonnegative().max(Number.MAX_SAFE_INTEGER);
 const freeze=<T>(value:T):T=>{if(value&&typeof value==='object'){Object.values(value).forEach(freeze);Object.freeze(value);}return value;};
 const minted=new WeakSet<object>();
 export type PeerProof=Readonly<{
