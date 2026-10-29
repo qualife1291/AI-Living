@@ -25,7 +25,7 @@ QA có DB riêng và không import history Sites A. Không thay owner-private, s
 
 ## Build và deploy
 
-Luồng Builds hiện có chạy install frozen + Access JWT/scheduler tests trước build, rồi configure/deploy. Khi cập nhật trigger phải giữ repository/branch/deploy command, không tạo trigger mới.
+Luồng Builds hiện có chạy install frozen + Access JWT/scheduler/config/log/progress tests và typecheck trước build, rồi configure/deploy. Khi cập nhật trigger phải giữ repository/branch/deploy command, không tạo trigger mới.
 
 ```bash
 npm run install:ci
