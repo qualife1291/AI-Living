@@ -1,12 +1,12 @@
 # H6 — Scenario scale and hierarchical offline models (QA-only, draft)
 
-Status: **draft / not merged / not deployed as a live model**. Owner: H6 agent. Stack: H6 PR #4 targets CI repair PR #3; both require separate review before integrating into `work`. No commits or force-pushes to other agents' branches.
+Status: **merged into work as shadow-only; no live-model deployment or promotion**. H6/CI changes were integrated at `b3881d7`; legacy runtime remains at 41 scenarios. Functional CI and model-quality gates are separate.
 
 ## Why this phase exists
 Baseline at `work` SHA `7dfad9541b67cc0bb891e24b9891419172fd91b7` has **41** learning scenarios, a schema cap of **100**, and contextual per-actor LinUCB. H6 adds **55 human-curated scenarios** across eight skill domains in a **separate shadow catalog of 96 total**, preserving the 41-scenario live registry and all its reward fingerprints. The sandbox trains against the 96-scenario catalog and never overwrites live files. It does not create real `learning_policies` or fabricate experience rows.
 
 ## Isolation
-H6 branch `feat/h6-policy-scale-stacked-20261029`. PR #4 into `test/ci-install-exec-boundary-20261029` so the existing full GitHub quality suite can run with repaired shell permissions. Never merge this draft directly into `work`, `main`, `cloudflare-staging` or `cloudflare-qa` without reconciling both PRs and running checks on the final merge commit. Other agents currently own chat, visuals, H5 peer admission, D1 consistency; H6 does not change those modules. Only a new versioned training scenario catalog, H6-only scripts, H6 workflow and this note are modified; the live data/city/scenarios.json stays byte-for-byte identical.
+H6 branch `feat/h6-policy-scale-stacked-20261029`. PR #4 into `test/ci-install-exec-boundary-20261029` so the existing full GitHub quality suite can run with repaired shell permissions. Future H6 changes require review and checks on the combined source before rollout; runtime activation still requires the promotion gates below. Other agents currently own chat, visuals, H5 peer admission, D1 consistency; H6 does not change those modules. Only a new versioned training scenario catalog, H6-only scripts, H6 workflow and this note are modified; the live data/city/scenarios.json stays byte-for-byte identical.
 
 ## Offline models and experiment
 `scripts/h6-train-and-audit.mjs` trains **two hierarchical-disjoint-LinUCB priors** independently, for `ordinary-v1` and `cold-stress-v1`, using the existing `HierarchyTrainer`. Only verified synthetic **completed plan outcomes** are accepted. Each artifact is SHA-256 checked and includes catalog/scenario signatures and transcript hash. Holdout seeds differ from all training seeds. Strict covariance validation, min multi-actor/multi-seed support, no donor memories or owner IDs, no seeded D1 observations. The candidate's personal sample count must equal its own completed plans.
