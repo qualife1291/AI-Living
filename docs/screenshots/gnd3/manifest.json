@@ -1,0 +1,28 @@
+{
+  "source": "761917d1838663f9fa21b4ed56eb9fb24d566ab8",
+  "production": false,
+  "renderer": "Chromium SwiftShader",
+  "fixture": "real GND2 replay/accounting with synthetic browser transport heads; not durable D1 receipts",
+  "images": [
+    {
+      "file": "authority-desktop.png",
+      "sha256": "52867b4bf645fc85a8e976a37d35d2d6a0d2f753cb232a775274361c51018c72",
+      "bytes": 267462,
+      "viewport": [
+        1280,
+        850
+      ],
+      "purpose": "Actual server-emitted caption; identical line and accepted root poses in two viewers"
+    },
+    {
+      "file": "authority-mobile.png",
+      "sha256": "4d93b3bbc57ea8bbccfbd28c2b93db79f8d26e16e4255486fb250ecb4401d93e",
+      "bytes": 105864,
+      "viewport": [
+        390,
+        844
+      ],
+      "purpose": "Actual server-emitted caption; identical line and accepted root poses in two viewers"
+    }
+  ]
+}

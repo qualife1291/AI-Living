@@ -17,7 +17,7 @@ Planner/rules hoặc local LLM sinh kế hoạch và hội thoại có nguồn r
 | UI/framework | TypeScript5.9.3 strict, React19.2.6, Vinext1.0.0-beta.5/Vite8.0.13; Next/eslint-config-next16.4.1 theo lockfile |
 | 3D | Three.js0.186.1/WebGL2, GLTFLoader, SkeletonUtils, InstancedMesh/LOD; 41 modelKenney +239 Gobkit/KayKit canonical CC0 |
 | API/schema | Worker nodejs_compat, Zod4.6.6; endpoint mutations có origin/schema/body limits và owner guard |
-| Persistence | D1 SQLite, Drizzle0.45.2;21bảng trong db/schema.ts, migration0000–0010 (0004reconciliation); ground0009/0010 local opt-in |
+| Persistence | D1 SQLite, Drizzle0.45.2;23bảng trong db/schema.ts, migration0000–0011 (0004reconciliation); ground0009–0011 local opt-in |
 | AI local | llama.cpp/CPU opt-in; rule fallback, narrative guard, không cần paid API để chạy ứng dụng |
 | Production | Sites project cũ, owner-private; native credential/deploy/readback theo PRODUCTION_RUNBOOK |
 
@@ -31,6 +31,7 @@ Planner/rules hoặc local LLM sinh kế hoạch và hội thoại có nguồn r
 | lib/city/walk-ground.ts, walk-path.ts, walkability.ts, footprints.ts, scenery.ts | Shared geometry và pure A*/cache; WalkDirector giữ frame/collision người/xe/bike9,2unit |
 | lib/living/ground-timeline.ts, ground-store.ts | Ground GND1 local core/static fixed-step, independent session/CAS/receipts; chưa reward/P2P/renderer authority |
 | lib/living/shared-ground{,-store,-view}.ts, city/director-state.ts | GND2 journal replay/all-actor+traffic checkpoint và server-frame sampling; local opt-in, không reward/P2P |
+| lib/living/ground-authority{,-store,-service,-view}.ts | GND3 quan sát physics đã nhận, receipt arrival/presence/co-presence/emitted/heard; commit cùng shared head, không tự ghi memory hoặc học |
 | lib/city/traffic.ts, tag-game.ts, pet-walk.ts | Giao thông/ghép cặp/mục tiêu companion; giữ collision chung |
 | lib/living/engine.ts, social-scheduler.ts, activities.ts | Population/routine/plan5 bước, schedulerNPC20s simulation/pulse, không sinh reward từ activity bị hủy |
 | identity.ts, households.ts, pets.ts | Metadata snapshot additive, ID/history ổn định, household mới tối đa4/người chăm thú có CAS |
@@ -84,4 +85,19 @@ npm run ground:shared -- --action=advance --session=UUID_SESSION --operation=UUI
 
 Sau start, mở đường dẫn local với `?ground=shared` để xem preview. API/GET world query chỉ owner+local-admin+loopback; production owner vẫn bị từ chối. Shared page dùng loop pulse/poll hiện có ở1s, đọc metadata+frame server. Renderer sample theo thời gian đã align với server trừ1,5s playback delay; không Walk/TrafficDirector local, không extrapolate khi thiếu frame, không fallback physics riêng. Roster/body-envelope đổi thì giữ cả khung cũ đến khung kế tiếp. Hai viewer mở lệch giờ/camera/F5 nhận cùng root pose ở cùng thời điểm; render rigs/camera không là authority. Browser QA dùng fixture synthetic trên build mới, D1 được kiểm riêng; ảnh thật ở [desktop](screenshots/gnd2/shared-desktop-preview.png) / [mobile](screenshots/gnd2/shared-mobile-preview.png).
 
-Shared preview chưa phát thoại/script do viewer quyết định; encounter/heard/witnessed và hoàn tất hoạt động là GND3. Receipt luôn không eligible reward/P2P; không đổi learned samples, policy/memory hoặc gán outcome ground vào namespace simulation-plan-time cũ. Migration0010 chưa áp dụng DB người dùng/production; health8probes vẫn không yêu cầu shared tables. Giữ owner-private và local-admin đóng trên Site.
+Shared preview không phát thoại/script do viewer quyết định; GND3 bên dưới bổ sung caption server khi được kích hoạt riêng. Receipt luôn không eligible reward/P2P; không đổi learned samples, policy/memory hoặc gán outcome ground vào namespace simulation-plan-time cũ. Migration0010 chưa áp dụng DB người dùng/production; health8probes vẫn không yêu cầu shared tables. Giữ owner-private và local-admin đóng trên Site.
+
+## Ground GND3 — authority local
+
+[Protocol v1](validation/ground-authority-contract-v1.json) cố định trước triển khai. `ground-authority.ts` chỉ quan sát pose/WalkDirector sau kiểm tra an toàn của GND2, trên toàn bộ243human, không dựa budget72 của renderer. Mapping thời gian `G+(P-S)` được đóng băng khi nhận intent, đồng thời raw active plan/step/location phải khớp; lệch clock không được bù bằng credit. Plan tồn tại lúc start/tân cư là baseline. Plan mới có epoch/SHA/source/window và requested+routed goal; receipt phân biệt đến sau di chuyển với đã ở đó. `presence-completed` cần stationary goal presence liên tục≥38% cửa sổ và cửa sổ đóng đầy đủ, chỉ chứng minh hiện diện mô phỏng. Không suy ra lao động, thu nhập hoặc chữa bệnh; plan thiếu anchor/transit/moving games không được nhận completion ngoài phạm vi.
+
+Co-presence cần≤30unit liên tục3000ms simulation và static swept sightline, chỉ hai người tham gia được nhận nguồn. Lời thoại phải từ LivingTurn mới đã commit, đúng An+resident và hai plan còn hiệu lực. Server chờ mốc turn+120000ms đã map, đủ co-location/goal/window rồi mới phát từng câu12000ms, cách1000ms. Text đang nằm trong plan hoặc câu bị ngắt chưa là đã nghe; chỉ named listener sau toàn bộ cửa sổ hợp lệ có receipt `heard-text-not-witnessed-truth`. Pause không cộng thời lượng. Thay plan/source text/epoch hoặc mất tiếp xúc hủy delivery.
+
+Migration0011 thêm hai bảng authority và immutable batch triggers, không sửa namespace cũ. Activation chỉ trên shared session đã có, expected shared checkpoint+operation UUID; mặc định status chỉ đọc, không bootstrap/reset. Marker shared head và authority head được CAS/postassert trong **cùng D1 batch** với nguồn/frame/receipt GND2; retry không cộng lại, silent ignore hủy cả hai. Khi active, preflight thiếu schema/checkpoint chặn trước ordinary pulse world writes. Chưa active thì0011 là tùy chọn. Reuse pulse hiện có, không cron/daemon mới.
+
+```bash
+npm run ground:authority -- --origin=http://127.0.0.1:PORT
+npm run ground:authority -- --origin=http://127.0.0.1:PORT --action=start --session=UUID_SHARED_SESSION --operation=UUID_OPERATION_MOI --expected-checkpoint=SHA_SHARED_HEAD
+```
+
+Advance tiếp bằng `ground:shared` hoặc pulse có sẵn. API `/api/living/ground/authority` vẫn owner+local-admin+loopback, body≤2KiB; CLI≤32KiB và không tự retry. Shared GET world trả DTO `sharedAuthority` riêng, buộc đúng parent checkpoint/sequence/source/time. Viewer chỉ lấy utterance tại sample time, ưu tiên render hai người tham gia, Talk/Listen chỉ là pose; ACK hiển thị không tạo ký ức viewer. Không TTS hoặc claim nhân vật hiểu/suy nghĩ từ caption. GND3 receipt luôn `eligibleForReward:false`, `eligibleForP2P:false`; H3b/H5 cần protocol/namespace/admission riêng.0011 chưa migrate production hoặc DB người dùng; không gọi local acceptance là rollout.
