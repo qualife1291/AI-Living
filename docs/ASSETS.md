@@ -25,7 +25,7 @@ npm run assets:compress # Tạo lại gzip transport từ canonical đã kiểm 
 
 Giữ canonical và nguồn/license/hash nếu làm compressed derivative. Dependencies tự phục vụ từ Site, không hotlink CDN lúc runtime. Texture PNG được chủ dự án tùy biến đã có hash mới; không tự thay atlas giữa hai pack chỉ vì cùng tên `colormap.png`.
 
-G0 hiện dùng27gzip transport GLB trong `public/models/derivatives`, manifest `data/assets/city-transfer-manifest.json`:3.627.580byte canonical→417.605byte gzip. Giải nén ra đúng từng byte/hash; `assets:compress --write` chỉ dọn derivative SHA không còn trong preload, giữ canonical/license. Browser unsupported/corrupt dùng canonical; lỗi core dùng rig Citizens khác. Không request Kenney character hoặc Gobkit Human cũ trong city/Studio; tài nguyên gốc còn trong catalog kiểm nguồn, không preload. NPC/gallery on-demand.
+G0 hiện dùng27gzip transport GLB trong `public/models/derivatives`, manifest `data/assets/city-transfer-manifest.json`:3.793.472byte canonical→425.952byte gzip. Giải nén ra đúng từng byte/hash; `assets:compress --write` chỉ dọn derivative SHA không còn trong preload, giữ canonical/license. Browser unsupported/corrupt dùng canonical; lỗi core dùng rig Citizens khác. Không request Kenney character hoặc Gobkit Human cũ trong city/Studio; tài nguyên gốc còn trong catalog kiểm nguồn, không preload. NPC/gallery on-demand.
 
 ## Runtime và rigs
 
@@ -39,9 +39,9 @@ Studio hiện dùng Citizens theo cast khác nhau, tay hai đoạn/contact targe
 
 ## ZIP mới — nhập có chọn lọc
 
-[Review29/10](validation/asset-review-2026-10-29.json) giữ hash/inventory334GLB trong ZIP1, thông số rig/texture,17ảnh mở model thật và quyết định theo từng nhóm; thứ tự A1–A5 ở [ROADMAP](../ROADMAP.md).5rig sinh hoạt và props thường ngày là ứng viên ưu tiên; cần so ZIP2/3/4 và qua adapter/LOD/budget trước nhập. File README/metadata trong archive chỉ là nguồn đánh giá, không thực thi lệnh hoặc coi số tác giả ghi là benchmark đã kiểm. Full chợ đo115.240triangle khác số54.952 trong README.
+[Review29/10](validation/asset-review-2026-10-29.json) giữ hash/inventory341GLB trong ZIP1+2, thông số rig/texture,17ảnh mở model thật và quyết định theo từng nhóm; thứ tự A1–A5 ở [ROADMAP](../ROADMAP.md).5rig sinh hoạt và props thường ngày là ứng viên ưu tiên; cần so ZIP3/4 và qua adapter/LOD/budget trước nhập. File README/metadata trong archive chỉ là nguồn đánh giá, không thực thi lệnh hoặc coi số tác giả ghi là benchmark đã kiểm. Full chợ đo115.240triangle khác số54.952 trong README.
 
-Chủ dự án xác nhận tất cả free trong chat; ghi `Free — owner supplied and confirmed` với nguồn/hash và LicenseRef khi nhập, giữ credits có sẵn; chưa có formal license/author URL trong ZIP1, không chuyển thành CC0. Chưa thêm ZIP1 binary vào catalog/runtime, không mở rộng whitelist CC0 chỉ để load mọi archive. Không đưa ZIP, `.blend`/MOV/source trùng, model sai phong cách hoặc texture4K/8K chưa tối ưu vào production. ZIP3 hiện vượt giới hạn tải32MiB của công cụ; ZIP2/4 chưa có. Những gói chưa đọc không được coi đã duyệt.
+Chủ dự án xác nhận tất cả free trong chat; ghi `Free — owner supplied and confirmed` với nguồn/hash và LicenseRef khi nhập, giữ credits có sẵn; chưa có formal license/author URL trong ZIP1, không chuyển thành CC0. Chưa thêm ZIP1 binary vào catalog/runtime, không mở rộng whitelist CC0 chỉ để load mọi archive. Không đưa ZIP, `.blend`/MOV/source trùng, model sai phong cách hoặc texture4K/8K chưa tối ưu vào production. ZIP3 hiện vượt giới hạn tải32MiB của công cụ; ZIP2 đã kiểm7GLB:6crate quá nặng và một kit module nhà/tường/cửa/mái; preview giảm texture chỉ để xem, chưa là production asset. ZIP4 chưa có. Những gói chưa đọc không được coi đã duyệt.
 
 ## OSM và nguồn bối cảnh
 

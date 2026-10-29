@@ -15,7 +15,8 @@ export class StudioAvatar extends RiggedAvatar {
   });
   for(const side of ['left','right']){
    const cloth=new THREE.MeshPhongMaterial({color:shirt,shininess:12}),skin=new THREE.MeshPhongMaterial({color:'#e7c19c',shininess:15});
-   const upper=new THREE.Mesh(new THREE.CapsuleGeometry(.29,1,2,6),cloth),lower=new THREE.Mesh(new THREE.CapsuleGeometry(.23,1,2,6),skin),elbow=new THREE.Mesh(new THREE.SphereGeometry(.27,6,4),cloth),hand=new THREE.Group();
+   const sleeve=new THREE.CapsuleGeometry(.4,1,2,6),shoulder=new THREE.SphereGeometry(.44,6,3).translate(0,.9,0),upperGeometry=mergeGeometries([sleeve,shoulder])!;sleeve.dispose();shoulder.dispose();
+   const upper=new THREE.Mesh(upperGeometry,cloth),lower=new THREE.Mesh(new THREE.CapsuleGeometry(.3,1,2,6),skin),elbow=new THREE.Mesh(new THREE.SphereGeometry(.32,6,4),cloth),hand=new THREE.Group();
    const palm=new THREE.Mesh(new THREE.SphereGeometry(1,8,4),skin);palm.scale.set(.29,.15,.34);hand.add(palm);
    for(let i=0;i<4;i++){const finger=new THREE.Mesh(new THREE.CapsuleGeometry(.055,.22,1,4),skin);finger.position.set((i-1.5)*.13,0,.31);finger.rotation.x=Math.PI/2;hand.add(finger);}
    const thumb=new THREE.Mesh(new THREE.CapsuleGeometry(.075,.18,1,4),skin);thumb.rotation.z=-.6;thumb.position.set(.3,0,.04);hand.add(thumb);
@@ -31,7 +32,7 @@ export class StudioAvatar extends RiggedAvatar {
   const pole=new THREE.Vector3(side==='left'?1:-1,-.75,-.5).applyAxisAngle(new THREE.Vector3(0,1,0),this.group.rotation.y);pole.addScaledVector(direction,-pole.dot(direction)).normalize();
   const elbow=origin.clone().addScaledVector(direction,reach/2).addScaledVector(pole,Math.sqrt(Math.max(0,length*length-reach*reach/4)));
   const segment=(mesh:THREE.Mesh,a:THREE.Vector3,b:THREE.Vector3,radius:number)=>{const start=this.group.worldToLocal(a.clone()),end=this.group.worldToLocal(b.clone()),v=end.clone().sub(start);mesh.position.copy(start).add(end).multiplyScalar(.5);mesh.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),v.clone().normalize());const scale=this.group.scale.x;mesh.scale.set(1/scale,Math.max(.01,a.distanceTo(b)/(1+radius*2)/scale),1/scale);};
-  segment(arm.upper,origin,elbow,.29);segment(arm.lower,elbow,goal,.23);arm.elbow.position.copy(this.group.worldToLocal(elbow.clone()));arm.elbow.scale.setScalar(1/this.group.scale.x);arm.hand.position.copy(this.group.worldToLocal(goal));arm.hand.scale.setScalar(1/this.group.scale.x);arm.hand.rotation.set(0,0,0);this.group.updateMatrixWorld(true);
+  segment(arm.upper,origin,elbow,.4);segment(arm.lower,elbow,goal,.3);arm.elbow.position.copy(this.group.worldToLocal(elbow.clone()));arm.elbow.scale.setScalar(1/this.group.scale.x);arm.hand.position.copy(this.group.worldToLocal(goal));arm.hand.scale.setScalar(1/this.group.scale.x);arm.hand.rotation.set(0,0,0);this.group.updateMatrixWorld(true);
  }
  override poseTimeline(layers:{clip:string;time:number;weight:number}[],position:readonly number[],yaw:number,bend=0){super.poseTimeline(layers,position,yaw,bend);for(const side of ['left','right'])this.placeArm(side,super.hand(side),1);}
  reachTimeline(targets:{right?:readonly number[];left?:readonly number[]},strength=1){for(const side of ['left','right'] as const)if(targets[side])this.placeArm(side,new THREE.Vector3(...targets[side]!),strength);}

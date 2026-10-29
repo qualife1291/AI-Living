@@ -30,9 +30,10 @@ function make(design,index){
  const shape=(geo,b,color,mask,x,y,z,sx=1,sy=1,sz=1,rx=0)=>{geo.rotateX(rx);geo.scale(sx,sy,sz);geo.translate(x,y,z);geo.applyMatrix4(b.matrixWorld);if(geo.index){const g=geo.toNonIndexed();geo.dispose();geo=g;}const n=geo.attributes.position.count,c=new THREE.Color(color),colors=new Float32Array(n*3),indices=new Uint16Array(n*4),weights=new Float32Array(n*4),masks=new Float32Array(n);for(let i=0;i<n;i++){c.toArray(colors,i*3);indices[i*4]=bones.indexOf(b);weights[i*4]=1;masks[i]=mask;}geo.setAttribute('color',new THREE.BufferAttribute(colors,3));geo.setAttribute('skinIndex',new THREE.BufferAttribute(indices,4));geo.setAttribute('skinWeight',new THREE.BufferAttribute(weights,4));geo.setAttribute('_wardrobe',new THREE.BufferAttribute(masks,1));parts.push(geo);};
  const capsule=(b,x,y,z,r,len,color,mask,sx=1,sz=1)=>shape(new THREE.CapsuleGeometry(r,len,2,6),b,color,mask,x,y,z,sx,1,sz);
  const sphere=(b,x,y,z,sx,sy,sz,color,mask=0)=>shape(new THREE.SphereGeometry(1,8,6),b,color,mask,x,y,z,sx,sy,sz);
+ const joint=(b,x,y,z,sx,sy,sz,color,mask)=>shape(new THREE.SphereGeometry(1,6,3),b,color,mask,x,y,z,sx,sy,sz);
  const box=(b,x,y,z,w,h,d,color,mask=0)=>shape(new THREE.BoxGeometry(1,1,1),b,color,mask,x,y,z,w,h,d);
  const build=1+(index%3-1)*.045;
- capsule(spine,0,1,0,1.5,1.4,shirt,1,1.05*build,.58);sphere(hips,0,0,0,1.62*build,.72,.83,trousers,2);
+ capsule(spine,0,1.35,0,1.5,2.8,shirt,1,1.05*build,.58);sphere(hips,0,0,0,1.62*build,.72,.83,trousers,2);
  capsule(neck,0,.25,0,.46,.5,skin,3);
  sphere(head,0,.6,0,1.12,1.42,.94,skin,3);
  for(const sign of [-1,1]){sphere(head,sign*1.1,.45,-.06,.22,.35,.2,skin,3);sphere(head,sign*.4,.8,.84,.23,.25,.13,'#faf5e7');sphere(head,sign*.4,.8,.97,.105,.15,.06,'#273740');box(head,sign*.4,1.2,.86,.48,.1,.08,hairColor);}
@@ -43,7 +44,7 @@ function make(design,index){
  if(hair==='side')sphere(head,-.5,1.6,.52,.8,.44,.54,hairColor);
  if(accessory==='glasses'){for(const sign of [-1,1]){shape(new THREE.TorusGeometry(.32,.045,3,8),head,'#39484e',0,sign*.4,.81,1.025,1,1,1);box(head,sign*.84,.83,.66,.07,.07,.6,'#39484e');}box(head,0,.83,1.03,.2,.06,.06,'#39484e');}
  if(accessory==='cap'){sphere(head,0,1.85,-.05,1.21,.47,1.03,shirt);box(head,0,1.7,.91,1.7,.11,.65,shirt);}
- for(const side of ['Left','Right']){const a=map.get(side+'Arm'),f=map.get(side+'ForeArm'),h=map.get(side+'Hand'),l=map.get(side+'UpLeg'),k=map.get(side+'Leg'),foot=map.get(side+'Foot');capsule(a,0,-1.2,0,.49,1.65,shirt,1,1,.9);capsule(f,0,-1.08,0,.36,1.65,skin,3);sphere(h,0,-.32,.05,.43,.62,.3,skin,3);capsule(l,0,-1.55,0,.63,2.25,trousers,2,1,.9);capsule(k,0,-1.55,0,.53,2.25,trousers,2,1,.95);box(foot,0,-.55,.36,1.15,.72,1.85,'#35474b');box(foot,0,-.93,.36,1.2,.15,1.9,'#d8d8cb');}
+ for(const side of ['Left','Right']){const a=map.get(side+'Arm'),f=map.get(side+'ForeArm'),h=map.get(side+'Hand'),l=map.get(side+'UpLeg'),k=map.get(side+'Leg'),foot=map.get(side+'Foot');joint(a,0,0,0,.5,.52,.46,shirt,1);capsule(a,0,-1.2,0,.49,1.65,shirt,1,1,.9);joint(f,0,0,0,.37,.38,.35,skin,3);capsule(f,0,-1.08,0,.36,1.65,skin,3);sphere(h,0,-.32,.05,.43,.62,.3,skin,3);capsule(l,0,-1.55,0,.63,2.25,trousers,2,1,.9);joint(k,0,0,0,.55,.56,.53,trousers,2);capsule(k,0,-1.55,0,.53,2.25,trousers,2,1,.95);joint(foot,0,.05,0,.44,.48,.43,trousers,2);box(foot,0,-.55,.36,1.15,.72,1.85,'#35474b');box(foot,0,-.93,.36,1.2,.15,1.9,'#d8d8cb');}
  if(outfit==='jacket'||outfit==='vest'||outfit==='coat'){const length=outfit==='coat'?4.1:2.6;box(spine,0,.6,-.83,2.7*build,length,.14,shirt,1);for(const sign of [-1,1])box(spine,sign*.65,.65,.85,.66,length,.15,shirt,1);box(spine,0,1.3,.9,.42,1.45,.08,'#e9e3cf');}
  if(outfit==='apron'){box(spine,0,.6,.91,2.3,3.5,.13,'#e7d8b6');box(spine,0,-.15,1.01,1.05,.7,.05,'#c4b99d');}
  for(const y of [.2,.8,1.4])sphere(spine,.08,y,.94,.065,.065,.05,'#e9d8b4');

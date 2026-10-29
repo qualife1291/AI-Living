@@ -374,16 +374,12 @@
       "reason": "Attached Sediment file exceeds32MiB transfer limit; need downloadable Drive link"
     },
     {
-      "name": "2.zip",
-      "status": "not-provided"
-    },
-    {
       "name": "4.zip",
       "status": "not-provided"
     }
   ],
   "implementationOrder": [
-    "A1 combine inventories/dedup/style selection across all supplied ZIPs; retain only approved canonical+dependencies+provenance",
+    "A1 inventories ZIP1+2 complete:341GLB,7rigs; compare ZIP3/4 before common final style/dedup/import selection",
     "A2 character adapter/normalization/LOD and city+Studio regression on isolated preview",
     "A3 selected ordinary props/palette and semantic bindings; no gameplay effect claimed from visuals",
     "A4 modular vegetation/indoor/market assets in existing dependent phases, preserving colliders and ownership journals",
@@ -11659,5 +11655,867 @@
         }
       ]
     }
-  ]
+  ],
+  "zip2Review": {
+    "name": "2.zip",
+    "source": "https://drive.google.com/file/d/1VjJegTYYRxmV-o1Okf78JPc7qCIsKIjQ/view",
+    "bytes": 1030419882,
+    "sha256": "307c567b5981eceabd89dbf2defccd47f2b6843b35f8d58652249dede91fb2a0",
+    "payloads": 2,
+    "models": 7,
+    "skinnedHumans": 0,
+    "binaryAssetsImported": 0,
+    "allGLBsMetadataHashCRCRead": true,
+    "duplicatesAgainstZip1": [],
+    "textureDedup": {
+      "references": 87,
+      "unique": 86,
+      "duplicateBytes": 42083983
+    },
+    "houseDecodedRGBABytesBeforeMipmaps": 2063597568,
+    "housePreview": {
+      "bytes": 19365636,
+      "sha256": "c79efce3e545c972b6143f1c17689c0d3cbb4a5308a24d254274ccc794b4de5f",
+      "texturesMax512": true,
+      "geometryUnchanged": true,
+      "runtimeImported": false,
+      "normalRenormalizationAndQualityNotCertified": true,
+      "scope": "All55900 triangles/materials/UVs kept, each texture resized to≤512px solely for quarantined inspection; not a certified production derivative",
+      "browser": {
+        "stats": [
+          {
+            "label": "ZIP2 house — review texture512 derivative",
+            "size": [
+              153.14404311686414,
+              20.81425952911377,
+              323.98938058050214
+            ],
+            "clips": 0,
+            "drawCalls": 46,
+            "triangles": 55900,
+            "textures": 70
+          }
+        ],
+        "errors": [],
+        "scope": "quarantined local GLTFLoader PBR; SwiftShader, no runtime import"
+      },
+      "screenshot": "docs/screenshots/asset-review/zip-2-house-preview.png"
+    },
+    "decisions": [
+      {
+        "entry": "free_stylized_crates_set.zip",
+        "decision": "reject-raw-do-not-store",
+        "reason": "Six static crates1496932–1500002 triangles and3×4096px maps each. No new gameplay value over existing light instanced crates. Future props need authored low-poly/retopology+bake; do not add these six binaries to repo."
+      },
+      {
+        "entry": "houseshop_mod_02.glb",
+        "decision": "conditional-future-modular-interior-exterior-kit",
+        "reason": "This is a laid-out kit of separate roof/wall/door/floor/beam modules, not a completed shop.55900 triangles,46primitives/23materials,69maps(51×2K+18×4K),1968MiB RGBA before mipmaps. A≤512 review derivative is19.37MB, showing most raw weight is texture.",
+        "gates": [
+          "Compare future ZIP3/4 style; needs a wooden/rural setting, not default modern city replacement",
+          "Normalize per-module units/origin/bounds, assemble doors/entrances and occupancy/colliders explicitly",
+          "Remove repeated maps/metadata, atlas compatible materials and bake/reencode normal/ORM in correct color space; certify visual quality",
+          "Generate geometry/material LOD/culling per module, demand-load only; no612MB monolithic preload",
+          "Actual desktop/mobile screenshots and unchanged frame/drawcall/triangle/memory budgets before runtime admission"
+        ]
+      }
+    ],
+    "inventory": [
+      {
+        "path": "1_057cc9b7f2d426aaad4165f869d49252.glb",
+        "bytes": 91468564,
+        "sha256": "ea53f1435ae2a6955c1848373906e3bd9517e382b98ce494f9e5b1e7e71c8af7",
+        "triangles": 1499964,
+        "primitives": 1,
+        "materials": 1,
+        "skins": [],
+        "animations": [],
+        "textures": [
+          {
+            "bytes": 9664691,
+            "dimensions": [
+              4096,
+              4096
+            ],
+            "sha256": "c3af289579bdb793170d66265d08e7140866e42f534f07f820ce191c9d1404d6"
+          },
+          {
+            "bytes": 20552648,
+            "dimensions": [
+              4096,
+              4096
+            ],
+            "sha256": "18938510268b2afb64b9acfd55cd8c748a2c31a27be05d710c27988cff29579a"
+          },
+          {
+            "bytes": 15511507,
+            "dimensions": [
+              4096,
+              4096
+            ],
+            "sha256": "9178139cf4522a7ecbb1db51b8cdb8a28146af849777961090c1bc0ebf80319a"
+          }
+        ],
+        "requiredExtensions": [],
+        "externalDependencies": []
+      },
+      {
+        "path": "2_7923d303762284fca8ecd13f89e4770c.glb",
+        "bytes": 91500128,
+        "sha256": "e9410914f3bd86bdbf24a32b701b8a1cc4431e8c156736ec500265e8c8b5c58e",
+        "triangles": 1500002,
+        "primitives": 1,
+        "materials": 1,
+        "skins": [],
+        "animations": [],
+        "textures": [
+          {
+            "bytes": 10495166,
+            "dimensions": [
+              4096,
+              4096
+            ],
+            "sha256": "7f036b044be2b32ee80b6c5a7de7d67cf8abf240fc2c45320939ecb6b9c09337"
+          },
+          {
+            "bytes": 20629738,
+            "dimensions": [
+              4096,
+              4096
+            ],
+            "sha256": "86292a577902f9741b72af53b3b3a6f0f0d19f1f8fe92207cf4fd776b55af606"
+          },
+          {
+            "bytes": 14879751,
+            "dimensions": [
+              4096,
+              4096
+            ],
+            "sha256": "7cffbf9658cb3c12c980eba7b835b7ae5b599d50610b63d2c27bb2f41296f41c"
+          }
+        ],
+        "requiredExtensions": [],
+        "externalDependencies": []
+      },
+      {
+        "path": "3_e09806fba8f1e5c2c9bde29c45b587e8.glb",
+        "bytes": 92770868,
+        "sha256": "e2c5c39fe02b6831a4326ecc3c899eb25c0a670c602f38b13862c455fd0f31a0",
+        "triangles": 1500000,
+        "primitives": 1,
+        "materials": 1,
+        "skins": [],
+        "animations": [],
+        "textures": [
+          {
+            "bytes": 10707525,
+            "dimensions": [
+              4096,
+              4096
+            ],
+            "sha256": "72dc60fdb4efc6c965e7575aa34aa8d4cd12450eec91e2dd44e6b5ee7aa2ca6a"
+          },
+          {
+            "bytes": 21911423,
+            "dimensions": [
+              4096,
+              4096
+            ],
+            "sha256": "77187641c0f5173e6dfc5d18b12ff1f1eb6fc9bff97696c9d205fffd1078d2e6"
+          },
+          {
+            "bytes": 14504756,
+            "dimensions": [
+              4096,
+              4096
+            ],
+            "sha256": "7f6002d6418b70efc1947acb474516cdcde9c3938069707cde663acbd38b2d0e"
+          }
+        ],
+        "requiredExtensions": [],
+        "externalDependencies": []
+      },
+      {
+        "path": "4_224e577d375d0a6246c2eca596a115d8.glb",
+        "bytes": 82346176,
+        "sha256": "5e92e57755e67d19286f45500814a4b64e8371465c45344ada12a9902a331f24",
+        "triangles": 1499116,
+        "primitives": 1,
+        "materials": 1,
+        "skins": [],
+        "animations": [],
+        "textures": [
+          {
+            "bytes": 7511309,
+            "dimensions": [
+              4096,
+              4096
+            ],
+            "sha256": "bbf67c9c8b29396c4132f4d38f1579525993c64d753d63592fc14c5addd98f9b"
+          },
+          {
+            "bytes": 18974823,
+            "dimensions": [
+              4096,
+              4096
+            ],
+            "sha256": "c37b41022817acc0c41eece5e100f29eae83c05e3f867b97eba6ab1003a45be4"
+          },
+          {
+            "bytes": 10378052,
+            "dimensions": [
+              4096,
+              4096
+            ],
+            "sha256": "270e6db7aed3919642fe907a9415849133c31c317e6af37d2e39f9897faabaae"
+          }
+        ],
+        "requiredExtensions": [],
+        "externalDependencies": []
+      },
+      {
+        "path": "5_53aef22f087790fd4049589f2e3b0498.glb",
+        "bytes": 93622276,
+        "sha256": "8973749ceb45b6df4b4be64c36bf85165b33b98860ee3c115dc32e5b0298fcbb",
+        "triangles": 1496932,
+        "primitives": 1,
+        "materials": 1,
+        "skins": [],
+        "animations": [],
+        "textures": [
+          {
+            "bytes": 10112353,
+            "dimensions": [
+              4096,
+              4096
+            ],
+            "sha256": "b924defee67afc42b3ea9958650bc095a4be124534177018c61d6a7d69a9e455"
+          },
+          {
+            "bytes": 21255444,
+            "dimensions": [
+              4096,
+              4096
+            ],
+            "sha256": "df1d8249ec9011343dca069807d71cf14cd57bff4403fae2268b0ad091116723"
+          },
+          {
+            "bytes": 16360804,
+            "dimensions": [
+              4096,
+              4096
+            ],
+            "sha256": "6f20c8255d4129f08b3c403c9175b04f9f299f09caa72e3fcd616d1dd306bc4d"
+          }
+        ],
+        "requiredExtensions": [],
+        "externalDependencies": []
+      },
+      {
+        "path": "6_1a9ad01f835d57c3084c66ba1ffc7d9a.glb",
+        "bytes": 88183316,
+        "sha256": "6f9a35b3cc8f31b07cb5e6d16e59321c803038e6682d7ee00869cd298c4f0d25",
+        "triangles": 1500000,
+        "primitives": 1,
+        "materials": 1,
+        "skins": [],
+        "animations": [],
+        "textures": [
+          {
+            "bytes": 8902687,
+            "dimensions": [
+              4096,
+              4096
+            ],
+            "sha256": "2680d03d9b070fc7fd3b1e9298f0e89db7316c53b36e3c5e2ef43259b7e85dea"
+          },
+          {
+            "bytes": 20605887,
+            "dimensions": [
+              4096,
+              4096
+            ],
+            "sha256": "be9275b2ce386ae4d4a71b239037bba5804e64782788f855714650d1fc68f50b"
+          },
+          {
+            "bytes": 12960892,
+            "dimensions": [
+              4096,
+              4096
+            ],
+            "sha256": "d3e912b51a2f2e5fb48c3bd2598c90642e8a6fce91a5edad42e6b0dc07d55db6"
+          }
+        ],
+        "requiredExtensions": [],
+        "externalDependencies": []
+      },
+      {
+        "path": "2/houseshop_mod_02.glb",
+        "bytes": 612136260,
+        "sha256": "285413adf86cf2204447de70fc874ece5cc7fc40cf769502576457c74c45d297",
+        "triangles": 55900,
+        "primitives": 46,
+        "materials": 23,
+        "skins": [],
+        "animations": [],
+        "textures": [
+          {
+            "bytes": 38402,
+            "dimensions": [
+              2048,
+              2048
+            ],
+            "sha256": "973bb250e81243fbad29e0e6b6bb5e38d842ea09d8bd167c4ea6489d5c75692e"
+          },
+          {
+            "bytes": 3989866,
+            "dimensions": [
+              2048,
+              2048
+            ],
+            "sha256": "09ac07baafbffb69f3fa831653a4c1673fe00d455ee1d01bc3718931c4d96f55"
+          },
+          {
+            "bytes": 2304696,
+            "dimensions": [
+              2048,
+              2048
+            ],
+            "sha256": "fc468616fb567d5bbdee6a7c629b467e58013c89817f3f46a5f6ef74578d72ea"
+          },
+          {
+            "bytes": 38617,
+            "dimensions": [
+              2048,
+              2048
+            ],
+            "sha256": "690db53c9a975cd2dbfc55048527dfe6b1271754f5e2ed3ed1b6e86a676bf81e"
+          },
+          {
+            "bytes": 4027435,
+            "dimensions": [
+              2048,
+              2048
+            ],
+            "sha256": "ea2862241a940523397effc2c0da06ff1ef7ab0b29ca3ac54b12b0b8a827649c"
+          },
+          {
+            "bytes": 2304629,
+            "dimensions": [
+              2048,
+              2048
+            ],
+            "sha256": "59bf6d7e887945a5c376ff7565acbe0db4050357202343934ac7399a4dc6422e"
+          },
+          {
+            "bytes": 5046433,
+            "dimensions": [
+              2048,
+              2048
+            ],
+            "sha256": "3f98c9c9695fc21ee58d056f9d6f06e379ac7313242749087040b9f0eef2997c"
+          },
+          {
+            "bytes": 4447401,
+            "dimensions": [
+              2048,
+              2048
+            ],
+            "sha256": "93cfa8c6aaafff82ee2ae7612ec27ec175ed5a94424d80ffbd08caa8387efc32"
+          },
+          {
+            "bytes": 4153913,
+            "dimensions": [
+              2048,
+              2048
+            ],
+            "sha256": "67983ff916460f44c3d86f17b7a1b16c3251e6dc1ddb42b59d369c4296633077"
+          },
+          {
+            "bytes": 3164044,
+            "dimensions": [
+              2048,
+              2048
+            ],
+            "sha256": "e5aa5a67a17502ce2c9c6e9eb1c50262742de8ed21af6b8db9b0efde03df91e9"
+          },
+          {
+            "bytes": 3643601,
+            "dimensions": [
+              2048,
+              2048
+            ],
+            "sha256": "ecb52de4846cad78058bb97e747bc4c3ecd63fbede482dcf897084c159d620c1"
+          },
+          {
+            "bytes": 2804315,
+            "dimensions": [
+              2048,
+              2048
+            ],
+            "sha256": "4e0eaaaa86d9d10fac160ff6fe12ba12e5d24e3203c7307f24da9fbc7f531c13"
+          },
+          {
+            "bytes": 3349392,
+            "dimensions": [
+              2048,
+              2048
+            ],
+            "sha256": "a4c6169d0aeed442db2eca71dae48dfdb9a2132d8aa52d4f54705fd97ac5661a"
+          },
+          {
+            "bytes": 3650713,
+            "dimensions": [
+              2048,
+              2048
+            ],
+            "sha256": "f8bd3e075cf82b254ad5ddbef4604acf9ffc81b1c243b09fd20465dd69bd0268"
+          },
+          {
+            "bytes": 2837310,
+            "dimensions": [
+              2048,
+              2048
+            ],
+            "sha256": "a51dd7bb9e6488a35e4b73814d036a32ba4047027290d1afdf10de9a4faacebc"
+          },
+          {
+            "bytes": 2066057,
+            "dimensions": [
+              2048,
+              2048
+            ],
+            "sha256": "092bd535742d6fd21a3acd05fda80a38eb6869688e4f1afa7f68e87588e5c5dd"
+          },
+          {
+            "bytes": 2115852,
+            "dimensions": [
+              2048,
+              2048
+            ],
+            "sha256": "08cfff9230b2f0f76e1790554aa6e56fcb9b5d9e767672859eb9b9ad7849b07f"
+          },
+          {
+            "bytes": 1773712,
+            "dimensions": [
+              2048,
+              2048
+            ],
+            "sha256": "16ab609b2383899380481adf9adbe9f076782ef708ddda629aa786ed78936966"
+          },
+          {
+            "bytes": 3350578,
+            "dimensions": [
+              2048,
+              2048
+            ],
+            "sha256": "2e9729f6fcc039346e9837eb7e8cb1a73aaf6ef951ab1dc1a4cc5934ff3ab044"
+          },
+          {
+            "bytes": 3261699,
+            "dimensions": [
+              2048,
+              2048
+            ],
+            "sha256": "9517459a7650161787c74798f773ec756586585a1d72cd6cc95345923e42cf73"
+          },
+          {
+            "bytes": 2632936,
+            "dimensions": [
+              2048,
+              2048
+            ],
+            "sha256": "11d3239c8cc8f28b96a36b2409857bb69ee852acc22d5cd6e64d2f2d5ec78003"
+          },
+          {
+            "bytes": 3138316,
+            "dimensions": [
+              2048,
+              2048
+            ],
+            "sha256": "9438ffb1a317d59c7754281bba9f6518eb9ed34de01910400414af3c3b051055"
+          },
+          {
+            "bytes": 3562907,
+            "dimensions": [
+              2048,
+              2048
+            ],
+            "sha256": "34035b04a80220e042199392a39b7bdbaf1c8b4952b46f5412b02317d4a3587e"
+          },
+          {
+            "bytes": 2740485,
+            "dimensions": [
+              2048,
+              2048
+            ],
+            "sha256": "fbd2c58715fcbaec629ccba246a794942fc67fa5b4c07af218867f4984b03a4c"
+          },
+          {
+            "bytes": 3383346,
+            "dimensions": [
+              2048,
+              2048
+            ],
+            "sha256": "ca34706c6893366746f907df358c276c74f2c4564dde2bbb74b53cf5022d7f4b"
+          },
+          {
+            "bytes": 3737335,
+            "dimensions": [
+              2048,
+              2048
+            ],
+            "sha256": "6542939dfc324a27913acec041774ef32d390907c3c588ff455501119f788f6e"
+          },
+          {
+            "bytes": 2870527,
+            "dimensions": [
+              2048,
+              2048
+            ],
+            "sha256": "8e912623e477932ee585609bfa9c73b0e559e586bd41245cdf1dbcb6d2d3773f"
+          },
+          {
+            "bytes": 3343945,
+            "dimensions": [
+              2048,
+              2048
+            ],
+            "sha256": "389fa09cc1443455de74ac82bffeead6c4ecc93d10530253ef78b594d0ddca6d"
+          },
+          {
+            "bytes": 3321965,
+            "dimensions": [
+              2048,
+              2048
+            ],
+            "sha256": "e1b7aa00439064cf57fb6634c2187a627eadc2287857a49d203468d6ce29b73a"
+          },
+          {
+            "bytes": 2688740,
+            "dimensions": [
+              2048,
+              2048
+            ],
+            "sha256": "872a466699d94fa99042e8d0dc479c03818b8e1e4001394fbf82ed825ebec274"
+          },
+          {
+            "bytes": 3371461,
+            "dimensions": [
+              2048,
+              2048
+            ],
+            "sha256": "b661e8691e28ece51c35fc715124c4efc61ab872086f4f019db9982d2f0bdd63"
+          },
+          {
+            "bytes": 3296532,
+            "dimensions": [
+              2048,
+              2048
+            ],
+            "sha256": "0757bf56f6a064286eee3b7b7e3670b80d30fb6e9d6d1b391a915f3df964ea9e"
+          },
+          {
+            "bytes": 2682914,
+            "dimensions": [
+              2048,
+              2048
+            ],
+            "sha256": "a45c10336972ba5e57258acb217b723f0ea0731cda1ba47b47b573d8c1d5556b"
+          },
+          {
+            "bytes": 3348127,
+            "dimensions": [
+              2048,
+              2048
+            ],
+            "sha256": "7a613816571087346b9a1b3ea796ec83d4ae5b3240dd78e306c599fa63db16c7"
+          },
+          {
+            "bytes": 3319310,
+            "dimensions": [
+              2048,
+              2048
+            ],
+            "sha256": "b957ef967e01e9f19e4a9a323730a8b0c968cadcf3b087a2d689c7571d98bc91"
+          },
+          {
+            "bytes": 2669008,
+            "dimensions": [
+              2048,
+              2048
+            ],
+            "sha256": "b9cf82afa200b78f12436344e489af011b022646fc1b53fd78a436264935dd61"
+          },
+          {
+            "bytes": 2086240,
+            "dimensions": [
+              2048,
+              2048
+            ],
+            "sha256": "658f7eb3eaa65b69f8e1b604072074877617ae690dcb509ee196fe0c0af2bfd1"
+          },
+          {
+            "bytes": 1982051,
+            "dimensions": [
+              2048,
+              2048
+            ],
+            "sha256": "2594be0e16ee8199a00d506da4ced103333689136c9fc3a00622bfcc97db7990"
+          },
+          {
+            "bytes": 1686802,
+            "dimensions": [
+              2048,
+              2048
+            ],
+            "sha256": "6df030f33174fc3fb1dddf58c6e29ca87200d7cad33fb57d5a3f0a20d8e0d44b"
+          },
+          {
+            "bytes": 6382476,
+            "dimensions": [
+              2048,
+              2048
+            ],
+            "sha256": "8816a17514f3464aa3c6189252250f0742f2b7c6bcb648e08e771a20c1873751"
+          },
+          {
+            "bytes": 5168170,
+            "dimensions": [
+              2048,
+              2048
+            ],
+            "sha256": "76b2a0db53df9461891fa1c5593358ba0502d1a326728cdb12a4dbc93951f6d4"
+          },
+          {
+            "bytes": 4398255,
+            "dimensions": [
+              2048,
+              2048
+            ],
+            "sha256": "1a6b2e6dabf7bb83a1bc3fa9bce1dcc39c8ac430854f1affb8d5d02a829a1781"
+          },
+          {
+            "bytes": 99612,
+            "dimensions": [
+              2048,
+              2048
+            ],
+            "sha256": "86a152120557768dba0598ce842f4612d7195b372648e5201908c622fd18a0ae"
+          },
+          {
+            "bytes": 5730476,
+            "dimensions": [
+              2048,
+              2048
+            ],
+            "sha256": "4c48b9d5b9bb4ae6f10b9d9c287d0d2f2477ee711c4291ef6b00f3f36b55b519"
+          },
+          {
+            "bytes": 61974,
+            "dimensions": [
+              2048,
+              2048
+            ],
+            "sha256": "0988baf7ff7fe23a51d48491d8e498691905e932bd9605f596c1c25c473f10f7"
+          },
+          {
+            "bytes": 99711,
+            "dimensions": [
+              2048,
+              2048
+            ],
+            "sha256": "e0535a9133afa1092fa32509fbd6b08707b48213530645a757592adad727ff29"
+          },
+          {
+            "bytes": 5726225,
+            "dimensions": [
+              2048,
+              2048
+            ],
+            "sha256": "43f081ffb02d9c24962c801271fe240c796bbb9937e2aa8527877bcf1edccebc"
+          },
+          {
+            "bytes": 61965,
+            "dimensions": [
+              2048,
+              2048
+            ],
+            "sha256": "5537cff17723a9b08f20c07c7c3889fac65ad67f8bbb039783e554242dc60c94"
+          },
+          {
+            "bytes": 16359363,
+            "dimensions": [
+              4096,
+              4096
+            ],
+            "sha256": "c0551586c48052799f57929e4ddee5e071876c419beaf3e7f9f34f99ea8ded86"
+          },
+          {
+            "bytes": 19907391,
+            "dimensions": [
+              4096,
+              4096
+            ],
+            "sha256": "2814d976c4822ef1dd6fd986333b833a809ed934d064fa667c2c0f4d1ebcadb9"
+          },
+          {
+            "bytes": 11774498,
+            "dimensions": [
+              4096,
+              4096
+            ],
+            "sha256": "64b6593391617972acffa0cd551f6548b31cc3988a3b6c8525771e9c18727816"
+          },
+          {
+            "bytes": 16508085,
+            "dimensions": [
+              4096,
+              4096
+            ],
+            "sha256": "b430b941b23ff4e3e0d660a871e98503d62a65b18790dab0257566c9103b4b1b"
+          },
+          {
+            "bytes": 18974803,
+            "dimensions": [
+              4096,
+              4096
+            ],
+            "sha256": "ed79fe40b44c607dd400dd6678d6e6909a94693979de7614153ea2aed8dfdfac"
+          },
+          {
+            "bytes": 11258568,
+            "dimensions": [
+              4096,
+              4096
+            ],
+            "sha256": "6b6c4ba5ca765bfc3526ad432d65b5491f124252037d97effb9af0c21760af8b"
+          },
+          {
+            "bytes": 6371071,
+            "dimensions": [
+              2048,
+              2048
+            ],
+            "sha256": "74c5702b0699a768b109439d192dc86738e7fab1b9264028c491fd925e9ee386"
+          },
+          {
+            "bytes": 5210508,
+            "dimensions": [
+              2048,
+              2048
+            ],
+            "sha256": "4d464054a877fa000d0b81fb308020d34cc50b1ca380f557f32e523e51239c4b"
+          },
+          {
+            "bytes": 4423393,
+            "dimensions": [
+              2048,
+              2048
+            ],
+            "sha256": "a9486b6505d2d8724db22e379e75bdbaa8fa7d1c1a3c0252a81bceb21776f483"
+          },
+          {
+            "bytes": 42089307,
+            "dimensions": [
+              4096,
+              4096
+            ],
+            "sha256": "b6b5d548c1bd4e07d4f1508b238ddbf59ec6fc7eaaf1416dc6c14b7b72bf1de3"
+          },
+          {
+            "bytes": 26613936,
+            "dimensions": [
+              4096,
+              4096
+            ],
+            "sha256": "f33b3e047f4054bd1b163b3cea2829c1a5f0e0210930cbcc3a6f7d845cb68da4"
+          },
+          {
+            "bytes": 20423465,
+            "dimensions": [
+              4096,
+              4096
+            ],
+            "sha256": "6ee8c7fc40822f2231d810ee21c3715a48982f04ccc57fec07a46909fad6550a"
+          },
+          {
+            "bytes": 42092908,
+            "dimensions": [
+              4096,
+              4096
+            ],
+            "sha256": "a92da1580a2a6f703be1205a4a2b869f27b11cb7b749d638f7ca61cc73d378b8"
+          },
+          {
+            "bytes": 26236949,
+            "dimensions": [
+              4096,
+              4096
+            ],
+            "sha256": "58838ac74f76f0ae6f8fbc02af7284f548819913bd8bab61ae2bac9985090cfe"
+          },
+          {
+            "bytes": 20437222,
+            "dimensions": [
+              4096,
+              4096
+            ],
+            "sha256": "5b2585a12fe86a2714f2125a53599fb47aef8a05f0648da167ad6f46e10129ef"
+          },
+          {
+            "bytes": 42083983,
+            "dimensions": [
+              4096,
+              4096
+            ],
+            "sha256": "02947103922e0b5a26ce52eb3137d3937c2b1be713ee00e9b7a5343caa862f61"
+          },
+          {
+            "bytes": 26726125,
+            "dimensions": [
+              4096,
+              4096
+            ],
+            "sha256": "a982b7dcb4144591604f254668fe11fc403cb3958442c82c2fc52abc862039f6"
+          },
+          {
+            "bytes": 20492923,
+            "dimensions": [
+              4096,
+              4096
+            ],
+            "sha256": "185df418f13d70ddd8f9d2b5c87656cd43f8d2474734b8a20ea8116fc7467eba"
+          },
+          {
+            "bytes": 42083983,
+            "dimensions": [
+              4096,
+              4096
+            ],
+            "sha256": "02947103922e0b5a26ce52eb3137d3937c2b1be713ee00e9b7a5343caa862f61"
+          },
+          {
+            "bytes": 26594015,
+            "dimensions": [
+              4096,
+              4096
+            ],
+            "sha256": "7fa88a342a0985e88eaa5517d3b9f75c7f7ff62048bb3c2d9af33736cb85634c"
+          },
+          {
+            "bytes": 20492592,
+            "dimensions": [
+              4096,
+              4096
+            ],
+            "sha256": "5ebde85dc1d1ba3303f582d00285bb4ecc92c3866fdcc9dc241e544ed0155674"
+          }
+        ],
+        "requiredExtensions": [],
+        "externalDependencies": []
+      }
+    ]
+  },
+  "totalModelsReviewed": 341
 }
