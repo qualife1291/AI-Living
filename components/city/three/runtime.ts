@@ -497,7 +497,7 @@ export function createCity(
       venueLabels.push({ sprite: sign, width: 112 });
     }
   }
-  for(const t of sceneryTrees){if(neighborhood.trees)cylinder(t.x,10,t.z,2.6,20,'#9c8769');else tree(t.x,t.z,t.seed);}
+  for(const t of sceneryTrees){if(neighborhood.trees)cylinder(t.x,14,t.z,2.6,28,'#9c8769');else tree(t.x,t.z,t.seed);}
   for (const lamp of sceneryLamps) {
     cylinder(lamp.x, 26, lamp.z, 1.4, 52, "#728882");
     box(lamp.x - 4, 52, lamp.z, 11, 2, 5, "#f7dba1");
@@ -654,7 +654,7 @@ export function createCity(
   // Render-only crown/trunk bounds, separate from walkable ground footprints.
   const cameraFoliage=sceneryTrees.flatMap(t=>{
     const ground=groundElevation(t.x,t.z);
-    if(neighborhood.trees)return [{x:t.x,z:t.z,width:3,depth:3,minY:ground,maxY:ground+20},{x:t.x,z:t.z,width:36,depth:32,minY:ground+18,maxY:ground+50}];
+    if(neighborhood.trees)return [{x:t.x,z:t.z,width:3,depth:3,minY:ground,maxY:ground+28},{x:t.x,z:t.z,width:36,depth:32,minY:ground+26,maxY:ground+58}];
     return [{x:t.x,z:t.z,width:3,depth:3,minY:ground,maxY:ground+34+t.seed%7},
       ...[-1,0,1].map(side=>({x:t.x+side*6,z:t.z+(side===0?0:2),width:side===0?22:18,depth:20,
         minY:ground+36+t.seed%7+(side===0?4:0)-(side===0?13:10),
@@ -840,7 +840,7 @@ export function createCity(
       const rawActors = visibleHumans([
         ...actorsAt(world, lastTime),
         ...(world.living
-          ? crowdAt(world.living, world, lastTime, selected)
+          ? crowdAt(world.living, world, lastTime, selected,capacity-world.people.length)
           : []),
       ],capacity,[selected,...world.people.map(p=>p.id),world.livingTurn?.residentId]);
       const animalProjections = animalsAt(world, lastTime);
