@@ -10,7 +10,9 @@ export class AnimalRig{
   this.actions.get('idle')?.play();this.mixer.update(0);this.group.updateMatrixWorld(true);
   const size=new THREE.Box3().setFromObject(this.group,true).getSize(new THREE.Vector3());
   const scale=Math.min(height/size.y,radius/Math.max(.001,Math.hypot(size.x/2,size.z/2)));if(!Number.isFinite(scale)||scale<=0)throw Error('Invalid animal bounds');this.group.scale.multiplyScalar(scale);
-  this.group.traverse(o=>{const mesh=o as THREE.Mesh;if(!mesh.isMesh)return;mesh.material=(Array.isArray(mesh.material)?mesh.material:[mesh.material]).map(m=>m.clone());mesh.castShadow=true;mesh.receiveShadow=true;});
+  // A single material must remain single: an array with no geometry groups
+  // produces no render items in Three.js, even though bounds/poses look valid.
+  this.group.traverse(o=>{const mesh=o as THREE.Mesh;if(!mesh.isMesh)return;mesh.material=Array.isArray(mesh.material)?mesh.material.map(m=>m.clone()):mesh.material.clone();mesh.castShadow=true;mesh.receiveShadow=true;});
  }
  pose(moving:boolean,time:number,position:readonly number[],yaw:number,floor:number){
   const name=moving&&this.actions.has('walk')?'walk':'idle';if(name!==this.current){for(const action of this.actions.values())action.stop();this.actions.get(name)?.reset().play();this.current=name;}
