@@ -367,14 +367,9 @@
       "rationale": "1.28M-triangle scene, monolithic82MB city,444.8MB crate with3×8192px maps (~768MiB RGBA before mipmaps), and three static1.5M-triangle fantasy/scifi characters respectively. Poor fit for current setting/budgets; retain review hashes, not binaries in repo/runtime."
     }
   ],
-  "remainingArchives": [
-    {
-      "name": "4.zip",
-      "status": "not-provided"
-    }
-  ],
+  "remainingArchives": [],
   "implementationOrder": [
-    "A1 ZIP1/2/3 reviewed:343GLB+25music; preserve originals in asset vault, await ZIP4 before final common-style/import choice",
+    "A1 ZIP1–4 reviewed:593GLB entries (ZIP4 has50characters×5LOD)+25music; all four originals retained outside app. Selective five-rig Casino/Chess adaptation underway, ZIP4 static worksite poses deferred.",
     "A2 character adapter/normalization/LOD and city+Studio regression on isolated preview",
     "A3 selected ordinary props/palette and semantic bindings; no gameplay effect claimed from visuals",
     "A4 modular vegetation/indoor/market assets in existing dependent phases, preserving colliders and ownership journals",
@@ -12512,7 +12507,7 @@
       }
     ]
   },
-  "totalModelsReviewed": 343,
+  "totalModelsReviewed": 593,
   "zip3Review": {
     "name": "3.zip",
     "source": "https://drive.google.com/file/d/1MhFUsF3TguEmUiaYozMaCygNJINCWNsr/view",
@@ -14007,8 +14002,8 @@
   "sourceArchivePreservation": {
     "requestedByOwner": true,
     "localDirectory": "/workspace/AI-Living-assets/source-archives",
-    "localCopies": 3,
-    "rawBytes": 3818113241,
+    "localCopies": 4,
+    "rawBytes": 8437107889,
     "inRuntimeOrGitTree": false,
     "registry": "data/assets/source-archives.json",
     "externalBackup": {
@@ -14020,5 +14015,2998 @@
       "status": "BLOCKED_HTTP_401",
       "reason": "Current GitHub integration can create/read the draft but uploads.github.com rejects asset uploads as Bad credentials. No external backup success claimed."
     }
+  },
+  "zip4Review": {
+    "archive": {
+      "file": "4.zip",
+      "bytes": 4618994648,
+      "sha256": "8c248fc5675f2e5d638ca7074ef79befe023c6897acea19aa46a73715c7750c7",
+      "source": "https://drive.google.com/file/d/1_4grQ3thLIazY3a_NdD8dzyiTbB8SAFX/view"
+    },
+    "nestedMember": "4/glb (1).zip",
+    "expandedModelBytes": 4985124372,
+    "models": 250,
+    "uniqueCharacters": 50,
+    "lodLevels": 5,
+    "crcAndSha256": "all 250 GLBs fully read; outer nested stream CRC verified",
+    "unsafePaths": [],
+    "sourceLicenseFiles": [],
+    "license": "LicenseRef-Owner-Confirmed-Free",
+    "style": "Construction workers in fixed task poses, with fused tools; not 50 animated civilian rigs",
+    "skins": 0,
+    "animationClips": 0,
+    "externalDependencies": [],
+    "uniqueImages": 100,
+    "textureResolution": [
+      4096,
+      4096
+    ],
+    "lod4Triangles": [
+      3898,
+      6459
+    ],
+    "browser": {
+      "stats": [
+        {
+          "label": "Carpenter — LOD4 static / reference only",
+          "size": [
+            0.7787995549987556,
+            1.3108213877114148,
+            0.8997425566879842
+          ],
+          "clips": 0,
+          "drawCalls": 1,
+          "triangles": 4404,
+          "textures": 3
+        },
+        {
+          "label": "Cleaner — LOD4 static / reference only",
+          "size": [
+            0.738748468640793,
+            1.6740559386342175,
+            1.1158923235567788
+          ],
+          "clips": 0,
+          "drawCalls": 1,
+          "triangles": 4994,
+          "textures": 3
+        },
+        {
+          "label": "Electrician — LOD4 static / reference only",
+          "size": [
+            1.1533660751039367,
+            1.9858391812920717,
+            0.6680496786467109
+          ],
+          "clips": 0,
+          "drawCalls": 1,
+          "triangles": 4536,
+          "textures": 3
+        },
+        {
+          "label": "Manager — LOD4 static / reference only",
+          "size": [
+            1.1567209814910981,
+            1.794681277322549,
+            0.7738548174173085
+          ],
+          "clips": 0,
+          "drawCalls": 1,
+          "triangles": 4469,
+          "textures": 3
+        },
+        {
+          "label": "SafetyOfficer — LOD4 static / reference only",
+          "size": [
+            1.0151658780089257,
+            1.7907597049452546,
+            0.5914939294482059
+          ],
+          "clips": 0,
+          "drawCalls": 1,
+          "triangles": 4107,
+          "textures": 3
+        },
+        {
+          "label": "Surveyor — LOD4 static / reference only",
+          "size": [
+            0.6181133869324462,
+            1.7955445565981294,
+            1.0285595639299372
+          ],
+          "clips": 0,
+          "drawCalls": 1,
+          "triangles": 4965,
+          "textures": 3
+        },
+        {
+          "label": "TruckDriver — LOD4 static / reference only",
+          "size": [
+            1.036512279316458,
+            1.1860907068525868,
+            0.6373111604251238
+          ],
+          "clips": 0,
+          "drawCalls": 1,
+          "triangles": 6152,
+          "textures": 3
+        },
+        {
+          "label": "Worker — LOD4 static / reference only",
+          "size": [
+            0.7596712304883368,
+            1.7974881075152849,
+            0.36034370961522716
+          ],
+          "clips": 0,
+          "drawCalls": 1,
+          "triangles": 4559,
+          "textures": 3
+        }
+      ],
+      "errors": [],
+      "scope": "quarantined local GLTFLoader PBR; SwiftShader, no runtime import"
+    },
+    "screenshot": "docs/screenshots/asset-review/zip-4-contact-sheet.jpg",
+    "decision": "Retain original; defer runtime character import. Prioritize Worker/Cleaner/Carpenter/Electrician for a supported worksite phase after rig/skin/pose, UV, palette/texture and tool separation review. Neutral Worker is the simplest future re-rig candidate. Do not treat fixed poses as behavior or skill evidence.",
+    "requirementsBeforeRuntime": [
+      "Choose one canonical LOD, not all five copies of the same textures",
+      "Reduce textures to measured 512/1024 or an atlas while preserving UV and PBR semantics",
+      "Create a deformable skeleton, weights and in-place clips for live characters; a .glb extension does not supply animation",
+      "Split held tools/vehicles from fused meshes before independent ownership or action animation",
+      "Preserve actor IDs, world journals, colliders and causal completion; do not infer a job or skill from filenames"
+    ],
+    "characters": [
+      {
+        "name": "AsphaltWorker",
+        "lods": [
+          {
+            "lod": "LOD0",
+            "triangles": 47122,
+            "bytes": 20773608,
+            "sha256": "c179ef643817c15d573b3de6f42fef95249711c4a8e44dd089cbb0364b6a7ca2"
+          },
+          {
+            "lod": "LOD1",
+            "triangles": 30004,
+            "bytes": 20438504,
+            "sha256": "da99d552272aaf69bdee6e7ea349a848328dfda5b492781ebf929a7b3dd8b9d3"
+          },
+          {
+            "lod": "LOD2",
+            "triangles": 14303,
+            "bytes": 20073804,
+            "sha256": "1a04d411466b8160b85ca716c71308912064a3981f3b0ab466cd9591fe1c1b09"
+          },
+          {
+            "lod": "LOD3",
+            "triangles": 7709,
+            "bytes": 19829372,
+            "sha256": "279719898f72d48e82514b9f1188d80833b954acc0843820c360991c959de66b"
+          },
+          {
+            "lod": "LOD4",
+            "triangles": 4400,
+            "bytes": 19674120,
+            "sha256": "e3ab5f14d074d8da1a3bfa5150e95dfdf48447bcf4d5f222ff251ca279f101f0"
+          }
+        ],
+        "skins": 0,
+        "clips": 0,
+        "images": [
+          {
+            "bytes": 6301785,
+            "sha256": "4f823fde9f816b17b206e8bd7cd92ea6fdc10438a0aa08d94c6a1761c8ddef07",
+            "size": [
+              4096,
+              4096
+            ],
+            "format": "PNG"
+          },
+          {
+            "bytes": 13165893,
+            "sha256": "827f30b5843ae2836f5b3896e9d4c63d686fcf05865608110ac8ba18626644d0",
+            "size": [
+              4096,
+              4096
+            ],
+            "format": "PNG"
+          }
+        ]
+      },
+      {
+        "name": "BlastingWorker",
+        "lods": [
+          {
+            "lod": "LOD0",
+            "triangles": 47753,
+            "bytes": 21898784,
+            "sha256": "e26124887c254eac6e2e32c60481486503848263b8988814b3eb76104c2452ba"
+          },
+          {
+            "lod": "LOD1",
+            "triangles": 29322,
+            "bytes": 21491392,
+            "sha256": "0b1ea2f55c8fb4edd72347407e0d741bd10c9dcb743b92e6b9dabe05190decbf"
+          },
+          {
+            "lod": "LOD2",
+            "triangles": 14427,
+            "bytes": 21090716,
+            "sha256": "484552bd80a5fde9e9e9cab477216150620d1ef3e1b1fe9bf39c4c4dd22c8cf3"
+          },
+          {
+            "lod": "LOD3",
+            "triangles": 7864,
+            "bytes": 20831016,
+            "sha256": "19204e3510fa567acbea621b148d91d68abae3320e1c87bbeca9a74135d7f708"
+          },
+          {
+            "lod": "LOD4",
+            "triangles": 4520,
+            "bytes": 20659172,
+            "sha256": "d46fd74f7ea122b25d43a8c257116604a713d4c2b96b7991f1dd2c8dbc642eca"
+          }
+        ],
+        "skins": 0,
+        "clips": 0,
+        "images": [
+          {
+            "bytes": 5397956,
+            "sha256": "2d30d062097c4d0a6e77e4a0a875d34991d0dd2caf96a6e9b9953e52a55a86d2",
+            "size": [
+              4096,
+              4096
+            ],
+            "format": "PNG"
+          },
+          {
+            "bytes": 15032132,
+            "sha256": "80e2cd53cab17f83994777be3fc3d4e6e36d301b5a65237b9c4f357bb9d1656c",
+            "size": [
+              4096,
+              4096
+            ],
+            "format": "PNG"
+          }
+        ]
+      },
+      {
+        "name": "BoltTighteningWorker",
+        "lods": [
+          {
+            "lod": "LOD0",
+            "triangles": 45667,
+            "bytes": 21298608,
+            "sha256": "157492a4c4fe85869f43ef565f96a9c2b9f835897c61431dcd9ee8c65e26c723"
+          },
+          {
+            "lod": "LOD1",
+            "triangles": 28272,
+            "bytes": 20933272,
+            "sha256": "9ec31d70a7e64e94e6a7422ed30d9f586c5d02c971ae39f054804394b52ec8e5"
+          },
+          {
+            "lod": "LOD2",
+            "triangles": 14803,
+            "bytes": 20587664,
+            "sha256": "5e4801047fd9cf4339b606f9dc6c7275f765e57f6b6452b048072d3a9cad10ea"
+          },
+          {
+            "lod": "LOD3",
+            "triangles": 8186,
+            "bytes": 20336520,
+            "sha256": "2ca0cd986e3aa68495df5ccbb85a4dced1ab436e9a27aed2c5713ba3e7ff7c64"
+          },
+          {
+            "lod": "LOD4",
+            "triangles": 4857,
+            "bytes": 20177440,
+            "sha256": "1a76d9faace0a65a8138c942ffd4c849cfe9f8f7ae3d9fab11bdc47e0e034c43"
+          }
+        ],
+        "skins": 0,
+        "clips": 0,
+        "images": [
+          {
+            "bytes": 6515465,
+            "sha256": "a0c8ee30c3d8edfbc6ca7400abaad22ca3e129766c5389eee4e1ef36208f144a",
+            "size": [
+              4096,
+              4096
+            ],
+            "format": "PNG"
+          },
+          {
+            "bytes": 13429972,
+            "sha256": "c2f3521740d4e80abd06213157079b789bdb597ddc1462aada231e2f0beb8922",
+            "size": [
+              4096,
+              4096
+            ],
+            "format": "PNG"
+          }
+        ]
+      },
+      {
+        "name": "Bricklayer",
+        "lods": [
+          {
+            "lod": "LOD0",
+            "triangles": 47032,
+            "bytes": 21754348,
+            "sha256": "cd21c495774e02195252148cb2549baf4f20733fe8c0540a4a5814e4e5296659"
+          },
+          {
+            "lod": "LOD1",
+            "triangles": 30783,
+            "bytes": 21415020,
+            "sha256": "b3486fa9502c4ec2a12eef6b2316cb2a86ab60ec8388c33d1b41a9424fb06d06"
+          },
+          {
+            "lod": "LOD2",
+            "triangles": 16977,
+            "bytes": 21077048,
+            "sha256": "9c1c602977b7ffffe04396849959108c4578c5c098b95ff66095c1a79af5a946"
+          },
+          {
+            "lod": "LOD3",
+            "triangles": 9902,
+            "bytes": 20825312,
+            "sha256": "f5884f926c82143fd0287b20797bc83f7f4243f28006acca47ec7c1a188afd7f"
+          },
+          {
+            "lod": "LOD4",
+            "triangles": 5373,
+            "bytes": 20632728,
+            "sha256": "09e038489d8bfa1f7cc415b4a94a1748fbdd1fff10265d221a790cf152e133e4"
+          }
+        ],
+        "skins": 0,
+        "clips": 0,
+        "images": [
+          {
+            "bytes": 5972189,
+            "sha256": "326bc67f74dabbaab3a17b1debba346da340188295aab2dc406d37b64efff9d0",
+            "size": [
+              4096,
+              4096
+            ],
+            "format": "PNG"
+          },
+          {
+            "bytes": 14416367,
+            "sha256": "7077baf12462549d0751fd881d1a7a23d3a5716906168affed6e0f6bcefe95f9",
+            "size": [
+              4096,
+              4096
+            ],
+            "format": "PNG"
+          }
+        ]
+      },
+      {
+        "name": "CableWorker",
+        "lods": [
+          {
+            "lod": "LOD0",
+            "triangles": 48582,
+            "bytes": 23373356,
+            "sha256": "92ede4e58ba885db28d75cb909ad2de41c0007f6035c9cde5e8edede86f663a6"
+          },
+          {
+            "lod": "LOD1",
+            "triangles": 31158,
+            "bytes": 23012800,
+            "sha256": "ac14d80dea187b70449a313c0a41875bd4303311d9942ca8a04ac3b668b165ab"
+          },
+          {
+            "lod": "LOD2",
+            "triangles": 15566,
+            "bytes": 22631120,
+            "sha256": "0282e8974af0b892f35b87822112549180d3fb8758fa7e39f1d6a10dafd91bab"
+          },
+          {
+            "lod": "LOD3",
+            "triangles": 8758,
+            "bytes": 22371772,
+            "sha256": "1b98e618d59f8cc69aa4e3a67d2cd5685bb636d884d97852cb49afb3d44cdef6"
+          },
+          {
+            "lod": "LOD4",
+            "triangles": 5055,
+            "bytes": 22189132,
+            "sha256": "64f320f055cc30ea70f653844adea761c7ac76fd36cc96df48bd425eb15b3e23"
+          }
+        ],
+        "skins": 0,
+        "clips": 0,
+        "images": [
+          {
+            "bytes": 6840976,
+            "sha256": "bf3c9960797e4b3e3ccc9c18a7458d72c5b47c19cf343521eb30b5fc21e17c75",
+            "size": [
+              4096,
+              4096
+            ],
+            "format": "PNG"
+          },
+          {
+            "bytes": 15090600,
+            "sha256": "0a5b89708e214466dc4ac0b91f6c4a95f80ec272dea04e2fd3c68e2d85aa6f13",
+            "size": [
+              4096,
+              4096
+            ],
+            "format": "PNG"
+          }
+        ]
+      },
+      {
+        "name": "Carpenter",
+        "lods": [
+          {
+            "lod": "LOD0",
+            "triangles": 46835,
+            "bytes": 19641836,
+            "sha256": "b91e6bdf34385b865760a71382cca14b63be734a9c20a0bfc7f27c5a57f795de"
+          },
+          {
+            "lod": "LOD1",
+            "triangles": 28959,
+            "bytes": 19281420,
+            "sha256": "cbcf5f2d064fc25770d92a224a3997a90295aa72e3d75b713b59e446850e9882"
+          },
+          {
+            "lod": "LOD2",
+            "triangles": 15406,
+            "bytes": 18945320,
+            "sha256": "576b7f4fe3f353aa4d5c4bc45bbbb9ddb92100f3072de05d7250161ebf88f3d5"
+          },
+          {
+            "lod": "LOD3",
+            "triangles": 8435,
+            "bytes": 18705732,
+            "sha256": "59f83e07365bc9ee3e0d13978ab8ec9c8cedb94e6eb4f59957d18e8fc86e3c12"
+          },
+          {
+            "lod": "LOD4",
+            "triangles": 4404,
+            "bytes": 18532420,
+            "sha256": "9a9b8ccf14f1b9fb00ae3e634cbb8d5be8ed27b4c0b00c97393c6e9bcdbfccbf"
+          }
+        ],
+        "skins": 0,
+        "clips": 0,
+        "images": [
+          {
+            "bytes": 5419808,
+            "sha256": "4e642c127e1242d8fc93439677d3de12d7fb21c0b48d48d665caf459d2584229",
+            "size": [
+              4096,
+              4096
+            ],
+            "format": "PNG"
+          },
+          {
+            "bytes": 12904252,
+            "sha256": "0a73a389485e8d069f8ae9d6da2006837ad8f5e67572d86c7b68547810a2eb55",
+            "size": [
+              4096,
+              4096
+            ],
+            "format": "PNG"
+          }
+        ]
+      },
+      {
+        "name": "Cleaner",
+        "lods": [
+          {
+            "lod": "LOD0",
+            "triangles": 48250,
+            "bytes": 20329908,
+            "sha256": "d81ad64595f591555cf37d976f1082e0b7b2e80fdd9608b8d2e528fe18648eae"
+          },
+          {
+            "lod": "LOD1",
+            "triangles": 29724,
+            "bytes": 19969200,
+            "sha256": "6e1d97dc7208042c5e9ab8cfe37214895bb77a752397fefab3be36c9a8815638"
+          },
+          {
+            "lod": "LOD2",
+            "triangles": 15303,
+            "bytes": 19612084,
+            "sha256": "89dc98f2523163d2595dccb1bc36a7ea07a6eb7671a2a19f229083aaa04ccfc7"
+          },
+          {
+            "lod": "LOD3",
+            "triangles": 8794,
+            "bytes": 19374564,
+            "sha256": "50b168261ebd34dfc73bb68322955783d83f17bb45ce0eb26b73d8a9dcee0161"
+          },
+          {
+            "lod": "LOD4",
+            "triangles": 4994,
+            "bytes": 19201548,
+            "sha256": "c113d897692b217a9de2de9d22c69e0997c10706edc4c22851a59cd4c21202d9"
+          }
+        ],
+        "skins": 0,
+        "clips": 0,
+        "images": [
+          {
+            "bytes": 5631329,
+            "sha256": "8fea231225137c184cee74baed683553189992309e25d0d46c4bdc59fe0bc6c6",
+            "size": [
+              4096,
+              4096
+            ],
+            "format": "PNG"
+          },
+          {
+            "bytes": 13338712,
+            "sha256": "c74a8efa6d1e6d9a4368a3f9dfb2250ac36284e2ace19d3d6dc48f4b0fafc9b3",
+            "size": [
+              4096,
+              4096
+            ],
+            "format": "PNG"
+          }
+        ]
+      },
+      {
+        "name": "ConcreteFinisher",
+        "lods": [
+          {
+            "lod": "LOD0",
+            "triangles": 47533,
+            "bytes": 19584636,
+            "sha256": "301e6226cc632ce65279def1262ea9acbaee066ae30e590af9c6594a6723416a"
+          },
+          {
+            "lod": "LOD1",
+            "triangles": 30139,
+            "bytes": 19264128,
+            "sha256": "7c78432093e5417898ed17bfc927261f4860c71630af656affbb013d6844e56f"
+          },
+          {
+            "lod": "LOD2",
+            "triangles": 15995,
+            "bytes": 18938688,
+            "sha256": "ae47cd1d51915a20b783754b49089caaa1001aee136b995dedc9ed678df1be47"
+          },
+          {
+            "lod": "LOD3",
+            "triangles": 8837,
+            "bytes": 18702396,
+            "sha256": "50d1ae6ea7cb2ad026a691c7e6585d1d50a49372868c47d40129e1866c733235"
+          },
+          {
+            "lod": "LOD4",
+            "triangles": 4802,
+            "bytes": 18514852,
+            "sha256": "b87e7e4c704b7bed5bb0eb7cc4f42ab8bcfedfb9f8f12e14d0ebaabcaf903f26"
+          }
+        ],
+        "skins": 0,
+        "clips": 0,
+        "images": [
+          {
+            "bytes": 5737177,
+            "sha256": "74dd006caf012bf6b9147716c39bec2c7edf4b0ecaceb4f14a0fd597cb2da93d",
+            "size": [
+              4096,
+              4096
+            ],
+            "format": "PNG"
+          },
+          {
+            "bytes": 12551748,
+            "sha256": "fc013229e569f233e09191b8def1179febb7ae7dece781eeda952f30d20f75b9",
+            "size": [
+              4096,
+              4096
+            ],
+            "format": "PNG"
+          }
+        ]
+      },
+      {
+        "name": "ConcreteVibratorWorker",
+        "lods": [
+          {
+            "lod": "LOD0",
+            "triangles": 48130,
+            "bytes": 22841164,
+            "sha256": "e6b512fb0471661f99463b9f9869ef6b8b7e8961e6383d27ee4faf53a7f145a1"
+          },
+          {
+            "lod": "LOD1",
+            "triangles": 31625,
+            "bytes": 22497944,
+            "sha256": "590307461652426991d5ea358c3ae81a6d3de7780e42a8492b6a74cce4ad630f"
+          },
+          {
+            "lod": "LOD2",
+            "triangles": 17170,
+            "bytes": 22135872,
+            "sha256": "8e9a984a29ca42473b647719ba0e734a643e737c92d2a90e5d7ab8b5d685cd91"
+          },
+          {
+            "lod": "LOD3",
+            "triangles": 10072,
+            "bytes": 21876068,
+            "sha256": "5b24a307dfe5d9fe01277a4378caf2a331321aecfcac2b56dd375a173f5648d6"
+          },
+          {
+            "lod": "LOD4",
+            "triangles": 5805,
+            "bytes": 21691676,
+            "sha256": "d38002878b68c26ac8b3ed4c64c5a00ed51d74e80f08abc6713fb9beeafdad02"
+          }
+        ],
+        "skins": 0,
+        "clips": 0,
+        "images": [
+          {
+            "bytes": 7043144,
+            "sha256": "3de3b604e97e485bfa4cbcd86318ada3723ab10497ea4c6a71f0da059a477557",
+            "size": [
+              4096,
+              4096
+            ],
+            "format": "PNG"
+          },
+          {
+            "bytes": 14373010,
+            "sha256": "932bcaba1e83cba6107170183174eb93fd6bc4f38805ebbccb9a5b3730b83401",
+            "size": [
+              4096,
+              4096
+            ],
+            "format": "PNG"
+          }
+        ]
+      },
+      {
+        "name": "ConcreteWorker",
+        "lods": [
+          {
+            "lod": "LOD0",
+            "triangles": 46910,
+            "bytes": 20648812,
+            "sha256": "d0c3064fee019a3de9751b77ff945d31bd2d9232c0e60ab6075789a0eff027ab"
+          },
+          {
+            "lod": "LOD1",
+            "triangles": 29543,
+            "bytes": 20314628,
+            "sha256": "f6c2c2878346d16a44ce9cba106a3e784ee516085a9321fd27093548363ddc1d"
+          },
+          {
+            "lod": "LOD2",
+            "triangles": 15627,
+            "bytes": 19966872,
+            "sha256": "2d26251009cffd15d874c0be015f61e7051293cc8dd72657001b32a661b69791"
+          },
+          {
+            "lod": "LOD3",
+            "triangles": 8800,
+            "bytes": 19717776,
+            "sha256": "609c120f993058cc11972d47eaae54b2922f05e643c7e7c5dec72b47cf0ea192"
+          },
+          {
+            "lod": "LOD4",
+            "triangles": 5039,
+            "bytes": 19543500,
+            "sha256": "330ca008babf9f283cda369524ea0d1ae0d2f528550e7780b7ac2d7d3df3c3bb"
+          }
+        ],
+        "skins": 0,
+        "clips": 0,
+        "images": [
+          {
+            "bytes": 5969902,
+            "sha256": "6615dc120b097937b75a5ff7432e09c9431f556f5d59d340537f7703967d4146",
+            "size": [
+              4096,
+              4096
+            ],
+            "format": "PNG"
+          },
+          {
+            "bytes": 13337709,
+            "sha256": "811075be061fd125526933f2ec7b61feb9cdc4df5da6cfa920f9ee1b40459932",
+            "size": [
+              4096,
+              4096
+            ],
+            "format": "PNG"
+          }
+        ]
+      },
+      {
+        "name": "CoreDrillingWorker",
+        "lods": [
+          {
+            "lod": "LOD0",
+            "triangles": 48452,
+            "bytes": 22313324,
+            "sha256": "472dcb1841b598236892bed8e222d8df1c09fcc45cd76d5a7a1dadb4db1899ee"
+          },
+          {
+            "lod": "LOD1",
+            "triangles": 31549,
+            "bytes": 21940996,
+            "sha256": "b3e23683bebe5d3afe57dae4e0fe6c5ee03a68f2e6e8da4049f4b9b53b7c2354"
+          },
+          {
+            "lod": "LOD2",
+            "triangles": 17171,
+            "bytes": 21564004,
+            "sha256": "3024cc342df4f77eb2f711a97a4da5f571317ac22bab16dfac34eb1b936c5c6f"
+          },
+          {
+            "lod": "LOD3",
+            "triangles": 10173,
+            "bytes": 21309044,
+            "sha256": "8e3c6a4cf2a6a98c31fce704d381a7891261b747caa1e809032d5b3be4a7da8d"
+          },
+          {
+            "lod": "LOD4",
+            "triangles": 5677,
+            "bytes": 21121260,
+            "sha256": "d4dffa3fe953d8a382108e020deef3516968df520abaad10f3916bf289ff048d"
+          }
+        ],
+        "skins": 0,
+        "clips": 0,
+        "images": [
+          {
+            "bytes": 6250543,
+            "sha256": "1789ea46caca26e43da0fc15f690b9bef8440f4ce4ed2fd5d8e5ec48a88ad72b",
+            "size": [
+              4096,
+              4096
+            ],
+            "format": "PNG"
+          },
+          {
+            "bytes": 14601580,
+            "sha256": "1d01efdb248973a1ec8835ebeb5e2fac6c0c45afbdeee445a9257f06fd85e855",
+            "size": [
+              4096,
+              4096
+            ],
+            "format": "PNG"
+          }
+        ]
+      },
+      {
+        "name": "CraneOperator",
+        "lods": [
+          {
+            "lod": "LOD0",
+            "triangles": 46567,
+            "bytes": 19352228,
+            "sha256": "2e24a847c3b4ac53375438f278d9b4efdd1f6ab409830f0c757aa9259e8b98e6"
+          },
+          {
+            "lod": "LOD1",
+            "triangles": 30030,
+            "bytes": 19017148,
+            "sha256": "c1a5637b37f4aabf817023b09113524eeecfabdccb2c0b1293f6998fbc77f91d"
+          },
+          {
+            "lod": "LOD2",
+            "triangles": 16988,
+            "bytes": 18694228,
+            "sha256": "cac209d6ce816b8748fe746723ce5e67dc37d8b68bca411932dc2fb21a24ea72"
+          },
+          {
+            "lod": "LOD3",
+            "triangles": 9776,
+            "bytes": 18439944,
+            "sha256": "5d076cbc23a6f93834f53de51c59989d118c5dcdda53d9f7f851aa3eb3885d5c"
+          },
+          {
+            "lod": "LOD4",
+            "triangles": 5432,
+            "bytes": 18254128,
+            "sha256": "b0868749d3f8c890e5d6f312a03078d9c6b417832ba82810b1adc692a3d0bff4"
+          }
+        ],
+        "skins": 0,
+        "clips": 0,
+        "images": [
+          {
+            "bytes": 5266279,
+            "sha256": "82bca2bd10541f0c6ec9ea126e8de8f36716f7fba70ddcad503d059441410801",
+            "size": [
+              4096,
+              4096
+            ],
+            "format": "PNG"
+          },
+          {
+            "bytes": 12740080,
+            "sha256": "78da577122215cea8be388fee230e5a5fc50c8d6cf1d8dfaf02bbadde4da2883",
+            "size": [
+              4096,
+              4096
+            ],
+            "format": "PNG"
+          }
+        ]
+      },
+      {
+        "name": "DemolitionWorker",
+        "lods": [
+          {
+            "lod": "LOD0",
+            "triangles": 46290,
+            "bytes": 21028028,
+            "sha256": "4ec4f74427346fd480646964c1754cf55b4be7f444f0ac4882d333c1252b17f7"
+          },
+          {
+            "lod": "LOD1",
+            "triangles": 30052,
+            "bytes": 20674916,
+            "sha256": "f65a5b05921de092946f7f0e3882b80d1a4b9b39c6aedad9b2b9e885cc77b5e5"
+          },
+          {
+            "lod": "LOD2",
+            "triangles": 16430,
+            "bytes": 20320088,
+            "sha256": "cdc7b8a9e99c372bc5e6d017fd4fe304d3349b34644bbb917ee91c376c200f5f"
+          },
+          {
+            "lod": "LOD3",
+            "triangles": 9662,
+            "bytes": 20076440,
+            "sha256": "7e0a7cdc487220e2e850e2c0cacfd688af11ae3b24f262e79fd94d695ab92824"
+          },
+          {
+            "lod": "LOD4",
+            "triangles": 5449,
+            "bytes": 19905396,
+            "sha256": "d132e0e8a35f350a658cea29fb7184a4226fc832baac103a6d39b6957ad8a188"
+          }
+        ],
+        "skins": 0,
+        "clips": 0,
+        "images": [
+          {
+            "bytes": 5811128,
+            "sha256": "973904d7683379095b925c08c9622a66e133318c075c8324d205253b83af30fe",
+            "size": [
+              4096,
+              4096
+            ],
+            "format": "PNG"
+          },
+          {
+            "bytes": 13833346,
+            "sha256": "3c8246fb18d078a8e1964b638fe267989aa95ae9d2c2985b81aa972361711484",
+            "size": [
+              4096,
+              4096
+            ],
+            "format": "PNG"
+          }
+        ]
+      },
+      {
+        "name": "Diver",
+        "lods": [
+          {
+            "lod": "LOD0",
+            "triangles": 48296,
+            "bytes": 24130084,
+            "sha256": "173664ba515fa7248a22de9a063ee5cee5389f352fde3a9e35cdc00d606e7aaa"
+          },
+          {
+            "lod": "LOD1",
+            "triangles": 31303,
+            "bytes": 23738292,
+            "sha256": "a88c5a108ac43fa99e00d4bbb30304d86b1d8fabc709216e8221c36039c80cd2"
+          },
+          {
+            "lod": "LOD2",
+            "triangles": 16960,
+            "bytes": 23351208,
+            "sha256": "2fb467c3ac630d5d56a051dda7cffdcf7cdbe96fd92b4145c620a57c62e3294c"
+          },
+          {
+            "lod": "LOD3",
+            "triangles": 9954,
+            "bytes": 23092084,
+            "sha256": "8b2596417231781b010c1eb19359d5a55c8e1e9ac8bdc767467aede8c1de1f65"
+          },
+          {
+            "lod": "LOD4",
+            "triangles": 5640,
+            "bytes": 22884432,
+            "sha256": "7030200d89375a14489dfabf1cc398543454c93be4ae2256bf6fb14eb370a09f"
+          }
+        ],
+        "skins": 0,
+        "clips": 0,
+        "images": [
+          {
+            "bytes": 6752384,
+            "sha256": "0cc9e05f2c7158dd13b4249d1b477efacc181142e9f01780f3c6eb1cafdbbc7c",
+            "size": [
+              4096,
+              4096
+            ],
+            "format": "PNG"
+          },
+          {
+            "bytes": 15830497,
+            "sha256": "2c710b208300ac348cc8738a3358302595b56fd1a9c703336b7aef99be1936fd",
+            "size": [
+              4096,
+              4096
+            ],
+            "format": "PNG"
+          }
+        ]
+      },
+      {
+        "name": "DrywallInstaller",
+        "lods": [
+          {
+            "lod": "LOD0",
+            "triangles": 47508,
+            "bytes": 19585924,
+            "sha256": "6f0bab037d6004eceb103e6cb313a2170af937db99c933b56d34a9db5e4eceae"
+          },
+          {
+            "lod": "LOD1",
+            "triangles": 28401,
+            "bytes": 19181672,
+            "sha256": "cb2b4164021ce44f1889cd47f8b66dfbd4e35ddec338e3044cbe0f788e763180"
+          },
+          {
+            "lod": "LOD2",
+            "triangles": 14199,
+            "bytes": 18816332,
+            "sha256": "20279707ffaec7948f7cb589a028a429e7f0d09dcc0d867943b566e94d84d9ac"
+          },
+          {
+            "lod": "LOD3",
+            "triangles": 7744,
+            "bytes": 18579452,
+            "sha256": "804be2bf0c40567db3929f3b62e0afa92ce0f3da903db2808424159228322ff5"
+          },
+          {
+            "lod": "LOD4",
+            "triangles": 4311,
+            "bytes": 18412384,
+            "sha256": "7adea7103a82d3074435768fb6db7f71a15919b2b1bb1f758e326cba959cb8aa"
+          }
+        ],
+        "skins": 0,
+        "clips": 0,
+        "images": [
+          {
+            "bytes": 5240315,
+            "sha256": "0c0f358972426ebd90c6cb93459a423c20f1480dcb987a7e56ae539f09299122",
+            "size": [
+              4096,
+              4096
+            ],
+            "format": "PNG"
+          },
+          {
+            "bytes": 12960802,
+            "sha256": "000add1444bff24fdf7031c27d9dc37e3676c7998dd391ad698dafb55c4b892e",
+            "size": [
+              4096,
+              4096
+            ],
+            "format": "PNG"
+          }
+        ]
+      },
+      {
+        "name": "Electrician",
+        "lods": [
+          {
+            "lod": "LOD0",
+            "triangles": 47996,
+            "bytes": 19563876,
+            "sha256": "95b1a7653bc2e9501d6f40d41a035016e5e4b3a0cd3ec79812f978eb4d310839"
+          },
+          {
+            "lod": "LOD1",
+            "triangles": 29399,
+            "bytes": 19164836,
+            "sha256": "ac31a22d947f104198a8cf4a6bfa88710a054cf78e218b51a77aaa50f1d13fe5"
+          },
+          {
+            "lod": "LOD2",
+            "triangles": 14840,
+            "bytes": 18789468,
+            "sha256": "4a6b61caddcb8a7fa4c9adbef7a4ca7633fa6cd6cfeeba1fe0bd09dac8d92f30"
+          },
+          {
+            "lod": "LOD3",
+            "triangles": 8131,
+            "bytes": 18536800,
+            "sha256": "228e7e9647c9b2993946125bb0dcfd3600a70d5410a8033f809824d7c666ff5e"
+          },
+          {
+            "lod": "LOD4",
+            "triangles": 4536,
+            "bytes": 18361240,
+            "sha256": "f005169957c300b3e4d157ef2f2e70ba23672a380de7bc912b1dc5cc349dd51d"
+          }
+        ],
+        "skins": 0,
+        "clips": 0,
+        "images": [
+          {
+            "bytes": 4839960,
+            "sha256": "9c671c0ad4808fc8689fb4b5c096ce393af76687ea64108c9d987923574d1644",
+            "size": [
+              4096,
+              4096
+            ],
+            "format": "PNG"
+          },
+          {
+            "bytes": 13291596,
+            "sha256": "217192400b9e04eff215f8d1dfb8c884988fbee1c201046dc0f89d92716cde34",
+            "size": [
+              4096,
+              4096
+            ],
+            "format": "PNG"
+          }
+        ]
+      },
+      {
+        "name": "ExcavatorOperator",
+        "lods": [
+          {
+            "lod": "LOD0",
+            "triangles": 46307,
+            "bytes": 19667788,
+            "sha256": "305efbe1c283ad80c8b887ec83e245d02bdd777a27dcf293d1c8a4e9c7d2b305"
+          },
+          {
+            "lod": "LOD1",
+            "triangles": 29854,
+            "bytes": 19301568,
+            "sha256": "57afa1914c1d32417dd0f6b3f38320166cd4f824b2443b16c7911d27c7ae474c"
+          },
+          {
+            "lod": "LOD2",
+            "triangles": 16792,
+            "bytes": 18969372,
+            "sha256": "728600c7d366e722f158832d115efc878e75d72ae01244e982ff470037d5f5d0"
+          },
+          {
+            "lod": "LOD3",
+            "triangles": 9825,
+            "bytes": 18719604,
+            "sha256": "e9885cc00964b7fc2cba3e8857c7a6e8dfced3d4ec1347c46f1fad6ea0cb9d1d"
+          },
+          {
+            "lod": "LOD4",
+            "triangles": 5169,
+            "bytes": 18520908,
+            "sha256": "372f2539c6fd1e6e36a0bb10c811cf4c963450528608a28af9afc3af8fc84193"
+          }
+        ],
+        "skins": 0,
+        "clips": 0,
+        "images": [
+          {
+            "bytes": 5107400,
+            "sha256": "fcd801c96a79424636d5aed32a23153e8bd6e0c4e8ce2f59b8b7bc197cf4ab4a",
+            "size": [
+              4096,
+              4096
+            ],
+            "format": "PNG"
+          },
+          {
+            "bytes": 13166014,
+            "sha256": "8606b34ce58134f8550bb7a707d3504f3e0edda8514af4e6cffe8507feb373b3",
+            "size": [
+              4096,
+              4096
+            ],
+            "format": "PNG"
+          }
+        ]
+      },
+      {
+        "name": "FlooringInstaller",
+        "lods": [
+          {
+            "lod": "LOD0",
+            "triangles": 48296,
+            "bytes": 21845904,
+            "sha256": "295c81699867d2ee1ef1f8a12fae0b5bad408a5cc19b0e342e67657b7f1a519a"
+          },
+          {
+            "lod": "LOD1",
+            "triangles": 30764,
+            "bytes": 21494684,
+            "sha256": "2a2dfc66c774b638b64fc071ab1e5d0406445beef19a20248a99c8a8e73a01d6"
+          },
+          {
+            "lod": "LOD2",
+            "triangles": 16205,
+            "bytes": 21140836,
+            "sha256": "11b73a495efe6ca5e182c04936099abfecd11f7e2fc1f4ebe11b67a40fc412d8"
+          },
+          {
+            "lod": "LOD3",
+            "triangles": 9398,
+            "bytes": 20901144,
+            "sha256": "967a99fa3db2d889ab4e539d19548a50edafbc7a9a9c9f72c7830b946bfcd8ef"
+          },
+          {
+            "lod": "LOD4",
+            "triangles": 5255,
+            "bytes": 20722168,
+            "sha256": "8e87be900ba7ade184663ce53214e65b6384df0c74fe9e3e73fc0f48030f3cb4"
+          }
+        ],
+        "skins": 0,
+        "clips": 0,
+        "images": [
+          {
+            "bytes": 6332637,
+            "sha256": "b29bd20b06c179d05e773eba83193dcec1ea50389efc9ef36c491d8cfd626b43",
+            "size": [
+              4096,
+              4096
+            ],
+            "format": "PNG"
+          },
+          {
+            "bytes": 14146738,
+            "sha256": "bcf5704f903f285519f3c3a719ee6f9e4592fc194294fe5c4f879a41a72fac7d",
+            "size": [
+              4096,
+              4096
+            ],
+            "format": "PNG"
+          }
+        ]
+      },
+      {
+        "name": "FormworkWorker",
+        "lods": [
+          {
+            "lod": "LOD0",
+            "triangles": 47471,
+            "bytes": 19454848,
+            "sha256": "8c165363b41dcffe4f72b500b1aef332ebd1ef76c3fe87baeca5aa149d659c62"
+          },
+          {
+            "lod": "LOD1",
+            "triangles": 29621,
+            "bytes": 19098712,
+            "sha256": "a904e28a7fc23d4d36f68078323ebcb51332a8861f2bb046540e0ebb8902c6c0"
+          },
+          {
+            "lod": "LOD2",
+            "triangles": 15255,
+            "bytes": 18746788,
+            "sha256": "31da590b3b988ee7d0fda6a91fe595ded78cff7585faf8f6f7446e84fc71445b"
+          },
+          {
+            "lod": "LOD3",
+            "triangles": 8318,
+            "bytes": 18501640,
+            "sha256": "6719d142b8f939d92647de5cf05c5c4fb1be47ad291a5f57574757c498954e02"
+          },
+          {
+            "lod": "LOD4",
+            "triangles": 4569,
+            "bytes": 18334504,
+            "sha256": "77e548c2f6c74940d061e4a440008a42f3794f867ed2ac1c3782978a09acb0ee"
+          }
+        ],
+        "skins": 0,
+        "clips": 0,
+        "images": [
+          {
+            "bytes": 5091388,
+            "sha256": "6816c5408b8bfad63d662f03a74367941a1a58a050050951e01dd24d67e900e3",
+            "size": [
+              4096,
+              4096
+            ],
+            "format": "PNG"
+          },
+          {
+            "bytes": 13025507,
+            "sha256": "20e384d75c07e2c8b1722f782861ce02871bfacc56bd5c5721bf9299246a46ea",
+            "size": [
+              4096,
+              4096
+            ],
+            "format": "PNG"
+          }
+        ]
+      },
+      {
+        "name": "GeotextileInstaller",
+        "lods": [
+          {
+            "lod": "LOD0",
+            "triangles": 47900,
+            "bytes": 22433892,
+            "sha256": "f416bf824042b828e3b7b65569265598fab64b79095d7f7124e61d6c742d14a4"
+          },
+          {
+            "lod": "LOD1",
+            "triangles": 29820,
+            "bytes": 22050496,
+            "sha256": "cd661ccd1c8be92b6ea3d1ca0212d530989f96562165c9c22724357454651d5d"
+          },
+          {
+            "lod": "LOD2",
+            "triangles": 15101,
+            "bytes": 21664808,
+            "sha256": "92f703c48e1c44c6955b96f55b867972bb94753f4452e85fcb3a61e9cc5835fe"
+          },
+          {
+            "lod": "LOD3",
+            "triangles": 8280,
+            "bytes": 21403560,
+            "sha256": "11222e2a2d381b5b55f1a4d7ae1c1a0bb05b417c4b391224e7ecd5065af9d2ab"
+          },
+          {
+            "lod": "LOD4",
+            "triangles": 4758,
+            "bytes": 21237224,
+            "sha256": "402e6dd988e360074fdb5c48cd2607a51b95282101a50f5bc6dc05bcd1843c9b"
+          }
+        ],
+        "skins": 0,
+        "clips": 0,
+        "images": [
+          {
+            "bytes": 6449269,
+            "sha256": "d525308813e559c642b236dcbd58b6d9bb68e20fb2b53023750f3a2e677ff00c",
+            "size": [
+              4096,
+              4096
+            ],
+            "format": "PNG"
+          },
+          {
+            "bytes": 14565420,
+            "sha256": "ce625da74c567047a98cfa6ac8be5c233c5dc5e17d857f24203b2329106ccf48",
+            "size": [
+              4096,
+              4096
+            ],
+            "format": "PNG"
+          }
+        ]
+      },
+      {
+        "name": "Glazier",
+        "lods": [
+          {
+            "lod": "LOD0",
+            "triangles": 46870,
+            "bytes": 19771560,
+            "sha256": "9a585a8510b363423cabc619a26fa3e1b33c0c1a36e1461ea2892da926f61db8"
+          },
+          {
+            "lod": "LOD1",
+            "triangles": 29461,
+            "bytes": 19429600,
+            "sha256": "8742e7b30e16900d3a695aade5a7d87b5f9871f8e59e88f605f80cb371cf4499"
+          },
+          {
+            "lod": "LOD2",
+            "triangles": 15697,
+            "bytes": 19085220,
+            "sha256": "4f45008157362f5b62b9a12b54ffe9d71f2bc24483b0a275c4288572938baeca"
+          },
+          {
+            "lod": "LOD3",
+            "triangles": 8836,
+            "bytes": 18833912,
+            "sha256": "d653fb2cacfa1b3705bb05f5f2bcb3314e8744bb4019503a71d7b888b576fa53"
+          },
+          {
+            "lod": "LOD4",
+            "triangles": 4867,
+            "bytes": 18653036,
+            "sha256": "c7dce7aab592915d5763a70914563685e1f49c376e324265fc0f2325cc902bed"
+          }
+        ],
+        "skins": 0,
+        "clips": 0,
+        "images": [
+          {
+            "bytes": 4517846,
+            "sha256": "f6d8ca40da954d1cf5430d1561119a029c0a3c86f559c7380a4c53c6fa96dcc7",
+            "size": [
+              4096,
+              4096
+            ],
+            "format": "PNG"
+          },
+          {
+            "bytes": 13905553,
+            "sha256": "028d74c086820a1da8c9bd5f2f74274b97f2c96a0419ec6e162560472e5d418f",
+            "size": [
+              4096,
+              4096
+            ],
+            "format": "PNG"
+          }
+        ]
+      },
+      {
+        "name": "GuardrailInstaller",
+        "lods": [
+          {
+            "lod": "LOD0",
+            "triangles": 46650,
+            "bytes": 21766040,
+            "sha256": "84e94af963b52de1c648fb1115c2b2d8ecbaf33c053bf14c676ab6f7f53544a5"
+          },
+          {
+            "lod": "LOD1",
+            "triangles": 28785,
+            "bytes": 21411264,
+            "sha256": "177efd9146646a8414c32122ffeecba35ff698ae0a1c842eeca58322abb15b0c"
+          },
+          {
+            "lod": "LOD2",
+            "triangles": 14958,
+            "bytes": 21062956,
+            "sha256": "78e732647dd5a603ac1154838f8a2f3311be3a308e05d35b4b0232b296c85779"
+          },
+          {
+            "lod": "LOD3",
+            "triangles": 8684,
+            "bytes": 20826304,
+            "sha256": "b9987843a117d46220fbe2545759fbbfed1f40e9284ed273f6a18731c0d007e3"
+          },
+          {
+            "lod": "LOD4",
+            "triangles": 5082,
+            "bytes": 20660336,
+            "sha256": "c886c5591fdc075883d97722a0053efd0ac80b2f61f74c00e18c1ca50741b92d"
+          }
+        ],
+        "skins": 0,
+        "clips": 0,
+        "images": [
+          {
+            "bytes": 6299105,
+            "sha256": "9cbf05a92f63163a4193c6bff64d84d3f05dc6312c8354f3632f522e26333074",
+            "size": [
+              4096,
+              4096
+            ],
+            "format": "PNG"
+          },
+          {
+            "bytes": 14128302,
+            "sha256": "a0ca88a7a3c127718f490ee509c01c93a8eda0cceaef7d87c0ed7524d70554de",
+            "size": [
+              4096,
+              4096
+            ],
+            "format": "PNG"
+          }
+        ]
+      },
+      {
+        "name": "Inspector",
+        "lods": [
+          {
+            "lod": "LOD0",
+            "triangles": 47947,
+            "bytes": 17227432,
+            "sha256": "bcfe1470dc1d7cbba7ac3a28d471b1950c78ea796c8ed38d85d3a719ea0754b4"
+          },
+          {
+            "lod": "LOD1",
+            "triangles": 28945,
+            "bytes": 16863328,
+            "sha256": "997a61716aca07f98000723ca4a81f5c393600f6c9b83851bab1f8a4451132ac"
+          },
+          {
+            "lod": "LOD2",
+            "triangles": 14482,
+            "bytes": 16511140,
+            "sha256": "43ba37ae410310011efc4d29e65de271392feea6162782208b0d36170c58ee22"
+          },
+          {
+            "lod": "LOD3",
+            "triangles": 7810,
+            "bytes": 16277344,
+            "sha256": "aeeee42b6b57cb5b261751c5b113d94778e1b6dacdb56fda89ea3267e9b539f7"
+          },
+          {
+            "lod": "LOD4",
+            "triangles": 4266,
+            "bytes": 16117836,
+            "sha256": "9766ad3e570238b4453fae093434ff829b333cf7594fb926fca8027729880d15"
+          }
+        ],
+        "skins": 0,
+        "clips": 0,
+        "images": [
+          {
+            "bytes": 3982522,
+            "sha256": "e47a505f39486ade9ce1f854f7648a77c5e27a6b06d95f1e64b58ce9e4d894c6",
+            "size": [
+              4096,
+              4096
+            ],
+            "format": "PNG"
+          },
+          {
+            "bytes": 11934306,
+            "sha256": "4b4556b93a23941119cd66edff6a9e84f2825ff2e98f913a5e849fae77263023",
+            "size": [
+              4096,
+              4096
+            ],
+            "format": "PNG"
+          }
+        ]
+      },
+      {
+        "name": "InsulationWorker",
+        "lods": [
+          {
+            "lod": "LOD0",
+            "triangles": 47164,
+            "bytes": 21541136,
+            "sha256": "5127c7387339b16edede59d7475c75e785442797a44abaf4866a696aaf888106"
+          },
+          {
+            "lod": "LOD1",
+            "triangles": 31441,
+            "bytes": 21202884,
+            "sha256": "53365e12cbdb91c43ae2c399e5b41d1c7eb93dc25c666c2e8adac22d0aea9be0"
+          },
+          {
+            "lod": "LOD2",
+            "triangles": 17533,
+            "bytes": 20863112,
+            "sha256": "2891c23cbb70ec93ff4145cf725850c597053a374c3cb56078dc29d1cee38d48"
+          },
+          {
+            "lod": "LOD3",
+            "triangles": 10266,
+            "bytes": 20607540,
+            "sha256": "7282fcd823f6f4d16d1ff08e1813504a60eaaff89c396d51d5cb47f41e60342b"
+          },
+          {
+            "lod": "LOD4",
+            "triangles": 5406,
+            "bytes": 20411908,
+            "sha256": "9d764bad8bb5700495ff59db2394bc227bfa10449ccd93acc793e90436b338e1"
+          }
+        ],
+        "skins": 0,
+        "clips": 0,
+        "images": [
+          {
+            "bytes": 5546012,
+            "sha256": "fe2e18856ff542d3c0d2276f992d5d8f123808e25b590400c02e1901ae0c4036",
+            "size": [
+              4096,
+              4096
+            ],
+            "format": "PNG"
+          },
+          {
+            "bytes": 14618302,
+            "sha256": "b9cdcfa3522c060a203059f9929909ca91e07e532922693db434791727c64e18",
+            "size": [
+              4096,
+              4096
+            ],
+            "format": "PNG"
+          }
+        ]
+      },
+      {
+        "name": "JackhammerWorker",
+        "lods": [
+          {
+            "lod": "LOD0",
+            "triangles": 47050,
+            "bytes": 21596660,
+            "sha256": "f8785efa17105a59d0e542c97939196c69cce3a6ba44f4749ee131333c7efd7b"
+          },
+          {
+            "lod": "LOD1",
+            "triangles": 30827,
+            "bytes": 21254808,
+            "sha256": "cbcec5732947e03fab43ecee660f623d1def36b283c2b62df9a9c3e02b2597ac"
+          },
+          {
+            "lod": "LOD2",
+            "triangles": 17544,
+            "bytes": 20920088,
+            "sha256": "94acd24dafa37b01d95527b8421689d54bbcd66799b0f725b2ece370448412e5"
+          },
+          {
+            "lod": "LOD3",
+            "triangles": 10570,
+            "bytes": 20675684,
+            "sha256": "114a8d4ca83fcabe5f6ea37ffe8b2652ac1649229046cc3f6676fde461d60932"
+          },
+          {
+            "lod": "LOD4",
+            "triangles": 5936,
+            "bytes": 20481188,
+            "sha256": "488ebb56c58810a69f505b61b4a31a8a79246706d4a00ad0e557fb2a7131c0fa"
+          }
+        ],
+        "skins": 0,
+        "clips": 0,
+        "images": [
+          {
+            "bytes": 5858287,
+            "sha256": "291ce2e39b0161fbdf2423765b8f6a902e50b81e7fda22f77641dbc1f8ae0bef",
+            "size": [
+              4096,
+              4096
+            ],
+            "format": "PNG"
+          },
+          {
+            "bytes": 14349312,
+            "sha256": "0ba13acca6666b5411301ef59cb0cfa5246dc09515d6fbd348106033f0a58974",
+            "size": [
+              4096,
+              4096
+            ],
+            "format": "PNG"
+          }
+        ]
+      },
+      {
+        "name": "Manager",
+        "lods": [
+          {
+            "lod": "LOD0",
+            "triangles": 47196,
+            "bytes": 18748784,
+            "sha256": "629c71e9f6343712d586fe1488db7ee72bb83e6962acc326afede82206d01a29"
+          },
+          {
+            "lod": "LOD1",
+            "triangles": 27574,
+            "bytes": 18379868,
+            "sha256": "7bc7b95d3af388003754c5f49ebe55b81f8945b24ed001be03403e0d4047067c"
+          },
+          {
+            "lod": "LOD2",
+            "triangles": 13956,
+            "bytes": 18042732,
+            "sha256": "256f055c92f58c3b446a543dc6a3acb3ebe2918ccab0f4814ede78934c0743d3"
+          },
+          {
+            "lod": "LOD3",
+            "triangles": 7800,
+            "bytes": 17817064,
+            "sha256": "d6fb8a470d238b278badba663371c6c9ab04a76f2fdf6180dafb9008ad15045a"
+          },
+          {
+            "lod": "LOD4",
+            "triangles": 4469,
+            "bytes": 17656244,
+            "sha256": "5d254898156709208cb3f8065a1747e2211b6d59380e7668c8e95a09cc6b73c7"
+          }
+        ],
+        "skins": 0,
+        "clips": 0,
+        "images": [
+          {
+            "bytes": 4895936,
+            "sha256": "da4aa7732243fd1199f99875ef4dd1eaaf8dce052383c2bf82003a1af10c2fa2",
+            "size": [
+              4096,
+              4096
+            ],
+            "format": "PNG"
+          },
+          {
+            "bytes": 12553900,
+            "sha256": "661b4367a1fedbe94c84b262f987df1b0fb7619fe05f3db3350e6fd4b98d09c2",
+            "size": [
+              4096,
+              4096
+            ],
+            "format": "PNG"
+          }
+        ]
+      },
+      {
+        "name": "Nailer",
+        "lods": [
+          {
+            "lod": "LOD0",
+            "triangles": 47676,
+            "bytes": 19976268,
+            "sha256": "5143944e38e2199fc8b160254da5b7551fdb298e4c81583096a84b15bd2e34e0"
+          },
+          {
+            "lod": "LOD1",
+            "triangles": 31318,
+            "bytes": 19650148,
+            "sha256": "55b5af25d1acce0ae5e00c8a494f0291a35795dde8dfd967dee855dedc53c20d"
+          },
+          {
+            "lod": "LOD2",
+            "triangles": 17441,
+            "bytes": 19309568,
+            "sha256": "b7e0de3b1806d22ac635da9f175c127a64bd05926715a78ba7d1a6182388bd60"
+          },
+          {
+            "lod": "LOD3",
+            "triangles": 10299,
+            "bytes": 19065816,
+            "sha256": "b9107c59da9bbf476c377d47d1b3f50de619ad39039c10b6affb684a47a3dd52"
+          },
+          {
+            "lod": "LOD4",
+            "triangles": 5682,
+            "bytes": 18880088,
+            "sha256": "504780b0d42f6294c0353f5b240bdd4367c0083bacb1b86dc93ab5470c60e5fe"
+          }
+        ],
+        "skins": 0,
+        "clips": 0,
+        "images": [
+          {
+            "bytes": 5394275,
+            "sha256": "d50b5b59d290ef2614e4ad07ba05503a996e422bd8826bd25b2c8d68a55330d9",
+            "size": [
+              4096,
+              4096
+            ],
+            "format": "PNG"
+          },
+          {
+            "bytes": 13243976,
+            "sha256": "c97d1c7878ba9be592e29b6ef74d3660ecda979956d531a20de9a097fe70061a",
+            "size": [
+              4096,
+              4096
+            ],
+            "format": "PNG"
+          }
+        ]
+      },
+      {
+        "name": "Painter",
+        "lods": [
+          {
+            "lod": "LOD0",
+            "triangles": 47429,
+            "bytes": 19783372,
+            "sha256": "92a52cb484c6e4a194565129dc4b14f2ab1aad5063c8aef26e6e166c2ce97d3f"
+          },
+          {
+            "lod": "LOD1",
+            "triangles": 29365,
+            "bytes": 19429864,
+            "sha256": "fe524fc288d8059fe6f9367ca8def1c9dc1ae7619fea87cc724bdb5b0999be0c"
+          },
+          {
+            "lod": "LOD2",
+            "triangles": 15137,
+            "bytes": 19073220,
+            "sha256": "486e9d1ccc76e677543c512c332eadc02cf29c2347b672c3fdc5036c41f47bd6"
+          },
+          {
+            "lod": "LOD3",
+            "triangles": 8414,
+            "bytes": 18820272,
+            "sha256": "c208b3daacdb5ba9c43603ed85f455609d54114766bb78871af24758d2947d27"
+          },
+          {
+            "lod": "LOD4",
+            "triangles": 4714,
+            "bytes": 18658452,
+            "sha256": "bad327f5186b0a20d2905f5bb55507dd130b76866452a3d9d33f43e0aec6e656"
+          }
+        ],
+        "skins": 0,
+        "clips": 0,
+        "images": [
+          {
+            "bytes": 4787640,
+            "sha256": "029c7a8cd34dd8f028251659f0800ff66ae02f0206f8386079951e9ffd1391c6",
+            "size": [
+              4096,
+              4096
+            ],
+            "format": "PNG"
+          },
+          {
+            "bytes": 13652340,
+            "sha256": "a5e2acd994c1cf66baf6d4bbe29bf7e9d0ec9b672fc4e0caf80cc28a2cc79285",
+            "size": [
+              4096,
+              4096
+            ],
+            "format": "PNG"
+          }
+        ]
+      },
+      {
+        "name": "Plumber",
+        "lods": [
+          {
+            "lod": "LOD0",
+            "triangles": 47115,
+            "bytes": 20384048,
+            "sha256": "8dde97635289e961af5cc1b0ed6a5db1d48073d9c55b0fdda2832a4ecccbd20f"
+          },
+          {
+            "lod": "LOD1",
+            "triangles": 29795,
+            "bytes": 20029140,
+            "sha256": "abb1f0613ca2ae0864a87585e6a8f1ddf0d583a9bac1a1fb4b27e9b1b1edf4d6"
+          },
+          {
+            "lod": "LOD2",
+            "triangles": 16376,
+            "bytes": 19684176,
+            "sha256": "fef235ec6776f839e8a2de96f34feae43a07059e1281eecf87a0c7c29aed2829"
+          },
+          {
+            "lod": "LOD3",
+            "triangles": 9483,
+            "bytes": 19436772,
+            "sha256": "fa1e25ecf7327657295a12e61ee943cf1fcf5a119344d5474e7216c870a4f676"
+          },
+          {
+            "lod": "LOD4",
+            "triangles": 5299,
+            "bytes": 19250984,
+            "sha256": "bc0d0399c64f07aed5d4d9a5d35e78dc4778b1e248ba4d1acaf001887468f9d6"
+          }
+        ],
+        "skins": 0,
+        "clips": 0,
+        "images": [
+          {
+            "bytes": 5323935,
+            "sha256": "5fe1bc065672ac1be980ba6b3df69fac0da1542b063dfc5a5ec46ca81a75e60b",
+            "size": [
+              4096,
+              4096
+            ],
+            "format": "PNG"
+          },
+          {
+            "bytes": 13677262,
+            "sha256": "4ddfaf57d35885395953eabe772c232fe75bc28ca590c29fae553bb08ab39078",
+            "size": [
+              4096,
+              4096
+            ],
+            "format": "PNG"
+          }
+        ]
+      },
+      {
+        "name": "PrestressingWorker",
+        "lods": [
+          {
+            "lod": "LOD0",
+            "triangles": 47237,
+            "bytes": 21030108,
+            "sha256": "d8b4d1412edada98f46e37fc1f44e08b21b78f18d0506eba9dca83144146bb66"
+          },
+          {
+            "lod": "LOD1",
+            "triangles": 28386,
+            "bytes": 20622424,
+            "sha256": "61ef8d468182c193a8ce199f8e82f42aa57e9d880243245d34f931f6c7d62abe"
+          },
+          {
+            "lod": "LOD2",
+            "triangles": 14641,
+            "bytes": 20246196,
+            "sha256": "0cd72d60da945068882203541cfdc9121c04d7b06c09cf126bfe7e44f870fa7a"
+          },
+          {
+            "lod": "LOD3",
+            "triangles": 8421,
+            "bytes": 19999624,
+            "sha256": "acaa9db008378fbefc0c7068373427f629c5ffaf00224e784ea4cf0aa163d618"
+          },
+          {
+            "lod": "LOD4",
+            "triangles": 4909,
+            "bytes": 19832852,
+            "sha256": "be0317a34cf40c1bdb5e2a15e35a8eca70c3ffa4cfb1f3f737687289fdd537d0"
+          }
+        ],
+        "skins": 0,
+        "clips": 0,
+        "images": [
+          {
+            "bytes": 5287789,
+            "sha256": "4be2f0b9f40728c16006e9066419b0999f8d8e6bf2fe27bf53959bc4f436c1fb",
+            "size": [
+              4096,
+              4096
+            ],
+            "format": "PNG"
+          },
+          {
+            "bytes": 14290035,
+            "sha256": "7889814aabf83176968eb7a8fcbd8e5039783bf033b75d1c9580ef01838e6343",
+            "size": [
+              4096,
+              4096
+            ],
+            "format": "PNG"
+          }
+        ]
+      },
+      {
+        "name": "QAInspector",
+        "lods": [
+          {
+            "lod": "LOD0",
+            "triangles": 48159,
+            "bytes": 17897884,
+            "sha256": "bccc449ef8c3ab997ba2cb2ff8cbb3f9e64bf2c4c4c13090a9f972a0d59ccb14"
+          },
+          {
+            "lod": "LOD1",
+            "triangles": 29444,
+            "bytes": 17540940,
+            "sha256": "fd055b6e2355ed6cfb0b21cdcb92a504c4339d1f4ce122c22c5fc8981cc4cf57"
+          },
+          {
+            "lod": "LOD2",
+            "triangles": 15353,
+            "bytes": 17198856,
+            "sha256": "4e51daa2e00873d58b85fe25089ab5b966796eea078e1352c7120660fb84ffda"
+          },
+          {
+            "lod": "LOD3",
+            "triangles": 8469,
+            "bytes": 16951284,
+            "sha256": "10722c3f50448758929436cafaa91ee525b677a39f0176adf9b39f92c6e1d10d"
+          },
+          {
+            "lod": "LOD4",
+            "triangles": 4910,
+            "bytes": 16785600,
+            "sha256": "470c281d1196a45ad31de7fcc53b24bd1889694e11d26fd825bb496261671999"
+          }
+        ],
+        "skins": 0,
+        "clips": 0,
+        "images": [
+          {
+            "bytes": 4478240,
+            "sha256": "9f267462db7c91d00f61102c523a258d5794609c30930be7cc2205a78bc2e564",
+            "size": [
+              4096,
+              4096
+            ],
+            "format": "PNG"
+          },
+          {
+            "bytes": 12085295,
+            "sha256": "4d14c33f15e2e5d232b63cc7a3fc76e91c9b3a8978647d9f017f35183857e0f1",
+            "size": [
+              4096,
+              4096
+            ],
+            "format": "PNG"
+          }
+        ]
+      },
+      {
+        "name": "RebarWorker",
+        "lods": [
+          {
+            "lod": "LOD0",
+            "triangles": 48654,
+            "bytes": 20540680,
+            "sha256": "523bd796ed736e478347cec6c6a379b6534506fefd10d743cf92133ffeeae24f"
+          },
+          {
+            "lod": "LOD1",
+            "triangles": 34458,
+            "bytes": 20215716,
+            "sha256": "03c647d837f038b49a9e53595dbd13618a3abd9b384eb88bd65a0bd7e7408685"
+          },
+          {
+            "lod": "LOD2",
+            "triangles": 19486,
+            "bytes": 19864476,
+            "sha256": "23cfa962933c46a439d52c760a2ca4f94a3846e56e6fb3b7cc22c7d17164986e"
+          },
+          {
+            "lod": "LOD3",
+            "triangles": 11064,
+            "bytes": 19587924,
+            "sha256": "e57c5c5807f4aa87687311279fd4c3e50bb5bd74417e13735173a9e8327735e9"
+          },
+          {
+            "lod": "LOD4",
+            "triangles": 6033,
+            "bytes": 19380932,
+            "sha256": "44382fb4d6672d08da796d6fb9f0f520a8941492069bd01547ab93af13fb50de"
+          }
+        ],
+        "skins": 0,
+        "clips": 0,
+        "images": [
+          {
+            "bytes": 5311544,
+            "sha256": "028fdc7820ef9fd9a75a5dd6f657d7153707a161797a6459ade98d456ee73ccd",
+            "size": [
+              4096,
+              4096
+            ],
+            "format": "PNG"
+          },
+          {
+            "bytes": 13788876,
+            "sha256": "49548b527c2c0d1f9a588aecb1ea6411f9a6a70c42b10f5eba5231615400d08a",
+            "size": [
+              4096,
+              4096
+            ],
+            "format": "PNG"
+          }
+        ]
+      },
+      {
+        "name": "Rigger",
+        "lods": [
+          {
+            "lod": "LOD0",
+            "triangles": 47441,
+            "bytes": 19611616,
+            "sha256": "48df9ea43dea49cc95b2b8889bd14aa7c01ffef94794ca88fbf9a3953621e6f3"
+          },
+          {
+            "lod": "LOD1",
+            "triangles": 26534,
+            "bytes": 19215416,
+            "sha256": "19dde5abaabcb136748efc63afc923741ea5a366bb4806f44919496fabf15330"
+          },
+          {
+            "lod": "LOD2",
+            "triangles": 12685,
+            "bytes": 18847608,
+            "sha256": "a596ee97d8580cf7ccd7d857569f0e66d774257028876308f275b5b3bdd24028"
+          },
+          {
+            "lod": "LOD3",
+            "triangles": 6844,
+            "bytes": 18617456,
+            "sha256": "d6ad51697df82a01a3baa8cc17d1aa825b0369e4ad9b99a56081c3c41183456b"
+          },
+          {
+            "lod": "LOD4",
+            "triangles": 3898,
+            "bytes": 18468160,
+            "sha256": "67f662e3178d32780668068fed9e78ce4621f3808e6a42bd3ac0072577e1b65d"
+          }
+        ],
+        "skins": 0,
+        "clips": 0,
+        "images": [
+          {
+            "bytes": 5238398,
+            "sha256": "1bd14e3c8f6dd504403bfd8d5a4d9659635b9472efd0d1ba39b59bd92d21ed47",
+            "size": [
+              4096,
+              4096
+            ],
+            "format": "PNG"
+          },
+          {
+            "bytes": 13031551,
+            "sha256": "822835fd3feed1d4c106641daec630c9b1c54c900a23f6be6aec1a69c65a5244",
+            "size": [
+              4096,
+              4096
+            ],
+            "format": "PNG"
+          }
+        ]
+      },
+      {
+        "name": "RoadMarkingWorker",
+        "lods": [
+          {
+            "lod": "LOD0",
+            "triangles": 47618,
+            "bytes": 20927664,
+            "sha256": "85142ee7e716b2c091bd87d925a48855b5109181da370a2b87aa959adfbae74a"
+          },
+          {
+            "lod": "LOD1",
+            "triangles": 28877,
+            "bytes": 20540528,
+            "sha256": "1f86a6758c9b828d68cbafb7e0b82085cccf31dbdcfed9b71c82d7b995017e69"
+          },
+          {
+            "lod": "LOD2",
+            "triangles": 14896,
+            "bytes": 20177396,
+            "sha256": "ebb56227b1b8cf41bcb727efbfc9fc25e5b2cda3ba16a7217d158a75a619124e"
+          },
+          {
+            "lod": "LOD3",
+            "triangles": 8832,
+            "bytes": 19944720,
+            "sha256": "ad7090027e9c07efbfe47943d1964d165350026dc3435a52765c9f2b4ea12db9"
+          },
+          {
+            "lod": "LOD4",
+            "triangles": 5160,
+            "bytes": 19770780,
+            "sha256": "7445376edd73309878b426d172c580fedcd3e43eaec0654f5686e727f7c92a2c"
+          }
+        ],
+        "skins": 0,
+        "clips": 0,
+        "images": [
+          {
+            "bytes": 4705305,
+            "sha256": "6059e4deb3eb0cc49036fb4a36439dbfbe1e0367bbdbeaa1230a6435ea231260",
+            "size": [
+              4096,
+              4096
+            ],
+            "format": "PNG"
+          },
+          {
+            "bytes": 14810228,
+            "sha256": "5b23698c31f3bd036ef0fe412f03051fa721222928cd0d40b0942e30b11ffd8b",
+            "size": [
+              4096,
+              4096
+            ],
+            "format": "PNG"
+          }
+        ]
+      },
+      {
+        "name": "RockBoltWorker",
+        "lods": [
+          {
+            "lod": "LOD0",
+            "triangles": 48001,
+            "bytes": 21497548,
+            "sha256": "132f23f743649b8dd9705ecd98c6ec51ff5d4049df7178c7315c7198c92aa674"
+          },
+          {
+            "lod": "LOD1",
+            "triangles": 30910,
+            "bytes": 21154216,
+            "sha256": "5f2913ca5b6eab8418b41cdd9d49ce2cd78e0b7455d53244aae47da250b29ae5"
+          },
+          {
+            "lod": "LOD2",
+            "triangles": 16224,
+            "bytes": 20788688,
+            "sha256": "6f18e867623eaa5f55461ab7d42cba61cdd5d80ab28e4690f55d0490de0917b5"
+          },
+          {
+            "lod": "LOD3",
+            "triangles": 9323,
+            "bytes": 20541336,
+            "sha256": "e1490fdd09c6abb84cae0bf961399c79246832e76ddd188405958f61701ea577"
+          },
+          {
+            "lod": "LOD4",
+            "triangles": 5246,
+            "bytes": 20362948,
+            "sha256": "d0f78440ceb6155122458716bb3c99fd60a3a695f1bf5219df39d507fdd3115f"
+          }
+        ],
+        "skins": 0,
+        "clips": 0,
+        "images": [
+          {
+            "bytes": 6147424,
+            "sha256": "aed38ec7a6674ccf1268e0d1fcbeee71e6e329d5fa2fa7255c72d557bec52190",
+            "size": [
+              4096,
+              4096
+            ],
+            "format": "PNG"
+          },
+          {
+            "bytes": 13975643,
+            "sha256": "e98ee5fd29a61f2d30d2ff0e3997f622dec06217e573e09b9c648d2999293c52",
+            "size": [
+              4096,
+              4096
+            ],
+            "format": "PNG"
+          }
+        ]
+      },
+      {
+        "name": "Roofer",
+        "lods": [
+          {
+            "lod": "LOD0",
+            "triangles": 47998,
+            "bytes": 20380888,
+            "sha256": "00170f9af3d963a72ea85446b1af539c52a041752d19abd4ab4ed10a998e4fc4"
+          },
+          {
+            "lod": "LOD1",
+            "triangles": 33271,
+            "bytes": 20055328,
+            "sha256": "e49c3447273277f90f525f1445f76b3d8da0f579d352389bca7e7b6d4e83a80e"
+          },
+          {
+            "lod": "LOD2",
+            "triangles": 19699,
+            "bytes": 19728708,
+            "sha256": "4f522471dbf3a382fa21a07a3f1b81707c1521fe69bc59e45c18cea2fca0cf7b"
+          },
+          {
+            "lod": "LOD3",
+            "triangles": 11423,
+            "bytes": 19460848,
+            "sha256": "8cc330c42699001a1591345da950449ca66b2e9249c9b542dbc4f6d89292d165"
+          },
+          {
+            "lod": "LOD4",
+            "triangles": 6083,
+            "bytes": 19255392,
+            "sha256": "0c6373b8cccec322b44b36086fce955cd0a3472640766008400de6c4fa6e5bc3"
+          }
+        ],
+        "skins": 0,
+        "clips": 0,
+        "images": [
+          {
+            "bytes": 5932571,
+            "sha256": "632838b72738b86d69da97d092fb20e8b05d3ca38a99247571832afe50d47e6c",
+            "size": [
+              4096,
+              4096
+            ],
+            "format": "PNG"
+          },
+          {
+            "bytes": 13048841,
+            "sha256": "bfc7c7cec32b559d4b76be55be1925ca3076bf2017b8ab96f9a01b4ecd4c3868",
+            "size": [
+              4096,
+              4096
+            ],
+            "format": "PNG"
+          }
+        ]
+      },
+      {
+        "name": "SafetyOfficer",
+        "lods": [
+          {
+            "lod": "LOD0",
+            "triangles": 47444,
+            "bytes": 17471040,
+            "sha256": "b005937c852ebd48071e55bef090cbea474ba4a895e45ce4705974b4d8c3fe72"
+          },
+          {
+            "lod": "LOD1",
+            "triangles": 27938,
+            "bytes": 17103848,
+            "sha256": "cbcc406990184fbb39f827087d4aef0beb5d7185be41f9ccd5f38c37389492b1"
+          },
+          {
+            "lod": "LOD2",
+            "triangles": 13864,
+            "bytes": 16759588,
+            "sha256": "3cd21c86457c9cfe13ae96c401093f07a6c13c763b2043f9df615d027588da2b"
+          },
+          {
+            "lod": "LOD3",
+            "triangles": 7490,
+            "bytes": 16523708,
+            "sha256": "02d4475cecf29417c3367c90421bbe9825693344a1642fb83db10fa424113b1d"
+          },
+          {
+            "lod": "LOD4",
+            "triangles": 4107,
+            "bytes": 16363348,
+            "sha256": "cd13bb429e5dbe7de44f3a8cab7e693a2e8b680c80274587d57e64fd4a68fb2c"
+          }
+        ],
+        "skins": 0,
+        "clips": 0,
+        "images": [
+          {
+            "bytes": 4297874,
+            "sha256": "2d4cc0fe5fba20982aee284e0fc699392f3181d40265807eb66cad2446dec753",
+            "size": [
+              4096,
+              4096
+            ],
+            "format": "PNG"
+          },
+          {
+            "bytes": 11865814,
+            "sha256": "a4e0aead5cc6001a03a02befc91cdd52e8b18f58b04f0c3f1cff57626035128e",
+            "size": [
+              4096,
+              4096
+            ],
+            "format": "PNG"
+          }
+        ]
+      },
+      {
+        "name": "ScaffoldWorker",
+        "lods": [
+          {
+            "lod": "LOD0",
+            "triangles": 48151,
+            "bytes": 20580976,
+            "sha256": "f9802a40560438d88d42ab066df21f4a6ed01ab067bb9064d8aa0c3676634abc"
+          },
+          {
+            "lod": "LOD1",
+            "triangles": 29259,
+            "bytes": 20172988,
+            "sha256": "e750cd902f8a1f889673025f9f6d43d6aa3836e6b5467e18976a79635506224f"
+          },
+          {
+            "lod": "LOD2",
+            "triangles": 14563,
+            "bytes": 19753288,
+            "sha256": "e0fca005964a599a9b9e3f0defebeff055e9bb9e231b55092f52222a0d7cb63d"
+          },
+          {
+            "lod": "LOD3",
+            "triangles": 8580,
+            "bytes": 19496940,
+            "sha256": "3fdff6c5b726b69f200fca89d6a99f01759b0cc49aad610bfe589e367e277d77"
+          },
+          {
+            "lod": "LOD4",
+            "triangles": 5127,
+            "bytes": 19321944,
+            "sha256": "a99d0888fae0dc02fd9b254d080a3ec833297bad0808f3f57ea0e2b3d89137df"
+          }
+        ],
+        "skins": 0,
+        "clips": 0,
+        "images": [
+          {
+            "bytes": 4973677,
+            "sha256": "e19d64e72d5e2fb1d42804f65cae73dd2689e514c9889a0fad776e4ff15f8891",
+            "size": [
+              4096,
+              4096
+            ],
+            "format": "PNG"
+          },
+          {
+            "bytes": 14077426,
+            "sha256": "dfea0765fe92ea1883429b03e4ad0e2e4fa17e85be9dad824e5dc2ce9902909e",
+            "size": [
+              4096,
+              4096
+            ],
+            "format": "PNG"
+          }
+        ]
+      },
+      {
+        "name": "ShotcreteWorker",
+        "lods": [
+          {
+            "lod": "LOD0",
+            "triangles": 48972,
+            "bytes": 23863836,
+            "sha256": "d9063bf94662db72afea9da3f50d9470409eafdd144209eaeec8434a02444ccd"
+          },
+          {
+            "lod": "LOD1",
+            "triangles": 35600,
+            "bytes": 23542576,
+            "sha256": "57ee6784707a6fe8b0ebb05e3ccc627a3e6fc94779ec9c291264cd573394ad3c"
+          },
+          {
+            "lod": "LOD2",
+            "triangles": 20182,
+            "bytes": 23164304,
+            "sha256": "fc538228d4c027725b23cee581ba27db97dab3214d20aec6420bf0fa67cea4da"
+          },
+          {
+            "lod": "LOD3",
+            "triangles": 11682,
+            "bytes": 22897112,
+            "sha256": "ed6ebebfaccf5ef64955e1bca7694953f5bcdc6d3f7ebe94e78254153ba75730"
+          },
+          {
+            "lod": "LOD4",
+            "triangles": 6459,
+            "bytes": 22687752,
+            "sha256": "b6109390f58b1f8235af698e61b5612968418116e96098eb5b9aa8d11a46e67e"
+          }
+        ],
+        "skins": 0,
+        "clips": 0,
+        "images": [
+          {
+            "bytes": 7000658,
+            "sha256": "f7d9b2b91784778bed44daf8ee057ade84f80498881d31c18bcae00f5c75797a",
+            "size": [
+              4096,
+              4096
+            ],
+            "format": "PNG"
+          },
+          {
+            "bytes": 15398813,
+            "sha256": "ca8a750968d238202737443245b3b8d41425b0b9178a9b5e1dbd41b3158902a8",
+            "size": [
+              4096,
+              4096
+            ],
+            "format": "PNG"
+          }
+        ]
+      },
+      {
+        "name": "SignalMan",
+        "lods": [
+          {
+            "lod": "LOD0",
+            "triangles": 47296,
+            "bytes": 18921408,
+            "sha256": "1586d8c8a290b89e802a083d3d32a030decfa2dd4c6b941dfe42c6a862d69d39"
+          },
+          {
+            "lod": "LOD1",
+            "triangles": 28228,
+            "bytes": 18557176,
+            "sha256": "54ab961f3596527bb401b590e72b3c25a2c9d59875185e31f2ae1845d186b222"
+          },
+          {
+            "lod": "LOD2",
+            "triangles": 14113,
+            "bytes": 18208676,
+            "sha256": "295a9d072b34fd0dae968fd2b736dd0bd2ebb9a6a583b8eb91635ef2e7594e0d"
+          },
+          {
+            "lod": "LOD3",
+            "triangles": 7904,
+            "bytes": 17973756,
+            "sha256": "ceccb5281ae2ff75e3525e58934c532d3d7dbcbd6c1c53d5bbf23172b3126d20"
+          },
+          {
+            "lod": "LOD4",
+            "triangles": 4713,
+            "bytes": 17815888,
+            "sha256": "ca8dd15c344a8107dda6d2cd7dba557a821f069422671eeb2303c3e7f3676ec3"
+          }
+        ],
+        "skins": 0,
+        "clips": 0,
+        "images": [
+          {
+            "bytes": 5044693,
+            "sha256": "791f55866f58b6780237f8951d1c7d473234d6865cf3df5d64031a492fb90a2d",
+            "size": [
+              4096,
+              4096
+            ],
+            "format": "PNG"
+          },
+          {
+            "bytes": 12554059,
+            "sha256": "f84282399ed84d8ee93368514ae7c793b40f63a617b5d2bf27b7fbaf4570b1a6",
+            "size": [
+              4096,
+              4096
+            ],
+            "format": "PNG"
+          }
+        ]
+      },
+      {
+        "name": "Slacker",
+        "lods": [
+          {
+            "lod": "LOD0",
+            "triangles": 47887,
+            "bytes": 19052712,
+            "sha256": "5f1b4a496996f2e03edfb0c36ed8bd372f6ac6aa0ca27fda23b302fa076d83ec"
+          },
+          {
+            "lod": "LOD1",
+            "triangles": 31123,
+            "bytes": 18705012,
+            "sha256": "999081f43f4f2c8c0c351cfe038da9b78923c974c5424a65db96a255e8cfde5d"
+          },
+          {
+            "lod": "LOD2",
+            "triangles": 16811,
+            "bytes": 18323108,
+            "sha256": "10ed4f0d438d6a8315582859b36095474ed882d97e99aa797c237697e4f9fe9f"
+          },
+          {
+            "lod": "LOD3",
+            "triangles": 9664,
+            "bytes": 18067964,
+            "sha256": "f2b628be3a16a0da1b20a5a5ab0a13131b304ea05f0fb8477c7c59cd992c238d"
+          },
+          {
+            "lod": "LOD4",
+            "triangles": 5157,
+            "bytes": 17891956,
+            "sha256": "307239ce2aa1162d0f9eda457840cc3093f94802534407a18d5164474b8082d8"
+          }
+        ],
+        "skins": 0,
+        "clips": 0,
+        "images": [
+          {
+            "bytes": 4096590,
+            "sha256": "3287773334be39ab5c308a4c1ed079fe0ab177bd32dc9c43511015dd5f093a85",
+            "size": [
+              4096,
+              4096
+            ],
+            "format": "PNG"
+          },
+          {
+            "bytes": 13563323,
+            "sha256": "e32d20a16221909311af2974f3a1b4d58dfc68a5bfa3c77dc197817bad66ae1e",
+            "size": [
+              4096,
+              4096
+            ],
+            "format": "PNG"
+          }
+        ]
+      },
+      {
+        "name": "Smoker",
+        "lods": [
+          {
+            "lod": "LOD0",
+            "triangles": 48205,
+            "bytes": 18629608,
+            "sha256": "b6e15ba2a0dab9d3a9a675f20666ac2457fed452e29c48ea7077d54cf68d0aa2"
+          },
+          {
+            "lod": "LOD1",
+            "triangles": 28764,
+            "bytes": 18263088,
+            "sha256": "02a4667f8b700558ccd9a505057cbd28e3b1c4148324980b2f5f47d42bda5c08"
+          },
+          {
+            "lod": "LOD2",
+            "triangles": 14738,
+            "bytes": 17924224,
+            "sha256": "41a85373402a2d08f314a4751b7bc6950c54caade242e3e36a8514941465cdd6"
+          },
+          {
+            "lod": "LOD3",
+            "triangles": 8164,
+            "bytes": 17691680,
+            "sha256": "8ab346d2f75af28a2611193c4af1005c31da776d6098b5b9442b35e7276ff450"
+          },
+          {
+            "lod": "LOD4",
+            "triangles": 4592,
+            "bytes": 17525988,
+            "sha256": "92c9ee60f227313d4f742a07423b2422bf08eea51a9eeabef831f8f61818cae9"
+          }
+        ],
+        "skins": 0,
+        "clips": 0,
+        "images": [
+          {
+            "bytes": 4747737,
+            "sha256": "e404638e0467d0647d6cc2e4a6328e79c4f371920d7d091867a8b9e1208807dd",
+            "size": [
+              4096,
+              4096
+            ],
+            "format": "PNG"
+          },
+          {
+            "bytes": 12562714,
+            "sha256": "f19510a0fa26861ae43c83d337d66f82dd4b0377036da7bfee04f3f00ffc6e0f",
+            "size": [
+              4096,
+              4096
+            ],
+            "format": "PNG"
+          }
+        ]
+      },
+      {
+        "name": "Spotter",
+        "lods": [
+          {
+            "lod": "LOD0",
+            "triangles": 47246,
+            "bytes": 19168972,
+            "sha256": "6b629559899a3ffcc6277cd7ff0e03fdb721927b175ee4c332d3dccb304bda1a"
+          },
+          {
+            "lod": "LOD1",
+            "triangles": 27951,
+            "bytes": 18808580,
+            "sha256": "95004651318041e4825fdf9b1bd5a1fc5ec454bfc7f5e1ab4e4138aa86cbef80"
+          },
+          {
+            "lod": "LOD2",
+            "triangles": 13764,
+            "bytes": 18455104,
+            "sha256": "8b56110f5029a862d9d1a7148ed28acf1dcefc02bb6dbcf8ff8592e4a7308119"
+          },
+          {
+            "lod": "LOD3",
+            "triangles": 7602,
+            "bytes": 18221876,
+            "sha256": "8b1baf923bd2883c87e660ad2002d9f198598856f4dbd232d2a7ae920707f15f"
+          },
+          {
+            "lod": "LOD4",
+            "triangles": 4460,
+            "bytes": 18063244,
+            "sha256": "f747731b73b4ef94ade1d28dcf8bd8b860a3682fb79cbe9a9fd2bb7fdc6928fb"
+          }
+        ],
+        "skins": 0,
+        "clips": 0,
+        "images": [
+          {
+            "bytes": 5352558,
+            "sha256": "1096e16d0810bbc137d69cdee1a3deabbf19a05fab7a00486e856a53f7075c06",
+            "size": [
+              4096,
+              4096
+            ],
+            "format": "PNG"
+          },
+          {
+            "bytes": 12502299,
+            "sha256": "ffad96e4129beeb273095e917b98f2c16e30de512e8ad5dfb5d81c0377d610cc",
+            "size": [
+              4096,
+              4096
+            ],
+            "format": "PNG"
+          }
+        ]
+      },
+      {
+        "name": "SteelErector",
+        "lods": [
+          {
+            "lod": "LOD0",
+            "triangles": 47308,
+            "bytes": 23460484,
+            "sha256": "0fe4feb9eb0fd25371796be34b3e1a762dfb9352dc42f258b19247b1f5f3dd71"
+          },
+          {
+            "lod": "LOD1",
+            "triangles": 29653,
+            "bytes": 23054192,
+            "sha256": "c6d0904988028c96332460fa029769c19a8e37f896edfede08eff7bcb7360811"
+          },
+          {
+            "lod": "LOD2",
+            "triangles": 14820,
+            "bytes": 22638532,
+            "sha256": "c2c66d01522041a46fa1a55f31dcb8664b8424d5ddb9ba5f7e3093c20fd0555e"
+          },
+          {
+            "lod": "LOD3",
+            "triangles": 8227,
+            "bytes": 22377660,
+            "sha256": "78e77f72f238db517576adf1cf65139e0b3166556fc3e93b4c73cf47a5b45be1"
+          },
+          {
+            "lod": "LOD4",
+            "triangles": 4572,
+            "bytes": 22202792,
+            "sha256": "892a594be69d1bd028665b07a6618b8ed805b8740396dc2268e23fd3478b6a65"
+          }
+        ],
+        "skins": 0,
+        "clips": 0,
+        "images": [
+          {
+            "bytes": 6874749,
+            "sha256": "8f0fd28707c621712a4cee7d542e936d6d143f528c297566615fbe3b15b1d644",
+            "size": [
+              4096,
+              4096
+            ],
+            "format": "PNG"
+          },
+          {
+            "bytes": 15079752,
+            "sha256": "3ef18cf7274d84bd7ce6245c13d3b3897ba4e00e9d6e331605790fe03cace6ce",
+            "size": [
+              4096,
+              4096
+            ],
+            "format": "PNG"
+          }
+        ]
+      },
+      {
+        "name": "Surveyor",
+        "lods": [
+          {
+            "lod": "LOD0",
+            "triangles": 47728,
+            "bytes": 19969548,
+            "sha256": "3e0c4469413eb585829bc7c53f6f8ddc765e4ef2a6ad1645e83c4e796548b124"
+          },
+          {
+            "lod": "LOD1",
+            "triangles": 29101,
+            "bytes": 19593720,
+            "sha256": "269e292f64f9ac667bf5b832d3681d34182737a0f68faa9365fa3d1fdcbc8db9"
+          },
+          {
+            "lod": "LOD2",
+            "triangles": 15353,
+            "bytes": 19243188,
+            "sha256": "fe0d01d35fac3f1176fd01d11e006ab4a26c3478c6d8ebf64515bb5f52c95edb"
+          },
+          {
+            "lod": "LOD3",
+            "triangles": 8597,
+            "bytes": 18996472,
+            "sha256": "d180596dd860aa6e40f16e33d9634a855ffe42a898e5d1ec8f10db5df501d9e2"
+          },
+          {
+            "lod": "LOD4",
+            "triangles": 4965,
+            "bytes": 18830868,
+            "sha256": "8d603a1c93fe1e9a850fcb0500e2669795c55c046b54855f7984914ce701becf"
+          }
+        ],
+        "skins": 0,
+        "clips": 0,
+        "images": [
+          {
+            "bytes": 5042897,
+            "sha256": "e1025eaa5e781931e8e49f912cff1d4fd5984472876070f03a283ecc8f762440",
+            "size": [
+              4096,
+              4096
+            ],
+            "format": "PNG"
+          },
+          {
+            "bytes": 13555953,
+            "sha256": "eca1c1fd7a339d341efc4bcf76f50bd5ef6b59ab38d3ae936370116b60933ac1",
+            "size": [
+              4096,
+              4096
+            ],
+            "format": "PNG"
+          }
+        ]
+      },
+      {
+        "name": "TileSetter",
+        "lods": [
+          {
+            "lod": "LOD0",
+            "triangles": 48988,
+            "bytes": 26872232,
+            "sha256": "f69861921241ba859d4fecaec0b70533095cea004b8573ef03a7b7214625e7c4"
+          },
+          {
+            "lod": "LOD1",
+            "triangles": 33100,
+            "bytes": 26558244,
+            "sha256": "2c714a28bae7e2739003c25079882cbfce26905e285e207b167ce8e91dd0f62f"
+          },
+          {
+            "lod": "LOD2",
+            "triangles": 18097,
+            "bytes": 26236120,
+            "sha256": "4f87d2f58c14e348a6659e6bbf924b0d3697ddbe55b9742f71a4287328f98a16"
+          },
+          {
+            "lod": "LOD3",
+            "triangles": 10239,
+            "bytes": 25985160,
+            "sha256": "5b9ccd83252baac7a400335f5f593250576506dc5e79266265e5d92e9b26efdc"
+          },
+          {
+            "lod": "LOD4",
+            "triangles": 5279,
+            "bytes": 25772452,
+            "sha256": "fd3cf428fb01d47a9b9116e357cf38d3e71385708d01cd3fbb5ee0d0c57173df"
+          }
+        ],
+        "skins": 0,
+        "clips": 0,
+        "images": [
+          {
+            "bytes": 9080718,
+            "sha256": "7ec3136827fbff9830579703220682f4b8a9cdcb44bc9cbd1113061c47a67661",
+            "size": [
+              4096,
+              4096
+            ],
+            "format": "PNG"
+          },
+          {
+            "bytes": 16444867,
+            "sha256": "3cefbcce2e4f264cca14178d2797b5afa660ed05d0af139fde470236b055ca96",
+            "size": [
+              4096,
+              4096
+            ],
+            "format": "PNG"
+          }
+        ]
+      },
+      {
+        "name": "TruckDriver",
+        "lods": [
+          {
+            "lod": "LOD0",
+            "triangles": 48207,
+            "bytes": 17631792,
+            "sha256": "b846e7a07559e0ddb14593e57f4de7c91eb413df3c2a2664dc1ec8d82c707483"
+          },
+          {
+            "lod": "LOD1",
+            "triangles": 32080,
+            "bytes": 17303496,
+            "sha256": "5b0db33c78d14686cc4846ff2fc4331a56f1ff383dfa850362a10734f51e470b"
+          },
+          {
+            "lod": "LOD2",
+            "triangles": 18774,
+            "bytes": 16982472,
+            "sha256": "58d8ce75c751d0819c36e112177edcb5f3a549f6b88c5603f1a9e690e63f548c"
+          },
+          {
+            "lod": "LOD3",
+            "triangles": 11278,
+            "bytes": 16743768,
+            "sha256": "b987edfea149000a5a8a46b6dae98ce5ea78753906286f8f0ce63ae2d96b45a3"
+          },
+          {
+            "lod": "LOD4",
+            "triangles": 6152,
+            "bytes": 16537480,
+            "sha256": "dd35068c29e82b03c3788062553c2dd8a949d9a8ec3889e4705b507ffce4b937"
+          }
+        ],
+        "skins": 0,
+        "clips": 0,
+        "images": [
+          {
+            "bytes": 4006139,
+            "sha256": "dc82675782c74ec2a956f30bab9f0010db7970af7f18ebd12728878c1b69a30f",
+            "size": [
+              4096,
+              4096
+            ],
+            "format": "PNG"
+          },
+          {
+            "bytes": 12255874,
+            "sha256": "a09db55ff14e1cf810ae41229108cc4fa9a816f21a09f3ca2d6978ada2ede025",
+            "size": [
+              4096,
+              4096
+            ],
+            "format": "PNG"
+          }
+        ]
+      },
+      {
+        "name": "WaterproofingWorker",
+        "lods": [
+          {
+            "lod": "LOD0",
+            "triangles": 48068,
+            "bytes": 20422576,
+            "sha256": "025dcf4305ac856c2ef5cbc922ee228f38173ffdd82339bf732b6f2e4d6efa7c"
+          },
+          {
+            "lod": "LOD1",
+            "triangles": 32092,
+            "bytes": 20091968,
+            "sha256": "e296d982395aa2a1f358535c76ad87a77b6b039633e48db57bbf8c6493420c2e"
+          },
+          {
+            "lod": "LOD2",
+            "triangles": 17623,
+            "bytes": 19734340,
+            "sha256": "a2e7658696cbda9ebd8e59c6b9bc26fd4e32b172d5717d510f4f2bfc83c9488e"
+          },
+          {
+            "lod": "LOD3",
+            "triangles": 10182,
+            "bytes": 19483536,
+            "sha256": "ac1cc4d6104c99c6bcce29e609a2c2b5709d41b231d356d7c6a6083e7db03511"
+          },
+          {
+            "lod": "LOD4",
+            "triangles": 5450,
+            "bytes": 19284448,
+            "sha256": "0eedf59d1668da37474dcc34385a43d93f112259b8c57f0b2819002920258627"
+          }
+        ],
+        "skins": 0,
+        "clips": 0,
+        "images": [
+          {
+            "bytes": 5457687,
+            "sha256": "171ba14d911a49325199fa3bf101e165238857fe7064b86438ebe6f0724b85bc",
+            "size": [
+              4096,
+              4096
+            ],
+            "format": "PNG"
+          },
+          {
+            "bytes": 13574154,
+            "sha256": "8e67566dd48b3a9710031ba901d06301f3c3fd939001a9a28a2bc0021ad7356c",
+            "size": [
+              4096,
+              4096
+            ],
+            "format": "PNG"
+          }
+        ]
+      },
+      {
+        "name": "Welder",
+        "lods": [
+          {
+            "lod": "LOD0",
+            "triangles": 47623,
+            "bytes": 19656032,
+            "sha256": "0b3f908898089bfc30656b8bdb15f9a652f3f168a8d122d995185e1e59dc521b"
+          },
+          {
+            "lod": "LOD1",
+            "triangles": 30120,
+            "bytes": 19270852,
+            "sha256": "8e532eab3d1783bb3bedfd0c14237d51f97e27002260076e66d753d6a58ada85"
+          },
+          {
+            "lod": "LOD2",
+            "triangles": 16049,
+            "bytes": 18902636,
+            "sha256": "d2984392f1db91d08125f84aa5db286e5343766a0e35a6624ed6061844726fee"
+          },
+          {
+            "lod": "LOD3",
+            "triangles": 8862,
+            "bytes": 18654172,
+            "sha256": "f63d9c21294f0354826f6dc7554e69474a799d1f536d09238a37f041da733b90"
+          },
+          {
+            "lod": "LOD4",
+            "triangles": 4721,
+            "bytes": 18469896,
+            "sha256": "62c3ec30a528e253493c656c51c5bbf023a4fba0ba551605a35adde95376a860"
+          }
+        ],
+        "skins": 0,
+        "clips": 0,
+        "images": [
+          {
+            "bytes": 5550324,
+            "sha256": "fb38d51a248c7bf59ccdfa5b9416f30ae0a5e5af5f59d5520a33f256f68ee60e",
+            "size": [
+              4096,
+              4096
+            ],
+            "format": "PNG"
+          },
+          {
+            "bytes": 12690917,
+            "sha256": "da2db186cd5a062171d896318b73fd0ccef48867d62c6d10df6e0b06da49bf34",
+            "size": [
+              4096,
+              4096
+            ],
+            "format": "PNG"
+          }
+        ]
+      },
+      {
+        "name": "Worker",
+        "lods": [
+          {
+            "lod": "LOD0",
+            "triangles": 48018,
+            "bytes": 18909724,
+            "sha256": "4b03a74088d07228c27e83fa153ae49646a95b39e805a7886135c75f9636a3fc"
+          },
+          {
+            "lod": "LOD1",
+            "triangles": 28794,
+            "bytes": 18549020,
+            "sha256": "7b0a7ffc0cc8ab78d9c62e617e680da031c07bc9e1a4ecee790116733e9ee2d9"
+          },
+          {
+            "lod": "LOD2",
+            "triangles": 14409,
+            "bytes": 18191096,
+            "sha256": "07d22b58f3a7017b419ac14397f8277e82906064d0c251bb59f9affc5b19c1ff"
+          },
+          {
+            "lod": "LOD3",
+            "triangles": 7910,
+            "bytes": 17955876,
+            "sha256": "d6cf2b7d4cbb8c1f89a58a4462e3b714c1ec2a3e046c20d3b3ce2af6d650a7f1"
+          },
+          {
+            "lod": "LOD4",
+            "triangles": 4559,
+            "bytes": 17792948,
+            "sha256": "1280032573b083e9f80c1cb4dc4c648971f3fc3aa99299023a21d32473c4c5a9"
+          }
+        ],
+        "skins": 0,
+        "clips": 0,
+        "images": [
+          {
+            "bytes": 4865405,
+            "sha256": "1a035b9731f323cc858f953ec4ac160bc1b0ca3cde0d85f619b4613ba16bf22d",
+            "size": [
+              4096,
+              4096
+            ],
+            "format": "PNG"
+          },
+          {
+            "bytes": 12715761,
+            "sha256": "f059169ff6a4563a9c11b4cc60dc969cd17f2a3b62782304b4ffd20538be8662",
+            "size": [
+              4096,
+              4096
+            ],
+            "format": "PNG"
+          }
+        ]
+      }
+    ]
   }
 }

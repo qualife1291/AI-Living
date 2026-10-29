@@ -17,7 +17,7 @@ with sync_playwright() as p:
     page.get_by_label('Chọn kịch bản',exact=True).select_option(scenario);page.wait_for_function('(id)=>document.querySelector(".studio-canvas")?.dataset.scenario===id',arg=scenario)
     for shot in range(1,6):
      page.get_by_role('button',name=f'Phân cảnh {shot}',exact=True).click();page.wait_for_function('(n)=>Number(document.querySelector(".studio-canvas")?.dataset.beat)===n',arg=shot-1)
-     assert host.get_attribute('data-asset-failures')=='0';assert int(host.get_attribute('data-triangles'))<25000,(name,scenario,shot,host.evaluate('(e)=>({...e.dataset})'));assert int(host.get_attribute('data-draw-calls'))<150
+     assert host.get_attribute('data-scenery-blocked-subjects')=='0';assert host.get_attribute('data-asset-failures')=='0';assert int(host.get_attribute('data-triangles'))<25000,(name,scenario,shot,host.evaluate('(e)=>({...e.dataset})'));assert int(host.get_attribute('data-draw-calls'))<150
     page.get_by_role('button',name='Phân cảnh 4',exact=True).click();page.wait_for_function('document.querySelector(".studio-canvas")?.dataset.beat==="3"')
     page.screenshot(path=str(out/f'{scenario}-{name}-preview.png'))
     # Settle the authored 2.4s transition, then require selected heads/feet to fit.
@@ -25,7 +25,7 @@ with sync_playwright() as p:
      slider=page.get_by_label('Thời gian kịch bản',exact=True)
      slider.evaluate("(e,t)=>{Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,'value').set.call(e,String(t));e.dispatchEvent(new Event('input',{bubbles:true}));e.dispatchEvent(new Event('change',{bubbles:true}));}",at+2.5)
      page.wait_for_function('(t)=>Math.abs(Number(document.querySelector(".studio-canvas").dataset.time)-t)<.001',arg=at+2.5)
-     subjects=json.loads(host.get_attribute('data-camera-subjects'));framing=json.loads(host.get_attribute('data-framing'))
+     assert host.get_attribute('data-scenery-blocked-subjects')=='0';subjects=json.loads(host.get_attribute('data-camera-subjects'));framing=json.loads(host.get_attribute('data-framing'))
      for item in framing:
       if item['id'] in subjects:
        assert all(abs(v)<.95 for part in ['head','feet'] for v in item[part][:2]),(scenario,name,at,item)
