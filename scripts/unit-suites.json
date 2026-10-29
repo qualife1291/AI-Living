@@ -219,5 +219,8 @@
   ],
   [
     "scripts/test-chat-admission.mjs"
+  ],
+  [
+    "scripts/test-peer-sharing.mjs"
   ]
 ]

@@ -1,0 +1,32 @@
+{
+  "phase": "H5a",
+  "version": 1,
+  "scope": "offline-peer-hearsay-v1",
+  "date": "2026-10-29",
+  "registeredBeforeImplementation": true,
+  "purpose": "Admission and recipient isolation for peer advice on actual accepted GND2/GND3 synthetic replay, not live training or proof that advice is true.",
+  "offer": "A typed, editorial advice offer exists before the fresh committed turn. Bind exact speaker/recipient/topic/text and source turn hash; no retrospective extraction of facts from natural language.",
+  "evidence": "Only process-minted proofs from our own accepted GND3 observer replay. Require a matching emitted utterance and completed heard-utterance, exact source/turn/actor epochs/plan windows/text and prior verified co-presence. Planned, baseline, partial, interrupted, other-recipient and externally rehashed JSON are never admission proofs.",
+  "namespace": "Separate PeerAdviceInbox: heard-from-peer, unverified-advice, not own experience or observed fact. No matrices, earned samples, skills, money, memories or world changes; GND3 eligibleForReward/P2P remain false.",
+  "retention": {
+    "maximumLiveEntries": 256,
+    "maximumPerRecipient": 32,
+    "textCharacters": 280,
+    "ttlSimulationMs": 604800000,
+    "halfLifeSimulationMs": 86400000,
+    "initialConfidence": 0.5,
+    "policy": "Reads filter expiry and compute decay without writes. Successful admission may prune expired advice; reject when capacity is full rather than evicting live dedup keys. An expired proof cannot be reintroduced. No future or backwards admission time."
+  },
+  "retrieval": "Filter world and exact recipient before topic/ranking, stable score/time/id ordering and bounded top-K<=8. Returned metadata must retain named speaker, evidence and hearsay label. No instruction execution, model calls or inferred factual knowledge.",
+  "acceptance": [
+    "Actual accepted physics positive with emitted/heard/encounter proof; chunk/resume equivalent identity and contents.",
+    "Baseline/planned/partial/pause/cancel/transit or no recipient cannot mint a delivered proof.",
+    "Plain JSON/clone/tamper/cross-world/cross-recipient/future/expired replay rejected; original proof immutable.",
+    "Duplicate delivery idempotent, expired/near-capacity pressure bounded, no duplicate amplification through eviction.",
+    "Read-time decay, recipient/topic filter before ranking, immutable reads and no private tip bleed.",
+    "World/personal policy/memory/skill/samples unchanged; no runtime/DB/API importer.",
+    "Bounded deterministic offline benchmark and CLI, checksum/explicit output/no overwrite/no external URLs or secrets.",
+    "Full unit/type/lint/assets/build; compiled API regressions unchanged. No browser run required for offline-only modules absent from app bundle."
+  ],
+  "promotion": "No automatic runtime P2P or model/policy promotion. H5b needs durable offer provenance and transactional receipt/advice CAS, source authenticity, API guards, privacy review and separate evaluation before rollout. This protocol does not permit treating a hash or viewer ACK as live delivery proof."
+}
