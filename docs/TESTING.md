@@ -21,6 +21,7 @@ npm run test:api:local
 npm run test:api:ground
 npm run test:api:shared-ground
 npm run test:api:legacy
+node scripts/test-chat-admission-api.mjs
 npm run audit:learning-evidence
 ```
 
@@ -36,6 +37,7 @@ Restart Worker từ `dist/server/wrangler.json` sau build. `QA_BASE` bắt buộ
 
 | Harness trong scripts/ | Điều phải giữ |
 |---|---|
+| qa-chat-admission.py | HTTP429 giữ draft/focus, không tự retry, hồi phục khi chủ động gửi lại; desktop/mobile, không overflow. Mock UI writes; quota/rollback kiểm riêng trên compiled D1. |
 | qa-g0-ux.py | Gzip/canonical fallback, pause403/409/5xx/network/ACK, chat focus/draft, keyboard,320px, presets/resize/hidden/context loss/retry và reduced-motion. |
 | qa-shared-ground.py | Hai shared viewer desktop/mobile mở lệch giờ, cùng absolute sample roots, camera/F5/pause, no extrapolation, ảnh thật; synthetic source và D1 riêng. |
 | qa-loading.py | Compiled loopback build,3 cold-page repeat/viewport, network profile cố định, bytes/first-frame và asset completeness; `QA_BEFORE` tùy chọn phải là build khác nếu so sánh. Một build không chứng minh cải thiện/SLA thiết bị thật. |
