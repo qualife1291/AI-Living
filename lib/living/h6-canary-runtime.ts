@@ -90,6 +90,20 @@ export async function withQaH6Canary<T>(settings: Record<string, string | undefi
     }
   });
 }
+/** Pure cohort and protected-needs gate: no model, DB or network access. */
+export function eligibleForH6Canary(input: {
+  actorId: string; residents: readonly { id: string }[]; ids: ReadonlySet<string>;
+  minPopulation: number; agent: AgentLearning; context: RealContext;
+}): boolean {
+  const n = input.residents.length;
+  return input.ids.has(input.actorId) &&
+    n >= input.minPopulation &&
+    input.ids.size <= Math.floor(n * .05) &&
+    input.residents.some(r => r.id === input.actorId) &&
+    input.context.hour >= 6 && input.context.hour < 22 &&
+    input.agent.energy >= 55 && input.agent.hunger <= 45 &&
+    input.agent.health >= 85 && input.context.weather.status === "fresh";
+}
 /** Must be called only for a genuine eligible resident's next plan.
  * Cohort is a signed stable allowlist, max 5% of CURRENT QA population.
  * Welfare/health, night, unsupported arm, ambiguous baseline -> personal fallback.
@@ -104,13 +118,8 @@ export function chooseH6CanaryScenario(input: {
   s.total++;
   const begin = performance.now();
   try {
-    const population = input.residents.length;
-    if (population < s.minPopulation || s.ids.size > Math.floor(population * .05) ||
-      !input.residents.some(r => r.id === input.actorId) ||
-      // Conservative treatment: do not explore under stress or unavailable weather.
-      input.context.hour < 6 || input.context.hour >= 22 ||
-      input.agent.energy < 55 || input.agent.hunger > 45 ||
-      input.agent.health < 85 || input.context.weather.status !== "fresh") {
+    if (!eligibleForH6Canary({ actorId: input.actorId, residents: input.residents,
+      ids: s.ids, minPopulation: s.minPopulation, agent: input.agent, context: input.context })) {
       s.fallback++; return input.baseline;
     }
     const paired = evaluateH6ShadowPair({actorId: input.actorId, agent: input.agent,
