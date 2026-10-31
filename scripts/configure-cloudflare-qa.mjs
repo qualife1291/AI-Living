@@ -70,6 +70,11 @@ cfg.vars = {
   XOM_RULE_SCHEDULER: "true",
   XOM_SYSTEM_LOGS: "true",
   XOM_H6_MODE: "shadow-only",
+  // Explicitly fail closed on every normal QA deployment. Separate signed promotion
+  // and QA rollout authorization are required before any resident treatment.
+  XOM_H6_SHADOW_EVAL_ENABLED: "false",
+  XOM_H6_CANARY_ENABLED: "false",
+  XOM_H6_CANARY_KILL_SWITCH: "true",
   XOM_H6_CANDIDATE_COUNT: "96",
   XOM_H6_CATALOG_SHA256: h6CatalogHash,
 };
