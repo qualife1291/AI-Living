@@ -261,5 +261,8 @@
   ],
   [
     "scripts/test-h6-shadow-evaluator.mjs"
+  ],
+  [
+    "scripts/test-h6-qa-canary.mjs"
   ]
 ]
