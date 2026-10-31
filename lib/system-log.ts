@@ -1,6 +1,6 @@
 import { AsyncLocalStorage } from 'node:async_hooks';
 
-const events = ['http_complete','http_uncaught','chat_storage_failed','chat_throttled','pulse_stage','pulse_result','cron_result','cron_failed','cron_disabled','qa_auth_denied','h6_shadow_eval','h6_shadow_blocked'] as const;
+const events = ['http_complete','http_uncaught','chat_storage_failed','chat_throttled','pulse_stage','pulse_result','cron_result','cron_failed','cron_disabled','qa_auth_denied','h6_shadow_eval','h6_shadow_blocked','h6_canary_result','h6_canary_blocked'] as const;
 type Event = typeof events[number];
 type Context = { requestId: string; trigger: 'http'|'cron'; route: string; method: string; version?: string };
 const contexts = new AsyncLocalStorage<Context>();
@@ -15,7 +15,7 @@ export function systemLog(event: Event, fields: Record<string, unknown> = {}) {
   const context = contexts.getStore();
   if (!context || !events.includes(event)) return;
   const safe: Record<string, string|number|boolean> = {};
-  for (const key of ['status','durationMs','updated','retryAfter','h6Candidates','h6Evaluations','h6Paired','h6ModelUsed','h6Agreements','h6Mismatches','h6Errors','h6Skipped','h6UncertaintyLow','h6UncertaintyMedium','h6UncertaintyHigh','h6LatencyP50Ms','h6LatencyP95Ms','h6LatencyP99Ms'] as const) {
+  for (const key of ['status','durationMs','updated','retryAfter','h6Candidates','h6Evaluations','h6Paired','h6ModelUsed','h6Agreements','h6Mismatches','h6Errors','h6Skipped','h6UncertaintyLow','h6UncertaintyMedium','h6UncertaintyHigh','h6LatencyP50Ms','h6LatencyP95Ms','h6LatencyP99Ms','h6CanaryEvaluations','h6CanaryChanged','h6CanaryFallback','h6CanaryErrors'] as const) {
     const value = fields[key];
     if (typeof value === 'number' && Number.isFinite(value) && value >= 0 && value <= 1e12) safe[key] = Math.round(value * 100) / 100;
   }
