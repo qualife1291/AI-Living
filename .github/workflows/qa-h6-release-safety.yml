@@ -13,6 +13,8 @@ on:
       - 'lib/living/h6-shadow-*.ts'
       - 'data/training/h6-shadow-runtime.json'
       - 'scripts/test-h6-shadow-evaluator.mjs'
+      - 'scripts/test-h6-qa-canary.mjs'
+      - 'data/training/h6-canary-promotion.json'
       - 'scripts/unit-suites.json'
       - 'lib/system-log.ts'
       - 'scripts/test-system-log.mjs'
@@ -39,6 +41,6 @@ jobs:
       - name: Validate redacted Cron logs, ownership, and privacy
         run: node scripts/test-system-log.mjs && node scripts/test-cloudflare-access.mjs
       - name: Verify signed H6.1 shadow evaluation, tamper resistance and no state mutation
-        run: node scripts/test-h6-shadow-evaluator.mjs
+        run: node scripts/test-h6-shadow-evaluator.mjs && node scripts/test-h6-qa-canary.mjs
       - name: Confirm type safety
         run: npm run check
