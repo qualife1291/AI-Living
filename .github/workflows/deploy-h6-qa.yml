@@ -1,0 +1,73 @@
+name: Deploy H6 QA (safe shadow-only)
+on:
+  push:
+    branches: [cloudflare-qa]
+    paths:
+      - 'lib/living/h6-canary-runtime.ts'
+      - '.github/workflows/deploy-h6-qa.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: qa-h6-deployment
+  cancel-in-progress: false
+jobs:
+  qa-deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    env:
+      CI: 'true'
+      CF_ACCOUNT_ID: '966c7ceee358485648b935a07877ec45'
+      QA_TARGET: 'ai-living-qa'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Install pinned dependencies
+        run: corepack pnpm install --frozen-lockfile
+      - name: QA code, security and compatibility gates
+        run: |
+          node scripts/test-h6-scenario-scale.mjs
+          node scripts/test-h6-shadow-evaluator.mjs
+          node scripts/test-h6-qa-canary.mjs
+          node scripts/test-qa-h6-release.mjs
+          node scripts/test-cloudflare-qa-config.mjs
+          node scripts/test-qa-scheduler.mjs
+          node scripts/test-cloudflare-access.mjs
+          npm run check
+          npm run lint
+      - name: Build isolated QA release bundle
+        run: npm run build && node scripts/configure-cloudflare-qa.mjs
+      - name: Check exclusive QA target and default OFF
+        run: |
+          node --input-type=module -e '
+          import { readFileSync } from "node:fs";
+          const c=JSON.parse(readFileSync("dist/server/wrangler.json","utf8"));
+          if(c.name!=="ai-living-qa"||c.vars?.XOM_H6_MODE!=="shadow-only"||
+             c.vars?.XOM_H6_CANARY_ENABLED!=="false"||
+             c.vars?.XOM_H6_CANARY_KILL_SWITCH!=="true"||
+             c.vars?.XOM_H6_SHADOW_EVAL_ENABLED!=="false"||
+             c.triggers?.crons?.join()!=="*/5 * * * *"||
+             c.d1_databases?.length!==1||c.d1_databases[0].database_id!=="21347bba-caaf-4ba5-9d80-d849958192d1"||
+             c.preview_urls!==false||c.workers_dev!==true)process.exit(9);
+          console.log("QA-only bundle verified, H6 treatment disabled");
+          '
+      - name: Upload only if scoped Cloudflare QA credential exists
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_QA_API_TOKEN || secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: '966c7ceee358485648b935a07877ec45'
+        run: |
+          if [ -z "$CLOUDFLARE_API_TOKEN" ]; then
+            echo "::notice::QA deployment not performed: scoped Cloudflare API token not configured"
+            echo "QA_DEPLOYED=false" >> "$GITHUB_ENV"
+            exit 0
+          fi
+          node ./node_modules/wrangler/bin/wrangler.js deploy --config dist/server/wrangler.json --name ai-living-qa
+          echo "QA_DEPLOYED=true" >> "$GITHUB_ENV"
+      - name: Verify deployment metadata
+        if: env.QA_DEPLOYED == 'true'
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_QA_API_TOKEN || secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: '966c7ceee358485648b935a07877ec45'
+        run: node ./node_modules/wrangler/bin/wrangler.js deployments list --name ai-living-qa
