@@ -1,4 +1,5 @@
 import { meetingSteps, microActivity, actionSteps } from "./activities.ts";
+import { captureH6ShadowProposal } from "./h6-shadow-runtime.ts";
 import { assignIdentities, nextResidentName, defaultIdentity } from "./identity.ts";
 import { decisionContext } from "./linucb.ts";
 import {planKey} from "./plan-identity.ts";
@@ -178,6 +179,10 @@ export function planLivingTurn(
   learning.an.energy = state.energy;
   learning.an.hunger = state.hunger;
   const chosen = chooseScenario(learning.an, "an", context, role.place);
+  // Model-independent baseline proposal, compared only inside a signed QA shadow context.
+  // Neither this call nor the shadow scorer changes the actual chosen action.
+  captureH6ShadowProposal({ agent: learning.an, actorId: "an", context, rolePlace: role.place,
+    roleKind: role.kind, baselineScenarioId: chosen.id });
   const available = state.residents.filter(r => !hasUnfinishedLearning(learning[r.id], r.plan, simNow));
   const peers = available.filter((r) => r.roleId === role.id);
   const resident =
