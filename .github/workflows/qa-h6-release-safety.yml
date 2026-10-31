@@ -9,6 +9,11 @@ on:
       - 'scripts/test-cloudflare-qa-config.mjs'
       - 'scripts/test-qa-h6-release.mjs'
       - 'worker/index.ts'
+      - 'lib/living/engine.ts'
+      - 'lib/living/h6-shadow-*.ts'
+      - 'data/training/h6-shadow-runtime.json'
+      - 'scripts/test-h6-shadow-evaluator.mjs'
+      - 'scripts/unit-suites.json'
       - 'lib/system-log.ts'
       - 'scripts/test-system-log.mjs'
       - 'docs/QA_H6_ROLLOUT_20261029.md'
@@ -33,5 +38,7 @@ jobs:
         run: node scripts/test-cloudflare-qa-config.mjs && node scripts/test-qa-scheduler.mjs
       - name: Validate redacted Cron logs, ownership, and privacy
         run: node scripts/test-system-log.mjs && node scripts/test-cloudflare-access.mjs
+      - name: Verify signed H6.1 shadow evaluation, tamper resistance and no state mutation
+        run: node scripts/test-h6-shadow-evaluator.mjs
       - name: Confirm type safety
         run: npm run check
