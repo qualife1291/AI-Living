@@ -8,6 +8,7 @@ import { runWithConnectorBinding } from "../lib/connector-context";
 import type { ConnectorBinding } from "../lib/connector-contract.mjs";
 import {observeHttp,runSystemTask,systemLog,safeErrorType} from "../lib/system-log";
 import {runPulsePipeline} from "../lib/living/pulse-pipeline";
+import { withQaH6Shadow } from "../lib/living/h6-shadow-runtime";
 
 const worker = {
   async scheduled(event: ScheduledController, env: Cloudflare.Env, ctx: ExecutionContext) {
@@ -20,7 +21,7 @@ const worker = {
         try {
           const db = env.DB;
           if (!db) throw new Error("QA D1 binding missing");
-          const result = await runCoalescedPulse(db, () => runPulsePipeline({learning:learnCompleted,social:advanceResidentSocial,tick:tickLiving}));
+          const result = await withQaH6Shadow(settings, () => runCoalescedPulse(db, () => runPulsePipeline({learning:learnCompleted,social:advanceResidentSocial,tick:tickLiving})));
           const learning = result.data.learning as {updated?:number}|undefined;
           systemLog("cron_result", {status:result.status,duplicate:result.data.duplicate === true,coalesced:result.data.coalesced === true,updated:learning?.updated ?? 0,h6ShadowOnly:settings.XOM_H6_MODE === "shadow-only",h6Candidates:Number(settings.XOM_H6_CANDIDATE_COUNT ?? 0),durationMs:performance.now()-started});
           if (result.status !== 200 && result.status !== 409) throw new Error("QA Cron pulse rejected");

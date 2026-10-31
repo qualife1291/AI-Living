@@ -1,6 +1,6 @@
 import { AsyncLocalStorage } from 'node:async_hooks';
 
-const events = ['http_complete','http_uncaught','chat_storage_failed','chat_throttled','pulse_stage','pulse_result','cron_result','cron_failed','cron_disabled','qa_auth_denied'] as const;
+const events = ['http_complete','http_uncaught','chat_storage_failed','chat_throttled','pulse_stage','pulse_result','cron_result','cron_failed','cron_disabled','qa_auth_denied','h6_shadow_eval','h6_shadow_blocked'] as const;
 type Event = typeof events[number];
 type Context = { requestId: string; trigger: 'http'|'cron'; route: string; method: string; version?: string };
 const contexts = new AsyncLocalStorage<Context>();
@@ -15,12 +15,13 @@ export function systemLog(event: Event, fields: Record<string, unknown> = {}) {
   const context = contexts.getStore();
   if (!context || !events.includes(event)) return;
   const safe: Record<string, string|number|boolean> = {};
-  for (const key of ['status','durationMs','updated','retryAfter','h6Candidates'] as const) {
+  for (const key of ['status','durationMs','updated','retryAfter','h6Candidates','h6Evaluations','h6Paired','h6ModelUsed','h6Agreements','h6Mismatches','h6Errors','h6Skipped','h6UncertaintyLow','h6UncertaintyMedium','h6UncertaintyHigh','h6LatencyP50Ms','h6LatencyP95Ms','h6LatencyP99Ms'] as const) {
     const value = fields[key];
     if (typeof value === 'number' && Number.isFinite(value) && value >= 0 && value <= 1e12) safe[key] = Math.round(value * 100) / 100;
   }
   for (const key of ['duplicate','coalesced','h6ShadowOnly','accessContextPresent','accessAudiencePresent','accessAudienceMatches','configuredAudiencePresent','expectedHostnameMatches','https'] as const) if (typeof fields[key] === 'boolean') safe[key] = fields[key];
   if (typeof fields.stage === 'string' && stages.has(fields.stage)) safe.stage = fields.stage;
+  if (typeof fields.h6ModelSha256 === 'string' && /^[0-9a-f]{64}$/.test(fields.h6ModelSha256)) safe.h6ModelSha256 = fields.h6ModelSha256;
   if (typeof fields.errorType === 'string') safe.errorType = errorNames.has(fields.errorType) ? fields.errorType : 'Error';
   const error = event === 'http_uncaught' || event === 'chat_storage_failed' || event === 'cron_failed' || Number(safe.status) >= 500;
   const level = error ? 'error' : Number(safe.status) >= 400 || event === 'cron_disabled' ? 'warn' : 'info';
