@@ -84,7 +84,7 @@ export async function verifyH6ShadowArtifact(
   return { sha256, prior, rows };
 }
 export type H6PairedResult = { eligible: boolean; modelUsed: boolean; agreement: boolean; baselineMatchesObserved: boolean;
-  candidateLive: boolean; uncertaintyBucket: "low" | "medium" | "high" | "unavailable" };
+  candidateLive: boolean; candidateScenarioId: string | null; uncertaintyBucket: "low" | "medium" | "high" | "unavailable" };
 /** Scores the SAME context through existing 41-action eligibility; never writes a plan.
  * Skip inconsistent observed decisions instead of inventing a matched baseline.
  * Posterior uncertainty is NOT calibrated confidence or counterfactual reward.
@@ -97,11 +97,11 @@ export function evaluateH6ShadowPair(input: {
   const eligible = availableScenarios(agent, context);
   if (!eligible.some(s => s.id === observedScenarioId))
     return { eligible: false, modelUsed: false, agreement: false, baselineMatchesObserved: false,
-      candidateLive: false, uncertaintyBucket: "unavailable" };
+      candidateLive: false, candidateScenarioId: null, uncertaintyBucket: "unavailable" };
   const baseline = chooseScenario(agent, actorId, context, rolePlace);
   if (baseline.id !== observedScenarioId)
     return { eligible: true, modelUsed: false, agreement: false, baselineMatchesObserved: false,
-      candidateLive: false, uncertaintyBucket: "unavailable" };
+      candidateLive: false, candidateScenarioId: null, uncertaintyBucket: "unavailable" };
   const x = decisionContext(agent, context.weather);
   let used = false;
   const prior = (scenario: typeof scenarios[number]) => {
@@ -120,5 +120,5 @@ export function evaluateH6ShadowPair(input: {
   const uncertainty = row ? linearScore(row.model, x).uncertainty : null;
   const uncertaintyBucket = uncertainty === null ? "unavailable" : uncertainty < .1 ? "low" : uncertainty < .25 ? "medium" : "high";
   return { eligible: true, modelUsed: used, agreement: observedScenarioId === shadow.id,
-    baselineMatchesObserved: true, candidateLive: eligible.some(s => s.id === shadow.id), uncertaintyBucket };
+    baselineMatchesObserved: true, candidateLive: eligible.some(s => s.id === shadow.id), candidateScenarioId: shadow.id, uncertaintyBucket };
 }
