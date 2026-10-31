@@ -59,8 +59,16 @@ assert.equal(baseline.id, "rest-home");
 const paired = evaluateH6ShadowPair({ agent: actor, actorId: "h6-test-actor", context, model: verified,
   rolePlace: HIERARCHY_CATALOG.roles[0].place, roleKind: HIERARCHY_CATALOG.roles[0].kind, observedScenarioId: "rest-home" });
 assert.equal(paired.agreement, true);
-assert.equal(paired.modelUsed, true);
+// A single forced safe action must never be biased by a model prior.
+assert.equal(paired.modelUsed, false);
 assert.equal(paired.candidateLive, true);
+const daylight = { ...context, hour: 10 };
+const daylightBaseline = chooseScenario(actor, "h6-test-actor", daylight, HIERARCHY_CATALOG.roles[0].place);
+const daytimePair = evaluateH6ShadowPair({ agent: actor, actorId: "h6-test-actor", context: daylight, model: verified,
+  rolePlace: HIERARCHY_CATALOG.roles[0].place, roleKind: HIERARCHY_CATALOG.roles[0].kind, observedScenarioId: daylightBaseline.id });
+assert.equal(daytimePair.baselineMatchesObserved, true);
+assert.equal(daytimePair.modelUsed, true, "Prior should be applied to an eligible daytime candidate");
+assert.equal(daytimePair.candidateLive, true);
 assert.equal(JSON.stringify(actor), before, "Shadow altered personal learning state");
 const mismatched = evaluateH6ShadowPair({ agent: actor, actorId: "h6-test-actor", context, model: verified,
   rolePlace: HIERARCHY_CATALOG.roles[0].place, roleKind: HIERARCHY_CATALOG.roles[0].kind, observedScenarioId: "lunch" });
