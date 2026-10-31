@@ -26,7 +26,7 @@ const validKinds = new Set(HIERARCHY_CATALOG.roles.map(r => r.kind));
 
 function positiveDefinite(arm: LinearArm): boolean {
   if (!validArm(arm) || arm.samples < 5 || arm.b.some(v => Math.abs(v) > arm.samples + 1e-8)) return false;
-  const idx = (r: number, c: number) => r > c ? idx(c, r) : r * 6 - r * (r + 1) / 2 + c;
+  const idx = (r: number, c: number): number => r > c ? idx(c, r) : r * 6 - r * (r + 1) / 2 + c;
   const lower = Array.from({ length: 6 }, () => Array<number>(6).fill(0));
   for (let i = 0; i < 6; i++) for (let j = 0; j <= i; j++) {
     let value = arm.inverse[idx(i, j)];
