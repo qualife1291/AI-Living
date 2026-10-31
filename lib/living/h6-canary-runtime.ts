@@ -8,7 +8,6 @@ import decision from "../../data/training/h6-canary-promotion.json" with { type:
 import { systemLog } from "../system-log.ts";
 import { evaluateH6ShadowPair, verifyH6ShadowArtifact, type H6ShadowEnvelope, type VerifiedH6Shadow } from "./h6-shadow-evaluator.ts";
 import { scenarios, type Scenario, type AgentLearning } from "./learning.ts";
-import { hashSeed } from "../clock.ts";
 import type { RealContext } from "./schema.ts";
 
 export type H6CanaryGate = {
@@ -20,7 +19,7 @@ export type H6CanaryGate = {
   independentReview: string; rollbackVersion: string; expiresAt: string;
 };
 export type H6SignedCanaryGate = { gate: H6CanaryGate | null; signature: string | null };
-type Stats = { model: VerifiedH6Shadow; ids: Set<string>; total: number; changed: number;
+type Stats = { model: VerifiedH6Shadow; ids: Set<string>; minPopulation: number; total: number; changed: number;
   fallback: number; failed: number; modelUsed: number; ms: number[]; };
 const storage = new AsyncLocalStorage<Stats>();
 const expectedCatalogSha = "3b3cf7a0e0db902c006766f4e2f23927562d5581247ff08b701575b7d35e0267";
@@ -78,7 +77,7 @@ export async function withQaH6Canary<T>(settings: Record<string, string | undefi
     gate = await verifyH6CanaryGate(decision as H6SignedCanaryGate, model.sha256,
       settings.XOM_H6_PROMOTION_PUBLIC_KEY ?? "");
   } catch { systemLog("h6_canary_blocked", { status: 409 }); return run(); }
-  const stats: Stats = { model, ids: new Set(gate.approvedActorIds), total: 0,
+  const stats: Stats = { model, ids: new Set(gate.approvedActorIds), minPopulation: gate.minPopulation, total: 0,
     changed: 0, fallback: 0, failed: 0, modelUsed: 0, ms: [] };
   return storage.run(stats, async () => {
     try { return await run(); }
@@ -106,7 +105,7 @@ export function chooseH6CanaryScenario(input: {
   const begin = performance.now();
   try {
     const population = input.residents.length;
-    if (population < 40 || s.ids.size > Math.floor(population * .05) ||
+    if (population < s.minPopulation || s.ids.size > Math.floor(population * .05) ||
       !input.residents.some(r => r.id === input.actorId) ||
       // Conservative treatment: do not explore under stress or unavailable weather.
       input.context.hour < 6 || input.context.hour >= 22 ||
