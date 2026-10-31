@@ -258,5 +258,8 @@
   ],
   [
     "scripts/test-neighborhood.mjs"
+  ],
+  [
+    "scripts/test-h6-shadow-evaluator.mjs"
   ]
 ]
