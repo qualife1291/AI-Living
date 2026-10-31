@@ -1,5 +1,6 @@
 import { meetingSteps, microActivity, actionSteps } from "./activities.ts";
 import { captureH6ShadowProposal } from "./h6-shadow-runtime.ts";
+import { chooseH6CanaryScenario } from "./h6-canary-runtime.ts";
 import { assignIdentities, nextResidentName, defaultIdentity } from "./identity.ts";
 import { decisionContext } from "./linucb.ts";
 import {planKey} from "./plan-identity.ts";
@@ -334,7 +335,17 @@ export function planLivingTurn(
     const rolePlace = npc
       ? state.catalog.roles.find((r) => r.id === npc.roleId)?.place
       : id === "binh" ? "Thư viện" : id === "chi" ? "Vườn nhỏ" : person?.location;
-    const scenario = chooseScenario(agent, id, context, rolePlace);
+    const baseline = chooseScenario(agent, id, context, rolePlace);
+    // Observe every eligible resident proposal in shadow mode, without altering baseline.
+    captureH6ShadowProposal({ agent, actorId: id, context, rolePlace: rolePlace ?? "",
+      roleKind: npc ? state.catalog.roles.find(r => r.id === npc.roleId)?.kind ?? "unknown" : "unknown",
+      baselineScenarioId: baseline.id });
+    // Model treatment is impossible unless a separately signed H6.3 promotion
+    // decision and model are independently verified in this QA request scope.
+    const scenario = chooseH6CanaryScenario({ agent, actorId: id, context,
+      residents: state.residents, rolePlace,
+      roleKind: npc ? state.catalog.roles.find(r => r.id === npc.roleId)?.kind ?? "unknown" : "unknown",
+      baseline });
     const previous = person
       ? actorsAt(world, now).find((a) => a.id === id)
       : crowdAt(state, { ...world, livingTurn: turn }, now).find(
