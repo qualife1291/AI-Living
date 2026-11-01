@@ -163,8 +163,11 @@ export function planLivingTurn(
       state.catalog.roles.length < 40
     )
       state.catalog.roles.push(structuredClone(role));
-  // Add verified built-in occupations only when a durable living turn is
-  // being committed. Existing owner roles, population caps and resident IDs win.
+  // New default occupations are opt-in by the existing QA default catalog,
+  // not injected into owner-customized worlds that set population/role caps.
+  const standardEcology=state.catalog.initialPopulation===48
+    &&state.catalog.newResidentsPerDay===3&&state.catalog.maxPopulation===240;
+  if(standardEcology) {
   for (const raw of cityExpansion.roles) {
     const role = roleSchema.parse(raw);
     if (state.catalog.roles.length >= 40) break;
@@ -174,6 +177,7 @@ export function planLivingTurn(
   for (const name of cityExpansion.names) {
     if(state.catalog.names.length>=100)break;
     if(!state.catalog.names.includes(name))state.catalog.names.push(name);
+  }
   }
   state.residents = population(state, context.date);
   const newExperiences: import("./learning").Experience[] = [];
