@@ -270,5 +270,11 @@
   ],
   [
     "scripts/test-h6-qa-canary.mjs"
+  ],
+  [
+    "scripts/test-dense-city-society.mjs"
+  ],
+  [
+    "scripts/test-dense-streetscape.mjs"
   ]
 ]
