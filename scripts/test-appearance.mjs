@@ -32,6 +32,9 @@ assert.equal(
     .success,
   false,
 );
+const outfits=new Set(Array.from({length:64},(_,n)=>{const a=defaultAppearance("neighbor-"+(n+1));return a.shirt+"/"+a.trousers;}));
+assert(outfits.size>=6,'Everyday citizens need at least six stable outfit colorways');
+assert.deepEqual(defaultAppearance('neighbor-51'),defaultAppearance('neighbor-51'),'Outfits must never change on browser reload');
 console.log(
   "PASS: 14 valid wardrobe themes, role-based police/delivery/teacher/worker defaults, stable identities and rejection of unsupported theme/CSS-like input.",
 );
