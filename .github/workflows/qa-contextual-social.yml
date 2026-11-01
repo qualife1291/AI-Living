@@ -1,11 +1,17 @@
 name: QA Contextual Social — Unit, Real Assets and Browser Frames
 on:
   push:
-    branches: [feat/qa-contextual-social-20261101]
+    branches: [feat/qa-contextual-social-20261101, fix/qa-context-graphics-h6-readiness-20261101]
   pull_request:
     paths:
       - 'lib/living/social.ts'
       - 'scripts/test-social.mjs'
+      - 'lib/living/interaction.ts'
+      - 'scripts/test-visitor-context.mjs'
+      - 'components/city/three/runtime.ts'
+      - 'app/globals.css'
+      - 'scripts/qa-social.py'
+      - 'scripts/unit-suites.json'
       - '.github/workflows/qa-contextual-social.yml'
 permissions:
   contents: read
@@ -26,6 +32,10 @@ jobs:
       - name: Social dialogues and full isolated unit suite
         run: |
           node scripts/test-social.mjs
+          node scripts/test-visitor-context.mjs
+          node scripts/test-h6-shadow-evaluator.mjs
+          node scripts/test-h6-qa-canary.mjs
+          node scripts/test-qa-h6-release.mjs
           npm run test:unit
       - name: Type, lint and real 3D model compatibility
         run: |
