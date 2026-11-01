@@ -1025,6 +1025,13 @@ export function createCity(
     host.dataset.personHeight = String(40 * HUMAN_SCALE);
     host.dataset.carLength = String(VEHICLES.car.length);
     host.dataset.actors = String(actors.length);
+    // Read-only visual observability for browser acceptance: the activity label
+    // and motion are projections, never proof of completed tasks/reward.
+    if (drawnFrames % 30 === 0) host.dataset.actorActivity = JSON.stringify(
+      actors.map(a => ({id:a.id,kind:a.kind,walking:!!a.walking,
+        bicycle:!!a.bicycle,speaking:!!socialPoses.get(a.id)?.speaking,
+        activity:a.activity})));
+
     host.dataset.exchanges = String(exchanges.length);
     host.dataset.socialCast = JSON.stringify(actors.filter(a => socialPoses.get(a.id)?.gesture !== "idle" && socialPoses.has(a.id)).map(a => ({ id: a.id, position: a.position, ...socialPoses.get(a.id) })));
     host.dataset.cyclists = JSON.stringify(actors.filter(a => a.bicycle).map(a => {
