@@ -19,7 +19,23 @@
     "Quỳnh",
     "Sơn",
     "Lan",
-    "Huy"
+    "Huy",
+    "Trúc",
+    "Thiên",
+    "Khoa",
+    "Nhi",
+    "Vân",
+    "Lộc",
+    "Tâm",
+    "Bảo",
+    "Hà",
+    "Đạt",
+    "Như",
+    "Phương",
+    "Yên",
+    "Cường",
+    "Hiếu",
+    "Mỹ"
   ],
   "roles": [
     {
@@ -213,6 +229,102 @@
       "activity": "Khám phá triển lãm",
       "kind": "read",
       "greeting": "Mình cùng làm từng bước nhé, nếu bạn cần nghỉ thì cứ nói mình biết."
+    },
+    {
+      "id": "florist",
+      "label": "Người bán hoa",
+      "place": "Chợ nhỏ",
+      "activity": "Sắp hoa và tư vấn chăm cây",
+      "kind": "social",
+      "greeting": "Mình chọn hoa vừa mùa và ghi lại cách chăm nhé."
+    },
+    {
+      "id": "street-cleaner",
+      "label": "Nhân viên vệ sinh phố",
+      "place": "Phố đi bộ",
+      "activity": "Thu gom rác và phân loại",
+      "kind": "work",
+      "greeting": "Mình gom gọn để vỉa hè sạch, bạn đi cẩn thận nhé."
+    },
+    {
+      "id": "courier",
+      "label": "Người giao hàng",
+      "place": "Bưu điện",
+      "activity": "Phân tuyến và kiểm tra bưu kiện",
+      "kind": "work",
+      "greeting": "Mình đối chiếu danh sách và giao đúng địa chỉ nhé."
+    },
+    {
+      "id": "cafe-server",
+      "label": "Nhân viên quán nước",
+      "place": "Quán cà phê",
+      "activity": "Phục vụ nước và dọn bàn",
+      "kind": "eat",
+      "greeting": "Bạn dùng nước gì? Mình ghi đúng món rồi phục vụ nhé."
+    },
+    {
+      "id": "market-clerk",
+      "label": "Nhân viên siêu thị",
+      "place": "Siêu thị",
+      "activity": "Kiểm hàng và đối chiếu hóa đơn",
+      "kind": "work",
+      "greeting": "Mình kiểm từng món để không bỏ sót nhé."
+    },
+    {
+      "id": "bike-technician",
+      "label": "Thợ kiểm tra xe đạp",
+      "place": "Xưởng xe máy",
+      "activity": "Kiểm tra phanh và đèn xe",
+      "kind": "work",
+      "greeting": "Mình chỉ chạy thử khi mọi bộ phận đều an toàn."
+    },
+    {
+      "id": "tree-keeper",
+      "label": "Người chăm cây đô thị",
+      "place": "Vườn nhỏ",
+      "activity": "Quan sát lá và đất trong bồn cây",
+      "kind": "garden",
+      "greeting": "Mình xem đất và lá trước khi quyết định tưới nhé."
+    },
+    {
+      "id": "restaurant-server",
+      "label": "Nhân viên nhà hàng",
+      "place": "Nhà hàng",
+      "activity": "Bày bàn và phục vụ bữa ăn",
+      "kind": "eat",
+      "greeting": "Mình dọn bàn cho gọn và phục vụ đúng thứ tự."
+    },
+    {
+      "id": "community-organizer",
+      "label": "Người kết nối hàng xóm",
+      "place": "Sân chung",
+      "activity": "Giới thiệu người mới đến xóm",
+      "kind": "social",
+      "greeting": "Mình hỏi tên và cách xưng hô để ai cũng thoải mái nhé."
+    },
+    {
+      "id": "financial-clerk",
+      "label": "Người ghi chép quỹ",
+      "place": "Trung tâm việc làm",
+      "activity": "Đối chiếu sổ chi tiêu mô phỏng",
+      "kind": "read",
+      "greeting": "Mọi khoản thu chi cần có bản ghi, không ước đoán."
+    },
+    {
+      "id": "park-steward",
+      "label": "Người giữ công viên",
+      "place": "Công viên",
+      "activity": "Kiểm tra ghế, lối đi và thùng rác",
+      "kind": "work",
+      "greeting": "Mình chừa lối cho khách đi dạo và dọn đồ về đúng chỗ."
+    },
+    {
+      "id": "market-cook",
+      "label": "Người làm món ăn đường phố",
+      "place": "Chợ nhỏ",
+      "activity": "Chuẩn bị món ăn và ghi đơn",
+      "kind": "eat",
+      "greeting": "Mình kiểm nguyên liệu trước rồi mới nhận món nhé."
     }
   ]
 }
