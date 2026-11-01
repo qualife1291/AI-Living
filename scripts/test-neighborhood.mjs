@@ -33,7 +33,7 @@ const rainy=structuredClone(world.living);rainy.petOwners={};updateAnimalLearnin
 const paused=structuredClone(world);paused.paused=true;paused.clock.pausedAt=now;assert.equal(settleAnimalLearning(paused,paused.living,now+3600000),0);
 for(let i=1;i<=16;i++){const at=now+i*900000;world=planLivingTurn(world,{...context,hour:9+i*.25,fetchedAt:new Date(at).toISOString()},at).world;}
 const humans=Object.values(world.living.learning),trainedAnimals=Object.values(world.living.animalLearning);
-assert.equal(humans.length,51);assert(humans.every(p=>p.samples>0),'All expanded humans must earn completed simulation samples');assert.equal(trainedAnimals.length,9);assert(trainedAnimals.every(p=>p.samples>0));
+assert.equal(humans.length,63,'Second durable population expansion adds 12 residents without duplicating the 3 core actors');assert(humans.every(p=>p.samples>0),'All expanded humans must earn completed simulation samples');assert.equal(trainedAnimals.length,9);assert(trainedAnimals.every(p=>p.samples>0));
 const dense=structuredClone(world);dense.living.residents=population(dense.living,'2030-01-01');
 const source={seq:1,revision:0,capturedAt:now+14400000,raw:JSON.stringify(dense)},shared=await bootstrapShared(source,randomUUID());
 assert.equal(shared.frames[0].poses.length,252);assert.equal((await replayShared(shared,source,[],source.capturedAt+100)).state.frames.at(-1).poses.length,252,'Full population includes every new animal without crossing the ground schema cap');
