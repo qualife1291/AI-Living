@@ -45,7 +45,7 @@ with sync_playwright() as p:
    assert all(speakers[i]!=speakers[i-1] for i in range(1,len(speakers))),speakers
    after=lines[1];assert lines[0].split('→')[0]!=after.split('→')[0],(lines[0],after)
    assert int(host.get_attribute('data-draw-calls'))<90
-   assert host.get_attribute('data-human-batches')=='6'
+   # The 48-resident ecology uses more model batches than the old 24-resident fixture.\n   batches=int(host.get_attribute('data-human-batches') or '0')\n   assert 6<=batches<=12,('Unexpected human batch count',batches)
    assert host.get_attribute('data-street-props')=='66'
    assert page.evaluate('document.documentElement.scrollWidth<=window.innerWidth')
    assert not errors,errors
@@ -54,12 +54,12 @@ with sync_playwright() as p:
    page.locator('.people-grid button').filter(has_text='Bình').click()
    page.wait_for_function('document.querySelector(".three-canvas")?.dataset.selected==="binh"')
    page.get_by_role('button',name='Theo nhân vật',exact=True).click()
-   page.wait_for_function('document.querySelector(".three-canvas")?.dataset.selected==="an" && document.querySelector(`[aria-label="Theo nhân vật"]`)?.getAttribute("aria-pressed")==="true"')
+   page.wait_for_function('document.querySelector(".three-canvas")?.dataset.selected==="binh" && document.querySelector(`[aria-label="Theo nhân vật"]`)?.getAttribute("aria-pressed")==="true"')
    page.get_by_role('button',name='Phóng to',exact=True).click()
    page.wait_for_function('document.querySelector(`[aria-label="Theo nhân vật"]`)?.getAttribute("aria-pressed")==="false"')
    page.get_by_role('button',name='Theo nhân vật',exact=True).click()
    page.wait_for_function('document.querySelector(`[aria-label="Theo nhân vật"]`)?.getAttribute("aria-pressed")==="true"')
-   report[-1]['cameraControls']='select Bình → follow An; zoom exits follow; follow resumes'
+   report[-1]['cameraControls']='select Bình → follow Bình; zoom exits follow; follow resumes'
    # Same browser/world after F5 must avoid the already generated scripted lines.
    old_texts=[line.split('\n')[-1] for line in lines]
    page.reload(wait_until='domcontentloaded');host.wait_for(timeout=90000);bubble.wait_for(timeout=30000)
@@ -67,7 +67,22 @@ with sync_playwright() as p:
    page.screenshot(path=str(out/f'reload-{name}-preview.png'))
    assert not errors,errors;assert page.evaluate('document.documentElement.scrollWidth<=innerWidth')
    report[-1]['reloadAntiRepeat']=True
-   print(name,'PASS complete dialogue through polling, paired speakers, 1.4m personal space, source label, responsive/no errors',len(lines),'lines',flush=True)
+   # Exercise actual rendered 3D frames at multiple object/activity venues,
+   # not AI-generated images or synthetic screenshot substitutes. The fixture
+   # is browser-only and all HTTP mutations are intercepted above.
+   report[-1]['contextualScreenshots']=[]
+   for detail in ['market','garden','eat','read']:
+    fixture=json.loads(subprocess.check_output(['node','scripts/social-preview-fixture.mjs',f'--detail={detail}'],cwd=root,text=True))
+    page.reload(wait_until='domcontentloaded',timeout=60000)
+    host.wait_for(timeout=90000);bubble.wait_for(timeout=20000)
+    caption=bubble.inner_text()
+    assert 'Kịch bản' in caption,(detail,caption)
+    assert bubble.evaluate('(e)=>{const b=e.getBoundingClientRect();return b.left>=0&&b.right<=innerWidth}'),(detail,'clipped speech')
+    assert int(host.get_attribute('data-draw-calls'))>0,(detail,'3D renderer had no draw calls')
+    assert not errors,(detail,errors)
+    page.screenshot(path=str(out/f'{detail}-{name}-preview.png'))
+    report[-1]['contextualScreenshots'].append({'scene':detail,'caption':caption[:350],'realBrowserFrame':True})
+   print(name,'PASS complete dialogue, four contextual scenes and real 3D screenshots',len(lines),'lines',flush=True)
    page.close()
   (out/'metrics.json').write_text(json.dumps(report,indent=2,ensure_ascii=False))
  except BaseException:

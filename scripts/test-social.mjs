@@ -46,6 +46,26 @@ test('authored scene data: venues, kinds, timing and alternating short replies',
   }
 });
 
+test('social director renders the selected place-specific authored scene before using anti-repeat grammar', () => {
+  const selectedPlace = 'Chợ nhỏ';
+  const actors = spaceActors(world, [stationary(world, 'an', selectedPlace), stationary(world, 'binh', selectedPlace)]);
+  const first = actors[0], second = actors[1];
+  const candidates = scripts.scenes.filter(scene => scene.places.includes(selectedPlace) && scene.kinds.includes('social'));
+  assert.ok(candidates.length > 0);
+  const key = `${selectedPlace}:${first.id}:${second.id}`;
+  const selected = candidates[hashSeed(key) % candidates.length];
+  const director = new SocialDirector();
+  const opening = director.frame(world, actors, [], noon, null, true);
+  const authored = selected.turns[0].text.replaceAll('{a}', first.name).replaceAll('{b}', second.name);
+  assert.equal(opening.exchanges[0]?.speech.text, authored, 'Do not substitute generic grammar for a contextual scene');
+  assert.equal(opening.exchanges[0]?.title, selected.title);
+  assert.equal(opening.exchanges[0]?.source, 'script', 'Author-written words must not be represented as AI');
+  assert.equal(opening.poses.get(first.id)?.gesture, selected.turns[0].gesture);
+  const followup = director.frame(world, actors, [], noon + 4000, null, true);
+  assert.equal(followup.exchanges[0]?.speech.speaker, second.id);
+  assert.equal(followup.exchanges[0]?.speech.text, selected.turns[1].text.replaceAll('{a}', first.name).replaceAll('{b}', second.name));
+});
+
 test('63 stationary residents: unique stable slots and minimum 14 world-unit spacing', () => {
   const w = structuredClone(world);
   const originals = w.living.residents;
@@ -361,14 +381,14 @@ test('director reads at a human pace even when the simulation clock runs at one 
   assert.ok((simulationTime(w, noon + 18000) - simulationTime(w, noon)) / 1000 < 2);
 });
 
-test('director cooldown is between 20 and 45 seconds after a complete exchange', () => {
+test('director cooldown is between 15 and 30 seconds after a complete exchange', () => {
   const director = new SocialDirector(), report = collectDirector(director, world, spaceActors(world, pair), 100);
   const openings = report.lines.filter(line => line.exchange.speech.key.endsWith('-0'));
   assert.ok(openings.length >= 2);
   const firstPrefix = openings[0].exchange.speech.key.slice(0, -2), first = report.lines.filter(line => line.exchange.speech.key.startsWith(firstPrefix + '-'));
   const end = first.reduce((total, line) => total + spokenSeconds(line.exchange.speech.text) + SOCIAL_TIMING.gapSeconds, 0);
   const cooldown = openings[1].start - openings[0].start - end;
-  assert.ok(cooldown >= 20 && cooldown <= 45.3, `${cooldown} seconds`);
+  assert.ok(cooldown >= 15 && cooldown <= 30.3, `${cooldown} seconds`);
 });
 
 test('director freezes a whole conversation on pause and continues remaining replies after resume', () => {

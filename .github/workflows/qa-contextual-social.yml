@@ -1,0 +1,66 @@
+name: QA Contextual Social — Unit, Real Assets and Browser Frames
+on:
+  push:
+    branches: [feat/qa-contextual-social-20261101]
+  pull_request:
+    paths:
+      - 'lib/living/social.ts'
+      - 'scripts/test-social.mjs'
+      - '.github/workflows/qa-contextual-social.yml'
+permissions:
+  contents: read
+jobs:
+  contextual-social:
+    runs-on: ubuntu-latest
+    timeout-minutes: 55
+    env:
+      CI: 'true'
+      XOM_TEST_JOBS: '4'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Install exact locked dependencies
+        run: corepack pnpm install --frozen-lockfile
+      - name: Social dialogues and full isolated unit suite
+        run: |
+          node scripts/test-social.mjs
+          npm run test:unit
+      - name: Type, lint and real 3D model compatibility
+        run: |
+          npm run check
+          npm run lint
+          npm run assets:check
+          node scripts/test-neighborhood.mjs
+      - name: Build app for loopback-only visual QA
+        run: npm run build
+      - name: Install isolated browser test dependencies
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y chromium
+          python3 -m venv /tmp/ai-living-browser-venv
+          /tmp/ai-living-browser-venv/bin/pip install playwright
+      - name: Start local Worker (no remote D1 or QA writes)
+        run: |
+          mkdir -p qa-evidence/social
+          (npm run start -- --port 5177 >qa-evidence/social/local-server.log 2>&1 &)
+          for i in $(seq 1 90); do
+            if curl -fsS -o /dev/null http://127.0.0.1:5177; then exit 0; fi
+            sleep 2
+          done
+          tail -100 qa-evidence/social/local-server.log
+          exit 1
+      - name: Chromium desktop/mobile 3D frames, real screenshots and six-turn interactions
+        env:
+          QA_BASE: http://127.0.0.1:5177
+          QA_OUT: qa-evidence/social/screenshots
+        run: /tmp/ai-living-browser-venv/bin/python scripts/qa-social.py
+      - name: Upload real browser screenshots and local server evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: qa-contextual-social-${{ github.sha }}
+          path: qa-evidence/social
+          if-no-files-found: warn
+          retention-days: 14
