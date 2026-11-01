@@ -54,12 +54,12 @@ with sync_playwright() as p:
    page.locator('.people-grid button').filter(has_text='Bình').click()
    page.wait_for_function('document.querySelector(".three-canvas")?.dataset.selected==="binh"')
    page.get_by_role('button',name='Theo nhân vật',exact=True).click()
-   page.wait_for_function('document.querySelector(".three-canvas")?.dataset.selected==="an" && document.querySelector(`[aria-label="Theo nhân vật"]`)?.getAttribute("aria-pressed")==="true"')
+   page.wait_for_function('document.querySelector(".three-canvas")?.dataset.selected==="binh" && document.querySelector(`[aria-label="Theo nhân vật"]`)?.getAttribute("aria-pressed")==="true"')
    page.get_by_role('button',name='Phóng to',exact=True).click()
    page.wait_for_function('document.querySelector(`[aria-label="Theo nhân vật"]`)?.getAttribute("aria-pressed")==="false"')
    page.get_by_role('button',name='Theo nhân vật',exact=True).click()
    page.wait_for_function('document.querySelector(`[aria-label="Theo nhân vật"]`)?.getAttribute("aria-pressed")==="true"')
-   report[-1]['cameraControls']='select Bình → follow An; zoom exits follow; follow resumes'
+   report[-1]['cameraControls']='select Bình → follow Bình; zoom exits follow; follow resumes'
    # Same browser/world after F5 must avoid the already generated scripted lines.
    old_texts=[line.split('\n')[-1] for line in lines]
    page.reload(wait_until='domcontentloaded');host.wait_for(timeout=90000);bubble.wait_for(timeout=30000)
