@@ -65,7 +65,7 @@ with sync_playwright() as p:
    actions={a['kind'] for point in trace for a in point['actors'] if a['walking'] or a['bicycle'] or a['speaking'] or a['kind'] not in ['rest','sleep','idle']}
    assert actions,('No active tasks or interactions in 60-second window',name)
    # Rest/sleep/quiet hours are allowed; no synthetic actions are injected.
-   report[-1]['activity60s']={'samples':len(trace),'visibleIds':len(ids),'activeKinds':sorted(actions),'restExempt':True,'worldWrites':False}
+   activity60s={'samples':len(trace),'visibleIds':len(ids),'activeKinds':sorted(actions),'restExempt':True,'worldWrites':False}
    assert int(host.get_attribute('data-draw-calls'))<90
    # The 48-resident ecology uses more model batches than the old 24-resident fixture.\n   batches=int(host.get_attribute('data-human-batches') or '0')\n   assert 6<=batches<=12,('Unexpected human batch count',batches)
    assert host.get_attribute('data-street-props')=='66'
@@ -77,7 +77,7 @@ with sync_playwright() as p:
     assert credit.evaluate("(e)=>{const s=getComputedStyle(e);return s.clipPath==='inset(50%)' && e.getBoundingClientRect().width<=1}"),'Keyboard/mouse instructions overlap the touch dock'
    assert page.evaluate('document.documentElement.scrollWidth<=window.innerWidth')
    assert not errors,errors
-   report.append({'viewport':name,'renderer':'Chromium SwiftShader','fixture':'synthetic-workshop-no-world-writes','first':lines[0],'reply':after,'fullDialogue':lines,'pollingCoveredSeconds':24,'stats':host.evaluate('(e)=>({...e.dataset})')})
+   report.append({'viewport':name,'renderer':'Chromium SwiftShader','fixture':'synthetic-workshop-no-world-writes','first':lines[0],'reply':after,'fullDialogue':lines,'pollingCoveredSeconds':24,'activity60s':activity60s,'stats':host.evaluate('(e)=>({...e.dataset})')})
    page.get_by_role('button',name='Cư dân',exact=True).click()
    page.locator('.people-grid button').filter(has_text='Bình').click()
    page.wait_for_function('document.querySelector(".three-canvas")?.dataset.selected==="binh"')
