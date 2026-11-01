@@ -267,5 +267,8 @@
   ],
   [
     "scripts/test-dense-city-society.mjs"
+  ],
+  [
+    "scripts/test-dense-streetscape.mjs"
   ]
 ]
