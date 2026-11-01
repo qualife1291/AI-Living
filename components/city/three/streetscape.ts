@@ -13,9 +13,14 @@ export function streetModel(prop: StreetProp,plant?:{phase:GrowthPhase;moisture:
     for (const x of [-8.5, 8.5]) for (const z of [-4.5, 4.5]) { box(x, 3.2, z, 1, 6, 1, "#6c8d86"); round("wheel", x, 2.3, z, 3.2, 3.2, .8, "#405957", Math.PI / 2); }
     for (const x of [-10, 10]) box(x, 15.5, -5.5, .9, 18, .9, "#9e8762");
     for (let stripe = 0; stripe < 7; stripe++) box(-9.4 + stripe * 3.1, 24.5, 0, 3.1, .9, 14, stripe % 2 ? "#fff0cc" : accent);
-    for (let crate = 0; crate < 3; crate++) {
-      box(-7 + crate * 7, 8, 0, 6, 2.5, 10, "#e2b47c");
-      for (let n = 0; n < 6; n++) round("bud", -8.2 + crate * 7 + n % 2 * 2.3, 9.8, -3 + Math.floor(n / 2) * 2.5, 2.2, 2, 2.2, ["#dc8163", "#eaca6b", "#77a16b"][crate]);
+    // Four produce baskets with distinct vegetables and fruit: stay inside
+    // the same reserved stall footprint, no additional pedestrian obstacles.
+    for (let crate = 0; crate < 4; crate++) {
+      const cx = -7.5 + crate * 5;
+      box(cx, 8, 0, 4.7, 2.5, 10, "#e2b47c");
+      for (let n = 0; n < 6; n++)
+        round("bud", cx - 1.1 + n % 2 * 2.2, 9.8, -3 + Math.floor(n / 2) * 2.5,
+          2, 2, 2, ["#dc8163", "#eaca6b", "#77a16b", "#b78bac"][crate]);
     }
   } else if (prop.kind === "books") {
     for (const x of [-6.5, 6.5]) box(x, 9, 0, 1, 18, 7, "#a58160");
@@ -30,11 +35,21 @@ export function streetModel(prop: StreetProp,plant?:{phase:GrowthPhase;moisture:
     box(7, 11.7, -2, 4, 2, 4, "#b77f61"); box(7, 13, -2, 2, .6, 2, "#d8c29a");
     box(-1, 2.5, 0, 13, 3, 7, "#8aa29a");
   } else if (prop.kind === "bicycle") {
+    // Alternate parked bicycle and compact scooter in the already protected
+    // 19x6 furniture reservation. These are NOT moving traffic or transport.
     for (const x of [-6, 6]) round("wheel", x, 3.5, 0, 6, 6, 1, "#455f60");
-    box(0, 4.9, 0, 10, .65, .7, accent, -.25); box(-3.5, 5.7, 0, .7, 6.5, .7, accent, -.4);
-    box(2, 5.5, 0, .7, 6, .7, accent, .6); box(5.5, 6.1, 0, .7, 6.5, .7, "#98a8a0", .15);
-    box(-3, 8.8, 0, 4, .8, 2.4, "#6b6a5c"); box(5, 9.5, 0, 1, .7, 5, "#6c817b");
-    box(-1, 2.3, 1.2, .5, 3.5, .5, "#9aab9d", -.35);
+    if(prop.seed % 2) {
+      box(0, 4.4, 0, 10, 1.3, 2.6, accent);
+      box(-2.5, 7.4, 0, 5.5, 1.1, 2.5, "#6b6a5c");
+      box(5.3, 8.1, 0, .8, 8, .8, "#98a8a0");
+      box(5.3, 12, 0, .9, .7, 4.5, "#6c817b");
+      box(-5.1, 5.6, 0, 2.8, 3.5, 2.5, accent);
+    } else {
+      box(0, 4.9, 0, 10, .65, .7, accent, -.25); box(-3.5, 5.7, 0, .7, 6.5, .7, accent, -.4);
+      box(2, 5.5, 0, .7, 6, .7, accent, .6); box(5.5, 6.1, 0, .7, 6.5, .7, "#98a8a0", .15);
+      box(-3, 8.8, 0, 4, .8, 2.4, "#6b6a5c"); box(5, 9.5, 0, 1, .7, 5, "#6c817b");
+      box(-1, 2.3, 1.2, .5, 3.5, .5, "#9aab9d", -.35);
+    }
   } else if (prop.kind === "flowers") {
     box(0, 2.3, 0, 18, 3.5, 12, "#bd8c6b"); box(0, 4.1, 0, 16.8, .4, 10.8, "#776c51");
     const phase=plant?.phase??"bloom",moisture=plant?.moisture??100;
