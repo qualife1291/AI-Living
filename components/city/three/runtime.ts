@@ -116,7 +116,7 @@ export function createCity(
   renderer.toneMappingExposure = 1.22;
   let renderQuality = input().quality;
   renderer.shadowMap.enabled = shadowMapSize(renderQuality, host.clientWidth) > 0;
-  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+  renderer.shadowMap.type = THREE.PCFShadowMap; // Three r186 removed PCFSoftShadowMap; use the supported equivalent without runtime warning.
   renderer.domElement.setAttribute("aria-label", "Thành phố 3D của An");
   renderer.domElement.setAttribute("role", "img");
   renderer.domElement.tabIndex = 0;
@@ -211,6 +211,17 @@ export function createCity(
     }
   };
   box(1200, -4, 570, 3150, 7, 2300, "#a7cd87");
+  // Scenic relief stays north of the playable street graph (first road z=50),
+  // so hills/rocks cannot obstruct residents or masquerade as walkable ground.
+  // Batch with the existing low-poly foliage geometry: no added draw call.
+  for(let i=0;i<18;i++){
+    const x=115+(i%9)*290,z=-455+Math.floor(i/9)*95;
+    leaves.push({x,y:2.5+i%4,z,w:94+i%3*13,h:10+i%5*4,d:66+i%3*8,
+      color:['#8fae79','#7da18d','#a8bb85','#92b58a'][i%4]});
+    if(i%3===0)leaves.push({x:x+19,y:7,z:z-8,w:15,h:12,d:13,color:'#9a9c89'});
+  }
+  host.dataset.terrainMounds='18';
+
   // River and a broad promenade at the southern edge of the fictional district.
   road(
     [
@@ -249,9 +260,9 @@ export function createCity(
   road(metroLine, 5, 3.5, "#bac7bd");
   const placements: AssetPlacement[] = [];
   const neighborhood=neighborhoodProps(new Set(approvedLoadedIds()));
-  function approvedLoadedIds(){return ['suburban/tree-large',...['book','books','chair','chessboard','lamp','plant','shelf','table','monitor','keyboard','mouse'].map(k=>'supplied/props/'+k)].filter(id=>assets.get(id));}
+  function approvedLoadedIds(){return ['suburban/tree-large','suburban/tree-small',...['book','books','chair','chessboard','lamp','plant','shelf','table','monitor','keyboard','mouse'].map(k=>'supplied/props/'+k)].filter(id=>assets.get(id));}
   placements.push(...neighborhood.placements);
-  host.dataset.neighborhoodProps=JSON.stringify({placements:neighborhood.placements.length,plants:neighborhood.plantCount,trees:neighborhood.trees?sceneryTrees.length:0,models:[...new Set(neighborhood.placements.map(p=>p.id))]});
+  host.dataset.neighborhoodProps=JSON.stringify({placements:neighborhood.placements.length,plants:neighborhood.plantCount,trees:neighborhood.trees?sceneryTrees.length:0,smallTrees:neighborhood.smallTreeCount,models:[...new Set(neighborhood.placements.map(p=>p.id))]});
   const modelBuildings = ["commercial/building-a", "commercial/building-b", "commercial/building-c"];
   const modelHomes = ["suburban/building-type-a", "suburban/building-type-b", "suburban/building-type-c"];
   const propAsset = (prop: typeof streetProps[number]) => resolveModel(prop.kind === "produce" ? prop.venue === "Chợ nhỏ" ? "display-bread" : "display-fruit" : prop.kind) ?? "";
@@ -1025,6 +1036,13 @@ export function createCity(
     host.dataset.personHeight = String(40 * HUMAN_SCALE);
     host.dataset.carLength = String(VEHICLES.car.length);
     host.dataset.actors = String(actors.length);
+    // Read-only visual observability for browser acceptance: the activity label
+    // and motion are projections, never proof of completed tasks/reward.
+    if (drawnFrames % 30 === 0) host.dataset.actorActivity = JSON.stringify(
+      actors.map(a => ({id:a.id,kind:a.kind,walking:!!a.walking,
+        bicycle:!!a.bicycle,speaking:!!socialPoses.get(a.id)?.speaking,
+        activity:a.activity})));
+
     host.dataset.exchanges = String(exchanges.length);
     host.dataset.socialCast = JSON.stringify(actors.filter(a => socialPoses.get(a.id)?.gesture !== "idle" && socialPoses.has(a.id)).map(a => ({ id: a.id, position: a.position, ...socialPoses.get(a.id) })));
     host.dataset.cyclists = JSON.stringify(actors.filter(a => a.bicycle).map(a => {

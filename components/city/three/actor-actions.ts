@@ -20,11 +20,30 @@ export class ActorActions{
   const t=THREE.MathUtils.clamp((seconds-state.started)/.6,0,1),blend=t*t*(3-2*t),goals:Partial<Hands>={};
   const goal=(side:'left'|'right',x:number,y:number,z:number)=>{goals[side]=new THREE.Vector3((side==='left'?1:-1)*x*h,y*h,z*h);};
   if(!actor.walking&&!actor.bicycle){
-   if(['read','study'].includes(kind)){for(const side of sides)goal(side,.075,.62,.145);avatar.joint('head')?.rotateX(.16*blend);}
+   if(['read','study'].includes(kind)){
+     const pageTurn=Math.max(0,Math.sin(seconds*.7));
+     goal('left',.075,.62,.145);goal('right',.075,.62+.035*pageTurn,.145+.025*pageTurn);
+     avatar.joint('head')?.rotateX(.16*blend);
+   }
    else if(['drink','eat','cup','bread'].includes(kind)){const sip=(1-Math.cos(seconds*1.5))*.5;goal('right',.045,.61+.18*sip,.115);}
-   else if(['work','tool'].includes(kind))goal('right',.09,.57,.14);
-   else if(['garden','can'].includes(kind))goal('right',.075,.57,.15);
-   else if(['shop','bag'].includes(kind))goal('right',.14,.45,.06);
+   else if(['work','tool'].includes(kind)){
+     const typing=Math.sin(seconds*3)*.025;goal('left',.075,.57-typing,.14);goal('right',.09,.57+typing,.14);
+   }
+   else if(['garden','can'].includes(kind)){
+     const watering=Math.sin(seconds*.9)*.035;goal('right',.075,.57+watering,.15+Math.abs(watering));
+   }
+   else if(['shop','bag'].includes(kind)){
+     goal('right',.14,.45+.018*Math.sin(seconds*1.2),.06);
+   }
+   else if(['social','walk-pet'].includes(kind)){
+     const greeting=Math.max(0,Math.sin(seconds*.6));
+     goal('right',.085,.58+.13*greeting,.08);
+   }
+   else if(kind==='rest') {
+     // Gentle idle motion keeps the avatar alive without fabricating a
+     // completed action, need change, sleep interruption or reward.
+     avatar.joint('head')?.rotateY(Math.sin(seconds*.45)*.07*blend);
+   }
    else if(kind==='cook'){goal('right',.105,.59,.15);goals.left=new THREE.Vector3(.025*h+Math.sin(seconds*2)*.35,.68*h,.15*h+Math.cos(seconds*2)*.35);}
    else if(kind==='swim'){for(const side of sides)goal(side,.13,.64,.12+Math.sin(seconds*2+(side==='left'?0:Math.PI))*.035);}
    else if(['exercise','jump'].includes(kind)){for(const side of sides)goal(side,.10,.8+Math.sin(seconds*2+(side==='left'?0:Math.PI))*.09,.07);}

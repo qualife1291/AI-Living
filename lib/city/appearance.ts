@@ -51,10 +51,19 @@ export function defaultAppearance(id: string, role = ""): Appearance {
                               ? "elder"
                               : "casual"),
   )!;
+  // Civilian outfits are stable cosmetics only: diversify everyday streets
+  // without changing resident identity, profession, skills or saved wardrobes.
+  const palette=[
+    ["#85aab0","#586e8c"],["#d99e78","#6c8691"],
+    ["#a9bb82","#786f8c"],["#d4acbb","#637d7b"],
+    ["#b8a5d2","#766e62"],["#e2bd73","#638b96"],
+    ["#79b9a3","#77678b"],["#cf9785","#597c71"],
+  ] as const;
+  const colors=palette[hashSeed(id+'-outfit')%palette.length];
   return {
     theme: theme.id,
-    shirt: theme.shirt,
-    trousers: theme.trousers,
+    shirt: theme.id==='casual'||theme.id==='sport'?colors[0]:theme.shirt,
+    trousers: theme.id==='casual'||theme.id==='sport'?colors[1]:theme.trousers,
     skin: ["#efd6a7", "#d9ba91", "#c79d7d", "#ead5b7"][hashSeed(id) % 4],
     hair: theme.id === "elder" ? "gray" : hashSeed(id) % 3 ? "black" : "brown",
     face: theme.face as Appearance["face"],

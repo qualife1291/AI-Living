@@ -1,6 +1,6 @@
 "use client";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Building2, LocateFixed, Minus, Plus, Scan, MessageCircle, Footprints, Coffee } from "lucide-react";
+import { Building2, LocateFixed, Minus, Plus, Scan, MessageCircle, Footprints, Coffee, DoorOpen } from "lucide-react";
 import { WorldOverlays } from "./WorldOverlays";
 import { WebGLUnavailable } from "./WebGLUnavailable";
 import type { CityRuntime, SceneInput, SceneStatus } from "./three/runtime";
@@ -10,6 +10,7 @@ type Props = SceneInput & {
   onSelect: (id: string) => void;
   onVenue: (v: Venue) => void;
   onInspect: () => void;
+  onInterior: () => void;
 };
 export function City3D(props: Props) {
   const host = useRef<HTMLDivElement>(null),
@@ -92,6 +93,13 @@ export function City3D(props: Props) {
           onClick={() => runtime.current?.follow()}
         >
           <LocateFixed size={17} />
+        </button>
+        <button
+          aria-label="Xem bên trong tòa nhà"
+          title="Quan sát nội thất và hoạt động của cư dân theo địa điểm"
+          onClick={props.onInterior}
+        >
+          <DoorOpen size={17} />
         </button>
         <button
           aria-label="Khu cao ốc"
