@@ -92,7 +92,8 @@ export function createInterior(host: HTMLDivElement, venue: string, floor: numbe
     const heldDetail = box(.74,1.69,.36,.36,.05,.29,"#fff3dd",root);
     bodies.push({root,shirt,legs,armL,armR,head,held,heldDetail});
   }
-  let frame = 0, last = 0;
+  let frame = 0, last = 0, renderedFrames = 0;
+  host.dataset.interiorFrames='0';
   const resize = () => { const w = host.clientWidth, h = host.clientHeight; renderer.setSize(w, h); key.shadow.mapSize.setScalar(w<600?512:1024); camera.aspect = w / Math.max(1, h); camera.updateProjectionMatrix(); };
   const observer = new ResizeObserver(resize); observer.observe(host); resize();
   function tick(stamp: number) {
@@ -168,6 +169,10 @@ export function createInterior(host: HTMLDivElement, venue: string, floor: numbe
       // wall or pretends to follow a different unseen building.
     }
     controls.update(); renderer.render(scene, camera);
+    // A mode label is not a rendered frame: browser acceptance must wait for
+    // actual WebGL draws after each camera/floor switch (especially mobile).
+    host.dataset.interiorFrames=String(++renderedFrames);
+    host.dataset.interiorDrawCalls=String(renderer.info.render.calls);
   }
   frame = requestAnimationFrame(tick);
   return () => { cancelAnimationFrame(frame); observer.disconnect(); controls.dispose(); geometry.dispose(); materials.forEach((m) => m.dispose()); renderer.dispose(); renderer.forceContextLoss(); renderer.domElement.remove(); };
