@@ -10,7 +10,7 @@ import type { World } from "@/lib/world";
 
 export type InteriorCamera = 'wide' | 'follow' | 'overhead';
 export function createInterior(host: HTMLDivElement, venue: string, floor: number, world: () => World, offset: number, options: {camera:InteriorCamera; focusId?:string} = {camera:'wide'}) {
-  const renderer = new THREE.WebGLRenderer({ antialias: true });
+  const renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
   renderer.setPixelRatio(Math.min(devicePixelRatio, 1.5));
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
@@ -94,6 +94,8 @@ export function createInterior(host: HTMLDivElement, venue: string, floor: numbe
   }
   let frame = 0, last = 0, renderedFrames = 0;
   host.dataset.interiorFrames='0';
+  // A small, on-demand cutaway should keep its latest completed frame visible
+  // through mobile compositor delays and camera transitions, not flash navy.
   const resize = () => { const w = host.clientWidth, h = host.clientHeight; renderer.setSize(w, h); key.shadow.mapSize.setScalar(w<600?512:1024); camera.aspect = w / Math.max(1, h); camera.updateProjectionMatrix(); };
   const observer = new ResizeObserver(resize); observer.observe(host); resize();
   function tick(stamp: number) {
