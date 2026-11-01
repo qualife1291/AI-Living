@@ -22,7 +22,8 @@ assert.equal(interiorProp('read'),'book');
 assert.equal(interiorProp('sleep'),'none');
 assert.equal(interiorKind('Phòng An'),'home');
 assert.equal(interiorKind('Quán cà phê'),'dining');
-assert.equal(interiorKind('Bệnh viện'),'study'); // Existing venue classifier: document known gap separately
+assert.equal(interiorKind('Bệnh viện'),'clinic');
+assert.equal(interiorKind('Thư viện'),'study');
 assert.equal(interiorPhase(125).floor,0);
 assert.equal(interiorAction('work',''), 'type');
 console.log(JSON.stringify({suite:'interior-actions',mapped:cases.length,actionTypes:INTERIOR_ACTIONS.length,syntheticRewards:0,worldWrites:false}));
