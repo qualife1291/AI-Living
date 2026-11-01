@@ -12,7 +12,7 @@ export function createInterior(host: HTMLDivElement, venue: string, floor: numbe
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.shadowMap.enabled = true;
-  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+  renderer.shadowMap.type = THREE.PCFShadowMap;
   host.appendChild(renderer.domElement);
   const scene = new THREE.Scene(); scene.background = new THREE.Color("#182b39");
   const camera = new THREE.PerspectiveCamera(38, 1, .1, 200); camera.position.set(17, 18, 23);
@@ -31,11 +31,32 @@ export function createInterior(host: HTMLDivElement, venue: string, floor: numbe
   // Window mullions and a luminous courtyard beyond the rear wall.
   for (let i = 0; i < 3; i++) { box(-5 + i * 3.4, 3.3, -5.84, 2.8, 2.6, .12, "#86b4c0"); box(-5 + i * 3.4, 3.3, -5.7, .08, 2.7, .1, "#f6ecd7"); }
   function chair(x: number, z: number, back = true) { box(x, .9, z, .9, .2, .9, "#467b77"); if (back) box(x, 1.5, z - .4, .9, 1, .15, "#467b77"); for (const dx of [-.32, .32]) for (const dz of [-.32, .32]) box(x + dx, .4, z + dz, .08, .8, .08, "#594a3a"); }
-  for (let row = 0; row < 2; row++) for (let col = 0; col < 2; col++) {
-    const x = -4 + col * 4.5, z = -1.8 + row * 4.2;
-    box(x, 1.5, z, 2.8, .18, 1.7, "#ab7956"); box(x, .7, z, .25, 1.4, .25, "#665848"); chair(x, z + 1.25);
-    if (dining) { box(x, 1.65, z, .65, .08, .65, "#fff1ce"); box(x + .8, 1.8, z, .22, .4, .22, "#a4cbc3"); }
-    else { box(x, 1.64, z, .9, .1, .65, study ? "#b37457" : "#829cae"); box(x + .7, 1.7, z, .15, .3, .15, "#e3b85d"); }
+  if (kind === "home") {
+    // A residential cutaway: two distinct beds with pillows/duvets, wardrobes,
+    // low drawers and a bedside light. Furniture is visual only; sleep and
+    // ownership remain exclusively in the authenticated world state.
+    for (const [i,x] of [-4.3,.4].entries()) {
+      box(x,.40,.45,3.2,.8,4.5,"#986f58");
+      box(x,.92,.45,3.05,.22,4.3,"#e9dec3");
+      box(x,1.03,1.25,2.85,.16,2.4,i===0?"#8bb3b2":"#c69fb6");
+      box(x,1.06,-1.25,2.3,.21,.9,"#fff5df");
+      box(x,.93,-1.82,3.2,1.8,.24,"#765e4f");
+    }
+    for (const x of [-5.9,-2.7,1.5]) {
+      box(x,1.65,-4.65,1.4,3.3,1.4,"#977c62");
+      box(x,1.75,-3.88,1.16,2.9,.10,"#bda083");
+      box(x+.32,1.7,-3.80,.07,.34,.09,"#d7c6a2");
+    }
+    box(2.75,.7,3.7,1.45,1.4,1.4,"#ad967b");
+    box(2.75,1.45,3.7,1.6,.12,1.6,"#d9c5a6");
+    box(2.75,1.84,3.7,.50,.72,.5,"#edcb7e");
+  } else {
+    for (let row = 0; row < 2; row++) for (let col = 0; col < 2; col++) {
+      const x = -4 + col * 4.5, z = -1.8 + row * 4.2;
+      box(x, 1.5, z, 2.8, .18, 1.7, "#ab7956"); box(x, .7, z, .25, 1.4, .25, "#665848"); chair(x, z + 1.25);
+      if (dining) { box(x, 1.65, z, .65, .08, .65, "#fff1ce"); box(x + .8, 1.8, z, .22, .4, .22, "#a4cbc3"); }
+      else { box(x, 1.64, z, .9, .1, .65, study ? "#b37457" : "#829cae"); box(x + .7, 1.7, z, .15, .3, .15, "#e3b85d"); }
+    }
   }
   box(-6, 1.35, -4.9, 3, 2.7, .75, "#7c6958");
   for (let i = 0; i < 11; i++) box(-7.25 + i * .24, 1.8, -4.4, .17, .7 + (i % 3) * .12, .3, ["#69897a", "#bd886b", "#dbbd7b"][i % 3]);
