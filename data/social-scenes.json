@@ -961,31 +961,43 @@
         "rest",
         "work"
       ],
-      "durationSeconds": 36,
+      "durationSeconds": 46,
       "turns": [
         {
           "speaker": "a",
           "text": "{b}, sau khi thời tiết đổi, mình xem đất trong chậu trước nhé.",
           "gesture": "point",
-          "seconds": 8
+          "seconds": 7
         },
         {
           "speaker": "b",
           "text": "Ừ, đất còn ẩm thì chưa cần tưới thêm.",
           "gesture": "nod",
-          "seconds": 8
+          "seconds": 7
         },
         {
           "speaker": "a",
           "text": "Nếu lá có dấu khác thường, mình ghi lại rồi hỏi người chăm cây.",
           "gesture": "explain",
-          "seconds": 8
+          "seconds": 7
         },
         {
           "speaker": "b",
           "text": "Mình dọn dụng cụ gọn lại để người khác vẫn đi qua được.",
           "gesture": "wave",
-          "seconds": 8
+          "seconds": 7
+        },
+        {
+          "speaker": "a",
+          "text": "Mình sẽ nhìn lại vào ngày mai, không vội kết luận chỉ từ một chiếc lá.",
+          "gesture": "explain",
+          "seconds": 7
+        },
+        {
+          "speaker": "b",
+          "text": "Ừ, mình chăm đều đặn và ghi chú thay đổi nhỏ thôi nhé.",
+          "gesture": "nod",
+          "seconds": 7
         }
       ]
     }
