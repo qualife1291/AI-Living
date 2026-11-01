@@ -116,7 +116,7 @@ export function createCity(
   renderer.toneMappingExposure = 1.22;
   let renderQuality = input().quality;
   renderer.shadowMap.enabled = shadowMapSize(renderQuality, host.clientWidth) > 0;
-  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+  renderer.shadowMap.type = THREE.PCFShadowMap; // Three r186 removed PCFSoftShadowMap; use the supported equivalent without runtime warning.
   renderer.domElement.setAttribute("aria-label", "Thành phố 3D của An");
   renderer.domElement.setAttribute("role", "img");
   renderer.domElement.tabIndex = 0;
