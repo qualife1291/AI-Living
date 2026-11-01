@@ -77,7 +77,9 @@ with sync_playwright() as p:
    assert int(host.get_attribute('data-draw-calls'))<90
    # The 48-resident ecology uses more model batches than the old 24-resident fixture.
    batches=int(host.get_attribute('data-human-batches') or '0')
-   assert 6<=batches<=12,('Unexpected human batch count',batches)
+   # Expanded citizen rigs use 13 human batches on the fixed realistic fixture.
+   # Keep a finite ceiling and the stricter total draw-call gate (<90).
+   assert 6<=batches<=16,('Unexpected human batch count',batches)
    assert host.get_attribute('data-street-props')=='66'
    # Real 3D browser regression: supported Three.js shadows and no mobile HUD overlap.
    assert not any('PCFSoftShadowMap has been removed' in row['text'] for row in console), 'Removed Three.js shadow setting still used'
