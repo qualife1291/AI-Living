@@ -249,9 +249,9 @@ export function createCity(
   road(metroLine, 5, 3.5, "#bac7bd");
   const placements: AssetPlacement[] = [];
   const neighborhood=neighborhoodProps(new Set(approvedLoadedIds()));
-  function approvedLoadedIds(){return ['suburban/tree-large',...['book','books','chair','chessboard','lamp','plant','shelf','table','monitor','keyboard','mouse'].map(k=>'supplied/props/'+k)].filter(id=>assets.get(id));}
+  function approvedLoadedIds(){return ['suburban/tree-large','suburban/tree-small',...['book','books','chair','chessboard','lamp','plant','shelf','table','monitor','keyboard','mouse'].map(k=>'supplied/props/'+k)].filter(id=>assets.get(id));}
   placements.push(...neighborhood.placements);
-  host.dataset.neighborhoodProps=JSON.stringify({placements:neighborhood.placements.length,plants:neighborhood.plantCount,trees:neighborhood.trees?sceneryTrees.length:0,models:[...new Set(neighborhood.placements.map(p=>p.id))]});
+  host.dataset.neighborhoodProps=JSON.stringify({placements:neighborhood.placements.length,plants:neighborhood.plantCount,trees:neighborhood.trees?sceneryTrees.length:0,smallTrees:neighborhood.smallTreeCount,models:[...new Set(neighborhood.placements.map(p=>p.id))]});
   const modelBuildings = ["commercial/building-a", "commercial/building-b", "commercial/building-c"];
   const modelHomes = ["suburban/building-type-a", "suburban/building-type-b", "suburban/building-type-c"];
   const propAsset = (prop: typeof streetProps[number]) => resolveModel(prop.kind === "produce" ? prop.venue === "Chợ nhỏ" ? "display-bread" : "display-fruit" : prop.kind) ?? "";
