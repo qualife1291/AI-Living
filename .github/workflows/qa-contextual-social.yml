@@ -66,7 +66,7 @@ jobs:
           sudo apt-get update -qq
           sudo apt-get install -y chromium
           python3 -m venv /tmp/ai-living-browser-venv
-          /tmp/ai-living-browser-venv/bin/pip install playwright
+          /tmp/ai-living-browser-venv/bin/pip install playwright pillow
       - name: Start local Worker (no remote D1 or QA writes)
         run: |
           mkdir -p qa-evidence/social
