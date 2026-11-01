@@ -47,6 +47,12 @@ with sync_playwright() as p:
    assert int(host.get_attribute('data-draw-calls'))<90
    # The 48-resident ecology uses more model batches than the old 24-resident fixture.\n   batches=int(host.get_attribute('data-human-batches') or '0')\n   assert 6<=batches<=12,('Unexpected human batch count',batches)
    assert host.get_attribute('data-street-props')=='66'
+   # Real 3D browser regression: supported Three.js shadows and no mobile HUD overlap.
+   assert not any('PCFSoftShadowMap has been removed' in row['text'] for row in console), 'Removed Three.js shadow setting still used'
+   if name=='mobile':
+    credit=page.locator('.city-three .map-credit')
+    assert credit.count()==1 and 'Thành phố 3D' in credit.inner_text()
+    assert credit.evaluate("(e)=>{const s=getComputedStyle(e);return s.clipPath==='inset(50%)' && e.getBoundingClientRect().width<=1}"),'Keyboard/mouse instructions overlap the touch dock'
    assert page.evaluate('document.documentElement.scrollWidth<=window.innerWidth')
    assert not errors,errors
    report.append({'viewport':name,'renderer':'Chromium SwiftShader','fixture':'synthetic-workshop-no-world-writes','first':lines[0],'reply':after,'fullDialogue':lines,'pollingCoveredSeconds':24,'stats':host.evaluate('(e)=>({...e.dataset})')})
