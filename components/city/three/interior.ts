@@ -93,7 +93,7 @@ export function createInterior(host: HTMLDivElement, venue: string, floor: numbe
     bodies.push({root,shirt,legs,armL,armR,head,held,heldDetail});
   }
   let frame = 0, last = 0;
-  const resize = () => { const w = host.clientWidth, h = host.clientHeight; renderer.setSize(w, h); camera.aspect = w / Math.max(1, h); camera.updateProjectionMatrix(); };
+  const resize = () => { const w = host.clientWidth, h = host.clientHeight; renderer.setSize(w, h); key.shadow.mapSize.setScalar(w<600?512:1024); camera.aspect = w / Math.max(1, h); camera.updateProjectionMatrix(); };
   const observer = new ResizeObserver(resize); observer.observe(host); resize();
   function tick(stamp: number) {
     frame = requestAnimationFrame(tick); if (document.hidden || stamp - last < 33) return; last = stamp;
@@ -108,7 +108,7 @@ export function createInterior(host: HTMLDivElement, venue: string, floor: numbe
     const shown = present.slice(0,bodies.length),seenActions: string[]=[];
     bodies.forEach((part,i)=>{
       const actor=shown[i],figure=part.root;
-      figure.visible=!!actor;if(!actor)return;
+      // The world knows the venue but not a room/floor. Never duplicate a\n      // resident on each imaginary storey; ground-floor cutaway is an\n      // illustrative venue-wide projection, upper floors show architecture only.\n      figure.visible=!!actor && floor===0;if(!actor || floor!==0)return;
       const action=interiorAction(actor.kind,actor.activity);
       seenActions.push(action);
       const col=(i%3),row=Math.floor(i/3);
@@ -123,7 +123,7 @@ export function createInterior(host: HTMLDivElement, venue: string, floor: numbe
       for (const leg of part.legs)(leg.material as THREE.MeshStandardMaterial).color.set(clothing.trousers);
       (part.head.material as THREE.MeshStandardMaterial).color.set(clothing.skin);
       const beat=Math.sin(sim*2.1+i)*.35,slow=Math.sin(sim*.65+i);
-      part.armL.rotation.x=0;part.armR.rotation.x=0;
+      part.armL.rotation.x=0;part.armR.rotation.x=0;part.head.rotation.x=0;
       part.head.rotation.y=slow*.07;
       if(['eat','drink','serve'].includes(action))part.armR.rotation.x=-.35-.35*Math.max(0,Math.sin(sim*1.6+i));
       else if(['read','write','study','type','repair','pack','cook','wash','clean','tidy','garden','shop','browse','care'].includes(action)){
@@ -151,9 +151,9 @@ export function createInterior(host: HTMLDivElement, venue: string, floor: numbe
         part.heldDetail.scale.set(w*.7,.05,Math.max(.05,d*.5));
       }
     });
-    host.dataset.interiorVisible=String(shown.length);
+    host.dataset.interiorVisible=String(floor===0?shown.length:0);
     host.dataset.interiorVenueCount=String(atVenue.length);
-    host.dataset.interiorActions=JSON.stringify(seenActions);
+    host.dataset.interiorActions=JSON.stringify(seenActions);\n    host.dataset.floorLocationsVerified='false';
     host.dataset.interiorResidents=JSON.stringify(shown.map(a=>({id:a.id,kind:a.kind,action:interiorAction(a.kind,a.activity)})));
     const followed=shown.find(a=>a.id===options.focusId)??shown[0];
     if(options.camera==='follow'&&followed){
