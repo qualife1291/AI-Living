@@ -21,8 +21,10 @@ import {
 } from "./learning.ts";
 import defaults from "../../data/living/catalog.json" with { type: "json" };
 import socialScripts from "../../data/social-scenes.json" with { type: "json" };
+import cityExpansion from "../../data/living/city-expansion.json" with { type: "json" };
 import {
   catalogSchema,
+  roleSchema,
   type LivingCatalog,
   type LivingState,
   type LivingTurn,
@@ -75,7 +77,7 @@ export function population(state: LivingState, date: string): Resident[] {
   for (const role of state.catalog.roles)
     if (
       !residents.some((r) => r.roleId === role.id) &&
-      residents.length < Math.min(state.catalog.maxPopulation,count)
+      residents.length < state.catalog.maxPopulation
     )
       add(role);
   while (residents.length < count)
@@ -161,6 +163,18 @@ export function planLivingTurn(
       state.catalog.roles.length < 40
     )
       state.catalog.roles.push(structuredClone(role));
+  // Add verified built-in occupations only when a durable living turn is
+  // being committed. Existing owner roles, population caps and resident IDs win.
+  for (const raw of cityExpansion.roles) {
+    const role = roleSchema.parse(raw);
+    if (state.catalog.roles.length >= 40) break;
+    if (!state.catalog.roles.some(r=>r.id===role.id))
+      state.catalog.roles.push(role);
+  }
+  for (const name of cityExpansion.names) {
+    if(state.catalog.names.length>=100)break;
+    if(!state.catalog.names.includes(name))state.catalog.names.push(name);
+  }
   state.residents = population(state, context.date);
   const newExperiences: import("./learning").Experience[] = [];
   const learning = prepareLearning(world, state, now, (e) => newExperiences.push(e));
