@@ -67,7 +67,22 @@ with sync_playwright() as p:
    page.screenshot(path=str(out/f'reload-{name}-preview.png'))
    assert not errors,errors;assert page.evaluate('document.documentElement.scrollWidth<=innerWidth')
    report[-1]['reloadAntiRepeat']=True
-   print(name,'PASS complete dialogue through polling, paired speakers, 1.4m personal space, source label, responsive/no errors',len(lines),'lines',flush=True)
+   # Exercise actual rendered 3D frames at multiple object/activity venues,
+   # not AI-generated images or synthetic screenshot substitutes. The fixture
+   # is browser-only and all HTTP mutations are intercepted above.
+   report[-1]['contextualScreenshots']=[]
+   for detail in ['market','garden','eat','read']:
+    fixture=json.loads(subprocess.check_output(['node','scripts/social-preview-fixture.mjs',f'--detail={detail}'],cwd=root,text=True))
+    page.reload(wait_until='domcontentloaded',timeout=60000)
+    host.wait_for(timeout=90000);bubble.wait_for(timeout=20000)
+    caption=bubble.inner_text()
+    assert 'Kịch bản' in caption,(detail,caption)
+    assert bubble.evaluate('(e)=>{const b=e.getBoundingClientRect();return b.left>=0&&b.right<=innerWidth}'),(detail,'clipped speech')
+    assert int(host.get_attribute('data-draw-calls'))>0,(detail,'3D renderer had no draw calls')
+    assert not errors,(detail,errors)
+    page.screenshot(path=str(out/f'{detail}-{name}-preview.png'))
+    report[-1]['contextualScreenshots'].append({'scene':detail,'caption':caption[:350],'realBrowserFrame':True})
+   print(name,'PASS complete dialogue, four contextual scenes and real 3D screenshots',len(lines),'lines',flush=True)
    page.close()
   (out/'metrics.json').write_text(json.dumps(report,indent=2,ensure_ascii=False))
  except BaseException:
