@@ -28,9 +28,7 @@ export const trafficRouteVertices: TrafficPoint[] = [
 ];
 export const TRAFFIC_LANE_OFFSET = 10;
 export const TRAFFIC_SPEED = 24; // world units/s = 2.4 m/s, slow urban traffic
-// Extra vehicles share the proven paved circuit. The independent sweep tests
-// enforce oriented-body separation, pedestrian yielding and queue recovery.
-export const TRAFFIC_COUNT = 16;
+export const TRAFFIC_COUNT = 12;
 /** These four paved turning aprons must be drawn by the street renderer. */
 export const trafficJunctions = trafficRouteVertices.map(position => ({ position, radius: 42 }));
 const CORNER_CUT = 14;
