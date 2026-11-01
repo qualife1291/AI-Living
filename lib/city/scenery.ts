@@ -54,9 +54,7 @@ for (const venue of venues) {
   }
 }
 // The exact former runtime generation, now consumed by both graphics and motion.
-// Additional native street trees are generated deterministically; the same
-// shared trunk collision data is consumed by routing, walking and rendering.
-for (let i = 0; i < 185; i++) {
+for (let i = 0; i < 140; i++) {
   const x = (i * 379 + 41) % 2430, z = (i * 193 + 110) % 1480;
   if (buildingAllowed(x, z, 6) && !buildings.some(b => Math.abs(x - b.x) < b.width / 2 + 17 && Math.abs(z - b.z) < b.depth / 2 + 17)) tree(`street-tree:${i}`, x, z, i);
 }
