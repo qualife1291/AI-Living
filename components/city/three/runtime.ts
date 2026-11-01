@@ -211,6 +211,17 @@ export function createCity(
     }
   };
   box(1200, -4, 570, 3150, 7, 2300, "#a7cd87");
+  // Scenic relief stays north of the playable street graph (first road z=50),
+  // so hills/rocks cannot obstruct residents or masquerade as walkable ground.
+  // Batch with the existing low-poly foliage geometry: no added draw call.
+  for(let i=0;i<18;i++){
+    const x=115+(i%9)*290,z=-455+Math.floor(i/9)*95;
+    leaves.push({x,y:2.5+i%4,z,w:94+i%3*13,h:10+i%5*4,d:66+i%3*8,
+      color:['#8fae79','#7da18d','#a8bb85','#92b58a'][i%4]});
+    if(i%3===0)leaves.push({x:x+19,y:7,z:z-8,w:15,h:12,d:13,color:'#9a9c89'});
+  }
+  host.dataset.terrainMounds='18';
+
   // River and a broad promenade at the southern edge of the fictional district.
   road(
     [
