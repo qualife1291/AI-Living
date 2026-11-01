@@ -21,11 +21,18 @@ def assert_visible_interior(page, mode):
         Number(e.dataset.interiorDrawCalls)>0;
     }""",timeout=20000)
     el=page.locator('.interior-canvas')
-    im=Image.open(io.BytesIO(el.screenshot(timeout=20000))).convert('RGB').resize((48,32))
-    pixels=list(im.getdata())
-    bright=sum(1 for r,g,b in pixels if r+g+b>270)/len(pixels)
-    assert bright>=0.08,(mode,'Interior WebGL screenshot is blank/dark',round(bright,3),
-                         el.get_attribute('data-interior-frames'),
+    # SwiftShader shader compilation and mobile compositing can take several
+    # actual frames. Retry the pixel sample, never accept a dark final frame.
+    checks=[]
+    bright=0
+    for attempt in range(12):
+      im=Image.open(io.BytesIO(el.screenshot(timeout=20000))).convert('RGB').resize((48,32))
+      pixels=list(im.getdata())
+      bright=sum(1 for r,g,b in pixels if r+g+b>270)/len(pixels)
+      checks.append({'bright':round(bright,3),'frames':el.get_attribute('data-interior-frames')})
+      if bright>=0.08:break
+      page.wait_for_timeout(900)
+    assert bright>=0.08,(mode,'Interior WebGL screenshot stayed blank/dark',checks,
                          el.get_attribute('data-interior-draw-calls'))
     return {'mode':mode,'renderedFrames':int(el.get_attribute('data-interior-frames')),
             'drawCalls':int(el.get_attribute('data-interior-draw-calls')),
