@@ -825,6 +825,169 @@
           "seconds": 7
         }
       ]
+    },
+    {
+      "id": "market-bag-and-receipt",
+      "title": "Giỏ mua sắm và hóa đơn",
+      "places": [
+        "Chợ nhỏ",
+        "Siêu thị"
+      ],
+      "kinds": [
+        "eat",
+        "read",
+        "social",
+        "work"
+      ],
+      "durationSeconds": 36,
+      "turns": [
+        {
+          "speaker": "a",
+          "text": "{b}, mình kiểm lại danh sách trước khi đặt đồ vào giỏ nhé?",
+          "gesture": "wave",
+          "seconds": 8
+        },
+        {
+          "speaker": "b",
+          "text": "Ừ, món dễ vỡ thì để riêng, đừng đặt dưới các túi nặng.",
+          "gesture": "explain",
+          "seconds": 8
+        },
+        {
+          "speaker": "a",
+          "text": "Nếu có hóa đơn, mình đối lại số món rồi mới rời quầy.",
+          "gesture": "point",
+          "seconds": 8
+        },
+        {
+          "speaker": "b",
+          "text": "Xong rồi mình nhường lối cho người mua tiếp nhé.",
+          "gesture": "nod",
+          "seconds": 8
+        }
+      ]
+    },
+    {
+      "id": "street-crossing-look-first",
+      "title": "Nhường đường ở lối sang phố",
+      "places": [
+        "Phố đi bộ",
+        "Bến xe buýt"
+      ],
+      "kinds": [
+        "social",
+        "read",
+        "rest"
+      ],
+      "durationSeconds": 36,
+      "turns": [
+        {
+          "speaker": "a",
+          "text": "{b}, trước khi sang đường mình quan sát cả hai phía nhé.",
+          "gesture": "point",
+          "seconds": 8
+        },
+        {
+          "speaker": "b",
+          "text": "Ừ, mình chờ tín hiệu rõ rồi mới đi, không vội.",
+          "gesture": "nod",
+          "seconds": 8
+        },
+        {
+          "speaker": "a",
+          "text": "Mình để lối đi thông thoáng cho xe và người khác.",
+          "gesture": "explain",
+          "seconds": 8
+        },
+        {
+          "speaker": "b",
+          "text": "Cảm ơn. Sang xong mình đứng gọn lại rồi mới nói chuyện.",
+          "gesture": "wave",
+          "seconds": 8
+        }
+      ]
+    },
+    {
+      "id": "park-pet-courtesy",
+      "title": "Gặp thú cưng nơi công cộng",
+      "places": [
+        "Công viên",
+        "Sân chung",
+        "Phố đi bộ"
+      ],
+      "kinds": [
+        "social",
+        "play",
+        "rest"
+      ],
+      "durationSeconds": 36,
+      "turns": [
+        {
+          "speaker": "a",
+          "text": "{b}, nếu có thú cưng tới gần, mình hỏi người chăm trước nhé?",
+          "gesture": "wave",
+          "seconds": 8
+        },
+        {
+          "speaker": "b",
+          "text": "Đúng rồi. Mình không tự cho ăn hay chạm vào khi chưa được đồng ý.",
+          "gesture": "explain",
+          "seconds": 8
+        },
+        {
+          "speaker": "a",
+          "text": "Vậy mình chừa lối và giữ khoảng cách để bạn nhỏ không giật mình.",
+          "gesture": "nod",
+          "seconds": 8
+        },
+        {
+          "speaker": "b",
+          "text": "Ừ, quan sát nhẹ nhàng cũng vui mà. Mình đi tiếp nhé.",
+          "gesture": "wave",
+          "seconds": 8
+        }
+      ]
+    },
+    {
+      "id": "garden-check-after-weather",
+      "title": "Quan sát chậu cây sau thay đổi thời tiết",
+      "places": [
+        "Vườn nhỏ",
+        "Công viên"
+      ],
+      "kinds": [
+        "garden",
+        "social",
+        "rest",
+        "work"
+      ],
+      "durationSeconds": 36,
+      "turns": [
+        {
+          "speaker": "a",
+          "text": "{b}, sau khi thời tiết đổi, mình xem đất trong chậu trước nhé.",
+          "gesture": "point",
+          "seconds": 8
+        },
+        {
+          "speaker": "b",
+          "text": "Ừ, đất còn ẩm thì chưa cần tưới thêm.",
+          "gesture": "nod",
+          "seconds": 8
+        },
+        {
+          "speaker": "a",
+          "text": "Nếu lá có dấu khác thường, mình ghi lại rồi hỏi người chăm cây.",
+          "gesture": "explain",
+          "seconds": 8
+        },
+        {
+          "speaker": "b",
+          "text": "Mình dọn dụng cụ gọn lại để người khác vẫn đi qua được.",
+          "gesture": "wave",
+          "seconds": 8
+        }
+      ]
     }
   ]
 }
