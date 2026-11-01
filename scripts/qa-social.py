@@ -44,6 +44,28 @@ with sync_playwright() as p:
    speakers=[line.split('→')[0].strip() for line in lines]
    assert all(speakers[i]!=speakers[i-1] for i in range(1,len(speakers))),speakers
    after=lines[1];assert lines[0].split('→')[0]!=after.split('→')[0],(lines[0],after)
+   # Observe a full 60-second real browser window. All samples come from
+   # actual rendered actor projections, not fabricated learning or world writes.
+   page.evaluate("""() => {
+     window.__livingActivityTrace=[];
+     window.__livingActivityMonitor=setInterval(()=>{
+       const el=document.querySelector('.three-canvas');
+       if(!el)return;
+       try {const actors=JSON.parse(el.dataset.actorActivity||'[]');
+         window.__livingActivityTrace.push({at:performance.now(),actors:actors.map(
+           a=>({id:a.id,kind:a.kind,walking:a.walking,bicycle:a.bicycle,speaking:a.speaking}))});
+       } catch {}
+     },1000);
+   }""")
+   page.wait_for_timeout(61000)
+   trace=page.evaluate("""() => {clearInterval(window.__livingActivityMonitor);return window.__livingActivityTrace}""")
+   assert len(trace)>=55,('Missing live one-minute activity observations',len(trace))
+   ids=set(a['id'] for point in trace for a in point['actors'])
+   assert len(ids)>=3,('Too few visible characters',len(ids))
+   actions={a['kind'] for point in trace for a in point['actors'] if a['walking'] or a['bicycle'] or a['speaking'] or a['kind'] not in ['rest','sleep','idle']}
+   assert actions,('No active tasks or interactions in 60-second window',name)
+   # Rest/sleep/quiet hours are allowed; no synthetic actions are injected.
+   report[-1]['activity60s']={'samples':len(trace),'visibleIds':len(ids),'activeKinds':sorted(actions),'restExempt':True,'worldWrites':False}
    assert int(host.get_attribute('data-draw-calls'))<90
    # The 48-resident ecology uses more model batches than the old 24-resident fixture.\n   batches=int(host.get_attribute('data-human-batches') or '0')\n   assert 6<=batches<=12,('Unexpected human batch count',batches)
    assert host.get_attribute('data-street-props')=='66'
