@@ -1,12 +1,36 @@
 """Actual local rendered evidence from synthetic world responses; no real-world writes."""
 import json,subprocess,time,os,datetime
 from pathlib import Path
+from PIL import Image
+import io
 from urllib.parse import urlparse
 from playwright.sync_api import sync_playwright
 root=Path(__file__).resolve().parent.parent
 base=os.environ.get('QA_BASE','http://127.0.0.1:5177');assert urlparse(base).hostname in ['127.0.0.1','localhost']
 out=Path(os.environ.get('QA_OUT',str(root/'docs/screenshots/social')));out.mkdir(parents=True,exist_ok=True)
 report=[];diagnostics=[];console=[];errors=[]
+def assert_visible_interior(page, mode):
+    """Require actual rendered WebGL frames AND nonblank screenshot pixels.
+
+    A mounted canvas or selected camera button is not visual evidence.
+    This catches mobile follow-mode frames that formerly photographed solid navy.
+    """
+    page.wait_for_function("""() => {
+      const e=document.querySelector('.interior-canvas');
+      return e && Number(e.dataset.interiorFrames)>=3 &&
+        Number(e.dataset.interiorDrawCalls)>0;
+    }""",timeout=20000)
+    el=page.locator('.interior-canvas')
+    im=Image.open(io.BytesIO(el.screenshot(timeout=20000))).convert('RGB').resize((48,32))
+    pixels=list(im.getdata())
+    bright=sum(1 for r,g,b in pixels if r+g+b>270)/len(pixels)
+    assert bright>=0.08,(mode,'Interior WebGL screenshot is blank/dark',round(bright,3),
+                         el.get_attribute('data-interior-frames'),
+                         el.get_attribute('data-interior-draw-calls'))
+    return {'mode':mode,'renderedFrames':int(el.get_attribute('data-interior-frames')),
+            'drawCalls':int(el.get_attribute('data-interior-draw-calls')),
+            'brightFraction':round(bright,3)}
+
 with sync_playwright() as p:
  b=p.chromium.launch(executable_path='/usr/bin/chromium',headless=True,args=['--no-sandbox','--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader'])
  try:
@@ -135,9 +159,11 @@ with sync_playwright() as p:
    }""",timeout=45000)
    residents=json.loads(canvas.get_attribute('data-interior-residents'))
    assert residents and all(v['action'] for v in residents),residents
+   interiorFrameEvidence=[assert_visible_interior(page,'wide')]
    page.screenshot(path=str(out/f'interior-wide-{name}.png'))
    indoor.get_by_role('button',name='Theo cư dân',exact=True).click()
    page.locator('.interior-canvas[data-interior-camera="follow"]').wait_for(timeout=30000)
+   interiorFrameEvidence.append(assert_visible_interior(page,'follow'))
    page.screenshot(path=str(out/f'interior-follow-{name}.png'))
    indoor.get_by_role('button',name='Góc trên cao',exact=True).click()
    page.locator('.interior-canvas[data-interior-camera="overhead"]').wait_for(timeout=30000)
@@ -148,9 +174,10 @@ with sync_playwright() as p:
      const e=document.querySelector('.interior-canvas');
      return e&&e.dataset.floorLocationsVerified==='false'&&e.dataset.interiorVisible==='0';
    }""",timeout=10000)
+   interiorFrameEvidence.append(assert_visible_interior(page,'overhead'))
    page.screenshot(path=str(out/f'interior-overhead-{name}.png'))
    assert not errors,('Interior browser errors',errors)
-   report[-1]['indoorCamera']={'venue':'Thư viện','modes':['wide','follow','overhead'],'floorObserved':1,'visible':len(residents),'renderedScreenshots':3,'fakeOutcomes':False}
+   report[-1]['indoorCamera']={'venue':'Thư viện','modes':['wide','follow','overhead'],'floorObserved':1,'visible':len(residents),'renderedScreenshots':3,'fakeOutcomes':False,'renderEvidence':interiorFrameEvidence}
    page.get_by_role('button',name='Đóng bảng thông tin').click()
    print(name,'PASS complete dialogue, four contextual scenes and real 3D screenshots',len(lines),'lines',flush=True)
    page.close()
