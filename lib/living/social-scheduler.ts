@@ -20,6 +20,18 @@ export function scheduleResidentSocial(input: World, now: number) {
     // A replaced or cancelled plan cannot earn a social outcome.
     if(a?.plan?.simStartedAt!==meeting.startedSimMs||b?.plan?.simStartedAt!==meeting.startedSimMs)continue;
     for(const r of [a,b]){r.familiarity=Math.min(100,r.familiarity+1);state.learning[r.id].socialNeed=Math.max(0,(state.learning[r.id].socialNeed??50)-25);}
+    // Only a completed, plan-matched encounter creates/strengthens a social
+    // link. Viewer-local speech, canceled plans and proposed visits do not.
+    const key=[meeting.a,meeting.b].sort().join(":");
+    const graph=state.socialGraph??={};
+    const oldLink=graph[key];
+    if(!oldLink || oldLink.lastCompletedSimMs<meeting.startedSimMs+meeting.durationMs)
+      graph[key]={
+        a:meeting.a,b:meeting.b,
+        meetings:Math.min(65535,(oldLink?.meetings??0)+1),
+        trust:Math.min(100,(oldLink?.trust??0)+2),
+        lastCompletedSimMs:meeting.startedSimMs+meeting.durationMs,
+      };
   }
   schedule.pending=schedule.pending.filter(p=>sim<p.startedSimMs+p.durationMs);
   for(const key of Object.keys(schedule.cooldowns))if(schedule.cooldowns[key]<=sim)delete schedule.cooldowns[key];

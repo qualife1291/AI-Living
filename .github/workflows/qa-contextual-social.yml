@@ -1,14 +1,30 @@
 name: QA Contextual Social — Unit, Real Assets and Browser Frames
 on:
   push:
-    branches: [feat/qa-contextual-social-20261101]
+    branches: [cloudflare-qa]
+  workflow_dispatch:
   pull_request:
+    branches: [cloudflare-qa]
     paths:
       - 'lib/living/social.ts'
       - 'scripts/test-social.mjs'
+      - 'lib/living/engine.ts'
+      - 'lib/living/schema.ts'
+      - 'lib/living/social-scheduler.ts'
+      - 'lib/living/society.ts'
+      - 'components/city/SocietyPanel.tsx'
+      - 'components/city/three/streetscape.ts'
+      - 'app/page.tsx'
+      - 'data/living/city-expansion.json'
+      - 'scripts/test-dense-city-society.mjs'
+      - 'scripts/test-dense-streetscape.mjs'
+      - 'scripts/unit-suites.json'
       - '.github/workflows/qa-contextual-social.yml'
 permissions:
   contents: read
+concurrency:
+  group: qa-city-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 jobs:
   contextual-social:
     runs-on: ubuntu-latest
@@ -26,6 +42,8 @@ jobs:
       - name: Social dialogues and full isolated unit suite
         run: |
           node scripts/test-social.mjs
+          node scripts/test-dense-city-society.mjs
+          node scripts/test-dense-streetscape.mjs
           npm run test:unit
       - name: Type, lint and real 3D model compatibility
         run: |
