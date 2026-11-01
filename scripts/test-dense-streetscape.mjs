@@ -22,8 +22,8 @@ for(const p of streetProps){
 const transport=streetProps.filter(x=>x.kind==="bicycle");
 assert(transport.some(x=>x.seed%2) && transport.some(x=>x.seed%2===0),
   "Both parked scooters and bicycles must be visible");
-assert.equal(TRAFFIC_COUNT,16);
-assert.equal(trafficAt(0).length,16);
+assert.equal(TRAFFIC_COUNT,12);
+assert.equal(trafficAt(0).length,12);
 assert(sceneryTrees.length>90);
 assert(sceneryObstacles.some(x=>x.id?.includes("street-tree")));
 console.log(JSON.stringify({suite:"dense-streetscape",stalls:streetProps.filter(x=>x.kind==="produce").length,
