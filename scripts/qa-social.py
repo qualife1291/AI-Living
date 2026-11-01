@@ -75,7 +75,9 @@ with sync_playwright() as p:
    # Rest/sleep/quiet hours are allowed; no synthetic actions are injected.
    activity60s={'samples':len(trace),'visibleIds':len(ids),'activeKinds':sorted(actions),'restExempt':True,'worldWrites':False}
    assert int(host.get_attribute('data-draw-calls'))<90
-   # The 48-resident ecology uses more model batches than the old 24-resident fixture.\n   batches=int(host.get_attribute('data-human-batches') or '0')\n   assert 6<=batches<=12,('Unexpected human batch count',batches)
+   # The 48-resident ecology uses more model batches than the old 24-resident fixture.
+   batches=int(host.get_attribute('data-human-batches') or '0')
+   assert 6<=batches<=12,('Unexpected human batch count',batches)
    assert host.get_attribute('data-street-props')=='66'
    # Real 3D browser regression: supported Three.js shadows and no mobile HUD overlap.
    assert not any('PCFSoftShadowMap has been removed' in row['text'] for row in console), 'Removed Three.js shadow setting still used'
