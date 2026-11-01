@@ -15,11 +15,14 @@ const context={
 const world={...structuredClone(seed),born,clock:{scale:1,pausedAt:null,pausedMs:0,
  anchors:[{realMs:start,simMs:0,scale:1}]},living:initializeLiving(start)};
 assert.equal(world.living.residents.length,24,"36 role types do not force 36 initial residents");
-assert.equal(world.living.catalog.roles.length,36);
+assert.equal(world.living.catalog.roles.length,24,"Existing fresh-world base catalog stays stable");
+assert.equal(world.living.catalog.names.length,16);
 const before=JSON.stringify(world);
 const first=planLivingTurn(world,context,start).world;
 assert.equal(first.living.ecologyVersion,1);
 assert.equal(first.living.residents.length,48);
+assert.equal(first.living.catalog.roles.length,36,"New city roles only appear on a committed turn");
+assert.equal(first.living.catalog.names.length,32);
 const second=planLivingTurn(first,{...context,fetchedAt:new Date(start+300000).toISOString()},start+300000).world;
 assert.equal(second.living.ecologyVersion,1);
 assert.equal(second.living.catalog.initialPopulation,48);
