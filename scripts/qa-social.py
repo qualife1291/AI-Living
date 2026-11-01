@@ -138,7 +138,12 @@ with sync_playwright() as p:
    indoor.get_by_role('button',name='Góc trên cao',exact=True).click()
    page.locator('.interior-canvas[data-interior-camera="overhead"]').wait_for(timeout=30000)
    indoor.get_by_role('button',name='Tầng 2',exact=True).click()
-   page.locator('.interior-canvas[data-interior-floor="1"]').wait_for(timeout=30000)
+   upper=page.locator('.interior-canvas[data-interior-floor="1"]')
+   upper.wait_for(timeout=30000)
+   page.wait_for_function("""() => {
+     const e=document.querySelector('.interior-canvas');
+     return e&&e.dataset.floorLocationsVerified==='false'&&e.dataset.interiorVisible==='0';
+   }""",timeout=10000)
    page.screenshot(path=str(out/f'interior-overhead-{name}.png'))
    assert not errors,('Interior browser errors',errors)
    report[-1]['indoorCamera']={'venue':'Thư viện','modes':['wide','follow','overhead'],'floorObserved':1,'visible':len(residents),'renderedScreenshots':3,'fakeOutcomes':False}
