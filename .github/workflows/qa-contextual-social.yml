@@ -1,7 +1,7 @@
 name: QA Contextual Social — Unit, Real Assets and Browser Frames
 on:
   push:
-    branches: [cloudflare-qa, feat/qa-contextual-social-20261101, fix/qa-context-graphics-h6-readiness-20261101]
+    branches: [cloudflare-qa]
   workflow_dispatch:
   pull_request:
     branches: [cloudflare-qa]
@@ -27,6 +27,9 @@ on:
       - '.github/workflows/qa-contextual-social.yml'
 permissions:
   contents: read
+concurrency:
+  group: qa-city-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 jobs:
   contextual-social:
     runs-on: ubuntu-latest
