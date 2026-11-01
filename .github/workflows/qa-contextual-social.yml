@@ -17,6 +17,11 @@ on:
       - 'lib/city/appearance.ts'
       - 'lib/city/neighborhood-props.ts'
       - 'components/city/three/interior.ts'
+      - 'components/city/InteriorView.tsx'
+      - 'components/city/City3D.tsx'
+      - 'app/page.tsx'
+      - 'lib/city/interior-actions.ts'
+      - 'scripts/test-interior-actions.mjs'
       - 'components/city/three/actor-actions.ts'
       - 'data/characters/themes.json'
       - '.github/workflows/qa-contextual-social.yml'
@@ -40,6 +45,7 @@ jobs:
         run: |
           node scripts/test-social.mjs
           node scripts/test-visitor-context.mjs
+          node scripts/test-interior-actions.mjs
           node scripts/test-h6-shadow-evaluator.mjs
           node scripts/test-h6-qa-canary.mjs
           node scripts/test-qa-h6-release.mjs
