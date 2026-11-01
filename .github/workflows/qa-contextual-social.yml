@@ -14,6 +14,15 @@ on:
       - 'app/globals.css'
       - 'scripts/qa-social.py'
       - 'scripts/unit-suites.json'
+      - 'lib/living/engine.ts'
+      - 'lib/living/schema.ts'
+      - 'lib/living/social-scheduler.ts'
+      - 'lib/living/society.ts'
+      - 'components/city/SocietyPanel.tsx'
+      - 'components/city/three/streetscape.ts'
+      - 'data/living/city-expansion.json'
+      - 'scripts/test-dense-city-society.mjs'
+      - 'scripts/test-dense-streetscape.mjs'
       - 'lib/city/appearance.ts'
       - 'lib/city/neighborhood-props.ts'
       - 'components/city/three/interior.ts'
@@ -49,6 +58,8 @@ jobs:
           node scripts/test-social.mjs
           node scripts/test-visitor-context.mjs
           node scripts/test-interior-actions.mjs
+          node scripts/test-dense-city-society.mjs
+          node scripts/test-dense-streetscape.mjs
           node scripts/test-h6-shadow-evaluator.mjs
           node scripts/test-h6-qa-canary.mjs
           node scripts/test-qa-h6-release.mjs
