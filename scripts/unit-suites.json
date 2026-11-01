@@ -54,6 +54,9 @@
     "scripts/test-visitor-context.mjs"
   ],
   [
+    "scripts/test-interior-actions.mjs"
+  ],
+  [
     "scripts/test-human-visuals.mjs"
   ],
   [
