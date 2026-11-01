@@ -153,7 +153,8 @@ export function createInterior(host: HTMLDivElement, venue: string, floor: numbe
     });
     host.dataset.interiorVisible=String(floor===0?shown.length:0);
     host.dataset.interiorVenueCount=String(atVenue.length);
-    host.dataset.interiorActions=JSON.stringify(seenActions);\n    host.dataset.floorLocationsVerified='false';
+    host.dataset.interiorActions=JSON.stringify(seenActions);
+    host.dataset.floorLocationsVerified='false';
     host.dataset.interiorResidents=JSON.stringify(shown.map(a=>({id:a.id,kind:a.kind,action:interiorAction(a.kind,a.activity)})));
     const followed=shown.find(a=>a.id===options.focusId)??shown[0];
     if(options.camera==='follow'&&followed){
