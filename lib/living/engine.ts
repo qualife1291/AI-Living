@@ -75,7 +75,7 @@ export function population(state: LivingState, date: string): Resident[] {
   for (const role of state.catalog.roles)
     if (
       !residents.some((r) => r.roleId === role.id) &&
-      residents.length < state.catalog.maxPopulation
+      residents.length < Math.min(state.catalog.maxPopulation,count)
     )
       add(role);
   while (residents.length < count)
