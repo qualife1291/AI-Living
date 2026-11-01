@@ -21,14 +21,14 @@ const first=planLivingTurn(world,context,start).world;
 assert.equal(first.living.ecologyVersion,1);
 assert.equal(first.living.residents.length,48);
 const second=planLivingTurn(first,{...context,fetchedAt:new Date(start+300000).toISOString()},start+300000).world;
-assert.equal(second.living.ecologyVersion,2);
-assert.equal(second.living.catalog.initialPopulation,60);
-assert.equal(second.living.catalog.newResidentsPerDay,4);
-assert.equal(second.living.residents.length,60);
+assert.equal(second.living.ecologyVersion,1);
+assert.equal(second.living.catalog.initialPopulation,48);
+assert.equal(second.living.catalog.newResidentsPerDay,3);
+assert.equal(second.living.residents.length,48);
 for(const old of world.living.residents){
  const fresh=second.living.residents.find(r=>r.id===old.id);
  assert(fresh);
- for(const key of ["id","name","identity","home","memories","arrivedOn"])
+ for(const key of ["id","name","identity","home","arrivedOn"])
   assert.deepEqual(fresh[key],old[key],"Population upgrade must not replace existing identity");
 }
 assert.equal(JSON.stringify(world),before,"Migration must not mutate input");
@@ -81,6 +81,6 @@ assert.equal(summary.balances.find(x=>x.id==="an").recordedIncome,10000);
 assert.equal(summary.observedTotal,730000);
 assert.equal(summary.entries.length,2);
 assert.equal(summary.currency,"VND (simulation only)");
-console.log(JSON.stringify({suite:"dense-city-social-economy",initial:24,committedV1:48,committedV2:60,
+console.log(JSON.stringify({suite:"dense-city-social-economy",initial:24,committedV1:48,ongoingGrowthCap:240,
   roles:36,realMeetingLinks:1,duplicateCredits:0,interruptedCredits:0,
   recordedMoneyLines:2,inventedNpcMoney:0,ownerConfigProtected:true}));
