@@ -153,6 +153,15 @@ export function planLivingTurn(
   if(!world.paused&&state.ecologyVersion===undefined){
     state.ecologyVersion=1;
     if(state.catalog.initialPopulation===24&&state.catalog.newResidentsPerDay===3&&state.catalog.maxPopulation===240)state.catalog.initialPopulation=48;
+  } else if (!world.paused && state.ecologyVersion===1) {
+    // Gradual increase is applied on a committed living turn only. The existing
+    // 48-resident expansion keeps its first-turn behaviour; custom owner caps
+    // and legacy imported residents are never removed or rewritten.
+    state.ecologyVersion=2;
+    if(state.catalog.initialPopulation===48&&state.catalog.newResidentsPerDay===3&&state.catalog.maxPopulation===240){
+      state.catalog.initialPopulation=60;
+      state.catalog.newResidentsPerDay=4;
+    }
   }
   // Add new built-in content without overwriting user roles or erasing residents.
   for (const role of defaultCatalog.roles)
