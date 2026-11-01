@@ -1,7 +1,7 @@
 import { socialCategory } from "./action-presentation.ts";
 import { DialogueGrammar } from "./dialogue-grammar.ts";
 import {lifeStory} from "../city/lifestory.ts";
-import {emptyDialoguePool,mergeDialoguePools,readDialoguePool,rememberDialogue,writeDialoguePool,type DialoguePool} from "./dialogue-pool.ts";
+import {emptyDialoguePool,hasDialogue,mergeDialoguePools,readDialoguePool,rememberDialogue,writeDialoguePool,type DialoguePool} from "./dialogue-pool.ts";
 import scripts from "../../data/social-scenes.json" with { type: "json" };
 import { distance, places, simulationTime, type Actor, type Point } from "../life.ts";
 import { hashSeed, worldTime } from "../clock.ts";
@@ -10,7 +10,7 @@ import type { World, EpisodeEvent } from "../world";
 
 export type SocialPose = { peerId: string; gesture: string; speaking: boolean; source: "script" | "ai" };
 export type Exchange = { a: string; b: string; title: string; speech: Speech; source: "script" | "ai" };
-export const SOCIAL_TIMING = { minimumLineSeconds: 2.4, maximumLineSeconds: 4, gapSeconds: .3, minimumCooldownSeconds: 20, maximumCooldownSeconds: 45 } as const;
+export const SOCIAL_TIMING = { minimumLineSeconds: 2.4, maximumLineSeconds: 4, gapSeconds: .3, minimumCooldownSeconds: 15, maximumCooldownSeconds: 30 } as const;
 export const spokenSeconds = (text: string) => Math.max(SOCIAL_TIMING.minimumLineSeconds, Math.min(SOCIAL_TIMING.maximumLineSeconds, .8 + text.length / 30));
 
 /** A stable frontage slot, in metres × 10. No two visible residents share a slot.
@@ -76,7 +76,7 @@ export function socialFrame(world: World, actors: Actor[], events: EpisodeEvent[
       const key = `${a.location}:${a.id}:${b.id}`, hash = hashSeed(key);
       const scene = candidates[hash % candidates.length];
       const duration = scene.turns.reduce((total, turn) => total + spokenSeconds(turn.text) + SOCIAL_TIMING.gapSeconds, 0);
-      const cycle = duration + SOCIAL_TIMING.minimumCooldownSeconds + hash % 26, slot = Math.floor((seconds + hash % cycle) / cycle), phase = (seconds + hash % cycle) % cycle;
+      const cycle = duration + SOCIAL_TIMING.minimumCooldownSeconds + hash % 16, slot = Math.floor((seconds + hash % cycle) / cycle), phase = (seconds + hash % cycle) % cycle;
       // Reserve this pair even through its quiet interval: no swapping partners mid-scene.
       poses.set(a.id, { peerId: b.id, gesture: "idle", speaking: false, source: "script" });
       poses.set(b.id, { peerId: a.id, gesture: "idle", speaking: false, source: "script" });
@@ -173,7 +173,7 @@ export class SocialDirector {
     const start = (key: string, speechPrefix: string, a: Actor, b: Actor, title: string, source: Encounter["source"], lines: EncounterLine[]) => {
       const hash = hashSeed(key);
       this.encounters.set(key, { key, speechPrefix, a: a.id, b: b.id, location: a.location, title, source, lines, lineIndex: 0, lineStartedAt: this.elapsed, presentedIndex: -1,
-        cooldown: SOCIAL_TIMING.minimumCooldownSeconds + hash % 26 });
+        cooldown: SOCIAL_TIMING.minimumCooldownSeconds + hash % 16 });
     };
     const startStored = (key: string, prefix: string, title: string, source: Encounter["source"], lines: EncounterLine[], location?: string) => {
       if (this.seen.has(key) || lines.length < 2) return;
@@ -219,7 +219,18 @@ export class SocialDirector {
         if (!candidates.length) continue;
         const pairKey = `${a.location}:${a.id}:${b.id}`, serial = this.sceneNumber++, script = candidates[(hashSeed(pairKey) + serial) % candidates.length];
         const profile=(actor:Actor)=>{const story=lifeStory(world,actor.id,now);return {id:actor.id,name:actor.name,age:story.age,gender:story.gender};};
-        const lines=this.grammar.lines(profile(a),profile(b),a.location,serial,script.turns.length);
+        // The chosen scene contains place- and object-specific authored dialogue.
+        // Preserve that context on the first encounter; generic grammar is only
+        // a repetition fallback (including after a browser reload).
+        // This is viewer-local staging, never evidence that an action completed.
+        const authored=script.turns.map(turn=>({
+          speaker:turn.speaker==="a"?a.id:b.id,
+          text:format(turn.text,a,b),
+          gesture:turn.gesture,
+        }));
+        const lines=hasDialogue(this.localPool,a.id,b.id,authored)
+          ? this.grammar.lines(profile(a),profile(b),a.location,serial,script.turns.length)
+          : authored;
         this.localPool=rememberDialogue(this.localPool,a.id,b.id,lines,'client-script');writeDialoguePool(world.born,this.localPool);
         start(`ambient:${pairKey}:${serial}`, `${pairKey}:${serial}`, a, b, script.title, "script", lines);
       }
