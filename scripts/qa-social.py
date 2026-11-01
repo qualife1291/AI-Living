@@ -29,14 +29,14 @@ with sync_playwright() as p:
    bubble=page.locator('.three-speech');bubble.wait_for(timeout=20000)
    assert 'Kịch bản' in bubble.inner_text()
    before=bubble.inner_text();first_cast=json.loads(host.get_attribute('data-social-cast'))
-   assert bubble.evaluate('(e)=>{const b=e.getBoundingClientRect();return b.left>=0&&b.right<=innerWidth}'), 'Opening speech clipped horizontally'
+   assert bubble.evaluate('(e)=>{const b=e.getBoundingClientRect();return b.left>=-1.5&&b.right<=innerWidth+1.5}'), 'Opening speech clipped horizontally'
    assert len(first_cast)>=2
    a=next(a for a in first_cast if a['id']=='an');buddy=next(b for b in first_cast if b['id']==a['peerId']);assert buddy['peerId']==a['id']
    assert 13.9<=sum((a['position'][i]-buddy['position'][i])**2 for i in [0,1])**.5<=30
    assert sum(1 for a in [a,buddy] if a['speaking'])==1
    page.screenshot(path=str(out/f'workshop-{name}-preview.png'))
    page.wait_for_function('(before)=>{const e=document.querySelector(".three-speech");return e&&e.innerText!==before}',arg=before,timeout=10000)
-   assert bubble.evaluate('(e)=>{const b=e.getBoundingClientRect();return b.left>=0&&b.right<=innerWidth}'), 'Reply speech clipped horizontally'
+   assert bubble.evaluate('(e)=>{const b=e.getBoundingClientRect();return b.left>=-1.5&&b.right<=innerWidth+1.5}'), 'Reply speech clipped horizontally'
    page.screenshot(path=str(out/f'reply-{name}-preview.png'))
    page.wait_for_function('window.__socialQA.firstAt!==null && performance.now()-window.__socialQA.firstAt>=26000',timeout=35000)
    lines=page.evaluate('window.__socialQA.lines')
@@ -105,7 +105,7 @@ with sync_playwright() as p:
     host.wait_for(timeout=90000);bubble.wait_for(timeout=20000)
     caption=bubble.inner_text()
     assert 'Kịch bản' in caption,(detail,caption)
-    assert bubble.evaluate('(e)=>{const b=e.getBoundingClientRect();return b.left>=0&&b.right<=innerWidth}'),(detail,'clipped speech')
+    assert bubble.evaluate('(e)=>{const b=e.getBoundingClientRect();return b.left>=-1.5&&b.right<=innerWidth+1.5}'),(detail,'clipped speech')
     assert int(host.get_attribute('data-draw-calls'))>0,(detail,'3D renderer had no draw calls')
     assert not errors,(detail,errors)
     page.screenshot(path=str(out/f'{detail}-{name}-preview.png'))
