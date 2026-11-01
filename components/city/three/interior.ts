@@ -108,7 +108,11 @@ export function createInterior(host: HTMLDivElement, venue: string, floor: numbe
     const shown = present.slice(0,bodies.length),seenActions: string[]=[];
     bodies.forEach((part,i)=>{
       const actor=shown[i],figure=part.root;
-      // The world knows the venue but not a room/floor. Never duplicate a\n      // resident on each imaginary storey; ground-floor cutaway is an\n      // illustrative venue-wide projection, upper floors show architecture only.\n      figure.visible=!!actor && floor===0;if(!actor || floor!==0)return;
+      // The world knows the venue but not a room/floor. Never duplicate a
+      // resident on each imaginary storey; ground-floor cutaway is an
+      // illustrative venue-wide projection, upper floors show architecture only.
+      figure.visible=!!actor && floor===0;
+      if(!actor || floor!==0)return;
       const action=interiorAction(actor.kind,actor.activity);
       seenActions.push(action);
       const col=(i%3),row=Math.floor(i/3);
