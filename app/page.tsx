@@ -29,6 +29,8 @@ import { addressFor } from "@/lib/living/identity";
 import { householdFor } from "@/lib/living/households";
 import {homeAnchor} from "@/lib/city/homes";
 import { lifeStory } from "@/lib/city/lifestory";
+import { actorsAt } from "@/lib/life";
+import { crowdAt } from "@/lib/living/engine";
 import { PetCare } from "@/components/characters/PetCare";
 import { Wardrobe } from "@/components/characters/Wardrobe";
 import { City3D } from "@/components/city/City3D";
@@ -218,6 +220,17 @@ export default function Page() {
             setPanel("places");
           }}
           onInspect={() => setPanel("people")}
+          onInterior={() => {
+            // Choose the resident's actual simulated venue; never imply an
+            // indoor floor or completed activity from camera navigation.
+            const now = Date.now() + clockOffset;
+            const actor = [...actorsAt(world, now),
+              ...(world.living ? crowdAt(world.living, world, now, selected) : [])].find(a => a.id === selected);
+            const target = venues.find(v => v.name === actor?.location)
+              ?? venues.find(v => v.name === (homeGroup?.home.place || ""))
+              ?? venues.find(v => v.name === "Khu dân cư");
+            if (target) { setVenue(target); setMode("city"); setPanel("places"); }
+          }}
           target={navigation}
           clockOffsetMs={clockOffset}
           sharedGroundRequested={sharedRequested}
@@ -422,7 +435,7 @@ export default function Page() {
                     .join(" · ") || "Sinh hoạt và gặp gỡ trong thành phố."}
                 </p>
               )}
-              {venue && world && <InteriorView key={venue.name} world={world} venue={venue.name} clockOffset={clockOffset} />}
+              {venue && world && <InteriorView key={venue.name} world={world} venue={venue.name} clockOffset={clockOffset} focusActorId={selected} />}
               {world&&data&&<GardenCare world={world} revision={data.revision} now={Date.parse(data.serverNow)} venue={venue?.name} refresh={()=>load(true)} onView={plot=>{setMode("city");setNavigation({x:plot.x,y:plot.z,key:Date.now(),gardenId:plot.id});setPanel(null);}}/>}
               <div className="venue-grid">
                 {venues.map((v) => (
