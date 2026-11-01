@@ -68,7 +68,7 @@ export type LivingState = {
   petOwners?: Record<string, string>;
   flora?: import("./flora").FloraState;
   /** Adopted by a committed living turn; never by a viewer/GET or old study. */
-  ecologyVersion?: 1 | 2;
+  ecologyVersion?: 1;
   /** Verified, completed real-in-simulation meetings only. Not display dialogue. */
   socialGraph?: Record<string, {
     a: string; b: string; meetings: number; trust: number;
