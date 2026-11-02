@@ -4,6 +4,7 @@ import { WalkDirector } from "@/lib/city/walkability";
 import { TrafficDirector, TRAFFIC_COUNT, trafficJunctions, type TrafficVehicle } from "@/lib/city/traffic";
 import { venueGeometry, openVenue, segmentHits } from "@/lib/city/footprints";
 import { sceneryTrees, sceneryLamps, streetProps, venueSceneryPose } from "@/lib/city/scenery";
+import { scenicGroves } from "@/lib/city/scenic-groves";
 import { characterShot, cameraRayBlocked } from "@/lib/city/cinematography";
 import { groundElevation } from "@/lib/city/ground";
 import {HOME_ANCHORS,homeAnchor,homeCameraOffset} from "../../../lib/city/homes";
@@ -221,6 +222,11 @@ export function createCity(
     if(i%3===0)leaves.push({x:x+19,y:7,z:z-8,w:15,h:12,d:13,color:'#9a9c89'});
   }
   host.dataset.terrainMounds='18';
+  // 48 extra distant trees stay OUTSIDE the playable road/venue graph. These
+  // are instanced scenic silhouettes, never resident positions, obstacles,
+  // new planting outcomes, or H6 learned ecological actions.
+  for (const grove of scenicGroves) tree(grove.x, grove.z, grove.seed);
+  host.dataset.scenicGroveTrees=String(scenicGroves.length);
 
   // River and a broad promenade at the southern edge of the fictional district.
   road(
