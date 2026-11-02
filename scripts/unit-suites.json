@@ -273,5 +273,8 @@
   ],
   [
     "scripts/test-action-pack-100.mjs"
+  ],
+  [
+    "scripts/test-transit-service.mjs"
   ]
 ]

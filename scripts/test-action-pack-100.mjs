@@ -1,7 +1,7 @@
 /** 100 real QA-eligible plans; evidence requires committed completion, not registration. */
 import assert from "node:assert/strict";
 import {scenarios,expandedActions,liveActionCatalog,scenarioSchema,availableScenarios,chooseLiveAction,chooseScenario,
- initializeAgent,settleLearning,applyScenarioOutcome,OUTCOME_SCENARIO_SIGNATURE,EXPANDED_ACTION_SIGNATURE} from "../lib/living/learning.ts";
+ initializeAgent,settleLearning,applyScenarioOutcome,OUTCOME_SCENARIO_SIGNATURE,EXPANDED_ACTION_SIGNATURE,TRANSPORT_ACTION_SIGNATURE,original100ActionCatalog,transportActions} from "../lib/living/learning.ts";
 import {hashSeed} from "../lib/clock.ts";
 import {readFileSync} from "node:fs";
 const legacy=JSON.parse(readFileSync(new URL("../data/city/scenarios.json",import.meta.url),"utf8"));
@@ -9,10 +9,13 @@ const shadow=JSON.parse(readFileSync(new URL("../data/training/h6-scenario-catal
 assert.equal(legacy.length,41);assert.deepEqual(scenarios,legacy);
 assert.deepEqual(shadow.slice(0,41),legacy);
 assert.equal(shadow.length,96);assert.equal(expandedActions.length,59);
-assert.equal(liveActionCatalog.length,100);
-assert.equal(new Set(liveActionCatalog.map(s=>s.id)).size,100);
+assert.equal(original100ActionCatalog.length,100);
+assert.equal(liveActionCatalog.length,103);
+assert.equal(new Set(liveActionCatalog.map(s=>s.id)).size,103);
 assert.equal(OUTCOME_SCENARIO_SIGNATURE,hashSeed(JSON.stringify(legacy)));
-assert.equal(EXPANDED_ACTION_SIGNATURE,hashSeed(JSON.stringify(liveActionCatalog)));
+assert.equal(EXPANDED_ACTION_SIGNATURE,hashSeed(JSON.stringify(original100ActionCatalog)));
+assert.equal(TRANSPORT_ACTION_SIGNATURE,hashSeed(JSON.stringify(liveActionCatalog)));
+assert.deepEqual(transportActions.map(x=>x.transport),["car","bus","metro"]);
 const domains=new Set();
 for(const action of expandedActions){
  scenarioSchema.parse(action);
@@ -42,8 +45,8 @@ const context={date:"2026-11-02",hour:10,weekday:1,timezone:"Asia/Ho_Chi_Minh",f
  traffic:{status:"unavailable",label:"fixture"},festivals:{status:"unavailable",label:"fixture"}};
 const actor=initializeAgent("qa-100");actor.skill=100;
 actor.domainSkills=Object.fromEntries([...domains].map(d=>[d,100]));
-const eligible=availableScenarios(actor,context,expandedActions);
-assert(eligible.length>=96 && eligible.length<=100,"unexpected hidden arms");
+const eligible=availableScenarios(actor,context,[...expandedActions,...transportActions]);
+assert(eligible.length>=96 && eligible.length<=103,"unexpected hidden arms");
 assert.equal(chooseLiveAction(actor,"qa-100",context).id,chooseLiveAction(actor,"qa-100",context).id);
 assert(eligible.some(s=>s.id===chooseLiveAction(actor,"qa-100",context).id));
 assert(scenarios.some(s=>s.id===chooseScenario(actor,"qa-100",context).id),"H6 baseline contaminated");

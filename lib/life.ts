@@ -257,7 +257,7 @@ export type Actor = {
   progress: number;
   source: "plan" | "routine";
   path: Point[];
-  transport?: "walk" | "bicycle" | "motorbike" | "bus" | "metro";
+  transport?: "walk" | "car" | "bicycle" | "motorbike" | "bus" | "metro";
   stationaryFor?: number;
   homeAnchor?: Point;
   tagGame?: import("./city/tag-game").TagRole;
@@ -376,7 +376,7 @@ export function project(
     from,
     location: current.location,
     activity: walking
-      ? `${mode === "walk" ? "Đi đến" : mode === "metro" ? "Đi metro đến" : mode === "bus" ? "Đi xe buýt đến" : mode === "motorbike" ? "Đi xe máy đến" : "Đi xe đạp đến"} ${current.location.toLowerCase()}`
+      ? `${mode === "walk" ? "Đi đến" : mode === "metro" ? "Đi metro đến" : mode === "bus" ? "Đi xe buýt đến" : mode === "car" ? "Lái ô tô đến" : mode === "motorbike" ? "Đi xe máy đến" : "Đi xe đạp đến"} ${current.location.toLowerCase()}`
       : current.activity,
     kind: current.kind,
     walking,

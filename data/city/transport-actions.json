@@ -1,0 +1,42 @@
+[
+  {
+    "id": "mobility-drive-car",
+    "title": "Lái ô tô theo tuyến đường đô thị an toàn",
+    "place": "Văn phòng",
+    "kind": "work",
+    "tag": "mobility",
+    "transport": "car",
+    "energy": -5,
+    "hunger": 4,
+    "skill": 2,
+    "adultOnly": true,
+    "skillDomain": "mobility",
+    "minDomainSkill": 2
+  },
+  {
+    "id": "mobility-ride-bus",
+    "title": "Đi xe buýt theo lịch trình và quan sát điểm dừng",
+    "place": "Bệnh viện",
+    "kind": "read",
+    "tag": "mobility",
+    "transport": "bus",
+    "energy": -2,
+    "hunger": 3,
+    "skill": 1,
+    "adultOnly": false,
+    "skillDomain": "mobility"
+  },
+  {
+    "id": "mobility-ride-metro",
+    "title": "Đi metro, quan sát chỉ dẫn và xuống đúng ga",
+    "place": "Sân bay",
+    "kind": "read",
+    "tag": "mobility",
+    "transport": "metro",
+    "energy": -2,
+    "hunger": 3,
+    "skill": 1,
+    "adultOnly": false,
+    "skillDomain": "mobility"
+  }
+]
