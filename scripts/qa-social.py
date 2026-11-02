@@ -34,9 +34,17 @@ def assert_visible_interior(page, mode):
       page.wait_for_timeout(900)
     assert bright>=0.08,(mode,'Interior WebGL screenshot stayed blank/dark',checks,
                          el.get_attribute('data-interior-draw-calls'))
-    return {'mode':mode,'renderedFrames':int(el.get_attribute('data-interior-frames')),
+    frame_count=int(el.get_attribute('data-interior-frames'))
+    material_count=int(el.get_attribute('data-interior-materials'))
+    sample_count=int(el.get_attribute('data-interior-actor-samples'))
+    # A single palette material for each static prop, not a new material per
+    # static cube. Dynamic per-resident clothing remains independently tinted.
+    assert 0<material_count<170,(mode,'unbounded WebGL material allocations',material_count)
+    assert 0<sample_count<=frame_count,(mode,'invalid actor sample telemetry',sample_count,frame_count)
+    return {'mode':mode,'renderedFrames':frame_count,
             'drawCalls':int(el.get_attribute('data-interior-draw-calls')),
-            'brightFraction':round(bright,3)}
+            'brightFraction':round(bright,3),'materials':material_count,
+            'actorSamples':sample_count}
 
 with sync_playwright() as p:
  b=p.chromium.launch(executable_path='/usr/bin/chromium',headless=True,args=['--no-sandbox','--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader'])

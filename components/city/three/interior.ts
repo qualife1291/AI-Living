@@ -24,8 +24,17 @@ export function createInterior(host: HTMLDivElement, venue: string, floor: numbe
   const hemi = new THREE.HemisphereLight("#d4eaff", "#a58061", 2); scene.add(hemi);
   const key = new THREE.DirectionalLight("#ffdfb4", 4); key.position.set(-8, 18, 8); key.castShadow = true; key.shadow.mapSize.set(2048, 2048); key.shadow.bias = -0.0005; Object.assign(key.shadow.camera, { left: -15, right: 15, top: 15, bottom: -15 }); scene.add(key);
   const geometry = new THREE.BoxGeometry(1, 1, 1), materials: THREE.Material[] = [];
+  // Static room pieces can share a single material per palette color. Avatars
+  // require independent materials because their saved appearance can change.
+  const staticMaterials = new Map<string, THREE.MeshStandardMaterial>();
   function box(x: number, y: number, z: number, w: number, h: number, d: number, color: string, parent: THREE.Object3D = scene) {
-    const material = new THREE.MeshStandardMaterial({ color, roughness: .68 }); materials.push(material);
+    const mutable = parent.userData.mutableAppearance === true;
+    let material = mutable ? undefined : staticMaterials.get(color);
+    if (!material) {
+      material = new THREE.MeshStandardMaterial({ color, roughness: .68 });
+      materials.push(material);
+      if (!mutable) staticMaterials.set(color, material);
+    }
     const mesh = new THREE.Mesh(geometry, material); mesh.position.set(x, y, z); mesh.scale.set(w, h, d); mesh.castShadow = true; mesh.receiveShadow = true; parent.add(mesh); return mesh;
   }
   const kind = interiorKind(venue), dining = kind === "dining", study = kind === "study";
@@ -80,7 +89,7 @@ export function createInterior(host: HTMLDivElement, venue: string, floor: numbe
   const bodies: {root:THREE.Group;shirt:THREE.Mesh;legs:THREE.Mesh[];
     armL:THREE.Mesh;armR:THREE.Mesh;head:THREE.Mesh;held:THREE.Mesh;heldDetail:THREE.Mesh}[]=[];
   for (let i = 0; i < 12; i++) {
-    const root = new THREE.Group(); figures.add(root);
+    const root = new THREE.Group(); root.userData.mutableAppearance = true; figures.add(root);
     const shirt = box(0,1.57,0,.75,1.03,.48,"#7b9f95",root);
     const head = box(0,2.37,0,.55,.55,.52,"#d8b18c",root);
     const eyes = box(0,2.41,.275,.32,.07,.035,"#475350",root);
@@ -93,22 +102,52 @@ export function createInterior(host: HTMLDivElement, venue: string, floor: numbe
     bodies.push({root,shirt,legs,armL,armR,head,held,heldDetail});
   }
   let frame = 0, last = 0, renderedFrames = 0;
-  host.dataset.interiorFrames='0';
-  // A small, on-demand cutaway should keep its latest completed frame visible
-  // through mobile compositor delays and camera transitions, not flash navy.
-  const resize = () => { const w = host.clientWidth, h = host.clientHeight; renderer.setSize(w, h); key.shadow.mapSize.setScalar(w<600?512:1024); camera.aspect = w / Math.max(1, h); camera.updateProjectionMatrix(); };
+  let lastWidth = 0, lastHeight = 0;
+  let sampledAt = Number.NEGATIVE_INFINITY, sampledWorld: World | null = null, actorSamples = 0;
+  let atVenue: ReturnType<typeof actorsAt> = [];
+  host.dataset.interiorFrames = '0';
+  host.dataset.interiorActorSamples = '0';
+  host.dataset.interiorMaterials = String(materials.length);
+  // Ignore transient zero-size layout during camera/floor changes instead of
+  // allocating a zero-sized render target or invalid perspective projection.
+  const resize = () => {
+    const w = Math.floor(host.clientWidth), h = Math.floor(host.clientHeight);
+    if (w < 2 || h < 2 || (w === lastWidth && h === lastHeight)) return;
+    lastWidth = w; lastHeight = h;
+    renderer.setSize(w, h);
+    key.shadow.mapSize.setScalar(w < 600 ? 512 : 1024);
+    camera.aspect = w / h;
+    camera.updateProjectionMatrix();
+  };
   const observer = new ResizeObserver(resize); observer.observe(host); resize();
+  // Recompute authoritative venue occupancy at <= 4 Hz (or on a fresh world
+  // snapshot); keep animations and WebGL frames at 30 FPS. This is only a visual
+  // cache: no resident plan, arrival, policy or reward is written.
+  const propShapes: Record<string, [number,number,number,string]> = {
+    cup:[.29,.49,.29,'#f2ddae'],plate:[.68,.09,.56,'#f2eadb'],
+    pan:[.67,.21,.52,'#69787b'],book:[.72,.14,.49,'#c79276'],
+    tablet:[.72,.42,.08,'#7e9fae'],bag:[.47,.62,.36,'#c5ad86'],
+    tool:[.13,.85,.18,'#8ba39a'],medical:[.44,.32,.38,'#d6e4de'],
+  };
   function tick(stamp: number) {
-    frame = requestAnimationFrame(tick); if (document.hidden || stamp - last < 33) return; last = stamp;
+    frame = requestAnimationFrame(tick);
+    if (document.hidden || stamp - last < 33) return;
+    resize();
+    if (lastWidth < 2 || lastHeight < 2) return;
+    last = stamp;
     const w = world(), now = Date.now() + offset, sim = computeSimMs(w.born, w.clock, now) / 1000, phase = interiorPhase(sim), daylight = worldTime(w, now).daylight;
     key.intensity = 1.2 + daylight * 2.8; hemi.intensity = 1.3 + daylight;
     cabin.position.y = (phase.liftY - floor) * 3.3; cabin.visible = Math.abs(cabin.position.y) < 3.5;
     const slide = phase.doorsOpen ? .75 : 0; doorL.position.x = 4.5 - slide; doorR.position.x = 5.6 + slide;
-    const atVenue = [...actorsAt(w, now), ...(w.living ? crowdAt(w.living, w, now) : [])]
-      .filter((a) => !a.walking && a.location === venue);
-    const present = [...atVenue].sort((a,b) =>
-      Number(b.id === options.focusId)-Number(a.id === options.focusId));
-    const shown = present.slice(0,bodies.length),seenActions: string[]=[];
+    if (sampledWorld !== w || now - sampledAt >= 250) {
+      atVenue = [...actorsAt(w, now), ...(w.living ? crowdAt(w.living, w, now) : [])]
+        .filter((a) => !a.walking && a.location === venue);
+      atVenue.sort((a,b) => Number(b.id === options.focusId)-Number(a.id === options.focusId));
+      sampledWorld = w;
+      sampledAt = now;
+      host.dataset.interiorActorSamples = String(++actorSamples);
+    }
+    const shown = atVenue.slice(0,bodies.length),seenActions: string[]=[];
     bodies.forEach((part,i)=>{
       const actor=shown[i],figure=part.root;
       // The world knows the venue but not a room/floor. Never duplicate a
@@ -144,14 +183,8 @@ export function createInterior(host: HTMLDivElement, venue: string, floor: numbe
       }else if(action==='rest'){part.head.rotation.y=slow*.045;}
       const prop=interiorProp(action);
       part.held.visible=part.heldDetail.visible=prop!=='none';
-      const shape:Record<string,[number,number,number,string]> = {
-        cup:[.29,.49,.29,'#f2ddae'],plate:[.68,.09,.56,'#f2eadb'],
-        pan:[.67,.21,.52,'#69787b'],book:[.72,.14,.49,'#c79276'],
-        tablet:[.72,.42,.08,'#7e9fae'],bag:[.47,.62,.36,'#c5ad86'],
-        tool:[.13,.85,.18,'#8ba39a'],medical:[.44,.32,.38,'#d6e4de'],
-      };
       if(prop!=='none'){
-        const [w,h,d,color]=shape[prop]??shape.book;
+        const [w,h,d,color]=propShapes[prop]??propShapes.book;
         part.held.scale.set(w,h,d);
         (part.held.material as THREE.MeshStandardMaterial).color.set(color);
         part.heldDetail.visible=prop==='book'||prop==='tablet'||prop==='cup';
