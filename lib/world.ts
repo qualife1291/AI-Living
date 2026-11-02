@@ -53,6 +53,8 @@ export type CommitmentItem = {
 
 export type World = {
   living?: import("./living/schema").LivingState;
+  /** Fictional VND charges for validated, completed mobility plans only. */
+  mobilityPayments?: import("./city/mobility-economy").MobilityPayment[];
   livingTurn?: import("./living/schema").LivingTurn;
   realContext?: import("./living/schema").RealContext;
   clock?: WorldClockConfig;

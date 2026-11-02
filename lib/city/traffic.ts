@@ -7,7 +7,7 @@ export type TrafficVehicle = {
   id: string;
   position: TrafficPoint;
   yaw: number;
-  type: "car" | "bus" | "metro";
+  type: "car" | "bus" | "metro" | "motorbike" | "bicycle";
   width: number;
   length: number;
   height: number;

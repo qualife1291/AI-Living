@@ -201,6 +201,10 @@ with sync_playwright() as p:
     assert int(host.get_attribute('data-draw-calls'))>0,(mode,'no WebGL render')
     fleet=json.loads(host.get_attribute('data-transit-vehicles'))
     assert len(fleet)==2 and {x['type'] for x in fleet}=={'bus','metro'}
+    two=json.loads(host.get_attribute('data-two-wheel-vehicles'))
+    assert {x['type'] for x in two['vehicles']}=={'motorbike','bicycle'}
+    assert two['signal'] in ('red','green')
+    assert max(x['speed'] for x in two['vehicles'])<=18
     page.screenshot(path=str(out/f'transit-{mode}-{name}.png'))
    page.get_by_role('button',name='Theo nhân vật',exact=True).click()
    page.locator('.three-canvas[data-vehicle-view="none"]').wait_for(timeout=12000)
