@@ -5,7 +5,7 @@
 ## What the baseline actually proves
 - 41 immutable original live scenarios, 96 **synthetic shadow catalog candidates**, and 100 **QA-registered plan actions** are different counts. 90 distinct action IDs had completed/learned evidence at 02:15 UTC 2026-11-02, but do not equate action count with measured H6 uplift.
 - 12 road cars share a collision-tested closed loop. The 3D view caps visible humans at 72; these are render slots, not a newly created resident population. Existing pet/animal records are sparse; do not fabricate ownership, medical outcomes or social relationships by adding meshes.
-- ~140 street-tree positions are shared with pedestrian obstacles; changing them can invalidate walking. The initial density pilot adds **48 northern, non-collidable background tree silhouettes** in existing trunk/foliage instanced batches; existing roads, collision footprints and D1 stay unchanged.
+- Up to 140 street-tree candidate coordinates are **filtered** against buildings; only accepted road/venue trees become shared pedestrian obstacles. Changing those accepted positions can invalidate walking. The initial density pilot adds **48 northern, non-collidable background tree silhouettes** in existing trunk/foliage instanced batches; existing roads, collision footprints and D1 stay unchanged.
 - Scripted social scene library goes 22 → 26 authored short scene options; they are **not LLM dialogue, remembered personal ties or a measured increase in real conversation events**.
 
 ## Release ladder (each stage independently reviewed)
