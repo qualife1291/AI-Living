@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { PLACES, STEP_KINDS } from "../event-schema.ts";
 import scenariosData from "../../data/city/scenarios.json" with { type: "json" };
+import expandedActionData from "../../data/city/action-pack-100.json" with { type: "json" };
 import type { LivingState, RealContext } from "./schema.ts";
 import type { World, PersonPlan } from "../world";
 import { computeSimMs, hashSeed, worldTime } from "../clock.ts";
@@ -38,8 +39,20 @@ export const scenarios = z
   .max(100)
   .parse(scenariosData);
 export type Scenario = (typeof scenarios)[number];
+/** QA action pack: 41 immutable historical arms + 59 independently registered live arms.
+ * The pinned H6 96-candidate shadow catalog, its SHA and the 41-arm reward
+ * signature do not change. Being registered is NOT being executed or learned. */
+export const expandedActions = z.array(scenarioSchema).length(59).parse(expandedActionData);
+export const liveActionCatalog: Scenario[] = [...scenarios, ...expandedActions];
+if (new Set(liveActionCatalog.map(s => s.id)).size !== 100)
+  throw Error("QA action pack must contain 100 distinct scenario IDs");
+const expandedActionIds = new Set(expandedActions.map(s => s.id));
+export const EXPANDED_ACTION_SIGNATURE = hashSeed(JSON.stringify(liveActionCatalog));
+
 export const OUTCOME_SCENARIO_SIGNATURE = hashSeed(JSON.stringify(scenarios));
 const scenariosByTag = new Map<string, Scenario[]>();
+const liveScenariosByTag = new Map<string, Scenario[]>();
+for (const s of liveActionCatalog) liveScenariosByTag.set(s.tag,[...(liveScenariosByTag.get(s.tag)??[]),s]);
 for (const scenario of scenarios) scenariosByTag.set(scenario.tag, [...(scenariosByTag.get(scenario.tag) ?? []), scenario]);
 export type LearnedAction = { trials: number; meanReward: number };
 export type AgentLearning = {
@@ -132,6 +145,7 @@ export function fitAction(
 export function availableScenarios(
   agent: AgentLearning,
   context: RealContext,
+  additional: readonly Scenario[] = [],
 ): Scenario[] {
   if (context.hour < 6 || context.hour >= 22 || agent.energy < 20)
     return [scenarios.find((s) => s.id === "rest-home")!];
@@ -142,7 +156,7 @@ export function availableScenarios(
   const rainy =
     context.weather.status === "fresh" &&
     (context.weather.precipitation ?? 0) > 0;
-  return scenarios
+  return [...scenarios, ...additional]
     .filter(s=>meetsSkillGate(agent,s))
     .filter((s) => !s.adultOnly || agent.adult)
     // Accidents and violations are reactive events, never purposeful errands.
@@ -156,8 +170,9 @@ export function chooseScenario(
   rolePlace?: string,
   policy: "tabular" | "linucb" = "linucb",
   prior?: (scenario: Scenario) => { mean: number; weight: number } | null,
+  additional: readonly Scenario[] = [],
 ): Scenario {
-  const candidates = availableScenarios(agent, context);
+  const candidates = availableScenarios(agent, context, additional);
   if (candidates.length === 1) return candidates[0];
   return candidates
     .map((s) => {
@@ -186,7 +201,7 @@ export function chooseScenario(
       const unnecessaryRest = s.id === "rest-home" && agent.energy >= 65 ? -.35 : 0;
       const evening = context.hour >= 18 ? (s.kind === "work" ? -.25 : ["social", "play"].includes(s.kind) ? .12 : 0) : 0;
       const taste = (hashSeed(`${id}:${s.tag}`) % 101 - 50) / 500;
-      const related = (scenariosByTag.get(s.tag) ?? []).filter(other => other.id !== s.id).map(other => agent.actions[other.id]).filter(Boolean);
+      const related = ((additional.length ? liveScenariosByTag : scenariosByTag).get(s.tag) ?? []).filter(other => other.id !== s.id).map(other => agent.actions[other.id]).filter(Boolean);
       const transfer = related.length ? related.reduce((sum, action) => sum + action.meanReward * Math.min(1, action.trials / 3), 0) / related.length * .12 : 0;
       const tie =
         (hashSeed(
@@ -200,6 +215,10 @@ export function chooseScenario(
       };
     })
     .sort((a, b) => b.score - a.score)[0].scenario;
+}
+/** New catalog is only used for QA scheduling. Legacy H6 baseline remains 41. */
+export function chooseLiveAction(agent:AgentLearning,id:string,context:RealContext,rolePlace?:string): Scenario {
+  return chooseScenario(agent,id,context,rolePlace,"linucb",undefined,expandedActions);
 }
 export type OutcomeNeeds = RewardState;
 
@@ -242,7 +261,7 @@ export function settleLearning(
     return false;
   pending.completed = true;
   if (!planMatches) return false;
-  const scenario = scenarios.find((s) => s.id === pending.scenarioId);
+  const scenario = liveActionCatalog.find((s) => s.id === pending.scenarioId);
   if (!scenario) return false;
   if (!agent.domainSkills) {
     // Keep previously unlocked activities; never turn historical scalar skill
@@ -315,7 +334,7 @@ export function prepareLearning(world: World, state: LivingState, now: number, c
     if (existingCore)
       agent.skill = Math.max(agent.skill, Math.min(100, existingCore.skill));
     advanceNeeds(agent, person.id, simMs, hour < 6 || hour >= 22);
-    const domain = scenarios.find(s=>s.id===agent.pending?.scenarioId)?.skillDomain;
+    const domain = liveActionCatalog.find(s=>s.id===agent.pending?.scenarioId)?.skillDomain;
     const beforeDomain = domain ? agent.domainSkills?.[domain]??0 : 0;
     const beforeOutcome = rewardState(agent),sampleBefore = agent.samples;
     const trained = settleLearning(
@@ -334,7 +353,7 @@ export function prepareLearning(world: World, state: LivingState, now: number, c
         reward: agent.lastReward ?? action.meanReward,
         source: "simulation",
         model: validDecisionContext(agent.pending.context) && agent.linear?.[agent.pending.scenarioId] ? "disjoint-linucb-v1" : "contextual-bandit-v1",
-        rewardEvidence:createRewardEvidence({scenarioSignature:OUTCOME_SCENARIO_SIGNATURE,
+        rewardEvidence:createRewardEvidence({scenarioSignature:expandedActionIds.has(agent.pending.scenarioId)?EXPANDED_ACTION_SIGNATURE:OUTCOME_SCENARIO_SIGNATURE,
           identity:{experienceId:agent.pending.id,actorId:person.id,scenarioId:agent.pending.scenarioId},
           plan:{binding:agent.pending.planKey?"fingerprint-v1":"legacy-start-time",
             declaredKey:agent.pending.planKey??null,...matchedPlanEvidence(person.plan),

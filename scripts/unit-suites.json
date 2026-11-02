@@ -270,5 +270,8 @@
   ],
   [
     "scripts/test-h6-qa-canary.mjs"
+  ],
+  [
+    "scripts/test-action-pack-100.mjs"
   ]
 ]

@@ -15,7 +15,7 @@ import { updateAnimalLearning } from "./animal-learning.ts";
 import {
   prepareLearning,
   cohortIds,
-  chooseScenario,
+  chooseLiveAction,
   scenarios,
   hasUnfinishedLearning,
 } from "./learning.ts";
@@ -179,11 +179,13 @@ export function planLivingTurn(
   const role = chooseRole(state, context);
   learning.an.energy = state.energy;
   learning.an.hunger = state.hunger;
-  const chosen = chooseScenario(learning.an, "an", context, role.place);
+  const chosen = chooseLiveAction(learning.an, "an", context, role.place);
   // Model-independent baseline proposal, compared only inside a signed QA shadow context.
   // Neither this call nor the shadow scorer changes the actual chosen action.
-  captureH6ShadowProposal({ agent: learning.an, actorId: "an", context, rolePlace: role.place,
-    roleKind: role.kind, baselineScenarioId: chosen.id });
+  // A new QA arm must never be misreported as a 41-arm paired H6 baseline.
+  if (scenarios.some(s => s.id === chosen.id))
+    captureH6ShadowProposal({ agent: learning.an, actorId: "an", context, rolePlace: role.place,
+      roleKind: role.kind, baselineScenarioId: chosen.id });
   const available = state.residents.filter(r => !hasUnfinishedLearning(learning[r.id], r.plan, simNow));
   const peers = available.filter((r) => r.roleId === role.id);
   const resident =
@@ -335,11 +337,12 @@ export function planLivingTurn(
     const rolePlace = npc
       ? state.catalog.roles.find((r) => r.id === npc.roleId)?.place
       : id === "binh" ? "Thư viện" : id === "chi" ? "Vườn nhỏ" : person?.location;
-    const baseline = chooseScenario(agent, id, context, rolePlace);
+    const baseline = chooseLiveAction(agent, id, context, rolePlace);
     // Observe every eligible resident proposal in shadow mode, without altering baseline.
-    captureH6ShadowProposal({ agent, actorId: id, context, rolePlace: rolePlace ?? "",
-      roleKind: npc ? state.catalog.roles.find(r => r.id === npc.roleId)?.kind ?? "unknown" : "unknown",
-      baselineScenarioId: baseline.id });
+    if (scenarios.some(s => s.id === baseline.id))
+      captureH6ShadowProposal({ agent, actorId: id, context, rolePlace: rolePlace ?? "",
+        roleKind: npc ? state.catalog.roles.find(r => r.id === npc.roleId)?.kind ?? "unknown" : "unknown",
+        baselineScenarioId: baseline.id });
     // Model treatment is impossible unless a separately signed H6.3 promotion
     // decision and model are independently verified in this QA request scope.
     const scenario = chooseH6CanaryScenario({ agent, actorId: id, context,
