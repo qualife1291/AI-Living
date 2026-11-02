@@ -74,6 +74,16 @@ with sync_playwright() as p:
    assert 13.9<=sum((a['position'][i]-buddy['position'][i])**2 for i in [0,1])**.5<=30
    assert sum(1 for a in [a,buddy] if a['speaking'])==1
    page.screenshot(path=str(out/f'workshop-{name}-preview.png'))
+   # Read-only in-vehicle camera tests exercise real WebGL frames on both sizes.
+   for mode,button in [('car','Góc tài xế ô tô'),('bus','Góc cửa sổ xe buýt'),('metro','Góc đầu tàu metro')]:
+    page.get_by_role('button',name=button,exact=True).click()
+    page.locator(f'.three-canvas[data-vehicle-view="{mode}"]').wait_for(timeout=12000)
+    assert int(host.get_attribute('data-draw-calls'))>0,(mode,'no WebGL render')
+    fleet=json.loads(host.get_attribute('data-transit-vehicles'))
+    assert len(fleet)==2 and {x['type'] for x in fleet}=={'bus','metro'}
+    page.screenshot(path=str(out/f'transit-{mode}-{name}.png'))
+   page.get_by_role('button',name='Theo nhân vật',exact=True).click()
+   page.locator('.three-canvas[data-vehicle-view="none"]').wait_for(timeout=12000)
    page.wait_for_function('(before)=>{const e=document.querySelector(".three-speech");return e&&e.innerText!==before}',arg=before,timeout=10000)
    # The dialogue text can update one animation frame before ResizeObserver
    # recomputes screen-space geometry. Require the settled on-screen result,

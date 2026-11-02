@@ -2,6 +2,7 @@ import { HUMAN_SCALE, VEHICLES, pixelRatio, shadowMapSize, type Quality } from "
 import { SocialDirector, type SocialPose, type Exchange } from "@/lib/living/social";
 import { WalkDirector } from "@/lib/city/walkability";
 import { TrafficDirector, TRAFFIC_COUNT, trafficJunctions, type TrafficVehicle } from "@/lib/city/traffic";
+import { independentTransitAt, type TransitMode } from "@/lib/city/transit";
 import { venueGeometry, openVenue, segmentHits } from "@/lib/city/footprints";
 import { sceneryTrees, sceneryLamps, streetProps, venueSceneryPose } from "@/lib/city/scenery";
 import { characterShot, cameraRayBlocked } from "@/lib/city/cinematography";
@@ -70,6 +71,7 @@ export type SceneStatus = {
   visible: boolean;
   walking: boolean;
   location: string;
+  vehicleView?: "car" | TransitMode | null;
 };
 export type CityRuntime = {
   select: (id:string) => void;
@@ -78,6 +80,7 @@ export type CityRuntime = {
   follow: () => void;
   overview: () => void;
   skyline: () => void;
+  viewVehicle: (mode: "car" | TransitMode | null) => void;
   dispose: () => void;
 };
 type Solid = {
@@ -631,6 +634,18 @@ export function createCity(
     mesh.frustumCulled = false; mesh.instanceMatrix.setUsage(THREE.DynamicDrawUsage); scene.add(mesh); return mesh;
   }) : [];
   host.dataset.assetCars = String(importedCars.length);
+  // The service fleet has independent deterministic timetables and no fake
+  // passengers. These meshes do not participate in the 12-car collision lane.
+  const serviceModels = (["bus","metro"] as const).map(mode => {
+    const group = new THREE.Group(); scene.add(group);
+    const {width,height,length}=VEHICLES[mode];
+    const body=new THREE.Mesh(boxGeo,new THREE.MeshStandardMaterial({color:mode==="bus"?"#e4ad5a":"#bdd4d5",roughness:.58}));
+    body.position.y=height*.55;body.scale.set(width,height*.72,length);group.add(body);
+    const windows=new THREE.Mesh(boxGeo,new THREE.MeshStandardMaterial({color:"#3b6476",roughness:.25,metalness:.15}));
+    windows.position.y=height*.87;windows.scale.set(width*.88,height*.23,length*.79);group.add(windows);
+    return {mode,group};
+  });
+  host.dataset.transitFleet = "2";
   const ring = new THREE.Mesh(
     new THREE.RingGeometry(6, 7, 32),
     new THREE.MeshBasicMaterial({ color: "#ffe0a0", side: THREE.DoubleSide }),
@@ -658,6 +673,8 @@ export function createCity(
   let socialPoses = new Map<string, SocialPose>(), exchanges: Exchange[] = [];
   const walkDirector = new WalkDirector(), trafficDirector = new TrafficDirector(), socialDirector = new SocialDirector();
   let cars: TrafficVehicle[] = [];
+  let services: TrafficVehicle[] = [];
+  let vehicleView: "car" | TransitMode | null = null;
   let lastTime = Date.parse(input().world.born);
   let lastStatus = 0;
   const viewOffset = new THREE.Vector3(48, 34, 62);
@@ -683,6 +700,7 @@ export function createCity(
   let followedBeforeGesture=false;
   const onStart = () => {
     followedBeforeGesture=following;following = false;
+    vehicleView=null;controls.enabled=true;
     host.dataset.view = "orbit";
   };
   controls.addEventListener("start", onStart);
@@ -700,7 +718,7 @@ export function createCity(
     pointer = new THREE.Vector2();
   const gesture=new TapGesture();
   const clearCameraMotion=()=>{const damping=controls.enableDamping;controls.enableDamping=false;controls.update();controls.enableDamping=damping;};
-  const selectActor=(id:string)=>{clearCameraMotion();callbacks.select(id);following=!motionPreference.matches;if(id===input().selected)lastSelected="";};
+  const selectActor=(id:string)=>{vehicleView=null;controls.enabled=true;clearCameraMotion();callbacks.select(id);following=!motionPreference.matches;if(id===input().selected)lastSelected="";};
   const pointerDown=(e:PointerEvent)=>gesture.down(e);
   const pointerMove=(e:PointerEvent)=>gesture.move(e);
   const pointerCancel=(e:PointerEvent)=>gesture.cancel(e);
@@ -924,6 +942,15 @@ export function createCity(
     }
     drawActors(world, dt);
     traffic();
+    services = independentTransitAt(seconds);
+    for (const visual of serviceModels) {
+      const v=services.find(v=>v.type===visual.mode)!;
+      visual.group.position.set(v.position[0],groundElevation(...v.position)+(visual.mode==="metro"?4:0),v.position[1]);
+      visual.group.rotation.y=v.yaw;
+      // In-vehicle first-person mode hides the observed shell, never the route.
+      visual.group.visible=vehicleView!==visual.mode;
+    }
+    host.dataset.transitVehicles=JSON.stringify(services.map(v=>({id:v.id,type:v.type,speed:v.speed,position:v.position})));
     contactShadows.count = actors.length + cars.length;
     for (let i = 0; i < contactShadows.count; i++) {
       const car = i >= actors.length ? cars[i - actors.length] : null, point = car?.position ?? actors[i].position;
@@ -937,7 +964,7 @@ export function createCity(
     host.dataset.homeTargets=JSON.stringify(actors.filter(a=>a.homeAnchor).map(a=>({id:a.id,target:a.homeAnchor,position:a.position})));
     if (current) {
       ring.position.set(current.position[0], 2, current.position[1]);
-      if (following) {
+      if (following && !vehicleView) {
         const partnerId = socialPoses.get(current.id)?.peerId;
         const peer = actors.find(a => a.id === partnerId) ?? groundAnimals.find(a => a.petOwnerId === current!.id);
         const height = Math.max(modelActors.height(current.id), peer && modelActors.ids.has(peer.id) ? modelActors.height(peer.id) : peer && actors.some(a => a.id === peer.id) ? 20 : 0);
@@ -956,8 +983,22 @@ export function createCity(
         }
       }
     }
-    controls.update();
-    if(!following){const floor=groundElevation(camera.position.x,camera.position.z)+3;controls.target.y=Math.max(controls.target.y,groundElevation(controls.target.x,controls.target.z)+2);if(camera.position.y<floor){camera.position.y=floor;camera.lookAt(controls.target);}}
+    if (vehicleView) {
+      const observed=vehicleView==="car"?cars[0]:services.find(v=>v.type===vehicleView);
+      if (observed) {
+        const [x,z]=observed.position,fx=Math.sin(observed.yaw),fz=Math.cos(observed.y);
+        const rx=Math.cos(observed.yaw),rz=-Math.sin(observed.yaw);
+        const lateral=vehicleView==="bus"?-observed.width*.25:vehicleView==="car"?-observed.width*.22:0;
+        const forward=vehicleView==="metro"?observed.length*.35:vehicleView==="car"?observed.length*.1:observed.length*.05;
+        const eye=groundElevation(x,z)+(vehicleView==="car"?14:vehicleView==="bus"?23:29);
+        camera.position.set(x+rx*lateral+fx*forward,eye,z+rz*lateral+fz*forward);
+        camera.lookAt(x+fx*130,eye+3,z+fz*130);
+        controls.target.set(x+fx*130,eye+3,z+fz*130);
+      }
+    } else {
+      controls.update();
+      if(!following){const floor=groundElevation(camera.position.x,camera.position.z)+3;controls.target.y=Math.max(controls.target.y,groundElevation(controls.target.x,controls.target.z)+2);if(camera.position.y<floor){camera.position.y=floor;camera.lookAt(controls.target);}}
+    }
     // Keep signs subordinate to residents; distant districts need no text clutter.
     updateAssetLOD(camera, activeQuality === "sharp");
     for (const chunk of detailChunks) chunk.mesh.visible = Math.hypot(camera.position.x - chunk.x, camera.position.z - chunk.z) < 520;
@@ -999,6 +1040,7 @@ export function createCity(
         name: current?.name ?? "An",
         activity: current?.activity ?? "Đang sinh hoạt",
         following,
+        vehicleView,
         walking: current?.walking ?? false,
         location: current?.location ?? "",
         speech: speech?.text ?? "",
@@ -1061,6 +1103,7 @@ export function createCity(
     }));
     host.dataset.pickTargets=JSON.stringify(actors.filter(a=>modelActors.ids.has(a.id)||people.head(a.id)).map(actor=>{const point=new THREE.Vector3(actor.position[0],groundElevation(...actor.position)+modelActors.height(actor.id)*.6,actor.position[1]).project(camera);return{id:actor.id,x:(point.x+1)*host.clientWidth/2,y:(1-point.y)*host.clientHeight/2,depth:point.z};}));
     host.dataset.selected = current?.id ?? "";
+    host.dataset.vehicleView=vehicleView??"none";
     host.dataset.humanBatches = String(people.stats().batches);
     host.dataset.crowdModels=JSON.stringify(people.stats());
     host.dataset.humanInstances = String(people.stats().instances);
@@ -1079,6 +1122,7 @@ export function createCity(
     select:selectActor,
     presentSpeech(key) { if(!input().sharedGroundRequested)socialDirector.presented(key, Date.now() + (input().clockOffsetMs ?? 0)); },
     zoom(factor) {
+      vehicleView=null;controls.enabled=true;
       following = false;
       host.dataset.view = "orbit";
       const offset = camera.position.clone().sub(controls.target);
@@ -1087,6 +1131,7 @@ export function createCity(
       camera.position.copy(controls.target).add(offset);
     },
     follow() {
+      vehicleView=null;controls.enabled=true;
       clearCameraMotion();
       if(current&&current.id!==input().selected)callbacks.select(current.id);
       host.dataset.view = "follow";
@@ -1094,6 +1139,7 @@ export function createCity(
       lastSelected = ""; // One explicit framing in reduced motion, then a stationary camera.
     },
     overview() {
+      vehicleView=null;controls.enabled=true;
       host.dataset.view = "overview";
       following = false;
       const vertical = THREE.MathUtils.degToRad(camera.fov),
@@ -1107,9 +1153,16 @@ export function createCity(
       scene.fog = null;
     },
     skyline() {
+      vehicleView=null;controls.enabled=true;
       host.dataset.view = "skyline";
       following = false;
       focus(1650, 120, new THREE.Vector3(580, 500, 750));
+    },
+    viewVehicle(mode) {
+      vehicleView=vehicleView===mode?null:mode;
+      following=false;controls.enabled=!vehicleView;
+      host.dataset.view=vehicleView?"vehicle-"+vehicleView:"orbit";
+      host.dataset.vehicleView=vehicleView??"none";
     },
     dispose() {
       dead = true;

@@ -1,6 +1,6 @@
 "use client";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Building2, LocateFixed, Minus, Plus, Scan, MessageCircle, Footprints, Coffee, DoorOpen } from "lucide-react";
+import { Building2, LocateFixed, Minus, Plus, Scan, MessageCircle, Footprints, Coffee, DoorOpen, CarFront, BusFront, TrainFront } from "lucide-react";
 import { WorldOverlays } from "./WorldOverlays";
 import { WebGLUnavailable } from "./WebGLUnavailable";
 import type { CityRuntime, SceneInput, SceneStatus } from "./three/runtime";
@@ -113,6 +113,14 @@ export function City3D(props: Props) {
         >
           <Scan size={17} />
         </button>
+      </div>
+      <div className="urban-vehicle-camera" aria-label="Góc nhìn phương tiện độc lập">
+        <button aria-label="Góc tài xế ô tô" title="Quan sát từ ô tô nền · Không điều khiển phương tiện"
+          aria-pressed={status?.vehicleView==="car"} onClick={()=>runtime.current?.viewVehicle("car")}><CarFront size={18}/></button>
+        <button aria-label="Góc cửa sổ xe buýt" title="Quan sát trên tuyến xe buýt độc lập"
+          aria-pressed={status?.vehicleView==="bus"} onClick={()=>runtime.current?.viewVehicle("bus")}><BusFront size={18}/></button>
+        <button aria-label="Góc đầu tàu metro" title="Quan sát trên tuyến metro độc lập"
+          aria-pressed={status?.vehicleView==="metro"} onClick={()=>runtime.current?.viewVehicle("metro")}><TrainFront size={18}/></button>
       </div>
       <div className="map-credit">
         Thành phố 3D mô phỏng · Kéo để xoay · Chuột phải / hai ngón để dịch ·

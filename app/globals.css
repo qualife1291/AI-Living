@@ -323,3 +323,10 @@ footer span:first-child {
 .resident-home{display:grid;gap:5px;padding:14px 16px;margin:16px 0;border:1px solid #d9e5d6;border-radius:14px;background:#f1f6ec;color:#335e54}.resident-home b{font-size:13px}.resident-home span{font-size:12px}.resident-home small{font-size:11px;line-height:1.6;color:#708576}.living-panel .resident-home-label{font-size:11px;color:#607f70;margin-bottom:8px}.household-count{font-size:12px}
 .asset-library-link{display:flex;align-items:center;gap:9px;padding:12px 15px;margin:0 0 18px;background:#e2efdf;color:#285e55;border:1px solid #bcd3b5;border-radius:13px;font-size:13px;font-weight:600}
 .resident-home button{justify-self:start;border:1px solid #b1cdbb;border-radius:9px;padding:7px 11px;background:#e6f0e5;color:#315c54;font:inherit;font-size:12px;cursor:pointer}.resident-home button:focus-visible{outline:3px solid #d6aa68;outline-offset:2px}
+
+/* Separate read-only vehicle cockpit cameras from the resident camera dock. */
+.urban-vehicle-camera{position:absolute;right:72px;bottom:40px;display:flex;flex-direction:column;gap:3px;padding:5px;z-index:3;border:1px solid #e5efe8;border-radius:14px;background:#fffdf5f0;box-shadow:0 5px 22px #244a6417}
+.urban-vehicle-camera button{width:36px;height:36px;display:grid;place-items:center;border-radius:9px;color:#275e69}
+.urban-vehicle-camera button[aria-pressed="true"]{background:#c1e8df;color:#164d48}
+.hud-hidden .urban-vehicle-camera{opacity:0;visibility:hidden;pointer-events:none}
+@media(max-width:900px){.urban-vehicle-camera{right:60px;bottom:112px}}
