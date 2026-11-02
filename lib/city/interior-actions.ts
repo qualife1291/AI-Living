@@ -17,6 +17,11 @@ export function interiorAction(kind: string, activity: string): InteriorAction {
   const a = activity.toLocaleLowerCase('vi');
   const patterns: [RegExp, InteriorAction][] = [
     [/ngủ|chợp mắt|đi ngủ|sleep/i,'sleep'],
+    [/rửa bát|rửa chén|lau chén|rửa ly|úp khô/i,'wash'],
+    [/tỉa cành|trồng hạt|tưới cây|đất|cây trồng/i,'garden'],
+    [/kiểm tra phanh|lốp xe|hiệu chỉnh|bảo dưỡng|sửa thiết bị/i,'repair'],
+    [/viết thiệp|ghi nhật ký|ghi chép|lập danh sách/i,'write'],
+    [/dọn dẹp quầy|dọn khu vực|phân loại chất hữu cơ/i,'clean'],
     [/nấu|chuẩn bị món|chế biến|cắt rau|xào|bếp/i,'cook'],
     [/phục vụ|bưng món|dọn bàn ăn/i,'serve'],
     [/rửa bát|rửa chén|lau chén|rửa ly/i,'wash'],
