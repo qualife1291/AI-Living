@@ -30,9 +30,12 @@ const cars=trafficAt(30),director=new TrafficDirector();director.frame(0);
 assert.equal(cars.length,12);assert.equal(director.frame(.1).length,12);
 for(const seconds of [0,30,500,100000]){independentTransitAt(seconds);assert.deepEqual(trafficAt(30),cars);}
 for(const action of transportActions){
+  const cancelled=initializeAgent("cancel-"+action.id);
+  cancelled.pending={id:"cancel-"+action.id,scenarioId:action.id,startedSimMs:0,durationMs:180000,completed:false};
+  assert.equal(settleLearning(cancelled,180000,"2026-11-02T00:00:00Z",false),false);
+  assert.equal(cancelled.samples,0);
   const agent=initializeAgent(action.id);
   agent.pending={id:action.id,scenarioId:action.id,startedSimMs:0,durationMs:180000,completed:false};
-  assert.equal(settleLearning(agent,180000,"2026-11-02T00:00:00Z",false),false);
   assert.equal(settleLearning(agent,180000,"2026-11-02T00:00:00Z",true),true);
   assert.equal(agent.actions[action.id].trials,1);assert.equal(agent.samples,1);
 }
