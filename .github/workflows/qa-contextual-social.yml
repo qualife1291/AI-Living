@@ -26,6 +26,13 @@ on:
       - 'lib/living/learning.ts'
       - 'lib/living/engine.ts'
       - 'scripts/test-action-pack-100.mjs'
+      - 'lib/city/soundscape.ts'
+      - 'components/city/useSoundscape.ts'
+      - 'components/studio/sound.ts'
+      - 'scripts/qa-soundscape.py'
+      - 'scripts/qa-studio-sound.py'
+      - 'scripts/test-studio-sound.mjs'
+      - 'public/audio/studio/**'
       - 'components/city/three/actor-actions.ts'
       - 'data/characters/themes.json'
       - '.github/workflows/qa-contextual-social.yml'
@@ -86,6 +93,13 @@ jobs:
           QA_BASE: http://127.0.0.1:5177
           QA_OUT: qa-evidence/social/screenshots
         run: /tmp/ai-living-browser-venv/bin/python scripts/qa-social.py
+      - name: Real browser audio ambience, speech decoding and lifecycle
+        env:
+          QA_BASE: http://127.0.0.1:5177
+          QA_OUT: qa-evidence/social/audio/ambience
+        run: |
+          /tmp/ai-living-browser-venv/bin/python scripts/qa-soundscape.py
+          QA_OUT=qa-evidence/social/audio/studio /tmp/ai-living-browser-venv/bin/python scripts/qa-studio-sound.py
       - name: Upload real browser screenshots and local server evidence
         if: always()
         uses: actions/upload-artifact@v4
