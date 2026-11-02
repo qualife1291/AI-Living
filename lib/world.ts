@@ -11,7 +11,7 @@ export type PersonPlan = {
   pausedMs: number;
   from: string;
   originPath?: [number, number][];
-  transport?: "walk" | "bicycle" | "motorbike" | "bus" | "metro";
+  transport?: "walk" | "car" | "bicycle" | "motorbike" | "bus" | "metro";
   simStartedAt?: number;
   generator?: "rules" | "local-llm";
   steps: Step[];

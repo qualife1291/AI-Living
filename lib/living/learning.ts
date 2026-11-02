@@ -2,6 +2,7 @@ import { z } from "zod";
 import { PLACES, STEP_KINDS } from "../event-schema.ts";
 import scenariosData from "../../data/city/scenarios.json" with { type: "json" };
 import expandedActionData from "../../data/city/action-pack-100.json" with { type: "json" };
+import transportActionData from "../../data/city/transport-actions.json" with { type: "json" };
 import type { LivingState, RealContext } from "./schema.ts";
 import type { World, PersonPlan } from "../world";
 import { computeSimMs, hashSeed, worldTime } from "../clock.ts";
@@ -18,6 +19,7 @@ export const scenarioSchema = z
     tag: z.string().min(1).max(40),
     transport: z.enum([
       "walk",
+      "car",
       "bicycle",
       "motorbike",
       "bus",
@@ -43,11 +45,18 @@ export type Scenario = (typeof scenarios)[number];
  * The pinned H6 96-candidate shadow catalog, its SHA and the 41-arm reward
  * signature do not change. Being registered is NOT being executed or learned. */
 export const expandedActions = z.array(scenarioSchema).length(59).parse(expandedActionData);
-export const liveActionCatalog: Scenario[] = [...scenarios, ...expandedActions];
-if (new Set(liveActionCatalog.map(s => s.id)).size !== 100)
-  throw Error("QA action pack must contain 100 distinct scenario IDs");
+/** Freeze the already-issued 100-action evidence fingerprint. */
+export const original100ActionCatalog: Scenario[] = [...scenarios, ...expandedActions];
+if (new Set(original100ActionCatalog.map(s => s.id)).size !== 100)
+  throw Error("Pinned QA catalog must contain 100 distinct scenario IDs");
+export const transportActions = z.array(scenarioSchema).length(3).parse(transportActionData);
+export const liveActionCatalog: Scenario[] = [...original100ActionCatalog, ...transportActions];
+if (new Set(liveActionCatalog.map(s => s.id)).size !== 103)
+  throw Error("QA transit catalog must contain 103 distinct scenario IDs");
+const transportActionIds = new Set(transportActions.map(s => s.id));
+export const TRANSPORT_ACTION_SIGNATURE = hashSeed(JSON.stringify(liveActionCatalog));
 const expandedActionIds = new Set(expandedActions.map(s => s.id));
-export const EXPANDED_ACTION_SIGNATURE = hashSeed(JSON.stringify(liveActionCatalog));
+export const EXPANDED_ACTION_SIGNATURE = hashSeed(JSON.stringify(original100ActionCatalog));
 
 export const OUTCOME_SCENARIO_SIGNATURE = hashSeed(JSON.stringify(scenarios));
 const scenariosByTag = new Map<string, Scenario[]>();
@@ -218,7 +227,7 @@ export function chooseScenario(
 }
 /** New catalog is only used for QA scheduling. Legacy H6 baseline remains 41. */
 export function chooseLiveAction(agent:AgentLearning,id:string,context:RealContext,rolePlace?:string): Scenario {
-  return chooseScenario(agent,id,context,rolePlace,"linucb",undefined,expandedActions);
+  return chooseScenario(agent,id,context,rolePlace,"linucb",undefined,[...expandedActions,...transportActions]);
 }
 export type OutcomeNeeds = RewardState;
 
@@ -353,7 +362,7 @@ export function prepareLearning(world: World, state: LivingState, now: number, c
         reward: agent.lastReward ?? action.meanReward,
         source: "simulation",
         model: validDecisionContext(agent.pending.context) && agent.linear?.[agent.pending.scenarioId] ? "disjoint-linucb-v1" : "contextual-bandit-v1",
-        rewardEvidence:createRewardEvidence({scenarioSignature:expandedActionIds.has(agent.pending.scenarioId)?EXPANDED_ACTION_SIGNATURE:OUTCOME_SCENARIO_SIGNATURE,
+        rewardEvidence:createRewardEvidence({scenarioSignature:transportActionIds.has(agent.pending.scenarioId)?TRANSPORT_ACTION_SIGNATURE:expandedActionIds.has(agent.pending.scenarioId)?EXPANDED_ACTION_SIGNATURE:OUTCOME_SCENARIO_SIGNATURE,
           identity:{experienceId:agent.pending.id,actorId:person.id,scenarioId:agent.pending.scenarioId},
           plan:{binding:agent.pending.planKey?"fingerprint-v1":"legacy-start-time",
             declaredKey:agent.pending.planKey??null,...matchedPlanEvidence(person.plan),

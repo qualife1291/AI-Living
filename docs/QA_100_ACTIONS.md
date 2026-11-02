@@ -11,3 +11,9 @@ Old completed evidence retains `OUTCOME_SCENARIO_SIGNATURE`; new IDs receive `EX
 Run `node scripts/test-action-pack-100.mjs`, `npm run test:unit`, `npm run check`, `npm run lint`, and desktop/mobile Chromium visual tests. Before release require a successful QA-only CI deployment plus Worker version, preserved H6 bindings and Cron, D1 QA binding, HTTP smoke via safe GET and a new completed action record. Never initiate POST pulse just to raise numbers.
 
 Report **catalog=100**, **eligible actions** (context-dependent) and **observed distinct completed action IDs** separately. Expect observed action types to rise gradually, not jump from 38 to 100 without 62 genuinely recorded completions. Compare policy rows, arm counts, sample totals, reward by scenario, CPU/p95 and error logs against pre-rollout baselines. Roll back the QA Worker if runtime or reward regressions exceed accepted bounds; do not alter D1, Site A, production or staging.
+
+## Independent mobility pack (QA only)
+
+The 41 legacy and 59 previously released actions remain unchanged. Their original100ActionCatalog evidence fingerprint stays pinned. Three new mobility plans (car driving, bus riding and metro riding) use a separate 103-action evidence fingerprint. An action only counts as learned after a correctly completed plan. This is not evidence of a real license, a real bus passenger, or rewards from the visual fleet.
+
+Ambient vehicles are a separate rendering simulation: the 12 cooperative road cars remain collision-authoritative for walking; a bus runs a straight southern boulevard shuttle and a metro runs a straight existing track with endpoint dwell. Cameras observe these vehicles, not an authenticated resident boarding them. No model treatment or new D1 data is fabricated. Until an approved transit occupancy integration exists, do not equate an actor's abstract transit route with the displayed service vehicle.
