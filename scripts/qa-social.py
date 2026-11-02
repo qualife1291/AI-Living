@@ -120,6 +120,7 @@ with sync_playwright() as p:
    # Keep a finite ceiling and the stricter total draw-call gate (<90).
    assert 6<=batches<=16,('Unexpected human batch count',batches)
    assert host.get_attribute('data-street-props')=='66'
+   assert host.get_attribute('data-scenic-grove-trees')=='48', 'Missing 48 batched scenic trees in actual WebGL scene'
    # Real 3D browser regression: supported Three.js shadows and no mobile HUD overlap.
    assert not any('PCFSoftShadowMap has been removed' in row['text'] for row in console), 'Removed Three.js shadow setting still used'
    if name=='mobile':

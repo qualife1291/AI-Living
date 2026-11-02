@@ -1000,6 +1000,158 @@
           "seconds": 7
         }
       ]
+    },
+    {
+      "id": "library-share-research-notes",
+      "title": "Chia sẻ ghi chú tra cứu",
+      "places": [
+        "Thư viện"
+      ],
+      "kinds": [
+        "read",
+        "social"
+      ],
+      "durationSeconds": 36,
+      "turns": [
+        {
+          "speaker": "a",
+          "text": "{b}, bạn có muốn xem phần mình vừa ghi chú không?",
+          "gesture": "wave",
+          "seconds": 8
+        },
+        {
+          "speaker": "b",
+          "text": "Có, nhưng mình thử tìm nguồn đối chiếu trước nhé.",
+          "gesture": "nod",
+          "seconds": 8
+        },
+        {
+          "speaker": "a",
+          "text": "Được, mình chỉ giữ lại điều có thể kiểm tra lại.",
+          "gesture": "explain",
+          "seconds": 8
+        },
+        {
+          "speaker": "b",
+          "text": "Vậy ta ghi cả chỗ còn chưa rõ để lần sau hỏi tiếp.",
+          "gesture": "nod",
+          "seconds": 8
+        }
+      ]
+    },
+    {
+      "id": "garden-choose-a-small-task",
+      "title": "Chia việc trong vườn",
+      "places": [
+        "Vườn nhỏ"
+      ],
+      "kinds": [
+        "garden",
+        "social"
+      ],
+      "durationSeconds": 36,
+      "turns": [
+        {
+          "speaker": "a",
+          "text": "{b}, hôm nay mình nên bắt đầu từ luống nào?",
+          "gesture": "wave",
+          "seconds": 8
+        },
+        {
+          "speaker": "b",
+          "text": "Mình kiểm tra đất và lá trước, chỗ nào cần mới tưới.",
+          "gesture": "point",
+          "seconds": 8
+        },
+        {
+          "speaker": "a",
+          "text": "Mình xem phía bên trái, bạn xem bên phải nhé?",
+          "gesture": "explain",
+          "seconds": 8
+        },
+        {
+          "speaker": "b",
+          "text": "Ừ, lát gặp lại mình so những điều đã quan sát.",
+          "gesture": "nod",
+          "seconds": 8
+        }
+      ]
+    },
+    {
+      "id": "park-pet-give-room",
+      "title": "Chừa lối cho thú cưng",
+      "places": [
+        "Công viên"
+      ],
+      "kinds": [
+        "social",
+        "play"
+      ],
+      "durationSeconds": 36,
+      "turns": [
+        {
+          "speaker": "a",
+          "text": "{b}, mình thấy có thú cưng ở gần lối đi.",
+          "gesture": "point",
+          "seconds": 8
+        },
+        {
+          "speaker": "b",
+          "text": "Mình cứ giữ khoảng cách, đừng gọi chúng chạy lại.",
+          "gesture": "nod",
+          "seconds": 8
+        },
+        {
+          "speaker": "a",
+          "text": "Vậy mình đứng nép sang bên để mọi người đi qua.",
+          "gesture": "explain",
+          "seconds": 8
+        },
+        {
+          "speaker": "b",
+          "text": "Cảm ơn bạn, như vậy đường đi thoáng hơn.",
+          "gesture": "nod",
+          "seconds": 8
+        }
+      ]
+    },
+    {
+      "id": "cafe-share-next-stop",
+      "title": "Nhắc lại điểm hẹn",
+      "places": [
+        "Quán cà phê"
+      ],
+      "kinds": [
+        "social",
+        "rest"
+      ],
+      "durationSeconds": 36,
+      "turns": [
+        {
+          "speaker": "a",
+          "text": "{b}, lát nữa bạn dự định ghé đâu?",
+          "gesture": "wave",
+          "seconds": 8
+        },
+        {
+          "speaker": "b",
+          "text": "Mình định ghé thư viện sau khi nghỉ một lát.",
+          "gesture": "nod",
+          "seconds": 8
+        },
+        {
+          "speaker": "a",
+          "text": "Mình sẽ xem lại giờ rồi chọn đường phù hợp.",
+          "gesture": "explain",
+          "seconds": 8
+        },
+        {
+          "speaker": "b",
+          "text": "Ừ, mình nhắc nhau điểm hẹn để khỏi đi nhầm.",
+          "gesture": "nod",
+          "seconds": 8
+        }
+      ]
     }
   ]
 }
