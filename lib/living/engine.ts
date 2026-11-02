@@ -43,6 +43,7 @@ import {
   type Step,
 } from "../life.ts";
 import type { World } from "../world";
+import {canAffordMobility,chargeCompletedMobility,fareForAction} from "../city/mobility-economy.ts";
 
 export const defaultCatalog = catalogSchema.parse(defaults);
 const DAY = 86400000;
@@ -179,7 +180,13 @@ export function planLivingTurn(
   const role = chooseRole(state, context);
   learning.an.energy = state.energy;
   learning.an.hunger = state.hunger;
-  const chosen = chooseLiveAction(learning.an, "an", context, role.place);
+  const offered = chooseLiveAction(learning.an, "an", context, role.place);
+  // This turn may settle a completed fare before selecting the next plan.
+  const pendingFare = newExperiences.filter(e=>e.actorId==="an")
+    .reduce((sum,e)=>sum+fareForAction(e.scenarioId),0);
+  const anBudget = (world.people.find(p=>p.id==="an")?.money??0)-pendingFare;
+  const chosen = canAffordMobility(anBudget,offered.id)
+    ? offered : scenarios.find(s=>s.id==="rest-home")!;
   // Model-independent baseline proposal, compared only inside a signed QA shadow context.
   // Neither this call nor the shadow scorer changes the actual chosen action.
   // A new QA arm must never be misreported as a 41-arm paired H6 baseline.
@@ -284,6 +291,17 @@ export function planLivingTurn(
   state.lastTurnId = turn.id;
   state.daysExperienced = dayDiff(state.startedOn, context.date) + 1;
   const next = structuredClone(world);
+  // No charge for a proposal, visualization, cancelled trip or stale replay.
+  // prepareLearning generates newExperiences only from plan-matched completions.
+  for(const evidence of newExperiences){
+    const payer=next.people.find(p=>p.id===evidence.actorId);
+    if(!payer)continue; // NPC wallets require a separate, approved migration.
+    const booked=chargeCompletedMobility(payer.money,next.mobilityPayments??[],{
+      id:evidence.id,actorId:evidence.actorId,
+      scenarioId:evidence.scenarioId,at:evidence.at
+    });
+    if(booked.charged){payer.money=booked.balance;next.mobilityPayments=booked.ledger;}
+  }
   const an = next.people.find((p) => p.id === "an");
   if (an && !anBusy) {
     an.plan = {
@@ -337,7 +355,11 @@ export function planLivingTurn(
     const rolePlace = npc
       ? state.catalog.roles.find((r) => r.id === npc.roleId)?.place
       : id === "binh" ? "Thư viện" : id === "chi" ? "Vườn nhỏ" : person?.location;
-    const baseline = chooseLiveAction(agent, id, context, rolePlace);
+    const proposal = chooseLiveAction(agent,id,context,rolePlace);
+    // Only named core residents currently have durable VND wallets.
+    const affordable=person?canAffordMobility(person.money,proposal.id)
+      :fareForAction(proposal.id)===0;
+    const baseline = affordable?proposal:scenarios.find(s=>s.id==="rest-home")!;
     // Observe every eligible resident proposal in shadow mode, without altering baseline.
     if (scenarios.some(s => s.id === baseline.id))
       captureH6ShadowProposal({ agent, actorId: id, context, rolePlace: rolePlace ?? "",
@@ -345,10 +367,12 @@ export function planLivingTurn(
         baselineScenarioId: baseline.id });
     // Model treatment is impossible unless a separately signed H6.3 promotion
     // decision and model are independently verified in this QA request scope.
-    const scenario = chooseH6CanaryScenario({ agent, actorId: id, context,
+    const h6Proposal = chooseH6CanaryScenario({ agent, actorId: id, context,
       residents: state.residents, rolePlace,
       roleKind: npc ? state.catalog.roles.find(r => r.id === npc.roleId)?.kind ?? "unknown" : "unknown",
       baseline });
+    const scenario = (person?canAffordMobility(person.money,h6Proposal.id):fareForAction(h6Proposal.id)===0)
+      ?h6Proposal:scenarios.find(s=>s.id==="rest-home")!;
     const previous = person
       ? actorsAt(world, now).find((a) => a.id === id)
       : crowdAt(state, { ...world, livingTurn: turn }, now).find(

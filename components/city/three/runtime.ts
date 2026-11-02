@@ -3,6 +3,7 @@ import { SocialDirector, type SocialPose, type Exchange } from "@/lib/living/soc
 import { WalkDirector } from "@/lib/city/walkability";
 import { TrafficDirector, TRAFFIC_COUNT, trafficJunctions, type TrafficVehicle } from "@/lib/city/traffic";
 import { independentTransitAt, type TransitMode } from "@/lib/city/transit";
+import {TwoWheelTrafficDirector,TWO_WHEEL_LANES,TWO_WHEEL_CROSSING_X,twoWheelSignal} from "@/lib/city/two-wheel-traffic";
 import { venueGeometry, openVenue, segmentHits } from "@/lib/city/footprints";
 import { sceneryTrees, sceneryLamps, streetProps, venueSceneryPose } from "@/lib/city/scenery";
 import { characterShot, cameraRayBlocked } from "@/lib/city/cinematography";
@@ -257,6 +258,14 @@ export function createCity(
         );
     }
   }
+  // Two painted dedicated lanes: bicycle nearest curb, motorbike nearer centre.
+  // Each is inside the existing 43-unit paved road; no new route is invented.
+  for (const lane of TWO_WHEEL_LANES) {
+    road([[lane.from,lane.z],[lane.to,lane.z]],lane.width+.4,1.3,
+      lane.type==="bicycle"?"#9bbfb4":"#bac4a6");
+  }
+  // Perpendicular zebra stripes at one independently controlled crossing.
+  for(let i=0;i<7;i++) box(TWO_WHEEL_CROSSING_X,1.65,1120+i*5.2,4.5,.24,2.5,"#f0e9d8");
   for (const junction of trafficJunctions) cylinder(junction.position[0], 1.15, junction.position[1], junction.radius * 2, .4, "#65767b");
   for (const [a, b] of pedestrianSegments) road([a, b], 8, 1.5, "#eee2c6");
   road(metroLine, 10, 3, "#617878");
@@ -646,6 +655,24 @@ export function createCity(
     return {mode,group};
   });
   host.dataset.transitFleet = "2";
+  // Two lightweight low-poly vehicle rigs, shared primitives and no external
+  // model downloads. No additional crowd AI or D1 writes are caused by them.
+  const twoWheelModels=TWO_WHEEL_LANES.map(lane=>{
+    const group=new THREE.Group();scene.add(group);
+    const paint=new THREE.MeshStandardMaterial({color:lane.type==="bicycle"?"#43a1ab":"#d47d55",roughness:.6});
+    const black=new THREE.MeshStandardMaterial({color:"#263945",roughness:.8});
+    const rider=new THREE.MeshStandardMaterial({color:"#e6cfb5",roughness:.85});
+    const chassis=new THREE.Mesh(boxGeo,paint);chassis.position.y=5;chassis.scale.set(lane.width*.7,2,lane.length*.55);group.add(chassis);
+    const head=new THREE.Mesh(boxGeo,rider);head.position.y=lane.height-2;head.scale.set(3.4,3.5,3.4);group.add(head);
+    const torso=new THREE.Mesh(boxGeo,paint);torso.position.y=lane.height*.58;torso.scale.set(4,4.5,3.7);group.add(torso);
+    const wheelGeo=new THREE.CylinderGeometry(2.4,2.4,1.3,10);
+    for(const dz of [-lane.length*.33,lane.length*.33]){
+      const wheel=new THREE.Mesh(wheelGeo,black);wheel.rotation.z=Math.PI/2;
+      wheel.position.set(0,2.9,dz);group.add(wheel);
+    }
+    return group;
+  });
+  host.dataset.twoWheelFleet="2";
   const ring = new THREE.Mesh(
     new THREE.RingGeometry(6, 7, 32),
     new THREE.MeshBasicMaterial({ color: "#ffe0a0", side: THREE.DoubleSide }),
@@ -671,8 +698,9 @@ export function createCity(
     groundAnimals: ReturnType<typeof animalsAt> = [],
     lastSelected = "";
   let socialPoses = new Map<string, SocialPose>(), exchanges: Exchange[] = [];
-  const walkDirector = new WalkDirector(), trafficDirector = new TrafficDirector(), socialDirector = new SocialDirector();
+  const walkDirector = new WalkDirector(), trafficDirector = new TrafficDirector(), twoWheelDirector=new TwoWheelTrafficDirector(), socialDirector = new SocialDirector();
   let cars: TrafficVehicle[] = [];
+  let twoWheelers: TrafficVehicle[] = [];
   let services: TrafficVehicle[] = [];
   let vehicleView: "car" | TransitMode | null = null;
   let lastTime = Date.parse(input().world.born);
@@ -858,11 +886,12 @@ export function createCity(
         const preferred=new Set([selected,...(serverLines.length?serverLines.flatMap(u=>[u.speakerId,u.listenerId]):[world.livingTurn?.residentId])]);
         actors=visibleHumans(allHumans,capacity,[...world.people.map(p=>p.id),...preferred]);
         groundAnimals=animalsAt(world,0).flatMap(base=>{const actor=sampled.actors.find(a=>a.id===base.id);return actor?[{...base,...actor}]:[];});cars=sampled.cars;seconds=sampled.simMs/1000;
+        twoWheelers=twoWheelDirector.frame(seconds,[...actors,...groundAnimals].map(a=>a.position));
         socialPoses=new Map();exchanges=[];
         for(const line of serverLines){const source=line.generator==='local-llm'?'ai':'script';socialPoses.set(line.speakerId,{peerId:line.listenerId,gesture:'explain',speaking:true,source});socialPoses.set(line.listenerId,{peerId:line.speakerId,gesture:'listen',speaking:false,source});exchanges.push({a:line.speakerId,b:line.listenerId,title:'Trò chuyện trong xóm',source,speech:{speaker:line.speakerId,text:line.text,source:source==='ai'?'ai':'routine',key:`ground:${line.id}`}});}
         host.dataset.sharedAuthority=JSON.stringify({checkpoint:state.sharedAuthority?.checkpoint??null,parentCheckpoint:shared.checkpoint,simMs:sampled.simMs,utterances:serverLines.map(u=>({id:u.id,speaker:u.speakerId,listener:u.listenerId,text:u.text,fromSimMs:u.fromSimMs,untilSimMs:u.untilSimMs}))});
         host.dataset.sharedGround=JSON.stringify({checkpoint:shared.checkpoint,sequence:shared.sequence,realMs:sampled.realMs,simMs:sampled.simMs,positions:sampled.actors.map(a=>({id:a.id,position:a.position})),cars:cars.map(c=>({id:c.id,position:c.position})),backlogMs:shared.backlogMs});
-      }else{actors=[];groundAnimals=[];cars=[];socialPoses=new Map();exchanges=[];host.dataset.sharedGround='waiting';delete host.dataset.sharedAuthority;}
+      }else{actors=[];groundAnimals=[];cars=[];twoWheelers=[];socialPoses=new Map();exchanges=[];host.dataset.sharedGround='waiting';delete host.dataset.sharedAuthority;}
       current=actors.find(a=>a.id===selected)??actors[0];
     }else{
       delete host.dataset.sharedGround;delete host.dataset.sharedAuthority;
@@ -874,7 +903,9 @@ export function createCity(
       ],capacity,[selected,...world.people.map(p=>p.id),world.livingTurn?.residentId]);
       const animalProjections = animalsAt(world, lastTime);
       cars = trafficDirector.frame(seconds, [...actors, ...groundAnimals].map(a => a.position), [...actors, ...groundAnimals].map(a => a.bicycle?.radius ?? 4.8));
-      const safeAll = walkDirector.frame(world, rawActors, seconds, cars, animalProjections);
+      twoWheelers=twoWheelDirector.frame(seconds,[...actors,...groundAnimals].map(a=>a.position));
+      // Pedestrians and bicycles yield to both four-wheel and two-wheel traffic.
+      const safeAll = walkDirector.frame(world, rawActors, seconds, [...cars,...twoWheelers], animalProjections);
       const byId = new Map(safeAll.map(a => [a.id, a]));
       groundAnimals = animalProjections.map(a => ({ ...a, ...byId.get(a.id) }));
       const safeActors = safeAll.filter(a => rawActors.some(p => p.id === a.id));
@@ -951,6 +982,16 @@ export function createCity(
       visual.group.visible=vehicleView!==visual.mode;
     }
     host.dataset.transitVehicles=JSON.stringify(services.map(v=>({id:v.id,type:v.type,speed:v.speed,position:v.position})));
+    for(let i=0;i<twoWheelModels.length;i++){
+      const v=twoWheelers[i],rig=twoWheelModels[i];
+      rig.visible=!!v;
+      if(!v)continue;
+      rig.position.set(v.position[0],groundElevation(...v.position),v.position[1]);rig.rotation.y=v.yaw;
+    }
+    if(stamp-lastStatus>180)host.dataset.twoWheelVehicles=JSON.stringify({
+      signal:twoWheelSignal(seconds),crossingX:TWO_WHEEL_CROSSING_X,
+      vehicles:twoWheelers.map(v=>({id:v.id,type:v.type,speed:v.speed,position:v.position}))
+    });
     contactShadows.count = actors.length + cars.length;
     for (let i = 0; i < contactShadows.count; i++) {
       const car = i >= actors.length ? cars[i - actors.length] : null, point = car?.position ?? actors[i].position;

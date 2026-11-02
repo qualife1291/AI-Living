@@ -276,5 +276,8 @@
   ],
   [
     "scripts/test-transit-service.mjs"
+  ],
+  [
+    "scripts/test-two-wheel-economy.mjs"
   ]
 ]
