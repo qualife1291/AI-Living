@@ -129,16 +129,6 @@ with sync_playwright() as p:
    assert page.evaluate('document.documentElement.scrollWidth<=window.innerWidth')
    assert not errors,errors
    report.append({'viewport':name,'renderer':'Chromium SwiftShader','fixture':'synthetic-workshop-no-world-writes','first':lines[0],'reply':after,'fullDialogue':lines,'pollingCoveredSeconds':24,'activity60s':activity60s,'stats':host.evaluate('(e)=>({...e.dataset})')})
-   # Read-only in-vehicle camera tests exercise real WebGL frames on both sizes.
-   for mode,button in [('car','Góc tài xế ô tô'),('bus','Góc cửa sổ xe buýt'),('metro','Góc đầu tàu metro')]:
-    page.get_by_role('button',name=button,exact=True).click()
-    page.locator(f'.three-canvas[data-vehicle-view="{mode}"]').wait_for(timeout=12000)
-    assert int(host.get_attribute('data-draw-calls'))>0,(mode,'no WebGL render')
-    fleet=json.loads(host.get_attribute('data-transit-vehicles'))
-    assert len(fleet)==2 and {x['type'] for x in fleet}=={'bus','metro'}
-    page.screenshot(path=str(out/f'transit-{mode}-{name}.png'))
-   page.get_by_role('button',name='Theo nhân vật',exact=True).click()
-   page.locator('.three-canvas[data-vehicle-view="none"]').wait_for(timeout=12000)
    page.get_by_role('button',name='Cư dân',exact=True).click()
    page.locator('.people-grid button').filter(has_text='Bình').click()
    page.wait_for_function('document.querySelector(".three-canvas")?.dataset.selected==="binh"')
@@ -204,6 +194,16 @@ with sync_playwright() as p:
    assert not errors,('Interior browser errors',errors)
    report[-1]['indoorCamera']={'venue':'Thư viện','modes':['wide','follow','overhead'],'floorObserved':1,'visible':len(residents),'renderedScreenshots':3,'fakeOutcomes':False,'renderEvidence':interiorFrameEvidence}
    page.get_by_role('button',name='Đóng bảng thông tin').click()
+   # Read-only in-vehicle camera tests exercise real WebGL frames on both sizes.
+   for mode,button in [('car','Góc tài xế ô tô'),('bus','Góc cửa sổ xe buýt'),('metro','Góc đầu tàu metro')]:
+    page.get_by_role('button',name=button,exact=True).click()
+    page.locator(f'.three-canvas[data-vehicle-view="{mode}"]').wait_for(timeout=12000)
+    assert int(host.get_attribute('data-draw-calls'))>0,(mode,'no WebGL render')
+    fleet=json.loads(host.get_attribute('data-transit-vehicles'))
+    assert len(fleet)==2 and {x['type'] for x in fleet}=={'bus','metro'}
+    page.screenshot(path=str(out/f'transit-{mode}-{name}.png'))
+   page.get_by_role('button',name='Theo nhân vật',exact=True).click()
+   page.locator('.three-canvas[data-vehicle-view="none"]').wait_for(timeout=12000)
    print(name,'PASS complete dialogue, four contextual scenes and real 3D screenshots',len(lines),'lines',flush=True)
    page.close()
   (out/'metrics.json').write_text(json.dumps(report,indent=2,ensure_ascii=False))
