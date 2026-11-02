@@ -986,7 +986,7 @@ export function createCity(
     if (vehicleView) {
       const observed=vehicleView==="car"?cars[0]:services.find(v=>v.type===vehicleView);
       if (observed) {
-        const [x,z]=observed.position,fx=Math.sin(observed.yaw),fz=Math.cos(observed.y);
+        const [x,z]=observed.position,fx=Math.sin(observed.yaw),fz=Math.cos(observed.yaw);
         const rx=Math.cos(observed.yaw),rz=-Math.sin(observed.yaw);
         const lateral=vehicleView==="bus"?-observed.width*.25:vehicleView==="car"?-observed.width*.22:0;
         const forward=vehicleView==="metro"?observed.length*.35:vehicleView==="car"?observed.length*.1:observed.length*.05;
