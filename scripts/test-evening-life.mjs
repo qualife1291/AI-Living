@@ -11,6 +11,7 @@ import {isSleepHour,plannedSleepMinutes} from '../lib/living/circadian.ts';
 import {RiggedAvatar} from '../components/city/three/rigged-avatar.ts';
 import {SOFA_SEATS,lieOnBed,sitOnSeat} from '../components/city/three/home-poses.ts';
 import {loadLocalGLTF} from './load-local-gltf.mjs';
+import {bootstrapShared,replayShared} from '../lib/living/shared-ground.ts';
 const born=Date.parse('2026-11-03T17:00:00Z'),now=born+22.5*3600000;
 const context=hour=>({date:'2026-11-04',hour,weekday:3,timezone:'Asia/Ho_Chi_Minh',fetchedAt:new Date(now).toISOString(),weather:{status:'unavailable',source:'fixture',observedAt:null,temperature:null,humidity:null,precipitation:null,code:null,windKph:null},calendar:{weekend:false,holidays:[],source:'fixture',status:'unavailable',coverage:'fixture'},traffic:{status:'unavailable',label:'fixture'},festivals:{status:'unavailable',label:'fixture'}});
 const world={...structuredClone(seed),born:new Date(born).toISOString(),living:initializeLiving(now),clock:{scale:1,pausedAt:null,pausedMs:0,anchors:[{realMs:born,simMs:0,scale:1}]}};
@@ -48,4 +49,9 @@ for(const m of catalog){
 }
 const shadow=JSON.parse(readFileSync('data/training/h6-scenario-catalog.json'));assert.deepEqual(shadow.slice(0,41),scenarios);assert.equal(createHash('sha256').update(JSON.stringify(shadow)).digest('hex'),'3b3cf7a0e0db902c006766f4e2f23927562d5581247ff08b701575b7d35e0267');
 assert.equal(new Set([...scenarios,...eveningActions].map(s=>s.id)).size,50);
+const sleepingWorld=planLivingTurn(world,context(2),born+2*3600000).world;
+assert(sleepingWorld.people[0].plan.steps[0].duration>3600);
+const source={seq:1,revision:1,capturedAt:born+2*3600000,raw:JSON.stringify(sleepingWorld)};
+const shared=await bootstrapShared(source,crypto.randomUUID()),replayed=await replayShared(shared,source,[],source.capturedAt+100);
+assert.equal(replayed.state.frames.at(-1).poses.length,60,'Long overnight plans must remain compatible with existing shared authority');
 console.log(JSON.stringify({suite:'evening-life',pass:true,nightActions:9,activeOutdoorsAt2230:out.length,diverseChoices:decisions.size,personalBedtime:true,noAutomaticNightRecovery:true,maxBedHeight,maxSeatGap,legacyH6Unchanged:true,dbWrites:false}));
