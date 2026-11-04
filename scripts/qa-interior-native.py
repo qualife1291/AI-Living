@@ -18,9 +18,14 @@ def ready(page):
     }''',timeout=60000)
     return page.locator('.interior-canvas')
 def capture(page,host,label):
-    png=host.screenshot(timeout=20000)
-    pixels=list(Image.open(io.BytesIO(png)).convert('RGB').resize((48,32)).getdata())
-    bright=sum(r+g+b>270 for r,g,b in pixels)/len(pixels)
+    # A native draw callback can precede Chromium compositing. Require actual
+    # nonblank screenshot pixels, with bounded retries as in qa-social.py.
+    for attempt in range(12):
+        png=host.screenshot(timeout=20000)
+        pixels=list(Image.open(io.BytesIO(png)).convert('RGB').resize((48,32)).getdata())
+        bright=sum(r+g+b>270 for r,g,b in pixels)/len(pixels)
+        if bright>=.08:break
+        page.wait_for_timeout(900)
     assert bright>=.08,(label,'blank frame',bright)
     stats=host.evaluate('(h)=>({...h.dataset})')
     assert 0<int(stats['interiorDrawCalls'])<160,(label,stats['interiorDrawCalls'])
