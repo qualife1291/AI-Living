@@ -254,8 +254,14 @@ try{
  // Only the synthetic suppression marker from this isolated database is removed.
  await db.prepare('DELETE FROM living_turns WHERE id=? AND data=?').bind(turnId(proposalNow),'{}').run();
  const proposalRow=await db.prepare("SELECT revision,data FROM worlds WHERE id='home'").first(),proposalWorld=JSON.parse(proposalRow.data);
+ // Prior settlement tests deliberately used simulated00:03. This fixture now
+ // exercises narrative/role validation during simulated09h, not night sleep.
+ proposalWorld.clock={scale:1,pausedAt:null,pausedMs:0,anchors:[{realMs:proposalNow,simMs:9*3600000,scale:1}]};
+ proposalRow.data=JSON.stringify(proposalWorld);
+ await db.prepare("UPDATE worlds SET data=? WHERE id='home'").bind(proposalRow.data).run();
  const context={date,hour:vn.getUTCHours()+vn.getUTCMinutes()/60,weekday:vn.getUTCDay(),timezone:'Asia/Ho_Chi_Minh',fetchedAt:new Date(proposalNow).toISOString(),weather:{status:'unavailable',source:'fixture',observedAt:null,temperature:null,humidity:null,precipitation:null,code:null,windKph:null},calendar:{weekend:[0,6].includes(vn.getUTCDay()),holidays:[],source:'fixture',status:'unavailable',coverage:'fixture'},traffic:{status:'unavailable',label:'fixture'},festivals:{status:'unavailable',label:'fixture',items:[]}};
  const preview=planLivingTurn(proposalWorld,context,proposalNow),residentId=preview.turn.residentId;
+ assert(preview.turn.dialogue.length,'Role validation fixture must reach an actual planned encounter');
  const duplicateProposal={title:'Cùng xem góc vườn',summary:'Hai người trao đổi về góc vườn mô phỏng.',newRole:{...proposalWorld.living.catalog.roles[0],label:'Một tên nghề mới có dấu'},dialogue:[{speaker:'an',text:'Mình cùng xem góc vườn nhé.'},{speaker:residentId,text:'Được, mình đứng quan sát ở đây.'}]};
  const rejected=await mf.dispatchFetch('http://localhost/api/living/tick',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({proposal:duplicateProposal,basis:{revision:proposalRow.revision,turnId:turnId(proposalNow)}})});
  assert.equal(rejected.status,422);assert.match((await rejected.json()).error,/ID vai trò/);
