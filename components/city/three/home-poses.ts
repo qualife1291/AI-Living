@@ -3,6 +3,9 @@ import type {RiggedAvatar} from './rigged-avatar.ts';
 export const HOME_BEDS=[-4.3,.4].map((x,i)=>({id:'bed-'+i,x,z:.2,surface:1.13,width:3.05,depth:4.3}));
 export const SOFA_SEATS=[[2.85,0,3.7],[4.15,0,3.7]] as const;
 export const cinemaSeat=(index:number):[number,number,number]=>[-4+(index%3)*4,0,-1.4+Math.floor(index/3)*2.5];
+export function diningSeat(index:number){const table=Math.floor(index/2),rear=index%2===1;
+  return {point:[-4+(table%2)*4.5,0,-1.8+Math.floor(table/2)*4.2+(rear?-1.25:1.25)] as [number,number,number],yaw:rear?0:Math.PI};
+}
 /** Fit actual deformed skin to an existing mattress. Feet/head are measured
  * after rotation; the body is never simply tipped through a desk or floor. */
 export function lieOnBed(avatar:RiggedAvatar,index:number){
@@ -13,8 +16,8 @@ export function lieOnBed(avatar:RiggedAvatar,index:number){
 }
 /** Bend existing legs, place hips on the real seat and keep soles above ground.
  * No detached procedural limbs or changes to physical/navigation roots. */
-export function sitOnSeat(avatar:RiggedAvatar,point:readonly number[],height=.99){
-  avatar.poseTimeline([{clip:'idle',time:0,weight:1}],point,Math.PI);
+export function sitOnSeat(avatar:RiggedAvatar,point:readonly number[],height=.99,yaw=Math.PI){
+  avatar.poseTimeline([{clip:'idle',time:0,weight:1}],point,yaw);
   for(const side of ['left','right']){
     const leg=avatar.joint('leg-'+side);leg?.rotateX(-1.38);
     leg?.children.find(b=>(b as THREE.Bone).isBone)?.rotateX(1.55);

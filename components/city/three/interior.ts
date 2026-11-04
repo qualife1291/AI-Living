@@ -74,7 +74,8 @@ export function createInterior(host: HTMLDivElement, venue: string, floor: numbe
   } else {
     for (let row = 0; row < 2; row++) for (let col = 0; col < 2; col++) {
       const x = -4 + col * 4.5, z = -1.8 + row * 4.2;
-      box(x, 1.5, z, 2.8, .18, 1.7, "#ab7956"); box(x, .7, z, .25, 1.4, .25, "#665848"); chair(x, z + 1.25);
+      box(x, 1.5, z, 2.8, .18, 1.7, "#ab7956"); box(x, .7, z, .25, 1.4, .25, "#665848"); chair(x, z + 1.25,true,true);
+      if(dining)chair(x,z-1.25);
       if (dining) { box(x, 1.65, z, .65, .08, .65, "#fff1ce"); box(x + .8, 1.8, z, .22, .4, .22, "#a4cbc3"); }
       else {
         const book=new THREE.Group();box(x,1.64,z,.9,.1,.65,study?'#b37457':'#829cae',book);
@@ -144,7 +145,7 @@ export function createInterior(host: HTMLDivElement, venue: string, floor: numbe
       host.dataset.interiorActorSamples = String(++actorSamples);
     }
     furniture.update();
-    cast.draw(w,atVenue,sim,floor,options.focusId,kind==='home',kind==='cinema');
+    cast.draw(w,atVenue,sim,floor,options.focusId,kind==='home',kind==='cinema',dining);
     host.dataset.interiorFurniture=JSON.stringify(furniture.snapshots());
     const native=cast.snapshots(),shown=atVenue.slice(0,8);
     if(appliances)host.dataset.interiorAppliances=JSON.stringify(appliances.update(sim,native.some(a=>a.action==='fridge'),native.some(a=>a.action==='watch-tv'||a.action==='watch-film')));

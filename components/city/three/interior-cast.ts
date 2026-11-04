@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import {AssetLibrary} from './assets.ts';
 import {RiggedAvatar} from './rigged-avatar.ts';
-import {HOME_BEDS,SOFA_SEATS,cinemaSeat,lieOnBed,sitOnSeat} from './home-poses.ts';
+import {HOME_BEDS,SOFA_SEATS,cinemaSeat,diningSeat,lieOnBed,sitOnSeat} from './home-poses.ts';
 import {reachLimb} from './limb-contact.ts';
 import {simpleProp,placeActionProp} from './model-actors.ts';
 import {CORE_MODELS,residentModel} from '../../../lib/city/character-models.ts';
@@ -36,7 +36,7 @@ export function createInteriorCast(scene:THREE.Scene,library:AssetLibrary){
   }
   function remove(id:string){const e=entries.get(id);if(e){releaseProp(e);e.avatar.dispose();entries.delete(id);}}
   return {
-    draw(world:World,actors:readonly Actor[],seconds:number,floor:number,focusId='',home=false,cinema=false){
+    draw(world:World,actors:readonly Actor[],seconds:number,floor:number,focusId='',home=false,cinema=false,dining=false){
       if(dead)return;
       let beds=0,seats=0;
       const shown=floor===0?[...actors].sort((a,b)=>Number(b.id===focusId)-Number(a.id===focusId)).filter(a=>{
@@ -66,12 +66,13 @@ export function createInteriorCast(scene:THREE.Scene,library:AssetLibrary){
         // drift. Absolute sampling also keeps late-loaded models on the clock.
         const nativeBook=!!library.compile('supplied/props/book');
         const sleeping=home&&action==='sleep',watching=(home&&action==='watch-tv')||(cinema&&action==='watch-film');
+        const eating=dining&&['eat','drink'].includes(action),meal=eating?diningSeat(index):undefined;
         const bedIndex=sleeping?bedSlot++:undefined,sofaIndex=home&&action==='watch-tv'?sofaSlot++:undefined;
-        const slot=action==='fridge'&&home?[-6.7,0,-1.2] as [number,number,number]:watching?(cinema?cinemaSeat(index):[...SOFA_SEATS[sofaIndex!]] as [number,number,number]):interiorSlot(index,home);
-        const key=[seconds,index,action,home,cinema,bedIndex,sofaIndex,nativeBook].join('/');
+        const slot=meal?.point??(action==='fridge'&&home?[-6.7,0,-1.2] as [number,number,number]:watching?(cinema?cinemaSeat(index):[...SOFA_SEATS[sofaIndex!]] as [number,number,number]):interiorSlot(index,home));
+        const key=[seconds,index,action,home,cinema,dining,bedIndex,sofaIndex,nativeBook].join('/');
         if(entry.lastPose===key)return;
         entry.lastPose=key;entry.action=action;
-        const yaw=watching||action==='fridge'?Math.PI:-Math.PI/2,h=avatar.height,base=new THREE.Vector3(...slot);
+        const yaw=meal?.yaw??(watching||action==='fridge'?Math.PI:-Math.PI/2),h=avatar.height,base=new THREE.Vector3(...slot);
         avatar.poseTimeline([{clip:'idle',time:seconds,weight:1}],slot,yaw);
         const target=(side:'left'|'right',x:number,y:number,z:number)=>{
           const p=new THREE.Vector3((side==='left'?1:-1)*x*h,y*h,z*h).applyAxisAngle(Y,yaw).add(base);
@@ -89,6 +90,7 @@ export function createInteriorCast(scene:THREE.Scene,library:AssetLibrary){
         entry.support=undefined;
         if(sleeping){entry.support=lieOnBed(avatar,bedIndex!).id;}
         else if(watching){sitOnSeat(avatar,slot);entry.support=cinema?'cinema-seat-'+index:'sofa-seat-'+sofaIndex;}
+        else if(meal){sitOnSeat(avatar,slot,.99,yaw);entry.support='dining-seat-'+index;target('right',.045,.64+.13*(1-Math.cos(seconds*1.5))*.5,.14);avatar.group.updateMatrixWorld(true);}
         else if(home&&action==='fridge'){target('right',.05,.68,.27);avatar.group.updateMatrixWorld(true);}
         // Support is an illustrative contact with room geometry, not ownership,
         // floor authority, productive completion or a new learning receipt.

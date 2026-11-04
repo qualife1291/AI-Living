@@ -16,7 +16,9 @@ export function createHomeAppliances(scene:THREE.Scene,box:Box,home:boolean,cine
     box(3.5,1.35,4.28,3.2,1.25,.18,'#537c79',root);
     for(const x of [1.85,5.15])box(x,1.05,3.7,.16,.8,1.35,'#6a9189',root);
   }
-  const tvX=home?3.5:0,tvY=cinema?3.6:2.85,tvZ=-5.75,width=cinema?9:3.2,height=cinema?3.9:1.85;
+  // Home display stays in front of the lift/wardrobes, visible from the sofa.
+  const tvX=home?4:0,tvY=cinema?3.6:2.4,tvZ=home?.1:-5.75,width=cinema?9:2.4,height=cinema?3.9:1.55;
+  if(home){box(tvX,.55,tvZ,2.8,1.1,.85,'#927b66',root);box(tvX,1.35,tvZ,.15,.5,.15,'#364e55',root);}
   box(tvX,tvY,tvZ,width+.22,height+.22,.15,'#233840',root);
   const screenMaterial=new THREE.MeshBasicMaterial({color:'#5684a0'}),screen=new THREE.Mesh(new THREE.PlaneGeometry(width,height),screenMaterial);
   screen.position.set(tvX,tvY,tvZ+.09);root.add(screen);
