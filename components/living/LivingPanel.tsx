@@ -227,7 +227,7 @@ export function LivingPanel({ onUpdated }: { onUpdated: () => Promise<void> }) {
           </div>
           <div className="living-needs" aria-label="Nhu cầu mô phỏng của An">
             {[
-              ["Năng lượng", view.living.energy],
+              ["Thể lực", view.living.energy],
               ["Độ đói", view.living.hunger],
               ["Kết nối", view.living.social],
             ].map(([label, value]) => (

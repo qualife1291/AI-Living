@@ -4,6 +4,7 @@
 
 | Phần | Trạng thái cần giữ |
 |---|---|
+| WIP | Đang triển khai9evening action/circadian, bỏ charging trong lịch live, nằm giường/sofa/tủ lạnh/tivi/rạp. Unit trực tiếp đạt; full/browser/QA deploy chưa chạy ở checkpoint này. Không đổi41legacy/H6. |
 | Git | `work` có H5b1/neighborhood/Ops và native interior5e0c8ee. QA đã nhận source qua merge, phát hànhb85ae9b. `main` vẫn402df57. Fetch trước push, giữ cập nhật của agent khác. Không merge QA hosting/auth/Cron hoặc103-action runtime ngược vào work/main. |
 | Live và học |41scenario/personal LinUCB, memory/domain skills/RAG; turn commit kế tiếp nhận ecologyVersion1, default target48resident +3core và9animal policy groups. Giữ custom caps, born/ID/home/petOwners/ký ức; pause không tự resume. H6 vẫn96candidate/sandbox/marker shadow-only, chưa scorer/promote. [Learning](docs/LEARNING.md), [H6](docs/H6_OFFLINE_POLICY_SCALE.md). |
 | Ground/P2P | GND1–3 có local journal/replay/receipt; H3b/H5a chỉ offline. H5b1 thêm `peer-offer-store.ts`: durable pre-publication journal/CAS và verifier đọc receipt thật từ D1; chưa app/API/pulse import, inbox hoặc P2P live. Migration0012 chỉ fixture, source24table không là schema live. [Contract](docs/LEARNING.md#h5b1--journal-và-đối-chiếu-receipt-bền-vững). |

@@ -5,7 +5,7 @@ export type InteriorAction =
   | 'eat' | 'drink' | 'cook' | 'serve' | 'wash' | 'clean' | 'tidy'
   | 'read' | 'write' | 'study' | 'type' | 'repair' | 'pack'
   | 'shop' | 'browse' | 'garden' | 'care' | 'exercise'
-  | 'social' | 'rest' | 'sleep' | 'observe';
+  | 'social' | 'rest' | 'sleep' | 'observe' | 'watch-tv' | 'watch-film' | 'fridge';
 
 const literal: Record<string, InteriorAction> = {
   eat: 'eat', drink: 'drink', garden: 'garden', read: 'read',
@@ -16,6 +16,7 @@ const literal: Record<string, InteriorAction> = {
 export function interiorAction(kind: string, activity: string): InteriorAction {
   const a = activity.toLocaleLowerCase('vi');
   const patterns: [RegExp, InteriorAction][] = [
+    [/tủ lạnh/i,'fridge'],[/xem tivi|xem tv|truyền hình/i,'watch-tv'],[/xem phim|rạp phim/i,'watch-film'],
     [/ngủ|chợp mắt|đi ngủ|sleep/i,'sleep'],
     [/rửa bát|rửa chén|lau chén|rửa ly|úp khô/i,'wash'],
     [/tỉa cành|trồng hạt|tưới cây|đất|cây trồng/i,'garden'],
@@ -49,11 +50,12 @@ export function interiorAction(kind: string, activity: string): InteriorAction {
 export const INTERIOR_ACTIONS: InteriorAction[] = [
   'eat','drink','cook','serve','wash','clean','tidy','read','write',
   'study','type','repair','pack','shop','browse','garden','care',
-  'exercise','social','rest','sleep','observe',
+  'exercise','social','rest','sleep','observe','watch-tv','watch-film','fridge',
 ];
 export function interiorProp(action: InteriorAction) {
   if (['eat','serve'].includes(action)) return 'plate';
   if (action==='drink') return 'cup';
+  if(action==='fridge')return 'plate';
   if (['cook','wash'].includes(action)) return 'pan';
   if (['read','study','write'].includes(action)) return 'book';
   if (['type','repair'].includes(action)) return 'tablet';

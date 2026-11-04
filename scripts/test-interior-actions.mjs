@@ -1,8 +1,8 @@
 import assert from 'node:assert/strict';
 import {INTERIOR_ACTIONS,interiorAction,interiorProp} from '../lib/city/interior-actions.ts';
 import {interiorKind,interiorPhase} from '../lib/city/lifestory.ts';
-assert.equal(INTERIOR_ACTIONS.length,22);
-assert.equal(new Set(INTERIOR_ACTIONS).size,22);
+assert.equal(INTERIOR_ACTIONS.length,25);
+assert.equal(new Set(INTERIOR_ACTIONS).size,25);
 const cases=[
  ['eat','Ăn trưa','eat'],['drink','Uống trà buổi sáng','drink'],
  ['work','Nấu ăn cho hàng xóm','cook'],['work','Phục vụ tại quầy','serve'],
@@ -14,7 +14,7 @@ const cases=[
  ['shop','Xem hàng tại quầy','browse'],['garden','Tưới cây','garden'],
  ['work','Chăm sóc bệnh nhân','care'],['exercise','Tập thể dục','exercise'],
  ['social','Thăm hỏi','social'],['rest','Nghỉ ngơi','rest'],
- ['rest','Ngủ trưa','sleep'],['unknown','Nhìn xung quanh','observe']
+ ['rest','Ngủ trưa','sleep'],['unknown','Nhìn xung quanh','observe'],['rest','Ngồi xem tivi','watch-tv'],['play','Đi xem phim tối','watch-film'],['eat','Lấy đồ trong tủ lạnh','fridge']
 ];
 for(const [kind,activity,expected] of cases)assert.equal(interiorAction(kind,activity),expected,kind+'/'+activity);
 assert.equal(interiorProp('drink'),'cup');

@@ -1,5 +1,7 @@
 import { z } from "zod";
 import { PLACES, STEP_KINDS } from "../event-schema.ts";
+import eveningData from "../../data/city/evening-actions.json" with { type: "json" };
+import {plannedSleepMinutes} from "./circadian.ts";
 import scenariosData from "../../data/city/scenarios.json" with { type: "json" };
 import type { LivingState, RealContext } from "./schema.ts";
 import type { World, PersonPlan } from "../world";
@@ -38,6 +40,10 @@ export const scenarios = z
   .max(100)
   .parse(scenariosData);
 export type Scenario = (typeof scenarios)[number];
+export const eveningActions=z.array(scenarioSchema).length(9).parse(eveningData);
+export const runtimeActionCatalog:Scenario[]=[...scenarios,...eveningActions];
+export const EVENING_SCENARIO_SIGNATURE=hashSeed(JSON.stringify(runtimeActionCatalog));
+const eveningIds=new Set(eveningActions.map(s=>s.id));
 export const OUTCOME_SCENARIO_SIGNATURE = hashSeed(JSON.stringify(scenarios));
 const scenariosByTag = new Map<string, Scenario[]>();
 for (const scenario of scenarios) scenariosByTag.set(scenario.tag, [...(scenariosByTag.get(scenario.tag) ?? []), scenario]);
@@ -242,7 +248,7 @@ export function settleLearning(
     return false;
   pending.completed = true;
   if (!planMatches) return false;
-  const scenario = scenarios.find((s) => s.id === pending.scenarioId);
+  const scenario = runtimeActionCatalog.find((s) => s.id === pending.scenarioId);
   if (!scenario) return false;
   if (!agent.domainSkills) {
     // Keep previously unlocked activities; never turn historical scalar skill
@@ -314,8 +320,14 @@ export function prepareLearning(world: World, state: LivingState, now: number, c
     const existingCore = world.people.find((p) => p.id === person.id);
     if (existingCore)
       agent.skill = Math.max(agent.skill, Math.min(100, existingCore.skill));
-    advanceNeeds(agent, person.id, simMs, hour < 6 || hour >= 22);
-    const domain = scenarios.find(s=>s.id===agent.pending?.scenarioId)?.skillDomain;
+    if(state.lifeScheduleVersion===1){
+      const end=simMs,start=Math.max(end-360*60000,agent.needsUpdatedSimMs??end),elapsed=Math.max(0,(end-start)/60000);
+      const asleep=plannedSleepMinutes(person.plan,start,end),metabolism=.9+hashSeed(person.id)%21/100;
+      agent.energy=Math.max(0,Math.min(100,agent.energy+(asleep*.12-(elapsed-asleep)*.035)*metabolism));
+      agent.hunger=Math.max(0,Math.min(100,agent.hunger+(asleep*.012+(elapsed-asleep)*.04)*metabolism));
+      agent.needsUpdatedSimMs=simMs;
+    }else advanceNeeds(agent, person.id, simMs, hour < 6 || hour >= 22);
+    const domain = runtimeActionCatalog.find(s=>s.id===agent.pending?.scenarioId)?.skillDomain;
     const beforeDomain = domain ? agent.domainSkills?.[domain]??0 : 0;
     const beforeOutcome = rewardState(agent),sampleBefore = agent.samples;
     const trained = settleLearning(
@@ -334,7 +346,7 @@ export function prepareLearning(world: World, state: LivingState, now: number, c
         reward: agent.lastReward ?? action.meanReward,
         source: "simulation",
         model: validDecisionContext(agent.pending.context) && agent.linear?.[agent.pending.scenarioId] ? "disjoint-linucb-v1" : "contextual-bandit-v1",
-        rewardEvidence:createRewardEvidence({scenarioSignature:OUTCOME_SCENARIO_SIGNATURE,
+        rewardEvidence:createRewardEvidence({scenarioSignature:eveningIds.has(agent.pending.scenarioId)?EVENING_SCENARIO_SIGNATURE:OUTCOME_SCENARIO_SIGNATURE,
           identity:{experienceId:agent.pending.id,actorId:person.id,scenarioId:agent.pending.scenarioId},
           plan:{binding:agent.pending.planKey?"fingerprint-v1":"legacy-start-time",
             declaredKey:agent.pending.planKey??null,...matchedPlanEvidence(person.plan),

@@ -484,7 +484,7 @@ export default function Page() {
               {agent ? (
                 <>
                   <p>
-                    Năng lượng {Math.round(agent.energy)}/100 · Sức khỏe mô
+                    Thể lực {Math.round(agent.energy)}/100 · Sức khỏe mô
                     phỏng {agent.health}/100 · Kỹ năng {agent.skill}/100
                   </p>
                   <p>

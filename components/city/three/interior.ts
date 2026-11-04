@@ -5,6 +5,8 @@ import { interiorAction } from "@/lib/city/interior-actions";
 import {AssetLibrary} from "./assets";
 import {createInteriorCast} from "./interior-cast";
 import {batchInteriorRoom,createInteriorFurniture} from "./interior-furniture";
+import {createHomeAppliances} from './home-appliances';
+import {cinemaSeat} from './home-poses';
 import { computeSimMs, worldTime } from "@/lib/clock";
 import { actorsAt } from "@/lib/life";
 import { crowdAt } from "@/lib/living/engine";
@@ -67,6 +69,8 @@ export function createInterior(host: HTMLDivElement, venue: string, floor: numbe
     box(2.75,.7,3.7,1.45,1.4,1.4,"#ad967b");
     box(2.75,1.45,3.7,1.6,.12,1.6,"#d9c5a6");
     box(2.75,1.84,3.7,.50,.72,.5,"#edcb7e");
+  } else if(kind==='cinema'){
+    for(let i=0;i<8;i++){const [x,,z]=cinemaSeat(i);chair(x,z);}
   } else {
     for (let row = 0; row < 2; row++) for (let col = 0; col < 2; col++) {
       const x = -4 + col * 4.5, z = -1.8 + row * 4.2;
@@ -91,6 +95,7 @@ export function createInterior(host: HTMLDivElement, venue: string, floor: numbe
   box(6.2, 3, -3.8, .2, 6, 3.5, "#546e79"); box(3.9, 3, -3.8, .16, 6, 3.5, "#546e79");
   const cabin = new THREE.Group(); scene.add(cabin); box(5.05, .2, -3.8, 2.1, .25, 3, "#a9bbb8", cabin); box(5.05, 1.3, -5.2, 2.1, 2.5, .1, "#819b9d", cabin);
   const doorL = box(4.5, 1.5, -2.25, 1, 2.8, .12, "#aebfc0", cabin), doorR = box(5.6, 1.5, -2.25, 1, 2.8, .12, "#aebfc0", cabin);
+  const appliances=kind==='home'||kind==='cinema'?createHomeAppliances(scene,box,kind==='home',kind==='cinema'):undefined;
   const room=batchInteriorRoom(scene,geometry),cast=createInteriorCast(scene,library);
   let frame = 0, last = 0, renderedFrames = 0;
   let lastWidth = 0, lastHeight = 0;
@@ -139,9 +144,10 @@ export function createInterior(host: HTMLDivElement, venue: string, floor: numbe
       host.dataset.interiorActorSamples = String(++actorSamples);
     }
     furniture.update();
-    cast.draw(w,atVenue,sim,floor,options.focusId,kind==='home');
+    cast.draw(w,atVenue,sim,floor,options.focusId,kind==='home',kind==='cinema');
     host.dataset.interiorFurniture=JSON.stringify(furniture.snapshots());
     const native=cast.snapshots(),shown=atVenue.slice(0,8);
+    if(appliances)host.dataset.interiorAppliances=JSON.stringify(appliances.update(sim,native.some(a=>a.action==='fridge'),native.some(a=>a.action==='watch-tv'||a.action==='watch-film')));
     const seenActions=native.map(a=>a.action);
     host.dataset.interiorModels=JSON.stringify(native);
     host.dataset.interiorNativeCount=String(native.length);
@@ -169,5 +175,5 @@ export function createInterior(host: HTMLDivElement, venue: string, floor: numbe
     host.dataset.interiorDrawCalls=String(renderer.info.render.calls);
   }
   frame = requestAnimationFrame(tick);
-  return () => { cancelAnimationFrame(frame); observer.disconnect(); controls.dispose(); cast.dispose(); furniture.dispose(); room.dispose(); library.dispose(); geometry.dispose(); materials.forEach((m) => m.dispose()); renderer.dispose(); renderer.forceContextLoss(); renderer.domElement.remove(); };
+  return () => { cancelAnimationFrame(frame); observer.disconnect(); controls.dispose(); cast.dispose(); furniture.dispose(); appliances?.dispose(); room.dispose(); library.dispose(); geometry.dispose(); materials.forEach((m) => m.dispose()); renderer.dispose(); renderer.forceContextLoss(); renderer.domElement.remove(); };
 }

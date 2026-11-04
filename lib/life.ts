@@ -217,7 +217,7 @@ export const routines: Record<string, Step[]> = {
     step("Công viên", "Nghỉ và chơi cùng Cún", "play"),
     step("Vườn nhỏ", "Phụ Chi chăm rau", "garden"),
     step("Bếp chung", "Rửa bát như đã hứa", "work"),
-    step("Phòng An", "Sạc pin và nghỉ ngơi", "rest", 85),
+    step("Phòng An", "Nằm ngủ và nghỉ ngơi", "rest", 85),
   ],
   binh: [
     step("Bếp chung", "Dọn bàn cho bữa sáng", "eat"),
@@ -227,7 +227,7 @@ export const routines: Record<string, Step[]> = {
     step("Công viên", "Đi bộ và quan sát chim", "rest"),
     step("Quảng trường", "Kiểm tra bảng tin của xóm", "social"),
     step("Bếp chung", "Ghi chi phí bữa cơm", "work"),
-    step("Phòng Bình", "Sạc pin và nghỉ ngơi", "rest", 85),
+    step("Phòng Bình", "Nằm ngủ và nghỉ ngơi", "rest", 85),
   ],
   chi: [
     step("Bếp chung", "Chuẩn bị bữa sáng", "eat"),
@@ -237,7 +237,7 @@ export const routines: Record<string, Step[]> = {
     step("Công viên", "Ngồi yên để Mướp lại gần", "rest"),
     step("Vườn nhỏ", "Kiểm tra đất và tỉa lá", "garden"),
     step("Bếp chung", "Nấu bữa tối cho cả xóm", "work"),
-    step("Phòng Chi", "Sạc pin và nghỉ ngơi", "rest", 85),
+    step("Phòng Chi", "Nằm ngủ và nghỉ ngơi", "rest", 85),
   ],
 };
 
@@ -446,8 +446,9 @@ export function actorsAt(world: World, now: number): Actor[] {
           ? routineAfterPlan(
               p.id,
               worldTime(world, now).hour * 3600 - elapsedAfterPlan,
+              world.living?.lifeScheduleVersion===1,
             )
-          : dailyRoutine(p.id),
+          : dailyRoutine(p.id,world.living?.lifeScheduleVersion===1),
         plan ? elapsedAfterPlan : worldTime(world, now).hour * 3600,
         "routine",
         plan?.steps.at(-1)?.location,

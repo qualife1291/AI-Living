@@ -69,6 +69,7 @@ export type LivingState = {
   flora?: import("./flora").FloraState;
   /** Adopted by a committed living turn; never by a viewer/GET or old study. */
   ecologyVersion?: 1;
+  lifeScheduleVersion?: 1;
 };
 export type RealContext = {
   date: string;

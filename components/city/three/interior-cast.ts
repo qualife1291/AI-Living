@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import {AssetLibrary} from './assets.ts';
 import {RiggedAvatar} from './rigged-avatar.ts';
+import {HOME_BEDS,SOFA_SEATS,cinemaSeat,lieOnBed,sitOnSeat} from './home-poses.ts';
 import {reachLimb} from './limb-contact.ts';
 import {simpleProp,placeActionProp} from './model-actors.ts';
 import {CORE_MODELS,residentModel} from '../../../lib/city/character-models.ts';
@@ -12,7 +13,7 @@ import type {World} from '../../../lib/world.ts';
 export const INTERIOR_CAST_LIMIT=8;
 const Y=new THREE.Vector3(0,1,0);
 type Entry={avatar:RiggedAvatar;modelId:string;action:InteriorAction;draws:number;
-  prop?:THREE.Group;propKey?:string;lastPose?:string};
+  prop?:THREE.Group;propKey?:string;lastPose?:string;support?:string};
 const propKinds:Record<string,string>={plate:'eat',cup:'cup',pan:'cook',book:'read',tablet:'phone',bag:'bag',tool:'tool',medical:'work'};
 function releaseProp(entry:Entry){
   entry.prop?.removeFromParent();entry.prop?.traverse(o=>{const m=o as THREE.Mesh;if(!m.isMesh)return;
@@ -35,9 +36,16 @@ export function createInteriorCast(scene:THREE.Scene,library:AssetLibrary){
   }
   function remove(id:string){const e=entries.get(id);if(e){releaseProp(e);e.avatar.dispose();entries.delete(id);}}
   return {
-    draw(world:World,actors:readonly Actor[],seconds:number,floor:number,focusId='',home=false){
+    draw(world:World,actors:readonly Actor[],seconds:number,floor:number,focusId='',home=false,cinema=false){
       if(dead)return;
-      const shown=floor===0?[...actors].sort((a,b)=>Number(b.id===focusId)-Number(a.id===focusId)).slice(0,INTERIOR_CAST_LIMIT):[];
+      let beds=0,seats=0;
+      const shown=floor===0?[...actors].sort((a,b)=>Number(b.id===focusId)-Number(a.id===focusId)).filter(a=>{
+        const action=interiorAction(a.kind,a.activity);
+        if(home&&action==='sleep')return beds++<HOME_BEDS.length;
+        if(home&&action==='watch-tv')return seats++<SOFA_SEATS.length;
+        return true;
+      }).slice(0,INTERIOR_CAST_LIMIT):[];
+      let bedSlot=0,sofaSlot=0;
       const wanted=new Set(shown.map(a=>a.id));for(const id of entries.keys())if(!wanted.has(id))remove(id);
       shown.forEach((actor,index)=>{
         const resident=world.living?.residents.find(r=>r.id===actor.id),role=world.people.find(p=>p.id===actor.id)?.role??resident?.roleId??'';
@@ -57,10 +65,13 @@ export function createInteriorCast(scene:THREE.Scene,library:AssetLibrary){
         // Paused worlds can receive appearance/selection updates without pose
         // drift. Absolute sampling also keeps late-loaded models on the clock.
         const nativeBook=!!library.compile('supplied/props/book');
-        const slot=interiorSlot(index,home),key=[seconds,index,action,home,nativeBook].join('/');
+        const sleeping=home&&action==='sleep',watching=(home&&action==='watch-tv')||(cinema&&action==='watch-film');
+        const bedIndex=sleeping?bedSlot++:undefined,sofaIndex=home&&action==='watch-tv'?sofaSlot++:undefined;
+        const slot=action==='fridge'&&home?[-6.7,0,-2] as [number,number,number]:watching?(cinema?cinemaSeat(index):[...SOFA_SEATS[sofaIndex!]] as [number,number,number]):interiorSlot(index,home);
+        const key=[seconds,index,action,home,cinema,bedIndex,sofaIndex,nativeBook].join('/');
         if(entry.lastPose===key)return;
         entry.lastPose=key;entry.action=action;
-        const yaw=-Math.PI/2,h=avatar.height,base=new THREE.Vector3(...slot);
+        const yaw=watching||action==='fridge'?Math.PI:-Math.PI/2,h=avatar.height,base=new THREE.Vector3(...slot);
         avatar.poseTimeline([{clip:'idle',time:seconds,weight:1}],slot,yaw);
         const target=(side:'left'|'right',x:number,y:number,z:number)=>{
           const p=new THREE.Vector3((side==='left'?1:-1)*x*h,y*h,z*h).applyAxisAngle(Y,yaw).add(base);
@@ -75,8 +86,12 @@ export function createInteriorCast(scene:THREE.Scene,library:AssetLibrary){
         else if(action==='exercise'){target('left',.12,.75+.09*beat,.1);target('right',.12,.75-.09*beat,.1);}
         else avatar.joint('head')?.rotateY(slow*(action==='sleep'?.01:.045));
         avatar.group.updateMatrixWorld(true);
-        // Sleep is a restrained idle cue in this venue projection, never an
-        // unsupported reclined body intersecting a desk or a fabricated bed.
+        entry.support=undefined;
+        if(sleeping){entry.support=lieOnBed(avatar,bedIndex!).id;}
+        else if(watching){sitOnSeat(avatar,slot);entry.support=cinema?'cinema-seat-'+index:'sofa-seat-'+sofaIndex;}
+        else if(home&&action==='fridge'){target('right',.05,.68,.27);avatar.group.updateMatrixWorld(true);}
+        // Support is an illustrative contact with room geometry, not ownership,
+        // floor authority, productive completion or a new learning receipt.
         const prop=interiorProp(action),kind=propKinds[prop];
         const propKey=kind?kind+'/'+(kind==='read'&&nativeBook?'native':'basic'):undefined;
         if(entry.propKey!==propKey){releaseProp(entry);if(kind){entry.prop=simpleProp(kind,library);entry.propKey=propKey;scene.add(entry.prop);}}
@@ -85,7 +100,7 @@ export function createInteriorCast(scene:THREE.Scene,library:AssetLibrary){
     },
     snapshots(){return [...entries].map(([id,e])=>({id,modelId:e.modelId,action:e.action,height:e.avatar.height,
       position:e.avatar.group.position.toArray(),head:e.avatar.head().toArray(),hands:{left:e.avatar.hand('left').toArray(),right:e.avatar.hand('right').toArray()},
-      prop:e.propKey??null,draws:e.draws}));},
+      prop:e.propKey??null,support:e.support??null,draws:e.draws}));},
     focus(id:string){return entries.get(id)?.avatar.group.position.clone().add(new THREE.Vector3(0,1.6,0));},
     dispose(){if(dead)return;dead=true;for(const id of [...entries.keys()])remove(id);},
   };

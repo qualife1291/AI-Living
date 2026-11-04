@@ -1,0 +1,110 @@
+[
+  {
+    "id": "sleep-night",
+    "title": "Về nhà nằm ngủ trên giường",
+    "place": "Khu dân cư",
+    "kind": "rest",
+    "tag": "evening-rest",
+    "transport": "walk",
+    "energy": 18,
+    "hunger": 4,
+    "skill": 0,
+    "adultOnly": true
+  },
+  {
+    "id": "evening-dinner",
+    "title": "Đi ăn tối tại nhà hàng",
+    "place": "Nhà hàng",
+    "kind": "eat",
+    "tag": "evening-eat",
+    "transport": "walk",
+    "energy": 4,
+    "hunger": -24,
+    "skill": 0,
+    "adultOnly": true
+  },
+  {
+    "id": "sidewalk-supper",
+    "title": "Ăn món nóng ở vỉa hè phố đi bộ",
+    "place": "Phố đi bộ",
+    "kind": "eat",
+    "tag": "evening-eat",
+    "transport": "walk",
+    "energy": 2,
+    "hunger": -20,
+    "skill": 0,
+    "adultOnly": true
+  },
+  {
+    "id": "evening-tea",
+    "title": "Ngồi uống trà và trò chuyện buổi tối",
+    "place": "Quán cà phê",
+    "kind": "drink",
+    "tag": "evening-drink",
+    "transport": "walk",
+    "energy": 2,
+    "hunger": -4,
+    "skill": 0,
+    "adultOnly": true
+  },
+  {
+    "id": "friends-supper",
+    "title": "Nhậu cùng bạn, nhâm nhi và ăn món chung",
+    "place": "Nhà hàng",
+    "kind": "social",
+    "tag": "evening-social",
+    "transport": "walk",
+    "energy": -3,
+    "hunger": -12,
+    "skill": 0,
+    "adultOnly": true
+  },
+  {
+    "id": "night-cinema",
+    "title": "Đi xem phim buổi tối ở rạp",
+    "place": "Rạp phim",
+    "kind": "play",
+    "tag": "evening-play",
+    "transport": "walk",
+    "energy": -3,
+    "hunger": 3,
+    "skill": 0,
+    "adultOnly": true
+  },
+  {
+    "id": "watch-tv",
+    "title": "Ngồi trên sofa xem tivi ở nhà",
+    "place": "Khu dân cư",
+    "kind": "rest",
+    "tag": "evening-rest",
+    "transport": "walk",
+    "energy": 6,
+    "hunger": 2,
+    "skill": 0,
+    "adultOnly": true
+  },
+  {
+    "id": "late-promenade",
+    "title": "Dạo vỉa hè, ngắm phố và gặp bạn",
+    "place": "Phố đi bộ",
+    "kind": "social",
+    "tag": "evening-social",
+    "transport": "walk",
+    "energy": -3,
+    "hunger": 2,
+    "skill": 0,
+    "adultOnly": true
+  },
+  {
+    "id": "home-snack",
+    "title": "Lấy đồ ăn nhẹ từ tủ lạnh",
+    "place": "Khu dân cư",
+    "kind": "eat",
+    "tag": "evening-eat",
+    "transport": "walk",
+    "energy": 2,
+    "hunger": -12,
+    "skill": 0,
+    "adultOnly": true
+  }
+]

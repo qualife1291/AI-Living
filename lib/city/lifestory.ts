@@ -16,7 +16,7 @@ export function lifeStory(world: World, id: string, now: number) {
     memories: agent?.memories ?? resident?.memories ?? world.people.find((p) => p.id === id)?.memories ?? [] };
 }
 export function interiorKind(name: string) {
-  return /bệnh viện|phòng khám|trạm y tế|phục hồi|khám bệnh/i.test(name) ? "clinic" : /quán|bếp|chợ|ăn|nhà hàng|siêu thị/i.test(name) ? "dining" : /thư viện|học|trường|đọc sách/i.test(name) ? "study" : /phòng (an|bình|chi)|dân cư|căn hộ|nhà ở/i.test(name) ? "home" : "work";
+  return /rạp phim|cinema/i.test(name)?"cinema": /bệnh viện|phòng khám|trạm y tế|phục hồi|khám bệnh/i.test(name) ? "clinic" : /quán|bếp|chợ|ăn|nhà hàng|siêu thị/i.test(name) ? "dining" : /thư viện|học|trường|đọc sách/i.test(name) ? "study" : /phòng (an|bình|chi)|dân cư|căn hộ|nhà ở/i.test(name) ? "home" : "work";
 }
 export function interiorPhase(seconds: number) {
   const t = ((seconds % 120) + 120) % 120;
