@@ -88,6 +88,7 @@ jobs:
         run: |
           /tmp/ai-living-browser-venv/bin/python scripts/qa-social.py
           QA_OUT=qa-evidence/social/interior-native /tmp/ai-living-browser-venv/bin/python scripts/qa-interior-native.py
+          QA_OUT=qa-evidence/social/evening /tmp/ai-living-browser-venv/bin/python scripts/qa-evening-life.py
       - name: Upload real browser screenshots and local server evidence
         if: always()
         uses: actions/upload-artifact@v4
