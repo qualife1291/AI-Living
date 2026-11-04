@@ -9,6 +9,7 @@ QA riêng với Sites A production và Cloudflare staging. `work` là nguồn t�
 | Ops 5749ce4 | Build d344afb0 success, deployment b25456fe/version d58255ac 100%; native scheduled 29/10/2026 21:00 Asia/Saigon (14:00 UTC), status 200/updated 10/non-coalesced và 3 stage đồng request/version. |
 | Integration 4377ed7 | Build efa85b42 success, deployment 55bdb507/version f77411ba 100%; native scheduled 21:10 (14:10 UTC) được xác minh riêng. Các file Ops không đổi so với 5749. |
 | QA 7157c32 | Git đã hợp nhất H6 shadow metadata/safety checks và Studio followup; source mới hơn native proof 4377. Đọc lại Build/version/config/Access/Cron/D1 và authenticated browser trên source mới trước nghiệm thu. Marker 96 không là model inference. |
+| QA 4e010d1 | Đã nhận8commit mới đến375ad38 (103action QA/traffic/interior, signed H6 scorer/canary OFF), Ops window audit và sửa telemetry H6.95/95suite/type/assets/exact build/compiled API đạt; CF build5d6699c1 success. CI browser375ad38 đã review ảnh; CI browser4e đang chạy lúc ghi evidence. Deploy Actions skip native metadata; chưa authenticated remote/version/D1/Cron readback. [Review](validation/qa-review-2026-11-04.json). |
 
 [Ops evidence](validation/qa-observability-2026-10-29.json) giữ exact SHA/UUID, before/after aggregate và các giới hạn; [graphics evidence](validation/graphics-interactions-2026-10-29.json) giữ acceptance theo source riêng. Không gộp full 78/82 hoặc ảnh local thành một lượt test của bản mới. Native counter growth không chứng minh model gain; authenticated remote browser/GPU/soak/independent review còn chờ.
 
@@ -24,7 +25,7 @@ QA riêng với Sites A production và Cloudflare staging. `work` là nguồn t�
 | Builds | trigger `24a32899-c5bf-474f-b31e-29ba7581ba24`, chỉ branch QA, previews tắt |
 | Cron | Đúng một `*/5 * * * *` UTC, `XOM_RULE_SCHEDULER=true`, lease chung với browser |
 
-ID là định danh tài nguyên, không phải credential. Không import/reset Sites A, đổi audience, nới Access, tìm token cũ, tạo Worker/DB/lịch thứ hai hoặc tự nâng plan. Source 23 table đến 0011 không chứng minh DB remote đã migrate; backup trước repair/migration. Lần dọn docs không thực hiện thao tác hạ tầng.
+ID là định danh tài nguyên, không phải credential. Không import/reset Sites A, đổi audience, nới Access, tìm token cũ, tạo Worker/DB/lịch thứ hai hoặc tự nâng plan. Source24table đến0012 không chứng minh DB remote đã migrate; backup trước repair/migration.
 
 ## Gate trước push/deploy
 

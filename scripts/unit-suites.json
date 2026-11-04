@@ -285,5 +285,8 @@
   ],
   [
     "scripts/test-h6-measurement.mjs"
+  ],
+  [
+    "scripts/test-interior-cast.mjs"
   ]
 ]

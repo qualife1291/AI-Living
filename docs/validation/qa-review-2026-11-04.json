@@ -1,0 +1,316 @@
+{
+  "schema": "xom-qa-review-v1",
+  "status": "QA_BUILD_SUCCESS_REMOTE_READBACK_PENDING",
+  "reviewDate": "2026-11-04",
+  "timezone": "Asia/Ho_Chi_Minh",
+  "observedAt": "2026-11-04T07:35:42.787597+00:00",
+  "source": {
+    "repository": "qualife1291/AI-Living",
+    "baselineQa": "375ad38fff38d46e22235c35d6b866ba9548cb2a",
+    "qaRelease": "4e010d1f32d56c828823b57664ad132f820358f6",
+    "sharedOpsWork": "0a9d970bd7176f7eb6ba64144a53ac16fb37bb23",
+    "mainUnchanged": "402df57027278c599aab6f4932adbde1609e6979",
+    "reviewedIncomingCommits": 8
+  },
+  "reviewFindings": [
+    {
+      "issue": "H6 shadow/canary finally blocks logged200 even if wrapped pipeline threw or returned409/503",
+      "resolution": "Shared withH6Measurement reports actual returned status or500, preserves result/error and isolates telemetry failure; tests cover both events and12 concurrent requests."
+    },
+    {
+      "issue": "Progress comparison checked only the later snapshot for future tick time",
+      "resolution": "Checks both snapshots; flags count/timestamp mismatch, lost or regressing tick timestamp."
+    },
+    {
+      "issue": "Successful deploy Actions can represent skipped upload",
+      "resolution": "Baseline metadata verification step was skipped. Updated existing workflow emits explicit deployed=false and summary; build success remains separate from native readback."
+    },
+    {
+      "issue": "Interior block figures still differ from supplied city/Studio rigs",
+      "resolution": "Confirmed visually in baseline CI artifact; added scoped backlog item. No renderer change claimed in this release."
+    }
+  ],
+  "implementation": {
+    "offlineWindowAudit": "scripts/audit-qa-window.mjs",
+    "schema": "xom-qa-window-v1",
+    "inputs": [
+      "before snapshot",
+      "after snapshot",
+      "chronological custom-log NDJSON"
+    ],
+    "budgets": {
+      "snapshotBytes": 8192,
+      "logBytes": 4194304,
+      "records": 10000
+    },
+    "metrics": [
+      "tick/turn/experience/policy deltas",
+      "same-version and request-correlated Cron stage/result completion",
+      "coalesced/duplicate/incomplete/failed Cron invocations",
+      "stage wall latency p50/p95/max",
+      "HTTP errors/auth denials/throttle",
+      "H6 actual evaluated/model-used/blocked/changed/errors"
+    ],
+    "newNetworkRequests": false,
+    "dbWrites": false,
+    "newSchedulers": false,
+    "nativeSchedulerAttributionProven": false,
+    "modelQualityGainProven": false
+  },
+  "localAcceptance": {
+    "source": "4e010d1f32d56c828823b57664ad132f820358f6",
+    "unit": {
+      "suite": "unit-summary",
+      "total": 95,
+      "passed": 95,
+      "failed": [],
+      "workers": 4,
+      "seconds": 100.17
+    },
+    "typecheck": "PASS",
+    "lint": {
+      "errors": 0,
+      "preExistingWarnings": 1,
+      "warning": "scripts/h6-shadow-worker.mjs unused trainReport"
+    },
+    "assets": {
+      "approved": 308,
+      "gzipModels": 42,
+      "sourceBytes": 5964264,
+      "transferBytes": 2215748
+    },
+    "build": {
+      "commit_sha": "4e010d1f32d56c828823b57664ad132f820358f6",
+      "built_at": "2026-11-04T07:32:08.626Z"
+    },
+    "compiledApi": {
+      "progress": "PASS;12 concurrent owner/private/loopback readers, no writes, absent schema503",
+      "legacy": [
+        "living",
+        "learning",
+        "liveness"
+      ],
+      "ground": "PASS;8arrival/6presence/1encounter/2heard;coupledCAS/retry/4rollback;reward/P2Pfalse",
+      "chat": "PASS;60unique/16duplicates/2isolates/sharedD1;6atomic rollback cases",
+      "diagnostics": "PASS;read-only/owner/schema/pulse12viewers/flora/memorybackfill/health"
+    },
+    "rawLogSha256": {
+      "unit": "205f2485294341361050ef8079cdb8604759d53b57965f461b92de0c668893a5",
+      "check": "8366207267355d3e3d5bf3bf6e8c94c5f93f6078c34f08973fa2b38cdda6cc92",
+      "lint": "5e4666e94ab142c1de5fefa88c74d0b617f077ba86e00611b7861147336a2c38",
+      "assets": "0fb25e82a6c3d3c48eaf1f25572bd8cfdb6b67fa8d0bdba2624cf322ea439b94",
+      "build": "06c9170f5c4cb6c7b890998d80955c7c816625aabf4920eab670bf65b989df43",
+      "progress-api": "9dea701bfcb7db1cb2fc01d421b44741fdd7cb2408c2f3e3f4cd54872d613426",
+      "legacy-api": "a63a55e5932ac27bca7d66f480b5c9a6f9445d39e314f96a9af47d715721fb29",
+      "ground-api": "f4fa88449921b735ee31022c4dcabb5d94acce9153f3ad1f89e7f9ea2af16c19",
+      "chat-api": "eeab55220361af91b2da19e9c5b0292fde53e998426c566bb87f34c3b43cad19",
+      "local-api": "8b7ef1af9d82f4d0e51aab5ccb92c3bf33c000b4b21a1df2870b39023282ab68"
+    }
+  },
+  "baselineCiReview": {
+    "source": "375ad38fff38d46e22235c35d6b866ba9548cb2a",
+    "checks": [
+      {
+        "name": "Workers Builds: ai-living-qa",
+        "status": "completed",
+        "conclusion": "success",
+        "details_url": "https://dash.cloudflare.com/966c7ceee358485648b935a07877ec45/workers/services/view/ai-living-qa/production/builds/68d71b3a-6c81-44c2-b61d-2c3cfe163d0a",
+        "completed_at": "2026-11-02T03:58:51Z"
+      },
+      {
+        "name": "contextual-social",
+        "status": "completed",
+        "conclusion": "success",
+        "details_url": "https://github.com/qualife1291/AI-Living/actions/runs/41385773254/job/125086150473",
+        "completed_at": "2026-11-02T04:06:15Z"
+      },
+      {
+        "name": "qa-deploy",
+        "status": "completed",
+        "conclusion": "success",
+        "details_url": "https://github.com/qualife1291/AI-Living/actions/runs/41385773243/job/125086150398",
+        "completed_at": "2026-11-02T03:59:08Z"
+      }
+    ],
+    "deployMetadataStep": "skipped",
+    "artifact": {
+      "id": 13114854164,
+      "run": 41385773254,
+      "sha256": "7d70183e6f1cf0c53eec2747cef7ab7ec1ef7fae2dbfb9576258594180917614",
+      "bytes": 13072550
+    },
+    "browserMetrics": [
+      {
+        "viewport": "desktop",
+        "renderer": "Chromium SwiftShader",
+        "cityDrawCalls": 71,
+        "activity60s": {
+          "samples": 61,
+          "visibleIds": 27,
+          "activeKinds": [
+            "eat",
+            "rest",
+            "work"
+          ],
+          "restExempt": true,
+          "worldWrites": false
+        },
+        "interior": {
+          "venue": "Thư viện",
+          "modes": [
+            "wide",
+            "follow",
+            "overhead"
+          ],
+          "floorObserved": 1,
+          "visible": 3,
+          "renderedScreenshots": 3,
+          "fakeOutcomes": false,
+          "renderEvidence": [
+            {
+              "mode": "wide",
+              "renderedFrames": 7,
+              "drawCalls": 227,
+              "brightFraction": 0.258,
+              "materials": 134,
+              "actorSamples": 6
+            },
+            {
+              "mode": "follow",
+              "renderedFrames": 4,
+              "drawCalls": 227,
+              "brightFraction": 0.792,
+              "materials": 134,
+              "actorSamples": 3
+            },
+            {
+              "mode": "overhead",
+              "renderedFrames": 3,
+              "drawCalls": 176,
+              "brightFraction": 0.328,
+              "materials": 134,
+              "actorSamples": 2
+            }
+          ]
+        }
+      },
+      {
+        "viewport": "mobile",
+        "renderer": "Chromium SwiftShader",
+        "cityDrawCalls": 60,
+        "activity60s": {
+          "samples": 60,
+          "visibleIds": 27,
+          "activeKinds": [
+            "eat",
+            "rest",
+            "work"
+          ],
+          "restExempt": true,
+          "worldWrites": false
+        },
+        "interior": {
+          "venue": "Thư viện",
+          "modes": [
+            "wide",
+            "follow",
+            "overhead"
+          ],
+          "floorObserved": 1,
+          "visible": 3,
+          "renderedScreenshots": 3,
+          "fakeOutcomes": false,
+          "renderEvidence": [
+            {
+              "mode": "wide",
+              "renderedFrames": 10,
+              "drawCalls": 227,
+              "brightFraction": 0.358,
+              "materials": 134,
+              "actorSamples": 6
+            },
+            {
+              "mode": "follow",
+              "renderedFrames": 11,
+              "drawCalls": 227,
+              "brightFraction": 0.784,
+              "materials": 134,
+              "actorSamples": 6
+            },
+            {
+              "mode": "overhead",
+              "renderedFrames": 11,
+              "drawCalls": 176,
+              "brightFraction": 0.469,
+              "materials": 134,
+              "actorSamples": 5
+            }
+          ]
+        }
+      }
+    ],
+    "screenshots": "docs/screenshots/qa-review-2026-11-04/manifest.json",
+    "newBrowserRunInThisSession": false,
+    "scope": "Downloaded existing CI synthetic loopback proof, opened screenshots; no authenticated remote browser acceptance."
+  },
+  "releaseChecks": [
+    {
+      "name": "Workers Builds: ai-living-qa",
+      "status": "completed",
+      "conclusion": "success",
+      "details_url": "https://dash.cloudflare.com/966c7ceee358485648b935a07877ec45/workers/services/view/ai-living-qa/production/builds/5d6699c1-a4eb-4557-b31d-26981903b7b0",
+      "completed_at": "2026-11-04T07:35:08Z"
+    },
+    {
+      "name": "contextual-social",
+      "status": "in_progress",
+      "conclusion": null,
+      "details_url": "https://github.com/qualife1291/AI-Living/actions/runs/41793108086/job/126450817272",
+      "completed_at": null
+    },
+    {
+      "name": "qa-deploy",
+      "status": "completed",
+      "conclusion": "success",
+      "details_url": "https://github.com/qualife1291/AI-Living/actions/runs/41793107948/job/126450816417",
+      "completed_at": "2026-11-04T07:35:36Z"
+    }
+  ],
+  "localQaConfig": {
+    "worker": "ai-living-qa",
+    "d1": "21347bba-caaf-4ba5-9d80-d849958192d1",
+    "crons": [
+      "*/5 * * * *"
+    ],
+    "accessAudiencePresent": true,
+    "h6Mode": "shadow-only",
+    "shadowEnabled": false,
+    "canaryEnabled": false,
+    "killSwitch": true,
+    "modelArtifact": null,
+    "promotionGate": null,
+    "liveQaCatalog": 103,
+    "legacyH6Catalog": 41,
+    "shadowCatalog": 96
+  },
+  "limits": {
+    "nativeManagementToolsAvailable": false,
+    "remoteDeploymentReadback": false,
+    "remoteD1Readback": false,
+    "remoteCronLogReadback": false,
+    "authenticatedRemoteBrowser": false,
+    "hardwareGpuFps": false,
+    "soak24h": false,
+    "modelQualityGain": false,
+    "sitesAChanged": false,
+    "productionDbChanged": false,
+    "rawSourceArchivesChanged": false
+  },
+  "releaseDeployAction": [
+    {
+      "name": "qa-deploy",
+      "conclusion": "success",
+      "metadataVerification": "skipped"
+    }
+  ]
+}

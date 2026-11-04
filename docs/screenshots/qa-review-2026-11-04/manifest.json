@@ -1,0 +1,26 @@
+{
+  "schema": "xom-qa-screenshot-review-v1",
+  "sourceCommit": "375ad38fff38d46e22235c35d6b866ba9548cb2a",
+  "ciRun": 41385773254,
+  "artifactId": 13114854164,
+  "reviewDate": "2026-11-04",
+  "reviewTimezone": "Asia/Ho_Chi_Minh",
+  "renderer": "Chromium SwiftShader",
+  "scope": "Existing CI loopback preview with synthetic fixture; downloaded and visually reviewed, not a new remote browser run.",
+  "images": [
+    {
+      "file": "interior-follow-mobile.png",
+      "bytes": 627410,
+      "sha256": "1344627fa4a934e00fe45fdcbfccb8097d53608e57abcd73485e44a5b08c7f32"
+    },
+    {
+      "file": "transit-bus-desktop.png",
+      "bytes": 337100,
+      "sha256": "2811fbacd8b8fa3a1ec2ee05fe8b109eab75c3dd52bad9a6217e8fcbf56cf624"
+    }
+  ],
+  "findings": [
+    "Interior cameras render nonblank frames but residents remain procedural block figures.",
+    "Bus camera renders the ambient city; no proof of resident boarding or completed travel."
+  ]
+}
