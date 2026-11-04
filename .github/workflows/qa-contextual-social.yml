@@ -85,7 +85,9 @@ jobs:
         env:
           QA_BASE: http://127.0.0.1:5177
           QA_OUT: qa-evidence/social/screenshots
-        run: /tmp/ai-living-browser-venv/bin/python scripts/qa-social.py
+        run: |
+          /tmp/ai-living-browser-venv/bin/python scripts/qa-social.py
+          QA_OUT=qa-evidence/social/interior-native /tmp/ai-living-browser-venv/bin/python scripts/qa-interior-native.py
       - name: Upload real browser screenshots and local server evidence
         if: always()
         uses: actions/upload-artifact@v4
