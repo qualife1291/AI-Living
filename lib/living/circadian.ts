@@ -45,3 +45,10 @@ export function eveningRoutine(base:readonly Slot[],id:string,home:string):Slot[
   else rows.push([bed-24,home,'Nằm ngủ trên giường','rest']);
   return rows.sort((a,b)=>a[0]-b[0]);
 }
+
+/** Awake public company after22h; viewing/bedtime stays quiet. Presentation and
+ * idle scheduling only: no interruption or physical/social reward receipt. */
+export function nightSocialActor(actor: Pick<import('../life.ts').Actor,'kind'|'activity'|'location'|'walking'>){
+  return !actor.walking && ['Nhà hàng','Quán cà phê','Phố đi bộ','Quảng trường','Công viên'].includes(actor.location)
+    && ['social','drink','eat','exercise','run'].includes(actor.kind) && !isSleepActivity(actor.activity);
+}

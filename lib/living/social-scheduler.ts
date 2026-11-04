@@ -1,3 +1,4 @@
+import { nightSocialActor } from "./circadian.ts";
 import { computeSimMs, hashSeed, worldTime } from "../clock.ts";
 import { actorTransition, distance } from "../life.ts";
 import { crowdAt } from "./engine.ts";
@@ -24,9 +25,10 @@ export function scheduleResidentSocial(input: World, now: number) {
   schedule.pending=schedule.pending.filter(p=>sim<p.startedSimMs+p.durationMs);
   for(const key of Object.keys(schedule.cooldowns))if(schedule.cooldowns[key]<=sim)delete schedule.cooldowns[key];
   const hour=worldTime(world,now).hour;
-  if(hour<6||hour>=22)return {world,changed:true,pairs:0};
+  const daytime=hour>=6&&hour<22;
+  if(!daytime&&state.lifeScheduleVersion!==1)return {world,changed:true,pairs:0};
   const busy=(id:string)=>{const p=residents.get(id)?.plan;return p?.simStartedAt!==undefined&&sim<p.simStartedAt+p.steps.reduce((s,v)=>s+v.duration,0)*1000;};
-  const actors=crowdAt(state,world,now,undefined,state.residents.length).filter(a=>!a.walking&&!busy(a.id)&&!/^Phòng |Khu dân cư|Bệnh viện|Phòng khám/.test(a.location)&&["social","play","exercise","run"].includes(a.kind));
+  const actors=crowdAt(state,world,now,undefined,state.residents.length).filter(a=>(daytime||nightSocialActor(a))&&!a.walking&&!busy(a.id)&&!/^Phòng |Khu dân cư|Bệnh viện|Phòng khám/.test(a.location)&&["social","play","exercise","run"].includes(a.kind));
   actors.sort((a,b)=>(state.learning![b.id].socialNeed??50)-(state.learning![a.id].socialNeed??50)||a.id.localeCompare(b.id));
   const used=new Set<string>();let pairs=0;
   for(const a of actors){

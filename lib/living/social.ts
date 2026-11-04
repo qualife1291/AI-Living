@@ -1,3 +1,4 @@
+import { nightSocialActor } from "./circadian.ts";
 import { socialCategory } from "./action-presentation.ts";
 import { DialogueGrammar } from "./dialogue-grammar.ts";
 import {lifeStory} from "../city/lifestory.ts";
@@ -49,6 +50,8 @@ const format = (text: string, a: Actor, b: Actor) => text.replaceAll("{a}", a.na
 export function socialFrame(world: World, actors: Actor[], events: EpisodeEvent[], now: number, livingSpeech: Speech | null = null) {
   const spaced = spaceActors(world, actors), poses = new Map<string, SocialPose>(), exchanges: Exchange[] = [];
   const seconds = simulationTime(world, now) / 1000;
+  const hour = worldTime(world, now).hour, daytime = hour >= scripts.quietHours[1] && hour < scripts.quietHours[0];
+  const awakeActor = (a: Actor) => daytime || (world.living?.lifeScheduleVersion === 1 && nightSocialActor(a));
   const claim = (a: Actor, b: Actor, speech: Speech, title: string, source: "script" | "ai", gesture = "explain") => {
     poses.set(a.id, { peerId: b.id, gesture: speech.speaker === a.id ? gesture : "listen", speaking: speech.speaker === a.id, source });
     poses.set(b.id, { peerId: a.id, gesture: speech.speaker === b.id ? gesture : "listen", speaking: speech.speaker === b.id, source });
@@ -62,11 +65,10 @@ export function socialFrame(world: World, actors: Actor[], events: EpisodeEvent[
     const lineIndex = aiEvent?.dialogue?.findIndex((_, i) => persisted.key === `${aiEvent.id}-${i}`) ?? -1;
     const otherSpeaker = aiEvent ? [...aiEvent.dialogue.slice(lineIndex + 1), ...aiEvent.dialogue.slice(0, lineIndex)].find(d => d.speaker !== persisted.speaker)?.speaker : persisted.speaker === "an" ? world.livingTurn?.residentId : "an";
     const b = a && spaced.find(b => b.id === otherSpeaker && !b.walking && a.location === b.location && distance(a.position, b.position) <= 60);
-    if (a && b) claim(a, b, persisted, aiEvent?.title ?? world.livingTurn?.title ?? "Chuyện trong xóm", persisted.source === "ai" ? "ai" : "script");
+    if (a && b && awakeActor(a) && awakeActor(b)) claim(a, b, persisted, aiEvent?.title ?? world.livingTurn?.title ?? "Chuyện trong xóm", persisted.source === "ai" ? "ai" : "script");
   }
-  const hour = worldTime(world, now).hour;
-  if (hour >= scripts.quietHours[1] && hour < scripts.quietHours[0]) {
-    const idle = spaced.filter(a => !["tag", "cycle"].includes(a.kind) && !a.walking && !/^Phòng |Bệnh viện|Phòng khám/.test(a.location)).sort((a, b) => a.id.localeCompare(b.id));
+  if (daytime || world.living?.lifeScheduleVersion === 1) {
+    const idle = spaced.filter(a => awakeActor(a) && !["tag", "cycle"].includes(a.kind) && !a.walking && !/^Phòng |Bệnh viện|Phòng khám/.test(a.location)).sort((a, b) => a.id.localeCompare(b.id));
     for (const a of idle) {
       if (poses.has(a.id)) continue;
       const b = idle.filter(b => b.id !== a.id && !poses.has(b.id) && b.location === a.location && distance(a.position, b.position) >= scripts.minPairDistance - .1 && distance(a.position, b.position) <= scripts.maxPairDistance).sort((x, y) => distance(a.position, x.position) - distance(a.position, y.position) || x.id.localeCompare(y.id))[0];
@@ -150,8 +152,9 @@ export class SocialDirector {
     this.previousNow = now; this.previousSim = sim; this.previouslyPaused = world.paused;
     const spaced = alreadySpaced ? actors : spaceActors(world, actors), byId = new Map(spaced.map(a => [a.id, a]));
     const poses = new Map<string, SocialPose>(), exchanges: Exchange[] = [];
-    const hour = worldTime(world, now).hour, awake = hour >= 6 && hour < 22;
-    const eligible = (a: Actor | undefined): a is Actor => !!a && !["tag", "cycle"].includes(a.kind) && !a.walking && (a.transport === undefined || a.transport === "walk") && !/^Phòng |Bệnh viện|Phòng khám/.test(a.location);
+    const hour = worldTime(world, now).hour, daytime = hour >= 6 && hour < 22;
+    const awake = daytime || world.living?.lifeScheduleVersion === 1;
+    const eligible = (a: Actor | undefined): a is Actor => !!a && (daytime || (world.living?.lifeScheduleVersion === 1 && nightSocialActor(a))) && !["tag", "cycle"].includes(a.kind) && !a.walking && (a.transport === undefined || a.transport === "walk") && !/^Phòng |Bệnh viện|Phòng khám/.test(a.location);
     const pairAvailable = (a: Actor | undefined, b: Actor | undefined, maximum = 60) => eligible(a) && eligible(b) && a.id !== b.id && a.location === b.location && distance(a.position, b.position) <= maximum;
     const finish = (encounter: Encounter) => {
       this.encounters.delete(encounter.key);

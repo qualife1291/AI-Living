@@ -421,6 +421,25 @@ test('director respects quiet/private/walking boundaries and does not restage pr
   assert.equal(JSON.stringify({ world, spaced }), before);
 });
 
+test('nightlife keeps awake public conversation after22h, with legacy/private/movie/sleep silence', () => {
+  const w=structuredClone(world),at=born+22.5*3600000;
+  w.living.lifeScheduleVersion=1;
+  const publicPair=['an','binh'].map(id=>stationary(w,id,'Nhà hàng'));
+  const before=JSON.stringify({w,publicPair});
+  assert.equal(new SocialDirector().frame(w,publicPair,[],at).exchanges.length,1);
+  let ambient=0;
+  for(let i=0;i<120;i++)ambient+=socialFrame(w,publicPair,[],at+i*1000).exchanges.length;
+  assert.ok(ambient>0);
+  assert.equal(JSON.stringify({w,publicPair}),before);
+  const legacy=structuredClone(w);delete legacy.living.lifeScheduleVersion;
+  assert.equal(new SocialDirector().frame(legacy,publicPair,[],at).exchanges.length,0);
+  for(const [location,activity,kind] of [['Phòng An','Nằm ngủ trên giường','rest'],['Khu dân cư','Nằm ngủ trên giường','rest'],['Rạp phim','Xem phim','play'],['Nhà hàng','Ngủ gục','rest']]){
+    const silent=publicPair.map(a=>({...stationary(w,a.id,location),activity,kind}));
+    assert.equal(new SocialDirector().frame(w,silent,[],at).exchanges.length,0,location);
+    assert.equal(socialFrame(w,silent,[],at).exchanges.length,0,location);
+  }
+});
+
 for (const result of results) console.log(`${result.ok ? 'PASS' : 'FAIL'} ${result.name}${result.ok ? '' : `: ${result.error}`}`);
 const failed = results.filter(r => !r.ok);
 console.log(JSON.stringify({ suite: 'social', cases: results.length, passed: results.length - failed.length, failed: failed.length }));
