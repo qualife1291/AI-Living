@@ -23,6 +23,11 @@ try{
   if(patch.experiences===-1)assert.throws(()=>compareProgress(a,after(patch)));else assert.equal(compareProgress(a,after(patch)).status,'state_changed');
  }
  assert.equal(compareProgress(a,after({version:crypto.randomUUID()})).status,'deployment_changed');assert.equal(compareProgress(a,after({lastTickFinishedAt:new Date(t+STALL_WINDOW_MS+1).toISOString()})).status,'clock_mismatch');
+ assert.equal(compareProgress({...a,lastTickFinishedAt:new Date(t+1).toISOString()},after()).status,'clock_mismatch','Earlier snapshot future tick cannot be hidden by later clock');
+ assert.equal(compareProgress(a,after({lastTickFinishedAt:new Date(t-6000).toISOString()})).status,'tick_evidence_mismatch');
+ assert.equal(compareProgress(a,after({lastTickFinishedAt:new Date(t+1).toISOString()})).status,'tick_evidence_mismatch','Timestamp advance without a completed tick is not healthy evidence');
+ assert.equal(compareProgress(a,after({lastTickFinishedAt:null})).status,'tick_evidence_mismatch');
+ assert.equal(compareProgress({...a,completedTicks:0},after()).status,'tick_evidence_mismatch');
  for(const value of [after({revision:1e100}),after({unknown:'PRIVATE'}),after({observedAt:'wrong'}),{...a}])assert.throws(()=>compareProgress(a,value));
  const dir=mkdtempSync('/tmp/xom-progress-test-');
  try{

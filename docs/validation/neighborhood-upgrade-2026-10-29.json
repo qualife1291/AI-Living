@@ -2,7 +2,7 @@
   "kind": "neighborhood-upgrade-acceptance-v1",
   "date": "2026-10-29",
   "timezone": "Asia/Ho_Chi_Minh",
-  "status": "TARGETED_PASS_FULL_AND_BROWSER_PENDING",
+  "status": "QA_BUILD_SUCCESS_REMOTE_ACCEPTANCE_PENDING",
   "native": {
     "suite": "neighborhood",
     "legacyInitializationStable": true,
@@ -57,18 +57,562 @@
     "modelQualityLimits": "Previously rejected experiments remain frozen; no retuning or automatic promotion."
   },
   "gates": {
-    "fullUnit": "PENDING",
+    "fullUnit": {
+      "suite": "unit-summary",
+      "total": 86,
+      "passed": 86,
+      "failed": [],
+      "workers": 4,
+      "seconds": 193.52
+    },
     "check": "PASS",
-    "assets": "PASS",
-    "lint": "PASS: zero errors, one existing H6 warning",
-    "build": "PENDING",
-    "browser": "PENDING",
-    "compiledApi": "PENDING"
+    "assets": "PASS:308 approved assets/42 lossless transports",
+    "lint": {
+      "errors": 0,
+      "warnings": 1,
+      "existingWarning": "scripts/h6-shadow-worker.mjs:37 unused trainReport"
+    },
+    "build": {
+      "commit_sha": "8153f2fca8f01dc551a6d46d981b07864c49965d",
+      "built_at": "2026-10-29T17:51:55.157Z"
+    },
+    "browser": {
+      "source": "8153f2fca8f01dc551a6d46d981b07864c49965d",
+      "status": "PASS",
+      "cases": [
+        {
+          "scene": "city",
+          "viewport": "desktop",
+          "population": 51,
+          "model": null,
+          "errors": [],
+          "actors": 51,
+          "humanSkeletons": 8,
+          "crowdStyles": [
+            "supplied/jacket",
+            "supplied/service",
+            "supplied/leisure",
+            "supplied/office",
+            "supplied/waistcoat"
+          ],
+          "triangles": 282774,
+          "drawCalls": 78,
+          "props": {
+            "placements": 487,
+            "plants": 338,
+            "trees": 94,
+            "models": [
+              "supplied/props/plant",
+              "supplied/props/table",
+              "supplied/props/chair",
+              "supplied/props/chessboard",
+              "supplied/props/book",
+              "supplied/props/shelf",
+              "supplied/props/books",
+              "supplied/props/monitor",
+              "supplied/props/keyboard",
+              "supplied/props/mouse",
+              "supplied/props/lamp",
+              "suburban/tree-large"
+            ]
+          }
+        },
+        {
+          "scene": "city",
+          "viewport": "desktop",
+          "population": 123,
+          "model": null,
+          "errors": [],
+          "actors": 72,
+          "humanSkeletons": 8,
+          "crowdStyles": [
+            "supplied/jacket",
+            "supplied/service",
+            "supplied/leisure",
+            "supplied/office",
+            "supplied/waistcoat"
+          ],
+          "triangles": 334318,
+          "drawCalls": 79,
+          "props": {
+            "placements": 487,
+            "plants": 338,
+            "trees": 94,
+            "models": [
+              "supplied/props/plant",
+              "supplied/props/table",
+              "supplied/props/chair",
+              "supplied/props/chessboard",
+              "supplied/props/book",
+              "supplied/props/shelf",
+              "supplied/props/books",
+              "supplied/props/monitor",
+              "supplied/props/keyboard",
+              "supplied/props/mouse",
+              "supplied/props/lamp",
+              "suburban/tree-large"
+            ]
+          }
+        },
+        {
+          "scene": "city",
+          "viewport": "desktop",
+          "population": 243,
+          "model": null,
+          "errors": [],
+          "actors": 72,
+          "humanSkeletons": 8,
+          "crowdStyles": [
+            "supplied/jacket",
+            "supplied/service",
+            "supplied/leisure",
+            "supplied/office",
+            "supplied/waistcoat"
+          ],
+          "triangles": 334369,
+          "drawCalls": 79,
+          "props": {
+            "placements": 487,
+            "plants": 338,
+            "trees": 94,
+            "models": [
+              "supplied/props/plant",
+              "supplied/props/table",
+              "supplied/props/chair",
+              "supplied/props/chessboard",
+              "supplied/props/book",
+              "supplied/props/shelf",
+              "supplied/props/books",
+              "supplied/props/monitor",
+              "supplied/props/keyboard",
+              "supplied/props/mouse",
+              "supplied/props/lamp",
+              "suburban/tree-large"
+            ]
+          }
+        },
+        {
+          "scene": "city",
+          "viewport": "mobile",
+          "population": 51,
+          "model": null,
+          "errors": [],
+          "actors": 51,
+          "humanSkeletons": 8,
+          "crowdStyles": [
+            "supplied/jacket",
+            "supplied/service",
+            "supplied/leisure",
+            "supplied/office",
+            "supplied/waistcoat"
+          ],
+          "triangles": 281356,
+          "drawCalls": 75,
+          "props": {
+            "placements": 487,
+            "plants": 338,
+            "trees": 94,
+            "models": [
+              "supplied/props/plant",
+              "supplied/props/table",
+              "supplied/props/chair",
+              "supplied/props/chessboard",
+              "supplied/props/book",
+              "supplied/props/shelf",
+              "supplied/props/books",
+              "supplied/props/monitor",
+              "supplied/props/keyboard",
+              "supplied/props/mouse",
+              "supplied/props/lamp",
+              "suburban/tree-large"
+            ]
+          }
+        },
+        {
+          "scene": "city",
+          "viewport": "mobile",
+          "population": 123,
+          "model": null,
+          "errors": [],
+          "actors": 72,
+          "humanSkeletons": 8,
+          "crowdStyles": [
+            "supplied/jacket",
+            "supplied/service",
+            "supplied/leisure",
+            "supplied/office",
+            "supplied/waistcoat"
+          ],
+          "triangles": 332913,
+          "drawCalls": 75,
+          "props": {
+            "placements": 487,
+            "plants": 338,
+            "trees": 94,
+            "models": [
+              "supplied/props/plant",
+              "supplied/props/table",
+              "supplied/props/chair",
+              "supplied/props/chessboard",
+              "supplied/props/book",
+              "supplied/props/shelf",
+              "supplied/props/books",
+              "supplied/props/monitor",
+              "supplied/props/keyboard",
+              "supplied/props/mouse",
+              "supplied/props/lamp",
+              "suburban/tree-large"
+            ]
+          }
+        },
+        {
+          "scene": "city",
+          "viewport": "mobile",
+          "population": 243,
+          "model": null,
+          "errors": [],
+          "actors": 72,
+          "humanSkeletons": 8,
+          "crowdStyles": [
+            "supplied/jacket",
+            "supplied/service",
+            "supplied/leisure",
+            "supplied/office",
+            "supplied/waistcoat"
+          ],
+          "triangles": 332908,
+          "drawCalls": 76,
+          "props": {
+            "placements": 487,
+            "plants": 338,
+            "trees": 94,
+            "models": [
+              "supplied/props/plant",
+              "supplied/props/table",
+              "supplied/props/chair",
+              "supplied/props/chessboard",
+              "supplied/props/book",
+              "supplied/props/shelf",
+              "supplied/props/books",
+              "supplied/props/monitor",
+              "supplied/props/keyboard",
+              "supplied/props/mouse",
+              "supplied/props/lamp",
+              "suburban/tree-large"
+            ]
+          }
+        },
+        {
+          "scene": "gallery",
+          "viewport": null,
+          "population": null,
+          "model": "supplied/props/book",
+          "errors": []
+        },
+        {
+          "scene": "gallery",
+          "viewport": null,
+          "population": null,
+          "model": "supplied/props/chair",
+          "errors": []
+        },
+        {
+          "scene": "gallery",
+          "viewport": null,
+          "population": null,
+          "model": "supplied/props/chessboard",
+          "errors": []
+        },
+        {
+          "scene": "gallery",
+          "viewport": null,
+          "population": null,
+          "model": "supplied/props/plant",
+          "errors": []
+        },
+        {
+          "scene": "gallery",
+          "viewport": null,
+          "population": null,
+          "model": "supplied/props/monitor",
+          "errors": []
+        },
+        {
+          "scene": "animals",
+          "viewport": null,
+          "population": null,
+          "model": null,
+          "errors": [],
+          "actualNativeDraws": {
+            "muop": 232,
+            "cun": 11,
+            "me-trang": 290,
+            "me-vang": 290,
+            "cho-dom": 11,
+            "cho-bong": 11,
+            "cut-nau": 10,
+            "ga-con": 11
+          },
+          "models": {
+            "muop": {
+              "modelId": "studio/articulated-feline",
+              "travel": 0,
+              "position": [
+                319.3887585051727,
+                2.111366605247639,
+                576.0287421037102
+              ]
+            },
+            "cun": {
+              "modelId": "gobkit-animal/corgi",
+              "travel": 26.399999999999928,
+              "position": [
+                305.47615508288516,
+                2.110507487295067,
+                546.7514457064076
+              ]
+            },
+            "me-trang": {
+              "modelId": "studio/articulated-feline",
+              "travel": 0,
+              "position": [
+                240.082212406505,
+                2.111366605247639,
+                588.5694072730221
+              ]
+            },
+            "me-vang": {
+              "modelId": "studio/articulated-feline",
+              "travel": 0,
+              "position": [
+                306.4379866838872,
+                2.111366605247639,
+                532.5678409599471
+              ]
+            },
+            "cho-dom": {
+              "modelId": "gobkit-animal/corgi",
+              "travel": 0,
+              "position": [
+                264.6113228126744,
+                2.0611068658240463,
+                546.6534200184856
+              ]
+            },
+            "cho-bong": {
+              "modelId": "gobkit-animal/corgi",
+              "travel": 0,
+              "position": [
+                285.03155281885387,
+                2.0611068658240463,
+                585.1066084615206
+              ]
+            },
+            "cut-nau": {
+              "modelId": "gobkit-animal007/quail",
+              "travel": 0,
+              "position": [
+                266.9862803759438,
+                -0.465059723704467,
+                596.1786417213434
+              ]
+            },
+            "ga-con": {
+              "modelId": "gobkit-animal007/chick",
+              "travel": 0,
+              "position": [
+                287.82571945883615,
+                2.037060276283166,
+                546.0479495091782
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "compiledApi": {
+      "progress": {
+        "suite": "progress-compiled-http",
+        "concurrentReaders": 12,
+        "ownerGate": true,
+        "loopbackGate": true,
+        "noBootstrap": true,
+        "noWrites": true,
+        "noPrivatePayloads": true,
+        "missingSchema503": true,
+        "requestCorrelation": true,
+        "productionAccess": false
+      },
+      "chat": {
+        "suite": "chat-admission-compiled-http",
+        "concurrentUnique": 60,
+        "concurrentDuplicate": 16,
+        "workerIsolates": 2,
+        "sharedD1": true,
+        "limit": 30,
+        "windowMs": 60000,
+        "atomicRollbackCases": 6,
+        "originOwnerBodyPauseActorGuards": true,
+        "retryAfter": true,
+        "rejectedUuidReusable": true,
+        "historyPreserved": true,
+        "productionAccess": false
+      },
+      "ground": {
+        "suite": "ground-authority-api",
+        "compiledWorker": true,
+        "ephemeralD1": true,
+        "ownerLocalRemoteAndOriginGuards": true,
+        "bodyUtf8And2KiB": true,
+        "noBootstrapOrClientPositions": true,
+        "optionalInactive0011": true,
+        "explicitStartBaseline": true,
+        "coupledCAS": true,
+        "concurrentOneCommit": true,
+        "actualReplayCounts": {
+          "arrivals": 8,
+          "presence": 5,
+          "encounters": 1,
+          "heard": 2
+        },
+        "immutableReceipts": true,
+        "silentIgnoreRollback": 4,
+        "lostAckNoCredit": true,
+        "worldViewParentBound": true,
+        "reusedPulse": true,
+        "preflightBeforeWorldWrite": true,
+        "userMemoryPreserved": true,
+        "productionAccess": false,
+        "eligibleForReward": false,
+        "eligibleForP2P": false
+      },
+      "legacy": {
+        "kind": "legacy-compiled-http-acceptance",
+        "isolated": true,
+        "productionAccess": false,
+        "results": [
+          {
+            "name": "living",
+            "exitCode": 0
+          },
+          {
+            "name": "learning",
+            "exitCode": 0
+          },
+          {
+            "name": "liveness",
+            "exitCode": 0
+          }
+        ]
+      },
+      "diagnostics": {
+        "suite": "local-diagnostics-http",
+        "ownerReadGuard": true,
+        "ownerWriteGuard": true,
+        "streamByteLimit": true,
+        "schema": true,
+        "origin": true,
+        "ack": true,
+        "jsonlReadback": true,
+        "rateLimit": true,
+        "retention": true,
+        "diagnosticsReadOnly": true,
+        "pulsePersistence": true,
+        "pulseRetry": true,
+        "pulseConcurrentViewers": 12,
+        "pulseNoDuplicateAudit": true,
+        "pulsePause": true,
+        "healthSchemaBatch": true,
+        "bulkReplay": true,
+        "memoryBackfill": true,
+        "productionAccess": false
+      }
+    },
+    "priorControls": {
+      "source": "c6e23e987488a859fa508de2338a3e3610fc2b96",
+      "cityCases": 2,
+      "studioCases": 8,
+      "status": "PASS",
+      "scope": "click/zoom/pinch/reset and carried-pet framing. Final release city density/zoom/native draws retested separately; Studio source files unchanged."
+    },
+    "qaConfig": {
+      "status": "PASS",
+      "worker": "ai-living-qa",
+      "d1": "ai_living_qa",
+      "databaseId": "21347bba-caaf-4ba5-9d80-d849958192d1",
+      "ownerAccessPreserved": true,
+      "crons": [
+        "*/5 * * * *"
+      ],
+      "scheduler": true,
+      "sitesOriginAndLocalAdminAbsent": true,
+      "h6": {
+        "suite": "qa-h6-shadow-release",
+        "mode": "shadow-only",
+        "liveScenarios": 41,
+        "shadowScenarios": 96,
+        "sha256": "3b3cf7a0e0db902c006766f4e2f23927562d5581247ff08b701575b7d35e0267",
+        "runtimeModelActivated": false,
+        "qaD1Writes": 0,
+        "passed": true
+      }
+    }
   },
   "limitations": [
     "Only appropriate reviewed portable models are imported; raw ZIP2–4, static construction poses and UE-only files are not live actors.",
     "Browser proof will be loopback synthetic transport/SwiftShader, not remote authenticated or physical GPU/24h soak.",
     "No runtime prior/LLM weight promotion, no own experience inferred from graphics.",
     "Original ZIP backup outside workspace remains a separate blocked task."
-  ]
+  ],
+  "qaSource": "8153f2fca8f01dc551a6d46d981b07864c49965d",
+  "workImplementation": "423c6af",
+  "completedAtUtc": "2026-10-29T18:15:10.822456+00:00",
+  "cloudflareBuild": {
+    "checks": [
+      {
+        "completed_at": "2026-10-29T18:11:16Z",
+        "conclusion": "success",
+        "details_url": "https://dash.cloudflare.com/966c7ceee358485648b935a07877ec45/workers/services/view/ai-living-qa/production/builds/59810f97-878e-4c10-8873-0da178c8bc98",
+        "id": 123640032060,
+        "name": "Workers Builds: ai-living-qa",
+        "started_at": "2026-10-29T18:11:16Z",
+        "status": "completed"
+      }
+    ],
+    "total": 1
+  },
+  "nativeDeploymentReadback": false,
+  "authenticatedRemoteBrowser": false,
+  "screenshots": "docs/screenshots/neighborhood/manifest.json",
+  "plantAccounting": {
+    "newModelPlacements": 338,
+    "replacedLegacyPlanterClumps": 44,
+    "netAdditionalPlantInstances": 294,
+    "existingTreeTrunksPreserved": 103
+  },
+  "fixedDuringAcceptance": [
+    {
+      "issue": "Native single material was converted to an array without geometry groups, yielding no render items despite valid pose/bounds.",
+      "fix": "Preserve material shape; assert drawable meshes and require all8 native animals to produce actual render callbacks in browser.",
+      "source": "423c6af"
+    },
+    {
+      "issue": "Native tree lower branches exceeded the reserved low-body envelope; default crowd slicing used only60 of69 available resident slots.",
+      "fix": "Canopy starts above26unit,2.6unit trunk remains inside3x3 footprint; use full bounded72human viewer and retain selected/core/speakers.",
+      "source": "8c6295b"
+    },
+    {
+      "issue": "Old fauna test import broke after fallback module rename.",
+      "fix": "Point fallback regression at renamed module; retain assertions and add native rig/draw coverage.",
+      "source": "832e010"
+    }
+  ],
+  "preview": {
+    "stopped": true,
+    "fixturesRetained": [
+      "/tmp/xom-phase-verification-3chw0h",
+      "/tmp/xom-phase-verification-p3Ricu"
+    ],
+    "liveDatabaseWrites": 0
+  }
 }

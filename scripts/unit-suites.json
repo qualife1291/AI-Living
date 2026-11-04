@@ -279,5 +279,8 @@
   ],
   [
     "scripts/test-two-wheel-economy.mjs"
+  ],
+  [
+    "scripts/test-qa-window.mjs"
   ]
 ]

@@ -49,8 +49,23 @@ CLI chỉ đọc hai file tối đa8KiB/file, strict UTF8/schema, từ chối sy
 | `deployment_changed` | Version thay đổi: tách cửa sổ theo version trước khi kết luận. |
 | `state_changed` | Khác environment/birth hoặc counter tụt: cần kiểm nguồn; không reset/repair tự động. |
 | `clock_mismatch` | Tick có timestamp tương lai so với snapshot. |
+| `tick_evidence_mismatch` | Counter và timestamp tick không khớp hoặc timestamp lùi; không kết luận healthy từ bằng chứng này. |
 | `insufficient_window` | Chưa đủ15phút và chưa quan sát tick tiến bộ. |
 | `activity_without_tick_progress` | Đủ15phút, revision tăng nhưng chưa có completed tick trong cửa sổ. |
 | `stalled` | Đủ15phút, unpaused ở hai đầu, chưa thấy completed tick hoặc revision tiến bộ; đây là cảnh báo cần đối chiếu log. |
 
 Hai snapshot không thấy mọi pause/restart ở giữa. `cronAttributionProven=false`, `modelQualityGainProven=false` luôn giữ trong report: row growth không chứng minh gain hoặc nguồn Cron. Muốn xác nhận tự chạy phải ghép **native scheduled outcome + cron_result không coalesced/duplicate + cùng version + D1 tiến bộ**, trong cửa sổ không có browser writes của bài test. Không tự mở Access, tăng tài nguyên, tạo Cron hay reset dữ liệu để làm report xanh.
+
+## Đối chiếu cửa sổ Cron, lỗi và H6
+
+Sau khi đã lấy hai snapshot và export các custom record `xom-system-log-v1` thành NDJSON, chạy:
+
+```bash
+node scripts/audit-qa-window.mjs before.json after.json custom-logs.ndjson
+```
+
+Chỉ đọc file local: snapshot tối đa8KiB, NDJSON tối đa4MiB/10.000record, UTF8 nghiêm ngặt; từ chối symlink leaf, directory/FIFO, không HTTP/DB/credential/scheduler. Export mỗi custom JSON record một dòng theo thứ tự thời gian, tách khỏi envelope platform; không đưa log có payload riêng tư vào Git.
+
+Report `xom-qa-window-v1` tổng hợp delta tick/turn/sample, số Cron hoàn tất/coalesced/duplicate/lỗi/thiếu bằng chứng, latency từng stage p50/p95/max, lỗi HTTP/auth/throttle và lượt H6 evaluate/model-used/blocked/changed/errors. Chỉ ghép cùng Worker version **khác null** và request ID; một Cron hoàn tất phải có đủ ba stage200 đúng thứ tự rồi result200 với duplicate/coalesced=false. Record trùng, version khác hoặc thiếu stage không được tính thành thành công. Latency là wall time, không phải CPU; không cộng/average percentile của các invocation H6.
+
+`correlated_progress` nghĩa D1 tick tiến và exported log có pipeline khớp trong cửa sổ; `attention_required` chỉ ra lỗi/fence/thiếu bằng chứng; `insufficient_evidence` không đồng nghĩa hệ thống dừng. Exit0 chỉ là input hợp lệ, phải đọc status. Không có log H6 hoặc model-used=0 không chứng minh scorer chạy. File export không tự xác minh nguồn, nên native scheduler attribution và model quality luôn false; vẫn cần native scheduled/deployment/D1 readback và bài đánh giá riêng. Đây là công cụ kiểm tra thủ công, chưa là monitor chạy nền hay soak24h.

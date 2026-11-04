@@ -38,9 +38,14 @@ export function compareProgress(beforeValue: unknown, afterValue: unknown) {
   const deltas={revision:after.revision-before.revision,turns:after.turns-before.turns,
     experiences:after.experiences-before.experiences,policies:after.policies-before.policies,completedTicks:after.completedTicks-before.completedTicks};
   const lastTickMs=after.lastTickFinishedAt?Date.parse(after.lastTickFinishedAt):null;
-  const clockMismatch=lastTickMs!==null&&lastTickMs>Date.parse(after.observedAt);
+  const beforeTickMs=before.lastTickFinishedAt?Date.parse(before.lastTickFinishedAt):null;
+  const clockMismatch=(lastTickMs!==null&&lastTickMs>Date.parse(after.observedAt))||
+    (beforeTickMs!==null&&beforeTickMs>Date.parse(before.observedAt));
+  const tickEvidenceMismatch=[before,after].some(s=>(s.completedTicks===0)!==(s.lastTickFinishedAt===null))||
+    (beforeTickMs!==null&&(lastTickMs===null||lastTickMs<beforeTickMs))||
+    (deltas.completedTicks===0&&before.lastTickFinishedAt!==after.lastTickFinishedAt);
   const stateChanged=before.environment!==after.environment||before.worldBorn!==after.worldBorn||Object.values(deltas).some(x=>x<0);
-  const status=stateChanged?'state_changed':clockMismatch?'clock_mismatch':before.version!==after.version?'deployment_changed':
+  const status=stateChanged?'state_changed':clockMismatch?'clock_mismatch':tickEvidenceMismatch?'tick_evidence_mismatch':before.version!==after.version?'deployment_changed':
     before.paused!==after.paused?'pause_changed':after.paused?'paused':
     deltas.completedTicks>0&&lastTickMs!==null&&lastTickMs>=Date.parse(before.observedAt)?'ticks_progressing':
     elapsedMs<STALL_WINDOW_MS?'insufficient_window':deltas.revision>0?'activity_without_tick_progress':'stalled';
