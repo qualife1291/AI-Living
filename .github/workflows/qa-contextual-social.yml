@@ -64,7 +64,9 @@ jobs:
           npm run assets:check
           node scripts/test-neighborhood.mjs
       - name: Build app for loopback-only visual QA
-        run: npm run build
+        run: |
+          npm run build
+          node scripts/test-evening-api.mjs
       - name: Install isolated browser test dependencies
         run: |
           sudo apt-get update -qq
