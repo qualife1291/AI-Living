@@ -16,7 +16,7 @@ const literal: Record<string, InteriorAction> = {
 export function interiorAction(kind: string, activity: string): InteriorAction {
   const a = activity.toLocaleLowerCase('vi');
   const patterns: [RegExp, InteriorAction][] = [
-    [/tủ lạnh/i,'fridge'],[/xem tivi|xem tv|truyền hình/i,'watch-tv'],[/xem phim|rạp phim/i,'watch-film'],
+    [/tủ lạnh/i,'fridge'],[/xem tivi|xem tv|truyền hình/i,'watch-tv'],[/xem phim|rạp phim/i,'watch-film'],[/nhậu|nhâm nhi/i,'drink'],
     [/ngủ|chợp mắt|đi ngủ|sleep/i,'sleep'],
     [/rửa bát|rửa chén|lau chén|rửa ly|úp khô/i,'wash'],
     [/tỉa cành|trồng hạt|tưới cây|đất|cây trồng/i,'garden'],
