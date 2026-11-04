@@ -20,7 +20,7 @@ with sync_playwright() as p:
     fixture['serverNow']=datetime.datetime.now(datetime.timezone.utc).isoformat()
     r.fulfill(status=200,content_type='application/json',body=json.dumps(fixture))
    page.route('**/api/world*',respond)
-   for scene in ['night','sleep','tv','fridge','cinema']:
+   for scene in ['night','sleep','tv','fridge','cinema','dinner','friends','sidewalk']:
     fixture=json.loads(subprocess.check_output(['node','scripts/evening-preview-fixture.mjs',scene],cwd=root,text=True))
     page.goto(base,wait_until='domcontentloaded',timeout=60000)
     city=page.locator('.three-canvas[data-ready="true"]');city.wait_for(timeout=90000)
@@ -29,14 +29,14 @@ with sync_playwright() as p:
      assert 'sạc pin' not in page.locator('body').inner_text().lower()
      page.screenshot(path=str(out/('night-'+label+'.png')))
      report.append({'scene':scene,'viewport':label,'cityActors':int(city.get_attribute('data-actors')),'nightLabel':fixture['weatherState']['label']});continue
-    place='Rạp phim' if scene=='cinema' else 'Phòng An'
+    place='Rạp phim' if scene=='cinema' else 'Nhà hàng' if scene in ('dinner','friends') else 'Phố đi bộ' if scene=='sidewalk' else 'Phòng An'
     page.get_by_role('button',name='Địa điểm',exact=True).click()
     page.locator('.venue-grid button').filter(has_text=place).click()
     host=page.locator('.interior-canvas')
     expected={'sleep':'bed-','tv':'sofa-seat-','cinema':'cinema-seat-'}.get(scene)
     page.wait_for_function('''({scene,expected})=>{
       const e=document.querySelector('.interior-canvas'),a=JSON.parse(e?.dataset.interiorModels||'[]').find(a=>a.id==='an');
-      return a?.draws>0&&(scene==='fridge'?a.action==='fridge':a.support?.startsWith(expected));
+      return a?.draws>0&&(expected?a.support?.startsWith(expected):scene==='fridge'?a.action==='fridge':scene==='friends'?a.action==='drink'&&a.prop==='cup/basic':a.action==='eat');
     }''',arg={'scene':scene,'expected':expected},timeout=60000)
     if scene in ('tv','cinema','fridge'):
      page.wait_for_function('''scene=>{const a=JSON.parse(document.querySelector('.interior-canvas')?.dataset.interiorAppliances||'{}');return scene==='fridge'?a.fridgeOpen:a.screenOn}''',arg=scene,timeout=15000)

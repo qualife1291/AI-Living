@@ -7,7 +7,7 @@ export const isEveningAction=(id:string)=>eveningActions.some(s=>s.id===id);
 export function runtimeTitle(s:Scenario){return s.id==='rest-home'?'Về nhà nằm ngủ trên giường':s.title;}
 export function runtimePlace(s:Scenario,id:string):Scenario['place']{return ['rest-home','sleep-night','watch-tv','home-snack'].includes(s.id)?homePlace(id):s.place;}
 export function eveningDuration(s:Scenario,id:string,hour:number){
-  if(s.id==='sleep-night')return Math.round(Math.max(.5,((sleepSchedule(id).wake-hour+24)%24))*3600);
+  if(s.id==='sleep-night')return hour>=7&&hour<20?3600:Math.round(Math.max(.5,((sleepSchedule(id).wake-hour+24)%24))*3600);
   return ({'night-cinema':5400,'watch-tv':2700,'evening-dinner':1800,'friends-supper':2400,'evening-tea':1500,'sidewalk-supper':1200,'late-promenade':1200,'home-snack':720} as Record<string,number>)[s.id];
 }
 /** Live-only chooser. Frozen41-arm studies remain unchanged; night actions
@@ -16,7 +16,7 @@ export function chooseEveningLife(agent:AgentLearning,id:string,context:RealCont
   if(agent.health<65)return scenarios.find(s=>s.id==='rehabilitate')!;
   if(agent.energy<28)return eveningActions.find(s=>s.id==='sleep-night')!;
   if(isSleepHour(id,context.hour)&&agent.hunger<=72)return eveningActions.find(s=>s.id==='sleep-night')!;
-  if(context.hour>=7&&context.hour<18)return day();
+  if(context.hour>=7&&context.hour<18){const choice=day();return choice.id==='rest-home'?eveningActions.find(s=>s.id==='sleep-night')!:choice;}
   let candidates=eveningActions.filter(s=>s.id!=='sleep-night');
   if(agent.hunger>60)candidates=candidates.filter(s=>['evening-dinner','sidewalk-supper','home-snack'].includes(s.id));
   const rain=context.weather.status==='fresh'&&(context.weather.precipitation??0)>0;

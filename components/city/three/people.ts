@@ -49,7 +49,7 @@ export function createPeople(scene:THREE.Scene,capacity:number,library:Pick<Asse
     const appearance=world.living?.appearances?.[actor.id]??defaultAppearance(actor.id,core?.role??npc?.roleId);
     if(batch){const time=kind==='cycle'?(actor.bicycle?.distance??0)/3:actor.walking?motion.phase(actor.id)/(Math.PI*2)*batch.period:seconds;batch.add(actor.id,actor.position,yaw,time,appearance,motion.lift(actor.id));heads.set(actor.id,batch.head(time,actor.position,yaw).add(new THREE.Vector3(0,motion.lift(actor.id),0)));assignments.set(actor.id,batch.modelId);
      const propKind=actorActionKind(actor);
-     if(_camera.position.distanceTo(new THREE.Vector3(actor.position[0],groundElevation(...actor.position)+8,actor.position[1]))<300&&!actor.walking&&!actor.bicycle&&(hasHandProp(actor.kind)||['cook','soccer','swim','lantern'].includes(propKind))){
+     if(_camera.position.distanceTo(new THREE.Vector3(actor.position[0],groundElevation(...actor.position)+8,actor.position[1]))<300&&!actor.walking&&!actor.bicycle&&(hasHandProp(actor.kind)||['cook','soccer','swim','lantern','cup'].includes(propKind))){
       let prop=props.get(actor.id);if(prop?.kind!==propKind){if(prop)release(prop.group);const group=simpleProp(propKind,library);group.traverse(o=>{if((o as THREE.Mesh).isMesh)o.userData.actorId=actor.id;});scene.add(group);prop={kind:propKind,group};props.set(actor.id,prop);}
       prop.group.visible=true;placeActionProp(prop.group,propKind,batch.height,yaw,new THREE.Vector3(actor.position[0],groundElevation(...actor.position),actor.position[1]),{left:batch.hand('left',time,actor.position,yaw).add(new THREE.Vector3(0,motion.lift(actor.id),0)),right:batch.hand('right',time,actor.position,yaw).add(new THREE.Vector3(0,motion.lift(actor.id),0))},time);
      }

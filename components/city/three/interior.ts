@@ -49,7 +49,7 @@ export function createInterior(host: HTMLDivElement, venue: string, floor: numbe
   for (let x = -7; x < 8; x += 1) box(x, .015, 0, .018, .025, 12, "#b7a78f");
   // Window mullions and a luminous courtyard beyond the rear wall.
   for (let i = 0; i < 3; i++) { box(-5 + i * 3.4, 3.3, -5.84, 2.8, 2.6, .12, "#86b4c0"); box(-5 + i * 3.4, 3.3, -5.7, .08, 2.7, .1, "#f6ecd7"); }
-  function chair(x: number, z: number, back = true) { box(x, .9, z, .9, .2, .9, "#467b77"); if (back) box(x, 1.5, z - .4, .9, 1, .15, "#467b77"); for (const dx of [-.32, .32]) for (const dz of [-.32, .32]) box(x + dx, .4, z + dz, .08, .8, .08, "#594a3a"); }
+  function chair(x: number, z: number, back = true, reverse=false) { box(x, .9, z, .9, .2, .9, "#467b77"); if (back) box(x, 1.5, z + (reverse?.4:-.4), .9, 1, .15, "#467b77"); for (const dx of [-.32, .32]) for (const dz of [-.32, .32]) box(x + dx, .4, z + dz, .08, .8, .08, "#594a3a"); }
   if (kind === "home") {
     // A residential cutaway: two distinct beds with pillows/duvets, wardrobes,
     // low drawers and a bedside light. Furniture is visual only; sleep and
@@ -70,7 +70,7 @@ export function createInterior(host: HTMLDivElement, venue: string, floor: numbe
     box(2.75,1.45,3.7,1.6,.12,1.6,"#d9c5a6");
     box(2.75,1.84,3.7,.50,.72,.5,"#edcb7e");
   } else if(kind==='cinema'){
-    for(let i=0;i<8;i++){const [x,,z]=cinemaSeat(i);chair(x,z);}
+    for(let i=0;i<8;i++){const [x,,z]=cinemaSeat(i);chair(x,z,true,true);}
   } else {
     for (let row = 0; row < 2; row++) for (let col = 0; col < 2; col++) {
       const x = -4 + col * 4.5, z = -1.8 + row * 4.2;
