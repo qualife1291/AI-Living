@@ -146,7 +146,8 @@ test('planner preserves money and memories, and keeps normal night turns quiet',
     assert.equal(after.money, person.money);
     assert.deepEqual(after.memories, person.memories);
   }
-  const night = planLivingTurn(w, { ...context, hour: 23 }, now);
+  const nightWorld={...w,clock:{scale:1,pausedAt:null,pausedMs:0,anchors:[{realMs:now,simMs:23*3600000,scale:1}]}};
+  const night = planLivingTurn(nightWorld, { ...context, hour: 23 }, now);
   assert.equal(night.turn.dialogue.length, 0);
   assert.equal(night.turn.location, 'Phòng An');
 });
