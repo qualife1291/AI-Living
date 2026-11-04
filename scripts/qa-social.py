@@ -170,7 +170,9 @@ with sync_playwright() as p:
    canvas.wait_for(timeout=45000)
    page.wait_for_function("""() => {
      const e=document.querySelector('.interior-canvas');
-     return e && Number(e.dataset.interiorVenueCount)>=1 && e.querySelector('canvas');
+     const models=JSON.parse(e?.dataset.interiorModels||'[]');
+     return e && Number(e.dataset.interiorVenueCount)>=1 && e.querySelector('canvas') &&
+       models.length>=1 && models.every(a=>a.modelId.startsWith('supplied/')&&a.draws>0);
    }""",timeout=45000)
    residents=json.loads(canvas.get_attribute('data-interior-residents'))
    assert residents and all(v['action'] for v in residents),residents
