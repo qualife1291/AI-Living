@@ -11,7 +11,7 @@ import { crowdAt } from "@/lib/living/engine";
 import type { World } from "@/lib/world";
 
 export type InteriorCamera = 'wide' | 'follow' | 'overhead';
-export function createInterior(host: HTMLDivElement, venue: string, floor: number, world: () => World, offset: number, options: {camera:InteriorCamera; focusId?:string} = {camera:'wide'}) {
+export function createInterior(host: HTMLDivElement, venue: string, floor: number, world: () => World, offset: number|(()=>number), options: {camera:InteriorCamera; focusId?:string} = {camera:'wide'}) {
   const renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
   renderer.setPixelRatio(Math.min(devicePixelRatio, 1.5));
   renderer.outputColorSpace = THREE.SRGBColorSpace;
@@ -120,7 +120,8 @@ export function createInterior(host: HTMLDivElement, venue: string, floor: numbe
     resize();
     if (lastWidth < 2 || lastHeight < 2) return;
     last = stamp;
-    const w = world(), now = Date.now() + offset, sim = computeSimMs(w.born, w.clock, now) / 1000, phase = interiorPhase(sim), daylight = worldTime(w, now).daylight;
+    const w = world(), now = Date.now() + (typeof offset==='function'?offset():offset), sim = computeSimMs(w.born, w.clock, now) / 1000, phase = interiorPhase(sim), daylight = worldTime(w, now).daylight;
+    host.dataset.interiorPoseClock=sim.toFixed(3);
     key.intensity = 1.2 + daylight * 2.8; hemi.intensity = 1.3 + daylight;
     cabin.position.y = (phase.liftY - floor) * 3.3; cabin.visible = Math.abs(cabin.position.y) < 3.5;
     const slide = phase.doorsOpen ? .75 : 0; doorL.position.x = 4.5 - slide; doorR.position.x = 5.6 + slide;

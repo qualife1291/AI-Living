@@ -11,20 +11,22 @@ export function InteriorView({ world, venue, clockOffset = 0, focusActorId = "" 
   world: World; venue: string; clockOffset?: number; focusActorId?: string;
 }) {
   const host = useRef<HTMLDivElement>(null), latest = useRef(world);
+  const latestOffset=useRef(clockOffset);
   const [floor, setFloor] = useState(0), [failed, setFailed] = useState(false);
   const [camera, setCamera] = useState<InteriorCamera>("wide"), [selected, setSelected] = useState("");
   const focus = selected || focusActorId;
   useEffect(() => { latest.current = world; }, [world]);
+  useEffect(() => { latestOffset.current = clockOffset; }, [clockOffset]);
   useEffect(() => {
     let stop: (() => void) | undefined, cancelled = false;
     import("./three/interior").then(({ createInterior }) => {
       if (cancelled || !host.current) return;
       try {
-        stop = createInterior(host.current, venue, floor, () => latest.current, clockOffset, {camera,focusId:focus});
+        stop = createInterior(host.current, venue, floor, () => latest.current, () => latestOffset.current, {camera,focusId:focus});
       } catch { setFailed(true); }
     }).catch(() => { if(!cancelled)setFailed(true); });
     return () => { cancelled = true; stop?.(); };
-  }, [venue, floor, clockOffset, camera, focus]);
+  }, [venue, floor, camera, focus]);
   const clock = useLifeClock(world.paused, clockOffset);
   const now = clock ?? Date.parse(world.born);
   const present = [...actorsAt(world, now), ...(world.living ? crowdAt(world.living, world, now) : [])]
