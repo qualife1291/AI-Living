@@ -1,0 +1,154 @@
+{
+  "schema": "xom-evening-screenshots-v1",
+  "sourceCommit": "5362454025dd1e7efa13d9011a85f8be8b643252",
+  "date": "2026-11-04",
+  "timezone": "Asia/Ho_Chi_Minh",
+  "renderer": "Chromium SwiftShader",
+  "scope": "Actual compiled loopback Worker; synthetic fixtures and intercepted API writes, not authenticated remote QA or AI-generated images.",
+  "images": [
+    {
+      "file": "cinema-desktop.png",
+      "sha256": "b1f74b5bbf51b95b457e11df93dea5bc4aab158e5f06c3af9ace0105672963db",
+      "bytes": 29561,
+      "pixels": [
+        558,
+        361
+      ]
+    },
+    {
+      "file": "cinema-mobile.png",
+      "sha256": "e5604bfb6b8eeae18a9716154008b8d368fd09360b6c2e52f4c423d8f699c086",
+      "bytes": 21327,
+      "pixels": [
+        310,
+        281
+      ]
+    },
+    {
+      "file": "dinner-desktop.png",
+      "sha256": "3e869675e2522a889eede54b8898d2be436fcb3c5b37ca7778180ab05a1d1b9a",
+      "bytes": 32512,
+      "pixels": [
+        558,
+        361
+      ]
+    },
+    {
+      "file": "dinner-mobile.png",
+      "sha256": "a6afdd94f2518c8d4f6c7b58d8b508aa8db3d7c45b205e0888f40789677741bc",
+      "bytes": 22622,
+      "pixels": [
+        310,
+        281
+      ]
+    },
+    {
+      "file": "fridge-desktop.png",
+      "sha256": "9dd0ebddd4f4495f1f5ccca25d30670402d2e05f421619ab9cc311a48e8e3b30",
+      "bytes": 32091,
+      "pixels": [
+        558,
+        361
+      ]
+    },
+    {
+      "file": "fridge-mobile.png",
+      "sha256": "6b3b2d49d432c15e1699cb28378b54475c669b8901b1c144d02a771423a15769",
+      "bytes": 22849,
+      "pixels": [
+        310,
+        281
+      ]
+    },
+    {
+      "file": "friends-desktop.png",
+      "sha256": "70d043728b66bfbd396e27c13b82cc36eeea3a69c84b98fa1bf4df3dfad11578",
+      "bytes": 32811,
+      "pixels": [
+        558,
+        361
+      ]
+    },
+    {
+      "file": "friends-mobile.png",
+      "sha256": "5563deec62edb2f5e99b33f879fde2da9234420202e34bd131cda29eb59a24f0",
+      "bytes": 22839,
+      "pixels": [
+        310,
+        281
+      ]
+    },
+    {
+      "file": "night-desktop.png",
+      "sha256": "46e48d7249dc1036aed29f618d51ec5fd2f74113a3f485bedfbd2a9b2c5b11e3",
+      "bytes": 167110,
+      "pixels": [
+        1440,
+        900
+      ]
+    },
+    {
+      "file": "night-mobile.png",
+      "sha256": "e9b35f0db5fc4d741b835875feed14ace3eab1f7738b81460299d663a93d73b7",
+      "bytes": 56593,
+      "pixels": [
+        390,
+        844
+      ]
+    },
+    {
+      "file": "sidewalk-desktop.png",
+      "sha256": "e7f6745f89515fc9a98951b741549821c09115c2f13035894b6744b6145446a9",
+      "bytes": 25130,
+      "pixels": [
+        558,
+        361
+      ]
+    },
+    {
+      "file": "sidewalk-mobile.png",
+      "sha256": "72c9fbb84ae485619d9553094b21f6abc071bbed6ba594e7ede4b755765e57d1",
+      "bytes": 17669,
+      "pixels": [
+        310,
+        281
+      ]
+    },
+    {
+      "file": "sleep-desktop.png",
+      "sha256": "49a3824922b2379e115401a7dac12f9fcf52cd3f9451ab037fb7d33f4b2c7c7d",
+      "bytes": 32467,
+      "pixels": [
+        558,
+        361
+      ]
+    },
+    {
+      "file": "sleep-mobile.png",
+      "sha256": "cb48a64c8bddb9c36166290095306a38bdff7ac4883392c3d4ab4803a08e5d0e",
+      "bytes": 23051,
+      "pixels": [
+        310,
+        281
+      ]
+    },
+    {
+      "file": "tv-desktop.png",
+      "sha256": "a57280f10f9253d230b97ef20b80570fb16bda59ad0d1edb90b3bd26d72dd6f5",
+      "bytes": 31784,
+      "pixels": [
+        558,
+        361
+      ]
+    },
+    {
+      "file": "tv-mobile.png",
+      "sha256": "988ea3ef81575ea76675f50ea722ccf74baca02b0cef832fdd614853b92d2e98",
+      "bytes": 22691,
+      "pixels": [
+        310,
+        281
+      ]
+    }
+  ]
+}

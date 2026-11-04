@@ -12,6 +12,8 @@ QA riêng với Sites A production và Cloudflare staging. `work` là nguồn t�
 | QA 4e010d1 | Đã nhận8commit mới đến375ad38 (103action QA/traffic/interior, signed H6 scorer/canary OFF), Ops window audit và sửa telemetry H6.95/95suite/type/assets/exact build/compiled API đạt; CF build5d6699c1 success. CI browser375ad38 đã review ảnh; CI browser4e đang chạy lúc ghi evidence. Deploy Actions skip native metadata; chưa authenticated remote/version/D1/Cron readback. [Review](validation/qa-review-2026-11-04.json). |
 | QA b85ae9b | Native interior/clock-poll lifecycle:96/96suite,10browser local/8ảnh thật, compiled progress API đạt. CF build0f038ae7 success vàCloudflare check App báo version8a194150-83bc-4b74-9df2-897e777d89cd cho đúngSHA. Đây là platform-reported version, chưa traffic100%/env/D1/Cron/authenticated runtime readback. CI4e về sau đãsuccess; CI mới xem [evidence](validation/interior-native-2026-11-04.json). |
 
+QA hiện tại **5362454**: đời sống tối/giấc ngủ,9action mới, actual bed/sofa/fridge/TV/cinema/patio và thoại sau22h.97/97suite/type/lint, compiled9posterior và16browser đạt cùng source. Cloudflare App báo build0386d342 success/version9fbf54b5-d7e8-40ae-a240-82496f6dc903; chưa authenticated traffic/env/D1/Cron readback. [Evidence và16ảnh](validation/evening-life-2026-11-04.json).
+
 [Ops evidence](validation/qa-observability-2026-10-29.json) giữ exact SHA/UUID, before/after aggregate và các giới hạn; [graphics evidence](validation/graphics-interactions-2026-10-29.json) giữ acceptance theo source riêng. Không gộp full 78/82 hoặc ảnh local thành một lượt test của bản mới. Native counter growth không chứng minh model gain; authenticated remote browser/GPU/soak/independent review còn chờ.
 
 ## Môi trường cố định

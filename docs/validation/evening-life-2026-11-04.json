@@ -1,0 +1,677 @@
+{
+  "schema": "xom-evening-life-acceptance-v1",
+  "status": "LOCAL_ACCEPTED_CLOUDFLARE_BUILD_SUCCESS_RUNTIME_READBACK_PENDING",
+  "date": "2026-11-04",
+  "timezone": "Asia/Ho_Chi_Minh",
+  "observedAt": "2026-11-04T16:10:24.984101+00:00",
+  "source": {
+    "workImplementation": "3b50ccb3d2fefe19f5e29b9ca3cdbc397b4c2413",
+    "qaRelease": "5362454025dd1e7efa13d9011a85f8be8b643252",
+    "previousQa": "e642d65d189f696063037958512d0a7ad265a6a5",
+    "productionUnchanged": true
+  },
+  "behavior": {
+    "newActions": [
+      {
+        "id": "sleep-night",
+        "title": "Về nhà nằm ngủ trên giường",
+        "place": "Khu dân cư",
+        "kind": "rest",
+        "tag": "evening-rest",
+        "transport": "walk",
+        "energy": 18,
+        "hunger": 4,
+        "skill": 0,
+        "adultOnly": true
+      },
+      {
+        "id": "evening-dinner",
+        "title": "Đi ăn tối tại nhà hàng",
+        "place": "Nhà hàng",
+        "kind": "eat",
+        "tag": "evening-eat",
+        "transport": "walk",
+        "energy": 4,
+        "hunger": -24,
+        "skill": 0,
+        "adultOnly": true
+      },
+      {
+        "id": "sidewalk-supper",
+        "title": "Ăn món nóng ở vỉa hè phố đi bộ",
+        "place": "Phố đi bộ",
+        "kind": "eat",
+        "tag": "evening-eat",
+        "transport": "walk",
+        "energy": 2,
+        "hunger": -20,
+        "skill": 0,
+        "adultOnly": true
+      },
+      {
+        "id": "evening-tea",
+        "title": "Ngồi uống trà và trò chuyện buổi tối",
+        "place": "Quán cà phê",
+        "kind": "drink",
+        "tag": "evening-drink",
+        "transport": "walk",
+        "energy": 2,
+        "hunger": -4,
+        "skill": 0,
+        "adultOnly": true
+      },
+      {
+        "id": "friends-supper",
+        "title": "Nhậu cùng bạn, nhâm nhi và ăn món chung",
+        "place": "Nhà hàng",
+        "kind": "social",
+        "tag": "evening-social",
+        "transport": "walk",
+        "energy": -3,
+        "hunger": -12,
+        "skill": 0,
+        "adultOnly": true
+      },
+      {
+        "id": "night-cinema",
+        "title": "Đi xem phim buổi tối ở rạp",
+        "place": "Rạp phim",
+        "kind": "play",
+        "tag": "evening-play",
+        "transport": "walk",
+        "energy": -3,
+        "hunger": 3,
+        "skill": 0,
+        "adultOnly": true
+      },
+      {
+        "id": "watch-tv",
+        "title": "Ngồi trên sofa xem tivi ở nhà",
+        "place": "Khu dân cư",
+        "kind": "rest",
+        "tag": "evening-rest",
+        "transport": "walk",
+        "energy": 6,
+        "hunger": 2,
+        "skill": 0,
+        "adultOnly": true
+      },
+      {
+        "id": "late-promenade",
+        "title": "Dạo vỉa hè, ngắm phố và gặp bạn",
+        "place": "Phố đi bộ",
+        "kind": "social",
+        "tag": "evening-social",
+        "transport": "walk",
+        "energy": -3,
+        "hunger": 2,
+        "skill": 0,
+        "adultOnly": true
+      },
+      {
+        "id": "home-snack",
+        "title": "Lấy đồ ăn nhẹ từ tủ lạnh",
+        "place": "Khu dân cư",
+        "kind": "eat",
+        "tag": "evening-eat",
+        "transport": "walk",
+        "energy": 2,
+        "hunger": -12,
+        "skill": 0,
+        "adultOnly": true
+      }
+    ],
+    "legacyCatalog": 41,
+    "qaDayCatalog": 103,
+    "qaRuntimeIncludingNight": 112,
+    "bedtimeRange": "22:45–00:45, stable by actor ID",
+    "wakeRange": "06:00–07:00",
+    "durationMinutes": {
+      "sleep": "until personal wake time; daytime nap60",
+      "cinema": 90,
+      "tv": 45,
+      "dinner": 30,
+      "friendsSupper": 40,
+      "tea": 25,
+      "sidewalkSupper": 20,
+      "promenade": 20,
+      "homeSnack": 12
+    },
+    "needsRecovery": "Only overlapping home sleep plan time, after same walking projection plus30s settling; no automatic22h recovery. Reward authority remains simulation-plan-time-v1.",
+    "adoption": "lifeScheduleVersion1 on successful unpaused living turn; no GET bootstrap or new scheduler",
+    "preserved": [
+      "IDs",
+      "world.born",
+      "memories/history",
+      "home",
+      "petOwners",
+      "personal policies",
+      "unfinished plans",
+      "custom population settings"
+    ],
+    "physicalReceiptsCreated": false,
+    "old41AndH6CatalogUnchanged": true,
+    "decisionClock": "Simulation hour, same as visible daylight; original provider context is retained in turn.context; mismatch regression tested.",
+    "nightDialogue": "Version1 public awake eating/drinking/social/exercise actors keep authored conversation after22h; quiet homes/sleep/cinema, no active-plan interruption or reward promotion."
+  },
+  "graphics": {
+    "sharedNativeRigs": 5,
+    "bedSupports": 2,
+    "sofaSupports": 2,
+    "cinemaSeats": 8,
+    "diningSeats": 8,
+    "proceduralHomeAppliances": [
+      "fridge with door",
+      "TV with local abstract animation"
+    ],
+    "sidewalk": "open patio cutaway, no enclosed walls or elevator",
+    "boundedControllers": 8,
+    "focusStableForSmallCasts": true,
+    "newThirdPartyAssets": 0
+  },
+  "acceptance": {
+    "unit": {
+      "suite": "unit-summary",
+      "total": 97,
+      "passed": 97,
+      "failed": [],
+      "workers": 4,
+      "seconds": 122.74,
+      "source": "5362454025dd1e7efa13d9011a85f8be8b643252"
+    },
+    "typecheck": "PASS",
+    "lint": {
+      "errors": 0,
+      "preExistingWarnings": 1
+    },
+    "build": {
+      "commit_sha": "5362454025dd1e7efa13d9011a85f8be8b643252",
+      "built_at": "2026-11-04T16:06:05.999842+00:00",
+      "sourceCleanBeforeAndAfterBuild": true,
+      "command": "corepack pnpm build"
+    },
+    "geometryAndBehavior": {
+      "suite": "evening-life",
+      "pass": true,
+      "nightActions": 9,
+      "activeOutdoorsAt2230": 43,
+      "diverseChoices": 8,
+      "personalBedtime": true,
+      "noAutomaticNightRecovery": true,
+      "maxBedHeight": 0.692757681318839,
+      "maxSeatGap": 6.353732762143238e-09,
+      "legacyH6Unchanged": true,
+      "dbWrites": false
+    },
+    "newCompiledD1": {
+      "suite": "evening-api",
+      "pass": true,
+      "compiledWorker": true,
+      "isolatedD1": true,
+      "newActionsSettled": 9,
+      "namespaceEvidence": true,
+      "retries": 3,
+      "duplicateSamples": 0,
+      "identityAndPetOwnersPreserved": true,
+      "productionAccess": false,
+      "physicalCompletionProven": false,
+      "source": "5362454025dd1e7efa13d9011a85f8be8b643252",
+      "personalPosteriorsPersisted": 9
+    },
+    "personalPosteriorsPersisted": 9,
+    "legacyCompiled": [
+      "living",
+      "learning",
+      "liveness"
+    ],
+    "progressCompiled": "PASS;12concurrent/private/no-write/schema503",
+    "otherCompiled": {
+      "source": "d0c28f28267b44e321885576b5e565554bcdae72",
+      "groundAuthority": "PASS;8arrivals/5presence/1encounter/2heard;4rollback;reward/P2Pfalse",
+      "localDiagnostics": "PASS; fixture anchored09h before narrative validation; guards unchanged"
+    },
+    "assets": "PASS;308approved/42lossless gzip; canonical/license files unchanged",
+    "browser": [
+      {
+        "scene": "night",
+        "viewport": "desktop",
+        "cityActors": 51,
+        "nightLabel": "Cảnh thử nghiệm buổi tối · mô phỏng"
+      },
+      {
+        "scene": "sleep",
+        "viewport": "desktop",
+        "brightFraction": 0.23177083333333334,
+        "drawCalls": 95,
+        "models": [
+          {
+            "id": "an",
+            "model": "supplied/office",
+            "action": "sleep",
+            "support": "bed-0",
+            "prop": null,
+            "draws": 11
+          }
+        ],
+        "appliances": {
+          "fridgeOpen": false,
+          "screenOn": false,
+          "program": "abstract-local-animation"
+        }
+      },
+      {
+        "scene": "tv",
+        "viewport": "desktop",
+        "brightFraction": 0.23697916666666666,
+        "drawCalls": 103,
+        "models": [
+          {
+            "id": "an",
+            "model": "supplied/office",
+            "action": "watch-tv",
+            "support": "sofa-seat-0",
+            "prop": null,
+            "draws": 9
+          }
+        ],
+        "appliances": {
+          "fridgeOpen": false,
+          "screenOn": true,
+          "program": "abstract-local-animation"
+        }
+      },
+      {
+        "scene": "fridge",
+        "viewport": "desktop",
+        "brightFraction": 0.22981770833333334,
+        "drawCalls": 101,
+        "models": [
+          {
+            "id": "an",
+            "model": "supplied/office",
+            "action": "fridge",
+            "support": null,
+            "prop": "bread/basic",
+            "draws": 10
+          }
+        ],
+        "appliances": {
+          "fridgeOpen": true,
+          "screenOn": false,
+          "program": "abstract-local-animation"
+        }
+      },
+      {
+        "scene": "cinema",
+        "viewport": "desktop",
+        "brightFraction": 0.232421875,
+        "drawCalls": 49,
+        "models": [
+          {
+            "id": "an",
+            "model": "supplied/office",
+            "action": "watch-film",
+            "support": "cinema-seat-0",
+            "prop": null,
+            "draws": 9
+          }
+        ],
+        "appliances": {
+          "fridgeOpen": false,
+          "screenOn": true,
+          "program": "abstract-local-animation"
+        }
+      },
+      {
+        "scene": "dinner",
+        "viewport": "desktop",
+        "brightFraction": 0.24348958333333334,
+        "drawCalls": 52,
+        "models": [
+          {
+            "id": "an",
+            "model": "supplied/office",
+            "action": "eat",
+            "support": "dining-seat-0",
+            "prop": "bread/basic",
+            "draws": 9
+          }
+        ],
+        "appliances": {}
+      },
+      {
+        "scene": "friends",
+        "viewport": "desktop",
+        "brightFraction": 0.24348958333333334,
+        "drawCalls": 56,
+        "models": [
+          {
+            "id": "an",
+            "model": "supplied/office",
+            "action": "drink",
+            "support": "dining-seat-0",
+            "prop": "cup/basic",
+            "draws": 9
+          },
+          {
+            "id": "binh",
+            "model": "supplied/waistcoat",
+            "action": "drink",
+            "support": "dining-seat-1",
+            "prop": "cup/basic",
+            "draws": 9
+          }
+        ],
+        "appliances": {}
+      },
+      {
+        "scene": "sidewalk",
+        "viewport": "desktop",
+        "brightFraction": 0.14127604166666666,
+        "drawCalls": 42,
+        "models": [
+          {
+            "id": "an",
+            "model": "supplied/office",
+            "action": "eat",
+            "support": "dining-seat-0",
+            "prop": "bread/basic",
+            "draws": 9
+          },
+          {
+            "id": "neighbor-47",
+            "model": "supplied/service",
+            "action": "social",
+            "support": null,
+            "prop": null,
+            "draws": 9
+          }
+        ],
+        "appliances": {}
+      },
+      {
+        "scene": "night",
+        "viewport": "mobile",
+        "cityActors": 51,
+        "nightLabel": "Cảnh thử nghiệm buổi tối · mô phỏng"
+      },
+      {
+        "scene": "sleep",
+        "viewport": "mobile",
+        "brightFraction": 0.326171875,
+        "drawCalls": 95,
+        "models": [
+          {
+            "id": "an",
+            "model": "supplied/office",
+            "action": "sleep",
+            "support": "bed-0",
+            "prop": null,
+            "draws": 9
+          }
+        ],
+        "appliances": {
+          "fridgeOpen": false,
+          "screenOn": false,
+          "program": "abstract-local-animation"
+        }
+      },
+      {
+        "scene": "tv",
+        "viewport": "mobile",
+        "brightFraction": 0.333984375,
+        "drawCalls": 103,
+        "models": [
+          {
+            "id": "an",
+            "model": "supplied/office",
+            "action": "watch-tv",
+            "support": "sofa-seat-0",
+            "prop": null,
+            "draws": 10
+          }
+        ],
+        "appliances": {
+          "fridgeOpen": false,
+          "screenOn": true,
+          "program": "abstract-local-animation"
+        }
+      },
+      {
+        "scene": "fridge",
+        "viewport": "mobile",
+        "brightFraction": 0.3229166666666667,
+        "drawCalls": 101,
+        "models": [
+          {
+            "id": "an",
+            "model": "supplied/office",
+            "action": "fridge",
+            "support": null,
+            "prop": "bread/basic",
+            "draws": 9
+          }
+        ],
+        "appliances": {
+          "fridgeOpen": true,
+          "screenOn": false,
+          "program": "abstract-local-animation"
+        }
+      },
+      {
+        "scene": "cinema",
+        "viewport": "mobile",
+        "brightFraction": 0.3307291666666667,
+        "drawCalls": 49,
+        "models": [
+          {
+            "id": "an",
+            "model": "supplied/office",
+            "action": "watch-film",
+            "support": "cinema-seat-0",
+            "prop": null,
+            "draws": 10
+          }
+        ],
+        "appliances": {
+          "fridgeOpen": false,
+          "screenOn": true,
+          "program": "abstract-local-animation"
+        }
+      },
+      {
+        "scene": "dinner",
+        "viewport": "mobile",
+        "brightFraction": 0.33984375,
+        "drawCalls": 52,
+        "models": [
+          {
+            "id": "an",
+            "model": "supplied/office",
+            "action": "eat",
+            "support": "dining-seat-0",
+            "prop": "bread/basic",
+            "draws": 9
+          }
+        ],
+        "appliances": {}
+      },
+      {
+        "scene": "friends",
+        "viewport": "mobile",
+        "brightFraction": 0.33984375,
+        "drawCalls": 56,
+        "models": [
+          {
+            "id": "an",
+            "model": "supplied/office",
+            "action": "drink",
+            "support": "dining-seat-0",
+            "prop": "cup/basic",
+            "draws": 10
+          },
+          {
+            "id": "binh",
+            "model": "supplied/waistcoat",
+            "action": "drink",
+            "support": "dining-seat-1",
+            "prop": "cup/basic",
+            "draws": 10
+          }
+        ],
+        "appliances": {}
+      },
+      {
+        "scene": "sidewalk",
+        "viewport": "mobile",
+        "brightFraction": 0.19921875,
+        "drawCalls": 42,
+        "models": [
+          {
+            "id": "an",
+            "model": "supplied/office",
+            "action": "eat",
+            "support": "dining-seat-0",
+            "prop": "bread/basic",
+            "draws": 10
+          },
+          {
+            "id": "neighbor-47",
+            "model": "supplied/service",
+            "action": "social",
+            "support": null,
+            "prop": null,
+            "draws": 10
+          }
+        ],
+        "appliances": {}
+      }
+    ],
+    "screenshots": "docs/screenshots/evening-life/manifest.json",
+    "rawMetricsSha256": "2b2ab7cb042c2d317f005fb937cc33c08982f815d41f96255ad633fdcb251e1a",
+    "logSha256": {
+      "evening-full-release": "ff2d409b04990f02b91fedf154287b6b3b2f9d799901d3dd46462b9a3fac41eb",
+      "evening-check-release": "8366207267355d3e3d5bf3bf6e8c94c5f93f6078c34f08973fa2b38cdda6cc92",
+      "evening-lint-release": "5e4666e94ab142c1de5fefa88c74d0b617f077ba86e00611b7861147336a2c38",
+      "evening-build-release-final": "637331580b48f63f63a7c3c8b0eafe3b72b1dc7e1a55c189da115157872c716f",
+      "evening-api-release": "724ce28d16db02dad283c0891d383b83f85179853e628f6ac7be680546e88bcf",
+      "evening-legacy-release": "a63a55e5932ac27bca7d66f480b5c9a6f9445d39e314f96a9af47d715721fb29",
+      "evening-progress-release": "ed5f98e14b88b226a0afba31642282efcf1a072a7ed9b6a3d81fbf70ba8c98f0",
+      "evening-ground-release": "28ffc46c35e78ab8cd1e661762acc65ff09830e0e35b208dd8f348f44974adbf",
+      "evening-browser-release": "961896cc1531f7130a65ce03c6fe59529fc0b41651b5f04af60026d1b1d8bed2",
+      "evening-assets-accepted": "7f7e96c2dc9d39162f8823b9ec0895e1fefd1493b721de02b3e652ec5b7cad8e",
+      "evening-final-social-unit": "b44f237a4667d41ed8f73294d6b52d3b8c764697135718d0a939e4a00b84f235",
+      "evening-final-social-check": "8366207267355d3e3d5bf3bf6e8c94c5f93f6078c34f08973fa2b38cdda6cc92",
+      "evening-final-social-lint": "5e4666e94ab142c1de5fefa88c74d0b617f077ba86e00611b7861147336a2c38",
+      "evening-final-social-build": "395a8e4ba03c222b1a30b9f86b350bbb6a9775fd254f176ad467ba3e612a5ff0",
+      "evening-final-social-api": "724ce28d16db02dad283c0891d383b83f85179853e628f6ac7be680546e88bcf",
+      "evening-final-social-diagnostics": "ca71494240bbd068cdf9967c1ef74928b3671833b4d589ec69c2820d077d7eab",
+      "evening-night-social": "649a864787fceb0ba62d370e88e80aa8cf0cfb99de5520ff9ab8ef4ec3b17c9f",
+      "evening-local-release": "ca71494240bbd068cdf9967c1ef74928b3671833b4d589ec69c2820d077d7eab",
+      "evening-final-social-browser": "961896cc1531f7130a65ce03c6fe59529fc0b41651b5f04af60026d1b1d8bed2",
+      "evening-final-social-config": "cb08f0b598bf31a550571923150ad972bfc98fdd3d8219f6167cd41ca7c180d5"
+    },
+    "localDiagnostics": {
+      "source": "5362454025dd1e7efa13d9011a85f8be8b643252",
+      "result": {
+        "suite": "local-diagnostics-http",
+        "ownerReadGuard": true,
+        "ownerWriteGuard": true,
+        "streamByteLimit": true,
+        "schema": true,
+        "origin": true,
+        "ack": true,
+        "jsonlReadback": true,
+        "rateLimit": true,
+        "retention": true,
+        "diagnosticsReadOnly": true,
+        "pulsePersistence": true,
+        "pulseRetry": true,
+        "pulseConcurrentViewers": 12,
+        "pulseNoDuplicateAudit": true,
+        "pulsePause": true,
+        "healthSchemaBatch": true,
+        "bulkReplay": true,
+        "memoryBackfill": true,
+        "productionAccess": false
+      }
+    },
+    "historicalRegressionSource": "d0c28f28267b44e321885576b5e565554bcdae72",
+    "socialNight": {
+      "source": "5362454025dd1e7efa13d9011a85f8be8b643252",
+      "publicAwakeAfter22": true,
+      "legacyQuietHoursPreserved": true,
+      "sleepHomesAndCinemaQuiet": true,
+      "worldMutation": false,
+      "focusedCases": 32,
+      "workFocusedCases": 31
+    },
+    "browserSource": "5362454025dd1e7efa13d9011a85f8be8b643252",
+    "finalBrowser": "PASS;16/16 actual loopback Chromium desktop/mobile"
+  },
+  "reviewFixes": [
+    "Healthy fatigue now sends a resident to sleep; health<65 still prioritizes clinic.",
+    "Canonical rest labels/signatures remain frozen for historical evidence; new live plans use sleep-night and sleep titles.",
+    "Corrected fridge/actor clearance and cinema chair facing.",
+    "Moved TV out of lift/wardrobe occlusion after visual inspection.",
+    "Seated diners face each other at the same table; cup/bread cues match activity.",
+    "Focus no longer swaps seat positions for small casts.",
+    "Planner uses simulated daylight; quiet-night/narrative test fixtures now anchor the intended simulated hour. Provider context is not rewritten.",
+    "Removed blanket22h social curfew only for awake public actors in version1 worlds; sleeping/movie/private/legacy silence retained and tested."
+  ],
+  "localReleaseConfig": {
+    "worker": "ai-living-qa",
+    "d1": "21347bba-caaf-4ba5-9d80-d849958192d1",
+    "crons": [
+      "*/5 * * * *"
+    ],
+    "accessAudiencePresent": true,
+    "shadowEvalEnabled": "false",
+    "canaryEnabled": "false",
+    "killSwitch": "true",
+    "scope": "Generated config validated locally; not native remote readback."
+  },
+  "limits": {
+    "nativeManagementToolsAvailable": false,
+    "nativeTrafficEnvD1CronReadback": false,
+    "authenticatedRemoteBrowser": false,
+    "hardwareGpuOr24hSoak": false,
+    "realDbWritesDuringTests": false,
+    "migrationAdded": false,
+    "newAutomation": false,
+    "modelQualityGainProven": false,
+    "h6Promoted": false,
+    "streamedVideoOrAlcoholInventory": false,
+    "roomProjection": "Bed/seat contacts are actual rendered skin, but illustrative room placement does not establish physical floor/household ownership or productive completion in shared authority.",
+    "screenContent": "Local abstract animation, no external movie/TV stream",
+    "city": "Existing outdoor/navigation projection retained; interior is a separate3D view."
+  },
+  "releaseChecks": [
+    {
+      "name": "Workers Builds: ai-living-qa",
+      "head_sha": "5362454025dd1e7efa13d9011a85f8be8b643252",
+      "status": "completed",
+      "conclusion": "success",
+      "details_url": "https://dash.cloudflare.com/966c7ceee358485648b935a07877ec45/workers/services/view/ai-living-qa/production/builds/0386d342-e8a9-4b6d-9a22-66d3de8c6774",
+      "completed_at": "2026-11-04T16:09:42Z",
+      "cloudflareReportedVersion": "9fbf54b5-d7e8-40ae-a240-82496f6dc903"
+    },
+    {
+      "name": "contextual-social",
+      "head_sha": "5362454025dd1e7efa13d9011a85f8be8b643252",
+      "status": "queued",
+      "conclusion": null,
+      "details_url": "https://github.com/qualife1291/AI-Living/actions/runs/41864331113/job/126694781104",
+      "completed_at": null
+    },
+    {
+      "name": "qa-deploy",
+      "head_sha": "5362454025dd1e7efa13d9011a85f8be8b643252",
+      "status": "queued",
+      "conclusion": null,
+      "details_url": "https://github.com/qualife1291/AI-Living/actions/runs/41864331082/job/126694493512",
+      "completed_at": null
+    }
+  ],
+  "previewStopped": true
+}
