@@ -130,7 +130,8 @@ assert.deepEqual(
   crowdAt(result.state, paused, now),
   crowdAt(result.state, paused, now + 10000),
 );
-const night = planLivingTurn(world, { ...context, hour: 23 }, now);
+const nightWorld={...world,born:'2026-10-24T17:00:00.000Z',clock:{scale:1,pausedAt:null,pausedMs:0,anchors:[{realMs:now,simMs:23*3600000,scale:1}]}};
+const night = planLivingTurn(nightWorld, { ...context, hour: 23 }, now);
 assert.equal(night.turn.location, "Phòng An");
 assert.equal(night.turn.dialogue.length, 0);
 assert.equal(
