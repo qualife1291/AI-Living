@@ -3,7 +3,7 @@ import {seed} from '../lib/world.ts';
 import {initializeLiving,planLivingTurn} from '../lib/living/engine.ts';
 import {realContext} from '../lib/living/realtime.ts';
 const now=Date.parse('2026-10-25T02:00:00Z'),world=structuredClone(seed);
-world.living=initializeLiving(now);world.clock={anchors:[{realMs:now,simMs:9*3600000,scale:1}],scale:1,pausedAt:null,pausedMs:0};
+world.born='2026-10-24T17:00:00.000Z';world.living=initializeLiving(now);world.clock={anchors:[{realMs:now,simMs:9*3600000,scale:1}],scale:1,pausedAt:null,pausedMs:0};
 for(const person of world.people)delete person.plan;
 const context=await realContext(now,{read:async()=>null,write:async()=>{}},async()=>{throw Error('offline fixture');});
 const view={world,living:world.living,context,serverNow:new Date(now).toISOString(),revision:1,turns:[]};
