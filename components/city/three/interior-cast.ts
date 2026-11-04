@@ -44,6 +44,7 @@ export function createInteriorCast(scene:THREE.Scene,library:AssetLibrary){
         const modelId=CORE_MODELS[actor.id]??residentModel(resident?.roleId??role,actor.id);
         request(modelId);request('supplied/props/book');
         let entry=entries.get(actor.id);
+        if(entry&&entry.modelId!==modelId&&library.get(modelId)){remove(actor.id);entry=undefined;}
         if(!entry){const source=library.get(modelId);if(!source)return;
           const avatar=new RiggedAvatar(source,2.6,.85,true);avatar.assignId(actor.id);scene.add(avatar.group);
           entry={avatar,modelId,action:'observe',draws:0};entries.set(actor.id,entry);

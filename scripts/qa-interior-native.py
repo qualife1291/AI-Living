@@ -80,6 +80,7 @@ with sync_playwright() as p:
         for button,mode in [('Theo cư dân','follow'),('Góc trên cao','overhead')]:
             page.locator('.interior-view').get_by_role('button',name=button,exact=True).click()
             host=ready(page);reports.append(capture(page,host,mode+'-'+name))
+        page.evaluate('window.__interiorCanvas=document.querySelector(".interior-canvas canvas")')
         # Owner pause through the existing button and mocked acknowledgement.
         page.get_by_role('button',name='Tạm nghỉ',exact=True).evaluate('(b)=>b.click()')
         page.get_by_role('button',name='Tiếp tục',exact=True).wait_for(timeout=20000)
@@ -88,7 +89,11 @@ with sync_playwright() as p:
         a=pose();page.wait_for_timeout(1200);assert pose()==a,'Paused interior pose drift'
         page.get_by_role('button',name='Tiếp tục',exact=True).evaluate('(b)=>b.click()')
         page.get_by_role('button',name='Tạm nghỉ',exact=True).wait_for(timeout=20000)
-        page.wait_for_timeout(600);assert pose()!=a,'Resume must animate again'
+        page.wait_for_function('''before=>{
+          const values=JSON.parse(document.querySelector('.interior-canvas')?.dataset.interiorModels||'[]');
+          return values.length===3&&JSON.stringify(values.map(({draws,...a})=>a))!==JSON.stringify(before);
+        }''',arg=a,timeout=15000)
+        assert page.evaluate('window.__interiorCanvas===document.querySelector(".interior-canvas canvas")'),'Polling/clock offset must not recreate the room renderer'
         page.locator('.interior-view').get_by_role('button',name='Tầng 2',exact=True).click()
         page.wait_for_function('document.querySelector(".interior-canvas")?.dataset.interiorFrames>=3')
         assert models(host)==[] and host.get_attribute('data-interior-visible')=='0'
@@ -98,7 +103,7 @@ with sync_playwright() as p:
         assert page.locator('.interior-canvas canvas').count()==1
         assert page.evaluate('document.documentElement.scrollWidth<=innerWidth')
         assert not errors,errors
-        reports.append({'case':'lifecycle-'+name,'pauseStable':True,'resume':True,'floorRemount':True,'slowLoadBeyond4s':name=='mobile','errors':errors,'apiWrites':'mocked only'})
+        reports.append({'case':'lifecycle-'+name,'pauseStable':True,'resume':True,'pollingCanvasPreserved':True,'floorRemount':True,'slowLoadBeyond4s':name=='mobile','errors':errors,'apiWrites':'mocked only'})
         print('PASS native interior',name,flush=True);page.close()
       (out/'metrics.json').write_text(json.dumps(reports,ensure_ascii=False,indent=2))
     except BaseException:
