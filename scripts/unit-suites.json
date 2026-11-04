@@ -288,5 +288,8 @@
   ],
   [
     "scripts/test-interior-cast.mjs"
+  ],
+  [
+    "scripts/test-evening-life.mjs"
   ]
 ]

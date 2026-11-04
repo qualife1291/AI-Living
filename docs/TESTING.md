@@ -46,6 +46,7 @@ Restart Worker từ `dist/server/wrangler.json` sau build. `QA_BASE` bắt buộ
 | qa-shared-ground.py | Hai shared viewer desktop/mobile mở lệch giờ, cùng absolute sample roots, camera/F5/pause, no extrapolation, ảnh thật; synthetic source và D1 riêng. |
 | qa-loading.py | Compiled loopback build,3 cold-page repeat/viewport, network profile cố định, bytes/first-frame và asset completeness; `QA_BEFORE` tùy chọn phải là build khác nếu so sánh. Một build không chứng minh cải thiện/SLA thiết bị thật. |
 | qa-social.py | Đủ 6 lượt, luân phiên/poll/F5/source badge/camera. |
+| qa-interior-native.py | Desktop/mobile:3native model đúng ID, callback draw thực, pixel không rỗng và đạo cụ native;3camera, pause/resume theo clock đã ACK, canvas giữ qua polling, tầng trên không tạo cư dân, tải canonical bị giữ>4s rồi nhận model. Tối đa8controller trong phòng kiểm bằng actual GLB ởtest-interior-cast; test browser không là authenticated remote hoặc GPU/FPS proof. |
 | qa-overlays-households.py | Tên dài/câu 240 ký tự, pill/occlusion/click, hồ sơ và 320px. |
 | qa-cycle.py, qa-tag.py | Full bike/ground/pause/dismount, đổi vai/no teleport/cancel. |
 | qa-three-only-pets.py | Follow/pause/assignment/wardrobe/OSM, hide/resize, WebGL loss/retry/no2D; ≥80% sample có cả inFrame+sightline qua cây/building. Fixture bootstrap có thể chưa sát caretaker: giữ seed, gap<120 và đóng về<55 cuối cửa sổ12s; ghi initial/final gap, không teleport để ép đạt. |

@@ -1,0 +1,829 @@
+{
+  "schema": "xom-interior-native-acceptance-v1",
+  "status": "QA_BUILD_SUCCESS_VERSION_REPORTED_REMOTE_RUNTIME_PENDING",
+  "date": "2026-11-04",
+  "timezone": "Asia/Ho_Chi_Minh",
+  "observedAt": "2026-11-04T08:44:44.526548+00:00",
+  "source": {
+    "workImplementation": "5e0c8ee32521a5df617cc1fcc11ddcb2659b0c34",
+    "qaRelease": "b85ae9ba79b99507621a326607001419ffbcebbc",
+    "previousQa": "4e010d1f32d56c828823b57664ad132f820358f6",
+    "productionUnchanged": true
+  },
+  "implemented": {
+    "sharedSuppliedRigs": 5,
+    "interiorControllerCap": 8,
+    "sameSavedWardrobe": true,
+    "legacyBlockFiguresRemoved": true,
+    "handSurfaceProps": true,
+    "visualActionMappings": 22,
+    "nativeFixtures": [
+      "book",
+      "lamp",
+      "shelf",
+      "plant"
+    ],
+    "slowNativeLoadsAdopted": true,
+    "staticPaletteBatches": true,
+    "clockOffsetAndPollingKeepCanvas": true,
+    "staleHostTelemetryClearedOnRemount": true,
+    "disposalIdempotent": true
+  },
+  "acceptance": {
+    "unit": {
+      "suite": "unit-summary",
+      "total": 96,
+      "passed": 96,
+      "failed": [],
+      "workers": 4,
+      "seconds": 121.66
+    },
+    "typecheck": "PASS on release source",
+    "lint": {
+      "status": "PASS",
+      "source": "b85ae9ba79b99507621a326607001419ffbcebbc",
+      "warnings": 1,
+      "preExistingWarning": "scripts/h6-shadow-worker.mjs unused trainReport"
+    },
+    "build": {
+      "commit_sha": "b85ae9ba79b99507621a326607001419ffbcebbc",
+      "built_at": "2026-11-04T08:38:47.739Z"
+    },
+    "rigGeometry": {
+      "suite": "interior-cast",
+      "pass": true,
+      "nativeModels": 5,
+      "maxControllers": 8,
+      "actions": 22,
+      "maxPropGap": 0.04887328713916664,
+      "delayedLoadAdopted": true,
+      "pauseAndSeekStable": true,
+      "noUpperFloorOccupants": true,
+      "staticBatching": true,
+      "disposeIdempotent": true,
+      "worldWrites": false
+    },
+    "assets": {
+      "approved": 308,
+      "gzipModels": 42,
+      "sourceBytes": 5964264,
+      "transferBytes": 2215748,
+      "unchanged": true
+    },
+    "compiledApi": {
+      "progress": "PASS;compiled release b85 owner/12concurrent/no-write/schema503",
+      "diagnostics": "PASS on5edd769;backend files unchanged through b85",
+      "productionAccess": false
+    },
+    "browser": [
+      {
+        "case": "wide-desktop",
+        "brightFraction": 0.2584635416666667,
+        "drawCalls": 68,
+        "materials": 26,
+        "visible": 3,
+        "models": [
+          {
+            "id": "an",
+            "modelId": "supplied/office",
+            "action": "read",
+            "prop": "read/native",
+            "actualDraws": 9
+          },
+          {
+            "id": "binh",
+            "modelId": "supplied/waistcoat",
+            "action": "read",
+            "prop": "read/native",
+            "actualDraws": 9
+          },
+          {
+            "id": "chi",
+            "modelId": "supplied/service",
+            "action": "read",
+            "prop": "read/native",
+            "actualDraws": 9
+          }
+        ],
+        "furniture": [
+          {
+            "modelId": "supplied/props/book",
+            "loaded": true,
+            "draws": 9
+          },
+          {
+            "modelId": "supplied/props/lamp",
+            "loaded": true,
+            "draws": 9
+          },
+          {
+            "modelId": "supplied/props/book",
+            "loaded": true,
+            "draws": 9
+          },
+          {
+            "modelId": "supplied/props/lamp",
+            "loaded": true,
+            "draws": 9
+          },
+          {
+            "modelId": "supplied/props/book",
+            "loaded": true,
+            "draws": 9
+          },
+          {
+            "modelId": "supplied/props/lamp",
+            "loaded": true,
+            "draws": 9
+          },
+          {
+            "modelId": "supplied/props/book",
+            "loaded": true,
+            "draws": 9
+          },
+          {
+            "modelId": "supplied/props/lamp",
+            "loaded": true,
+            "draws": 9
+          },
+          {
+            "modelId": "supplied/props/shelf",
+            "loaded": true,
+            "draws": 9
+          },
+          {
+            "modelId": "supplied/props/plant",
+            "loaded": true,
+            "draws": 9
+          }
+        ],
+        "floorLocationsVerified": "false"
+      },
+      {
+        "case": "follow-desktop",
+        "brightFraction": 0.80078125,
+        "drawCalls": 68,
+        "materials": 26,
+        "visible": 3,
+        "models": [
+          {
+            "id": "an",
+            "modelId": "supplied/office",
+            "action": "read",
+            "prop": "read/native",
+            "actualDraws": 6
+          },
+          {
+            "id": "binh",
+            "modelId": "supplied/waistcoat",
+            "action": "read",
+            "prop": "read/native",
+            "actualDraws": 6
+          },
+          {
+            "id": "chi",
+            "modelId": "supplied/service",
+            "action": "read",
+            "prop": "read/native",
+            "actualDraws": 6
+          }
+        ],
+        "furniture": [
+          {
+            "modelId": "supplied/props/book",
+            "loaded": true,
+            "draws": 6
+          },
+          {
+            "modelId": "supplied/props/lamp",
+            "loaded": true,
+            "draws": 6
+          },
+          {
+            "modelId": "supplied/props/book",
+            "loaded": true,
+            "draws": 6
+          },
+          {
+            "modelId": "supplied/props/lamp",
+            "loaded": true,
+            "draws": 6
+          },
+          {
+            "modelId": "supplied/props/book",
+            "loaded": true,
+            "draws": 6
+          },
+          {
+            "modelId": "supplied/props/lamp",
+            "loaded": true,
+            "draws": 6
+          },
+          {
+            "modelId": "supplied/props/book",
+            "loaded": true,
+            "draws": 6
+          },
+          {
+            "modelId": "supplied/props/lamp",
+            "loaded": true,
+            "draws": 6
+          },
+          {
+            "modelId": "supplied/props/shelf",
+            "loaded": true,
+            "draws": 6
+          },
+          {
+            "modelId": "supplied/props/plant",
+            "loaded": true,
+            "draws": 6
+          }
+        ],
+        "floorLocationsVerified": "false"
+      },
+      {
+        "case": "overhead-desktop",
+        "brightFraction": 0.3274739583333333,
+        "drawCalls": 60,
+        "materials": 26,
+        "visible": 3,
+        "models": [
+          {
+            "id": "an",
+            "modelId": "supplied/office",
+            "action": "read",
+            "prop": "read/native",
+            "actualDraws": 8
+          },
+          {
+            "id": "binh",
+            "modelId": "supplied/waistcoat",
+            "action": "read",
+            "prop": "read/native",
+            "actualDraws": 8
+          },
+          {
+            "id": "chi",
+            "modelId": "supplied/service",
+            "action": "read",
+            "prop": "read/native",
+            "actualDraws": 8
+          }
+        ],
+        "furniture": [
+          {
+            "modelId": "supplied/props/book",
+            "loaded": true,
+            "draws": 8
+          },
+          {
+            "modelId": "supplied/props/lamp",
+            "loaded": true,
+            "draws": 8
+          },
+          {
+            "modelId": "supplied/props/book",
+            "loaded": true,
+            "draws": 8
+          },
+          {
+            "modelId": "supplied/props/lamp",
+            "loaded": true,
+            "draws": 8
+          },
+          {
+            "modelId": "supplied/props/book",
+            "loaded": true,
+            "draws": 8
+          },
+          {
+            "modelId": "supplied/props/lamp",
+            "loaded": true,
+            "draws": 8
+          },
+          {
+            "modelId": "supplied/props/book",
+            "loaded": true,
+            "draws": 8
+          },
+          {
+            "modelId": "supplied/props/lamp",
+            "loaded": true,
+            "draws": 8
+          },
+          {
+            "modelId": "supplied/props/shelf",
+            "loaded": true,
+            "draws": 8
+          },
+          {
+            "modelId": "supplied/props/plant",
+            "loaded": true,
+            "draws": 8
+          }
+        ],
+        "floorLocationsVerified": "false"
+      },
+      {
+        "case": "upper-empty-desktop",
+        "brightFraction": 0.3313802083333333,
+        "drawCalls": 56,
+        "materials": 26,
+        "visible": 0,
+        "models": [],
+        "furniture": [
+          {
+            "modelId": "supplied/props/book",
+            "loaded": true,
+            "draws": 7
+          },
+          {
+            "modelId": "supplied/props/lamp",
+            "loaded": true,
+            "draws": 7
+          },
+          {
+            "modelId": "supplied/props/book",
+            "loaded": true,
+            "draws": 7
+          },
+          {
+            "modelId": "supplied/props/lamp",
+            "loaded": true,
+            "draws": 7
+          },
+          {
+            "modelId": "supplied/props/book",
+            "loaded": true,
+            "draws": 7
+          },
+          {
+            "modelId": "supplied/props/lamp",
+            "loaded": true,
+            "draws": 7
+          },
+          {
+            "modelId": "supplied/props/book",
+            "loaded": true,
+            "draws": 7
+          },
+          {
+            "modelId": "supplied/props/lamp",
+            "loaded": true,
+            "draws": 7
+          },
+          {
+            "modelId": "supplied/props/shelf",
+            "loaded": true,
+            "draws": 7
+          },
+          {
+            "modelId": "supplied/props/plant",
+            "loaded": true,
+            "draws": 7
+          }
+        ],
+        "floorLocationsVerified": "false"
+      },
+      {
+        "case": "lifecycle-desktop",
+        "pauseStable": true,
+        "resume": true,
+        "pollingCanvasPreserved": true,
+        "floorRemount": true,
+        "slowLoadBeyond4s": false,
+        "errors": [],
+        "apiWrites": "mocked only"
+      },
+      {
+        "case": "wide-mobile",
+        "brightFraction": 0.359375,
+        "drawCalls": 68,
+        "materials": 26,
+        "visible": 3,
+        "models": [
+          {
+            "id": "an",
+            "modelId": "supplied/office",
+            "action": "read",
+            "prop": "read/native",
+            "actualDraws": 9
+          },
+          {
+            "id": "binh",
+            "modelId": "supplied/waistcoat",
+            "action": "read",
+            "prop": "read/native",
+            "actualDraws": 9
+          },
+          {
+            "id": "chi",
+            "modelId": "supplied/service",
+            "action": "read",
+            "prop": "read/native",
+            "actualDraws": 9
+          }
+        ],
+        "furniture": [
+          {
+            "modelId": "supplied/props/book",
+            "loaded": true,
+            "draws": 9
+          },
+          {
+            "modelId": "supplied/props/lamp",
+            "loaded": true,
+            "draws": 9
+          },
+          {
+            "modelId": "supplied/props/book",
+            "loaded": true,
+            "draws": 9
+          },
+          {
+            "modelId": "supplied/props/lamp",
+            "loaded": true,
+            "draws": 9
+          },
+          {
+            "modelId": "supplied/props/book",
+            "loaded": true,
+            "draws": 9
+          },
+          {
+            "modelId": "supplied/props/lamp",
+            "loaded": true,
+            "draws": 9
+          },
+          {
+            "modelId": "supplied/props/book",
+            "loaded": true,
+            "draws": 9
+          },
+          {
+            "modelId": "supplied/props/lamp",
+            "loaded": true,
+            "draws": 9
+          },
+          {
+            "modelId": "supplied/props/shelf",
+            "loaded": true,
+            "draws": 9
+          },
+          {
+            "modelId": "supplied/props/plant",
+            "loaded": true,
+            "draws": 9
+          }
+        ],
+        "floorLocationsVerified": "false"
+      },
+      {
+        "case": "follow-mobile",
+        "brightFraction": 0.8391927083333334,
+        "drawCalls": 68,
+        "materials": 26,
+        "visible": 3,
+        "models": [
+          {
+            "id": "an",
+            "modelId": "supplied/office",
+            "action": "read",
+            "prop": "read/native",
+            "actualDraws": 8
+          },
+          {
+            "id": "binh",
+            "modelId": "supplied/waistcoat",
+            "action": "read",
+            "prop": "read/native",
+            "actualDraws": 8
+          },
+          {
+            "id": "chi",
+            "modelId": "supplied/service",
+            "action": "read",
+            "prop": "read/native",
+            "actualDraws": 8
+          }
+        ],
+        "furniture": [
+          {
+            "modelId": "supplied/props/book",
+            "loaded": true,
+            "draws": 8
+          },
+          {
+            "modelId": "supplied/props/lamp",
+            "loaded": true,
+            "draws": 8
+          },
+          {
+            "modelId": "supplied/props/book",
+            "loaded": true,
+            "draws": 8
+          },
+          {
+            "modelId": "supplied/props/lamp",
+            "loaded": true,
+            "draws": 8
+          },
+          {
+            "modelId": "supplied/props/book",
+            "loaded": true,
+            "draws": 8
+          },
+          {
+            "modelId": "supplied/props/lamp",
+            "loaded": true,
+            "draws": 8
+          },
+          {
+            "modelId": "supplied/props/book",
+            "loaded": true,
+            "draws": 8
+          },
+          {
+            "modelId": "supplied/props/lamp",
+            "loaded": true,
+            "draws": 8
+          },
+          {
+            "modelId": "supplied/props/shelf",
+            "loaded": true,
+            "draws": 8
+          },
+          {
+            "modelId": "supplied/props/plant",
+            "loaded": true,
+            "draws": 8
+          }
+        ],
+        "floorLocationsVerified": "false"
+      },
+      {
+        "case": "overhead-mobile",
+        "brightFraction": 0.470703125,
+        "drawCalls": 68,
+        "materials": 26,
+        "visible": 3,
+        "models": [
+          {
+            "id": "an",
+            "modelId": "supplied/office",
+            "action": "read",
+            "prop": "read/native",
+            "actualDraws": 7
+          },
+          {
+            "id": "binh",
+            "modelId": "supplied/waistcoat",
+            "action": "read",
+            "prop": "read/native",
+            "actualDraws": 7
+          },
+          {
+            "id": "chi",
+            "modelId": "supplied/service",
+            "action": "read",
+            "prop": "read/native",
+            "actualDraws": 7
+          }
+        ],
+        "furniture": [
+          {
+            "modelId": "supplied/props/book",
+            "loaded": true,
+            "draws": 7
+          },
+          {
+            "modelId": "supplied/props/lamp",
+            "loaded": true,
+            "draws": 7
+          },
+          {
+            "modelId": "supplied/props/book",
+            "loaded": true,
+            "draws": 7
+          },
+          {
+            "modelId": "supplied/props/lamp",
+            "loaded": true,
+            "draws": 7
+          },
+          {
+            "modelId": "supplied/props/book",
+            "loaded": true,
+            "draws": 7
+          },
+          {
+            "modelId": "supplied/props/lamp",
+            "loaded": true,
+            "draws": 7
+          },
+          {
+            "modelId": "supplied/props/book",
+            "loaded": true,
+            "draws": 7
+          },
+          {
+            "modelId": "supplied/props/lamp",
+            "loaded": true,
+            "draws": 7
+          },
+          {
+            "modelId": "supplied/props/shelf",
+            "loaded": true,
+            "draws": 7
+          },
+          {
+            "modelId": "supplied/props/plant",
+            "loaded": true,
+            "draws": 7
+          }
+        ],
+        "floorLocationsVerified": "false"
+      },
+      {
+        "case": "upper-empty-mobile",
+        "brightFraction": 0.4700520833333333,
+        "drawCalls": 56,
+        "materials": 26,
+        "visible": 0,
+        "models": [],
+        "furniture": [
+          {
+            "modelId": "supplied/props/book",
+            "loaded": true,
+            "draws": 7
+          },
+          {
+            "modelId": "supplied/props/lamp",
+            "loaded": true,
+            "draws": 7
+          },
+          {
+            "modelId": "supplied/props/book",
+            "loaded": true,
+            "draws": 7
+          },
+          {
+            "modelId": "supplied/props/lamp",
+            "loaded": true,
+            "draws": 7
+          },
+          {
+            "modelId": "supplied/props/book",
+            "loaded": true,
+            "draws": 7
+          },
+          {
+            "modelId": "supplied/props/lamp",
+            "loaded": true,
+            "draws": 7
+          },
+          {
+            "modelId": "supplied/props/book",
+            "loaded": true,
+            "draws": 7
+          },
+          {
+            "modelId": "supplied/props/lamp",
+            "loaded": true,
+            "draws": 7
+          },
+          {
+            "modelId": "supplied/props/shelf",
+            "loaded": true,
+            "draws": 7
+          },
+          {
+            "modelId": "supplied/props/plant",
+            "loaded": true,
+            "draws": 7
+          }
+        ],
+        "floorLocationsVerified": "false"
+      },
+      {
+        "case": "lifecycle-mobile",
+        "pauseStable": true,
+        "resume": true,
+        "pollingCanvasPreserved": true,
+        "floorRemount": true,
+        "slowLoadBeyond4s": true,
+        "errors": [],
+        "apiWrites": "mocked only"
+      }
+    ],
+    "screenshots": "docs/screenshots/interior-native/manifest.json",
+    "rawMetricsSha256": "94979408beaa6da770d401e90e500bbe2c103ce9b4e677549ac3bac9e18aea85",
+    "rawLogSha256": {
+      "interior-unit-b85": "3bc784fd14c70cd26cd9fe93dd8924c6a80cdad5e38f220e93a1aaa713f8d292",
+      "interior-check-final-accepted": "8366207267355d3e3d5bf3bf6e8c94c5f93f6078c34f08973fa2b38cdda6cc92",
+      "interior-lint-b85": "5e4666e94ab142c1de5fefa88c74d0b617f077ba86e00611b7861147336a2c38",
+      "interior-assets-b85": "7f7e96c2dc9d39162f8823b9ec0895e1fefd1493b721de02b3e652ec5b7cad8e",
+      "interior-build-final-accepted": "adc9a827c1e85807fd69b76612d38507188266f4db9b97f180e3937009f30aed",
+      "interior-cast-final-accepted": "e7674d4eebe30fbd6998838b6bf92be0b43775e6a05745b95d4cf5fa4852542b",
+      "interior-browser-b85": "566fd1fb35e29b13f731cd65525cd49ce8ede924927189a6b43e9aa52d4cc1fe",
+      "interior-progress-api-b85": "b2d006a541b7ec09ab48f489a06821087d33e3509ef4db86aa3b5006b028f366",
+      "interior-local-api": "8b7ef1af9d82f4d0e51aab5ccb92c3bf33c000b4b21a1df2870b39023282ab68"
+    }
+  },
+  "reviewFixes": [
+    {
+      "finding": "Clock offset EMA changed every poll and recreated the full interior WebGL canvas",
+      "fix": "Use a ref for fresh offset; remove offset from renderer lifecycle dependencies; browser asserts canvas identity through owner pause/resume and polling."
+    },
+    {
+      "finding": "Retained DOM dataset could claim old model draw callbacks immediately after a camera/floor remount",
+      "fix": "Clear model/count/residents/furniture/clock fields on new renderer before accepting new draws."
+    },
+    {
+      "finding": "Chromium can composite after a native draw callback",
+      "fix": "Bounded screenshot retries retain nonblank pixel gate; no fabricated image proof."
+    },
+    {
+      "finding": "Owner ACK/UI can arrive before the room renders paused clock",
+      "fix": "Browser waits for actual rendered clock to match acknowledged pause anchor, then asserts stable pose over1.2s and actual resume."
+    }
+  ],
+  "scopedPerformance": {
+    "libraryResidents": 3,
+    "currentRoomDrawCalls": [
+      60,
+      68
+    ],
+    "currentMaterials": [
+      26
+    ],
+    "priorCiSource": "375ad38fff38d46e22235c35d6b866ba9548cb2a",
+    "priorRoomDrawCalls": 227,
+    "priorMaterials": 134,
+    "limits": "Same library/3resident scene, different harness/pixel ratio/time; descriptive draw-call comparison, not hardware FPS, GPU memory, power or thermal benchmark."
+  },
+  "localConfig": {
+    "worker": "ai-living-qa",
+    "d1Database": "21347bba-caaf-4ba5-9d80-d849958192d1",
+    "crons": [
+      "*/5 * * * *"
+    ],
+    "accessAudiencePresent": true,
+    "shadowEnabled": "false",
+    "canaryEnabled": "false",
+    "killSwitch": "true"
+  },
+  "releaseChecks": [
+    {
+      "name": "Workers Builds: ai-living-qa",
+      "status": "completed",
+      "conclusion": "success",
+      "details_url": "https://dash.cloudflare.com/966c7ceee358485648b935a07877ec45/workers/services/view/ai-living-qa/production/builds/0f038ae7-58dd-4b5f-b5a2-c1142dd97ff1",
+      "completed_at": "2026-11-04T08:43:28Z"
+    },
+    {
+      "name": "contextual-social",
+      "status": "in_progress",
+      "conclusion": null,
+      "details_url": "https://github.com/qualife1291/AI-Living/actions/runs/41801530237/job/126478209101",
+      "completed_at": null
+    },
+    {
+      "name": "qa-deploy",
+      "status": "completed",
+      "conclusion": "success",
+      "details_url": "https://github.com/qualife1291/AI-Living/actions/runs/41801530148/job/126478208495",
+      "completed_at": "2026-11-04T08:43:58Z"
+    }
+  ],
+  "limits": {
+    "nativeManagementToolsAvailable": false,
+    "nativeDeploymentTrafficReadback": false,
+    "authenticatedRemoteBrowser": false,
+    "nativeD1CronReadback": false,
+    "hardwareGpuFpsOrSoak": false,
+    "newMigration": false,
+    "realDbWrites": false,
+    "newScheduler": false,
+    "h6ModelPromoted": false,
+    "physicalCompletionOrInventory": false,
+    "sleep": "restrained idle cue; no fabricated bed/floor assignment",
+    "proceduralFurnitureStillUsed": [
+      "tables",
+      "chairs",
+      "architecture"
+    ],
+    "concurrentCanvases": "city may remain active under the panel; room8controller cap is additional, not a global app cap"
+  },
+  "cloudflareRelease": {
+    "evidenceSource": "Cloudflare Workers Builds GitHub App check output for exact source SHA",
+    "sourceSha": "b85ae9ba79b99507621a326607001419ffbcebbc",
+    "checkId": 126478759480,
+    "conclusion": "success",
+    "buildUrl": "https://dash.cloudflare.com/966c7ceee358485648b935a07877ec45/workers/services/view/ai-living-qa/production/builds/0f038ae7-58dd-4b5f-b5a2-c1142dd97ff1",
+    "versionId": "8a194150-83bc-4b74-9df2-897e777d89cd",
+    "completedAt": "2026-11-04T08:43:28Z",
+    "nativeTraffic100PercentReadback": false
+  }
+}

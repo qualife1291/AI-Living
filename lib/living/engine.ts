@@ -1,3 +1,5 @@
+import {eveningRoutine} from "./circadian.ts";
+import {chooseEveningLife,runtimeTitle,runtimePlace,isEveningAction,eveningDuration} from "./evening-life.ts";
 import { meetingSteps, microActivity, actionSteps } from "./activities.ts";
 import { captureH6ShadowProposal } from "./h6-shadow-runtime.ts";
 import { chooseH6CanaryScenario } from "./h6-canary-runtime.ts";
@@ -163,6 +165,7 @@ export function planLivingTurn(
     )
       state.catalog.roles.push(structuredClone(role));
   state.residents = population(state, context.date);
+  if(!world.paused)state.lifeScheduleVersion=1;
   const newExperiences: import("./learning").Experience[] = [];
   const learning = prepareLearning(world, state, now, (e) => newExperiences.push(e));
   const simNow = computeSimMs(world.born, world.clock, now);
@@ -174,13 +177,13 @@ export function planLivingTurn(
     360,
     Math.max(0, (now - Date.parse(state.lastTickAt)) / 60000),
   );
-  const sleeping = context.hour < 6 || context.hour >= 22;
+
   // prepareLearning advances every actor's own needs once; do not drift An twice.
   state.social = Math.max(0, Math.min(100, state.social - 0.02 * minutes));
   const role = chooseRole(state, context);
   learning.an.energy = state.energy;
   learning.an.hunger = state.hunger;
-  const offered = chooseLiveAction(learning.an, "an", context, role.place);
+  const offered = chooseEveningLife(learning.an,"an",context,()=>chooseLiveAction(learning.an,"an",context,role.place));
   // This turn may settle a completed fare before selecting the next plan.
   const pendingFare = newExperiences.filter(e=>e.actorId==="an")
     .reduce((sum,e)=>sum+fareForAction(e.scenarioId),0);
@@ -193,11 +196,12 @@ export function planLivingTurn(
   if (scenarios.some(s => s.id === chosen.id))
     captureH6ShadowProposal({ agent: learning.an, actorId: "an", context, rolePlace: role.place,
       roleKind: role.kind, baselineScenarioId: chosen.id });
+  const sleeping=["rest-home","sleep-night"].includes(chosen.id);
   const available = state.residents.filter(r => !hasUnfinishedLearning(learning[r.id], r.plan, simNow));
   const peers = available.filter((r) => r.roleId === role.id);
   const resident =
     (anBusy ? state.residents.find(r => r.id === world.livingTurn?.residentId) : undefined) ?? peers[hashSeed(turnId(now)) % peers.length] ?? available[hashSeed(turnId(now)) % available.length] ?? state.residents[0];
-  const encounter = !sleeping && !anBusy && available.some(r => r.id === resident.id);
+  const encounter = !isEveningAction(chosen.id) && !sleeping && !anBusy && available.some(r => r.id === resident.id);
   const festival =
     !sleeping &&
     state.energy >= 28 &&
@@ -208,26 +212,9 @@ export function planLivingTurn(
             item.startDate <= context.date && item.endDate >= context.date,
         )
       : undefined;
-  let location = sleeping ? "Phòng An" : festival ? "Quảng trường" : role.place;
-  let activity = festival
-    ? `Tìm hiểu ${festival.title.slice(0, 55)}`
-    : sleeping
-      ? "Sạc pin và nghỉ đêm"
-      : state.hunger > 70
-        ? "Mua và ăn một bữa nhẹ"
-        : role.activity;
-  let kind = festival
-    ? "social"
-    : sleeping
-      ? "rest"
-      : state.hunger > 70
-        ? "eat"
-        : role.kind;
-  if (!sleeping && !festival && state.energy >= 28 && state.hunger <= 70) {
-    location = chosen.place;
-    activity = chosen.title;
-    kind = chosen.kind as Step["kind"];
-  }
+  let location: typeof chosen.place = festival?"Quảng trường":runtimePlace(chosen,"an");
+  let activity=festival?`Tìm hiểu ${festival.title.slice(0,55)}`:runtimeTitle(chosen);
+  let kind:Step['kind']=festival?'social':chosen.kind;
   if (anBusy) {
     const current = actorsAt(world, now).find(a => a.id === "an");
     if (current) { location = current.location as typeof location; activity = current.activity; kind = current.kind; }
@@ -274,15 +261,7 @@ export function planLivingTurn(
     dialogue,
     generator: "rules",
     scriptId: encounter ? scriptId : undefined,
-    scenarioId: anBusy ? learning.an.pending?.scenarioId : encounter ? "friendship" : !festival
-      ? sleeping
-        ? "rest-home"
-        : state.energy < 28
-          ? "hospital-check"
-          : state.hunger > 70
-            ? "lunch"
-            : chosen.id
-      : undefined,
+    scenarioId:anBusy?learning.an.pending?.scenarioId:encounter?'friendship':!festival?chosen.id:undefined,
     transport: anBusy ? world.people.find(p => p.id === "an")?.plan?.transport : chosen.transport,
     context,
     simStartedAt: computeSimMs(world.born, world.clock, now),
@@ -302,6 +281,11 @@ export function planLivingTurn(
     });
     if(booked.charged){payer.money=booked.balance;next.mobilityPayments=booked.ledger;}
   }
+  const liveSteps=(id:string,scenario:typeof chosen,target:string,title:string,kind:Step['kind'])=>{
+    const steps=actionSteps(target,title,kind),duration=eveningDuration(scenario,id,context.hour);
+    if(duration)steps[0].duration=duration;
+    return steps;
+  };
   const an = next.people.find((p) => p.id === "an");
   if (an && !anBusy) {
     an.plan = {
@@ -311,7 +295,7 @@ export function planLivingTurn(
       simStartedAt: turn.simStartedAt,
       generator: "rules",
       transport: chosen.transport === "plane" ? "bus" : chosen.transport,
-      steps: encounter ? meetingSteps(location, activity) : actionSteps(location, activity, kind),
+      steps: encounter ? meetingSteps(location, activity) : liveSteps("an",chosen,location,activity,kind),
     };
     an.activity = activity;
   }
@@ -355,7 +339,7 @@ export function planLivingTurn(
     const rolePlace = npc
       ? state.catalog.roles.find((r) => r.id === npc.roleId)?.place
       : id === "binh" ? "Thư viện" : id === "chi" ? "Vườn nhỏ" : person?.location;
-    const proposal = chooseLiveAction(agent,id,context,rolePlace);
+    const proposal = chooseEveningLife(agent,id,context,()=>chooseLiveAction(agent,id,context,rolePlace));
     // Only named core residents currently have durable VND wallets.
     const affordable=person?canAffordMobility(person.money,proposal.id)
       :fareForAction(proposal.id)===0;
@@ -389,12 +373,7 @@ export function planLivingTurn(
         : {
             from: npc?.plan?.steps.at(-1)?.location ?? rolePlace ?? "Sân chung",
           };
-    const target =
-      scenario.id === "rest-home" && person
-        ? `Phòng ${person.name}`
-        : scenario.id === "rest-home"
-          ? "Khu dân cư"
-          : scenario.place;
+    const target=runtimePlace(scenario,id);
     const plan = {
       createdAt: turn.createdAt,
       pausedMs: next.clock?.pausedMs ?? 0,
@@ -402,11 +381,11 @@ export function planLivingTurn(
       ...origin,
       generator: "rules" as const,
       transport: scenario.transport === "plane" ? "bus" : scenario.transport,
-      steps: actionSteps(target, scenario.title, scenario.kind as Step["kind"]),
+      steps: liveSteps(id,scenario,target,runtimeTitle(scenario),scenario.kind as Step["kind"]),
     };
     if (person) {
       person.plan = plan;
-      person.activity = scenario.title;
+      person.activity = runtimeTitle(scenario);
     }
     if (npc) npc.plan = plan;
     agent.pending = {
@@ -459,12 +438,12 @@ const errands: [string, string, Step["kind"]][] = [
  * Unlike the old eight-minute loop, the whole crowd never gathers at one plaza. */
 export function residentRoutine(state: LivingState, r: Resident): Step[] {
   const role = state.catalog.roles.find(x => x.id === r.roleId) ?? state.catalog.roles[0];
-  const key = `${r.id}:${role.id}:${role.place}:${role.activity}:${role.kind}`;
+  const key = `${r.id}:${role.id}:${role.place}:${role.activity}:${role.kind}:${state.lifeScheduleVersion??0}`;
   const cached = agendaCache.get(key); if (cached) return cached;
   const h = hashSeed(r.id), shift = (h % 45) / 60;
   const breakPlace = ["Công viên", "Quán cà phê", "Phố đi bộ", "Quảng trường", "Thư viện"][h % 5];
   const home = "Khu dân cư", workplace = role.id === "rest" ? home : role.place;
-  const slots: [number, string, string, Step["kind"]][] = [
+  let slots: [number, string, string, Step["kind"]][] = [
     [0, home, "Nghỉ đêm trong khu dân cư", "rest"],
     [6 + shift, h % 2 ? "Chợ nhỏ" : "Quán cà phê", "Ăn sáng trước giờ làm", "eat"],
     [6.35 + shift, breakPlace, "Chuẩn bị cho công việc trong ngày", "read"],
@@ -479,6 +458,7 @@ export function residentRoutine(state: LivingState, r: Resident): Step[] {
     [19 + shift, breakPlace, "Đi dạo thư giãn cuối ngày", "social"],
     [21 + shift, home, "Về nhà nghỉ, giữ yên tĩnh", "rest"],
   ];
+  if(state.lifeScheduleVersion===1)slots=eveningRoutine(slots,r.id,home);
   const result: Step[] = [];
   for (const [i, [hour, location, activity, kind]] of slots.entries()) {
     let remaining = ((slots[i + 1]?.[0] ?? 24) - hour) * 3600;

@@ -1,5 +1,7 @@
 import { z } from "zod";
 import { PLACES, STEP_KINDS } from "../event-schema.ts";
+import eveningData from "../../data/city/evening-actions.json" with { type: "json" };
+import {plannedSleepMinutes} from "./circadian.ts";
 import scenariosData from "../../data/city/scenarios.json" with { type: "json" };
 import expandedActionData from "../../data/city/action-pack-100.json" with { type: "json" };
 import transportActionData from "../../data/city/transport-actions.json" with { type: "json" };
@@ -41,6 +43,9 @@ export const scenarios = z
   .max(100)
   .parse(scenariosData);
 export type Scenario = (typeof scenarios)[number];
+export const eveningActions=z.array(scenarioSchema).length(9).parse(eveningData);
+export const EVENING_SCENARIO_SIGNATURE=hashSeed(JSON.stringify([...scenarios,...eveningActions]));
+const eveningIds=new Set(eveningActions.map(s=>s.id));
 /** QA action pack: 41 immutable historical arms + 59 independently registered live arms.
  * The pinned H6 96-candidate shadow catalog, its SHA and the 41-arm reward
  * signature do not change. Being registered is NOT being executed or learned. */
@@ -53,6 +58,8 @@ export const transportActions = z.array(scenarioSchema).length(3).parse(transpor
 export const liveActionCatalog: Scenario[] = [...original100ActionCatalog, ...transportActions];
 if (new Set(liveActionCatalog.map(s => s.id)).size !== 103)
   throw Error("QA transit catalog must contain 103 distinct scenario IDs");
+export const runtimeActionCatalog:Scenario[]=[...liveActionCatalog,...eveningActions];
+if(new Set(runtimeActionCatalog.map(s=>s.id)).size!==112)throw Error("Duplicate runtime action");
 const transportActionIds = new Set(transportActions.map(s => s.id));
 export const TRANSPORT_ACTION_SIGNATURE = hashSeed(JSON.stringify(liveActionCatalog));
 const expandedActionIds = new Set(expandedActions.map(s => s.id));
@@ -270,7 +277,7 @@ export function settleLearning(
     return false;
   pending.completed = true;
   if (!planMatches) return false;
-  const scenario = liveActionCatalog.find((s) => s.id === pending.scenarioId);
+  const scenario = runtimeActionCatalog.find((s) => s.id === pending.scenarioId);
   if (!scenario) return false;
   if (!agent.domainSkills) {
     // Keep previously unlocked activities; never turn historical scalar skill
@@ -342,8 +349,14 @@ export function prepareLearning(world: World, state: LivingState, now: number, c
     const existingCore = world.people.find((p) => p.id === person.id);
     if (existingCore)
       agent.skill = Math.max(agent.skill, Math.min(100, existingCore.skill));
-    advanceNeeds(agent, person.id, simMs, hour < 6 || hour >= 22);
-    const domain = liveActionCatalog.find(s=>s.id===agent.pending?.scenarioId)?.skillDomain;
+    if(state.lifeScheduleVersion===1){
+      const end=simMs,start=Math.max(end-360*60000,agent.needsUpdatedSimMs??end),elapsed=Math.max(0,(end-start)/60000);
+      const asleep=plannedSleepMinutes(person.plan,start,end),metabolism=.9+hashSeed(person.id)%21/100;
+      agent.energy=Math.max(0,Math.min(100,agent.energy+(asleep*.12-(elapsed-asleep)*.035)*metabolism));
+      agent.hunger=Math.max(0,Math.min(100,agent.hunger+(asleep*.012+(elapsed-asleep)*.04)*metabolism));
+      agent.needsUpdatedSimMs=simMs;
+    }else advanceNeeds(agent, person.id, simMs, hour < 6 || hour >= 22);
+    const domain = runtimeActionCatalog.find(s=>s.id===agent.pending?.scenarioId)?.skillDomain;
     const beforeDomain = domain ? agent.domainSkills?.[domain]??0 : 0;
     const beforeOutcome = rewardState(agent),sampleBefore = agent.samples;
     const trained = settleLearning(
@@ -362,7 +375,7 @@ export function prepareLearning(world: World, state: LivingState, now: number, c
         reward: agent.lastReward ?? action.meanReward,
         source: "simulation",
         model: validDecisionContext(agent.pending.context) && agent.linear?.[agent.pending.scenarioId] ? "disjoint-linucb-v1" : "contextual-bandit-v1",
-        rewardEvidence:createRewardEvidence({scenarioSignature:transportActionIds.has(agent.pending.scenarioId)?TRANSPORT_ACTION_SIGNATURE:expandedActionIds.has(agent.pending.scenarioId)?EXPANDED_ACTION_SIGNATURE:OUTCOME_SCENARIO_SIGNATURE,
+        rewardEvidence:createRewardEvidence({scenarioSignature:eveningIds.has(agent.pending.scenarioId)?EVENING_SCENARIO_SIGNATURE:transportActionIds.has(agent.pending.scenarioId)?TRANSPORT_ACTION_SIGNATURE:expandedActionIds.has(agent.pending.scenarioId)?EXPANDED_ACTION_SIGNATURE:OUTCOME_SCENARIO_SIGNATURE,
           identity:{experienceId:agent.pending.id,actorId:person.id,scenarioId:agent.pending.scenarioId},
           plan:{binding:agent.pending.planKey?"fingerprint-v1":"legacy-start-time",
             declaredKey:agent.pending.planKey??null,...matchedPlanEvidence(person.plan),
