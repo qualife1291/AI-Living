@@ -45,6 +45,8 @@ export function createInteriorCast(scene:THREE.Scene,library:AssetLibrary){
         if(home&&action==='watch-tv')return seats++<SOFA_SEATS.length;
         return true;
       }).slice(0,INTERIOR_CAST_LIMIT):[];
+      // Focus changes inclusion at capacity, never swaps seats for a small cast.
+      shown.sort((a,b)=>a.id.localeCompare(b.id));
       let bedSlot=0,sofaSlot=0;
       const wanted=new Set(shown.map(a=>a.id));for(const id of entries.keys())if(!wanted.has(id))remove(id);
       shown.forEach((actor,index)=>{
