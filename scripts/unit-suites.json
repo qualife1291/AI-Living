@@ -252,5 +252,11 @@
   ],
   [
     "scripts/test-qa-window.mjs"
+  ],
+  [
+    "scripts/test-interior-actions.mjs"
+  ],
+  [
+    "scripts/test-interior-cast.mjs"
   ]
 ]
