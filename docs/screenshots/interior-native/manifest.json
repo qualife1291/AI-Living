@@ -1,0 +1,82 @@
+{
+  "schema": "xom-interior-native-screenshots-v1",
+  "sourceCommit": "b85ae9ba79b99507621a326607001419ffbcebbc",
+  "capturedDate": "2026-11-04",
+  "timezone": "Asia/Ho_Chi_Minh",
+  "renderer": "Chromium SwiftShader",
+  "scope": "Actual compiled loopback Worker; synthetic world transport and mocked API writes. Not authenticated remote QA or generated images.",
+  "images": [
+    {
+      "file": "follow-desktop.png",
+      "sha256": "dcb4330638f766ac47b6c9040b55ee87e3fa9c4389a1f707f36bb72cfa4d3584",
+      "bytes": 71474,
+      "pixels": [
+        558,
+        361
+      ]
+    },
+    {
+      "file": "follow-mobile.png",
+      "sha256": "02ff35bb03531da32541c3085f88f892cbb86383ef69026e960bba05ffe055c2",
+      "bytes": 40110,
+      "pixels": [
+        310,
+        281
+      ]
+    },
+    {
+      "file": "overhead-desktop.png",
+      "sha256": "f53a79f88e8ebfe40ef5bad7c4be55a988fbb27d806ea681cd0f9d63a8cb7fd9",
+      "bytes": 22340,
+      "pixels": [
+        558,
+        361
+      ]
+    },
+    {
+      "file": "overhead-mobile.png",
+      "sha256": "ee781be1032fa699f62c8155c972b7ff52123d6777fe9a2d9274b2ed7944770b",
+      "bytes": 15842,
+      "pixels": [
+        310,
+        281
+      ]
+    },
+    {
+      "file": "upper-empty-desktop.png",
+      "sha256": "587fe7ff1caca62da2c43a0f077a70e1cc66fe8139ec36b98d18ca6121dca87e",
+      "bytes": 20509,
+      "pixels": [
+        558,
+        361
+      ]
+    },
+    {
+      "file": "upper-empty-mobile.png",
+      "sha256": "9f78fa49f5526cba5ee0729bda2d179ca6ec9643bff804e2256575cc57593567",
+      "bytes": 13675,
+      "pixels": [
+        310,
+        281
+      ]
+    },
+    {
+      "file": "wide-desktop.png",
+      "sha256": "b1c4e701f3f3f23b0dcf8466611b917bf52514dd7f6d3a9cdd3fd0695ecb708e",
+      "bytes": 32988,
+      "pixels": [
+        558,
+        361
+      ]
+    },
+    {
+      "file": "wide-mobile.png",
+      "sha256": "6db82e2035b0f59a4cc465bf4ad07ae2d39c2e5a268976e3ab093a9f4d655261",
+      "bytes": 23457,
+      "pixels": [
+        310,
+        281
+      ]
+    }
+  ]
+}
