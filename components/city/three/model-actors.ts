@@ -109,7 +109,7 @@ export function placeActionProp(prop:THREE.Group,kind:string,height:number,yaw:n
 
 export function actorActionKind(actor:Actor){
  const act=`${actor.kind} ${actor.activity??''} ${actor.location??''}`.toLowerCase();
- return ['drink','eat','study','shop'].includes(actor.kind)?handProp(actor.kind):/cook|nấu ăn/.test(act)?'cook':/soccer|đá bóng/.test(act)?'soccer':/swim|bơi/.test(act)?'swim':/lễ hội|festival|đèn lồng/.test(act)?'lantern':actor.kind;
+ return /nhậu|nhâm nhi/.test(act)?'cup':['drink','eat','study','shop'].includes(actor.kind)?handProp(actor.kind):/cook|nấu ăn/.test(act)?'cook':/soccer|đá bóng/.test(act)?'soccer':/swim|bơi/.test(act)?'swim':/lễ hội|festival|đèn lồng/.test(act)?'lantern':actor.kind;
 }
 
 export function createModelActors(scene: THREE.Scene, library: AssetLibrary) {
@@ -157,7 +157,7 @@ export function createModelActors(scene: THREE.Scene, library: AssetLibrary) {
         avatar.tint(appearance);
         if(world.paused&&posed.has(id))continue;
         const propKind = actorActionKind(actor);
-        const holding = !actor.bicycle && !actor.walking && (hasHandProp(actor.kind) || ["cook", "soccer", "swim", "lantern"].includes(propKind));
+        const holding = !actor.bicycle && !actor.walking && (hasHandProp(actor.kind) || ["cook", "soccer", "swim", "lantern", "cup"].includes(propKind));
         const speaking = social.get(id)?.speaking;
         const clip = !actor.walking && social.has(id)
           ? speaking ? "talk" : "listen" : resolveActorClip(actor, speaking);

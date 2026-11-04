@@ -186,7 +186,7 @@ export function planLivingTurn(
   const peers = available.filter((r) => r.roleId === role.id);
   const resident =
     (anBusy ? state.residents.find(r => r.id === world.livingTurn?.residentId) : undefined) ?? peers[hashSeed(turnId(now)) % peers.length] ?? available[hashSeed(turnId(now)) % available.length] ?? state.residents[0];
-  const encounter = !isEveningAction(chosen.id) && !sleeping && !anBusy && available.some(r => r.id === resident.id);
+  const encounter = learning.an.health>=65 && state.energy>=28 && state.hunger<=70 && !isEveningAction(chosen.id) && !sleeping && !anBusy && available.some(r => r.id === resident.id);
   const festival =
     !sleeping &&
     state.energy >= 28 &&

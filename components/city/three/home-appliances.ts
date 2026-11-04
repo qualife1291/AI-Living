@@ -23,7 +23,7 @@ export function createHomeAppliances(scene:THREE.Scene,box:Box,home:boolean,cine
   const bars:THREE.Mesh[]=[];
   for(let i=0;i<4;i++){const m=box(tvX+(i-1.5)*width*.22,tvY,tvZ+.11,width*.16,height*.6,.025,['#a2c4b8','#d0b18b','#91b7c9','#c5949a'][i],root);bars.push(m);}
   return {update(seconds:number,fridge:boolean,watching:boolean){
-    if(door)door.rotation.y=fridge?-.9*(.5+.5*Math.sin(seconds*.7)):0;
+    if(door)door.rotation.y=fridge?-.9*(.9+.1*Math.sin(seconds*.7)):0;
     screenMaterial.color.set(watching?'#5684a0':'#263f49');
     bars.forEach((bar,i)=>{bar.visible=watching;bar.scale.y=height*(.35+.18*Math.sin(seconds*.8+i));});
     return {fridgeOpen:!!door&&Math.abs(door.rotation.y)>.01,screenOn:watching,program:'abstract-local-animation'};

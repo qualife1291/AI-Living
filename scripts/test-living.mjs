@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import {initializeAgent} from '../lib/living/learning.ts';
 import {
   initializeLiving,
   population,
@@ -201,7 +202,11 @@ const tired = {
     lastTickAt: new Date(now).toISOString(),
   },
 };
-assert.equal(planLivingTurn(tired, clear, now).turn.location, "Phòng khám");
+const sleep=planLivingTurn(tired,clear,now).turn;
+assert.equal(sleep.location,'Phòng An','Tiredness sends a healthy resident home to sleep');
+assert.equal(sleep.scenarioId,'sleep-night');
+const ill=structuredClone(tired);ill.living.learning={...ill.living.learning,an:{...initializeAgent('an'),health:60}};
+assert.equal(planLivingTurn(ill,clear,now).turn.location,'Phòng khám','Health priority must still override sleep');
 const hungry = {
   ...structuredClone(world),
   living: {

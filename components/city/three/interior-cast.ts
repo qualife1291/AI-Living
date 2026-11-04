@@ -14,7 +14,7 @@ export const INTERIOR_CAST_LIMIT=8;
 const Y=new THREE.Vector3(0,1,0);
 type Entry={avatar:RiggedAvatar;modelId:string;action:InteriorAction;draws:number;
   prop?:THREE.Group;propKey?:string;lastPose?:string;support?:string};
-const propKinds:Record<string,string>={plate:'eat',cup:'cup',pan:'cook',book:'read',tablet:'phone',bag:'bag',tool:'tool',medical:'work'};
+const propKinds:Record<string,string>={plate:'bread',cup:'cup',pan:'cook',book:'read',tablet:'phone',bag:'bag',tool:'tool',medical:'work'};
 function releaseProp(entry:Entry){
   entry.prop?.removeFromParent();entry.prop?.traverse(o=>{const m=o as THREE.Mesh;if(!m.isMesh)return;
     m.geometry.dispose();for(const material of Array.isArray(m.material)?m.material:[m.material])material.dispose();});
@@ -67,7 +67,7 @@ export function createInteriorCast(scene:THREE.Scene,library:AssetLibrary){
         const nativeBook=!!library.compile('supplied/props/book');
         const sleeping=home&&action==='sleep',watching=(home&&action==='watch-tv')||(cinema&&action==='watch-film');
         const bedIndex=sleeping?bedSlot++:undefined,sofaIndex=home&&action==='watch-tv'?sofaSlot++:undefined;
-        const slot=action==='fridge'&&home?[-6.7,0,-2] as [number,number,number]:watching?(cinema?cinemaSeat(index):[...SOFA_SEATS[sofaIndex!]] as [number,number,number]):interiorSlot(index,home);
+        const slot=action==='fridge'&&home?[-6.7,0,-1.2] as [number,number,number]:watching?(cinema?cinemaSeat(index):[...SOFA_SEATS[sofaIndex!]] as [number,number,number]):interiorSlot(index,home);
         const key=[seconds,index,action,home,cinema,bedIndex,sofaIndex,nativeBook].join('/');
         if(entry.lastPose===key)return;
         entry.lastPose=key;entry.action=action;
@@ -101,7 +101,7 @@ export function createInteriorCast(scene:THREE.Scene,library:AssetLibrary){
     snapshots(){return [...entries].map(([id,e])=>({id,modelId:e.modelId,action:e.action,height:e.avatar.height,
       position:e.avatar.group.position.toArray(),head:e.avatar.head().toArray(),hands:{left:e.avatar.hand('left').toArray(),right:e.avatar.hand('right').toArray()},
       prop:e.propKey??null,support:e.support??null,draws:e.draws}));},
-    focus(id:string){return entries.get(id)?.avatar.group.position.clone().add(new THREE.Vector3(0,1.6,0));},
+    focus(id:string){const avatar=entries.get(id)?.avatar;return avatar?.head().add(avatar.seat()).multiplyScalar(.5);},
     dispose(){if(dead)return;dead=true;for(const id of [...entries.keys()])remove(id);},
   };
 }
