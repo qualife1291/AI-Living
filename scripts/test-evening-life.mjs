@@ -9,7 +9,7 @@ import {eveningActions,initializeAgent,scenarios,settleLearning,prepareLearning}
 import {chooseEveningLife,runtimePlace,eveningDuration} from '../lib/living/evening-life.ts';
 import {isSleepHour,plannedSleepMinutes} from '../lib/living/circadian.ts';
 import {RiggedAvatar} from '../components/city/three/rigged-avatar.ts';
-import {HOME_BEDS,SOFA_SEATS,lieOnBed,sitOnSeat} from '../components/city/three/home-poses.ts';
+import {SOFA_SEATS,lieOnBed,sitOnSeat} from '../components/city/three/home-poses.ts';
 import {loadLocalGLTF} from './load-local-gltf.mjs';
 const born=Date.parse('2026-11-03T17:00:00Z'),now=born+22.5*3600000;
 const context=hour=>({date:'2026-11-04',hour,weekday:3,timezone:'Asia/Ho_Chi_Minh',fetchedAt:new Date(now).toISOString(),weather:{status:'unavailable',source:'fixture',observedAt:null,temperature:null,humidity:null,precipitation:null,code:null,windKph:null},calendar:{weekend:false,holidays:[],source:'fixture',status:'unavailable',coverage:'fixture'},traffic:{status:'unavailable',label:'fixture'},festivals:{status:'unavailable',label:'fixture'}});
@@ -31,7 +31,7 @@ const sleepy=chooseEveningLife({...initializeAgent('an'),energy:10},'an',context
 const walk={createdAt:new Date(now).toISOString(),simStartedAt:0,pausedMs:0,from:'Phòng An',steps:[{location:'Phòng An',kind:'rest',activity:'Nằm ngủ trên giường',duration:3600}]};
 assert.equal(plannedSleepMinutes(walk,0,60000),.5);assert.equal(plannedSleepMinutes({...walk,steps:[{...walk.steps[0],location:'Phố đi bộ',activity:'Đi dạo'}]},0,3600000),0);
 const resting=structuredClone(planned.living),awake=structuredClone(planned.living);
-for(const [state,activity] of [[resting,'Nằm ngủ trên giường'],[awake,'Ngồi xem tivi']]){state.learning.an.needsUpdatedSimMs=0;state.learning.an.energy=50;state.learning.an.pending=undefined;}
+for(const state of [resting,awake]){state.learning.an.needsUpdatedSimMs=0;state.learning.an.energy=50;state.learning.an.pending=undefined;}
 const fixture={...world,clock:{scale:1,pausedAt:null,pausedMs:0,anchors:[{realMs:now,simMs:1200000,scale:1}]},people:world.people.map(p=>({...p,plan:p.id==='an'?walk:p.plan}))};
 prepareLearning(fixture,resting,now);
 prepareLearning({...fixture,people:fixture.people.map(p=>({...p,plan:p.id==='an'?{...walk,steps:[{...walk.steps[0],activity:'Ngồi xem tivi'}]}:p.plan}))},awake,now);

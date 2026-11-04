@@ -132,7 +132,7 @@ export function createInterior(host: HTMLDivElement, venue: string, floor: numbe
     last = stamp;
     const w = world(), now = Date.now() + (typeof offset==='function'?offset():offset), sim = computeSimMs(w.born, w.clock, now) / 1000, phase = interiorPhase(sim), daylight = worldTime(w, now).daylight;
     host.dataset.interiorPoseClock=sim.toFixed(3);
-    key.intensity = 1.2 + daylight * 2.8; hemi.intensity = 1.3 + daylight;
+    key.intensity = (kind==='cinema'?1.2:2.5) + daylight * 1.5; hemi.intensity = 1.8 + daylight*.5;
     cabin.position.y = (phase.liftY - floor) * 3.3; cabin.visible = Math.abs(cabin.position.y) < 3.5;
     const slide = phase.doorsOpen ? .75 : 0; doorL.position.x = 4.5 - slide; doorR.position.x = 5.6 + slide;
     if (sampledWorld !== w || now - sampledAt >= 250) {
