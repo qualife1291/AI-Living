@@ -249,5 +249,8 @@
   ],
   [
     "scripts/test-neighborhood.mjs"
+  ],
+  [
+    "scripts/test-qa-window.mjs"
   ]
 ]
