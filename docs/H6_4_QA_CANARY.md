@@ -59,10 +59,13 @@ Emergency stop: change the QA-only kill switch back to `true`, return
 Worker version. Do **not** delete D1 experiences or reset policies.
 
 ## Measurement / interpretation
-- `h6_canary_result` logs aggregate evaluations, actual choices changed,
+- `h6_canary_result` logs aggregate evaluations, proposed choices changed,
   fallbacks, scorer errors, model use, latency p50/p95/p99, version, model SHA.
   No actor IDs, names, contexts, JWT, emails, tokens, decision prompts or raw
   reward records enter this telemetry.
+- Status follows the wrapped pipeline (including409/503 or thrown500), not an
+  unconditional200. A proposal change can be overridden later; it is not an
+  executed/completed action, a fare authority or a proven reward improvement.
 - Use existing completed `agent_experiences` (real actor IDs in private QA
   D1 only) to compare exact fixed cohort vs matched contemporaneous controls,
   stratified by activity, local clock hour, skill headroom, baseline needs,

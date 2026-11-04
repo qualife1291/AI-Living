@@ -6,6 +6,7 @@ import { AsyncLocalStorage } from "node:async_hooks";
 import release from "../../data/training/h6-shadow-runtime.json" with { type: "json" };
 import decision from "../../data/training/h6-canary-promotion.json" with { type: "json" };
 import { systemLog } from "../system-log.ts";
+import {withH6Measurement} from './h6-measurement.ts';
 import { evaluateH6ShadowPair, verifyH6ShadowArtifact, type H6ShadowEnvelope, type VerifiedH6Shadow } from "./h6-shadow-evaluator.ts";
 import { scenarios, type Scenario, type AgentLearning } from "./learning.ts";
 import type { RealContext } from "./schema.ts";
@@ -79,16 +80,11 @@ export async function withQaH6Canary<T>(settings: Record<string, string | undefi
   } catch { systemLog("h6_canary_blocked", { status: 409 }); return run(); }
   const stats: Stats = { model, ids: new Set(gate.approvedActorIds), minPopulation: gate.minPopulation, total: 0,
     changed: 0, fallback: 0, failed: 0, modelUsed: 0, ms: [] };
-  return storage.run(stats, async () => {
-    try { return await run(); }
-    finally {
-      systemLog("h6_canary_result", { status: 200, h6ModelSha256: model.sha256,
+  return storage.run(stats, () => withH6Measurement("h6_canary_result",run,() => ({h6ModelSha256: model.sha256,
         h6CanaryEvaluations: stats.total, h6CanaryChanged: stats.changed,
         h6CanaryFallback: stats.fallback, h6CanaryErrors: stats.failed,
         h6ModelUsed: stats.modelUsed, h6LatencyP50Ms: percentile(stats.ms, .5),
-        h6LatencyP95Ms: percentile(stats.ms, .95), h6LatencyP99Ms: percentile(stats.ms, .99) });
-    }
-  });
+        h6LatencyP95Ms: percentile(stats.ms, .95), h6LatencyP99Ms: percentile(stats.ms, .99) })));
 }
 /** Pure cohort and protected-needs gate: no model, DB or network access. */
 export function eligibleForH6Canary(input: {

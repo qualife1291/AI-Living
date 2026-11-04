@@ -5,6 +5,7 @@
 import { AsyncLocalStorage } from "node:async_hooks";
 import modelRelease from "../../data/training/h6-shadow-runtime.json" with { type: "json" };
 import { systemLog } from "../system-log.ts";
+import {withH6Measurement} from './h6-measurement.ts';
 import { evaluateH6ShadowPair, verifyH6ShadowArtifact, type H6ShadowEnvelope, type VerifiedH6Shadow } from "./h6-shadow-evaluator.ts";
 import type { AgentLearning } from "./learning.ts";
 import type { RealContext } from "./schema.ts";
@@ -40,11 +41,7 @@ export async function withQaH6Shadow<T>(settings: Record<string, string | undefi
   }
   const aggregate: Aggregate = { model, total: 0, paired: 0, used: 0, agreements: 0,
     mismatches: 0, errors: 0, skipped: 0, uncertainty: { low: 0, medium: 0, high: 0, unavailable: 0 }, durations: [] };
-  return local.run(aggregate, async () => {
-    try {
-      return await run();
-    } finally {
-      systemLog("h6_shadow_eval", { status: 200, h6ModelSha256: model.sha256,
+  return local.run(aggregate, () => withH6Measurement("h6_shadow_eval",run,() => ({h6ModelSha256: model.sha256,
         h6Evaluations: aggregate.total, h6Paired: aggregate.paired, h6ModelUsed: aggregate.used,
         h6Agreements: aggregate.agreements, h6Mismatches: aggregate.mismatches,
         h6Errors: aggregate.errors, h6Skipped: aggregate.skipped,
@@ -53,9 +50,7 @@ export async function withQaH6Shadow<T>(settings: Record<string, string | undefi
         h6LatencyP50Ms: quantile(aggregate.durations, .5),
         h6LatencyP95Ms: quantile(aggregate.durations, .95),
         h6LatencyP99Ms: quantile(aggregate.durations, .99),
-        h6ShadowOnly: true });
-    }
-  });
+        h6ShadowOnly: true })));
 }
 /** Called with the exact baseline chooser input. Merely compares PROPOSED
  * actions, which may later be overridden by encounter, need or pending plan.

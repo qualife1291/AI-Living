@@ -282,5 +282,8 @@
   ],
   [
     "scripts/test-qa-window.mjs"
+  ],
+  [
+    "scripts/test-h6-measurement.mjs"
   ]
 ]
