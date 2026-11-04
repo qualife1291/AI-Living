@@ -99,6 +99,11 @@ export function createInterior(host: HTMLDivElement, venue: string, floor: numbe
   host.dataset.interiorFrames = '0';
   host.dataset.interiorActorSamples = '0';
   host.dataset.interiorMaterials = String(materials.length);
+  // The DOM host survives camera/floor remounts. Never retain old callbacks or
+  // occupants as evidence that the newly created canvas has rendered them.
+  host.dataset.interiorModels='[]';host.dataset.interiorNativeCount='0';
+  host.dataset.interiorResidents='[]';host.dataset.interiorVisible='0';
+  host.dataset.interiorFurniture='[]';host.dataset.interiorPoseClock='';
   // Ignore transient zero-size layout during camera/floor changes instead of
   // allocating a zero-sized render target or invalid perspective projection.
   const resize = () => {
