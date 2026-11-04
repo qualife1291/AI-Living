@@ -40,15 +40,17 @@ export function createInterior(host: HTMLDivElement, venue: string, floor: numbe
     }
     const mesh = new THREE.Mesh(geometry, material); mesh.position.set(x, y, z); mesh.scale.set(w, h, d); mesh.castShadow = true; mesh.receiveShadow = true; parent.add(mesh); return mesh;
   }
-  const kind = interiorKind(venue), dining = kind === "dining", study = kind === "study";
+  const kind = interiorKind(venue), dining = kind === "dining"||kind==='patio', study = kind === "study";
   host.dataset.interiorCamera=options.camera;
   host.dataset.interiorFloor=String(floor);
   host.dataset.interiorLocation=venue;
   // Open front and right walls preserve a readable cutaway at every camera angle.
-  box(0, -.2, 0, 16, .4, 12, "#d9c6aa"); box(0, 2.8, -6, 16, 6, .22, "#e4ded0"); box(-8, 2.8, 0, .22, 6, 12, "#c4d3cd");
+  box(0, -.2, 0, 16, .4, 12, "#d9c6aa");
+  if(kind!=='patio'){box(0, 2.8, -6, 16, 6, .22, "#e4ded0"); box(-8, 2.8, 0, .22, 6, 12, "#c4d3cd");}
+  else{box(0,.05,-5.8,16,.15,.35,'#91a19a');for(const x of [-7.4,7.4]){box(x,2.6,-5.4,.16,5.2,.16,'#567a73');box(x,5.1,-5.4,1.1,.2,.8,'#e2ca8a');}}
   for (let x = -7; x < 8; x += 1) box(x, .015, 0, .018, .025, 12, "#b7a78f");
   // Window mullions and a luminous courtyard beyond the rear wall.
-  for (let i = 0; i < 3; i++) { box(-5 + i * 3.4, 3.3, -5.84, 2.8, 2.6, .12, "#86b4c0"); box(-5 + i * 3.4, 3.3, -5.7, .08, 2.7, .1, "#f6ecd7"); }
+  if(kind!=='patio')for (let i = 0; i < 3; i++) { box(-5 + i * 3.4, 3.3, -5.84, 2.8, 2.6, .12, "#86b4c0"); box(-5 + i * 3.4, 3.3, -5.7, .08, 2.7, .1, "#f6ecd7"); }
   function chair(x: number, z: number, back = true, reverse=false) { box(x, .9, z, .9, .2, .9, "#467b77"); if (back) box(x, 1.5, z + (reverse?.4:-.4), .9, 1, .15, "#467b77"); for (const dx of [-.32, .32]) for (const dz of [-.32, .32]) box(x + dx, .4, z + dz, .08, .8, .08, "#594a3a"); }
   if (kind === "home") {
     // A residential cutaway: two distinct beds with pillows/duvets, wardrobes,
@@ -93,7 +95,7 @@ export function createInterior(host: HTMLDivElement, venue: string, floor: numbe
   const pot = new THREE.Group(); scene.add(pot); box(-6, .45, 4.5, .7, .9, .7, "#b97757", pot); box(-6, 1.3, 4.5, 1.2, 1, 1, "#688967", pot); box(-6, 2, 4.5, .7, .8, .7, "#83a374", pot);
   furniture.add({id:'supplied/props/plant',x:-6,y:0,z:4.5,width:1.2,height:2.8,depth:1.2},pot);
   // Visible shaft, moving cabin and sliding doors. No actor transport is fabricated.
-  box(6.2, 3, -3.8, .2, 6, 3.5, "#546e79"); box(3.9, 3, -3.8, .16, 6, 3.5, "#546e79");
+  if(kind!=='patio'){box(6.2, 3, -3.8, .2, 6, 3.5, "#546e79"); box(3.9, 3, -3.8, .16, 6, 3.5, "#546e79");}
   const cabin = new THREE.Group(); scene.add(cabin); box(5.05, .2, -3.8, 2.1, .25, 3, "#a9bbb8", cabin); box(5.05, 1.3, -5.2, 2.1, 2.5, .1, "#819b9d", cabin);
   const doorL = box(4.5, 1.5, -2.25, 1, 2.8, .12, "#aebfc0", cabin), doorR = box(5.6, 1.5, -2.25, 1, 2.8, .12, "#aebfc0", cabin);
   const appliances=kind==='home'||kind==='cinema'?createHomeAppliances(scene,box,kind==='home',kind==='cinema'):undefined;
@@ -134,7 +136,7 @@ export function createInterior(host: HTMLDivElement, venue: string, floor: numbe
     const w = world(), now = Date.now() + (typeof offset==='function'?offset():offset), sim = computeSimMs(w.born, w.clock, now) / 1000, phase = interiorPhase(sim), daylight = worldTime(w, now).daylight;
     host.dataset.interiorPoseClock=sim.toFixed(3);
     key.intensity = (kind==='cinema'?1.2:2.5) + daylight * 1.5; hemi.intensity = 1.8 + daylight*.5;
-    cabin.position.y = (phase.liftY - floor) * 3.3; cabin.visible = Math.abs(cabin.position.y) < 3.5;
+    cabin.position.y = (phase.liftY - floor) * 3.3; cabin.visible = kind!=='patio'&&Math.abs(cabin.position.y) < 3.5;
     const slide = phase.doorsOpen ? .75 : 0; doorL.position.x = 4.5 - slide; doorR.position.x = 5.6 + slide;
     if (sampledWorld !== w || now - sampledAt >= 250) {
       atVenue = [...actorsAt(w, now), ...(w.living ? crowdAt(w.living, w, now) : [])]
