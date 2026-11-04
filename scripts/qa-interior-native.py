@@ -84,9 +84,11 @@ with sync_playwright() as p:
         # Owner pause through the existing button and mocked acknowledgement.
         page.get_by_role('button',name='Tạm nghỉ',exact=True).evaluate('(b)=>b.click()')
         page.get_by_role('button',name='Tiếp tục',exact=True).wait_for(timeout=20000)
-        page.wait_for_timeout(500)
+        expected=fixture['world']['clock']['anchors'][-1]['simMs']/1000
+        page.wait_for_function('''expected=>Math.abs(Number(document.querySelector('.interior-canvas')?.dataset.interiorPoseClock)-expected)<.002''',arg=expected,timeout=20000)
         pose=lambda:[{k:v for k,v in a.items() if k!='draws'} for a in models(host)]
-        a=pose();page.wait_for_timeout(1200);assert pose()==a,'Paused interior pose drift'
+        a=pose();page.wait_for_timeout(1200)
+        assert pose()==a,('Paused interior pose drift',a,pose(),host.get_attribute('data-interior-pose-clock'),expected)
         page.get_by_role('button',name='Tiếp tục',exact=True).evaluate('(b)=>b.click()')
         page.get_by_role('button',name='Tạm nghỉ',exact=True).wait_for(timeout=20000)
         page.wait_for_function('''before=>{
