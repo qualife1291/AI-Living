@@ -17,6 +17,9 @@ const context=hour=>({date:'2026-11-04',hour,weekday:3,timezone:'Asia/Ho_Chi_Min
 const world={...structuredClone(seed),born:new Date(born).toISOString(),living:initializeLiving(now),clock:{scale:1,pausedAt:null,pausedMs:0,anchors:[{realMs:born,simMs:0,scale:1}]}};
 const original=JSON.stringify(world),planned=planLivingTurn(world,context(22.5),now).world;
 assert.equal(JSON.stringify(world),original);assert.equal(planned.living.lifeScheduleVersion,1);assert.equal(planned.born,world.born);assert.deepEqual(planned.living.petOwners,world.living.petOwners);
+const clockShift=planLivingTurn(world,context(9),now);
+assert(eveningActions.some(s=>s.id===clockShift.turn.scenarioId),'Visual22:30 must use evening actions even if provider clock says09h');
+assert.equal(clockShift.turn.context.hour,9,'Provider provenance must remain unchanged');
 const actors=[...actorsAt(planned,now+120000),...crowdAt(planned.living,planned,now+120000)];
 const out=actors.filter(a=>!/^Phòng |Khu dân cư/.test(a.location));assert(out.length>=20,'Evening population must not disappear at22h');
 const decisions=new Set();for(let n=1;n<=48;n++){const id='neighbor-'+n,agent=initializeAgent(id),chosen=chooseEveningLife(agent,id,context(22.5),()=>{throw Error('Night must not use daytime curfew');});decisions.add(chosen.id);assert(!isSleepHour(id,22.5));}

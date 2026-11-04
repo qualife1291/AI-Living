@@ -147,6 +147,10 @@ export function planLivingTurn(
   context: RealContext,
   now: number,
 ): { state: LivingState; turn: LivingTurn; world: World; newExperiences: import("./learning").Experience[] } {
+  // Activities follow the same simulation clock as the rendered day/night.
+  // Keep the original provider context for provenance in the durable turn.
+  const observedContext=context;
+  context={...context,hour:worldTime(world,now).hour};
   const state = structuredClone(world.living ?? initializeLiving(now));
   // Versioned expansion on a durable turn, not a GET or initialization used by
   // frozen studies. Preserve custom population caps, identities and old data.
@@ -248,7 +252,7 @@ export function planLivingTurn(
     scriptId: encounter ? scriptId : undefined,
     scenarioId:anBusy?learning.an.pending?.scenarioId:encounter?'friendship':!festival?chosen.id:undefined,
     transport: anBusy ? world.people.find(p => p.id === "an")?.plan?.transport : chosen.transport,
-    context,
+    context:observedContext,
     simStartedAt: computeSimMs(world.born, world.clock, now),
   };
   state.lastTickAt = turn.createdAt;
