@@ -107,7 +107,8 @@ with sync_playwright() as p:
     audit('assets')
     page.get_by_role('link',name='Trở về xóm',exact=True).click();page.wait_for_url(base+'/');page.locator('.three-canvas[data-ready=true]').wait_for(timeout=90000)
    assert not errors,errors
-   assert not any('/api/living/' in url for url in writes),'Review cannot mutate personal learning or plans'
+   assert not any('/api/living/' in url and urlparse(url).path!='/api/living/pulse' for url in writes),'Only the existing, intercepted pulse is allowed; review cannot change learning/plans'
+   report.append({'scene':'write-isolation','viewport':label,'interceptedPulsePosts':sum(urlparse(url).path=='/api/living/pulse' for url in writes),'remoteWrites':0});save()
    page.close()
  except BaseException:
   try:page.screenshot(path=str(out/'failure.png'));(out/'failure.json').write_text(json.dumps({'errors':errors,'body':page.locator('body').inner_text()[-2500:]},ensure_ascii=False,indent=2))
