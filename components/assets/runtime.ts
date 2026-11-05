@@ -10,6 +10,9 @@ export async function createAssetViewer(host: HTMLDivElement, onClips: (clips: s
   renderer.setPixelRatio(Math.min(devicePixelRatio, 1.5));
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  renderer.domElement.tabIndex=0;
+  renderer.domElement.setAttribute('role','img');
+  renderer.domElement.setAttribute('aria-label','Model 3D; dùng chuột hoặc phím mũi tên để đổi góc nhìn');
   host.appendChild(renderer.domElement);
   const scene = new THREE.Scene();
   scene.background = new THREE.Color("#d6e9e6");
@@ -18,6 +21,7 @@ export async function createAssetViewer(host: HTMLDivElement, onClips: (clips: s
   sun.position.set(-15, 30, 25); scene.add(sun);
   const camera = new THREE.PerspectiveCamera(35, 1, .1, 1000);
   const controls = new OrbitControls(camera, renderer.domElement);
+  controls.listenToKeyEvents(renderer.domElement);
   controls.enableDamping = true; controls.minDistance = 8; controls.maxDistance = 350;
   controls.maxPolarAngle = Math.PI / 2 - .02;
   const floor = new THREE.Mesh(new THREE.CircleGeometry(32, 48), new THREE.MeshLambertMaterial({ color: "#c9cfad" }));
