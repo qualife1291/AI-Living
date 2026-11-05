@@ -136,7 +136,7 @@ export async function createStudio(host: HTMLDivElement, input: () => { id: Scen
       group.traverse(o=>{if((o as THREE.Mesh).isMesh)o.userData.actorId=prop.holderId??undefined;});
       group.visible = prop.visible; group.position.set(...stagePoint(prop.position)); group.rotation.set(...prop.rotation);
     }
-    const shot=studioCamera(frame,contacts,camera.aspect,motion.matches||snapBeat===frame.beat.index);const subjects=focused?studioFocusSubjects(frame,focused):shot.subjects;host.dataset.cameraSubjects=JSON.stringify(subjects);activeStage=stage;
+    const shot=studioCamera(frame,contacts,camera.aspect,motion.matches||snapBeat===frame.beat.index,host.clientHeight);const subjects=focused?studioFocusSubjects(frame,focused):shot.subjects;host.dataset.cameraSubjects=JSON.stringify(subjects);activeStage=stage;
     subjectPoints=subjects.flatMap(id=>{const contact=contacts.find(c=>c.id===id),actor=frame.actors.find(a=>a.id===id)!;const head=contact?.head??[actor.position[0],actor.position[1]*STAGE_Y+2.25,actor.position[2]];return [new THREE.Vector3(...head),new THREE.Vector3(head[0],head[1]*.65,head[2])];});
     if (!manual) {
       target.copy(shot.target);eye.copy(shot.eye);
@@ -153,8 +153,8 @@ export async function createStudio(host: HTMLDivElement, input: () => { id: Scen
     host.dataset.renderedProps=JSON.stringify(frame.props.map(p=>{const group=stage.props.get(p.id)!,base=group.userData.sourceSize as number[];return{id:p.id,size:base.map((v,i)=>v*group.scale.getComponent(i))};}));
     lastId = state.id; lastTime = state.time;
   }
-  function actorAnchor(id:string){return activeFrame?studioFocus(activeFrame,activeContacts,id,camera.aspect,camera.fov,camera.position.clone().sub(controls.target)).target:undefined;}
-  function focusActor(id:string){if(!activeFrame?.actors.some(a=>a.id===id))return;const shot=studioFocus(activeFrame,activeContacts,id,camera.aspect,camera.fov,camera.position.clone().sub(controls.target));
+  function actorAnchor(id:string){return activeFrame?studioFocus(activeFrame,activeContacts,id,camera.aspect,camera.fov,camera.position.clone().sub(controls.target),host.clientHeight).target:undefined;}
+  function focusActor(id:string){if(!activeFrame?.actors.some(a=>a.id===id))return;const shot=studioFocus(activeFrame,activeContacts,id,camera.aspect,camera.fov,camera.position.clone().sub(controls.target),host.clientHeight);
     clearCameraMotion();manual=true;focused=id;focusKey=shot.subjects.join('|');focusAnchor=shot.target.clone();onSelect(id);controls.target.copy(shot.target);camera.position.copy(shot.eye);dirty=true;
   }
   const pointer=new THREE.Vector2(),pickRay=new THREE.Raycaster(),gesture=new TapGesture();
