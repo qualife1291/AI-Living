@@ -261,5 +261,8 @@
   ],
   [
     "scripts/test-evening-life.mjs"
+  ],
+  [
+    "scripts/test-render-visibility.mjs"
   ]
 ]

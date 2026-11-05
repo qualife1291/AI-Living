@@ -3,12 +3,14 @@
 export function observeRenderVisibility(host: HTMLElement) {
   let intersecting = true, disposed = false;
   const observer = typeof IntersectionObserver === 'undefined' ? undefined : new IntersectionObserver(entries => {
-    const entry = entries.find(entry => entry.target === host);
+    // Opening/scrolling a dialog can queue several transitions for one target.
+    // The first record may be its old, hidden position; the last is current.
+    const entry = entries.findLast(entry => entry.target === host);
     if (entry) intersecting = entry.isIntersecting && entry.intersectionRect.width > 0 && entry.intersectionRect.height > 0;
-  });
+  }, {root:host.closest('dialog')});
   observer?.observe(host);
   return {
     visible: () => !disposed && !document.hidden && intersecting && host.clientWidth > 1 && host.clientHeight > 1,
-    dispose() { disposed = true; observer?.disconnect(); },
+    dispose() { if(disposed)return;disposed = true; observer?.disconnect(); },
   };
 }
