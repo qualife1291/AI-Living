@@ -29,11 +29,14 @@ def setup(browser,width=1440,height=900,dpr=2,motion='no-preference',fallback=No
    if mode==409:fixture['revision']+=1
    route.fulfill(status=mode,content_type='text/html',body='<html>error</html>');return
   if mode=='invalid':route.fulfill(status=200,content_type='text/html',body='<html>sign in</html>');return
-  real=int(time.time()*1000);clock=fixture['world']['clock'];anchor=clock['anchors'][0]
-  sim=anchor['simMs']+((clock.get('pausedAt') or real)-anchor['realMs'])*anchor['scale']
-  fixture['world']['paused']=value['paused'];clock['pausedAt']=real if value['paused'] else None;clock['anchors']=[{'realMs':real,'simMs':sim,'scale':1}];fixture['revision']+=1
-  if mode=='held':state['pending']=route
-  else:route.fulfill(status=200,content_type='application/json',body='{"ok":true}')
+  def commit():
+   real=int(time.time()*1000);clock=fixture['world']['clock'];anchor=clock['anchors'][0]
+   sim=anchor['simMs']+((clock.get('pausedAt') or real)-anchor['realMs'])*anchor['scale']
+   fixture['world']['paused']=value['paused'];clock['pausedAt']=real if value['paused'] else None;clock['anchors']=[{'realMs':real,'simMs':sim,'scale':1}];fixture['revision']+=1
+  # A held write has not committed: concurrent GET/poll must still see the old
+  # snapshot until this test explicitly releases the server commit/ACK.
+  if mode=='held':state['pending']=route;state['commitPending']=commit
+  else:commit();route.fulfill(status=200,content_type='application/json',body='{"ok":true}')
  def chat(route):state['chatPosts']+=1;state['chatPending']=route
  page.route('**/api/world*',world);page.route('**/api/living/interact',chat)
  if fallback=='unsupported':page.add_init_script('window.DecompressionStream=undefined;')
@@ -80,6 +83,8 @@ with sync_playwright() as p:
    page.wait_for_function('document.querySelector(".live-top button:disabled")!==null')
    assert page.get_by_role('button',name='Tạm nghỉ',exact=True).is_disabled()
    assert state['posts']==before+1;assert state['pending'] is not None
+   assert fixture['world']['paused'] is False,'Held server write must not leak through polling'
+   state.pop('commitPending')()
    state['pending'].fulfill(status=200,content_type='application/json',body='{"ok":true}');state['pending']=None
    page.get_by_role('button',name='Tiếp tục',exact=True).wait_for();page.wait_for_timeout(300)
    position=host.get_attribute('data-position');page.wait_for_timeout(600);assert host.get_attribute('data-position')==position
