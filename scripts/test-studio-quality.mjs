@@ -29,6 +29,12 @@ for(const d of scenarioDefinitions){
   const f=scenarioFrame(d.id,at),contacts=sample(at),shot=studioCamera(f,contacts,aspect),camera=new THREE.PerspectiveCamera(f.camera.fov,aspect,.1,2000);camera.position.copy(shot.eye);camera.lookAt(shot.target);camera.updateMatrixWorld(true);
   for(const id of shot.subjects){const a=f.actors.find(a=>a.id===id),head=contacts.find(c=>c.id===id)?.head??[a.position[0],a.position[1]*STAGE_Y+2.25,a.position[2]];for(const p of [head,stagePoint(a.position)]){const ndc=new THREE.Vector3(...p).project(camera);assert(Math.abs(ndc.x)<.95&&Math.abs(ndc.y)<.95,`${d.id} ${id} camera ${at} clips head/feet`);}}
  }
+ // Short landscape uses a tighter vertical fit, keeping bodies out of the HUD.
+ for(const at of d.shots.map(s=>s.at+2.5)){
+  const f=scenarioFrame(d.id,at),contacts=sample(at),aspect=844/390,shot=studioCamera(f,contacts,aspect,true,390),camera=new THREE.PerspectiveCamera(f.camera.fov,aspect,.1,2000);
+  camera.position.copy(shot.eye);camera.lookAt(shot.target);camera.updateMatrixWorld(true);
+  for(const id of shot.subjects){const a=f.actors.find(a=>a.id===id),head=contacts.find(c=>c.id===id)?.head??[a.position[0],a.position[1]*STAGE_Y+2.25,a.position[2]];for(const point of [head,stagePoint(a.position)]){const screen=new THREE.Vector3(...point).project(camera);assert(Math.abs(screen.y)<.6,`${d.id}/${id}: short-screen HUD obscures head/feet`);}}
+ }
  let maximumContactGap=0;
  for(const [t,id,actor] of probes){const f=scenarioFrame(d.id,t),p=f.props.find(p=>p.id===id),a=sample(t).find(a=>a.id===actor),centre=new THREE.Vector3(...stagePoint(p.position)),q=new THREE.Quaternion().setFromEuler(new THREE.Euler(...p.rotation)).invert(),hand=new THREE.Vector3(...a.hands.right).sub(centre).applyQuaternion(q),size=p.size.map((v,i)=>i===1?v*STAGE_Y:v),outside=Math.hypot(...hand.toArray().map((v,i)=>Math.max(0,Math.abs(v)-size[i]/2)));maximumContactGap=Math.max(maximumContactGap,outside);assert(outside<.35,`${d.id}/${id} at ${t}: rendered palm outside prop ${outside}`);}
  if(d.id==='kitten-care'){const c=sample(119),f=scenarioFrame(d.id,119),cat=f.actors.find(a=>a.id==='miu'),a=c.find(a=>a.id==='thanh');for(const side of ['left','right']){const h=a.hands[side],p=stagePoint(cat.position);assert(Math.abs(h[0]-p[0])<1&&Math.abs(h[2]-p[2])<1.3&&h[1]>p[1]&&h[1]<p[1]+1.2,'Both hands support the actual feline body');}}

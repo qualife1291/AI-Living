@@ -55,7 +55,7 @@ with sync_playwright() as p:
    before=city.get_attribute('data-frame');page.wait_for_timeout(900)
    assert city.get_attribute('data-frame')==before,'Hidden city must stop GPU draws'
    page.locator('.venue-grid button').filter(has_text='Thư viện').click()
-   room=page.locator('.interior-canvas');room.scroll_into_view_if_needed()
+   room=page.locator('.interior-canvas');page.wait_for_function('document.querySelector(".interior-canvas")?.dataset.renderState==="active"');room.scroll_into_view_if_needed()
    page.wait_for_function('JSON.parse(document.querySelector(".interior-canvas")?.dataset.interiorModels||"[]").length===3',timeout=60000)
    page.evaluate('window.__roomCanvas=document.querySelector(".interior-canvas canvas")')
    for name,mode in [('Theo cư dân','follow'),('Góc trên cao','overhead'),('Toàn phòng','wide')]:
