@@ -350,3 +350,6 @@ footer span:first-child {
 }
 
 @media(max-height:500px) and (min-width:600px){.urban-vehicle-camera{flex-direction:row;bottom:151px;right:14px;padding:3px}.urban-vehicle-camera button{width:40px;height:40px}}
+
+/* Preserve the QA touch guidance screen-reader footprint after desktop styling. */
+@media(max-width:700px){.city-three .map-credit{padding:0}}
