@@ -440,6 +440,18 @@ test('nightlife keeps awake public conversation after22h, with legacy/private/mo
   }
 });
 
+test('a hidden/modal viewport preserves the current subtitle reading time', () => {
+  const director=new SocialDirector(),spaced=spaceActors(world,pair);
+  const opening=director.frame(world,spaced,[],noon,null,true).exchanges[0];
+  assert.ok(opening);director.presented(opening.speech.key,noon);
+  director.suspend(noon+60000);
+  const resumed=director.frame(world,spaced,[],noon+60000,null,true).exchanges[0];
+  assert.equal(resumed?.speech.key,opening.speech.key);
+  director.presented(resumed.speech.key,noon+60000);
+  const next=director.frame(world,spaced,[],noon+65000,null,true).exchanges[0];
+  assert.notEqual(next?.speech.key,opening.speech.key,'Reading resumes normally after the viewport returns');
+});
+
 for (const result of results) console.log(`${result.ok ? 'PASS' : 'FAIL'} ${result.name}${result.ok ? '' : `: ${result.error}`}`);
 const failed = results.filter(r => !r.ok);
 console.log(JSON.stringify({ suite: 'social', cases: results.length, passed: results.length - failed.length, failed: failed.length }));

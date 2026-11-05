@@ -206,6 +206,7 @@ export default function Page() {
       {world ? (
         <CityView
           world={world}
+          active={!panel}
           quality={quality}
           events={data?.events ?? []}
           selected={selected}
@@ -422,7 +423,7 @@ export default function Page() {
                     .join(" · ") || "Sinh hoạt và gặp gỡ trong thành phố."}
                 </p>
               )}
-              {venue && world && <InteriorView key={venue.name} world={world} venue={venue.name} clockOffset={clockOffset} />}
+              {venue && world && <InteriorView key={venue.name} world={world} venue={venue.name} clockOffset={clockOffset} quality={quality} />}
               {world&&data&&<GardenCare world={world} revision={data.revision} now={Date.parse(data.serverNow)} venue={venue?.name} refresh={()=>load(true)} onView={plot=>{setMode("city");setNavigation({x:plot.x,y:plot.z,key:Date.now(),gardenId:plot.id});setPanel(null);}}/>}
               <div className="venue-grid">
                 {venues.map((v) => (
@@ -574,8 +575,8 @@ export default function Page() {
                 .
               </p>
               <p>
-                Các công trình và phương tiện đang hiển thị được vẽ bằng thư
-                viện SVG của dự án. Nguồn bản đồ/tài sản và phạm vi sử dụng được
+                Công trình, phương tiện và nhân vật được dựng bằng Three.js với
+                tài nguyên 3D. Nguồn bản đồ/tài sản và phạm vi sử dụng được
                 ghi trong tài liệu.
               </p>
             </>

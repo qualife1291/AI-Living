@@ -3,7 +3,9 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 import osm from '@/data/city/hcm-district1.json';
 import { closedFootprint, buildingHeight } from '@/lib/city/osm';
-export function createOsm(host:HTMLDivElement, fatal:()=>void = ()=>{}) {
+import {observeRenderVisibility} from './render-visibility';
+import {pixelRatio} from '../../../lib/city/scale';
+export function createOsm(host:HTMLDivElement, fatal:()=>void = ()=>{},active:()=>boolean=()=>true) {
   const renderer=new THREE.WebGLRenderer({antialias:true,powerPreference:'low-power'});
   renderer.setPixelRatio(Math.min(devicePixelRatio,1.5));renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;
   host.appendChild(renderer.domElement);
@@ -26,9 +28,12 @@ export function createOsm(host:HTMLDivElement, fatal:()=>void = ()=>{}) {
   const lines:number[]=[];
   for(const feature of osm.features.filter(f=>f.kind==='road'))for(let i=1;i<feature.points.length;i++){const a=feature.points[i-1],b=feature.points[i];lines.push(a[0],.3,a[1],b[0],.3,b[1]);}
   const lineGeometry=new THREE.BufferGeometry();lineGeometry.setAttribute('position',new THREE.Float32BufferAttribute(lines,3));geometries.push(lineGeometry);const lineMaterial=new THREE.LineBasicMaterial({color:'#57767b'});materials.push(lineMaterial);scene.add(new THREE.LineSegments(lineGeometry,lineMaterial));
-  let frame=0,last=0;const resize=()=>{renderer.setSize(host.clientWidth,host.clientHeight);camera.aspect=host.clientWidth/Math.max(1,host.clientHeight);camera.updateProjectionMatrix();};const observer=new ResizeObserver(resize);observer.observe(host);resize();
+  const visibility=observeRenderVisibility(host);let dirty=true;
+  const changed=()=>{dirty=true;};controls.addEventListener('change',changed);
+  const motion=matchMedia('(prefers-reduced-motion: reduce)'),motionChanged=()=>{controls.enableDamping=!motion.matches;dirty=true;};motionChanged();motion.addEventListener('change',motionChanged);
+  let frame=0,last=0;const resize=()=>{if(host.clientWidth<2||host.clientHeight<2)return;renderer.setPixelRatio(pixelRatio('balanced',Math.min(devicePixelRatio,1.5),host.clientWidth,host.clientHeight));renderer.setSize(host.clientWidth,host.clientHeight);camera.aspect=host.clientWidth/host.clientHeight;camera.updateProjectionMatrix();dirty=true;};const observer=new ResizeObserver(resize);observer.observe(host);resize();
   const onLoss=(event:Event)=>{event.preventDefault();cancelAnimationFrame(frame);host.dataset.ready='false';fatal();};renderer.domElement.addEventListener('webglcontextlost',onLoss);
-  function tick(t:number){frame=requestAnimationFrame(tick);if(document.hidden||t-last<33)return;last=t;controls.update();renderer.render(scene,camera);host.dataset.ready='true';host.dataset.buildings=String(count);host.dataset.estimated=String(estimated);host.dataset.drawCalls=String(renderer.info.render.calls);}
+  function tick(t:number){frame=requestAnimationFrame(tick);if(!visibility.visible()||!active()){last=0;host.dataset.renderState='suspended';return;}if(t-last<33)return;last=t;host.dataset.renderState='active';const moved=controls.update();if(!dirty&&!moved)return;renderer.render(scene,camera);dirty=false;host.dataset.frame=String(Number(host.dataset.frame??0)+1);host.dataset.ready='true';host.dataset.buildings=String(count);host.dataset.estimated=String(estimated);host.dataset.drawCalls=String(renderer.info.render.calls);}
   frame=requestAnimationFrame(tick);
-  return()=>{cancelAnimationFrame(frame);observer.disconnect();controls.dispose();renderer.domElement.removeEventListener('webglcontextlost',onLoss);geometries.forEach(g=>g.dispose());materials.forEach(m=>m.dispose());renderer.dispose();renderer.forceContextLoss();renderer.domElement.remove();};
+  return()=>{cancelAnimationFrame(frame);visibility.dispose();observer.disconnect();motion.removeEventListener('change',motionChanged);controls.removeEventListener('change',changed);controls.dispose();renderer.domElement.removeEventListener('webglcontextlost',onLoss);geometries.forEach(g=>g.dispose());materials.forEach(m=>m.dispose());renderer.dispose();renderer.forceContextLoss();renderer.domElement.remove();};
 }

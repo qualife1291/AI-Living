@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { ArrowLeft, Play, Pause, RotateCcw, Clapperboard, Volume2, VolumeX, LocateFixed } from "lucide-react";
 import { scenarioDefinitions, scenarioFrame, type ScenarioId } from "@/lib/city/scenarios";
 import {StudioSound} from "./sound";
@@ -14,6 +14,8 @@ export function ScenarioStudio() {
   const [id, setId] = useState<ScenarioId>("wallet-return"), [time, setTime] = useState(0), [playing, setPlaying] = useState(false), [ready, setReady] = useState(false), [error, setError] = useState("");
   const [cameraReset,setCameraReset]=useState(0),[focused,setFocused]=useState<string|null>(null);
   const [soundOn,setSoundOn]=useState(false),[soundStatus,setSoundStatus]=useState("off");
+  const [attempt,setAttempt]=useState(0);
+  const finished=time>=120;
   const sound=useRef<StudioSound|null>(null);
   const host = useRef<HTMLDivElement>(null), input = useRef({ id, time, cameraReset }), runtime = useRef<StudioRuntime | null>(null);
   useEffect(() => { input.current = { id, time, cameraReset }; }, [id, time, cameraReset]);
@@ -21,30 +23,35 @@ export function ScenarioStudio() {
     let cancelled = false;
     sound.current=new StudioSound(state=>{if(host.current)host.current.dataset.audio=JSON.stringify(state);if(!cancelled)setSoundStatus(state.status);});
     const abort = new AbortController();
+    const failed=()=>{if(!cancelled){setReady(false);setPlaying(false);setError("Không gian 3D bị gián đoạn. Hãy thử mở lại.");}};
     import("./runtime").then(async ({ createStudio }) => {
       if (!host.current || cancelled) return;
-      const view = await createStudio(host.current, () => input.current, abort.signal,setFocused);
+      const view = await createStudio(host.current, () => input.current, abort.signal,setFocused,failed);
       if (cancelled) view.dispose(); else { runtime.current = view; setReady(true); }
-    }).catch(() => { if (!cancelled) setError("Chưa mở được trường quay 3D. Hãy tải lại hoặc dùng thiết bị hỗ trợ WebGL2."); });
+    }).catch(failed);
     return () => { cancelled = true; sound.current?.dispose();sound.current=null; abort.abort(); runtime.current?.dispose(); runtime.current = null; };
-  }, []);
+  }, [attempt]);
   useEffect(() => {
-    if (!playing || !ready) return;
+    if (!playing || !ready || finished) return;
     let last = performance.now(), handle = 0;
     const resetAnchor = () => { last = performance.now(); };
-    const tick = (now: number) => { const dt = Math.max(0, (now - last) / 1000); last = now; if (!document.hidden) setTime(t => Math.min(120, t + dt)); handle = requestAnimationFrame(tick); };
+    const tick = (now: number) => {
+      if(document.hidden)last=now;
+      else if(now-last>=33){const dt=Math.max(0,(now-last)/1000);last=now;setTime(t=>Math.min(120,t+dt));}
+      handle = requestAnimationFrame(tick);
+    };
     document.addEventListener("visibilitychange", resetAnchor);
     handle = requestAnimationFrame(tick); return () => { cancelAnimationFrame(handle); document.removeEventListener("visibilitychange", resetAnchor); };
-  }, [playing, ready]);
+  }, [playing, ready, finished]);
   useEffect(()=>{const leave=(event:PageTransitionEvent)=>{setPlaying(false);setSoundOn(false);if(event.persisted)sound.current?.mute();else{sound.current?.dispose();runtime.current?.dispose();sound.current=null;runtime.current=null;}};window.addEventListener('pagehide',leave);return()=>window.removeEventListener('pagehide',leave);},[]);
-  const definition = scenarioDefinitions.find(s => s.id === id)!, frame = scenarioFrame(id, time), line = frame.dialogue[0];
+  const definition = scenarioDefinitions.find(s => s.id === id)!, frame = useMemo(()=>scenarioFrame(id,time),[id,time]), line = frame.dialogue[0];
   useEffect(()=>{sound.current?.sync(frame,playing&&time<120);});
   useEffect(()=>{const hidden=()=>{if(document.hidden)sound.current?.sync(scenarioFrame(input.current.id,input.current.time),false);};document.addEventListener("visibilitychange",hidden);return()=>document.removeEventListener("visibilitychange",hidden);},[]);
   const stamp = (t: number) => `${Math.floor(t / 60)}:${String(Math.floor(t % 60)).padStart(2, "0")}`;
   return <main className="scenario-studio">
     <div ref={host} className="studio-canvas" aria-label="Trường quay kịch bản 3D" />
     <header className="studio-top"><StudioHomeLink/><div><b><Clapperboard size={16} />Chuyện trong xóm</b><small>Trường quay mô phỏng · Không thay đổi cuộc sống đang chạy</small></div><label><span className="sr-only">Chọn kịch bản</span><select aria-label="Chọn kịch bản" value={id} onChange={e => { setPlaying(false); setTime(0);setCameraReset(v=>v+1); setId(e.target.value as ScenarioId); }}>{scenarioDefinitions.map(s => <option value={s.id} key={s.id}>{s.title}</option>)}</select></label></header>
-    {!ready && <p className="studio-loading">{error || "Đang dựng trường quay và tải model…"}</p>}
+    {!ready && <div className="studio-loading" role={error?'alert':'status'}><p>{error || "Đang dựng trường quay và tải model…"}</p>{error&&<button onClick={()=>{setError('');setAttempt(v=>v+1);}}>Thử lại 3D Studio</button>}</div>}
     <aside className="studio-cast"><strong>{definition.subtitle}</strong><div>{definition.cast.map(a => <span key={a.id}><button className="studio-person" aria-label={`Theo dõi ${a.name}`} aria-pressed={focused===a.id} disabled={!ready} onClick={()=>runtime.current?.focus(a.id)}><b>{a.name}</b><small>{a.age} {a.ageUnit === "months" ? "tháng" : "tuổi"} · {a.role}</small></button></span>)}</div></aside>
     {line && <div className="studio-dialogue"><b>{frame.actors.find(a => a.id === line.speaker)?.name}</b><span>{line.text}</span></div>}
     <section className="studio-timeline" aria-label="Điều khiển kịch bản"><div><button disabled={!ready} aria-label={playing && time < 120 ? "Tạm dừng kịch bản" : "Phát kịch bản"} onClick={() => { if (time >= 120){setTime(0);setCameraReset(v=>v+1);} setPlaying(!playing || time >= 120); }}>{playing && time < 120 ? <Pause size={19} /> : <Play size={19} />}</button><button aria-label="Xem lại từ đầu" onClick={() => { setTime(0); setPlaying(false);setCameraReset(v=>v+1); }}><RotateCcw size={17} /></button><button aria-label={soundOn?"Tắt âm thanh":"Bật âm thanh"} aria-pressed={soundOn} title={soundOn?"Tắt âm thanh":"Bật lời thoại và âm thanh"} onClick={async()=>{if(soundOn){sound.current?.mute();setSoundOn(false);}else{setSoundOn(true);if(!await sound.current?.enable())setSoundOn(false);}}}>{soundOn?<Volume2 size={18}/>:<VolumeX size={18}/>}</button><button aria-label="Góc quay theo kịch bản" title="Đặt lại góc nhìn" onClick={()=>setCameraReset(v=>v+1)}><LocateFixed size={18}/></button><b>{frame.beat.label}</b><small>{frame.camera.lensMm.toFixed(0)}mm</small><output>{stamp(time)} / 2:00</output></div><input type="range" aria-label="Thời gian kịch bản" min="0" max="120" step="0.1" value={time} onChange={e => { setPlaying(false); setTime(Number(e.target.value)); }} /><div className="studio-beats">{definition.shots.map((shot, i) => <button key={shot.at} onClick={() => { setPlaying(false); setTime(shot.at + .1);setCameraReset(v=>v+1); }} aria-label={`Phân cảnh ${i + 1}`} className={frame.beat.index === i ? "active" : ""}>{String(i + 1).padStart(2, "0")}<span>{shot.label}</span></button>)}</div></section>

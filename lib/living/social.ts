@@ -123,6 +123,9 @@ export class SocialDirector {
   private previouslyPaused = false;
   private born: string | undefined;
 
+  /** Time behind a modal/hidden canvas is not time spent reading a subtitle. */
+  suspend(now: number) { this.previousNow = now; this.previouslyPaused = true; }
+
   /** Start reading time after the renderer has delivered this line to the HUD. */
   presented(key: string, now: number) {
     for (const e of this.encounters.values()) if (`${e.speechPrefix}-${e.lineIndex}` === key && e.presentedIndex !== e.lineIndex) {

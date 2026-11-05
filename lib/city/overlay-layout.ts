@@ -3,9 +3,10 @@ export type OverlayRect = { x: number; y: number; width: number; height: number 
 const clamp = (n: number, low: number, high: number) => Math.max(low, Math.min(Math.max(low, high), n));
 export function speechRect(anchor: { x: number; y: number }, size: { width: number; height: number }, viewport: { width: number; height: number }): OverlayRect {
   const margin = 12, top = 82, bottom = viewport.width <= 900 ? 162 : 104;
-  const width = Math.min(size.width, viewport.width - margin * 2), height = Math.min(size.height, viewport.height - top - bottom);
+  const right = viewport.width <= 900 && viewport.height >= 500 ? 68 : margin;
+  const width = Math.min(size.width, viewport.width - margin - right), height = Math.min(size.height, viewport.height - top - bottom);
   const above = anchor.y - height - 36, below = anchor.y + 18;
-  return { x: clamp(anchor.x - width / 2, margin, viewport.width - width - margin),
+  return { x: clamp(anchor.x - width / 2, margin, viewport.width - width - right),
     y: clamp(above < top && below + height <= viewport.height - bottom ? below : above, top, viewport.height - bottom - height), width, height };
 }
 function overlaps(a: OverlayRect, b: OverlayRect) {
