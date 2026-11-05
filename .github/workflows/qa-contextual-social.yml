@@ -73,6 +73,7 @@ jobs:
           sudo apt-get install -y chromium
           python3 -m venv /tmp/ai-living-browser-venv
           /tmp/ai-living-browser-venv/bin/pip install playwright pillow
+          curl --fail --silent --show-error https://cdn.jsdelivr.net/npm/axe-core@4.11.0/axe.min.js -o /tmp/ai-living-axe-4.11.0.min.js
       - name: Start local Worker (no remote D1 or QA writes)
         run: |
           mkdir -p qa-evidence/social
@@ -91,6 +92,7 @@ jobs:
           /tmp/ai-living-browser-venv/bin/python scripts/qa-social.py
           QA_OUT=qa-evidence/social/interior-native /tmp/ai-living-browser-venv/bin/python scripts/qa-interior-native.py
           QA_OUT=qa-evidence/social/evening /tmp/ai-living-browser-venv/bin/python scripts/qa-evening-life.py
+          QA_OUT=qa-evidence/social/ui-review /tmp/ai-living-browser-venv/bin/python scripts/qa-ui-review.py
       - name: Upload real browser screenshots and local server evidence
         if: always()
         uses: actions/upload-artifact@v4
