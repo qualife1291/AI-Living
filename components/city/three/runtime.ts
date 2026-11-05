@@ -785,7 +785,7 @@ export function createCity(
       if (mesh.instanceColor) mesh.instanceColor.needsUpdate = true;
     }
   }
-  const visibilityChanged = () => { lastDraw = 0; };
+  const visibilityChanged = () => { lastDraw = 0;if(document.hidden)socialDirector.suspend(Date.now()); };
   const visibility = observeRenderVisibility(host);
   document.addEventListener("visibilitychange", visibilityChanged);
   window.addEventListener('resize',visibilityChanged);
