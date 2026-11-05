@@ -77,8 +77,12 @@ with sync_playwright() as p:
         page.wait_for_function('''() => JSON.parse(document.querySelector('.interior-canvas').dataset.interiorFurniture||'[]').every(x=>x.loaded&&x.draws>0)''',timeout=30000)
         assert {x['modelId'] for x in models(host)}=={'supplied/office','supplied/waistcoat','supplied/service'}
         reports.append(capture(page,host,'wide-'+name))
+        page.evaluate('window.__interiorCanvas=document.querySelector(".interior-canvas canvas")')
         for button,mode in [('Theo cư dân','follow'),('Góc trên cao','overhead')]:
+            before=int(host.get_attribute('data-interior-frames'))
             page.locator('.interior-view').get_by_role('button',name=button,exact=True).click()
+            page.wait_for_function('([mode,before])=>{const h=document.querySelector(".interior-canvas");return h.dataset.interiorCamera===mode&&Number(h.dataset.interiorFrames)>before}',arg=[mode,before])
+            assert page.evaluate('window.__interiorCanvas===document.querySelector(".interior-canvas canvas")')
             host=ready(page);reports.append(capture(page,host,mode+'-'+name))
         page.evaluate('window.__interiorCanvas=document.querySelector(".interior-canvas canvas")')
         # Owner pause through the existing button and mocked acknowledgement.
@@ -96,8 +100,10 @@ with sync_playwright() as p:
           return values.length===3&&JSON.stringify(values.map(({draws,...a})=>a))!==JSON.stringify(before);
         }''',arg=a,timeout=15000)
         assert page.evaluate('window.__interiorCanvas===document.querySelector(".interior-canvas canvas")'),'Polling/clock offset must not recreate the room renderer'
+        before=int(host.get_attribute('data-interior-frames'))
         page.locator('.interior-view').get_by_role('button',name='Tầng 2',exact=True).click()
-        page.wait_for_function('document.querySelector(".interior-canvas")?.dataset.interiorFrames>=3')
+        page.wait_for_function('before=>{const h=document.querySelector(".interior-canvas");return h.dataset.interiorFloor==="1"&&Number(h.dataset.interiorFrames)>before}',arg=before)
+        assert page.evaluate('window.__interiorCanvas===document.querySelector(".interior-canvas canvas")')
         assert models(host)==[] and host.get_attribute('data-interior-visible')=='0'
         reports.append(capture(page,host,'upper-empty-'+name))
         page.locator('.interior-view').get_by_role('button',name='Tầng trệt',exact=True).click();ready(page)
@@ -105,7 +111,7 @@ with sync_playwright() as p:
         assert page.locator('.interior-canvas canvas').count()==1
         assert page.evaluate('document.documentElement.scrollWidth<=innerWidth')
         assert not errors,errors
-        reports.append({'case':'lifecycle-'+name,'pauseStable':True,'resume':True,'pollingCanvasPreserved':True,'floorRemount':True,'slowLoadBeyond4s':name=='mobile','errors':errors,'apiWrites':'mocked only'})
+        reports.append({'case':'lifecycle-'+name,'pauseStable':True,'resume':True,'pollingCanvasPreserved':True,'cameraAndFloorCanvasPreserved':True,'slowLoadBeyond4s':name=='mobile','errors':errors,'apiWrites':'mocked only'})
         print('PASS native interior',name,flush=True);page.close()
       (out/'metrics.json').write_text(json.dumps(reports,ensure_ascii=False,indent=2))
     except BaseException:

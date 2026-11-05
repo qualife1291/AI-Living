@@ -30,6 +30,12 @@ export function InteriorView({ world, venue, clockOffset = 0, focusActorId = "",
     }).catch(() => { if(!cancelled)setFailed(true); });
     return () => { cancelled = true; stop?.(); };
   }, [venue, failed]);
+  useEffect(()=>{
+    // A selected venue inserts its room above the list. Reveal it after the
+    // parent dialog's showModal/layout, instead of leaving it clipped offscreen.
+    let frame=requestAnimationFrame(()=>{frame=requestAnimationFrame(()=>host.current?.closest('.interior-view')?.scrollIntoView({block:'start',behavior:'instant'}));});
+    return()=>cancelAnimationFrame(frame);
+  },[venue]);
   const clock = useLifeClock(world.paused, clockOffset);
   const now = clock ?? Date.parse(world.born);
   const present = [...actorsAt(world, now), ...(world.living ? crowdAt(world.living, world, now) : [])]
