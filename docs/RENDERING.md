@@ -24,6 +24,16 @@ Tag/vai/đường đi/pet-follow là trạng thái **viewer**. Backend completio
 
 Đoạn trên mô tả chế độ mặc định. Local opt-in GND2 `?ground=shared` chỉ sample server frames; GND3 active bổ sung caption emitted ở đúng parent/time, Talk/Listen không sửa root và ACK không ghi memory. Authority/receipt/giới hạn ở [ARCHITECTURE](ARCHITECTURE.md), không đổi reward namespace của mặc định hoặc tự bật production.
 
+## Ngân sách render và khả năng thao tác
+
+City/OSM ngừng GPU draws khi dialog mở; IntersectionObserver cũng ngừng vẽ canvas bị cuộn khỏi vùng nhìn, Page Visibility xử lý tab nền. Polling, scheduler và simulation clock tiếp tục theo hợp đồng cũ. Khi quay lại, giữ canvas/tài nguyên và không trừ thời gian đọc phụ đề cho quãng bị che. OSM là cảnh tĩnh, chỉ vẽ lại khi camera/viewport đổi; phải nghe OrbitControls `change`, vì wheel có thể cập nhật camera ngay trước frame kế tiếp.
+
+Camera, focus và tầng nội thất đọc từ ref, không dựng lại WebGL/tải lại model mỗi lần bấm; địa điểm mới được đưa vào vùng nhìn sau khi dialog mở. Room dùng cùng pixel/shadow budget theo quality; bỏ preserveDrawingBuffer. Studio giới hạn timeline React và render30Hz, kết thúc120s thì dừng tick; viewport/DPR tính lại pixel budget và reduced-motion bỏ damping/chuyển cảnh camera. Studio/phòng có context-loss/retry, dispose idempotent. Gallery model tĩnh vẫn zoom/đổi góc khi animation dừng. GPU/FPS/pin/nhiệt trên thiết bị thật vẫn cần đo riêng.
+
+Bố cục dùng `dvh`/safe-area cho điện thoại, điều khiển ngang thấp giữ trong viewport. Bubble áp đúng width đã layout, không lấy width đang co làm trần mới; chừa cột nút camera trên portrait. Nhãn nguồn và chữ phụ gallery đủ tương phản trong fixture đã đo. `qa-ui-review.py` dùng axe-core4.11.0 được pin SHA, chỉ trong test; không thêm thư viện vào bundle sản phẩm. Zero automated violations không là chứng nhận accessibility hoặc thay review thị giác/keyboard.
+
+Tài liệu kỹ thuật đã đối chiếu: [IntersectionObserver](https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API), [Page Visibility](https://developer.mozilla.org/en-US/docs/Web/API/Page_Visibility_API), [OrbitControls](https://threejs.org/docs/pages/OrbitControls.html). Giữ WebGL hiện tại cho custom crowd skin/shader; [WebGPURenderer](https://threejs.org/docs/pages/WebGPURenderer.html)/TSL có fallback WebGL2 nhưng cần study tương thích và đo GPU trước chuyển renderer theo ROADMAP.
+
 ## Rigs, tên và thoại
 
 Core/near NPC và crowd dùng cùng approved skin/palette theo [ASSETS](ASSETS.md); crowd nội suy8 pose GPU, picker CPU theo cùng pose,≤ 8 skeletal controllers. Renderer người ghép procedural cũ đã bỏ. Reset base pose trước offset pedal/exercise; clip không key mọi limb không được tích lũy xoay. Pause giữ transform. Đạo cụ theo tay/step thật, không tồn tại sau actor đổi activity; contact IK tay và chân đạp xe đã có; chưa inventory, finger contact hay foot IK trên bậc/nền đầy đủ.
@@ -47,3 +57,5 @@ WebAudio gió/mưa/chim mô phỏng, mặc định off, không AudioContext trư
 ## Bằng chứng và chạy lại
 
 [TESTING](TESTING.md) liệt kê unit/QA harness; screenshots/metrics ở `docs/screenshots/{social,cycle,tag,three-only-pets,homes,gardens,soundscape}`.5 phase/care/camera/pause/errors/320px và các hồi quy đã có preview desktop/mobile; persistence được kiểm riêng compiledD1, browser mutations có thể mocked. Không lấy số frame SwiftShader hoặc synthetic240 làm hardware FPS/density live. GPU/soak, physical/finger/foot contact đầy đủ, inventory và rollout timeline chung lên production còn ở [ROADMAP](../ROADMAP.md).
+
+Review bổ sung theo skill MIT [Vercel React Best Practices](https://github.com/vercel-labs/agent-skills/blob/main/skills/react-best-practices/SKILL.md) và [Web Design Guidelines](https://github.com/vercel-labs/agent-skills/blob/main/skills/web-design-guidelines/SKILL.md): transient refs cho runtime, memo hóa scenario frame theo id/time, giữ lazy import renderer, focus/labels/tương phản, reduced-motion, safe-area và wheel redraw. Đây là tài liệu tham khảo được đọc trong review, không plugin/runtime dependency mới hoặc chứng nhận toàn bộ guideline.

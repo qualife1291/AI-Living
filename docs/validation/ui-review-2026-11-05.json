@@ -1,0 +1,475 @@
+{
+  "schema": "xom-ui-review-v1",
+  "date": "2026-11-05",
+  "timezone": "Asia/Ho_Chi_Minh",
+  "observedAt": "2026-11-05T01:42:41.383544+00:00",
+  "status": "LOCAL_ACCEPTED_REMOTE_READBACK_PENDING",
+  "source": {
+    "workImplementation": "935a8ccaf959ced87de4551c44ba7cc0686c4fd4",
+    "qaRelease": "f133a88faf7c3103c564bddeed0249ccfbb78ae7",
+    "regressionSource": "134f1badc8d1d667f3536d902651980c94d395e1",
+    "onlyChangesSinceFullGraphicsRegression": [
+      "app/globals.css",
+      "scripts/qa-g0-ux.py"
+    ],
+    "mainUnchanged": "402df570",
+    "cleanQaWorktree": true
+  },
+  "fixes": [
+    "Persistent interior camera/focus/floor refs; no WebGL recreation or model reload for view controls.",
+    "City/OSM do not draw behind modal; clipped interiors and hidden tabs stop GPU draws; simulation/polling continue.",
+    "Latest queued IntersectionObserver transition wins; explicit dialog root; regression reproduced and fixed.",
+    "Venue selection reveals the new room after dialog layout; cinema no longer stays offscreen.",
+    "Studio dynamic-viewport/short-header/camera framing; safe areas, reachable controls and reduced motion.",
+    "Studio React timeline and draws capped30Hz; memoized scenario frames; completed/paused static views stop draws.",
+    "OrbitControls change invalidates paused/static scenes, including gallery and OSM wheel zoom.",
+    "Bounded pixel targets and room quality shadows; no preserveDrawingBuffer; context loss/retry in Studio/interior.",
+    "Speech width matches layout and avoids portrait camera dock; badge/gallery contrast, semantic gallery region, keyboard focus and native return navigation.",
+    "Hidden/modal reading time excluded without pausing agents or promoting a learned/physical outcome."
+  ],
+  "acceptance": {
+    "unit": {
+      "suite": "unit-summary",
+      "total": 98,
+      "passed": 98,
+      "failed": [],
+      "workers": 4,
+      "seconds": 120.15
+    },
+    "typecheck": "PASS",
+    "lint": {
+      "errors": 0,
+      "preExistingWarnings": 1
+    },
+    "compiledNewActions": {
+      "suite": "evening-api",
+      "pass": true,
+      "compiledWorker": true,
+      "isolatedD1": true,
+      "newActionsSettled": 9,
+      "namespaceEvidence": true,
+      "retries": 3,
+      "duplicateSamples": 0,
+      "identityAndPetOwnersPreserved": true,
+      "productionAccess": false,
+      "physicalCompletionProven": false
+    },
+    "compiledProgress": {
+      "suite": "progress-compiled-http",
+      "concurrentReaders": 12,
+      "ownerGate": true,
+      "loopbackGate": true,
+      "noBootstrap": true,
+      "noWrites": true,
+      "noPrivatePayloads": true,
+      "missingSchema503": true,
+      "requestCorrelation": true,
+      "productionAccess": false
+    },
+    "ui": {
+      "production": false,
+      "source": "f133a88faf7c3103c564bddeed0249ccfbb78ae7",
+      "renderer": "Chromium SwiftShader",
+      "axe": "4.11.0",
+      "fixture": "Synthetic world; intercepted API writes; no remote D1",
+      "cases": [
+        {
+          "scene": "city",
+          "viewport": "desktop",
+          "a11y": {
+            "version": "4.11.0",
+            "violations": [],
+            "incomplete": 2
+          },
+          "pageErrors": []
+        },
+        {
+          "scene": "interior",
+          "viewport": "desktop",
+          "a11y": {
+            "version": "4.11.0",
+            "violations": [],
+            "incomplete": 2
+          },
+          "pageErrors": []
+        },
+        {
+          "scene": "render-budget",
+          "viewport": "desktop",
+          "cityDrawsBehindModal": 0,
+          "offscreenInteriorDraws": 0,
+          "cameraAndFloorKeepCanvas": true,
+          "pixelsCapped": true
+        },
+        {
+          "scene": "studio",
+          "viewport": "desktop",
+          "a11y": {
+            "version": "4.11.0",
+            "violations": [],
+            "incomplete": 2
+          },
+          "pageErrors": []
+        },
+        {
+          "scene": "assets",
+          "viewport": "desktop",
+          "a11y": {
+            "version": "4.11.0",
+            "violations": [],
+            "incomplete": 1
+          },
+          "pageErrors": []
+        },
+        {
+          "scene": "write-isolation",
+          "viewport": "desktop",
+          "interceptedPulsePosts": 6,
+          "remoteWrites": 0
+        },
+        {
+          "scene": "city",
+          "viewport": "mobile",
+          "a11y": {
+            "version": "4.11.0",
+            "violations": [],
+            "incomplete": 2
+          },
+          "pageErrors": []
+        },
+        {
+          "scene": "interior",
+          "viewport": "mobile",
+          "a11y": {
+            "version": "4.11.0",
+            "violations": [],
+            "incomplete": 2
+          },
+          "pageErrors": []
+        },
+        {
+          "scene": "render-budget",
+          "viewport": "mobile",
+          "cityDrawsBehindModal": 0,
+          "offscreenInteriorDraws": 0,
+          "cameraAndFloorKeepCanvas": true,
+          "pixelsCapped": true
+        },
+        {
+          "scene": "studio",
+          "viewport": "mobile",
+          "a11y": {
+            "version": "4.11.0",
+            "violations": [],
+            "incomplete": 2
+          },
+          "pageErrors": []
+        },
+        {
+          "scene": "assets",
+          "viewport": "mobile",
+          "a11y": {
+            "version": "4.11.0",
+            "violations": [],
+            "incomplete": 1
+          },
+          "pageErrors": []
+        },
+        {
+          "scene": "write-isolation",
+          "viewport": "mobile",
+          "interceptedPulsePosts": 3,
+          "remoteWrites": 0
+        },
+        {
+          "scene": "city",
+          "viewport": "compact",
+          "a11y": {
+            "version": "4.11.0",
+            "violations": [],
+            "incomplete": 2
+          },
+          "pageErrors": []
+        },
+        {
+          "scene": "interior",
+          "viewport": "compact",
+          "a11y": {
+            "version": "4.11.0",
+            "violations": [],
+            "incomplete": 2
+          },
+          "pageErrors": []
+        },
+        {
+          "scene": "render-budget",
+          "viewport": "compact",
+          "cityDrawsBehindModal": 0,
+          "offscreenInteriorDraws": 0,
+          "cameraAndFloorKeepCanvas": true,
+          "pixelsCapped": true
+        },
+        {
+          "scene": "studio",
+          "viewport": "compact",
+          "a11y": {
+            "version": "4.11.0",
+            "violations": [],
+            "incomplete": 2
+          },
+          "pageErrors": []
+        },
+        {
+          "scene": "write-isolation",
+          "viewport": "compact",
+          "interceptedPulsePosts": 2,
+          "remoteWrites": 0
+        },
+        {
+          "scene": "city",
+          "viewport": "landscape",
+          "a11y": {
+            "version": "4.11.0",
+            "violations": [],
+            "incomplete": 2
+          },
+          "pageErrors": []
+        },
+        {
+          "scene": "interior",
+          "viewport": "landscape",
+          "a11y": {
+            "version": "4.11.0",
+            "violations": [],
+            "incomplete": 1
+          },
+          "pageErrors": []
+        },
+        {
+          "scene": "render-budget",
+          "viewport": "landscape",
+          "cityDrawsBehindModal": 0,
+          "offscreenInteriorDraws": 0,
+          "cameraAndFloorKeepCanvas": true,
+          "pixelsCapped": true
+        },
+        {
+          "scene": "studio",
+          "viewport": "landscape",
+          "a11y": {
+            "version": "4.11.0",
+            "violations": [],
+            "incomplete": 2
+          },
+          "pageErrors": []
+        },
+        {
+          "scene": "write-isolation",
+          "viewport": "landscape",
+          "interceptedPulsePosts": 2,
+          "remoteWrites": 0
+        }
+      ]
+    },
+    "social": {
+      "source": "f133a88faf7c3103c564bddeed0249ccfbb78ae7",
+      "viewports": 2,
+      "rawSha256": "ed2dc3cb1dee2f6adefcf51de78a42c944061390eae51b99d1cbbf48c918b9b9",
+      "reports": 2
+    },
+    "evening": {
+      "cases": 16,
+      "rawSha256": "cbd0180dfb25d2bee3c8adb7a68a65b10dfd87fd2d56f44abcb1ee4d32b41cb8",
+      "source": "134f1badc8d1d667f3536d902651980c94d395e1"
+    },
+    "studio": {
+      "cases": 8,
+      "scenarios": 4,
+      "viewports": 2,
+      "shotsPerScenario": 5,
+      "source": "134f1badc8d1d667f3536d902651980c94d395e1"
+    },
+    "native": {
+      "cases": 10,
+      "rawSha256": "bddd59bce5d886089df65759de74c5ec2091766fe18cce20cc9d60134aff5834",
+      "source": "134f1badc8d1d667f3536d902651980c94d395e1"
+    },
+    "interactions": {
+      "cases": 10,
+      "rawSha256": "8df850b04ce62895f64b94902fac650eb27512fb4c2a4d9d9677f2f44779e8a4",
+      "source": "134f1badc8d1d667f3536d902651980c94d395e1"
+    },
+    "g0": {
+      "cases": 7,
+      "rawSha256": "404c669e2d1ad763ae04726b8f339dfdf9447e6ab15cb51c84a7ae3cd91b4e63",
+      "source": "134f1badc8d1d667f3536d902651980c94d395e1",
+      "harnessCommit": "935a8cc",
+      "scope": "Corrected held server commit fixture, same compiled134f1ba; guards and assertions retained."
+    },
+    "osm": {
+      "production": false,
+      "actualWebGL": true,
+      "idleDraws900ms": 0,
+      "wheelRedraws": true,
+      "modalDraws900ms": 0,
+      "pageErrors": [],
+      "stats": {
+        "renderState": "active",
+        "frame": "3",
+        "ready": "true",
+        "buildings": "912",
+        "estimated": "912",
+        "drawCalls": "6"
+      }
+    },
+    "assets": {
+      "result": "PASS308approved/42lossless transfers; canonical/license unchanged",
+      "verifiedSource": "f39af71c5d35c058ff7628141b16a83033985827",
+      "identicalTrees": {
+        "public": {
+          "verifiedSource": "533e884d9ca580417bd7c705fcd4847c47a8955b",
+          "releaseSource": "533e884d9ca580417bd7c705fcd4847c47a8955b"
+        },
+        "data/assets": {
+          "verifiedSource": "4487eccadf86ec262ba8d31f807127624e423a76",
+          "releaseSource": "4487eccadf86ec262ba8d31f807127624e423a76"
+        }
+      }
+    },
+    "screenshots": "docs/screenshots/ui-review/manifest.json",
+    "logSha256": {
+      "build": "69b08bef170e8a90cc422c3ffc6ac36bce2f42f5b93de1f9ba7c92248a3ee1b1",
+      "unit": "5eb32cd81ceda800ddc2a76f989d7d70a509215faafc555a433dfbfb46af5b86",
+      "check": "8366207267355d3e3d5bf3bf6e8c94c5f93f6078c34f08973fa2b38cdda6cc92",
+      "lint": "5e4666e94ab142c1de5fefa88c74d0b617f077ba86e00611b7861147336a2c38",
+      "api": "724ce28d16db02dad283c0891d383b83f85179853e628f6ac7be680546e88bcf",
+      "progress": "6fa39284a3c81f33319361162ee0828b3d1dc88a0a92955eb05485afabde2a07",
+      "evening": "961896cc1531f7130a65ce03c6fe59529fc0b41651b5f04af60026d1b1d8bed2",
+      "browser": "b0dcc280cc3e2cdb05dec2e0498ee930f19c1f317b46f53f014dbd25c5963661",
+      "studio": "5560a23aa7be664d0028b39feb6b28da94306ad0bf21b27e5abcc4f2ef255057",
+      "native": "566fd1fb35e29b13f731cd65525cd49ce8ede924927189a6b43e9aa52d4cc1fe",
+      "interactions": "e60b45f4d86563bbfe07bebd0e96af2061710891ab04421d5c317713ae6e19e4",
+      "g0": "50291587487d70d8917efaa71461f49a909bc7f8cc81b6f1873d01a0590b8331",
+      "osm": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "social": "44375e3e16a32eac9d292aca388d394d9391053bd82eea01f33ab0f040430885",
+      "qaConfig": "cb08f0b598bf31a550571923150ad972bfc98fdd3d8219f6167cd41ca7c180d5"
+    },
+    "reportSha256": {
+      "ui": "0177ecc43377970e1d08cc3c4d3681d363c67284915a1c89cb8b77c42fc44ac0",
+      "evening": "cbd0180dfb25d2bee3c8adb7a68a65b10dfd87fd2d56f44abcb1ee4d32b41cb8",
+      "studio": "2b5c7da575381215e60ca06832c1a2bab43edb01b19d1b2d5cde2c253aabecef",
+      "native": "bddd59bce5d886089df65759de74c5ec2091766fe18cce20cc9d60134aff5834",
+      "interactions": "8df850b04ce62895f64b94902fac650eb27512fb4c2a4d9d9677f2f44779e8a4",
+      "g0": "404c669e2d1ad763ae04726b8f339dfdf9447e6ab15cb51c84a7ae3cd91b4e63",
+      "osm": "6126634efcb7798e4bef1db7415c1de4f9958bb39945b632365519d83ab4e353"
+    },
+    "build": {
+      "source": "f133a88faf7c3103c564bddeed0249ccfbb78ae7",
+      "command": "corepack pnpm build",
+      "sourceCleanBeforeAndAfter": true
+    }
+  },
+  "technology": {
+    "adopted": [
+      "IntersectionObserver with dialog clipping/latest-queue ordering",
+      "Page Visibility",
+      "OrbitControls change/demand redraw",
+      "CSS dvh/safe-area",
+      "React refs/memo + bounded UI cadence",
+      "Pinned axe-core4.11.0 in tests only"
+    ],
+    "skills": {
+      "vercel-react-best-practices": {
+        "url": "https://github.com/vercel-labs/agent-skills/blob/main/skills/react-best-practices/SKILL.md",
+        "contentSha256": "71ed7794962fa6e803ee83030517b5b93a9f70fbfeb431ec4535c5480a8d8355",
+        "usage": "Read/review reference; no plugin or runtime installation"
+      },
+      "web-design-guidelines": {
+        "url": "https://github.com/vercel-labs/agent-skills/blob/main/skills/web-design-guidelines/SKILL.md",
+        "contentSha256": "f4647ca866a3accf763777f83e7682954f0187cd6bea7eea0399796652414e8f",
+        "usage": "Read/review reference; no plugin or runtime installation"
+      }
+    },
+    "webGuidelinesSha256": "d246b026f4f29b5823a9cc857f9edf3d2507002e055e32040cadeaf3b38e0234",
+    "harnessCorrection": "G0 held POST keeps mock snapshot uncommitted until explicit ACK, preventing poll from changing the label before the no-optimism assertion; no product guard relaxed.",
+    "webgpu": "Reviewed official WebGPURenderer docs/fallback; defer migration/TSL until custom crowd shader/skin compatibility study and device GPU profile.",
+    "productionDependencyAdded": false,
+    "newPluginInstalled": false
+  },
+  "releaseChecks": [
+    {
+      "name": "Workers Builds: ai-living-qa",
+      "head_sha": "f133a88faf7c3103c564bddeed0249ccfbb78ae7",
+      "status": "completed",
+      "conclusion": "success",
+      "details_url": "https://dash.cloudflare.com/966c7ceee358485648b935a07877ec45/workers/services/view/ai-living-qa/production/builds/83e5b435-3e2e-4096-9d96-f426a9b4da74",
+      "completed_at": "2026-11-05T01:35:02Z",
+      "cloudflareReportedVersion": "a59d61e1-9d58-41c5-aac4-44cd5be52065"
+    },
+    {
+      "name": "contextual-social",
+      "head_sha": "f133a88faf7c3103c564bddeed0249ccfbb78ae7",
+      "status": "in_progress",
+      "conclusion": null,
+      "details_url": "https://github.com/qualife1291/AI-Living/actions/runs/41949064188/job/126988388789",
+      "completed_at": null
+    },
+    {
+      "name": "qa-deploy",
+      "head_sha": "f133a88faf7c3103c564bddeed0249ccfbb78ae7",
+      "status": "completed",
+      "conclusion": "success",
+      "details_url": "https://github.com/qualife1291/AI-Living/actions/runs/41949064110/job/126988388788",
+      "completed_at": "2026-11-05T01:34:08Z"
+    }
+  ],
+  "limits": {
+    "nativeManagementReadback": false,
+    "authenticatedRemoteBrowser": false,
+    "realHardwareGpuOrBatteryOr24hSoak": false,
+    "automatedA11yIsCertification": false,
+    "remoteDbWritesDuringTests": false,
+    "migrationAdded": false,
+    "newSchedule": false,
+    "catalog41AndH6Preserved": true,
+    "h6ActivationRequested": false,
+    "modelQualityGainClaimed": false,
+    "productionMainDeployed": false
+  },
+  "reproduction": {
+    "commands": [
+      "pnpm test:unit",
+      "pnpm check",
+      "pnpm lint",
+      "pnpm build",
+      "node scripts/test-evening-api.mjs",
+      "node scripts/test-progress-api.mjs",
+      "QA_BASE=http://127.0.0.1:5342 python3 scripts/qa-evening-life.py",
+      "QA_BASE=http://127.0.0.1:5342 python3 scripts/qa-ui-review.py",
+      "QA_BASE=http://127.0.0.1:5342 python3 scripts/qa-studio.py",
+      "QA_BASE=http://127.0.0.1:5342 python3 scripts/qa-interior-native.py",
+      "QA_BASE=http://127.0.0.1:5342 python3 scripts/qa-scene-interactions.py",
+      "QA_BASE=http://127.0.0.1:5342 python3 scripts/qa-g0-ux.py"
+    ],
+    "axeSource": "https://cdn.jsdelivr.net/npm/axe-core@4.11.0/axe.min.js",
+    "axeSha256": "e9e5863c33a874f09bc01acd9234b7e3c871479f5eef8802fa582544465e6d01",
+    "previewPersistTo": "/tmp/ai-living-ui-final",
+    "rawEvidence": "work/ui-review/dialog-* in QA worktree",
+    "osmProbe": "QA_BASE=http://127.0.0.1:5342 QA_OUT=work/ui-review/final-osm python3 /tmp/ai-living-ui-osm.py; reuses G0 synthetic fixture; idle/wheel/modal counters."
+  },
+  "previewStopped": true,
+  "localReleaseConfig": {
+    "worker": "ai-living-qa",
+    "d1_binding": "DB",
+    "d1_database": "ai_living_qa",
+    "workersDevViaAccess": true,
+    "versionUrls": false,
+    "cron": "*/5 * * * *",
+    "schedulerEnabled": "true",
+    "mode": "access-protected-qa-deploy",
+    "h6Mode": "shadow-only",
+    "h6Candidates": "96",
+    "h6CatalogSha256": "3b3cf7a0e0db902c006766f4e2f23927562d5581247ff08b701575b7d35e0267",
+    "scope": "Generated config only; not native environment/traffic/D1/Cron readback."
+  }
+}

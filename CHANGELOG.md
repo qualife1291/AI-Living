@@ -2,6 +2,14 @@
 
 Chỉ ghi mốc sản phẩm. Chi tiết commit/review nằm trong Git; số version/deployment và readback nằm ở [releases](docs/releases/).
 
+## 05/11/2026
+
+- Rà soát UI/UX thành phố, nội thất, Studio và thư viện model; sửa tương phản, khung thoại, bố cục ngang thấp, camera/floor giữ canvas và WebGL retry. Giảm GPU draws khi bị che/ngoài vùng nhìn, OSM vẽ theo nhu cầu và Studio30Hz; thêm kiểm tra accessibility và race visibility. [Nghiệm thu](docs/validation/ui-review-2026-11-05.json).
+
+## 04/11/2026
+
+- Đời sống buổi tối có9hành động mới, giờ ngủ riêng, nằm giường/sofa, tủ lạnh/TV/rạp, ăn uống và vỉa hè; người còn đi chơi trò chuyện sau22h. Giữ policy cá nhân và catalog nghiên cứu cũ. [Nghiệm thu](docs/validation/evening-life-2026-11-04.json).
+
 ## 29/10/2026
 
 - Sửa tương tác đồ họa city/Studio: picker theo skin/visibility, follow giữ nhân vật, focus và reset camera sau zoom/shot/restart; thống nhất crowd/wardrobe với5model mới, pose real-time và contact tay/đạo cụ/xe đạp. Bằng chứng local và giới hạn remote ở [graphics acceptance](docs/validation/graphics-interactions-2026-10-29.json).
