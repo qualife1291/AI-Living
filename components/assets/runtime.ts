@@ -2,6 +2,8 @@ import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { AssetLibrary } from "../city/three/assets.ts";
 import { RiggedAvatar } from "../city/three/rigged-avatar.ts";
+import {observeRenderVisibility} from '../city/three/render-visibility';
+import {pixelRatio} from '../../lib/city/scale';
 
 export async function createAssetViewer(host: HTMLDivElement, onClips: (clips: string[]) => void, onError: (message: string) => void) {
   const renderer = new THREE.WebGLRenderer({ antialias: true });
@@ -21,6 +23,9 @@ export async function createAssetViewer(host: HTMLDivElement, onClips: (clips: s
   const floor = new THREE.Mesh(new THREE.CircleGeometry(32, 48), new THREE.MeshLambertMaterial({ color: "#c9cfad" }));
   floor.rotation.x = -Math.PI / 2; floor.position.y = -.08; scene.add(floor);
   let dirty = true, dead = false, lost = false, version = 0, frame = 0, last = 0, time = 0, poseVersion = 0, playing = true, clip = "idle";
+  const visibility=observeRenderVisibility(host),motion=matchMedia('(prefers-reduced-motion: reduce)');
+  const changed=()=>{dirty=true;};controls.addEventListener('change',changed);
+  const motionChanged=()=>{controls.enableDamping=!motion.matches;dirty=true;};motionChanged();motion.addEventListener('change',motionChanged);
   let library: AssetLibrary | undefined, pendingLibrary: AssetLibrary | undefined, avatar: RiggedAvatar | undefined, staticRoot: THREE.Group | undefined;
   const fit = () => {
     camera.aspect = Math.max(1, host.clientWidth) / Math.max(1, host.clientHeight);
@@ -32,7 +37,7 @@ export async function createAssetViewer(host: HTMLDivElement, onClips: (clips: s
     camera.position.copy(controls.target).add(new THREE.Vector3(.5, .25, 1).normalize().multiplyScalar(distance * 1.3));
     controls.update(); dirty = true;
   };
-  const resize = new ResizeObserver(() => { renderer.setSize(Math.max(1, host.clientWidth), Math.max(1, host.clientHeight)); fit(); });
+  const resize = new ResizeObserver(() => { renderer.setPixelRatio(pixelRatio('balanced',Math.min(devicePixelRatio,1.5),host.clientWidth,host.clientHeight));renderer.setSize(Math.max(1, host.clientWidth), Math.max(1, host.clientHeight)); fit(); });
   resize.observe(host);
   const disposeModel = () => {
     avatar?.dispose(); avatar = undefined;
@@ -85,7 +90,7 @@ export async function createAssetViewer(host: HTMLDivElement, onClips: (clips: s
     if (dead || lost) return;
     frame = requestAnimationFrame(tick);
     const dt = last ? Math.min(.2, (stamp - last) / 1000) : 0; last = stamp;
-    if (document.hidden) return;
+    if (!visibility.visible()) return;
     if (avatar && (playing || dirty)) {
       if (playing) time += dt;
       avatar.pose(clip, time, poseVersion + time, [0, 0, 0], 0, 0); dirty = true;
@@ -106,6 +111,7 @@ export async function createAssetViewer(host: HTMLDivElement, onClips: (clips: s
     animation(value: string) { clip = value; time = 0; poseVersion += 1000; dirty = true; },
     dispose() {
       dead = true; version++; cancelAnimationFrame(frame); resize.disconnect(); controls.dispose();
+      visibility.dispose();motion.removeEventListener('change',motionChanged);controls.removeEventListener('change',changed);
       renderer.domElement.removeEventListener("webglcontextlost", contextLost);
       pendingLibrary?.dispose(); disposeModel(); floor.geometry.dispose(); floor.material.dispose();
       renderer.dispose(); renderer.forceContextLoss(); renderer.domElement.remove();

@@ -1,14 +1,16 @@
 "use client";
 import { useEffect, useRef, useState } from 'react';
 import { WebGLUnavailable } from './WebGLUnavailable';
-export function Osm3D() {
+export function Osm3D({active=true}:{active?:boolean}) {
   const host=useRef<HTMLDivElement>(null), [failed,setFailed]=useState(false);
+  const visible=useRef(active);
+  useEffect(()=>{visible.current=active;},[active]);
   useEffect(()=>{
     let cancelled=false,dispose:(()=>void)|undefined;
     if(failed)return;
     import('./three/osm').then(({createOsm})=>{
       if(cancelled||!host.current)return;
-      try{dispose=createOsm(host.current,()=>setFailed(true));}catch{setFailed(true);}
+      try{dispose=createOsm(host.current,()=>setFailed(true),()=>visible.current);}catch{setFailed(true);}
     }).catch(()=>{if(!cancelled)setFailed(true);});
     return()=>{cancelled=true;dispose?.();};
   },[failed]);

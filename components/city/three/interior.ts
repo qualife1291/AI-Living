@@ -7,15 +7,18 @@ import {createInteriorCast} from "./interior-cast";
 import {batchInteriorRoom,createInteriorFurniture} from "./interior-furniture";
 import {createHomeAppliances} from './home-appliances';
 import {cinemaSeat} from './home-poses';
+import {observeRenderVisibility} from './render-visibility';
+import {pixelRatio,shadowMapSize,type Quality} from '../../../lib/city/scale';
 import { computeSimMs, worldTime } from "@/lib/clock";
 import { actorsAt } from "@/lib/life";
 import { crowdAt } from "@/lib/living/engine";
 import type { World } from "@/lib/world";
 
 export type InteriorCamera = 'wide' | 'follow' | 'overhead';
-export function createInterior(host: HTMLDivElement, venue: string, floor: number, world: () => World, offset: number|(()=>number), options: {camera:InteriorCamera; focusId?:string} = {camera:'wide'}) {
-  const renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
-  renderer.setPixelRatio(Math.min(devicePixelRatio, 1.5));
+export type InteriorViewState = {camera:InteriorCamera; focusId?:string; quality?:Quality};
+export function createInterior(host: HTMLDivElement, venue: string, floor: number|(()=>number), world: () => World, offset: number|(()=>number), options: InteriorViewState|(()=>InteriorViewState) = {camera:'wide'}, fatal:()=>void=()=>{}) {
+  const view = () => typeof options === 'function' ? options() : options;
+  const renderer = new THREE.WebGLRenderer({ antialias: true });
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.shadowMap.enabled = true;
@@ -23,8 +26,13 @@ export function createInterior(host: HTMLDivElement, venue: string, floor: numbe
   host.appendChild(renderer.domElement);
   const scene = new THREE.Scene(); scene.background = new THREE.Color("#182b39");
   const camera = new THREE.PerspectiveCamera(38, 1, .1, 200);
-  camera.position.set(...(options.camera === "overhead" ? [0,32,.01] : options.camera === "follow" ? [8,10,13] : [17,18,23]) as [number,number,number]);
+  camera.position.set(17,18,23);
   const controls = new OrbitControls(camera, renderer.domElement); controls.target.set(0, 2, 0); controls.minDistance = 12; controls.maxDistance = 45; controls.maxPolarAngle = 1.4; controls.enableDamping = true;
+  renderer.domElement.tabIndex=0;
+  renderer.domElement.setAttribute('aria-label',`Góc nhìn 3D bên trong ${venue}`);
+  controls.listenToKeyEvents(renderer.domElement);
+  const motion=matchMedia('(prefers-reduced-motion: reduce)');
+  const motionChanged=()=>{controls.enableDamping=!motion.matches;};motionChanged();motion.addEventListener('change',motionChanged);
   const hemi = new THREE.HemisphereLight("#d4eaff", "#a58061", 2); scene.add(hemi);
   const key = new THREE.DirectionalLight("#ffdfb4", 4); key.position.set(-8, 18, 8); key.castShadow = true; key.shadow.mapSize.set(2048, 2048); key.shadow.bias = -0.0005; Object.assign(key.shadow.camera, { left: -15, right: 15, top: 15, bottom: -15 }); scene.add(key);
   const geometry = new THREE.BoxGeometry(1, 1, 1), materials: THREE.Material[] = [];
@@ -41,8 +49,8 @@ export function createInterior(host: HTMLDivElement, venue: string, floor: numbe
     const mesh = new THREE.Mesh(geometry, material); mesh.position.set(x, y, z); mesh.scale.set(w, h, d); mesh.castShadow = true; mesh.receiveShadow = true; parent.add(mesh); return mesh;
   }
   const kind = interiorKind(venue), dining = kind === "dining"||kind==='patio', study = kind === "study";
-  host.dataset.interiorCamera=options.camera;
-  host.dataset.interiorFloor=String(floor);
+  host.dataset.interiorCamera=view().camera;
+  host.dataset.interiorFloor=String(typeof floor==='function'?floor():floor);
   host.dataset.interiorLocation=venue;
   // Open front and right walls preserve a readable cutaway at every camera angle.
   box(0, -.2, 0, 16, .4, 12, "#d9c6aa");
@@ -100,7 +108,9 @@ export function createInterior(host: HTMLDivElement, venue: string, floor: numbe
   const doorL = box(4.5, 1.5, -2.25, 1, 2.8, .12, "#aebfc0", cabin), doorR = box(5.6, 1.5, -2.25, 1, 2.8, .12, "#aebfc0", cabin);
   const appliances=kind==='home'||kind==='cinema'?createHomeAppliances(scene,box,kind==='home',kind==='cinema'):undefined;
   const room=batchInteriorRoom(scene,geometry),cast=createInteriorCast(scene,library);
-  let frame = 0, last = 0, renderedFrames = 0;
+  let frame = 0, last = 0, renderedFrames = 0, dead=false;
+  let viewKey='',lastQuality:Quality|undefined;
+  const visibility=observeRenderVisibility(host);
   let lastWidth = 0, lastHeight = 0;
   let sampledAt = Number.NEGATIVE_INFINITY, sampledWorld: World | null = null, actorSamples = 0;
   let atVenue: ReturnType<typeof actorsAt> = [];
@@ -114,29 +124,53 @@ export function createInterior(host: HTMLDivElement, venue: string, floor: numbe
   host.dataset.interiorFurniture='[]';host.dataset.interiorPoseClock='';
   // Ignore transient zero-size layout during camera/floor changes instead of
   // allocating a zero-sized render target or invalid perspective projection.
-  const resize = () => {
+  const resize = (quality:Quality='balanced') => {
     const w = Math.floor(host.clientWidth), h = Math.floor(host.clientHeight);
-    if (w < 2 || h < 2 || (w === lastWidth && h === lastHeight)) return;
+    if (w < 2 || h < 2) return;
+    const ratio=pixelRatio(quality,devicePixelRatio,w,h),size=shadowMapSize(quality,w);
+    if(w===lastWidth&&h===lastHeight&&quality===lastQuality&&Math.abs(renderer.getPixelRatio()-ratio)<.001)return;
     lastWidth = w; lastHeight = h;
+    lastQuality=quality;
+    renderer.setPixelRatio(ratio);
     renderer.setSize(w, h);
-    key.shadow.mapSize.setScalar(w < 600 ? 512 : 1024);
+    if(key.shadow.mapSize.x!==size||renderer.shadowMap.enabled!==(size>0)){
+      renderer.shadowMap.enabled=key.castShadow=size>0;
+      key.shadow.map?.dispose();key.shadow.map=null;
+      if(size)key.shadow.mapSize.setScalar(size);
+      scene.traverse(o=>{const m=(o as THREE.Mesh).material;if(m)for(const material of Array.isArray(m)?m:[m])material.needsUpdate=true;});
+    }
     camera.aspect = w / h;
     camera.updateProjectionMatrix();
+    host.dataset.interiorPixelRatio=String(ratio);
+    host.dataset.interiorShadowMap=String(size);
   };
-  const observer = new ResizeObserver(resize); observer.observe(host); resize();
+  const observer = new ResizeObserver(()=>resize(view().quality)); observer.observe(host); resize(view().quality);
+  const contextLost=(event:Event)=>{event.preventDefault();if(dead)return;dead=true;cancelAnimationFrame(frame);host.dataset.renderState='lost';fatal();};
+  renderer.domElement.addEventListener('webglcontextlost',contextLost);
   // Recompute authoritative venue occupancy at <= 4 Hz (or on a fresh world
   // snapshot); keep animations and WebGL frames at 30 FPS. This is only a visual
   // cache: no resident plan, arrival, policy or reward is written.
   function tick(stamp: number) {
+    if(dead)return;
     frame = requestAnimationFrame(tick);
-    if (document.hidden || stamp - last < 33) return;
-    resize();
+    if (!visibility.visible()) {last=0;host.dataset.renderState='suspended';return;}
+    if(stamp-last<33)return;
+    const options=view(),activeFloor=typeof floor==='function'?floor():floor;
+    resize(options.quality);
     if (lastWidth < 2 || lastHeight < 2) return;
+    host.dataset.renderState='active';
     last = stamp;
+    const nextKey=`${options.camera}:${options.focusId??''}:${activeFloor}`;
+    if(nextKey!==viewKey){
+      const damping=controls.enableDamping;controls.enableDamping=false;controls.update();controls.enableDamping=damping;
+      controls.target.set(0,2,0);
+      camera.position.set(...(options.camera==='overhead'?[0,32,.01]:options.camera==='follow'?[8,10,13]:[17,18,23]) as [number,number,number]);
+      viewKey=nextKey;sampledWorld=null;
+    }
     const w = world(), now = Date.now() + (typeof offset==='function'?offset():offset), sim = computeSimMs(w.born, w.clock, now) / 1000, phase = interiorPhase(sim), daylight = worldTime(w, now).daylight;
     host.dataset.interiorPoseClock=sim.toFixed(3);
     key.intensity = (kind==='cinema'?1.2:2.5) + daylight * 1.5; hemi.intensity = 1.8 + daylight*.5;
-    cabin.position.y = (phase.liftY - floor) * 3.3; cabin.visible = kind!=='patio'&&Math.abs(cabin.position.y) < 3.5;
+    cabin.position.y = (phase.liftY - activeFloor) * 3.3; cabin.visible = kind!=='patio'&&Math.abs(cabin.position.y) < 3.5;
     const slide = phase.doorsOpen ? .75 : 0; doorL.position.x = 4.5 - slide; doorR.position.x = 5.6 + slide;
     if (sampledWorld !== w || now - sampledAt >= 250) {
       atVenue = [...actorsAt(w, now), ...(w.living ? crowdAt(w.living, w, now) : [])]
@@ -147,7 +181,7 @@ export function createInterior(host: HTMLDivElement, venue: string, floor: numbe
       host.dataset.interiorActorSamples = String(++actorSamples);
     }
     furniture.update();
-    cast.draw(w,atVenue,sim,floor,options.focusId,kind==='home',kind==='cinema',dining);
+    cast.draw(w,atVenue,sim,activeFloor,options.focusId,kind==='home',kind==='cinema',dining);
     host.dataset.interiorFurniture=JSON.stringify(furniture.snapshots());
     const native=cast.snapshots(),shown=atVenue.slice(0,8);
     if(appliances)host.dataset.interiorAppliances=JSON.stringify(appliances.update(sim,native.some(a=>a.action==='fridge'),native.some(a=>a.action==='watch-tv'||a.action==='watch-film')));
@@ -162,7 +196,7 @@ export function createInterior(host: HTMLDivElement, venue: string, floor: numbe
     const followed=shown.find(a=>a.id===options.focusId)??shown[0];
     if(options.camera==='follow'&&followed){
       const point=cast.focus(followed.id)??new THREE.Vector3(0,1.6,0);
-      controls.target.lerp(point,.15);
+      if(motion.matches)controls.target.copy(point);else controls.target.lerp(point,.15);
       // Camera stays in the currently selected room; never flies through a
       // wall or pretends to follow a different unseen building.
     }
@@ -175,8 +209,11 @@ export function createInterior(host: HTMLDivElement, venue: string, floor: numbe
     // A mode label is not a rendered frame: browser acceptance must wait for
     // actual WebGL draws after each camera/floor switch (especially mobile).
     host.dataset.interiorFrames=String(++renderedFrames);
+    host.dataset.interiorCamera=options.camera;
+    host.dataset.interiorFloor=String(activeFloor);
     host.dataset.interiorDrawCalls=String(renderer.info.render.calls);
   }
   frame = requestAnimationFrame(tick);
-  return () => { cancelAnimationFrame(frame); observer.disconnect(); controls.dispose(); cast.dispose(); furniture.dispose(); appliances?.dispose(); room.dispose(); library.dispose(); geometry.dispose(); materials.forEach((m) => m.dispose()); renderer.dispose(); renderer.forceContextLoss(); renderer.domElement.remove(); };
+  let disposed=false;
+  return () => { if(disposed)return;disposed=true;dead=true;cancelAnimationFrame(frame);visibility.dispose();observer.disconnect();motion.removeEventListener('change',motionChanged);renderer.domElement.removeEventListener('webglcontextlost',contextLost);controls.dispose();cast.dispose();furniture.dispose();appliances?.dispose();room.dispose();library.dispose();geometry.dispose();materials.forEach((m)=>m.dispose());renderer.dispose();renderer.forceContextLoss();renderer.domElement.remove(); };
 }

@@ -20,6 +20,7 @@ import { createModelActors } from "./model-actors";
 import {pickVisible,TapGesture} from "./picking";
 import { SceneDetail } from "./scene-detail";
 import { QualityBudget } from "../../../lib/city/quality-budget";
+import { observeRenderVisibility } from "./render-visibility";
 import { streetModel } from "./streetscape";
 import {neighborhoodProps} from '../../../lib/city/neighborhood-props.ts';
 import {visibleHumans} from '../../../lib/city/actor-budget.ts';
@@ -46,6 +47,7 @@ import {sampleSharedGround,type SharedGroundView} from '@/lib/living/shared-grou
 
 export type SceneInput = {
   world: World;
+  active?: boolean;
   quality?: Quality;
   events?: EpisodeEvent[];
   selected: string;
@@ -841,6 +843,7 @@ export function createCity(
     }
   }
   const visibilityChanged = () => { lastDraw = 0; };
+  const visibility = observeRenderVisibility(host);
   document.addEventListener("visibilitychange", visibilityChanged);
   window.addEventListener('resize',visibilityChanged);
   let activeQuality = input().quality;
@@ -857,7 +860,14 @@ export function createCity(
   function drawFrame(stamp: number) {
     if (dead) return;
     frame = requestAnimationFrame(tick);
-    if (document.hidden || stamp - lastDraw < 15) return;
+    if (!visibility.visible() || input().active === false) {
+      lastDraw = 0;
+      socialDirector.suspend(Date.now());
+      host.dataset.renderState = 'suspended';
+      return;
+    }
+    if (stamp - lastDraw < 15) return;
+    host.dataset.renderState = 'active';
     const frameMs = stamp - lastDraw;
     if (lastDraw) recordFrame(frameMs);
     const dt = Math.min(.15, Math.max(.001, frameMs / 1000));
@@ -1217,6 +1227,7 @@ export function createCity(
       renderer.domElement.removeEventListener("wheel",pointerWheel);
       renderer.domElement.removeEventListener("webglcontextlost", lost);
       document.removeEventListener("visibilitychange", visibilityChanged);
+      visibility.dispose();
       window.removeEventListener('resize',visibilityChanged);
       motionPreference.removeEventListener('change',motionChanged);
       renderer.domElement.removeEventListener('keydown',cameraKey);

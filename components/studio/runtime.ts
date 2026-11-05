@@ -11,6 +11,8 @@ import {poseStudioActors} from "./actors.ts";
 import {StudioFeline} from "./feline.ts";
 import {STAGE_Y,stagePoint} from "./motion.ts";
 import { resolveModel } from "../../lib/city/asset-bindings.ts";
+import {pixelRatio} from '../../lib/city/scale';
+import {observeRenderVisibility} from '../city/three/render-visibility';
 
 export type StudioRuntime = { focus:(id:string)=>void; dispose: () => void };
 type Stage = { group: THREE.Group; actors: Map<string, StudioAvatar>; kitten: StudioFeline | null; props: Map<string, THREE.Group>; occluders: THREE.Object3D[] };
@@ -33,7 +35,7 @@ function makeEnvironment(prop: EnvironmentProp) {
   group.position.set(...stagePoint(prop.position)); return group;
 }
 
-export async function createStudio(host: HTMLDivElement, input: () => { id: ScenarioId; time: number; cameraReset?:number }, signal?: AbortSignal,onSelect:(id:string|null)=>void=()=>{}): Promise<StudioRuntime> {
+export async function createStudio(host: HTMLDivElement, input: () => { id: ScenarioId; time: number; cameraReset?:number }, signal?: AbortSignal,onSelect:(id:string|null)=>void=()=>{},fatal:()=>void=()=>{}): Promise<StudioRuntime> {
   const wanted = ["market/display-bread", "market/display-fruit", "roads/dumpster", "suburban/tree-large", "suburban/building-type-a", ...scenarioDefinitions.flatMap(d => [...d.cast.map(a => modelFor(a.modelHint)), ...d.environment.map(p => modelFor(p.modelHint ?? p.kind))])].filter(Boolean);
   const library = await new AssetLibrary().preload([...new Set(wanted)], 15000);
   if (signal?.aborted || !host.isConnected) { library.dispose(); throw new DOMException("Studio navigation cancelled", "AbortError"); }
@@ -75,7 +77,12 @@ export async function createStudio(host: HTMLDivElement, input: () => { id: Scen
     scene.add(group); const stage = { group, actors, props, kitten: cat,occluders }; stages.set(frame.id, stage); return stage;
   }
   let dirty = true;
-  const resize = new ResizeObserver(() => { renderer.setSize(host.clientWidth, host.clientHeight); camera.aspect = host.clientWidth / Math.max(1, host.clientHeight); camera.updateProjectionMatrix(); dirty = true; }); resize.observe(host);
+  const visibility=observeRenderVisibility(host),motion=matchMedia('(prefers-reduced-motion: reduce)');
+  const changed=()=>{dirty=true;};controls.addEventListener('change',changed);
+  const motionChanged=()=>{controls.enableDamping=!motion.matches;dirty=true;};motionChanged();motion.addEventListener('change',motionChanged);
+  const size=()=>{if(host.clientWidth<2||host.clientHeight<2)return;renderer.setPixelRatio(pixelRatio('balanced',Math.min(devicePixelRatio,host.clientWidth<700?1.25:1.5),host.clientWidth,host.clientHeight));renderer.setSize(host.clientWidth,host.clientHeight);camera.aspect=host.clientWidth/host.clientHeight;camera.updateProjectionMatrix();dirty=true;host.dataset.pixelRatio=String(renderer.getPixelRatio());};
+  const resize = new ResizeObserver(size); resize.observe(host);
+  window.addEventListener('resize',size);
   let handle = 0, dead = false, lastDraw = 0, lastId = "", lastTime = -10, lastStatus = 0;
   const target = new THREE.Vector3(), eye = new THREE.Vector3();
   let activeStage:Stage|undefined,activeFrame:ScenarioFrame|undefined,activeContacts:ReturnType<typeof poseStudioActors>=[],subjectPoints:THREE.Vector3[]=[];
@@ -95,7 +102,7 @@ export async function createStudio(host: HTMLDivElement, input: () => { id: Scen
     host.dataset.triangles = String(renderer.info.render.triangles); host.dataset.drawCalls = String(renderer.info.render.calls); host.dataset.frames = String(Number(host.dataset.frames ?? 0) + 1);
   }
   function tick(stamp: number) {
-    if (dead) return; handle = requestAnimationFrame(tick); if (document.hidden || stamp - lastDraw < 20) return;
+    if (dead) return; handle = requestAnimationFrame(tick); if (!visibility.visible()){lastDraw=0;return;}if(stamp-lastDraw<33)return;
     lastDraw = stamp; const state = input();
     const reset=(state.cameraReset??0)!==lastReset;
     if(reset){clearCameraMotion();manual=false;focused=null;focusAnchor=undefined;onSelect(null);}
@@ -129,7 +136,7 @@ export async function createStudio(host: HTMLDivElement, input: () => { id: Scen
       group.traverse(o=>{if((o as THREE.Mesh).isMesh)o.userData.actorId=prop.holderId??undefined;});
       group.visible = prop.visible; group.position.set(...stagePoint(prop.position)); group.rotation.set(...prop.rotation);
     }
-    const shot=studioCamera(frame,contacts,camera.aspect,snapBeat===frame.beat.index);const subjects=focused?studioFocusSubjects(frame,focused):shot.subjects;host.dataset.cameraSubjects=JSON.stringify(subjects);activeStage=stage;
+    const shot=studioCamera(frame,contacts,camera.aspect,motion.matches||snapBeat===frame.beat.index);const subjects=focused?studioFocusSubjects(frame,focused):shot.subjects;host.dataset.cameraSubjects=JSON.stringify(subjects);activeStage=stage;
     subjectPoints=subjects.flatMap(id=>{const contact=contacts.find(c=>c.id===id),actor=frame.actors.find(a=>a.id===id)!;const head=contact?.head??[actor.position[0],actor.position[1]*STAGE_Y+2.25,actor.position[2]];return [new THREE.Vector3(...head),new THREE.Vector3(head[0],head[1]*.65,head[2])];});
     if (!manual) {
       target.copy(shot.target);eye.copy(shot.eye);
@@ -141,6 +148,7 @@ export async function createStudio(host: HTMLDivElement, input: () => { id: Scen
     controls.update(); render(); dirty = false;
     host.dataset.contacts=JSON.stringify(contacts);host.dataset.modelGeneration="supplied-civilians-v1";host.dataset.shadows=String(sun.castShadow);
     host.dataset.ready = "true"; host.dataset.scenario = frame.id; host.dataset.time = frame.time.toFixed(3); host.dataset.beat = String(frame.beat.index); host.dataset.assets = String(library.stats().loaded); host.dataset.assetFailures = String(library.stats().failed);
+    host.dataset.reducedMotion=String(motion.matches);
     if (stamp - lastStatus > 200 || seeking) { lastStatus = stamp; host.dataset.state = JSON.stringify(frame.state); host.dataset.cast = JSON.stringify(frame.actors.map(a => ({ id: a.id, age: a.age, clip: a.clip, position: a.position }))); host.dataset.props = JSON.stringify(frame.props.map(p => ({ id: p.id, holder: p.holderId, stage: p.stage, position: p.position }))); }
     host.dataset.renderedProps=JSON.stringify(frame.props.map(p=>{const group=stage.props.get(p.id)!,base=group.userData.sourceSize as number[];return{id:p.id,size:base.map((v,i)=>v*group.scale.getComponent(i))};}));
     lastId = state.id; lastTime = state.time;
@@ -155,8 +163,12 @@ export async function createStudio(host: HTMLDivElement, input: () => { id: Scen
   renderer.domElement.addEventListener('pointerdown',pointerDown);renderer.domElement.addEventListener('pointermove',pointerMove);renderer.domElement.addEventListener('pointerup',pointerUp);renderer.domElement.addEventListener('pointercancel',pointerCancel);renderer.domElement.addEventListener('wheel',pointerWheel,{passive:true});
   const cameraKey=(e:KeyboardEvent)=>{if(e.key.startsWith('Arrow'))manual=true;if(e.key==='Escape'){clearCameraMotion();manual=false;focused=null;focusAnchor=undefined;snapBeat=activeFrame?.beat.index;onSelect(null);dirty=true;}};
   renderer.domElement.addEventListener('keydown',cameraKey);
+  const contextLost=(event:Event)=>{event.preventDefault();if(dead)return;dead=true;cancelAnimationFrame(handle);host.dataset.ready='false';fatal();};
+  renderer.domElement.addEventListener('webglcontextlost',contextLost);
   handle = requestAnimationFrame(tick);
+  let disposed=false;
   return { focus:focusActor,dispose() {
+    if(disposed)return;disposed=true;visibility.dispose();window.removeEventListener('resize',size);motion.removeEventListener('change',motionChanged);controls.removeEventListener('change',changed);renderer.domElement.removeEventListener('webglcontextlost',contextLost);
     renderer.domElement.removeEventListener('keydown',cameraKey);
     renderer.domElement.removeEventListener('pointerdown',pointerDown);renderer.domElement.removeEventListener('pointermove',pointerMove);renderer.domElement.removeEventListener('pointerup',pointerUp);renderer.domElement.removeEventListener('pointercancel',pointerCancel);renderer.domElement.removeEventListener('wheel',pointerWheel);
     dead = true; for(const stage of stages.values())for(const actor of stage.actors.values())actor.dispose(); cancelAnimationFrame(handle); resize.disconnect(); controls.dispose();

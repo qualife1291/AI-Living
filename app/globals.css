@@ -313,7 +313,7 @@ footer span:first-child {
 .actor-name{position:absolute;left:0;top:0;height:26px;display:flex;align-items:center;justify-content:center;gap:5px;padding:0 9px;border:1px solid #ffffffdb;border-radius:999px;background:#fffdf4ed;color:#335b56;box-shadow:0 2px 8px #173e3820;font:600 11px/1.1 'Be Vietnam Pro',sans-serif;white-space:nowrap;pointer-events:auto;transition:transform .14s linear}
 .actor-name>span:last-child{overflow:hidden;text-overflow:ellipsis}.actor-name-dot{width:5px;height:5px;flex:none;background:#9bab91;border-radius:50%}.actor-name.is-selected{background:#28665fed;color:#fffdf4;border-color:#c8e5d8}.actor-name.is-selected .actor-name-dot,.actor-name.is-speaking .actor-name-dot{background:#e5c478}.actor-name.is-speaking:not(.is-selected){border-color:#79ad9b}
 .world-overlays .three-speech{box-sizing:border-box;position:absolute;width:min(292px,calc(100vw - 24px));max-width:none;max-height:calc(100dvh - 244px);margin:0;padding:12px 14px;transform:none;border:1px solid #d6e1d6;border-radius:18px;background:#fffdf5f5;color:#284d48;box-shadow:0 8px 24px #193e3826;pointer-events:auto;overflow-wrap:anywhere}
-.speech-heading{display:flex;align-items:center;gap:10px;margin-bottom:7px}.world-overlays .three-speech strong{display:block;min-width:0;margin:0;font-size:11px;font-weight:650;color:#2d6860;line-height:1.4}.speech-heading em{float:none;flex:none;margin-left:auto;padding:3px 6px;border-radius:7px;background:#edf2e5;color:#688173;font:500 9px/1.2 'Be Vietnam Pro',sans-serif;white-space:nowrap}.world-overlays .three-speech p{margin:0;font-size:14px;line-height:1.6;font-weight:450}.world-overlays .three-speech::after{content:"";position:absolute;left:var(--speech-pointer,50%);bottom:-5px;width:9px;height:9px;background:#fffdf5;border-right:1px solid #d6e1d6;border-bottom:1px solid #d6e1d6;transform:translateX(-50%) rotate(45deg);border-bottom-right-radius:2px}
+.speech-heading{display:flex;align-items:center;gap:10px;margin-bottom:7px}.world-overlays .three-speech strong{display:block;min-width:0;margin:0;font-size:11px;font-weight:650;color:#2d6860;line-height:1.4}.speech-heading em{float:none;flex:none;margin-left:auto;padding:3px 6px;border-radius:7px;background:#edf2e5;color:#456154;font:600 10px/1.2 'Be Vietnam Pro',sans-serif;white-space:nowrap}.world-overlays .three-speech p{margin:0;font-size:14px;line-height:1.6;font-weight:450}.world-overlays .three-speech::after{content:"";position:absolute;left:var(--speech-pointer,50%);bottom:-5px;width:9px;height:9px;background:#fffdf5;border-right:1px solid #d6e1d6;border-bottom:1px solid #d6e1d6;transform:translateX(-50%) rotate(45deg);border-bottom-right-radius:2px}
 @media(max-width:700px){.actor-name{font-size:11px}.world-overlays .three-speech{padding:11px 13px;border-radius:16px}.world-overlays .three-speech p{font-size:13px;line-height:1.6}}
 @media(prefers-reduced-motion:reduce){.actor-name{transition:none}}
 .hud-hidden .world-overlays{visibility:hidden}
@@ -325,8 +325,28 @@ footer span:first-child {
 .resident-home button{justify-self:start;border:1px solid #b1cdbb;border-radius:9px;padding:7px 11px;background:#e6f0e5;color:#315c54;font:inherit;font-size:12px;cursor:pointer}.resident-home button:focus-visible{outline:3px solid #d6aa68;outline-offset:2px}
 
 /* Separate read-only vehicle cockpit cameras from the resident camera dock. */
-.urban-vehicle-camera{position:absolute;right:72px;bottom:40px;display:flex;flex-direction:column;gap:3px;padding:5px;z-index:5;border:1px solid #e5efe8;border-radius:14px;background:#fffdf5f0;box-shadow:0 5px 22px #244a6417}
+.urban-vehicle-camera{position:absolute;right:84px;bottom:40px;display:flex;flex-direction:column;gap:3px;padding:5px;z-index:5;border:1px solid #e5efe8;border-radius:14px;background:#fffdf5f0;box-shadow:0 5px 22px #244a6417}
 .urban-vehicle-camera button{width:36px;height:36px;display:grid;place-items:center;border-radius:9px;color:#275e69}
 .urban-vehicle-camera button[aria-pressed="true"]{background:#c1e8df;color:#164d48}
 .hud-hidden .urban-vehicle-camera{opacity:0;visibility:hidden;pointer-events:none}
 @media(max-width:900px){.urban-vehicle-camera{right:14px;bottom:374px}}
+/* Keep observation controls reachable on touch screens and short viewports. */
+.urban-camera button{width:44px;height:44px}
+.city-three .map-credit{color:#304d51;background:#fffdf5e8;border-radius:6px;padding:3px 6px;max-width:calc(100% - 48px)}
+.interior-view .scene-choice{margin:10px 0}
+.interior-view .scene-choice button{min-height:44px}
+.interior-residents{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
+.interior-residents button{text-align:left;min-width:0;display:grid;gap:5px;align-content:start}
+.interior-residents small{font-size:11px;line-height:1.5;overflow-wrap:anywhere}
+.live-top{top:max(14px,env(safe-area-inset-top))}
+.live-dock{bottom:max(24px,env(safe-area-inset-bottom))}
+.live-drawer{overscroll-behavior:contain;scrollbar-gutter:stable}
+@media(max-height:500px) and (min-width:600px){
+  .urban-camera{flex-direction:row;right:14px;bottom:100px;padding:3px;border-radius:13px}
+  .urban-camera button{width:40px;height:40px}
+  .live-person{bottom:100px;max-width:310px;left:14px;padding:8px 10px}
+  .live-dock{bottom:max(28px,env(safe-area-inset-bottom))}
+  .map-credit{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+}
+
+@media(max-height:500px) and (min-width:600px){.urban-vehicle-camera{flex-direction:row;bottom:151px;right:14px;padding:3px}.urban-vehicle-camera button{width:40px;height:40px}}
