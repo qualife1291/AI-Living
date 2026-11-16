@@ -139,6 +139,9 @@
     "scripts/test-policy-store.mjs"
   ],
   [
+    "scripts/test-experience-store.mjs"
+  ],
+  [
     "scripts/test-daemon-fallback.mjs"
   ],
   [

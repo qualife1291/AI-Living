@@ -1,0 +1,144 @@
+{
+  "schema": "xom-ui-review-screenshots-v1",
+  "sourceCommit": "f133a88faf7c3103c564bddeed0249ccfbb78ae7",
+  "date": "2026-11-05",
+  "renderer": "Chromium SwiftShader",
+  "scope": "Actual compiled loopback WebGL; synthetic fixtures/intercepted APIs; not remote QA, hardware GPU or AI-generated images.",
+  "images": [
+    {
+      "file": "ui-assets-desktop.png",
+      "sha256": "f975da9e1f1eede162273aacb18a338dfff5828936749d9fd9d8a0821df54260",
+      "bytes": 671122,
+      "pixels": [
+        2880,
+        1800
+      ]
+    },
+    {
+      "file": "ui-assets-mobile.png",
+      "sha256": "37cb7e5824dbfbab66003140a6167971d86ed1c1845f0be8a85d4eea1e1e005d",
+      "bytes": 318047,
+      "pixels": [
+        1170,
+        2532
+      ]
+    },
+    {
+      "file": "ui-city-compact.png",
+      "sha256": "f95f357607eecdfbe47621e82413734eb49c98d8f3faf5fa178c8f96cbcf0859",
+      "bytes": 232751,
+      "pixels": [
+        640,
+        1136
+      ]
+    },
+    {
+      "file": "ui-city-desktop.png",
+      "sha256": "4cf3f9d10893c1579605fa9465092f4023f33149d49263573fd56137ced59c6f",
+      "bytes": 868741,
+      "pixels": [
+        2880,
+        1800
+      ]
+    },
+    {
+      "file": "ui-city-landscape.png",
+      "sha256": "1002ab6a1fbf6655c6500aeeb4124fd4bd628f273c71fae55ff461f37f1a316f",
+      "bytes": 393571,
+      "pixels": [
+        1688,
+        780
+      ]
+    },
+    {
+      "file": "ui-city-mobile.png",
+      "sha256": "c6c04a567997dc64355a9f12a6616d44b5ab169e8ea99d87fe899c96eb70734e",
+      "bytes": 526199,
+      "pixels": [
+        1170,
+        2532
+      ]
+    },
+    {
+      "file": "ui-interior-compact.png",
+      "sha256": "0519c5b57583372b2ab77c85fdcf915c086066610edad89da40b077c03e370cd",
+      "bytes": 216725,
+      "pixels": [
+        640,
+        1136
+      ]
+    },
+    {
+      "file": "ui-interior-desktop.png",
+      "sha256": "e62a822d448ea8b6b358a1da6c6f8f773da9d50b73cb8ddc0c586c0228439a94",
+      "bytes": 891597,
+      "pixels": [
+        2880,
+        1800
+      ]
+    },
+    {
+      "file": "ui-interior-landscape.png",
+      "sha256": "900bc8a55788e81c4c05029ce39f2757701d6f5c80dfa079f47781bff5701841",
+      "bytes": 200352,
+      "pixels": [
+        1688,
+        780
+      ]
+    },
+    {
+      "file": "ui-interior-mobile.png",
+      "sha256": "76665b0735939b761b7e1529a1ecb5206f251c2211af229e628148bfefc1fe55",
+      "bytes": 517555,
+      "pixels": [
+        1170,
+        2532
+      ]
+    },
+    {
+      "file": "ui-studio-compact.png",
+      "sha256": "bf35e732ee047c1b1e57cb4a854eebbaa29af4b36b89c3bb5a61603b5b1a240c",
+      "bytes": 139999,
+      "pixels": [
+        640,
+        1136
+      ]
+    },
+    {
+      "file": "ui-studio-desktop.png",
+      "sha256": "3440794cd3cd9c2fede585c28d4495ba21dafa0fc79a30ed45069efd1b0ba608",
+      "bytes": 575871,
+      "pixels": [
+        2880,
+        1800
+      ]
+    },
+    {
+      "file": "ui-studio-landscape.png",
+      "sha256": "364e4e814178e67a2c0e2b56d809dcec8e4bef7de359db34f5189f51cf29c0a2",
+      "bytes": 263497,
+      "pixels": [
+        1688,
+        780
+      ]
+    },
+    {
+      "file": "ui-studio-mobile.png",
+      "sha256": "7ae42f017dbaf0d3a9082bc0989d97b0c92c454b808fac2b191b3281bbbc92a6",
+      "bytes": 344596,
+      "pixels": [
+        1170,
+        2532
+      ]
+    },
+    {
+      "file": "osm-landscape.png",
+      "sha256": "a18f08ec537bcc30e523ae3b35fcf7b8abecbc341667e9820b5aeb26f509d7e1",
+      "bytes": 478170,
+      "pixels": [
+        1688,
+        780
+      ]
+    }
+  ]
+}

@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import {realpathSync,readFileSync} from 'node:fs';
 import {createRequire} from 'node:module';
 import {resolve} from 'node:path';
-import {hydratePolicies,preparePolicyWrite,PolicyRevisionConflict} from '../lib/living/policy-store.ts';
+import {hydratePolicies,preparePolicyWrite,policyWriteBaseline,PolicyRevisionConflict} from '../lib/living/policy-store.ts';
 import {newArm,fitLinear} from '../lib/living/linucb.ts';
 import {initializeAgent} from '../lib/living/learning.ts';
 import {seed} from '../lib/world.ts';
@@ -57,6 +57,54 @@ try {
  await hydratePolicies(db,JSON.parse(bulk.data),2);
  const inlineBytes=Buffer.byteLength(JSON.stringify(many)),snapshotBytes=Buffer.byteLength(bulk.data);
  assert(snapshotBytes<inlineBytes/4,'Posterior matrices are removed from ordinary snapshots');
+ // A105-actor workload: legacy writer rewrites every model, even if only
+ // needs/plans changed. Preserve their exact row bytes/revisions after repair.
+ const cohort=JSON.parse(bulk.data);cohort.living.learning=Object.fromEntries(Object.entries(cohort.living.learning).slice(0,105));
+ await hydratePolicies(db,cohort,2);cohort.living.learningCommit='measure-old';
+ const oldWrite=await preparePolicyWrite(db,cohort,3,'measure-old');
+ const oldResults=await db.batch([cas(oldWrite.data,2),...oldWrite.statements]);
+ const oldChanged=oldResults.slice(1).reduce((n,r)=>n+r.meta.changes,0);assert.equal(oldChanged,105);
+ let unchanged=JSON.parse(oldWrite.data);await hydratePolicies(db,unchanged,3);
+ const reference=policyWriteBaseline(unchanged),rowsBefore=(await db.prepare('SELECT * FROM learning_policies ORDER BY actor_id').all()).results;
+ unchanged.living.learningCommit='no-op';
+ const noOp=await preparePolicyWrite(db,unchanged,4,'no-op',reference);
+ assert.equal(noOp.statements.length,0,'Unchanged posteriors need no D1 write, not just an ignored UPSERT');
+ await db.batch([cas(noOp.data,3),...noOp.statements]);
+ assert.deepEqual((await db.prepare('SELECT * FROM learning_policies ORDER BY actor_id').all()).results,rowsBefore);
+ const storedNoOp=JSON.parse(noOp.data);assert(Object.values(storedNoOp.living.learning).every(a=>a.policyRevision===3));
+ await hydratePolicies(db,storedNoOp,4);
+ const baseline=policyWriteBaseline(storedNoOp),ids=Object.keys(storedNoOp.living.learning).slice(0,2);
+ for(const id of ids){const a=storedNoOp.living.learning[id];a.linear['action-0']=fitLinear(a.linear['action-0'],[1,.2,.3,.4,0,.7],.2);}
+ storedNoOp.living.learningCommit='two-changed';
+ const two=await preparePolicyWrite(db,storedNoOp,5,'two-changed',baseline);
+ const twoResults=await db.batch([cas(two.data,4),...two.statements]);
+ const changed=twoResults.slice(1).reduce((n,r)=>n+r.meta.changes,0);assert.equal(changed,2);
+ const afterRows=(await db.prepare('SELECT * FROM learning_policies ORDER BY actor_id').all()).results;
+ for(const row of afterRows)if(!ids.includes(row.actor_id))assert.deepEqual(row,rowsBefore.find(r=>r.actor_id===row.actor_id));
+ let mixed=JSON.parse(two.data);for(const [id,a] of Object.entries(mixed.living.learning))assert.equal(a.policyRevision,ids.includes(id)?5:3);
+ await hydratePolicies(db,mixed,5);
+ for(const [id,a] of Object.entries(mixed.living.learning)){
+  const expected={...storedNoOp.living.learning[id],policyRevision:ids.includes(id)?5:3};
+  assert.deepEqual(a,expected,'Mixed revision snapshot preserves every posterior and agent field');
+ }
+ const retryBaseline=policyWriteBaseline(mixed),beforeRetry=JSON.stringify(mixed);
+ mixed.living.learning[ids[0]].linear['action-0']=fitLinear(mixed.living.learning[ids[0]].linear['action-0'],[1,0,0,0,0,0],-.1);
+ mixed.living.learningCommit='retry';
+ const retry=await preparePolicyWrite(db,mixed,6,'retry',retryBaseline);
+ await db.batch([cas(retry.data,4),...retry.statements]);
+ assert.equal((await db.prepare('SELECT revision FROM worlds').first()).revision,5);
+ assert.deepEqual((await db.prepare('SELECT * FROM learning_policies ORDER BY actor_id').all()).results,afterRows,'Optimized writer also respects stale CAS');
+ await assert.rejects(db.batch([cas(retry.data,5),...retry.statements,db.prepare('INSERT INTO missing_table VALUES (1)')]));
+ assert.equal((await db.prepare('SELECT revision FROM worlds').first()).revision,5);
+ assert.deepEqual((await db.prepare('SELECT * FROM learning_policies ORDER BY actor_id').all()).results,afterRows,'Optimized writer rolls back all policies and references');
+ mixed.living.learningCommit='wrong-nonce';
+ const wrongNonce=await preparePolicyWrite(db,mixed,6,'different-nonce',retryBaseline);
+ await db.batch(wrongNonce.statements);
+ assert.deepEqual((await db.prepare('SELECT * FROM learning_policies ORDER BY actor_id').all()).results,afterRows,'Nonce blocks detached policy writes');
+ mixed=JSON.parse(beforeRetry);
+ const mismatchBaseline=new Map(baseline);mismatchBaseline.set(ids[0],{...baseline.get(ids[0]),revision:999});
+ await assert.rejects(preparePolicyWrite(db,mixed,6,'invalid',mismatchBaseline),PolicyRevisionConflict);
+ console.log(JSON.stringify({suite:'policy-write-budget',actors:105,unchangedRowsBefore:oldChanged,unchangedRowsAfter:0,twoChangedRowsAfter:changed,unchangedRowsByteIdentical:true,staleAndRollbackChecks:true,d1RowsWrittenBaseline:oldResults.slice(1).reduce((n,r)=>n+(r.meta.rows_written??0),0),d1RowsWrittenTwoChanged:twoResults.slice(1).reduce((n,r)=>n+(r.meta.rows_written??0),0),productionAccess:false}));
  await db.prepare('DROP TABLE learning_policies').run();
  await assert.rejects(hydratePolicies(db,JSON.parse(first.data),1),/unavailable/);
  console.log(JSON.stringify({suite:'policy-store',actors:240,armsPerActor:41,inlineBytes,snapshotBytes,statements:bulk.statements.length,cas:true,atomicRollback:true,legacy:true,corruptionPreserved:true,productionAccess:false}));
