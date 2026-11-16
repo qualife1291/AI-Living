@@ -1,5 +1,7 @@
 # AI–Living H6 QA Release / Observation / Policy Scaling — 29 Oct 2026
 
+> Release audit lịch sử29/10, giữ nguyên baseline và gates tại thời điểm đó. Không dùng branch/catalog/số liệu bên dưới làm trạng thái hiện hành. Đọc [handoff](../CODEX_HANDOFF.md), [runbook QA](CLOUDFLARE_AGENT_QA.md) và [catalog hiện tại](QA_100_ACTIONS.md); activation hiện hành theo signed gate H6.4.
+
 ## Status and ownership
 This phase is QA-only, on `deploy/qa-h6-shadow-20261029`. Merges must be coordinated with the owners of `cloudflare-qa`; do not cherry-pick unrelated `work` commits or alter Site A / `cloudflare-staging`. Release artifact: **96 synthetic H6 candidate scenarios, 2 hierarchical offline priors in GitHub Actions; runtime still uses the original 41 actions and personal LinUCB**. Cloudflare QA config marks `XOM_H6_MODE=shadow-only`, H6 candidate count 96 and SHA-256 of canonical candidate JSON; Cron structured `cron_result` logs include `h6ShadowOnly=true` and `h6Candidates=96`. A release marker does **not** imply H6 model inference is running or that H6 improves reward in vivo.
 

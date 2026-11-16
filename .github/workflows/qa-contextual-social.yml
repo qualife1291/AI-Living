@@ -59,6 +59,7 @@ jobs:
           npm run test:unit
       - name: Type, lint and real 3D model compatibility
         run: |
+          npm run check:docs
           npm run check
           npm run lint
           npm run assets:check

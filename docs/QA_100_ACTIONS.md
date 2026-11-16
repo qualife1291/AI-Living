@@ -1,16 +1,18 @@
-# QA catalog: 100 selectable resident action plans
+# QA live action catalog
+
+Hiện hành: **103day+9night=112runtime IDs**. Catalog gốc100, mobility3 và night9 có namespace/evidence riêng; [Learning](LEARNING.md) là contract chung. Các số dưới đây mô tả từng pack, không là số arm đã học.
 
 Release scope: **cloudflare-qa only**. The original 41-item `data/city/scenarios.json` and pinned H6 96-candidate artifact stay byte-for-byte unchanged. This versioned expansion adopts the 55 previously reviewed *candidate descriptions* as 55 newly schedulable QA scenarios and adds four distinct scenarios in `data/city/action-pack-100.json`. Their prior synthetic sample counts are **not** imported, copied, or counted; each begins with zero recorded experience.
 
 The total catalog is 41 + 59 = 100 unique IDs. These are **plan-level action types** supported by simulated duration, hard health/sleep/hunger gates, venue, travel, needs changes, skill-domain credit, completed-plan evidence and per-actor LinUCB policy. They are not 100 independent character animation clips, physical object transfers, verified real-world events, or 100 already learned policy arms. UI projections remain based on existing action poses and observable plan/activity, without promising material outcomes.
 
-Old completed evidence retains `OUTCOME_SCENARIO_SIGNATURE`; new IDs receive `EXPANDED_ACTION_SIGNATURE`. H6 model inference, canary and promotion remain gated/off; the 41-arm H6 comparison cannot be reported as a genuine paired result when a new arm is chosen. H6 catalog metadata SHA and 41 legacy fingerprint must remain unchanged. 
+Old completed evidence retains `OUTCOME_SCENARIO_SIGNATURE`; new IDs receive `EXPANDED_ACTION_SIGNATURE`. H6 model inference, canary and promotion remain gated/off; the 41-arm H6 comparison cannot be reported as a genuine paired result when a new arm is chosen. H6 catalog metadata SHA and 41 legacy fingerprint must remain unchanged.
 
 ## QA acceptance
 
 Run `node scripts/test-action-pack-100.mjs`, `npm run test:unit`, `npm run check`, `npm run lint`, and desktop/mobile Chromium visual tests. Before release require a successful QA-only CI deployment plus Worker version, preserved H6 bindings and Cron, D1 QA binding, HTTP smoke via safe GET and a new completed action record. Never initiate POST pulse just to raise numbers.
 
-Report **catalog=100**, **eligible actions** (context-dependent) and **observed distinct completed action IDs** separately. Expect observed action types to rise gradually, not jump from 38 to 100 without 62 genuinely recorded completions. Compare policy rows, arm counts, sample totals, reward by scenario, CPU/p95 and error logs against pre-rollout baselines. Roll back the QA Worker if runtime or reward regressions exceed accepted bounds; do not alter D1, Site A, production or staging.
+Report **original100=100**, **daytime=103**, **night=9**, eligible actions (context-dependent) and observed distinct completed IDs separately. Observed arms chỉ tăng qua completion hợp lệ; thêm catalog không backfill samples. Compare policy rows, arm counts, sample totals, reward by scenario, CPU/p95 and error logs against pre-rollout baselines. Roll back the QA Worker if runtime or reward regressions exceed accepted bounds; do not alter D1, Site A, production or staging.
 
 ## Independent mobility pack (QA only)
 
@@ -22,4 +24,6 @@ Ambient vehicles are a separate rendering simulation: the 12 cooperative road ca
 
 A separate motorbike and bicycle are drawn on marked lanes of the existing 43-unit southern boulevard; they use bounded frame steps, speed limits, signal-stop lines, pedestrian clearance and four-second layby stops at route termini. The 12 original cars are unaffected, and the new bikes are included in local walker collision avoidance. This is an **initial traffic rules simulation**, not a city-wide signal network or legally certified vehicle physics.
 
-The existing three core residents already have fictional VND wallet balances. A core resident must afford a proposed car/bus/metro plan. Only a **newly completed, matching plan experience** may produce an idempotent simulated fare transaction; deduplicate by experience ID, never by screenshot or frame. No NPC balance is invented and NPCs do not receive paid plans without a wallet. These are not real payments. No D1 migration is necessary because the ledger field is optional. Run the independent 2-wheel/finance suite and real Chromium camera suite before release. 
+The existing three core residents already have fictional VND wallet balances. A core resident must afford a proposed car/bus/metro plan. Feasibility được lọc trước UCB scoring để paid arm chưa thử không tạo vòng fallback rest-home. Only a **newly completed, matching plan experience** may produce an idempotent simulated fare transaction; deduplicate by experience ID, never by screenshot or frame. No NPC balance is invented and NPCs do not receive paid plans without a wallet. These are not real payments. No D1 migration is necessary because the ledger field is optional. Run the independent 2-wheel/finance suite and real Chromium camera suite before release.
+
+Tick-first và learning-first dùng chung booking helper trong world CAS, chỉ trừ phí một lần theo experience ID. [Regression](validation/learning-repair-2026-11-16.json).

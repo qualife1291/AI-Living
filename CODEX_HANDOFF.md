@@ -4,7 +4,7 @@
 
 ## Đang làm
 
-Review ZIP skill mới và dọn source/tài liệu. Đã chọn6skill, bỏ UI starter không có đường import, dependency chỉ phục vụ chúng và ngoại lệ lint cũ. Đang chốt kiểm tra/đóng gói; bản QA đã xác minh trước cleanup là54ca2ec. Không thay renderer, schema, hành vi học hoặc dữ liệu thật.
+Review ZIP skill mới và dọn source/tài liệu. Đã chọn6skill, bỏ UI starter không có đường import, dependency chỉ phục vụ chúng và ngoại lệ lint cũ. Local QA101suite/type/lint/build/assets và compiled API đã đạt; đang chờ push/CI. Bản QA đã xác minh trước cleanup là54ca2ec. Không thay renderer, schema, hành vi học hoặc dữ liệu thật.
 
 ## Trạng thái nền
 

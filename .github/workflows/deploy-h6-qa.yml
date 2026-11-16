@@ -42,6 +42,7 @@ jobs:
         run: corepack pnpm install --frozen-lockfile
       - name: QA code, security and compatibility gates
         run: |
+          npm run check:docs
           python3 scripts/validate-agent-skills.py
           node scripts/test-h6-scenario-scale.mjs
           node scripts/test-h6-shadow-evaluator.mjs
