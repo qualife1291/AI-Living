@@ -1,3 +1,4 @@
+import {bookCompletedMobility} from "../city/mobility-economy.ts";
 import { assignIdentities } from "./identity";
 import { assignHomes } from "./households";
 import { scheduleResidentSocial } from "./social-scheduler";
@@ -325,6 +326,7 @@ export async function learnCompleted() {
   const animals = settleAnimalLearning(current.world, state, Date.now());
   if (!trained && !animals)
     return { status: 200, data: { ok: true, updated: 0 } };
+  bookCompletedMobility(current.world,newExperiences);
   if (learning.an) {
     state.energy = learning.an.energy;
     state.hunger = learning.an.hunger;

@@ -187,8 +187,10 @@ export function chooseScenario(
   policy: "tabular" | "linucb" = "linucb",
   prior?: (scenario: Scenario) => { mean: number; weight: number } | null,
   additional: readonly Scenario[] = [],
+  eligible?: (scenario: Scenario) => boolean,
 ): Scenario {
-  const candidates = availableScenarios(agent, context, additional);
+  const candidates = availableScenarios(agent, context, additional).filter(s=>!eligible||eligible(s));
+  if (!candidates.length) throw new Error("No feasible learning action");
   if (candidates.length === 1) return candidates[0];
   return candidates
     .map((s) => {
@@ -233,8 +235,8 @@ export function chooseScenario(
     .sort((a, b) => b.score - a.score)[0].scenario;
 }
 /** New catalog is only used for QA scheduling. Legacy H6 baseline remains 41. */
-export function chooseLiveAction(agent:AgentLearning,id:string,context:RealContext,rolePlace?:string): Scenario {
-  return chooseScenario(agent,id,context,rolePlace,"linucb",undefined,[...expandedActions,...transportActions]);
+export function chooseLiveAction(agent:AgentLearning,id:string,context:RealContext,rolePlace?:string,eligible?:(scenario:Scenario)=>boolean): Scenario {
+  return chooseScenario(agent,id,context,rolePlace,"linucb",undefined,[...expandedActions,...transportActions],eligible);
 }
 export type OutcomeNeeds = RewardState;
 

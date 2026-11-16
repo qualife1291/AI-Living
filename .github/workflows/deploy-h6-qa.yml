@@ -4,6 +4,12 @@ on:
     branches: [cloudflare-qa]
     paths:
       - 'lib/living/h6-canary-runtime.ts'
+      - 'lib/living/engine.ts'
+      - 'lib/living/learning.ts'
+      - 'lib/living/service.ts'
+      - 'lib/living/policy-store.ts'
+      - 'lib/living/experience-store.ts'
+      - 'lib/living/evening-life.ts'
       - 'components/city/**'
       - 'lib/city/**'
       - 'app/page.tsx'
@@ -36,6 +42,7 @@ jobs:
         run: corepack pnpm install --frozen-lockfile
       - name: QA code, security and compatibility gates
         run: |
+          python3 scripts/validate-agent-skills.py
           node scripts/test-h6-scenario-scale.mjs
           node scripts/test-h6-shadow-evaluator.mjs
           node scripts/test-h6-qa-canary.mjs
@@ -50,7 +57,11 @@ jobs:
           node scripts/test-neighborhood.mjs
           node scripts/test-interior-actions.mjs
       - name: Build isolated QA release bundle
-        run: npm run build && node scripts/configure-cloudflare-qa.mjs
+        run: |
+          npm run build
+          node scripts/test-evening-api.mjs
+          node scripts/test-mobility-learning-api.mjs
+          node scripts/configure-cloudflare-qa.mjs
       - name: Check exclusive QA target and default OFF
         run: |
           node --input-type=module -e '

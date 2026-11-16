@@ -119,6 +119,156 @@
         "productionAccess": false,
         "physicalCompletionProven": false
       }
+    ],
+    "qaCompiledLearning": [
+      {
+        "suite": "evening-api",
+        "pass": true,
+        "compiledWorker": true,
+        "isolatedD1": true,
+        "newActionsSettled": 9,
+        "subsequentSettlements": 1,
+        "onlyChangedPolicyRows": 1,
+        "unchangedPoliciesByteIdenticalAfterTick": true,
+        "retainedArchiveSequenceUnchanged": true,
+        "namespaceEvidence": true,
+        "retries": 3,
+        "duplicateSamples": 0,
+        "identityAndPetOwnersPreserved": true,
+        "productionAccess": false,
+        "physicalCompletionProven": false
+      }
+    ],
+    "qualityChecks": {
+      "typecheck": "pass",
+      "lint": "pass, one pre-existing unused trainReport warning",
+      "build": "pass",
+      "assetsCheck": "pass",
+      "qaSafetyAndSingleCron": "pass",
+      "browser": "not rerun locally: no renderer/UI/assets changes; existing QA CI still runs full browser acceptance"
+    },
+    "qaCompiledMobility": [
+      {
+        "suite": "mobility-learning-api",
+        "compiledWorker": true,
+        "isolatedD1": true,
+        "concurrentLearningRequests": 8,
+        "completedFares": 3,
+        "doubleCharges": 0,
+        "duplicateSamples": 0,
+        "unchangedPolicies": true,
+        "productionAccess": false
+      }
+    ],
+    "qaCompiledDiagnostics": [
+      {
+        "suite": "local-diagnostics-http",
+        "ownerReadGuard": true,
+        "ownerWriteGuard": true,
+        "streamByteLimit": true,
+        "schema": true,
+        "origin": true,
+        "ack": true,
+        "jsonlReadback": true,
+        "rateLimit": true,
+        "retention": true,
+        "diagnosticsReadOnly": true,
+        "pulsePersistence": true,
+        "pulseRetry": true,
+        "pulseConcurrentViewers": 12,
+        "pulseNoDuplicateAudit": true,
+        "pulsePause": true,
+        "healthSchemaBatch": true,
+        "bulkReplay": true,
+        "memoryBackfill": true,
+        "productionAccess": false
+      }
+    ],
+    "qaCompiledLegacy": [
+      {
+        "kind": "legacy-compiled-http-acceptance",
+        "isolated": true,
+        "productionAccess": false,
+        "results": [
+          {
+            "name": "world",
+            "exitCode": 0
+          },
+          {
+            "name": "living",
+            "exitCode": 0
+          },
+          {
+            "name": "learning",
+            "exitCode": 0
+          },
+          {
+            "name": "liveness",
+            "exitCode": 0
+          },
+          {
+            "name": "appearance",
+            "exitCode": 0
+          },
+          {
+            "name": "proposal",
+            "exitCode": 0
+          }
+        ]
+      }
+    ],
+    "qaCompiledProgress": [
+      {
+        "suite": "progress-private-aliases",
+        "results": [
+          {
+            "path": "/api/system/progress",
+            "status": 403
+          },
+          {
+            "path": "/api/system/progress/",
+            "status": 403
+          },
+          {
+            "path": "//api/system/progress",
+            "status": 404
+          },
+          {
+            "path": "/api/%73ystem/progress",
+            "status": 404
+          },
+          {
+            "path": "/api/system/%70rogress",
+            "status": 404
+          },
+          {
+            "path": "/api/system%2Fprogress",
+            "status": 404
+          }
+        ]
+      },
+      {
+        "suite": "progress-compiled-http",
+        "concurrentReaders": 12,
+        "ownerGate": true,
+        "loopbackGate": true,
+        "noBootstrap": true,
+        "noWrites": true,
+        "noPrivatePayloads": true,
+        "missingSchema503": true,
+        "requestCorrelation": true,
+        "productionAccess": false
+      }
+    ],
+    "qaUnit": [
+      {
+        "suite": "unit-summary",
+        "total": 100,
+        "passed": 100,
+        "failed": [],
+        "workers": 4,
+        "seconds": 98.29
+      }
     ]
   },
   "preserved": [
@@ -159,7 +309,7 @@
   "release": {
     "workCommonCode": "6121c41",
     "qaSource": null,
-    "deploymentStatus": "pending",
+    "deploymentStatus": "local acceptance complete; QA push pending",
     "productionSitesChanged": false,
     "schemaMigration": false,
     "modelPromotion": false

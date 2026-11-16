@@ -45,7 +45,7 @@ import {
   type Step,
 } from "../life.ts";
 import type { World } from "../world";
-import {canAffordMobility,chargeCompletedMobility,fareForAction} from "../city/mobility-economy.ts";
+import {canAffordMobility,bookCompletedMobility,fareForAction} from "../city/mobility-economy.ts";
 
 export const defaultCatalog = catalogSchema.parse(defaults);
 const DAY = 86400000;
@@ -187,13 +187,14 @@ export function planLivingTurn(
   const role = chooseRole(state, context);
   learning.an.energy = state.energy;
   learning.an.hunger = state.hunger;
-  const offered = chooseEveningLife(learning.an,"an",context,()=>chooseLiveAction(learning.an,"an",context,role.place));
   // This turn may settle a completed fare before selecting the next plan.
   const pendingFare = newExperiences.filter(e=>e.actorId==="an")
     .reduce((sum,e)=>sum+fareForAction(e.scenarioId),0);
   const anBudget = (world.people.find(p=>p.id==="an")?.money??0)-pendingFare;
-  const chosen = canAffordMobility(anBudget,offered.id)
-    ? offered : scenarios.find(s=>s.id==="rest-home")!;
+  // Mask infeasible arms before UCB scoring: an untried paid arm must not
+  // win forever and force a free actor into repeated rest-home settlements.
+  const chosen = chooseEveningLife(learning.an,"an",context,()=>chooseLiveAction(
+    learning.an,"an",context,role.place,s=>fareForAction(s.id)===0||canAffordMobility(anBudget,s.id)));
   // Model-independent baseline proposal, compared only inside a signed QA shadow context.
   // Neither this call nor the shadow scorer changes the actual chosen action.
   // A new QA arm must never be misreported as a 41-arm paired H6 baseline.
@@ -276,15 +277,7 @@ export function planLivingTurn(
   const next = structuredClone(world);
   // No charge for a proposal, visualization, cancelled trip or stale replay.
   // prepareLearning generates newExperiences only from plan-matched completions.
-  for(const evidence of newExperiences){
-    const payer=next.people.find(p=>p.id===evidence.actorId);
-    if(!payer)continue; // NPC wallets require a separate, approved migration.
-    const booked=chargeCompletedMobility(payer.money,next.mobilityPayments??[],{
-      id:evidence.id,actorId:evidence.actorId,
-      scenarioId:evidence.scenarioId,at:evidence.at
-    });
-    if(booked.charged){payer.money=booked.balance;next.mobilityPayments=booked.ledger;}
-  }
+  bookCompletedMobility(next,newExperiences);
   const liveSteps=(id:string,scenario:typeof chosen,target:string,title:string,kind:Step['kind'])=>{
     const steps=actionSteps(target,title,kind),duration=eveningDuration(scenario,id,context.hour);
     if(duration)steps[0].duration=duration;
@@ -343,11 +336,11 @@ export function planLivingTurn(
     const rolePlace = npc
       ? state.catalog.roles.find((r) => r.id === npc.roleId)?.place
       : id === "binh" ? "Thư viện" : id === "chi" ? "Vườn nhỏ" : person?.location;
-    const proposal = chooseEveningLife(agent,id,context,()=>chooseLiveAction(agent,id,context,rolePlace));
-    // Only named core residents currently have durable VND wallets.
-    const affordable=person?canAffordMobility(person.money,proposal.id)
-      :fareForAction(proposal.id)===0;
-    const baseline = affordable?proposal:scenarios.find(s=>s.id==="rest-home")!;
+    // Only named core residents have durable wallets; free actions remain
+    // feasible without a wallet, including mandatory need-recovery actions.
+    const affordable=(s:typeof scenarios[number])=>fareForAction(s.id)===0||
+      !!person&&canAffordMobility(person.money,s.id);
+    const baseline = chooseEveningLife(agent,id,context,()=>chooseLiveAction(agent,id,context,rolePlace,affordable));
     // Observe every eligible resident proposal in shadow mode, without altering baseline.
     if (scenarios.some(s => s.id === baseline.id))
       captureH6ShadowProposal({ agent, actorId: id, context, rolePlace: rolePlace ?? "",
@@ -359,8 +352,7 @@ export function planLivingTurn(
       residents: state.residents, rolePlace,
       roleKind: npc ? state.catalog.roles.find(r => r.id === npc.roleId)?.kind ?? "unknown" : "unknown",
       baseline });
-    const scenario = (person?canAffordMobility(person.money,h6Proposal.id):fareForAction(h6Proposal.id)===0)
-      ?h6Proposal:scenarios.find(s=>s.id==="rest-home")!;
+    const scenario = affordable(h6Proposal)?h6Proposal:baseline;
     const previous = person
       ? actorsAt(world, now).find((a) => a.id === id)
       : crowdAt(state, { ...world, livingTurn: turn }, now).find(

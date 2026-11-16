@@ -297,5 +297,8 @@
   ],
   [
     "scripts/test-render-visibility.mjs"
+  ],
+  [
+    "scripts/test-feasible-learning.mjs"
   ]
 ]
