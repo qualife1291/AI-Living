@@ -19,10 +19,12 @@ tree=ast.parse(sys.stdin.read())
 print(json.dumps(next(ast.literal_eval(node.value) for node in tree.body if isinstance(node,ast.Assign) and any(isinstance(t,ast.Name) and t.id=='required' for t in node.targets))))`],packager));
  for(const file of required){const path=join(project,file);mkdirSync(dirname(path),{recursive:true});writeFileSync(path,'Synthetic source fixture\n');}
  const script=join(project,'scripts/package-handoff.py');mkdirSync(dirname(script),{recursive:true});writeFileSync(script,packager);
+ const docsScript=join(project,'scripts/check-docs.py');writeFileSync(docsScript,readFileSync('scripts/check-docs.py'));
  const snapshot=()=>Object.fromEntries(readdirSync(project,{recursive:true,withFileTypes:true}).filter(e=>e.isFile()).map(e=>{
   const file=join(e.parentPath,e.name);return[file,readFileSync(file).toString('base64')];
  }));
  const before=snapshot();
+ python([docsScript]); // The same checker must work in a source ZIP without .git.
  for(let i=0;i<2;i++){
   const out=join(temp,`source-${i}.zip`);python([script,out]);
   assert.deepEqual(snapshot(),before,'Export must not create or modify any source file, including on repeat');
