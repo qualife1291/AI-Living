@@ -2,7 +2,7 @@
   "schema": "xom-learning-repair-v1",
   "date": "2026-11-16",
   "timezone": "Asia/Ho_Chi_Minh",
-  "scope": "Local isolated Miniflare/D1 reproduction and compiled HTTP; QA-only release pending. No production DB mutation or migration.",
+  "scope": "Isolated Miniflare/D1 reproduction and compiled HTTP plus existing QA-only release. No production Sites DB mutation or migration.",
   "observation": {
     "reference": "learning-observation-2026-11-16.json",
     "observedAt": "2026-11-16T07:35:43.673601+00:00",
@@ -119,6 +119,208 @@
         "productionAccess": false,
         "physicalCompletionProven": false
       }
+    ],
+    "qaCompiledLearning": [
+      {
+        "suite": "evening-api",
+        "pass": true,
+        "compiledWorker": true,
+        "isolatedD1": true,
+        "newActionsSettled": 9,
+        "subsequentSettlements": 1,
+        "onlyChangedPolicyRows": 1,
+        "unchangedPoliciesByteIdenticalAfterTick": true,
+        "retainedArchiveSequenceUnchanged": true,
+        "namespaceEvidence": true,
+        "retries": 3,
+        "duplicateSamples": 0,
+        "identityAndPetOwnersPreserved": true,
+        "productionAccess": false,
+        "physicalCompletionProven": false
+      }
+    ],
+    "qualityChecks": {
+      "typecheck": "pass",
+      "lint": "pass, one pre-existing unused trainReport warning",
+      "build": "pass",
+      "assetsCheck": "pass",
+      "qaSafetyAndSingleCron": "pass",
+      "browser": "not rerun locally: no renderer/UI/assets changes; existing QA CI still runs full browser acceptance",
+      "finalCodeSource": "54ca2eca6cd8838876142c7f5ce63f6e0a39399f"
+    },
+    "qaCompiledMobility": [
+      {
+        "suite": "mobility-learning-api",
+        "compiledWorker": true,
+        "isolatedD1": true,
+        "concurrentLearningRequests": 8,
+        "completedFares": 3,
+        "doubleCharges": 0,
+        "duplicateSamples": 0,
+        "unchangedPolicies": true,
+        "productionAccess": false
+      }
+    ],
+    "qaCompiledDiagnostics": [
+      {
+        "suite": "local-diagnostics-http",
+        "ownerReadGuard": true,
+        "ownerWriteGuard": true,
+        "streamByteLimit": true,
+        "schema": true,
+        "origin": true,
+        "ack": true,
+        "jsonlReadback": true,
+        "rateLimit": true,
+        "retention": true,
+        "diagnosticsReadOnly": true,
+        "pulsePersistence": true,
+        "pulseRetry": true,
+        "pulseConcurrentViewers": 12,
+        "pulseNoDuplicateAudit": true,
+        "pulsePause": true,
+        "healthSchemaBatch": true,
+        "bulkReplay": true,
+        "memoryBackfill": true,
+        "productionAccess": false
+      }
+    ],
+    "qaCompiledLegacy": [
+      {
+        "kind": "legacy-compiled-http-acceptance",
+        "isolated": true,
+        "productionAccess": false,
+        "results": [
+          {
+            "name": "world",
+            "exitCode": 0
+          },
+          {
+            "name": "living",
+            "exitCode": 0
+          },
+          {
+            "name": "learning",
+            "exitCode": 0
+          },
+          {
+            "name": "liveness",
+            "exitCode": 0
+          },
+          {
+            "name": "appearance",
+            "exitCode": 0
+          },
+          {
+            "name": "proposal",
+            "exitCode": 0
+          }
+        ]
+      }
+    ],
+    "qaCompiledProgress": [
+      {
+        "suite": "progress-private-aliases",
+        "results": [
+          {
+            "path": "/api/system/progress",
+            "status": 403
+          },
+          {
+            "path": "/api/system/progress/",
+            "status": 403
+          },
+          {
+            "path": "//api/system/progress",
+            "status": 404
+          },
+          {
+            "path": "/api/%73ystem/progress",
+            "status": 404
+          },
+          {
+            "path": "/api/system/%70rogress",
+            "status": 404
+          },
+          {
+            "path": "/api/system%2Fprogress",
+            "status": 404
+          }
+        ]
+      },
+      {
+        "suite": "progress-compiled-http",
+        "concurrentReaders": 12,
+        "ownerGate": true,
+        "loopbackGate": true,
+        "noBootstrap": true,
+        "noWrites": true,
+        "noPrivatePayloads": true,
+        "missingSchema503": true,
+        "requestCorrelation": true,
+        "productionAccess": false
+      }
+    ],
+    "qaUnit": [
+      {
+        "suite": "unit-summary",
+        "total": 100,
+        "passed": 100,
+        "failed": [],
+        "workers": 4,
+        "seconds": 98.29
+      }
+    ],
+    "qaCompiledChatAdmission": [
+      {
+        "suite": "chat-admission-compiled-http",
+        "concurrentUnique": 60,
+        "concurrentDuplicate": 16,
+        "workerIsolates": 2,
+        "sharedD1": true,
+        "limit": 30,
+        "windowMs": 60000,
+        "atomicRollbackCases": 6,
+        "originOwnerBodyPauseActorGuards": true,
+        "retryAfter": true,
+        "rejectedUuidReusable": true,
+        "historyPreserved": true,
+        "productionAccess": false
+      }
+    ],
+    "h6ScenarioIntegrity": [
+      {
+        "suite": "h6-scenario-validation",
+        "scenarios": 96,
+        "legacyLive": 41,
+        "added": 55,
+        "domains": {
+          "community": 9,
+          "learning": 9,
+          "technical": 7,
+          "ecology": 8,
+          "commerce": 6,
+          "mobility": 6,
+          "fitness": 5,
+          "service": 5
+        },
+        "decisions": 384,
+        "outcomes": 4361,
+        "selectedActions": 7,
+        "signature": 4091955440,
+        "passed": true
+      }
+    ],
+    "frozenLearningEvidence": [
+      {
+        "kind": "frozen-learning-evidence-acceptance-v1",
+        "artifacts": 76,
+        "comparisons": 42,
+        "holdout": {
+          "reserved12000to12019": "unobserved",
+          "plans": 0
+        }
+      }
     ]
   },
   "preserved": [
@@ -158,11 +360,25 @@
   },
   "release": {
     "workCommonCode": "6121c41",
-    "qaSource": null,
-    "deploymentStatus": "pending",
+    "qaSource": "54ca2eca6cd8838876142c7f5ce63f6e0a39399f",
+    "deploymentStatus": "Cloudflare App success for exact QA source; deploy gate success, browser CI running",
     "productionSitesChanged": false,
     "schemaMigration": false,
-    "modelPromotion": false
+    "modelPromotion": false,
+    "githubDeployRun": "https://github.com/qualife1291/AI-Living/actions/runs/43828611059",
+    "githubAcceptanceRun": "https://github.com/qualife1291/AI-Living/actions/runs/43828611090",
+    "platformReportedVersion": "5ae13157-c603-4810-86ad-0b503f98e356",
+    "cloudflareBuildId": "d4e97bb0-8cd4-47f5-81c9-d6fcba990372",
+    "cloudflareCheckRunId": 133168724201,
+    "cloudflareCompletedAt": "2026-11-16T08:07:41Z",
+    "cloudflareCheckConclusion": "success",
+    "deploymentGateConclusion": "success",
+    "nativeTrafficEnvD1CronReadback": false,
+    "authenticatedQaProgressAfterRelease": {
+      "httpStatus": 302,
+      "freshLearningDataRead": false
+    },
+    "githubActionUpload": "skipped: scoped Cloudflare token not configured; successful deploy gate is not a second deployment. Cloudflare App independently reported exact-source version."
   },
   "limitations": [
     "Current environment has no native Cloudflare/D1 or authenticated browser capability; QA progress GET returned302Access redirect.",

@@ -64,6 +64,8 @@ Framing metadata đạt vẫn phải mở ảnh cận cảnh: trường hợp m�
 
 [LEARNING](LEARNING.md) mô tả benchmark policy runtime; không phải model A/B hoặc bằng chứng ngữ nghĩa. Không tự chạy `test-world.mjs`/`verify-live.py` hay fixtures lên production.
 
+Kiểm persistence16/11: unit registry có policy write-budget105→0/2changed, mixed revision/CAS/rollback và archive retained200/sequence/backfill. `test-evening-api.mjs` kiểm9namespace + subsequent settlement chỉ đổi1posterior, tick không rewrite hoặc ăn archive seq. Trên nhánh **cloudflare-qa**, `test-feasible-learning.mjs` tái hiện60vòng thiếu tiền→rest và chạy planner/cohort thực; `test-mobility-learning-api.mjs` chạy sau build, kiểm8request học cạnh tranh/3fare và tick không trừ lại. Đây là fixture local, không là usage/quality gain live. Skill cấu trúc kiểm bằng `python3 scripts/validate-agent-skills.py`.
+
 ## Learning rollout
 
 `node scripts/test-learning-policy.mjs` kiểm golden trước refactor, outcome/purity/gates, oracle/drift, determinism/censoring/CI/seed alignment. `npm run simulate:learning` và `scripts/compare-learning.mjs` chạy offline; profile/limits/hash và kết quả ở [LEARNING](LEARNING.md). CLI từ chối ghi đè baseline khác và so sánh report sai checksum. Không đưa rollout/synthetic outcomes vào DB thật. H2 thêm `test-residual-policy.mjs`: ownership/completion/replay/checkpoint, raw models/skills không đổi, EMA shift, prior không tạo samples, cap không chặn emergency, cold-stress và H1 row giữ nguyên. Evidence H2 ghi full repeat byte/hash, prior checksum/profile/seed-overlap và immutable-output CLI guards; negative result không cho phép tự bật policy.
