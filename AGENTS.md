@@ -14,3 +14,5 @@
 - Phát hành theo runbook: backup/schema, exact source SHA, version/deployment/env revision/readback, cập nhật ledger. GitHub push không phải Sites deploy. Gỡ `XOM_OWNER_PRIVATE_ORIGIN` trước khi thay audience.
 
 **Giữ tài liệu gọn:** handoff chỉ context hiện tại/blocker; ROADMAP chỉ việc chưa xong; CHANGELOG chỉ mốc sản phẩm; hợp đồng/giới hạn ở tài liệu chủ đề. Không tạo MEMORY_SHORT/LONG, WIP/review theo phiên hoặc chép lại nhật ký kiểm thử. Dùng Git history, validation JSON và release ledger cho bằng chứng cũ. Xóa/gộp tài liệu phải sửa cả liên kết và danh sách đóng gói; giữ giấy phép, đặc tả gốc cần tra cứu và release audit.
+
+**Skill theo tác vụ:** SQL/persistence → [database-engineer](.agents/skills/database-engineer/SKILL.md); điều tra lỗi → [qa-debugger](.agents/skills/qa-debugger/SKILL.md); chỉ số/vận hành → [observability-sre](.agents/skills/observability-sre/SKILL.md). Chỉ đọc skill phù hợp; nguồn ZIP do chủ dự án cung cấp16/11/2026. Hướng dẫn dự án và quyền đã được chủ dự án cấp vẫn áp dụng.

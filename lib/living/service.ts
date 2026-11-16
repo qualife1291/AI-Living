@@ -11,7 +11,8 @@ import { proposalSchema, type LivingTurn, type LivingState } from "./schema";
 import { reviewRoleExpansion } from "./expansion";
 import { memoryInsert, outcomeMemory } from "../memory-records";
 import {hasDialogue,rememberDialogue} from "./dialogue-pool";
-import {preparePolicyWrite} from "./policy-store";
+import {preparePolicyWrite,policyWriteBaseline} from "./policy-store";
+import {archiveExperienceStatements} from './experience-store';
 import {reviewNarrative} from "./director";
 import {pendingPlanMatches} from "./plan-identity";
 import {rewardEvidenceSnapshot} from "./reward-evidence";
@@ -73,8 +74,7 @@ function archiveStatements(
 ) {
   const entries = [...new Map([...(state.experiences ?? []), ...extra].map((e) => [e.id, e])).values()];
   if (!entries.length) return [];
-  return [database().prepare("INSERT OR IGNORE INTO agent_experiences(id,actor_id,created_at,data) SELECT json_extract(value,'$.id'),json_extract(value,'$.actorId'),json_extract(value,'$.at'),json_extract(value,'$.data') FROM json_each(?) WHERE EXISTS(SELECT 1 FROM worlds WHERE id='home' AND revision=? AND json_extract(data,'$.living.learningCommit')=?)")
-    .bind(JSON.stringify(entries.map(e => ({id:e.id,actorId:e.actorId,at:e.at,data:JSON.stringify(e)}))),revision,nonce),
+  return [...archiveExperienceStatements(database(),entries,revision,nonce),
     ...memoryInsert(database(), extra.map(e => outcomeMemory(e, state.learning?.[e.actorId]?.memories.at(-1) ?? `Kết quả kế hoạch ${e.scenarioId}; phản hồi ${e.reward.toFixed(2)}.`)),revision,nonce)];
 }
 export async function auditTick(status: string, detail: Record<string, string | number | boolean>) {
@@ -106,6 +106,7 @@ async function tickLivingInternal(proposal?: unknown, basis?: { revision: number
   if (current.world.paused)
     return { status: 409, data: { error: "Xóm đang tạm nghỉ" } };
   const context = await realContext(now, contextCache(), fetchContext);
+  const baseline = policyWriteBaseline(current.world);
   const result = planLivingTurn(current.world, context, now);
   const parsed = proposalSchema.safeParse(proposal);
   // Models only write bounded narrative. They cannot invent live facts, change money,
@@ -222,7 +223,7 @@ async function tickLivingInternal(proposal?: unknown, basis?: { revision: number
   }
   const learningCommit = crypto.randomUUID();
   result.state.learningCommit = learningCommit;
-  const policies = await preparePolicyWrite(db, rewardEvidenceSnapshot(result.world), current.revision + 1, learningCommit);
+  const policies = await preparePolicyWrite(db, rewardEvidenceSnapshot(result.world), current.revision + 1, learningCommit, baseline);
   try {
     const results = await db.batch([
       db
@@ -312,6 +313,7 @@ export async function learnCompleted() {
     return { status: 409, data: { error: "Xóm đang tạm nghỉ" } };
   const state = current.world.living;
   if (!state) return { status: 200, data: { ok: true, updated: 0 } };
+  const baseline = policyWriteBaseline(current.world);
   const previous = Object.values(state.learning ?? {}).reduce(
     (s, a) => s + a.samples,
     0,
@@ -337,7 +339,7 @@ export async function learnCompleted() {
   }
   const nonce = crypto.randomUUID();
   state.learningCommit = nonce;
-  const policies = await preparePolicyWrite(database(), rewardEvidenceSnapshot(current.world), current.revision + 1, nonce);
+  const policies = await preparePolicyWrite(database(), rewardEvidenceSnapshot(current.world), current.revision + 1, nonce, baseline);
   const batch = await database().batch([
     database()
       .prepare(

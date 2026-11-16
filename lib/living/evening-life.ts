@@ -7,7 +7,7 @@ export const isEveningAction=(id:string)=>eveningActions.some(s=>s.id===id);
 export function runtimeTitle(s:Scenario){return s.id==='rest-home'?'Về nhà nằm ngủ trên giường':s.title;}
 export function runtimePlace(s:Scenario,id:string):Scenario['place']{return ['rest-home','sleep-night','watch-tv','home-snack'].includes(s.id)?homePlace(id):s.place;}
 export function eveningDuration(s:Scenario,id:string,hour:number){
-  if(s.id==='sleep-night')return hour>=7&&hour<20?3600:Math.round(Math.max(.5,((sleepSchedule(id).wake-hour+24)%24))*3600);
+  if(s.id==='sleep-night')return hour>=sleepSchedule(id).wake&&hour<20?3600:Math.round(Math.max(.5,((sleepSchedule(id).wake-hour+24)%24))*3600);
   return ({'night-cinema':5400,'watch-tv':2700,'evening-dinner':1800,'friends-supper':2400,'evening-tea':1500,'sidewalk-supper':1200,'late-promenade':1200,'home-snack':720} as Record<string,number>)[s.id];
 }
 /** Live-only chooser. Frozen41-arm studies remain unchanged; night actions

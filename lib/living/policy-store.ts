@@ -3,6 +3,7 @@ import { validArm, type LinearArm } from "./linucb.ts";
 
 type Policy = Record<string, LinearArm>;
 type PolicyRow = { actor_id: string; data: string; updated_revision: number };
+export type PolicyWriteBaseline = ReadonlyMap<string, { revision: number; data: string }>;
 export class PolicyRevisionConflict extends Error {}
 
 function parsePolicy(value: unknown): Policy {
@@ -16,6 +17,17 @@ function samePolicy(a: Policy, b: Policy) {
   return keys.length === Object.keys(b).length && keys.every(k =>
     b[k] && a[k].version === b[k].version && a[k].samples === b[k].samples &&
     a[k].b.every((v, i) => v === b[k].b[i]) && a[k].inverse.every((v, i) => v === b[k].inverse[i]));
+}
+/** Capture before planning/settlement mutates learning. Only a referenced,
+ * hydrated posterior can be reused; legacy inline models still migrate once. */
+export function policyWriteBaseline(world: World): PolicyWriteBaseline {
+  const baseline = new Map<string, { revision: number; data: string }>();
+  for (const [id, agent] of Object.entries(world.living?.learning ?? {})) {
+    if (agent.policyRevision === undefined) continue;
+    if (!agent.linear) throw new Error("Learning policy was not hydrated before writing");
+    baseline.set(id, { revision: agent.policyRevision, data: JSON.stringify(parsePolicy(agent.linear)) });
+  }
+  return baseline;
 }
 export async function policyTableExists(db: D1Database) {
   return !!await db.prepare("SELECT name FROM sqlite_master WHERE type='table' AND name='learning_policies'").first();
@@ -50,7 +62,7 @@ export async function hydratePolicies(db: D1Database, world: World, revision: nu
 }
 
 /** All rows and the stripped snapshot must be committed in the same CAS batch. */
-export async function preparePolicyWrite(db: D1Database, world: World, revision: number, nonce: string) {
+export async function preparePolicyWrite(db: D1Database, world: World, revision: number, nonce: string, baseline?: PolicyWriteBaseline) {
   const agents = world.living?.learning;
   if (!agents) return { data: JSON.stringify(world), statements: [] as D1PreparedStatement[] };
   if (!await policyTableExists(db)) {
@@ -63,8 +75,12 @@ export async function preparePolicyWrite(db: D1Database, world: World, revision:
       if (agent.policyRevision !== undefined) throw new Error("Learning policy was not hydrated before writing");
       continue;
     }
-    entries.push({ id, data: JSON.stringify(parsePolicy(agent.linear)) });
-    learning[id] = { ...agent, policyRevision: revision };
+    const data = JSON.stringify(parsePolicy(agent.linear)), previous = baseline?.get(id);
+    if (previous && (previous.revision !== agent.policyRevision || previous.revision >= revision))
+      throw new PolicyRevisionConflict("Learning policy baseline revision changed");
+    const unchanged = previous && previous.data === data;
+    if (!unchanged) entries.push({ id, data });
+    learning[id] = { ...agent, policyRevision: unchanged ? previous.revision : revision };
     delete learning[id].linear;
   }
   const statements: D1PreparedStatement[] = [], at = new Date().toISOString();

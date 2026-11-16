@@ -7,7 +7,7 @@ import {actorsAt} from '../lib/life.ts';
 import {initializeLiving,planLivingTurn,crowdAt} from '../lib/living/engine.ts';
 import {eveningActions,initializeAgent,scenarios,settleLearning,prepareLearning} from '../lib/living/learning.ts';
 import {chooseEveningLife,runtimePlace,eveningDuration} from '../lib/living/evening-life.ts';
-import {isSleepHour,plannedSleepMinutes} from '../lib/living/circadian.ts';
+import {isSleepHour,sleepSchedule,plannedSleepMinutes} from '../lib/living/circadian.ts';
 import {RiggedAvatar} from '../components/city/three/rigged-avatar.ts';
 import {SOFA_SEATS,lieOnBed,sitOnSeat} from '../components/city/three/home-poses.ts';
 import {loadLocalGLTF} from './load-local-gltf.mjs';
@@ -32,6 +32,13 @@ for(const action of eveningActions){
  const cancelled=initializeAgent('an');cancelled.pending={...agent.pending,completed:false};assert.equal(settleLearning(cancelled,180000,new Date(now).toISOString(),false),false);
 }
 const sleepy=chooseEveningLife({...initializeAgent('an'),energy:10},'an',context(21),()=>scenarios[0]);assert.equal(sleepy.id,'sleep-night');assert.equal(runtimePlace(sleepy,'binh'),'Phòng Bình');assert(eveningDuration(sleepy,'an',23)>3600);
+// A tired actor just after their own06:00–06:45 wake must nap, never
+// sleep almost24h because a global07h cutoff wraps to tomorrow's wake.
+for(let n=0;n<100;n++){
+ const id='dawn-'+n,wake=sleepSchedule(id).wake;
+ assert.equal(eveningDuration(sleepy,id,wake+.01),3600);
+ assert.equal(eveningDuration(sleepy,id,wake-.01),1800);
+}
 const walk={createdAt:new Date(now).toISOString(),simStartedAt:0,pausedMs:0,from:'Phòng An',steps:[{location:'Phòng An',kind:'rest',activity:'Nằm ngủ trên giường',duration:3600}]};
 assert.equal(plannedSleepMinutes(walk,0,60000),.5);assert.equal(plannedSleepMinutes({...walk,steps:[{...walk.steps[0],location:'Phố đi bộ',activity:'Đi dạo'}]},0,3600000),0);
 const resting=structuredClone(planned.living),awake=structuredClone(planned.living);

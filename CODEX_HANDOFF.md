@@ -1,9 +1,10 @@
-# Context tiếp nhận — 05/11/2026
+# Context tiếp nhận — 16/11/2026
 
 Đọc [AGENTS](AGENTS.md), file này rồi [ROADMAP](ROADMAP.md). ROADMAP là backlog duy nhất; mở tài liệu chủ đề khi cần contract. Lịch sử test, SHA và lỗi đã xử lý nằm trong validation/Git, không chép lại vào handoff.
 
 | Phần | Trạng thái cần giữ |
 |---|---|
+| WIP | Kiểm tra học/D1: đang test dirty-policy writer, archive dedup và nap sau wake; chưa phát hành bản sửa. Sau common tests: QA-only lọc hành động thiếu tiền trước UCB, giữ41/H6. Skills chọn3 từ ZIP16/11, không thay quy tắc dự án. |
 | Git | `work` có UI/UX bcd0652 và fixture935a8cc; QA f133a88 đã push. `main` vẫn402df57. QA hosting/auth/Cron/103day-action wrapper riêng, không merge ngược vào work/main. Fetch explicit refs trước push. |
 | Live và học | lifeScheduleVersion1 nhận ở turn unpaused:9night action, bedtime22:45–00:45/wake06–07h theo ID;12–90phút đi chơi/60phút nap/đêm đến wake. Sau22h người còn ăn uống/đi dạo vẫn trò chuyện, ngủ/nhà riêng/rạp phim yên lặng. Lịch dùng giờ mô phỏng/daylight, provider context lưu nguyên; chỉ hồi thể lực theo đoạn plan ngủ sau travel+30s. QA103day+9night=112runtime;41legacy/H6 và96shadow không đổi. Own LinUCB9namespace lưu/settle/CAS đã test, chưa quality gain hoặc H6promote. [Learning](docs/LEARNING.md#đời-sống-tối-và-giấc-ngủ). |
 | Ground/P2P | GND1–3 có local journal/replay/receipt; H3b/H5a chỉ offline. H5b1 thêm `peer-offer-store.ts`: durable pre-publication journal/CAS và verifier đọc receipt thật từ D1; chưa app/API/pulse import, inbox hoặc P2P live. Migration0012 chỉ fixture, source24table không là schema live. [Contract](docs/LEARNING.md#h5b1--journal-và-đối-chiếu-receipt-bền-vững). |
