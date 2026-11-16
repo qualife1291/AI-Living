@@ -1,3 +1,4 @@
+import { readBoundedJson } from "@/lib/bounded-json";
 import { eventSchema as schema } from '@/lib/event-schema';
 import { applyEventToWorld } from '@/lib/apply-event';
 import { readWorld, database, json, validOrigin } from '@/lib/store';
@@ -13,24 +14,9 @@ export async function POST(req: Request) {
     return json({ error: 'Dữ liệu quá lớn' }, 413);
   }
 
-  // Fixes L4: Always check true UTF-8 byte length of the body text, even on chunked transfers
-  let rawBody = '';
-  try {
-    rawBody = await req.text();
-  } catch {
-    return json({ error: 'Không đọc được dữ liệu đầu vào' }, 400);
-  }
-  if (new TextEncoder().encode(rawBody).length > MAX_BODY_BYTES) {
-    return json({ error: 'Dữ liệu quá lớn' }, 413);
-  }
-
-  let parsedJson: unknown;
-  try {
-    parsedJson = JSON.parse(rawBody);
-  } catch {
-    return json({ error: 'JSON không hợp lệ' }, 400);
-  }
-
+  const decoded = await readBoundedJson(req, 20000);
+  if (!decoded.ok) return json({ error: decoded.error }, decoded.status);
+  const parsedJson = decoded.value;
   const parsed = schema.safeParse(parsedJson);
   if (!parsed.success) {
     return json(

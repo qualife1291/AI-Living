@@ -1,3 +1,4 @@
+import { readBoundedJson } from "@/lib/bounded-json";
 import { z } from "zod";
 import { appearanceSchema, defaultAppearance } from "@/lib/city/appearance";
 import { readWorld, database, json, validOrigin } from "@/lib/store";
@@ -26,15 +27,9 @@ export async function GET(req: Request) {
 }
 export async function POST(req: Request) {
   if (!validOrigin(req)) return json({ error: "Origin không hợp lệ" }, 403);
-  const raw = await req.text();
-  if (new TextEncoder().encode(raw).length > 4000)
-    return json({ error: "Dữ liệu quá lớn" }, 413);
-  let body: unknown;
-  try {
-    body = JSON.parse(raw);
-  } catch {
-    return json({ error: "JSON không hợp lệ" }, 400);
-  }
+  const decoded = await readBoundedJson(req, 4000);
+  if (!decoded.ok) return json({ error: decoded.error }, decoded.status);
+  const body = decoded.value;
   const parsed = schema.safeParse(body);
   if (!parsed.success) return json({ error: "Tạo hình không hợp lệ" }, 400);
   const current = await readWorld();

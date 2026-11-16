@@ -1,3 +1,4 @@
+import { readBoundedJson } from "@/lib/bounded-json";
 import { realContext, observedWeather } from "@/lib/living/realtime";
 import { contextCache, fetchContext } from "@/lib/living/service";
 import { initializeLiving } from "@/lib/living/engine";
@@ -64,13 +65,9 @@ export async function POST(req: Request) {
     return json({ error: "Origin không hợp lệ" }, 403);
   }
 
-  let raw: unknown;
-  try {
-    raw = await req.json();
-  } catch {
-    return json({ error: "JSON không hợp lệ" }, 400);
-  }
-
+  const decoded = await readBoundedJson(req, 2000);
+  if (!decoded.ok) return json({ error: decoded.error }, decoded.status);
+  const raw = decoded.value;
   const parsed = controlsSchema.safeParse(raw);
   if (!parsed.success) return json({ error: "Điều khiển không hợp lệ" }, 400);
   const body = parsed.data;

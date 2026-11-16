@@ -1,11 +1,13 @@
+import { readBoundedJson } from "@/lib/bounded-json";
 import { z } from 'zod';
 import { database, json, validOrigin } from '@/lib/store';
 const schema=z.object({session:z.string().uuid()}).strict();
 export async function GET(){const row=await database().prepare("SELECT total FROM site_metrics WHERE id='views'").first<{total:number}>();return json({views:row?.total??0,definition:'Lượt mở theo phiên 30 phút, không phải số người duy nhất.'});}
 export async function POST(req:Request){
  if(!validOrigin(req))return json({error:'Origin không hợp lệ'},403);
- const raw=await req.text();if(raw.length>200)return json({error:'Dữ liệu quá lớn'},413);
- let body:unknown;try{body=JSON.parse(raw);}catch{return json({error:'JSON không hợp lệ'},400);}
+  const decoded = await readBoundedJson(req, 200);
+  if (!decoded.ok) return json({ error: decoded.error }, decoded.status);
+  const body = decoded.value;
  const parsed=schema.safeParse(body);if(!parsed.success)return json({error:'Phiên không hợp lệ'},400);
  const db=database(),nonce=crypto.randomUUID(),now=new Date().toISOString();
  await db.batch([

@@ -334,3 +334,6 @@ footer span:first-child {
   .live-dock{bottom:max(28px,env(safe-area-inset-bottom))}
   .map-credit{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 }
+
+.live-alert{max-width:min(640px,calc(100% - 24px));width:max-content;align-items:center;gap:12px}
+.live-alert button{flex:0 0 44px;min-width:44px;min-height:44px;display:grid;place-items:center;border-radius:10px;background:#fffdf5}

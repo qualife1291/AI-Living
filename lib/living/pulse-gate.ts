@@ -1,7 +1,7 @@
 // Shared D1 admission, independent of Worker isolates or the number of open tabs.
 // This cache entry is disposable coordination data, never simulation history.
 export const PULSE_GATE_KEY = 'internal:living-pulse:v1';
-export const PULSE_COOLDOWN_MS = 9_000;
+export const PULSE_COOLDOWN_MS = 55_000;
 export const PULSE_LEASE_MS = 30_000;
 
 type PulseResult = { status: number; data: Record<string, unknown> };
@@ -47,8 +47,8 @@ export async function runCoalescedPulse(
     succeeded = result.status === 200;
     return result;
   } finally {
-    // Cooldown is relative to admission, so a 10s client timer isn't slowed to
-    // every other tick. Failure is retryable immediately. An expired worker
+    // Cooldown is relative to admission; the60s viewer has5s jitter headroom.
+    // Shared ground still advances outside this durable learning/tick gate. Failure is retryable immediately. An expired worker
     // cannot release/shorten a newer worker's lease (nonce ownership).
     await db.prepare(`UPDATE context_cache SET expires_at=?
       WHERE id=? AND json_extract(data,'$.nonce')=?`)

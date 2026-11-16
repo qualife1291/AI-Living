@@ -55,7 +55,7 @@ export function contextCache(): ContextCache {
 export async function livingView() {
   const current = await readWorld({includePolicies:true});
   const now = Date.parse(current.serverNow);
-  const context = await realContext(now, contextCache(), fetchContext);
+  const context = await realContext(now, contextCache(), fetchContext, true);
   const rows = await database()
     .prepare("SELECT data FROM living_turns ORDER BY created_at DESC LIMIT 24")
     .all<{ data: string }>();
@@ -87,7 +87,7 @@ export async function tickLiving(proposal?: unknown, basis?: { revision: number;
   const started = performance.now();
   try {
     const result = await tickLivingInternal(proposal, basis);
-    await auditTick(result.status >= 400 ? "rejected" : "request_completed", { status: result.status, duplicate: "duplicate" in result.data && result.data.duplicate === true, durationMs: Math.round(performance.now()-started), reason: "error" in result.data ? String(result.data.error).slice(0,160) : "ok" });
+    if(!(result.status===200&&result.data.duplicate===true)) await auditTick(result.status >= 400 ? "rejected" : "request_completed", { status: result.status, duplicate: "duplicate" in result.data && result.data.duplicate === true, durationMs: Math.round(performance.now()-started), reason: "error" in result.data ? String(result.data.error).slice(0,160) : "ok" });
     return result;
   } catch (error) { await auditTick("request_failed", { durationMs: Math.round(performance.now()-started), reason: error instanceof Error && error.name === "TimeoutError" ? "timeout" : "internal_error" }); throw error; }
 }

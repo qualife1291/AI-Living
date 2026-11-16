@@ -647,7 +647,7 @@ export function createCity(
     groundAnimals: ReturnType<typeof animalsAt> = [],
     lastSelected = "";
   let socialPoses = new Map<string, SocialPose>(), exchanges: Exchange[] = [];
-  const walkDirector = new WalkDirector(), trafficDirector = new TrafficDirector(), socialDirector = new SocialDirector();
+  const walkDirector = new WalkDirector({ recoverCongestion: true }), trafficDirector = new TrafficDirector(), socialDirector = new SocialDirector();
   let cars: TrafficVehicle[] = [];
   let lastTime = Date.parse(input().world.born);
   let lastStatus = 0;

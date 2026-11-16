@@ -2,9 +2,6 @@ import { learnCompleted } from "@/lib/living/service";
 import { readWorld, json, validOrigin, database } from "@/lib/store";
 export const dynamic = "force-dynamic";
 export async function GET(req: Request) {
-  const { world } = await readWorld({includePolicies:true});
-  const models = world.living?.learning ?? {},
-    experiences = world.living?.experiences ?? [];
   const url = new URL(req.url);
   if (url.searchParams.get("format") === "jsonl") {
     const after = Number(url.searchParams.get("after") ?? 0),
@@ -37,6 +34,8 @@ export async function GET(req: Request) {
       },
     );
   }
+  const { world } = await readWorld({includePolicies:true});
+  const models = world.living?.learning ?? {}, experiences = world.living?.experiences ?? [];
   return json({
     models,
     animalModels: world.living?.animalLearning ?? {},

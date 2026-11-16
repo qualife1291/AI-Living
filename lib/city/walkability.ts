@@ -56,6 +56,10 @@ function reserveFree(point: Point, occupied: { position: Point; radius: number }
  * Every step sweeps static footprints and every other moving actor's disc.
  * Right-side steering and bounded side-pass replans resolve head-on encounters. */
 export class WalkDirector {
+  private readonly recoverCongestion: boolean;
+  constructor({ recoverCongestion = false }: { recoverCongestion?: boolean } = {}) {
+    this.recoverCongestion = recoverCongestion;
+  }
   private tag = new TagDirector();
   private pets = new PetWalkDirector();
   private walkers = new Map<string, Walker>();
@@ -163,8 +167,12 @@ export class WalkDirector {
             const spacing = s.radius + this.walkers.get(other.id)!.radius + .35;
             if (separation(relativePosition, relativeStep) < spacing - 1e-7) { safe = false; break; }
             const otherVelocity: Point = ends.has(other.id) ? [(otherEnd[0] - otherStart[0]) / dt, (otherEnd[1] - otherStart[1]) / dt] : this.walkers.get(other.id)!.velocity;
-            const predicted = separation(relativePosition, delta(velocity, otherVelocity), .8);
-            if (predicted < spacing + .1) { safe = false; break; }
+            const horizon=this.recoverCongestion?Math.min(.8,length/Math.max(s.speed,1e-9)):.8;
+            const predicted = separation(relativePosition, delta(velocity, otherVelocity), horizon);
+            // Do not trap an already-safe pair inside the prediction padding:
+            // separating moves must be allowed to regain that extra margin.
+            const margin=this.recoverCongestion?Math.min(spacing+.1,Math.hypot(...relativePosition)-1e-7):spacing+.1;
+            if (predicted < margin) { safe = false; break; }
             closest = Math.min(closest, predicted);
           }
           if (!safe) continue;
@@ -179,12 +187,35 @@ export class WalkDirector {
         // stopping on the same straight route. Replanning never changes position.
         if (s.blocked > .8 && s.replanIn <= 0 && neighbors.length) {
           const blocker = neighbors.map(({ actor }) => starts.get(actor.id)!).sort((p, q) => distance(start, p) - distance(start, q))[0];
-          for (const sign of [1, -1]) {
-            const waypoint: Point = [blocker[0] + direction[1] * (PERSONAL_SPACE + 5) * sign, blocker[1] - direction[0] * (PERSONAL_SPACE + 5) * sign];
-            if (!bodyWalkable(waypoint, s.radius) || !bodySegmentWalkable(s.position, waypoint, s.radius)) continue;
-            const tail = safeWalkPath(waypoint, s.goal, s.radius);
-            if (distance(tail.at(-1)!, s.goal) > .1) continue;
-            s.path = [[...s.position], waypoint, ...tail.slice(1)]; s.next = 1; s.blocked = 0; s.replanIn = 1.2; break;
+          if(this.recoverCongestion){
+            s.replanIn=1.2;
+            const occupied=records.filter(r=>r.actor.id!==a.id).map(r=>this.walkers.get(r.actor.id)!);
+            const nearby=occupied.slice().sort((x,y)=>distance(start,x.position)-distance(start,y.position)).slice(0,12);
+            const candidates:Point[]=[];
+            // Midpoints expose the person-wide gaps between arrived neighbors.
+            for(let i=0;i<nearby.length;i++)for(let j=i+1;j<nearby.length;j++)
+              candidates.push([(nearby[i].position[0]+nearby[j].position[0])/2,(nearby[i].position[1]+nearby[j].position[1])/2]);
+            // Retreat is necessary when a dense ring leaves no forward angle.
+            for(const width of [20,40,60])for(const angle of [Math.PI/2,-Math.PI/2,Math.PI*.75,-Math.PI*.75,Math.PI]){
+              const c=Math.cos(angle),sin=Math.sin(angle);
+              candidates.push([start[0]+(direction[0]*c+direction[1]*sin)*width,start[1]+(-direction[0]*sin+direction[1]*c)*width]);
+            }
+            const reachable=candidates.filter(p=>distance(start,p)>8&&bodySegmentWalkable(start,p,s.radius)&&
+              occupied.every(other=>separation(delta(start,other.position),delta(p,start))>=s.radius+other.radius+.35));
+            reachable.sort((p,q)=>(distance(start,p)+distance(p,s.goal)*1.1)-(distance(start,q)+distance(q,s.goal)*1.1));
+            for(const waypoint of reachable){
+              const tail=safeWalkPath(waypoint,s.goal,s.radius);
+              if(distance(tail.at(-1)!,s.goal)>.1)continue;
+              s.path=[[...s.position],waypoint,...tail.slice(1)];s.next=1;break;
+            }
+          }else{
+            for (const sign of [1, -1]) {
+              const waypoint: Point = [blocker[0] + direction[1] * (PERSONAL_SPACE + 5) * sign, blocker[1] - direction[0] * (PERSONAL_SPACE + 5) * sign];
+              if (!bodyWalkable(waypoint, s.radius) || !bodySegmentWalkable(s.position, waypoint, s.radius)) continue;
+              const tail = safeWalkPath(waypoint, s.goal, s.radius);
+              if (distance(tail.at(-1)!, s.goal) > .1) continue;
+              s.path = [[...s.position], waypoint, ...tail.slice(1)]; s.next = 1; s.blocked = 0; s.replanIn = 1.2; break;
+            }
           }
         }
       } else if (dt > 0) { s.velocity = [0, 0]; s.speed = 0; }

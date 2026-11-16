@@ -2,9 +2,9 @@
 
 Đọc [AGENTS](AGENTS.md) → file này → [ROADMAP](ROADMAP.md). Chỉ mở tài liệu đúng chủ đề từ [README](README.md); ROADMAP là backlog duy nhất.
 
-## Đợt cleanup gần nhất
+## WIP — giảm rows_written và gỡ tụ tập
 
-Bộ43skill đã review/chọn6. Đã bỏ67file starter không dùng/21dependency trực tiếp, siết unused/type/lint checks, rút gọn TESTING và sửa export không sinh manifest trong source. Giữ app/renderer/logic học/schema/dữ liệu thật. [Evidence](docs/validation/repository-cleanup-2026-11-16.json).
+Ưu tiên chủ dự án: hôm qua Cloudflare cảnh báo80%, nhân vật lag/tụ nhóm. Đang test gate55s/browser60s (shared ground1s giữ), bỏ audit duplicate tick, telemetry sample60s/critical15s/backoff, JSONL không hydrate và7route bounded streaming. Cost fixture coordination721→121rows/giờ; telemetry41→11POST/10phút. Viewer-only congestion recovery đang kiểm72người; **chưa nghiệm thu/phát hành**. GND authority mặc định giữ algorithm cũ, không migrate/reset/model promote. API/body/queue tests đạt, còn build/full/browser cùng source và bổ sung evidence.
 
 ## Trạng thái nền
 
