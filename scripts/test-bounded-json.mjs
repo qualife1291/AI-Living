@@ -35,3 +35,6 @@ const broken=new ReadableStream({pull(c){c.error(Error('private network detail')
 assert.deepEqual(await readBoundedJson(new Request('http://localhost',{method:'POST',body:broken,duplex:'half'}),2000),{ok:false,status:400,error:'JSON không hợp lệ'});
 assert.equal(broken.locked,false);
 console.log(JSON.stringify({suite:'bounded-json',limitBytes:2000,splitUtf8:true,earlyCancel:true,untrustedLength:true,streamError:true,readerReleased:true,productionAccess:false}));
+
+for(const req of [new Request('http://localhost',{method:'POST'}),request([]).req])assert.deepEqual(await readBoundedJson(req,2000,{allowEmpty:true}),{ok:true,value:{}});
+assert.equal((await readBoundedJson(request([encode(' ')]).req,2000,{allowEmpty:true})).status,400,'Whitespace is not an empty tick body');

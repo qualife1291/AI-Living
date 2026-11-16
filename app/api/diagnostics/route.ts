@@ -1,12 +1,12 @@
+import { readBoundedJson } from "@/lib/bounded-json";
 import { database, json, validOrigin } from "@/lib/store";
 const MAX_BYTES = 16384;
 export async function POST(req: Request) {
   if (!validOrigin(req)) return json({ error: "Origin không hợp lệ" }, 403);
-  const reader = req.body?.getReader(); if (!reader) return json({ error: "Thiếu dữ liệu" }, 400);
-  let bytes = 0; const chunks: Uint8Array[] = [];
-  while (true) { const { done, value } = await reader.read(); if (done) break; bytes += value.byteLength; if (bytes > MAX_BYTES) { await reader.cancel(); return json({ error: "Dữ liệu quá lớn" }, 413); } chunks.push(value); }
-  const raw = new Uint8Array(bytes); let at = 0; for (const c of chunks) { raw.set(c, at); at += c.length; }
-  let logs: unknown; try { logs = JSON.parse(new TextDecoder().decode(raw)).logs; } catch { return json({ error: "JSON không hợp lệ" }, 400); }
+  const decoded = await readBoundedJson(req, MAX_BYTES);
+  if (!decoded.ok) return json({ error: decoded.error }, decoded.status);
+  const logs = decoded.value && typeof decoded.value === 'object'
+    ? (decoded.value as { logs?: unknown }).logs : undefined;
   if (!Array.isArray(logs) || !logs.length || logs.length > 32) return json({ error: "Tối đa 32 log" }, 400);
   const allowed = new Set(["frame_sample", "frame_slow", "longtask", "route_slow", "route_miss", "actor_stuck", "position_nan", "footprint_overlap", "webgl_lost", "render_error"]);
   for (const row of logs) if (!row || typeof row !== "object" || !allowed.has(row.kind) || !Number.isFinite(row.at) || !row.data || typeof row.data !== "object" || Array.isArray(row.data) || Object.keys(row.data).length > 8 || Object.entries(row.data).some(([k,v]) => k.length > 32 || !["string", "number", "boolean"].includes(typeof v) || (typeof v === "string" && v.length > 100) || (typeof v === "number" && !Number.isFinite(v)))) return json({ error: "Log không hợp lệ" }, 400);

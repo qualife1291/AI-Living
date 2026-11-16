@@ -1,9 +1,9 @@
 /** Read at most maxBytes into memory, including when Content-Length is absent or false. */
-export async function readBoundedJson(req: Request, maxBytes: number): Promise<
+export async function readBoundedJson(req: Request, maxBytes: number, options: { allowEmpty?: boolean } = {}): Promise<
   { ok: true; value: unknown } | { ok: false; status: 400 | 413; error: string }
 > {
   const reader = req.body?.getReader();
-  if (!reader) return { ok: false, status: 400, error: 'JSON không hợp lệ' };
+  if (!reader) return options.allowEmpty ? { ok: true, value: {} } : { ok: false, status: 400, error: 'JSON không hợp lệ' };
   try {
     const chunks: Uint8Array[] = [];
     let bytes = 0;
@@ -18,6 +18,7 @@ export async function readBoundedJson(req: Request, maxBytes: number): Promise<
       }
       chunks.push(value);
     }
+    if (bytes === 0 && options.allowEmpty) return { ok: true, value: {} };
     const raw = new Uint8Array(bytes);
     let offset = 0;
     for (const chunk of chunks) { raw.set(chunk, offset); offset += chunk.byteLength; }

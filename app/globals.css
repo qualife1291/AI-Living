@@ -353,3 +353,5 @@ footer span:first-child {
 
 /* Preserve the QA touch guidance screen-reader footprint after desktop styling. */
 @media(max-width:700px){.city-three .map-credit{padding:0}}
+.live-alert{max-width:min(640px,calc(100% - 24px));width:max-content;align-items:center;gap:12px}
+.live-alert button{flex:0 0 44px;min-width:44px;min-height:44px;display:grid;place-items:center;border-radius:10px;background:#fffdf5}

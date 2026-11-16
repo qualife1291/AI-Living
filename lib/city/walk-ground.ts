@@ -22,6 +22,7 @@ export const walkable = (p: readonly number[]) => bodyWalkable(p, WALK_RADIUS);
 export const segmentWalkable = (a: readonly number[], b: readonly number[]) => bodySegmentWalkable(a, b, WALK_RADIUS);
 export function nearestWalkable(point: Point): Point { return nearestBodyPoint(point, WALK_RADIUS); }
 export function nearestBodyPoint(point: Point, radius: number): Point {
+  if (bodyWalkable(point, radius + .1)) return [...point];
   let p: Point = [...point];
   for (let pass = 0; pass < 12; pass++) {
     const hit = groundObstacles.find(r => containsPoint(r, p, radius + .1));

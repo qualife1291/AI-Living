@@ -1,0 +1,288 @@
+{
+  "schema": "xom-system-budget-review-v1",
+  "date": "2026-11-16",
+  "status": "Local code/API gates passed; desktop browser passed, mobile and QA release pending",
+  "userObservation": "Cloudflare warning80% yesterday; current native rows_written unavailable",
+  "source": "ba0951b",
+  "preserved": [
+    "world IDs/birth/history/memories/policy",
+    "default authoritative ground",
+    "H6/scorer/canary OFF",
+    "one existing five-minute QA Cron",
+    "existing auth and source assets"
+  ],
+  "productionDatabaseAccess": false,
+  "environment": {
+    "node": "24.19.0",
+    "database": "Miniflare/workerd isolated D1, no production access",
+    "navigation": "Node synthetic72 actors,15Hz180seconds; no GPU claim",
+    "browser": "Chromium/SwiftShader compiled loopback, intercepted synthetic API"
+  },
+  "measurements": {
+    "write": {
+      "before": {
+        "suite": "pulse-write-budget",
+        "windowSeconds": 3600,
+        "requests": 360,
+        "pipelines": 360,
+        "writeStatements": 720,
+        "rowsWritten": 721,
+        "scope": "coordination-only; excludes earned samples/world commits/index layout in production",
+        "worldAndSamplesPreserved": true,
+        "productionAccess": false
+      },
+      "after": {
+        "suite": "pulse-write-budget",
+        "windowSeconds": 3600,
+        "requests": 360,
+        "pipelines": 60,
+        "writeStatements": 120,
+        "rowsWritten": 121,
+        "scope": "coordination-only; excludes earned samples/world commits/index layout in production",
+        "worldAndSamplesPreserved": true,
+        "productionAccess": false
+      }
+    },
+    "nav": {
+      "before": {
+        "checksPerRun": 8000,
+        "runs": 7,
+        "warmup": 1,
+        "medianMs": 32.50083600000005,
+        "p95Ms": 65.19841700000006,
+        "sha256": "da647905bd9417411fa1d46d5d82f48c7e344312991fb61235abc191a1dda696"
+      },
+      "after": {
+        "checksPerRun": 8000,
+        "runs": 7,
+        "warmup": 1,
+        "medianMs": 3.0295209999999884,
+        "p95Ms": 3.681510000000003,
+        "sha256": "da647905bd9417411fa1d46d5d82f48c7e344312991fb61235abc191a1dda696"
+      }
+    },
+    "crowd": {
+      "before": {
+        "actors": 72,
+        "seconds": 180,
+        "frameMedianMs": 1.336728000000221,
+        "frameP95Ms": 3.774819999999977,
+        "unfinished": 30,
+        "stalledFor60Seconds": 24,
+        "noPath": 0,
+        "stalledIds": [
+          "walker-001",
+          "walker-004",
+          "walker-005",
+          "walker-007",
+          "walker-009",
+          "walker-010",
+          "walker-011",
+          "walker-012",
+          "walker-013",
+          "walker-014",
+          "walker-018",
+          "walker-022",
+          "walker-024",
+          "walker-026",
+          "walker-028",
+          "walker-036",
+          "walker-037",
+          "walker-039",
+          "walker-041",
+          "walker-044",
+          "walker-048",
+          "walker-057",
+          "walker-064",
+          "walker-066"
+        ]
+      },
+      "after": {
+        "suite": "crowd-recovery",
+        "actors": 72,
+        "seconds": 180,
+        "unfinished": 0,
+        "stalledFor60Seconds": 0,
+        "frames": 2701,
+        "sweptCollisionChecks": true,
+        "noTeleport": true,
+        "pause": true,
+        "worldUnchanged": true,
+        "authorityDefaultUnchanged": true,
+        "frameMedianMs": 0.5417640000000574,
+        "frameP95Ms": 5.9367469999999685,
+        "scope": "Node synthetic navigation, not GPU or live QA"
+      }
+    }
+  },
+  "checks": {
+    "workUnit": {
+      "total": 94,
+      "passed": 94
+    },
+    "type": "pass",
+    "lint": "pass, zero warnings",
+    "build": "pass",
+    "assets": "pass",
+    "skills": "9 validated",
+    "docs": "pass",
+    "compiledApi": {
+      "resources": [
+        {
+          "suite": "api-resource-budgets",
+          "compiledWorker": true,
+          "isolatedD1": true,
+          "archiveReaders": 12,
+          "invalidCursorWithoutDatabase": true,
+          "archiveRequiresWorldOrPolicy": false,
+          "streamLimitedRoutes": 7,
+          "overflowReads": 1,
+          "nonCooperativeCancel": true,
+          "invalidUtf8": true,
+          "ownerBeforeBody": true,
+          "noWrites": true,
+          "productionAccess": false
+        }
+      ],
+      "churn": [
+        {
+          "suite": "write-churn-api",
+          "compiledWorker": true,
+          "isolatedD1": true,
+          "duplicateTicks": 12,
+          "duplicateAuditRows": 0,
+          "rejectedAuditPreserved": true,
+          "telemetryLogs": 121,
+          "telemetryRowsBefore": 41,
+          "telemetryRowsAfter": 11,
+          "worldAndLearningPreserved": true,
+          "productionAccess": false
+        }
+      ],
+      "diagnostics": [
+        {
+          "suite": "local-diagnostics-http",
+          "ownerReadGuard": true,
+          "ownerWriteGuard": true,
+          "streamByteLimit": true,
+          "schema": true,
+          "origin": true,
+          "ack": true,
+          "jsonlReadback": true,
+          "rateLimit": true,
+          "retention": true,
+          "diagnosticsReadOnly": true,
+          "pulsePersistence": true,
+          "pulseRetry": true,
+          "pulseConcurrentViewers": 12,
+          "pulseNoDuplicateAudit": true,
+          "pulsePause": true,
+          "healthSchemaBatch": true,
+          "bulkReplay": true,
+          "memoryBackfill": true,
+          "productionAccess": false
+        }
+      ],
+      "legacy": [
+        {
+          "kind": "legacy-compiled-http-acceptance",
+          "isolated": true,
+          "productionAccess": false,
+          "results": [
+            {
+              "name": "world",
+              "exitCode": 0
+            },
+            {
+              "name": "living",
+              "exitCode": 0
+            },
+            {
+              "name": "learning",
+              "exitCode": 0
+            },
+            {
+              "name": "liveness",
+              "exitCode": 0
+            },
+            {
+              "name": "appearance",
+              "exitCode": 0
+            },
+            {
+              "name": "proposal",
+              "exitCode": 0
+            }
+          ]
+        }
+      ],
+      "evening": [
+        {
+          "suite": "evening-api",
+          "pass": true,
+          "compiledWorker": true,
+          "isolatedD1": true,
+          "newActionsSettled": 9,
+          "subsequentSettlements": 1,
+          "onlyChangedPolicyRows": 1,
+          "unchangedPoliciesByteIdenticalAfterTick": true,
+          "retainedArchiveSequenceUnchanged": true,
+          "namespaceEvidence": true,
+          "retries": 3,
+          "duplicateSamples": 0,
+          "identityAndPetOwnersPreserved": true,
+          "productionAccess": false,
+          "physicalCompletionProven": false
+        }
+      ],
+      "progress": [
+        {
+          "suite": "progress-private-aliases",
+          "results": [
+            {
+              "path": "/api/system/progress",
+              "status": 403
+            },
+            {
+              "path": "/api/system/progress/",
+              "status": 403
+            },
+            {
+              "path": "//api/system/progress",
+              "status": 404
+            },
+            {
+              "path": "/api/%73ystem/progress",
+              "status": 404
+            },
+            {
+              "path": "/api/system/%70rogress",
+              "status": 404
+            },
+            {
+              "path": "/api/system%2Fprogress",
+              "status": 404
+            }
+          ]
+        },
+        {
+          "suite": "progress-compiled-http",
+          "concurrentReaders": 12,
+          "ownerGate": true,
+          "loopbackGate": true,
+          "noBootstrap": true,
+          "noWrites": true,
+          "noPrivatePayloads": true,
+          "missingSchema503": true,
+          "requestCorrelation": true,
+          "productionAccess": false
+        }
+      ]
+    }
+  },
+  "limits": [
+    "No authenticated remote traffic/env/D1/Cron/quota/CPU/GPU/soak readback",
+    "No migration, reset, new scheduler, dependency or model promotion",
+    "Local navigation CPU costs do not measure entire frame rendering or live FPS"
+  ]
+}

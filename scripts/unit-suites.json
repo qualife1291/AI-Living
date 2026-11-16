@@ -303,5 +303,17 @@
   ],
   [
     "scripts/test-repository-hygiene.mjs"
+  ],
+  [
+    "scripts/test-refresh-queue.mjs"
+  ],
+  [
+    "scripts/test-telemetry-budget.mjs"
+  ],
+  [
+    "scripts/test-pulse-write-budget.mjs"
+  ],
+  [
+    "scripts/test-crowd-recovery.mjs"
   ]
 ]

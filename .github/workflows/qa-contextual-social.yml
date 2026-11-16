@@ -68,6 +68,8 @@ jobs:
         run: |
           npm run build
           node scripts/test-evening-api.mjs
+          node scripts/test-api-resource-budgets.mjs
+          node scripts/test-write-churn-api.mjs
       - name: Install isolated browser test dependencies
         run: |
           sudo apt-get update -qq
@@ -91,6 +93,7 @@ jobs:
           QA_OUT: qa-evidence/social/screenshots
         run: |
           /tmp/ai-living-browser-venv/bin/python scripts/qa-social.py
+          QA_OUT=qa-evidence/social/system-budgets /tmp/ai-living-browser-venv/bin/python scripts/qa-system-budgets.py
           QA_OUT=qa-evidence/social/interior-native /tmp/ai-living-browser-venv/bin/python scripts/qa-interior-native.py
           QA_OUT=qa-evidence/social/evening /tmp/ai-living-browser-venv/bin/python scripts/qa-evening-life.py
           QA_OUT=qa-evidence/social/ui-review /tmp/ai-living-browser-venv/bin/python scripts/qa-ui-review.py

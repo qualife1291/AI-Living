@@ -23,6 +23,8 @@ npm run build
 npm run test:api:local
 npm run test:api:legacy
 node scripts/test-evening-api.mjs
+node scripts/test-api-resource-budgets.mjs
+node scripts/test-write-churn-api.mjs
 node scripts/test-chat-admission-api.mjs
 node scripts/test-progress-api.mjs
 npm run audit:learning-evidence
@@ -49,6 +51,7 @@ Restart Worker từ `dist/server/wrangler.json` sau build. `QA_BASE` bắt buộ
 
 | Harness trong scripts/ | Điều phải giữ |
 |---|---|
+| qa-system-budgets.py | Compiled loopback desktop/mobile: steady-minute GET/pulse cadence,100caller queue có unit riêng,25retry click không parallel reads, Ctrl+H/IME không lấy shortcut, button44px/cached-state/no overflow. API intercepted, không là usage native hoặc GPU proof. |
 | qa-scene-interactions.py | City follow giữ ID, native skin/instance picking/occlusion, drag/pinch không thành tap;4Studio×desktop/mobile focus/zoom/orbit/shot/restart/reset và mèo trên đất/được bế phải có cả người hỗ trợ trong khung; dimensions khăn phải khớp mesh sau chuyển stage. |
 | qa-jump-lod.py | Pause khi NPC đang nhảy rồi chuyển native→crowd→native: cùng model/độ cao/clock desktop-mobile, không reset pha khi select/zoom. |
 | qa-city-activities.py, qa-wardrobe-lod.py |15ca hoạt động/2ca wardrobe desktop-mobile; shader errors, đủ cư dân khi action atlas warm, model preview/city trùng, màu khi pause, một preview canvas và zoom giữ identity. API writes synthetic; contact/clearance kiểm actual skin trong city-actions/crowd-skins. |

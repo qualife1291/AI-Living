@@ -12,6 +12,7 @@ import { logClient } from "../diagnostics.ts";
 import { TagDirector } from "./tag-game.ts";
 import { BICYCLE_RADIUS, BICYCLE_SPEED, BICYCLE_ACCELERATION } from "./bicycle.ts";
 import { bodyWalkable, bodySegmentWalkable, nearestBodyPoint } from "./walk-ground.ts";
+import { crowdDetour } from "./crowd-route.ts";
 import { PetWalkDirector } from "./pet-walk.ts";
 import {walkStateSchema,type WalkDirectorState} from './director-state.ts';
 /** Bounded A* with corner clearance, followed by exact swept-circle shortcuts. */
@@ -56,6 +57,11 @@ function reserveFree(point: Point, occupied: { position: Point; radius: number }
  * Every step sweeps static footprints and every other moving actor's disc.
  * Right-side steering and bounded side-pass replans resolve head-on encounters. */
 export class WalkDirector {
+  private readonly recoverCongestion: boolean;
+  constructor({ recoverCongestion = false }: { recoverCongestion?: boolean } = {}) {
+    this.recoverCongestion = recoverCongestion;
+  }
+  private congestion = new Map<string, { target: Point; best: number; waiting: number }>();
   private tag = new TagDirector();
   private pets = new PetWalkDirector();
   private walkers = new Map<string, Walker>();
@@ -65,13 +71,13 @@ export class WalkDirector {
   restoreState(value:unknown) {
     const s=walkStateSchema.parse(value);
     if(new Set(s.walkers.map(([id])=>id)).size!==s.walkers.length||s.walkers.some(([,w])=>w.next>w.path.length||!bodyWalkable(w.position,w.radius)||!w.path.every((p,i)=>bodyWalkable(p,w.radius)&&(!i||bodySegmentWalkable(w.path[i-1],p,w.radius)))))throw Error('Invalid walker checkpoint');
-    this.walkers=new Map(s.walkers);this.lastTime=s.lastTime;this.born=s.born;this.tag.restoreState(s.tag);this.pets.restoreState(s.pets);
+    this.congestion.clear();this.walkers=new Map(s.walkers);this.lastTime=s.lastTime;this.born=s.born;this.tag.restoreState(s.tag);this.pets.restoreState(s.pets);
   }
   holdAt(seconds:number) {this.lastTime=seconds;for(const w of this.walkers.values()){w.velocity=[0,0];w.speed=0;}}
-  retain(ids:Set<string>) {for(const id of this.walkers.keys())if(!ids.has(id))this.walkers.delete(id);}
+  retain(ids:Set<string>) {for(const id of this.congestion.keys())if(!ids.has(id))this.congestion.delete(id);for(const id of this.walkers.keys())if(!ids.has(id))this.walkers.delete(id);}
   frame(world: World, input: Actor[], seconds: number, cars: TrafficVehicle[] = [], companions: Actor[] = []): Actor[] {
     if (!Number.isFinite(seconds)) seconds = this.lastTime ?? 0;
-    if (this.born !== world.born || (this.lastTime !== null && seconds < this.lastTime - 1)) { this.walkers.clear(); this.tag.reset(); this.pets.reset(); this.lastTime = null; this.born = world.born; }
+    if (this.born !== world.born || (this.lastTime !== null && seconds < this.lastTime - 1)) { this.walkers.clear(); this.congestion.clear(); this.tag.reset(); this.pets.reset(); this.lastTime = null; this.born = world.born; }
     const dt = world.paused || this.lastTime === null ? 0 : Math.max(0, Math.min(.15, seconds - this.lastTime)); this.lastTime = seconds;
     // Animals have direct projected coordinates, without legacy human offsets.
     const spaced = [...spaceActors(world, input), ...companions];
@@ -163,8 +169,12 @@ export class WalkDirector {
             const spacing = s.radius + this.walkers.get(other.id)!.radius + .35;
             if (separation(relativePosition, relativeStep) < spacing - 1e-7) { safe = false; break; }
             const otherVelocity: Point = ends.has(other.id) ? [(otherEnd[0] - otherStart[0]) / dt, (otherEnd[1] - otherStart[1]) / dt] : this.walkers.get(other.id)!.velocity;
-            const predicted = separation(relativePosition, delta(velocity, otherVelocity), .8);
-            if (predicted < spacing + .1) { safe = false; break; }
+            const horizon=this.recoverCongestion?Math.min(.8,length/Math.max(s.speed,1e-9)):.8;
+            const predicted = separation(relativePosition, delta(velocity, otherVelocity), horizon);
+            // Do not trap an already-safe pair inside the prediction padding:
+            // separating moves must be allowed to regain that extra margin.
+            const margin=this.recoverCongestion?Math.min(spacing+.1,Math.hypot(...relativePosition)-1e-7):spacing+.1;
+            if (predicted < margin) { safe = false; break; }
             closest = Math.min(closest, predicted);
           }
           if (!safe) continue;
@@ -175,16 +185,32 @@ export class WalkDirector {
           s.position = best; s.velocity = [(best[0] - start[0]) / dt, (best[1] - start[1]) / dt];
           s.heading = Math.atan2(s.velocity[0], s.velocity[1]); s.blocked = 0;
         } else { s.velocity = [0, 0]; s.speed = 0; s.blocked += dt; }
+        if (this.recoverCongestion && !carBlocked && !petWalk.holds.has(a.id)) {
+          const remaining = distance(s.position, target), previous = this.congestion.get(a.id);
+          const progress = !previous || distance(previous.target, target) > .1 || remaining < previous.best - .25;
+          const watch = progress ? { target, best: remaining, waiting: 0 } : { ...previous, waiting: previous.waiting + dt };
+          this.congestion.set(a.id, watch);
+          // Tangential avoidance can orbit a waypoint without ever stopping.
+          // Replan on lack of progress as well as zero velocity.
+          if (watch.waiting > 2.5) s.blocked = Math.max(.81, s.blocked);
+        }
         // A blocked pair gets a persistent side waypoint, rather than repeatedly
         // stopping on the same straight route. Replanning never changes position.
         if (s.blocked > .8 && s.replanIn <= 0 && neighbors.length) {
           const blocker = neighbors.map(({ actor }) => starts.get(actor.id)!).sort((p, q) => distance(start, p) - distance(start, q))[0];
-          for (const sign of [1, -1]) {
-            const waypoint: Point = [blocker[0] + direction[1] * (PERSONAL_SPACE + 5) * sign, blocker[1] - direction[0] * (PERSONAL_SPACE + 5) * sign];
-            if (!bodyWalkable(waypoint, s.radius) || !bodySegmentWalkable(s.position, waypoint, s.radius)) continue;
-            const tail = safeWalkPath(waypoint, s.goal, s.radius);
-            if (distance(tail.at(-1)!, s.goal) > .1) continue;
-            s.path = [[...s.position], waypoint, ...tail.slice(1)]; s.next = 1; s.blocked = 0; s.replanIn = 1.2; break;
+          if(this.recoverCongestion){
+            s.replanIn=1.2;
+            const occupied=records.filter(r=>r.actor.id!==a.id).map(r=>this.walkers.get(r.actor.id)!);
+            const detour=crowdDetour(s.position,s.goal,occupied,s.radius);
+            if(detour){s.path=detour;s.next=1;this.congestion.delete(a.id);}
+          }else{
+            for (const sign of [1, -1]) {
+              const waypoint: Point = [blocker[0] + direction[1] * (PERSONAL_SPACE + 5) * sign, blocker[1] - direction[0] * (PERSONAL_SPACE + 5) * sign];
+              if (!bodyWalkable(waypoint, s.radius) || !bodySegmentWalkable(s.position, waypoint, s.radius)) continue;
+              const tail = safeWalkPath(waypoint, s.goal, s.radius);
+              if (distance(tail.at(-1)!, s.goal) > .1) continue;
+              s.path = [[...s.position], waypoint, ...tail.slice(1)]; s.next = 1; s.blocked = 0; s.replanIn = 1.2; break;
+            }
           }
         }
       } else if (dt > 0) { s.velocity = [0, 0]; s.speed = 0; }

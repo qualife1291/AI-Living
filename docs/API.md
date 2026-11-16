@@ -2,7 +2,7 @@
 
 Nguồn contract chi tiết là `app/api/**/route.ts`, schema tương ứng và `worker/index.ts`. Site giữ owner-private; Worker yêu cầu owner cho mutations và GET memories/diagnostics/JSONL archive. Origin có mặt phải khớp request; không có Origin vẫn cần owner guard, phục vụ server calls hợp lệ. Không mở public/allowlist chỉ để vượt403.
 
-JSON qua helper `json()` đặt `Cache-Control: private,no-store` và `X-Content-Type-Options: nosniff`. Body/schema/byte limit được kiểm theo từng endpoint.400=JSON/schema,403=quyền/origin,404=ID không có,409=pause/revision/basis,413=bytes,422=proposal bị review bác,429=giới hạn tần suất; client cần xử lý theo route, không coi mọi lỗi là conflict.
+JSON qua helper `json()` đặt `Cache-Control: private,no-store` và `X-Content-Type-Options: nosniff`. Body/schema/byte limit được kiểm theo từng endpoint; shared helper đọc UTF8 nghiêm ngặt và dừng/hủy stream ngay khi vượt, không chờ cancel treo. World2000B/events20000B/visits200B/tick12000B/catalog32000B/appearance4000B/diagnostics16384B. Tick cho phép body rỗng để giữ tương thích.400=JSON/schema,403=quyền/origin,404=ID không có,409=pause/revision/basis,413=bytes,422=proposal bị review bác,429=giới hạn tần suất; client cần xử lý theo route, không coi mọi lỗi là conflict.
 
 | Endpoint | Contract chính |
 |---|---|
@@ -10,9 +10,9 @@ JSON qua helper `json()` đặt `Cache-Control: private,no-store` và `X-Content
 | POST `/api/world` | `{revision,paused?,schedule?,speedScale?,weatherOverride?}` strict. Speed1..60; weather clear/cloudy/rain/fog/windy/null. CAS/segmentedclock giữ liên tục. |
 | POST `/api/events` | `eventSchema`/EventInput; batch snapshot+episode+memory có revision/idempotency. Core an/binh/chi; duplicateID200 không cộng lại. BodyUTF8≤20.000B; [DATA_MODEL](DATA_MODEL.md) giữ bất biến. |
 | GET `/api/instructions` | text/plain; `context=1` thêm context/owned memories/few-shot. Dữ liệu trong prompt không cấp quyền thực thi. |
-| GET `/api/living` | Living view/turns24 mới/context, có hydrate policy và có thể refresh provider; không dùng để poll world nhẹ. |
-| POST `/api/living/tick` | Narrative tick theo slot, proposal/basis guard, review trước write và audit. Model chỉ bounded narrative; bận/ngủ không chèn thoại. |
-| GET/POST `/api/living/learning` | GET models/animalModels/200 recent experiences, POST settle outcomes hợp lệ. `format=jsonl&after=0&limit=1000` owner-only, cursor `X-Next-Cursor`, toàn archive phân trang. |
+| GET `/api/living` | Living view/turns24 mới/context, có hydrate policy, context cache-only; không dùng để poll world nhẹ. |
+| POST `/api/living/tick` | Narrative tick theo slot, proposal/basis guard, review trước write và audit; duplicate200 dùng durable turn đã có, không thêm request audit. Model chỉ bounded narrative; bận/ngủ không chèn thoại. |
+| GET/POST `/api/living/learning` | GET models/animalModels/200 recent experiences, POST settle outcomes hợp lệ. `format=jsonl&after=0&limit=1000` owner-only, cursor `X-Next-Cursor`, toàn archive phân trang; kiểm cursor trước DB, chỉ SELECT archive, không hydrate world/policy. |
 | GET `/api/living/memories` | Owner-only actor/topic/top-K với provenance/witness filtering; [LEARNING](LEARNING.md). |
 | POST `/api/living/memories/backfill` | Local-admin+owner+loopback; preview mặc định, UUIDjob/actor/limit, apply bằng checkpoint+plan SHA; body≤2KiB. Additive memories/job/receipt, không đổi world/policy; [LEARNING](LEARNING.md). |
 | POST `/api/living/ground` | Owner+local-admin+loopback,≤2KiB strict; session UUID, default status/preview read-only, explicit start/advance cần operation UUID và checkpoint. Server time/plan/poses, state+receipt CAS0009; core/static scope không cấp reward/P2P. [ARCHITECTURE](ARCHITECTURE.md). |
@@ -33,11 +33,11 @@ JSON qua helper `json()` đặt `Cache-Control: private,no-store` và `X-Content
 
 POST `/api/living/pulse`: learning→resident social→narrative tick qua admission D1, khóa `internal:living-pulse:v1` trong context_cache; không process-local latch. Inspect chỉ lấy pause/expiry, không truyền snapshot/policies vào JS cho coalesced request.
 
-Lease30s, thành công cooldown9s **từ lúc nhận**, giữ cadence một tab10s. Lượt khác200 `{ok:true,coalesced:true}` nghĩa đang chạy/gần đây, không xác nhận pipeline trước thành công. Pause409 cả trong cooldown; HTTPfailure/exception release để retry ngay. Expired owner không nhả được lease mới nhờ nonce. Storage lỗi không chạy pipeline không guard.
+Lease30s, thành công cooldown55s **từ lúc nhận**; browser mặc định pulse60s và snapshot GET15s, vẫn animate độc lập. Lượt khác200 `{ok:true,coalesced:true}` nghĩa đang chạy/gần đây, không xác nhận pipeline trước thành công. Pause409 cả trong cooldown; HTTPfailure/exception release để retry ngay. Expired owner không nhả được lease mới nhờ nonce. Storage lỗi không chạy pipeline không guard.
 
 Hạn khóa chỉ giảm tải; pipeline quá30s có thể chồng và vẫn phải dựa CAS/idempotency. Direct tick/learning/daemon không dùng gate. Thêm hai gate writes mỗi lượt được nhận nên không nhận là giảm mọi chi phí single viewer. Không có scheduler mới/guarantee24/7; giữ client fallback cho đến khi lịch production được xác minh.
 
-GND2 local active có thêm shared step sau base pulse, CAS/coalescing khoảng1s; nếu GND3 active thì authority cùng batch. Base gate9s không đổi; preflight active journal/authority trước world writes, shared page dùng loop sẵn ở1s và GET chỉ đọc. Source capture tự đi cùng world transaction sau explicit shared start, không do GET/viewer receipt. Default page giữ cadence cũ; production không bật shared mode/local-admin.
+GND2 local active có thêm shared step sau base pulse, CAS/coalescing khoảng1s; nếu GND3 active thì authority cùng batch. Base learning/tick gate55s; preflight active journal/authority trước world writes, shared page dùng loop sẵn ở1s và GET chỉ đọc. Source capture tự đi cùng world transaction sau explicit shared start, không do GET/viewer receipt. Default page pulse60s; production không bật shared mode/local-admin.
 
 Chat admission chỉ giới hạn exchange mới đã lưu, không giới hạn mọi request đọc hoặc mọi chi phí D1: route vẫn kiểm snapshot/actor trước transaction. Window dùng server time, không simulation time/pause/scale; không phải rolling-window hay quota theo IP. Counter TTL có thể tái tạo sau expiry; giữ toàn bộ visitor_exchanges. Không có process-local latch hoặc rate key lấy từ actorId/client header.
 

@@ -61,6 +61,8 @@ jobs:
         run: |
           npm run build
           node scripts/test-evening-api.mjs
+          node scripts/test-api-resource-budgets.mjs
+          node scripts/test-write-churn-api.mjs
           node scripts/test-mobility-learning-api.mjs
           node scripts/configure-cloudflare-qa.mjs
       - name: Check exclusive QA target and default OFF

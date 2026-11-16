@@ -72,8 +72,12 @@ Report `xom-qa-window-v1` tổng hợp delta tick/turn/sample, số Cron hoàn t
 
 ## Ngân sách ghi D1
 
-Dùng usage/native analytics hiện hành theo ngày UTC để biết quota còn lại; thông báo reset có mốc đã qua không phải lỗi mới. Con số70K còn lại do chủ dự án cung cấp chưa được xác minh lại. `rows_written` có thể tính thêm index/SQLite metadata; số sample hoặc số hàng đổi không tự bằng usage tài khoản. Không tăng poll/scheduler để đo quota.
+Dùng usage/native analytics hiện hành theo ngày UTC để biết quota còn lại; thông báo reset có mốc đã qua không phải lỗi mới. Chủ dự án cho biết hôm qua cảnh báo80%; chưa có native counter hiện hành. `rows_written` có thể tính thêm index/SQLite metadata; số sample hoặc số hàng đổi không tự bằng usage tài khoản. Không tăng poll/scheduler để đo quota.
 
 Fixture16/11:105policy không đổi từ105→0rows_written, hai policy đổi ghi2; replay200archive có sẵn từ1→0rows_written (AUTOINCREMENT), giữ nguyên dữ liệu. Với105actor và288Cron/ngày, writer cũ có thể ghi60.480policy-row/ngày nếu cả tick lẫn learning cùng commit; đây là phép tính kịch bản, không là usage thực hay mức tiết kiệm bảo đảm. Writer mới vẫn ghi actor học thật, world CAS, sample/memory mới và audit cần thiết. Có thêm serialize/compare local, chưa đo CPU live. [Evidence](validation/learning-repair-2026-11-16.json).
 
 Nghiệm thu sau deploy: read-only cùng version/UTC window, đối chiếu experiences/memories/sumPolicySamples, lỗi hydration/CAS, writes/CPU và rest-home theo cohort/giờ mô phỏng. So sánh ngày đầy đủ có cùng phạm vi; rest sample share không là thời lượng nghỉ. Giữ model/promotion gates cũ, không reset policy để làm biểu đồ đẹp.
+
+Browser mặc định pulse60s/gate55s; snapshot15s chỉ đọc, shared-ground giữ1s ngoài base gate. Duplicate tick không thêm audit khi durable turn đã tồn tại; lỗi/rejected/completed thật giữ audit. Telemetry sample tự gửi tối đa một batch/phút, critical renderer lỗi có thể gửi ở timer15s; tab hidden/offline ngừng gửi, lỗi backoff60–300s và giữ bounded queue đến ACK. Manual export/flush giữ hành vi cũ. Không thay Cron hoặc giảm tần suất animation.
+
+Fixture mới: coordination721→121rows_written/giờ với request10s, telemetry121sample/10phút ghi41→11batch,12duplicate tick không thêm audit. Đây là workload D1 cô lập, không dự báo tổng usage tài khoản; [bằng chứng](validation/system-budgets-2026-11-16.json) ghi điều kiện và kết quả.

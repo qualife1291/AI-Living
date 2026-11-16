@@ -22,9 +22,15 @@ export function logClient(kind: string, data: Diagnostic["data"] = {}) {
   if (buffer.length > LIMIT) buffer.shift();
 }
 export const clientLogs = () => buffer.map(row => ({ ...row, data: { ...row.data } }));
-let sending = false;
-export async function flushClientLogs() {
+let sending = false, lastAutomaticSuccess = 0, nextAutomaticAttempt = 0, automaticFailures = 0;
+const urgentKinds = new Set(['render_error','webgl_lost','position_nan','footprint_overlap']);
+export async function flushClientLogs({ automatic = false }: { automatic?: boolean } = {}) {
   if (sending || !buffer.length) return;
+  const now=Date.now();
+  if(automatic){
+    if(typeof document!=='undefined'&&document.hidden||typeof navigator!=='undefined'&&navigator.onLine===false)return;
+    if(now<nextAutomaticAttempt||now-lastAutomaticSuccess<60000&&!buffer.some(row=>urgentKinds.has(row.kind)))return;
+  }
   sending = true;
   const batch: Diagnostic[] = [];
   // Count the JSON envelope, commas and UTF-8 bytes, not JS string length.
@@ -35,12 +41,22 @@ export async function flushClientLogs() {
     batch.push(row); bytes += size;
   }
   const ids = new Set(batch.map(r => r.id));
+  let acknowledged=false;
   try {
     const response = await fetch("/api/diagnostics", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ logs: batch }), signal: AbortSignal.timeout(5000) });
     const ack = response.ok ? await response.json() as { ok?: boolean } : null;
-    if (ack?.ok === true) for (let i = buffer.length - 1; i >= 0; i--) if (ids.has(buffer[i].id)) buffer.splice(i, 1);
+    if (ack?.ok === true) {
+      acknowledged=true;
+      for (let i = buffer.length - 1; i >= 0; i--) if (ids.has(buffer[i].id)) buffer.splice(i, 1);
+    }
   } catch { /* Keep bounded pending logs for retry. */ }
-  finally { sending = false; }
+  finally {
+    sending = false;
+    if(automatic){
+      if(acknowledged){lastAutomaticSuccess=now;automaticFailures=0;nextAutomaticAttempt=0;}
+      else{automaticFailures=Math.min(4,automaticFailures+1);nextAutomaticAttempt=now+Math.min(300000,30000*2**automaticFailures);}
+    }
+  }
 }
 const frameTimes: number[] = [];
 export function recordFrame(ms: number) {

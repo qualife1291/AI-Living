@@ -10,7 +10,7 @@ export function Diagnostics() {
       observer = new PerformanceObserver(list => list.getEntries().forEach(e => logClient("longtask", { ms: e.duration })));
       observer.observe({ type: "longtask", buffered: true });
     }
-    const timer = setInterval(() => { setSummary(diagnosticSummary()); void flushClientLogs(); }, 15000);
+    const timer = setInterval(() => { if(document.hidden)return;setSummary(diagnosticSummary()); void flushClientLogs({automatic:true}); }, 15000);
     return () => { clearTimeout(startup); clearInterval(timer); observer?.disconnect(); };
   }, []);
   if (!debug) return null;

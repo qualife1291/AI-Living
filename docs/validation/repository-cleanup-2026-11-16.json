@@ -400,7 +400,9 @@
       "TypeScript noUnusedLocals/noUnusedParameters",
       "ESLint max-warnings0 without starter-wide suppressions",
       "offline Markdown local paths/headings and Agent Skill structure"
-    ]
+    ],
+    "finalModuleCount": 379,
+    "activeAppTree": "git diff54ca2ec..a7eaea0 empty for worker, app/api, auth, living/city/data/db/drizzle, app/page and city/Studio/assets/living components. CLI/tooling changes covered separately."
   },
   "documentation": {
     "wordCounts": {
@@ -466,7 +468,20 @@
       }
     ],
     "persistentTest": "scripts/test-repository-hygiene.mjs: repeated real ZIP integrity/manifest/checksums plus Markdown Unicode/duplicate-heading/missing-file/anchor/image/fence/inline/external fixtures",
-    "fullSourceArchive": null
+    "fullSourceArchive": {
+      "archive": "/tmp/xom-ai-clean-source-final.zip",
+      "source_files": 1560,
+      "bytes": 72350939,
+      "sha256": "8cfaacae813845718eefddab380a766806ee0abe4394a751756a5826d627ad23",
+      "verified": "ZIP integrity, dotfiles (.gitignore/.npmrc), required files, per-file SHA256 and exclusion/credential scan passed",
+      "sourceCommit": "cac4e988010e02b54559a3452bf9e604bc2ae25c"
+    },
+    "portableUnpackedSource": {
+      "sourceFiles": 1560,
+      "gitlessMarkdown": "Checked 34 Markdown files; 0 local path/anchor errors",
+      "gitlessSkills": "Validated 6 skills",
+      "sourceUntouched": true
+    }
   },
   "checks": {
     "baselineUnit": {
@@ -654,19 +669,40 @@
           "plans": 0
         }
       }
-    ]
+    ],
+    "pythonJsonShellSyntax": {
+      ".py": 49,
+      ".json": 232,
+      ".sh": 6
+    },
+    "portableHygieneRetest": "pass standalone and full101-suite CI at exact QA source",
+    "browser": "Existing CI passed qa-social.py, qa-interior-native.py, qa-evening-life.py and qa-ui-review.py on loopback Worker with actual screenshots. No new manual image review or authenticated remote browser acceptance this task."
   },
   "release": {
     "workCleanup": "de2b645",
     "exportFix": "dca593e",
-    "qaSource": null,
-    "qaStatus": "local acceptance complete; pending QA push and CI",
-    "mainUnchanged": "402df57027278c599aab6f4932adbde1609e6979"
+    "qaSource": "a7eaea052ae65675cc7044223059efb48029f707",
+    "qaStatus": "Cloudflare App exact-source build/version success; both GitHub CI gates success",
+    "mainUnchanged": "402df57027278c599aab6f4932adbde1609e6979",
+    "cloudflareBuildId": "fcbb4805-7f8a-4c9b-9a7c-13083672d7a8",
+    "platformReportedVersion": "d2c1af6b-2973-4010-a5b2-95e9fe43fbb1",
+    "platformCheckId": 133200363228,
+    "deployGateRun": "https://github.com/qualife1291/AI-Living/actions/runs/43838098143",
+    "browserRun": "https://github.com/qualife1291/AI-Living/actions/runs/43838098166",
+    "deploymentGateConclusion": "success",
+    "browserConclusion": "success",
+    "nativeTrafficEnvD1CronReadback": false,
+    "actionUpload": "skipped: scoped Cloudflare token not configured; Cloudflare App is the independently confirmed version source",
+    "browserArtifact": {
+      "expired": false,
+      "id": 14211798540,
+      "name": "qa-contextual-social-a7eaea052ae65675cc7044223059efb48029f707",
+      "size_in_bytes": 20346908
+    }
   },
   "limits": [
     "Static import scan is not proof every framework/CLI extension is dead.",
     "No schema migration, real DB/data reset, model promotion, new service or scheduler.",
-    "No fresh live QA authenticated learning/quota/CPU readback.",
-    "Browser regression on QA release still pending."
+    "No fresh live QA authenticated learning/quota/CPU readback."
   ]
 }
