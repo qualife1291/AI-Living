@@ -1,0 +1,173 @@
+{
+  "schema": "xom-learning-repair-v1",
+  "date": "2026-11-16",
+  "timezone": "Asia/Ho_Chi_Minh",
+  "scope": "Local isolated Miniflare/D1 reproduction and compiled HTTP; QA-only release pending. No production DB mutation or migration.",
+  "observation": {
+    "reference": "learning-observation-2026-11-16.json",
+    "observedAt": "2026-11-16T07:35:43.673601+00:00",
+    "freshReadbackThisTask": false,
+    "samples": 52827,
+    "memories": 52827,
+    "sumPolicySamples": 52827,
+    "personalPolicies": 105,
+    "aggregateMismatch": false,
+    "fullMatrixAuditEstablished": false,
+    "completeDayRestSampleSharePercent": [
+      43.3,
+      41.0,
+      42.2
+    ],
+    "interpretation": "Rest sample share is not duration or proof of failure. Reproduction proves reachable bugs, not the exact fraction of live samples they caused. Simulation learning is not LLM fine-tuning or demonstrated quality gain."
+  },
+  "repairs": [
+    {
+      "problem": "All hydrated policies rewritten on both planning/settlement commits",
+      "change": "Capture serialized baseline before mutation; write changed/new matrices only; retain exact older policyRevision on unchanged actor. Same world CAS/nonce and atomic batch; no extra D1 policy reads."
+    },
+    {
+      "problem": "INSERT OR IGNORE replay consumes archive AUTOINCREMENT for retained duplicates",
+      "change": "Filter existing unique IDs before insert; preserve retained backfill, nonce/revision fences and rollback."
+    },
+    {
+      "problem": "Untried paid arms repeatedly win UCB then become rest-home for walletless actors",
+      "change": "QA masks infeasible actions before scoring; free need priorities retained, all-eligible ranking and canonical41 baseline preserved. No samples/matrices reset."
+    },
+    {
+      "problem": "Sleep just after personal wake before07h wraps to next day",
+      "change": "Nap60min after personal wake; overnight before wake remains min30min.100identity boundary fixtures."
+    },
+    {
+      "problem": "Learning-first settlement bypasses completed simulated mobility fare booking",
+      "change": "QA uses shared booking helper in tick and learning transaction; experience-ID dedup; no retroactive live ledger edits."
+    }
+  ],
+  "localEvidence": {
+    "policy": [
+      {
+        "suite": "policy-write-budget",
+        "actors": 105,
+        "unchangedRowsBefore": 105,
+        "unchangedRowsAfter": 0,
+        "twoChangedRowsAfter": 2,
+        "unchangedRowsByteIdentical": true,
+        "staleAndRollbackChecks": true,
+        "d1RowsWrittenBaseline": 105,
+        "d1RowsWrittenTwoChanged": 2,
+        "productionAccess": false
+      },
+      {
+        "suite": "policy-store",
+        "actors": 240,
+        "armsPerActor": 41,
+        "inlineBytes": 5135422,
+        "snapshotBytes": 62302,
+        "statements": 11,
+        "cas": true,
+        "atomicRollback": true,
+        "legacy": true,
+        "corruptionPreserved": true,
+        "productionAccess": false
+      }
+    ],
+    "archive": [
+      {
+        "suite": "experience-store",
+        "retained": 200,
+        "duplicateSequenceAdvanceBefore": 200,
+        "duplicateSequenceAdvanceAfter": 0,
+        "duplicateRowsWrittenBefore": 1,
+        "duplicateRowsWrittenAfter": 0,
+        "newRows": 1,
+        "backfill": true,
+        "nonce": true,
+        "staleRevision": true,
+        "atomicRollback": true,
+        "productionAccess": false
+      }
+    ],
+    "feasibility": [
+      {
+        "suite": "feasible-learning",
+        "syntheticCases": 60,
+        "oldForcedRest": 60,
+        "maskedRest": 0,
+        "paidWhenFunded": 60,
+        "walletBalances": 7,
+        "actualPlannerPending": 16,
+        "needPriorities": true,
+        "legacy41": true,
+        "modelReset": false,
+        "productionAccess": false
+      }
+    ],
+    "rootCompiledLearning": [
+      {
+        "suite": "evening-api",
+        "pass": true,
+        "compiledWorker": true,
+        "isolatedD1": true,
+        "newActionsSettled": 9,
+        "subsequentSettlements": 1,
+        "onlyChangedPolicyRows": 1,
+        "unchangedPoliciesByteIdenticalAfterTick": true,
+        "retainedArchiveSequenceUnchanged": true,
+        "namespaceEvidence": true,
+        "retries": 3,
+        "duplicateSamples": 0,
+        "identityAndPetOwnersPreserved": true,
+        "productionAccess": false,
+        "physicalCompletionProven": false
+      }
+    ]
+  },
+  "preserved": [
+    "IDs",
+    "world.born",
+    "history",
+    "memories",
+    "home",
+    "petOwners",
+    "personal posteriors and earned counts",
+    "legacy41/H6 baseline",
+    "96shadow catalog",
+    "owner Access",
+    "single existing Cron",
+    "D1 identity",
+    "paused and unfinished plans"
+  ],
+  "skills": {
+    "source": "user ai-coding-skills.zip",
+    "sha256": "1d5a22d1f1e2e147f57c5c93816c5af9ba46c1fa61ce6c0ef7a01bdaa5a62a18",
+    "installed": [
+      "database-engineer",
+      "qa-debugger",
+      "observability-sre"
+    ],
+    "reviewedButNotInstalled": "25other generic skills, template AGENTS and extra automation not needed; macOS metadata excluded",
+    "validation": "python3 scripts/validate-agent-skills.py: Validated3skills",
+    "authority": "Existing project instructions and user authorization remain authoritative; uploaded content is task reference."
+  },
+  "quota": {
+    "priorResetAt": "2026-11-16T00:00:00Z",
+    "priorResetAlreadyElapsed": true,
+    "remainingRowsWrittenUserEstimate": 70000,
+    "remainingQuotaVerified": false,
+    "oldPolicyRowsScenarioPerDay": 60480,
+    "scenarioAssumptions": "105 unchanged actors *2committing policy writes *288five-minute turns; excludes indexes/other writes. Not actual usage or guaranteed savings. New learning still writes changed actors. Additional local serialization and archive unique-index probes require live CPU/read measurement."
+  },
+  "release": {
+    "workCommonCode": "6121c41",
+    "qaSource": null,
+    "deploymentStatus": "pending",
+    "productionSitesChanged": false,
+    "schemaMigration": false,
+    "modelPromotion": false
+  },
+  "limitations": [
+    "Current environment has no native Cloudflare/D1 or authenticated browser capability; QA progress GET returned302Access redirect.",
+    "No current-day quota/CPU native measurement or post-release learning observation yet.",
+    "No reset, policy rewrite repair, history deletion, migration or H6 activation.",
+    "No intelligence/physical completion/LLM fine-tuning gain established."
+  ]
+}
