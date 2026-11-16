@@ -1,7 +1,7 @@
 {
   "schema": "xom-system-budget-review-v1",
   "date": "2026-11-16",
-  "status": "Cloudflare App exact-source version success; deploy gate success; browser CI pending",
+  "status": "CI dependency fix pushed, new exact-source pipeline running",
   "userObservation": "Cloudflare warning80% yesterday; current native rows_written unavailable",
   "source": "ba0951b",
   "preserved": [
@@ -615,7 +615,7 @@
     "No migration, reset, new scheduler, dependency or model promotion",
     "Local navigation CPU costs do not measure entire frame rendering or live FPS"
   ],
-  "release": {
+  "initialRelease": {
     "qaSource": "cf90e43bd7bb2f93c6dc6071a0fc59a569a6e538",
     "mainUnchanged": "402df57027278c599aab6f4932adbde1609e6979",
     "pipeline": "Cloudflare App version successful; GitHub browser still running",
@@ -626,8 +626,27 @@
     "browserRun": "https://github.com/qualife1291/AI-Living/actions/runs/43898088782",
     "platformReportedVersion": "00ca65f4-eb3a-4a13-a6ae-058a87d71719",
     "deploymentGateConclusion": "success",
-    "browserConclusion": "in_progress",
+    "browserConclusion": "cancelled after18m42s at Chromium Snap download, before browser test execution",
     "nativeTrafficEnvD1CronQuotaReadback": false,
     "actionUpload": "skipped: scoped Cloudflare token not configured; independently confirmed Cloudflare App supplied exact-source version"
+  },
+  "ciInfrastructureFix": {
+    "cause": "Chromium Snap download stalled in apt installation, confirmed cancelled job log",
+    "affectedRun": 43898088782,
+    "oldSource": "cf90e43bd7bb2f93c6dc6071a0fc59a569a6e538",
+    "fix": "Five loopback harnesses accept QA_CHROMIUM_PATH; existing CI selects preinstalled Google Chrome, setup timeout5min and bounded network attempts; no test removed",
+    "runtimeCodeDiff": "git diff cf90e43..3631067 -- worker app lib data db drizzle package.json pnpm-lock.yaml components is empty"
+  },
+  "release": {
+    "qaSource": "36310678bb420f50208986b04513720e6baaa513",
+    "mainUnchanged": "402df57027278c599aab6f4932adbde1609e6979",
+    "cloudflareBuildId": "a1548a09-5d9d-4e4d-8d0a-f938de271a86",
+    "platformCheckId": 133421902172,
+    "platformReportedVersion": null,
+    "deploymentGateConclusion": "in_progress",
+    "browserConclusion": "in_progress",
+    "deployGateRun": "https://github.com/qualife1291/AI-Living/actions/runs/43902428413",
+    "browserRun": "https://github.com/qualife1291/AI-Living/actions/runs/43902310672",
+    "nativeTrafficEnvD1CronQuotaReadback": false
   }
 }
