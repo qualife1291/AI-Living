@@ -38,6 +38,11 @@ with sync_playwright() as p:
    def hud():return page.locator('.live-world').evaluate("e=>e.classList.contains('hud-hidden')")
    initial=hud();page.evaluate("document.body.dispatchEvent(new KeyboardEvent('keydown',{key:'h',ctrlKey:true,bubbles:true}))")
    ctrl_changed=hud()!=initial
+   if not legacy:
+    for modifiers in [{'metaKey':True},{'altKey':True},{'repeat':True},{'isComposing':True}]:
+     page.evaluate("m=>document.body.dispatchEvent(new KeyboardEvent('keydown',{key:'h',bubbles:true,...m}))",modifiers);assert hud()==initial
+    page.evaluate("()=>{const e=document.createElement('input');e.id='qa-editor';document.body.append(e);e.focus();e.dispatchEvent(new KeyboardEvent('keydown',{key:'h',bubbles:true}));}");assert hud()==initial
+    page.evaluate("document.getElementById('qa-editor').remove()")
    if hud()!=initial:page.evaluate("document.body.dispatchEvent(new KeyboardEvent('keydown',{key:'h',bubbles:true}))")
    page.evaluate("document.body.dispatchEvent(new KeyboardEvent('keydown',{key:'h',bubbles:true}))");assert hud()!=initial
    page.evaluate("document.body.dispatchEvent(new KeyboardEvent('keydown',{key:'h',bubbles:true}))");assert hud()==initial
