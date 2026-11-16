@@ -1,7 +1,7 @@
 {
   "schema": "xom-system-budget-review-v1",
   "date": "2026-11-16",
-  "status": "Exact-source Cloudflare version and deploy gate passed; full browser CI pending",
+  "status": "Complete local and exact-source CI acceptance; Cloudflare App version success; native quota/runtime readback pending",
   "userObservation": "Cloudflare warning80% yesterday; current native rows_written unavailable",
   "source": "ba0951b",
   "preserved": [
@@ -615,6 +615,572 @@
       "passed": 105,
       "workers": 4,
       "seconds": 88.69
+    },
+    "ciBrowser": {
+      "source": "36310678bb420f50208986b04513720e6baaa513",
+      "production": false,
+      "chrome": "157.0.8103.50",
+      "social": [
+        {
+          "viewport": "desktop",
+          "renderer": "Chromium SwiftShader",
+          "fixture": "synthetic-workshop-no-world-writes",
+          "first": "An → Bình\nKịch bản\n\nBình, mình đang phân vân nên bắt đầu từ đâu.",
+          "reply": "Bình → An\nKịch bản\n\nMình chia việc thành từng bước trước nhé?",
+          "fullDialogue": [
+            "An → Bình\nKịch bản\n\nBình, mình đang phân vân nên bắt đầu từ đâu.",
+            "Bình → An\nKịch bản\n\nMình chia việc thành từng bước trước nhé?",
+            "An → Bình\nKịch bản\n\nỪ. Chọn một phần nhỏ để thử trước cũng đỡ rối.",
+            "Bình → An\nKịch bản\n\nThử xong mình nhìn lại, chưa ổn thì sửa ngay phần đó.",
+            "An → Bình\nKịch bản\n\nVậy rõ hơn rồi. Không cần ôm hết một lúc.",
+            "Bình → An\nKịch bản\n\nĐúng thế. Mình quay lại việc đang làm nhé."
+          ],
+          "pollingCoveredSeconds": 24,
+          "activity60s": {
+            "samples": 61,
+            "visibleIds": 27,
+            "activeKinds": [
+              "eat",
+              "rest",
+              "work"
+            ],
+            "restExempt": true,
+            "worldWrites": false
+          },
+          "stats": {
+            "startedAt": "914.5",
+            "terrainMounds": "18",
+            "neighborhoodProps": "{\"placements\":562,\"plants\":388,\"trees\":94,\"smallTrees\":25,\"models\":[\"suburban/tree-small\",\"supplied/props/plant\",\"supplied/props/table\",\"supplied/props/chair\",\"supplied/props/chessboard\",\"supplied/props/book\",\"supplied/props/shelf\",\"supplied/props/books\",\"supplied/props/monitor\",\"supplied/props/keyboard\",\"supplied/props/mouse\",\"supplied/props/lamp\",\"suburban/tree-large\"]}",
+            "assetPlacements": "686",
+            "loadedAssets": "42",
+            "failedAssets": "0",
+            "streetProps": "66",
+            "buildings": "279",
+            "towers": "150",
+            "gardenPlots": "5",
+            "gardenPlants": "30",
+            "gardenBatches": "2",
+            "fountainStreams": "16",
+            "cloudLobes": "18",
+            "homeDoors": "60",
+            "assetActors": "8",
+            "assetCars": "3",
+            "transitFleet": "2",
+            "twoWheelFleet": "2",
+            "animalBatches": "5",
+            "renderState": "active",
+            "gardenStates": "[{\"id\":\"street-prop:0:0\",\"phase\":\"rest\",\"moisture\":64.98933262371487,\"x\":288,\"z\":318.2},{\"id\":\"street-prop:5:0\",\"phase\":\"bud\",\"moisture\":64.98933262371487,\"x\":784,\"z\":645.2},{\"id\":\"street-prop:6:0\",\"phase\":\"young\",\"moisture\":64.98933262371487,\"x\":185,\"z\":597.2},{\"id\":\"street-prop:10:0\",\"phase\":\"bud\",\"moisture\":64.98933262371487,\"x\":541,\"z\":370.2},{\"id\":\"street-prop:11:0\",\"phase\":\"bloom\",\"moisture\":64.98933262371487,\"x\":373,\"z\":464.2}]",
+            "gardenUpdates": "2",
+            "gardenStateError": "false",
+            "poseClock": "52.217",
+            "transitVehicles": "[{\"id\":\"service-bus-01\",\"type\":\"bus\",\"speed\":0,\"position\":[1170,1148]},{\"id\":\"service-metro-01\",\"type\":\"metro\",\"speed\":29,\"position\":[894.1821979981644,1140]}]",
+            "twoWheelVehicles": "{\"signal\":\"green\",\"crossingX\":1710,\"vehicles\":[{\"id\":\"ambient-motorbike-01\",\"type\":\"motorbike\",\"speed\":18,\"position\":[1822.0000000000005,1132]},{\"id\":\"ambient-bicycle-01\",\"type\":\"bicycle\",\"speed\":9,\"position\":[1642.2439999999297,1124]}]}",
+            "animalModels": "{\"muop\":{\"modelId\":\"studio/articulated-feline\",\"travel\":281.0018115882578,\"position\":[603,1.863039825150559,610]},\"cun\":{\"modelId\":\"gobkit-animal/corgi\",\"travel\":103.85599999995974,\"position\":[532.1057491825346,1.3639913993546446,430.35300940502316]}}",
+            "animalDraws": "{\"muop\":0,\"cun\":0}",
+            "animalPositions": "[{\"id\":\"muop\",\"species\":\"cat\",\"position\":[603,610]},{\"id\":\"cun\",\"species\":\"dog\",\"position\":[531.8036279799787,430.35300892769715]},{\"id\":\"se\",\"species\":\"bird\",\"position\":[822.4340779217282,574.1374801578319]}]",
+            "homeTargets": "[]",
+            "firstFrameMs": "2722.1",
+            "ready": "true",
+            "paused": "false",
+            "frame": "358",
+            "pixelRatio": "0.8784104611578831",
+            "effectiveQuality": "eco",
+            "reducedMotion": "false",
+            "triangles": "263740",
+            "geometries": "74",
+            "textures": "54",
+            "walking": "false",
+            "position": "804.00,223.00",
+            "personHeight": "17.5",
+            "carLength": "44",
+            "actors": "27",
+            "exchanges": "6",
+            "socialCast": "[{\"id\":\"an\",\"position\":[804,223],\"peerId\":\"binh\",\"source\":\"script\",\"speaking\":true,\"gesture\":\"explain\"},{\"id\":\"binh\",\"position\":[781.651676224131,230.08575967227654],\"peerId\":\"an\",\"source\":\"script\",\"speaking\":false,\"gesture\":\"listen\"},{\"id\":\"neighbor-6\",\"position\":[721,451],\"peerId\":\"neighbor-8\",\"source\":\"script\",\"speaking\":false,\"gesture\":\"listen\"},{\"id\":\"neighbor-8\",\"position\":[696.5428213494599,447.75193678160525],\"peerId\":\"neighbor-6\",\"source\":\"script\",\"speaking\":true,\"gesture\":\"open\"},{\"id\":\"neighbor-9\",\"position\":[1114.0702583182804,1003.750374731767],\"peerId\":\"neighbor-12\",\"source\":\"script\",\"speaking\":true,\"gesture\":\"open\"},{\"id\":\"neighbor-12\",\"position\":[1100,988],\"peerId\":\"neighbor-9\",\"source\":\"script\",\"speaking\":false,\"gesture\":\"listen\"},{\"id\":\"neighbor-13\",\"position\":[721,543],\"peerId\":\"neighbor-15\",\"source\":\"script\",\"speaking\":false,\"gesture\":\"listen\"},{\"id\":\"neighbor-14\",\"position\":[1124.7824235492537,986.091638817074],\"peerId\":\"neighbor-23\",\"source\":\"script\",\"speaking\":false,\"gesture\":\"listen\"},{\"id\":\"neighbor-15\",\"position\":[700.9472121919316,552.1250347807829],\"peerId\":\"neighbor-13\",\"source\":\"script\",\"speaking\":true,\"gesture\":\"wave\"},{\"id\":\"neighbor-17\",\"position\":[682.0695436181312,561.9772264381301],\"peerId\":\"neighbor-24\",\"source\":\"script\",\"speaking\":false,\"gesture\":\"listen\"},{\"id\":\"neighbor-23\",\"position\":[1138.8378619923756,1003.56308906791],\"peerId\":\"neighbor-14\",\"source\":\"script\",\"speaking\":true,\"gesture\":\"open\"},{\"id\":\"neighbor-24\",\"position\":[709.3371228645657,571.5845266124096],\"peerId\":\"neighbor-17\",\"source\":\"script\",\"speaking\":true,\"gesture\":\"wave\"}]",
+            "cyclists": "[]",
+            "tagCast": "[]",
+            "petWalks": "[]",
+            "pickTargets": "[{\"id\":\"an\",\"x\":777.3760762473647,\"y\":438.59301773874915,\"depth\":0.9635669969534002},{\"id\":\"binh\",\"x\":562.3354432866005,\"y\":503.90600633886777,\"depth\":0.9570581264684471},{\"id\":\"chi\",\"x\":983.6413540624028,\"y\":396.99042042274704,\"depth\":0.9677129704201083},{\"id\":\"neighbor-1\",\"x\":-1340.7998584751115,\"y\":-34.42650095743125,\"depth\":1.010706514682384},{\"id\":\"neighbor-2\",\"x\":-560.3922045637347,\"y\":-214.29571768761735,\"depth\":1.0286316695561661},{\"id\":\"neighbor-3\",\"x\":-1151.9617328671638,\"y\":-38.52040238552985,\"depth\":1.0102618053154662},{\"id\":\"neighbor-4\",\"x\":-654.2417168704291,\"y\":-220.03149773811515,\"depth\":1.0269373983801726},{\"id\":\"neighbor-5\",\"x\":-1452.4334184007846,\"y\":-36.269109649950614,\"depth\":1.0108901428027794},{\"id\":\"neighbor-6\",\"x\":236.03768244945772,\"y\":-276.7191271758149,\"depth\":1.0334439339838764},{\"id\":\"neighbor-7\",\"x\":-1687.7298372009068,\"y\":-42.99331735106791,\"depth\":1.0115602544908002},{\"id\":\"neighbor-8\",\"x\":500.78122734514307,\"y\":-252.95517469487416,\"depth\":1.0311719689438568},{\"id\":\"neighbor-9\",\"x\":-1448.9840242539008,\"y\":-38.737880115850075,\"depth\":1.0102817851967203},{\"id\":\"neighbor-10\",\"x\":-1218.1541042674705,\"y\":-27.750198902908885,\"depth\":1.0100411771083009},{\"id\":\"neighbor-11\",\"x\":1479.523075290696,\"y\":-25.148747599415255,\"depth\":1.009781925312138},{\"id\":\"neighbor-12\",\"x\":-1414.5274197629547,\"y\":-31.674860844185503,\"depth\":1.010432295579841},{\"id\":\"neighbor-13\",\"x\":126.34321094655394,\"y\":-132.11015896750163,\"depth\":1.0204413360726092},{\"id\":\"neighbor-14\",\"x\":-1561.10437587519,\"y\":-35.289024229887964,\"depth\":1.0107924708205276},{\"id\":\"neighbor-15\",\"x\":252.60650318879644,\"y\":-115.93791068263813,\"depth\":1.0188296647681285},{\"id\":\"neighbor-16\",\"x\":-1715.321587363046,\"y\":-38.9217056721491,\"depth\":1.011154491507799},{\"id\":\"neighbor-17\",\"x\":352.5468427220046,\"y\":-102.11109912272401,\"depth\":1.0174517317169505},{\"id\":\"neighbor-18\",\"x\":1503.3126067143128,\"y\":-104.12235591947577,\"depth\":1.017652166734282},{\"id\":\"neighbor-19\",\"x\":989.7061641105917,\"y\":-190.19227925522313,\"depth\":1.0251714896732615},{\"id\":\"neighbor-20\",\"x\":1584.446777739217,\"y\":-86.43694872013216,\"depth\":1.0146639429709623},{\"id\":\"neighbor-21\",\"x\":4592.96828165602,\"y\":573.6104231474103,\"depth\":0.9505325320865321},{\"id\":\"neighbor-22\",\"x\":1520.3756062313716,\"y\":-21.007511764003905,\"depth\":1.0086528797738952},{\"id\":\"neighbor-23\",\"x\":-1588.654792981206,\"y\":-42.11519975815714,\"depth\":1.0105920626918516},{\"id\":\"neighbor-24\",\"x\":179.19700447694643,\"y\":-121.37004299925371,\"depth\":1.0178732788165648}]",
+            "selected": "an",
+            "vehicleView": "none",
+            "humanBatches": "12",
+            "crowdModels": "{\"batches\":12,\"instances\":19,\"modelIds\":[\"supplied/office\",\"supplied/waistcoat\",\"supplied/jacket\",\"supplied/leisure\",\"supplied/service\"],\"style\":\"same-approved-civilian-skins\",\"samples\":8,\"assignments\":{\"neighbor-1\":\"supplied/service\",\"neighbor-2\":\"supplied/waistcoat\",\"neighbor-3\":\"supplied/office\",\"neighbor-4\":\"supplied/office\",\"neighbor-5\":\"supplied/leisure\",\"neighbor-7\":\"supplied/waistcoat\",\"neighbor-8\":\"supplied/waistcoat\",\"neighbor-9\":\"supplied/office\",\"neighbor-10\":\"supplied/waistcoat\",\"neighbor-11\":\"supplied/jacket\",\"neighbor-12\":\"supplied/leisure\",\"neighbor-14\":\"supplied/jacket\",\"neighbor-16\":\"supplied/office\",\"neighbor-18\":\"supplied/leisure\",\"neighbor-19\":\"supplied/office\",\"neighbor-20\":\"supplied/leisure\",\"neighbor-21\":\"supplied/service\",\"neighbor-22\":\"supplied/jacket\",\"neighbor-23\":\"supplied/waistcoat\"}}",
+            "humanInstances": "19",
+            "modelActors": "{\"an\":{\"clip\":\"talk\",\"resolvedClip\":\"Talk\",\"leg\":[-0.006507190525480915,0.02300833054052832,0.010746765126119334,0.9996563310640948],\"position\":[804,1.9948255615434305,223],\"skinned\":true,\"height\":17.5,\"profile\":\"xom-supplied-v1\",\"modelId\":\"supplied/office\"},\"binh\":{\"clip\":\"listen\",\"resolvedClip\":\"Listen\",\"leg\":[-0.00709914849811102,0.023203330496519996,0.012916636081029317,0.9996221126289779],\"position\":[781.651676224131,1.9997728737374105,230.08575967227654],\"skinned\":true,\"height\":17.5,\"profile\":\"xom-supplied-v1\",\"modelId\":\"supplied/waistcoat\"},\"chi\":{\"clip\":\"holding-right\",\"resolvedClip\":\"Idle\",\"leg\":[-0.001597031766509463,0.0005480121531937474,-0.0010073320634546845,0.9999980672252975],\"position\":[828.5898733222175,2.0054424180405626,220.21484596128232],\"skinned\":true,\"height\":17.5,\"profile\":\"xom-supplied-v1\",\"modelId\":\"supplied/service\"},\"neighbor-17\":{\"clip\":\"listen\",\"resolvedClip\":\"Listen\",\"leg\":[-0.0046247235533470425,0.0012659644083308132,0.01454713573133692,0.9998826881730606],\"position\":[682.0695436181312,1.9986730581149652,561.9772264381301],\"skinned\":true,\"height\":17.5,\"profile\":\"xom-supplied-v1\",\"modelId\":\"supplied/waistcoat\"},\"neighbor-24\":{\"clip\":\"talk\",\"resolvedClip\":\"Talk\",\"leg\":[-0.012034588281363823,0.06704363575829211,0.009656211999610365,0.9976307318637624],\"position\":[709.3371228645657,-0.5036740688391983,571.5845266124096],\"skinned\":true,\"height\":17.5,\"profile\":\"xom-supplied-v1\",\"modelId\":\"supplied/office\"},\"neighbor-13\":{\"clip\":\"listen\",\"resolvedClip\":\"Listen\",\"leg\":[-0.001597031766509463,0.0005480121531937474,-0.0010073320634546845,0.9999980672252975],\"position\":[721,2.0054706266530395,543],\"skinned\":true,\"height\":17.5,\"profile\":\"xom-supplied-v1\",\"modelId\":\"supplied/jacket\"},\"neighbor-15\":{\"clip\":\"talk\",\"resolvedClip\":\"Talk\",\"leg\":[0.005249538403390361,0.0508852651859403,-0.0755536916509003,0.9958286859753681],\"position\":[700.9472121919316,1.9697794601181482,552.1250347807829],\"skinned\":true,\"height\":17.5,\"profile\":\"xom-supplied-v1\",\"modelId\":\"supplied/service\"},\"neighbor-6\":{\"clip\":\"listen\",\"resolvedClip\":\"Listen\",\"leg\":[-0.001597031766509463,0.0005480121531937474,-0.0010073320634546845,0.9999980672252975],\"position\":[721,0.7554706266530395,451],\"skinned\":true,\"height\":17.5,\"profile\":\"xom-supplied-v1\",\"modelId\":\"supplied/jacket\"}}",
+            "drawCalls": "68",
+            "camera": "748,42,312",
+            "shadowMap": "0",
+            "actorActivity": "[{\"id\":\"an\",\"kind\":\"work\",\"walking\":false,\"bicycle\":false,\"speaking\":false,\"activity\":\"Cùng xem cách sắp xếp dụng cụ\"},{\"id\":\"binh\",\"kind\":\"work\",\"walking\":false,\"bicycle\":false,\"speaking\":false,\"activity\":\"Cùng xem cách sắp xếp dụng cụ\"},{\"id\":\"chi\",\"kind\":\"work\",\"walking\":false,\"bicycle\":false,\"speaking\":false,\"activity\":\"Cùng xem cách sắp xếp dụng cụ\"},{\"id\":\"neighbor-1\",\"kind\":\"eat\",\"walking\":false,\"bicycle\":false,\"speaking\":false,\"activity\":\"Ăn trưa, nghỉ một lát\"},{\"id\":\"neighbor-2\",\"kind\":\"eat\",\"walking\":false,\"bicycle\":false,\"speaking\":false,\"activity\":\"Ăn trưa, nghỉ một lát\"},{\"id\":\"neighbor-3\",\"kind\":\"eat\",\"walking\":false,\"bicycle\":false,\"speaking\":false,\"activity\":\"Ăn trưa, nghỉ một lát\"},{\"id\":\"neighbor-4\",\"kind\":\"eat\",\"walking\":false,\"bicycle\":false,\"speaking\":false,\"activity\":\"Ăn trưa, nghỉ một lát\"},{\"id\":\"neighbor-5\",\"kind\":\"eat\",\"walking\":false,\"bicycle\":false,\"speaking\":false,\"activity\":\"Ăn trưa, nghỉ một lát\"},{\"id\":\"neighbor-6\",\"kind\":\"eat\",\"walking\":false,\"bicycle\":false,\"speaking\":false,\"activity\":\"Ăn trưa, nghỉ một lát\"},{\"id\":\"neighbor-7\",\"kind\":\"eat\",\"walking\":false,\"bicycle\":false,\"speaking\":false,\"activity\":\"Ăn trưa, nghỉ một lát\"},{\"id\":\"neighbor-8\",\"kind\":\"eat\",\"walking\":false,\"bicycle\":false,\"speaking\":true,\"activity\":\"Ăn trưa, nghỉ một lát\"},{\"id\":\"neighbor-9\",\"kind\":\"eat\",\"walking\":false,\"bicycle\":false,\"speaking\":false,\"activity\":\"Ăn trưa, nghỉ một lát\"},{\"id\":\"neighbor-10\",\"kind\":\"eat\",\"walking\":false,\"bicycle\":false,\"speaking\":false,\"activity\":\"Ăn trưa, nghỉ một lát\"},{\"id\":\"neighbor-11\",\"kind\":\"rest\",\"walking\":false,\"bicycle\":false,\"speaking\":false,\"activity\":\"Nghỉ tay sau bữa trưa: kiểm tra lại kết quả\"},{\"id\":\"neighbor-12\",\"kind\":\"eat\",\"walking\":false,\"bicycle\":false,\"speaking\":true,\"activity\":\"Ăn trưa, nghỉ một lát\"},{\"id\":\"neighbor-13\",\"kind\":\"eat\",\"walking\":false,\"bicycle\":false,\"speaking\":false,\"activity\":\"Ăn trưa, nghỉ một lát\"},{\"id\":\"neighbor-14\",\"kind\":\"eat\",\"walking\":false,\"bicycle\":false,\"speaking\":true,\"activity\":\"Ăn trưa, nghỉ một lát\"},{\"id\":\"neighbor-15\",\"kind\":\"eat\",\"walking\":false,\"bicycle\":false,\"speaking\":true,\"activity\":\"Ăn trưa, nghỉ một lát\"},{\"id\":\"neighbor-16\",\"kind\":\"eat\",\"walking\":false,\"bicycle\":false,\"speaking\":false,\"activity\":\"Ăn trưa, nghỉ một lát\"},{\"id\":\"neighbor-17\",\"kind\":\"eat\",\"walking\":false,\"bicycle\":false,\"speaking\":false,\"activity\":\"Ăn trưa, nghỉ một lát\"},{\"id\":\"neighbor-18\",\"kind\":\"rest\",\"walking\":false,\"bicycle\":false,\"speaking\":false,\"activity\":\"Nghỉ tay sau bữa trưa: chuẩn bị phần tiếp theo\"},{\"id\":\"neighbor-19\",\"kind\":\"rest\",\"walking\":false,\"bicycle\":false,\"speaking\":false,\"activity\":\"Nghỉ tay sau bữa trưa: làm một phần nhỏ\"},{\"id\":\"neighbor-20\",\"kind\":\"rest\",\"walking\":false,\"bicycle\":false,\"speaking\":false,\"activity\":\"Nghỉ tay sau bữa trưa: kiểm tra lại kết quả\"},{\"id\":\"neighbor-21\",\"kind\":\"rest\",\"walking\":false,\"bicycle\":false,\"speaking\":false,\"activity\":\"Nghỉ tay sau bữa trưa: làm một phần nhỏ\"},{\"id\":\"neighbor-22\",\"kind\":\"rest\",\"walking\":false,\"bicycle\":false,\"speaking\":false,\"activity\":\"Nghỉ tay sau bữa trưa: chuẩn bị phần tiếp theo\"},{\"id\":\"neighbor-23\",\"kind\":\"eat\",\"walking\":false,\"bicycle\":false,\"speaking\":false,\"activity\":\"Ăn trưa, nghỉ một lát\"},{\"id\":\"neighbor-24\",\"kind\":\"eat\",\"walking\":false,\"bicycle\":false,\"speaking\":true,\"activity\":\"Ăn trưa, nghỉ một lát\"}]"
+          },
+          "cameraControls": "select Bình → follow Bình; zoom exits follow; follow resumes",
+          "reloadAntiRepeat": true,
+          "contextualScreenshots": [
+            {
+              "scene": "market",
+              "caption": "An → Bình\nKịch bản\n\nBình, mình đang chọn rau cho bữa tối. Mua vừa một bữa thôi nhé?",
+              "realBrowserFrame": true
+            },
+            {
+              "scene": "garden",
+              "caption": "An → Bình\nKịch bản\n\nBình, sau khi thời tiết đổi, mình xem đất trong chậu trước nhé.",
+              "realBrowserFrame": true
+            },
+            {
+              "scene": "eat",
+              "caption": "An → Bình\nKịch bản\n\nBình, mình vừa pha một tách nước. Bạn muốn nghỉ tay một lát không?",
+              "realBrowserFrame": true
+            },
+            {
+              "scene": "read",
+              "caption": "An → Bình\nKịch bản\n\nBình, cuốn này có hình giải thích đúng phần mình đang tìm.",
+              "realBrowserFrame": true
+            }
+          ],
+          "indoorCamera": {
+            "venue": "Thư viện",
+            "modes": [
+              "wide",
+              "follow",
+              "overhead"
+            ],
+            "floorObserved": 1,
+            "visible": 3,
+            "renderedScreenshots": 3,
+            "fakeOutcomes": false,
+            "renderEvidence": [
+              {
+                "mode": "wide",
+                "renderedFrames": 11,
+                "drawCalls": 68,
+                "brightFraction": 0.268,
+                "materials": 26,
+                "actorSamples": 5
+              },
+              {
+                "mode": "follow",
+                "renderedFrames": 26,
+                "drawCalls": 68,
+                "brightFraction": 0.783,
+                "materials": 27,
+                "actorSamples": 10
+              },
+              {
+                "mode": "overhead",
+                "renderedFrames": 41,
+                "drawCalls": 56,
+                "brightFraction": 0.352,
+                "materials": 27,
+                "actorSamples": 16
+              }
+            ]
+          }
+        },
+        {
+          "viewport": "mobile",
+          "renderer": "Chromium SwiftShader",
+          "fixture": "synthetic-workshop-no-world-writes",
+          "first": "An → Bình\nKịch bản\n\nBình, mình đang phân vân nên bắt đầu từ đâu.",
+          "reply": "Bình → An\nKịch bản\n\nMình chia việc thành từng bước trước nhé?",
+          "fullDialogue": [
+            "An → Bình\nKịch bản\n\nBình, mình đang phân vân nên bắt đầu từ đâu.",
+            "Bình → An\nKịch bản\n\nMình chia việc thành từng bước trước nhé?",
+            "An → Bình\nKịch bản\n\nỪ. Chọn một phần nhỏ để thử trước cũng đỡ rối.",
+            "Bình → An\nKịch bản\n\nThử xong mình nhìn lại, chưa ổn thì sửa ngay phần đó.",
+            "An → Bình\nKịch bản\n\nVậy rõ hơn rồi. Không cần ôm hết một lúc.",
+            "Bình → An\nKịch bản\n\nĐúng thế. Mình quay lại việc đang làm nhé."
+          ],
+          "pollingCoveredSeconds": 24,
+          "activity60s": {
+            "samples": 61,
+            "visibleIds": 27,
+            "activeKinds": [
+              "eat",
+              "rest",
+              "work"
+            ],
+            "restExempt": true,
+            "worldWrites": false
+          },
+          "stats": {
+            "startedAt": "285.5",
+            "terrainMounds": "18",
+            "neighborhoodProps": "{\"placements\":562,\"plants\":388,\"trees\":94,\"smallTrees\":25,\"models\":[\"suburban/tree-small\",\"supplied/props/plant\",\"supplied/props/table\",\"supplied/props/chair\",\"supplied/props/chessboard\",\"supplied/props/book\",\"supplied/props/shelf\",\"supplied/props/books\",\"supplied/props/monitor\",\"supplied/props/keyboard\",\"supplied/props/mouse\",\"supplied/props/lamp\",\"suburban/tree-large\"]}",
+            "assetPlacements": "686",
+            "loadedAssets": "42",
+            "failedAssets": "0",
+            "streetProps": "66",
+            "buildings": "279",
+            "towers": "150",
+            "gardenPlots": "5",
+            "gardenPlants": "30",
+            "gardenBatches": "2",
+            "fountainStreams": "16",
+            "cloudLobes": "18",
+            "homeDoors": "60",
+            "assetActors": "8",
+            "assetCars": "3",
+            "transitFleet": "2",
+            "twoWheelFleet": "2",
+            "animalBatches": "5",
+            "renderState": "active",
+            "gardenStates": "[{\"id\":\"street-prop:0:0\",\"phase\":\"rest\",\"moisture\":64.98973544565837,\"x\":288,\"z\":318.2},{\"id\":\"street-prop:5:0\",\"phase\":\"bud\",\"moisture\":64.98973544565837,\"x\":784,\"z\":645.2},{\"id\":\"street-prop:6:0\",\"phase\":\"young\",\"moisture\":64.98973544565837,\"x\":185,\"z\":597.2},{\"id\":\"street-prop:10:0\",\"phase\":\"bud\",\"moisture\":64.98973544565837,\"x\":541,\"z\":370.2},{\"id\":\"street-prop:11:0\",\"phase\":\"bloom\",\"moisture\":64.98973544565837,\"x\":373,\"z\":464.2}]",
+            "gardenUpdates": "2",
+            "gardenStateError": "false",
+            "poseClock": "81.630",
+            "transitVehicles": "[{\"id\":\"service-bus-01\",\"type\":\"bus\",\"speed\":0,\"position\":[1170,1148]},{\"id\":\"service-metro-01\",\"type\":\"metro\",\"speed\":29,\"position\":[995.11326416011,1140]}]",
+            "twoWheelVehicles": "{\"signal\":\"green\",\"crossingX\":1710,\"vehicles\":[{\"id\":\"ambient-motorbike-01\",\"type\":\"motorbike\",\"speed\":18,\"position\":[1313.0960000002215,1132]},{\"id\":\"ambient-bicycle-01\",\"type\":\"bicycle\",\"speed\":9,\"position\":[1815.1419999999625,1124]}]}",
+            "animalModels": "{\"muop\":{\"modelId\":\"studio/articulated-feline\",\"travel\":281.00181158825757,\"position\":[603,1.8665826777606642,610]},\"cun\":{\"modelId\":\"gobkit-animal/corgi\",\"travel\":102.27199999997401,\"position\":[533.6691896191484,1.3615741707291231,429.9968319720323]}}",
+            "animalDraws": "{\"muop\":0,\"cun\":0}",
+            "animalPositions": "[{\"id\":\"muop\",\"species\":\"cat\",\"position\":[603,610]},{\"id\":\"cun\",\"species\":\"dog\",\"position\":[533.3470636339451,429.99683146908956]},{\"id\":\"se\",\"species\":\"bird\",\"position\":[829.5752185910051,581.9384984209885]}]",
+            "homeTargets": "[]",
+            "firstFrameMs": "1345.1",
+            "ready": "true",
+            "paused": "false",
+            "frame": "702",
+            "pixelRatio": "1",
+            "effectiveQuality": "eco",
+            "reducedMotion": "false",
+            "triangles": "251781",
+            "geometries": "73",
+            "textures": "53",
+            "walking": "false",
+            "position": "804.00,223.00",
+            "personHeight": "17.5",
+            "carLength": "44",
+            "actors": "27",
+            "exchanges": "5",
+            "socialCast": "[{\"id\":\"an\",\"position\":[804,223],\"peerId\":\"binh\",\"source\":\"script\",\"speaking\":true,\"gesture\":\"nod\"},{\"id\":\"binh\",\"position\":[781.651676224131,230.08575967227654],\"peerId\":\"an\",\"source\":\"script\",\"speaking\":false,\"gesture\":\"listen\"},{\"id\":\"neighbor-6\",\"position\":[721,451],\"peerId\":\"neighbor-8\",\"source\":\"script\",\"speaking\":false,\"gesture\":\"listen\"},{\"id\":\"neighbor-8\",\"position\":[696.5428213494599,447.75193678160525],\"peerId\":\"neighbor-6\",\"source\":\"script\",\"speaking\":true,\"gesture\":\"open\"},{\"id\":\"neighbor-9\",\"position\":[1114.0702583182804,1003.750374731767],\"peerId\":\"neighbor-12\",\"source\":\"script\",\"speaking\":false,\"gesture\":\"listen\"},{\"id\":\"neighbor-12\",\"position\":[1100,988],\"peerId\":\"neighbor-9\",\"source\":\"script\",\"speaking\":true,\"gesture\":\"nod\"},{\"id\":\"neighbor-13\",\"position\":[721,543],\"peerId\":\"neighbor-15\",\"source\":\"script\",\"speaking\":false,\"gesture\":\"listen\"},{\"id\":\"neighbor-14\",\"position\":[1124.7824235492537,986.091638817074],\"peerId\":\"neighbor-23\",\"source\":\"script\",\"speaking\":false,\"gesture\":\"listen\"},{\"id\":\"neighbor-15\",\"position\":[700.9472121919316,552.1250347807829],\"peerId\":\"neighbor-13\",\"source\":\"script\",\"speaking\":true,\"gesture\":\"wave\"},{\"id\":\"neighbor-23\",\"position\":[1138.8378619923756,1003.56308906791],\"peerId\":\"neighbor-14\",\"source\":\"script\",\"speaking\":true,\"gesture\":\"open\"}]",
+            "cyclists": "[]",
+            "tagCast": "[]",
+            "petWalks": "[]",
+            "pickTargets": "[{\"id\":\"an\",\"x\":221.81238526332908,\"y\":416.66940887078187,\"depth\":0.9819452053435386},{\"id\":\"binh\",\"x\":127.3518792458502,\"y\":445.12910461178956,\"depth\":0.9804612117572509},{\"id\":\"chi\",\"x\":325.6184311813462,\"y\":395.73694219667135,\"depth\":0.9830367014217911},{\"id\":\"neighbor-1\",\"x\":-2522.1207661199733,\"y\":-216.70603435416183,\"depth\":1.0149717388670065},{\"id\":\"neighbor-2\",\"x\":-5296.957410483625,\"y\":-2427.3486416732435,\"depth\":1.1302428043306236},{\"id\":\"neighbor-3\",\"x\":-2231.4477318173026,\"y\":-211.22299880397065,\"depth\":1.0141075204789518},{\"id\":\"neighbor-4\",\"x\":-4664.559600069443,\"y\":-1947.3488246477325,\"depth\":1.1010214074864735},{\"id\":\"neighbor-5\",\"x\":-2689.7753315446244,\"y\":-223.71697337611255,\"depth\":1.0153373151063703},{\"id\":\"neighbor-6\",\"x\":-5059.0400775178605,\"y\":-7467.480812982248,\"depth\":1.385052284368006},{\"id\":\"neighbor-7\",\"x\":-3087.833609255528,\"y\":-250.17467926827666,\"depth\":1.0167169175522},{\"id\":\"neighbor-8\",\"x\":-1186.3922029444407,\"y\":-4007.6242759888733,\"depth\":1.2083171632533556},{\"id\":\"neighbor-9\",\"x\":-2618.5851644401587,\"y\":-211.9860659213151,\"depth\":1.0141457211256037},{\"id\":\"neighbor-10\",\"x\":-2296.3668984696315,\"y\":-192.11578598275892,\"depth\":1.0136895125494634},{\"id\":\"neighbor-11\",\"x\":1161.8732426911993,\"y\":-182.86458572671623,\"depth\":1.013207120820108},{\"id\":\"neighbor-12\",\"x\":-2589.8222383734665,\"y\":-206.41959841570477,\"depth\":1.014435366127911},{\"id\":\"neighbor-13\",\"x\":-1059.6547110465162,\"y\":-808.2516649923042,\"depth\":1.0458171115601076},{\"id\":\"neighbor-14\",\"x\":-2822.6098563025193,\"y\":-219.97542117329917,\"depth\":1.0151422167637083},{\"id\":\"neighbor-15\",\"x\":-703.1518491504972,\"y\":-665.5165879711575,\"depth\":1.0383743777808958},{\"id\":\"neighbor-16\",\"x\":-3072.477738010649,\"y\":-233.9876104059567,\"depth\":1.0158728640320538},{\"id\":\"neighbor-17\",\"x\":-460.2582118982983,\"y\":-562.5481644335306,\"depth\":1.0330052241008778},{\"id\":\"neighbor-18\",\"x\":1606.622770877077,\"y\":-576.594595124922,\"depth\":1.0337376568452739},{\"id\":\"neighbor-19\",\"x\":1001.1935055904762,\"y\":-1491.6338967941513,\"depth\":1.0797962666104308},{\"id\":\"neighbor-20\",\"x\":1540.4960693978578,\"y\":-412.95459115416304,\"depth\":1.024206602332567},{\"id\":\"neighbor-21\",\"x\":1730.7376975986747,\"y\":471.01490866860763,\"depth\":0.9791987594852642},{\"id\":\"neighbor-22\",\"x\":1172.697470067003,\"y\":-153.35843044550555,\"depth\":1.0112107059271596},{\"id\":\"neighbor-23\",\"x\":-2835.5103569347557,\"y\":-223.98666460549137,\"depth\":1.0147464947921967},{\"id\":\"neighbor-24\",\"x\":-791.1067588591154,\"y\":-619.8430847805189,\"depth\":1.0345638488469195}]",
+            "selected": "an",
+            "vehicleView": "none",
+            "humanBatches": "11",
+            "crowdModels": "{\"batches\":11,\"instances\":19,\"modelIds\":[\"supplied/office\",\"supplied/leisure\",\"supplied/waistcoat\",\"supplied/jacket\",\"supplied/service\"],\"style\":\"same-approved-civilian-skins\",\"samples\":8,\"assignments\":{\"neighbor-1\":\"supplied/service\",\"neighbor-2\":\"supplied/waistcoat\",\"neighbor-3\":\"supplied/office\",\"neighbor-4\":\"supplied/office\",\"neighbor-5\":\"supplied/leisure\",\"neighbor-7\":\"supplied/waistcoat\",\"neighbor-9\":\"supplied/office\",\"neighbor-10\":\"supplied/waistcoat\",\"neighbor-11\":\"supplied/jacket\",\"neighbor-12\":\"supplied/leisure\",\"neighbor-14\":\"supplied/jacket\",\"neighbor-16\":\"supplied/office\",\"neighbor-17\":\"supplied/waistcoat\",\"neighbor-18\":\"supplied/leisure\",\"neighbor-20\":\"supplied/leisure\",\"neighbor-21\":\"supplied/service\",\"neighbor-22\":\"supplied/jacket\",\"neighbor-23\":\"supplied/waistcoat\",\"neighbor-24\":\"supplied/office\"}}",
+            "humanInstances": "19",
+            "modelActors": "{\"an\":{\"clip\":\"talk\",\"resolvedClip\":\"Talk\",\"leg\":[-0.012328004151474576,0.07759989840919104,0.006135050664945505,0.9968894809525592],\"position\":[804,1.9924022126252927,223],\"skinned\":true,\"height\":17.5,\"profile\":\"xom-supplied-v1\",\"modelId\":\"supplied/office\"},\"binh\":{\"clip\":\"listen\",\"resolvedClip\":\"Listen\",\"leg\":[-0.0026141848594029155,0.0006480775076037541,0.007683526971152068,0.9999668541738513],\"position\":[781.651676224131,1.9958433816207115,230.08575967227654],\"skinned\":true,\"height\":17.5,\"profile\":\"xom-supplied-v1\",\"modelId\":\"supplied/waistcoat\"},\"chi\":{\"clip\":\"holding-right\",\"resolvedClip\":\"Idle\",\"leg\":[0.000314376103413668,0.0007621532566599075,-0.00029162063677678617,0.9999996176236684],\"position\":[828.5898733222175,2.0025645011071127,220.21484596128232],\"skinned\":true,\"height\":17.5,\"profile\":\"xom-supplied-v1\",\"modelId\":\"supplied/service\"},\"neighbor-13\":{\"clip\":\"listen\",\"resolvedClip\":\"Listen\",\"leg\":[0.000314376103413668,0.0007621532566599075,-0.00029162063677678617,0.9999996176236684],\"position\":[721,2.002577795770121,543],\"skinned\":true,\"height\":17.5,\"profile\":\"xom-supplied-v1\",\"modelId\":\"supplied/jacket\"},\"neighbor-15\":{\"clip\":\"talk\",\"resolvedClip\":\"Talk\",\"leg\":[0.0050300703676608004,0.060838414661802516,-0.08050643672972776,0.9948829576078875],\"position\":[700.9472121919316,1.9727378500154609,552.1250347807829],\"skinned\":true,\"height\":17.5,\"profile\":\"xom-supplied-v1\",\"modelId\":\"supplied/service\"},\"neighbor-6\":{\"clip\":\"listen\",\"resolvedClip\":\"Listen\",\"leg\":[0.000314376103413668,0.0007621532566599075,-0.00029162063677678617,0.9999996176236684],\"position\":[721,0.752577795770121,451],\"skinned\":true,\"height\":17.5,\"profile\":\"xom-supplied-v1\",\"modelId\":\"supplied/jacket\"},\"neighbor-8\":{\"clip\":\"talk\",\"resolvedClip\":\"Talk\",\"leg\":[-0.012328004151474576,0.07759989840919104,0.006135050664945505,0.9968894809525592],\"position\":[696.5428213494599,0.7570272997103713,447.75193678160525],\"skinned\":true,\"height\":17.5,\"profile\":\"xom-supplied-v1\",\"modelId\":\"supplied/waistcoat\"},\"neighbor-19\":{\"clip\":\"sit\",\"resolvedClip\":\"Sit\",\"leg\":[-0.4123207926750183,0,0,0.9110387563705444],\"position\":[633,0.9718120427969478,449],\"skinned\":true,\"height\":17.5,\"profile\":\"xom-supplied-v1\",\"modelId\":\"supplied/office\"}}",
+            "drawCalls": "60",
+            "camera": "696,73,404",
+            "shadowMap": "0",
+            "actorActivity": "[{\"id\":\"an\",\"kind\":\"work\",\"walking\":false,\"bicycle\":false,\"speaking\":true,\"activity\":\"Cùng xem cách sắp xếp dụng cụ\"},{\"id\":\"binh\",\"kind\":\"work\",\"walking\":false,\"bicycle\":false,\"speaking\":false,\"activity\":\"Cùng xem cách sắp xếp dụng cụ\"},{\"id\":\"chi\",\"kind\":\"work\",\"walking\":false,\"bicycle\":false,\"speaking\":false,\"activity\":\"Cùng xem cách sắp xếp dụng cụ\"},{\"id\":\"neighbor-1\",\"kind\":\"eat\",\"walking\":false,\"bicycle\":false,\"speaking\":false,\"activity\":\"Ăn trưa, nghỉ một lát\"},{\"id\":\"neighbor-2\",\"kind\":\"eat\",\"walking\":false,\"bicycle\":false,\"speaking\":false,\"activity\":\"Ăn trưa, nghỉ một lát\"},{\"id\":\"neighbor-3\",\"kind\":\"eat\",\"walking\":false,\"bicycle\":false,\"speaking\":false,\"activity\":\"Ăn trưa, nghỉ một lát\"},{\"id\":\"neighbor-4\",\"kind\":\"eat\",\"walking\":false,\"bicycle\":false,\"speaking\":false,\"activity\":\"Ăn trưa, nghỉ một lát\"},{\"id\":\"neighbor-5\",\"kind\":\"eat\",\"walking\":false,\"bicycle\":false,\"speaking\":false,\"activity\":\"Ăn trưa, nghỉ một lát\"},{\"id\":\"neighbor-6\",\"kind\":\"eat\",\"walking\":false,\"bicycle\":false,\"speaking\":false,\"activity\":\"Ăn trưa, nghỉ một lát\"},{\"id\":\"neighbor-7\",\"kind\":\"eat\",\"walking\":false,\"bicycle\":false,\"speaking\":false,\"activity\":\"Ăn trưa, nghỉ một lát\"},{\"id\":\"neighbor-8\",\"kind\":\"eat\",\"walking\":false,\"bicycle\":false,\"speaking\":true,\"activity\":\"Ăn trưa, nghỉ một lát\"},{\"id\":\"neighbor-9\",\"kind\":\"eat\",\"walking\":false,\"bicycle\":false,\"speaking\":true,\"activity\":\"Ăn trưa, nghỉ một lát\"},{\"id\":\"neighbor-10\",\"kind\":\"eat\",\"walking\":false,\"bicycle\":false,\"speaking\":false,\"activity\":\"Ăn trưa, nghỉ một lát\"},{\"id\":\"neighbor-11\",\"kind\":\"rest\",\"walking\":false,\"bicycle\":false,\"speaking\":false,\"activity\":\"Nghỉ tay sau bữa trưa: kiểm tra lại kết quả\"},{\"id\":\"neighbor-12\",\"kind\":\"eat\",\"walking\":false,\"bicycle\":false,\"speaking\":false,\"activity\":\"Ăn trưa, nghỉ một lát\"},{\"id\":\"neighbor-13\",\"kind\":\"eat\",\"walking\":false,\"bicycle\":false,\"speaking\":false,\"activity\":\"Ăn trưa, nghỉ một lát\"},{\"id\":\"neighbor-14\",\"kind\":\"eat\",\"walking\":false,\"bicycle\":false,\"speaking\":true,\"activity\":\"Ăn trưa, nghỉ một lát\"},{\"id\":\"neighbor-15\",\"kind\":\"eat\",\"walking\":false,\"bicycle\":false,\"speaking\":true,\"activity\":\"Ăn trưa, nghỉ một lát\"},{\"id\":\"neighbor-16\",\"kind\":\"eat\",\"walking\":false,\"bicycle\":false,\"speaking\":false,\"activity\":\"Ăn trưa, nghỉ một lát\"},{\"id\":\"neighbor-17\",\"kind\":\"eat\",\"walking\":false,\"bicycle\":false,\"speaking\":false,\"activity\":\"Ăn trưa, nghỉ một lát\"},{\"id\":\"neighbor-18\",\"kind\":\"rest\",\"walking\":false,\"bicycle\":false,\"speaking\":false,\"activity\":\"Nghỉ tay sau bữa trưa: chuẩn bị phần tiếp theo\"},{\"id\":\"neighbor-19\",\"kind\":\"rest\",\"walking\":false,\"bicycle\":false,\"speaking\":false,\"activity\":\"Nghỉ tay sau bữa trưa: làm một phần nhỏ\"},{\"id\":\"neighbor-20\",\"kind\":\"rest\",\"walking\":false,\"bicycle\":false,\"speaking\":false,\"activity\":\"Nghỉ tay sau bữa trưa: kiểm tra lại kết quả\"},{\"id\":\"neighbor-21\",\"kind\":\"rest\",\"walking\":false,\"bicycle\":false,\"speaking\":false,\"activity\":\"Nghỉ tay sau bữa trưa: làm một phần nhỏ\"},{\"id\":\"neighbor-22\",\"kind\":\"rest\",\"walking\":false,\"bicycle\":false,\"speaking\":false,\"activity\":\"Nghỉ tay sau bữa trưa: chuẩn bị phần tiếp theo\"},{\"id\":\"neighbor-23\",\"kind\":\"eat\",\"walking\":false,\"bicycle\":false,\"speaking\":false,\"activity\":\"Ăn trưa, nghỉ một lát\"},{\"id\":\"neighbor-24\",\"kind\":\"eat\",\"walking\":false,\"bicycle\":false,\"speaking\":false,\"activity\":\"Ăn trưa, nghỉ một lát\"}]"
+          },
+          "cameraControls": "select Bình → follow Bình; zoom exits follow; follow resumes",
+          "reloadAntiRepeat": true,
+          "contextualScreenshots": [
+            {
+              "scene": "market",
+              "caption": "An → Bình\nKịch bản\n\nBình, mình đang chọn rau cho bữa tối. Mua vừa một bữa thôi nhé?",
+              "realBrowserFrame": true
+            },
+            {
+              "scene": "garden",
+              "caption": "An → Bình\nKịch bản\n\nBình, sau khi thời tiết đổi, mình xem đất trong chậu trước nhé.",
+              "realBrowserFrame": true
+            },
+            {
+              "scene": "eat",
+              "caption": "An → Bình\nKịch bản\n\nBình, mình vừa pha một tách nước. Bạn muốn nghỉ tay một lát không?",
+              "realBrowserFrame": true
+            },
+            {
+              "scene": "read",
+              "caption": "An → Bình\nKịch bản\n\nBình, cuốn này có hình giải thích đúng phần mình đang tìm.",
+              "realBrowserFrame": true
+            }
+          ],
+          "indoorCamera": {
+            "venue": "Thư viện",
+            "modes": [
+              "wide",
+              "follow",
+              "overhead"
+            ],
+            "floorObserved": 1,
+            "visible": 3,
+            "renderedScreenshots": 3,
+            "fakeOutcomes": false,
+            "renderEvidence": [
+              {
+                "mode": "wide",
+                "renderedFrames": 11,
+                "drawCalls": 68,
+                "brightFraction": 0.358,
+                "materials": 26,
+                "actorSamples": 5
+              },
+              {
+                "mode": "follow",
+                "renderedFrames": 27,
+                "drawCalls": 68,
+                "brightFraction": 0.816,
+                "materials": 27,
+                "actorSamples": 9
+              },
+              {
+                "mode": "overhead",
+                "renderedFrames": 43,
+                "drawCalls": 56,
+                "brightFraction": 0.47,
+                "materials": 27,
+                "actorSamples": 14
+              }
+            ]
+          }
+        }
+      ],
+      "systemBudgets": {
+        "legacy": false,
+        "source": "36310678bb420f50208986b04513720e6baaa513",
+        "transport": "intercepted API, synthetic fixture, no D1 writes",
+        "clock": "Playwright30s warm-up +60s steady foreground",
+        "cases": [
+          {
+            "viewport": "desktop",
+            "worldGetsPerSimulatedMinute": 5,
+            "pulsePostsPerSimulatedMinute": 1,
+            "ctrlHChangedHud": false,
+            "retryBurst": 25,
+            "maxPendingWorldReads": 1,
+            "forcedWorldReads": 1,
+            "retrySize": {
+              "x": 862.2421875,
+              "y": 107,
+              "width": 44,
+              "height": 44
+            },
+            "cachedStateExplained": true,
+            "pageErrors": []
+          },
+          {
+            "viewport": "mobile",
+            "worldGetsPerSimulatedMinute": 5,
+            "pulsePostsPerSimulatedMinute": 1,
+            "ctrlHChangedHud": false,
+            "retryBurst": 25,
+            "maxPendingWorldReads": 1,
+            "forcedWorldReads": 1,
+            "retrySize": {
+              "x": 316,
+              "y": 107,
+              "width": 44,
+              "height": 44
+            },
+            "cachedStateExplained": true,
+            "pageErrors": []
+          }
+        ]
+      },
+      "nativeInteriorCases": 10,
+      "eveningCases": 16,
+      "uiReview": {
+        "production": false,
+        "source": "36310678bb420f50208986b04513720e6baaa513",
+        "renderer": "Chromium SwiftShader",
+        "axe": "4.11.0",
+        "fixture": "Synthetic world; intercepted API writes; no remote D1",
+        "cases": [
+          {
+            "scene": "city",
+            "viewport": "desktop",
+            "a11y": {
+              "version": "4.11.0",
+              "violations": [],
+              "incomplete": 2
+            },
+            "pageErrors": []
+          },
+          {
+            "scene": "interior",
+            "viewport": "desktop",
+            "a11y": {
+              "version": "4.11.0",
+              "violations": [],
+              "incomplete": 2
+            },
+            "pageErrors": []
+          },
+          {
+            "scene": "render-budget",
+            "viewport": "desktop",
+            "cityDrawsBehindModal": 0,
+            "offscreenInteriorDraws": 0,
+            "cameraAndFloorKeepCanvas": true,
+            "pixelsCapped": true
+          },
+          {
+            "scene": "studio",
+            "viewport": "desktop",
+            "a11y": {
+              "version": "4.11.0",
+              "violations": [],
+              "incomplete": 2
+            },
+            "pageErrors": []
+          },
+          {
+            "scene": "assets",
+            "viewport": "desktop",
+            "a11y": {
+              "version": "4.11.0",
+              "violations": [],
+              "incomplete": 1
+            },
+            "pageErrors": []
+          },
+          {
+            "scene": "write-isolation",
+            "viewport": "desktop",
+            "interceptedPulsePosts": 2,
+            "remoteWrites": 0
+          },
+          {
+            "scene": "city",
+            "viewport": "mobile",
+            "a11y": {
+              "version": "4.11.0",
+              "violations": [],
+              "incomplete": 2
+            },
+            "pageErrors": []
+          },
+          {
+            "scene": "interior",
+            "viewport": "mobile",
+            "a11y": {
+              "version": "4.11.0",
+              "violations": [],
+              "incomplete": 2
+            },
+            "pageErrors": []
+          },
+          {
+            "scene": "render-budget",
+            "viewport": "mobile",
+            "cityDrawsBehindModal": 0,
+            "offscreenInteriorDraws": 0,
+            "cameraAndFloorKeepCanvas": true,
+            "pixelsCapped": true
+          },
+          {
+            "scene": "studio",
+            "viewport": "mobile",
+            "a11y": {
+              "version": "4.11.0",
+              "violations": [],
+              "incomplete": 2
+            },
+            "pageErrors": []
+          },
+          {
+            "scene": "assets",
+            "viewport": "mobile",
+            "a11y": {
+              "version": "4.11.0",
+              "violations": [],
+              "incomplete": 1
+            },
+            "pageErrors": []
+          },
+          {
+            "scene": "write-isolation",
+            "viewport": "mobile",
+            "interceptedPulsePosts": 2,
+            "remoteWrites": 0
+          },
+          {
+            "scene": "city",
+            "viewport": "compact",
+            "a11y": {
+              "version": "4.11.0",
+              "violations": [],
+              "incomplete": 2
+            },
+            "pageErrors": []
+          },
+          {
+            "scene": "interior",
+            "viewport": "compact",
+            "a11y": {
+              "version": "4.11.0",
+              "violations": [],
+              "incomplete": 2
+            },
+            "pageErrors": []
+          },
+          {
+            "scene": "render-budget",
+            "viewport": "compact",
+            "cityDrawsBehindModal": 0,
+            "offscreenInteriorDraws": 0,
+            "cameraAndFloorKeepCanvas": true,
+            "pixelsCapped": true
+          },
+          {
+            "scene": "studio",
+            "viewport": "compact",
+            "a11y": {
+              "version": "4.11.0",
+              "violations": [],
+              "incomplete": 2
+            },
+            "pageErrors": []
+          },
+          {
+            "scene": "write-isolation",
+            "viewport": "compact",
+            "interceptedPulsePosts": 1,
+            "remoteWrites": 0
+          },
+          {
+            "scene": "city",
+            "viewport": "landscape",
+            "a11y": {
+              "version": "4.11.0",
+              "violations": [],
+              "incomplete": 2
+            },
+            "pageErrors": []
+          },
+          {
+            "scene": "interior",
+            "viewport": "landscape",
+            "a11y": {
+              "version": "4.11.0",
+              "violations": [],
+              "incomplete": 1
+            },
+            "pageErrors": []
+          },
+          {
+            "scene": "render-budget",
+            "viewport": "landscape",
+            "cityDrawsBehindModal": 0,
+            "offscreenInteriorDraws": 0,
+            "cameraAndFloorKeepCanvas": true,
+            "pixelsCapped": true
+          },
+          {
+            "scene": "studio",
+            "viewport": "landscape",
+            "a11y": {
+              "version": "4.11.0",
+              "violations": [],
+              "incomplete": 2
+            },
+            "pageErrors": []
+          },
+          {
+            "scene": "write-isolation",
+            "viewport": "landscape",
+            "interceptedPulsePosts": 1,
+            "remoteWrites": 0
+          }
+        ]
+      },
+      "manualReview": [
+        "CI city-mobile and studio-mobile screenshots opened and reviewed; this is synthetic loopback QA, not authenticated remote or hardware GPU acceptance"
+      ],
+      "preservedScreenshot": "docs/screenshots/system-budgets-2026-11-16/ci-studio-mobile.png"
     }
   },
   "limits": [
@@ -651,11 +1217,17 @@
     "platformCheckId": 133423181863,
     "platformReportedVersion": "41ac37f1-33c6-448e-beca-3dab29905f6f",
     "deploymentGateConclusion": "success",
-    "browserConclusion": "in_progress",
+    "browserConclusion": "success",
     "deployGateRun": "https://github.com/qualife1291/AI-Living/actions/runs/43902428413",
     "browserRun": "https://github.com/qualife1291/AI-Living/actions/runs/43902310672",
     "nativeTrafficEnvD1CronQuotaReadback": false,
     "actionUpload": "skipped: scoped token absent; independently confirmed exact-source Cloudflare App version",
-    "pipeline": "Cloudflare App and deploy gate success; full browser CI running"
+    "pipeline": "Cloudflare App exact-source version and both GitHub gates successful",
+    "browserArtifact": {
+      "id": 14245675351,
+      "name": "qa-contextual-social-36310678bb420f50208986b04513720e6baaa513",
+      "size_in_bytes": 20854963,
+      "expired": false
+    }
   }
 }
