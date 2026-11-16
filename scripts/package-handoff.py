@@ -129,18 +129,16 @@ for f in files:
         }
     )
 
-(root / 'TRANSFER_MANIFEST.json').write_text(
-    json.dumps(manifest, ensure_ascii=False, indent=2) + '\n',
-    encoding='utf-8',
-)
+manifest_bytes = (json.dumps(manifest, ensure_ascii=False, indent=2) + '\n').encode('utf-8')
 
 with zipfile.ZipFile(out, 'w', zipfile.ZIP_DEFLATED, compresslevel=9) as z:
     for f in files:
         z.write(root / f, 'xom-ai/' + f)
-    z.write(root / 'TRANSFER_MANIFEST.json', 'xom-ai/TRANSFER_MANIFEST.json')
+    z.writestr('xom-ai/TRANSFER_MANIFEST.json', manifest_bytes)
 
 with zipfile.ZipFile(out) as z:
     assert z.testzip() is None
+    assert json.loads(z.read('xom-ai/TRANSFER_MANIFEST.json')) == manifest
     for name in required:
         assert 'xom-ai/' + name in z.namelist(), f'Missing required file: {name}'
     for entry in manifest['files']:

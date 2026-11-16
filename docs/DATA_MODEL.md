@@ -1,6 +1,6 @@
 # Mô hình dữ liệu hiện hành
 
-Nguồn: db/schema.ts, lib/world.ts, lib/event-schema.ts, lib/living/schema.ts. Source có23bảng; số bảng/migration production phải xác minh live, không suy ra từ schema local.
+Nguồn: db/schema.ts, lib/world.ts, lib/event-schema.ts, lib/living/schema.ts. Source có24bảng; số bảng/migration production phải xác minh live, không suy ra từ schema local.
 
 ## D1 và migration append-only
 
@@ -29,12 +29,13 @@ Nguồn: db/schema.ts, lib/world.ts, lib/event-schema.ts, lib/living/schema.ts. 
 | ground_shared_batches | Operation/sequence/source lifecycle receipt; world/source/state CAS và postassert | 0010 |
 | ground_authority_states | GND3 local checkpoint: epoch/plan/window/contact/utterance, bind exact shared parent, protocol SHA | 0011 |
 | ground_authority_batches | Immutable operation/sequence/records receipt, CAS cùng shared head; không cấp reward/P2P | 0011 |
+| peer_offers | Journal H5b1 trước publication, exact world/shared/authority CAS; chưa app importer hoặc live migration | 0012 |
 
 0004 là reconciliation schema cho lịch sử0000–0003; không đăng ký lại các SQL đã áp dụng hoặc sửa migration cũ. Dùng setup-local.mjs/Drizzle journal. Backup trước migration/repair production. memories/commitments có schema nhưng luồng sống vẫn giữ nhiều dữ liệu trong snapshot; không coi các bảng đó đã được khai thác đầy đủ.
 
 ## Domain
 
-Core event API giữ ba ID an/binh/chi. LivingState có NPC neighbor-ID riêng, tối đa240theo catalog; renderer có budget hiển thị riêng. Có33 địa điểm và41 scenario trong data/city; Gemini ghi32 scenario là số cũ trước9 actions mới.
+Core event API giữ ba ID an/binh/chi. LivingState có NPC neighbor-ID riêng, tối đa240theo catalog; renderer có budget hiển thị riêng. Có33 địa điểm và41 scenario trong data/city; QA có catalog riêng; xem [Learning](LEARNING.md), không cộng candidate offline vào số action live.
 
 STEP_KINDS có16 giá trị: work,eat,rest,social,garden,read,play,drink,run,jump,tag,cycle,exercise,walk-pet,shop,study. Plan lưu createdAt/pausedMs/from/originPath/simStartedAt/steps/transport/generator; originPath giữ chuyển tiếp liên tục từ vị trí projection cũ. Render ground có thể chậm hơn projection khi bị cản.
 

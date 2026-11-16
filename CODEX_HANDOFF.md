@@ -1,18 +1,27 @@
 # Context tiếp nhận — 16/11/2026
 
-Đọc [AGENTS](AGENTS.md), file này rồi [ROADMAP](ROADMAP.md). ROADMAP là backlog duy nhất; mở tài liệu chủ đề khi cần contract. Lịch sử test, SHA và lỗi đã xử lý nằm trong validation/Git, không chép lại vào handoff.
+Đọc [AGENTS](AGENTS.md) → file này → [ROADMAP](ROADMAP.md). Chỉ mở tài liệu đúng chủ đề từ [README](README.md); ROADMAP là backlog duy nhất.
 
-| Phần | Trạng thái cần giữ |
+## Đang làm
+
+Review ZIP skill mới và dọn source/tài liệu. Đã chọn6skill, bỏ UI starter không có đường import, dependency chỉ phục vụ chúng và ngoại lệ lint cũ. Đang chốt kiểm tra/đóng gói; bản QA đã xác minh trước cleanup là54ca2ec. Không thay renderer, schema, hành vi học hoặc dữ liệu thật.
+
+## Trạng thái nền
+
+| Phần | Context cần giữ |
 |---|---|
-| WIP |16/11 learning/D1: dirty-policy writer, archive prefilter, personal-wake nap; QA masks thiếu tiền trước UCB và book fare ở cả learning-first/tick-first cùng CAS. Local100suite/type/lint/build/assets, compiled learning/mobility/diagnostics/legacy/progress đạt; chờ QA release/CI và native post-deploy observation. Giữ41/H6, policy/history, không migration. Skills3 đã chọn từ ZIP. [Evidence](docs/validation/learning-repair-2026-11-16.json). |
-| Git | `work` có UI/UX bcd0652 và fixture935a8cc; QA f133a88 đã push. `main` vẫn402df57. QA hosting/auth/Cron/103day-action wrapper riêng, không merge ngược vào work/main. Fetch explicit refs trước push. |
-| Live và học | lifeScheduleVersion1 nhận ở turn unpaused:9night action, bedtime22:45–00:45/wake06–07h theo ID;12–90phút đi chơi/60phút nap/đêm đến wake. Sau22h người còn ăn uống/đi dạo vẫn trò chuyện, ngủ/nhà riêng/rạp phim yên lặng. Lịch dùng giờ mô phỏng/daylight, provider context lưu nguyên; chỉ hồi thể lực theo đoạn plan ngủ sau travel+30s. QA103day+9night=112runtime;41legacy/H6 và96shadow không đổi. Own LinUCB9namespace lưu/settle/CAS đã test, chưa quality gain hoặc H6promote. [Learning](docs/LEARNING.md#đời-sống-tối-và-giấc-ngủ). |
-| Ground/P2P | GND1–3 có local journal/replay/receipt; H3b/H5a chỉ offline. H5b1 thêm `peer-offer-store.ts`: durable pre-publication journal/CAS và verifier đọc receipt thật từ D1; chưa app/API/pulse import, inbox hoặc P2P live. Migration0012 chỉ fixture, source24table không là schema live. [Contract](docs/LEARNING.md#h5b1--journal-và-đối-chiếu-receipt-bền-vững). |
-| Đồ họa | Giữ5supplied rig/phố/Studio/phòng và night bed/sofa/TV/fridge/rạp/patio. Camera/focus/tầng giữ canvas, chọn địa điểm đưa phòng vào vùng nhìn; modal/scroll/tab nền ngừng GPU draws. Studio30Hz, viewport thấp/reduced-motion/retry; OSM/gallery vẽ theo thay đổi. Race IO lấy trạng thái mới nhất/root dialog đã có unit. Không physical receipt từ animation. [Renderer](docs/RENDERING.md), [UI evidence](docs/validation/ui-review-2026-11-05.json), [ảnh thực](docs/screenshots/ui-review/manifest.json). |
-| QA | f133a88:98/98suite/type/lint(1warningcũ),22UI/perf/isolation/14axe audit không violations; Cloudflare exact version và CI trong evidence. Regression đồ họa134f1ba:16night/8Studio/10native/10interaction/6G0 đạt; f133 chỉ sửa padding guidance mobile và held-ACK fixture. Current-source social2viewport đủ6lượt/4context/vehicle, OSM idle/wheel/modal và compiled9arm+12reader đạt. Cloudflare App báo versiona59d61e1-9d58-41c5-aac4-44cd5be52065; CI contextual-social/qa-deploy cùng source đều success; xem JSON. Chưa authenticated traffic/env/D1/Cron readback/GPU/24h. H6/scorer/canary OFF theo source. |
-| Production | Sites A: [ledger](docs/releases/latest.json) là readback lịch sử version11; [candidate](docs/releases/candidate.json) là gói77d1d1f chưa deploy. Source24table đến0012 không là schema live. Phiên này không migrate/deploy Sites A. Backup full DB/schema và readback trước cutover; giữ ID/born/history/memory/policy. [Runbook](docs/PRODUCTION_RUNBOOK.md). |
-| Asset nguồn | Canonical/derivative/license giữ trong app; ZIP gốc thuộc vault ngoài app, phải kiểm tồn tại/hash theo [registry](data/assets/source-archives.json). Chưa có bằng chứng backup ngoài workspace thành công. [ASSETS](docs/ASSETS.md). |
+| Git/release | Làm trên `work`; QA hosting/auth/Cron/catalog nằm riêng ở `cloudflare-qa`, không merge ngược. `main`402df57. Fetch trước push. Push không tự chứng minh đã deploy hoặc migrate. |
+| QA đã xác minh |54ca2ec:100suite, compiled API và browser desktop/mobile CI đạt; Cloudflare App báo version5ae13157-c603-4810-86ad-0b503f98e356. Action upload skip vì thiếu scoped token; App là kênh phát hành. Exact nguồn/phạm vi ở [learning evidence](docs/validation/learning-repair-2026-11-16.json). |
+| Live/learning | LinUCB cá nhân học outcome theo plan;9night action và giờ ngủ riêng theo simulation clock. QA103day+9night;41legacy/96shadow không đổi. H6/scorer/canary OFF, chưa quality gain. Đã sửa dirty-policy writes, archive replay, wake/nap; QA lọc thiếu tiền trước scoring và book fare ở cả learning-first/tick-first. [Contract](docs/LEARNING.md). |
+| Ground/P2P | GND1–3 có local journal/replay/receipt. H3b/H5a offline; H5b1 journal/verifier có test nhưng chưa app/API/pulse/importer hoặc P2P live.0012 chỉ được kiểm fixture. [H5b1](docs/LEARNING.md#h5b1--journal-và-đối-chiếu-receipt-bền-vững). |
+| Đồ họa |5supplied skin dùng chung city/Studio/phòng; bed/sofa/dining/cinema/fridge/TV có contact trình bày. Camera/floor giữ canvas, visibility gating, Studio30Hz/OSM on-demand đã có proof. Animation không cấp physical receipt. [Renderer](docs/RENDERING.md), [UI evidence](docs/validation/ui-review-2026-11-05.json). |
+| Sites A | [latest.json](docs/releases/latest.json) là readback lịch sử version11; [candidate](docs/releases/candidate.json)77d1d1f chưa deploy.24table source không là schema live. Backup/readback theo [runbook](docs/PRODUCTION_RUNBOOK.md) trước cutover. |
 
-Công việc tiếp theo: authenticated QA hiện hành/traffic/env/D1/Cron, GPU/mobile/soak cả phố+phòng; nightly planner/speed/pause/nhu cầu cần quan sát dài thật. Dùng audit-qa-window cho snapshot/log aggregate, không tự chứng minh native provenance. H5b2 producer trước choice → inbox/consumption CAS/quota/TTL/clock fence → privacy/evaluation; H5b1 vẫn chưa runtime/P2P live. H2/H3b/H4/H6/H10 chưa đạt promotion gates, không bật model thất bại hoặc retune holdout đã xem. Giữ ID/born/memory/home/petOwners/policy; không reset DB hoặc tự resume pause.
+## Việc tiếp theo và giới hạn
 
-Animal pending giữ qua pulse ngắn/clock chậm;51human/9animal có sample sau16slot **simulation**, không chứng minh physical productive effect hoặc quality gain. Ground252body/legacy246, city viewer72human/≤8human skeleton; phòng có budget riêng. Study init24/3 và cohort cũ giữ nguyên. Lint còn1warning H6 có sẵn. Preview5342 đã dừng; fixture `/tmp/ai-living-ui-final` giữ nguyên, chỉ local. Không DB người dùng. Logs `/tmp/ai-living-ui-*`, raw ảnh/metrics QAworktree `work/ui-review` (source theo JSON). Docs/evidence hậu release chỉ push work, không redeploy chỉ vì tài liệu.
+1. Nghiệm thu source QA mới: native traffic/env/D1/Cron/quota và authenticated API/browser; phiên trước chỉ có Access302. Snapshot read-only07:35 có52.827experience=memory=sumPolicySamples/105policy. Cần đo cohort/UTC window sau fix, không suy intelligence gain từ sample tăng.
+2. GPU/mobile/soak và nightly behavior qua speed/pause theo P0 của ROADMAP; headless/local fixtures không thay thiết bị thật hoặc24h.
+3. H5b2 producer trước choice → inbox/consumption CAS/quota/TTL/clock fence → privacy/evaluation. Giữ các model chưa đạt promotion gates và holdout đã đóng băng.
+4. Kiểm vault nguồn/backup ngoài workspace theo [registry](data/assets/source-archives.json); chưa có bằng chứng backup ngoài workspace thành công.
+
+Không reset hoặc tự resume world; giữ ID/born/history/memory/home/petOwners/policy và unfinished plans. Các bất biến chung ở AGENTS, hợp đồng ở tài liệu chủ đề; lịch sử test/SHA/ảnh ở validation và Git. Docs hậu release chỉ push `work`, không redeploy chỉ để đổi tài liệu.

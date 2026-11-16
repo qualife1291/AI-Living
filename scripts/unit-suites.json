@@ -300,5 +300,8 @@
   ],
   [
     "scripts/test-feasible-learning.mjs"
+  ],
+  [
+    "scripts/test-repository-hygiene.mjs"
   ]
 ]

@@ -22,8 +22,12 @@ for path in sorted(SKILLS.glob('*/SKILL.md')):
     if name in seen:
         errors.append(f'{path}: duplicate skill {name}')
     seen.add(name)
+    # Require useful structure, without rewarding padding to an arbitrary60lines.
     if len(raw.splitlines()) < 20:
         errors.append(f'{path}: too little procedural content')
+    for section in ('Operating contract', 'Deliverables', 'Stop conditions', 'Kiểm chứng'):
+        if f'## {section}' not in raw and f'## {section.lower()}' not in raw:
+            errors.append(f'{path}: missing section "## {section}"')
 if not seen:
     errors.append('No skills found')
 print(f'Validated {len(seen)} skills')

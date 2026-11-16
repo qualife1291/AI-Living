@@ -15,6 +15,8 @@ node scripts/setup-local.mjs
 npm start
 ```
 
+Kiểm tra source/tài liệu: `npm run check:docs`, `npm run check`, `npm run lint`, `npm run test:unit`. Sáu skill theo tác vụ được route từ AGENTS, chỉ mở1–3skill cần cho việc đang làm.
+
 Setup chỉ áp dụng D1 local, giữ dữ liệu đã có. `npm run dev` dùng khi phát triển; sau build, restart Worker mới trước browser QA. `npm run living:up` là model/relay/daemon **local opt-in**, không phải scheduler production. Credential và runtime files không commit.
 
 ## Tra cứu đúng chủ đề
