@@ -1,0 +1,501 @@
+{
+  "schema": "xom-repository-cleanup-v1",
+  "date": "2026-11-16",
+  "timezone": "Asia/Ho_Chi_Minh",
+  "baselineWork": "2c063754555c42aa4037b9440640abc1fc755ca9",
+  "skills": {
+    "source": "user updated ai-coding-skills.zip",
+    "sha256": "31d5c91be431cd530ed5061bd724fe77856fa9ca61bc478b7bef3d01f516a1d6",
+    "catalogCount": 43,
+    "installed": [
+      "database-engineer",
+      "qa-debugger",
+      "observability-sre",
+      "refactor-safely",
+      "documentation-engineer",
+      "linter-typecheck"
+    ],
+    "review": "Catalog/index reviewed, selected six read and installed. Template AGENTS and37irrelevant skills not copied. Generic version examples do not override pinned project tools.",
+    "validatorAdaptation": "Required sections and minimum procedural content; removed arbitrary60-line padding warning."
+  },
+  "removedFiles": [
+    {
+      "path": "components/ui/accordion.tsx",
+      "lines": 66,
+      "bytes": 2048
+    },
+    {
+      "path": "components/ui/alert-dialog.tsx",
+      "lines": 196,
+      "bytes": 5439
+    },
+    {
+      "path": "components/ui/alert.tsx",
+      "lines": 66,
+      "bytes": 1614
+    },
+    {
+      "path": "components/ui/aspect-ratio.tsx",
+      "lines": 11,
+      "bytes": 274
+    },
+    {
+      "path": "components/ui/attachment.tsx",
+      "lines": 204,
+      "bytes": 6002
+    },
+    {
+      "path": "components/ui/avatar.tsx",
+      "lines": 109,
+      "bytes": 2916
+    },
+    {
+      "path": "components/ui/badge.tsx",
+      "lines": 48,
+      "bytes": 1776
+    },
+    {
+      "path": "components/ui/breadcrumb.tsx",
+      "lines": 109,
+      "bytes": 2350
+    },
+    {
+      "path": "components/ui/bubble.tsx",
+      "lines": 125,
+      "bytes": 4699
+    },
+    {
+      "path": "components/ui/button-group.tsx",
+      "lines": 83,
+      "bytes": 2202
+    },
+    {
+      "path": "components/ui/button.tsx",
+      "lines": 64,
+      "bytes": 2392
+    },
+    {
+      "path": "components/ui/calendar.tsx",
+      "lines": 220,
+      "bytes": 7832
+    },
+    {
+      "path": "components/ui/card.tsx",
+      "lines": 92,
+      "bytes": 1987
+    },
+    {
+      "path": "components/ui/carousel.tsx",
+      "lines": 241,
+      "bytes": 5556
+    },
+    {
+      "path": "components/ui/chart.tsx",
+      "lines": 377,
+      "bytes": 10614
+    },
+    {
+      "path": "components/ui/checkbox.tsx",
+      "lines": 32,
+      "bytes": 1214
+    },
+    {
+      "path": "components/ui/collapsible.tsx",
+      "lines": 33,
+      "bytes": 795
+    },
+    {
+      "path": "components/ui/combobox.tsx",
+      "lines": 310,
+      "bytes": 9158
+    },
+    {
+      "path": "components/ui/command.tsx",
+      "lines": 184,
+      "bytes": 4818
+    },
+    {
+      "path": "components/ui/context-menu.tsx",
+      "lines": 252,
+      "bytes": 8268
+    },
+    {
+      "path": "components/ui/dialog.tsx",
+      "lines": 158,
+      "bytes": 4303
+    },
+    {
+      "path": "components/ui/direction.tsx",
+      "lines": 22,
+      "bytes": 506
+    },
+    {
+      "path": "components/ui/drawer.tsx",
+      "lines": 135,
+      "bytes": 4255
+    },
+    {
+      "path": "components/ui/dropdown-menu.tsx",
+      "lines": 257,
+      "bytes": 8418
+    },
+    {
+      "path": "components/ui/empty.tsx",
+      "lines": 104,
+      "bytes": 2396
+    },
+    {
+      "path": "components/ui/field.tsx",
+      "lines": 248,
+      "bytes": 6159
+    },
+    {
+      "path": "components/ui/form.tsx",
+      "lines": 167,
+      "bytes": 3757
+    },
+    {
+      "path": "components/ui/hover-card.tsx",
+      "lines": 44,
+      "bytes": 1526
+    },
+    {
+      "path": "components/ui/input-group.tsx",
+      "lines": 170,
+      "bytes": 5065
+    },
+    {
+      "path": "components/ui/input-otp.tsx",
+      "lines": 77,
+      "bytes": 2254
+    },
+    {
+      "path": "components/ui/input.tsx",
+      "lines": 21,
+      "bytes": 962
+    },
+    {
+      "path": "components/ui/item.tsx",
+      "lines": 193,
+      "bytes": 4486
+    },
+    {
+      "path": "components/ui/kbd.tsx",
+      "lines": 28,
+      "bytes": 862
+    },
+    {
+      "path": "components/ui/label.tsx",
+      "lines": 24,
+      "bytes": 606
+    },
+    {
+      "path": "components/ui/marker.tsx",
+      "lines": 69,
+      "bytes": 1864
+    },
+    {
+      "path": "components/ui/menubar.tsx",
+      "lines": 276,
+      "bytes": 8389
+    },
+    {
+      "path": "components/ui/message-scroller.tsx",
+      "lines": 130,
+      "bytes": 3992
+    },
+    {
+      "path": "components/ui/message.tsx",
+      "lines": 92,
+      "bytes": 2232
+    },
+    {
+      "path": "components/ui/native-select.tsx",
+      "lines": 62,
+      "bytes": 1995
+    },
+    {
+      "path": "components/ui/navigation-menu.tsx",
+      "lines": 168,
+      "bytes": 6658
+    },
+    {
+      "path": "components/ui/pagination.tsx",
+      "lines": 127,
+      "bytes": 2717
+    },
+    {
+      "path": "components/ui/popover.tsx",
+      "lines": 89,
+      "bytes": 2357
+    },
+    {
+      "path": "components/ui/progress.tsx",
+      "lines": 32,
+      "bytes": 755
+    },
+    {
+      "path": "components/ui/radio-group.tsx",
+      "lines": 45,
+      "bytes": 1460
+    },
+    {
+      "path": "components/ui/resizable.tsx",
+      "lines": 53,
+      "bytes": 1815
+    },
+    {
+      "path": "components/ui/scroll-area.tsx",
+      "lines": 58,
+      "bytes": 1639
+    },
+    {
+      "path": "components/ui/select.tsx",
+      "lines": 190,
+      "bytes": 6353
+    },
+    {
+      "path": "components/ui/separator.tsx",
+      "lines": 28,
+      "bytes": 694
+    },
+    {
+      "path": "components/ui/sheet.tsx",
+      "lines": 143,
+      "bytes": 4188
+    },
+    {
+      "path": "components/ui/sidebar.tsx",
+      "lines": 723,
+      "bytes": 21526
+    },
+    {
+      "path": "components/ui/skeleton.tsx",
+      "lines": 13,
+      "bytes": 276
+    },
+    {
+      "path": "components/ui/slider.tsx",
+      "lines": 63,
+      "bytes": 1991
+    },
+    {
+      "path": "components/ui/sonner.tsx",
+      "lines": 40,
+      "bytes": 1034
+    },
+    {
+      "path": "components/ui/spinner.tsx",
+      "lines": 16,
+      "bytes": 331
+    },
+    {
+      "path": "components/ui/switch.tsx",
+      "lines": 35,
+      "bytes": 1408
+    },
+    {
+      "path": "components/ui/table.tsx",
+      "lines": 116,
+      "bytes": 2478
+    },
+    {
+      "path": "components/ui/tabs.tsx",
+      "lines": 91,
+      "bytes": 3782
+    },
+    {
+      "path": "components/ui/textarea.tsx",
+      "lines": 18,
+      "bytes": 759
+    },
+    {
+      "path": "components/ui/toggle-group.tsx",
+      "lines": 83,
+      "bytes": 2308
+    },
+    {
+      "path": "components/ui/toggle.tsx",
+      "lines": 47,
+      "bytes": 1565
+    },
+    {
+      "path": "components/ui/tooltip.tsx",
+      "lines": 57,
+      "bytes": 1830
+    },
+    {
+      "path": "components/connector-error.tsx",
+      "lines": 36,
+      "bytes": 1082
+    },
+    {
+      "path": "hooks/use-mobile.ts",
+      "lines": 19,
+      "bytes": 565
+    },
+    {
+      "path": "lib/utils.ts",
+      "lines": 6,
+      "bytes": 177
+    },
+    {
+      "path": "components.json",
+      "lines": 21,
+      "bytes": 420
+    },
+    {
+      "path": "vendor/shadcn-tailwind-4.13.0.css",
+      "lines": 629,
+      "bytes": 16041
+    },
+    {
+      "path": "postcss.config.mjs",
+      "lines": 7,
+      "bytes": 94
+    }
+  ],
+  "dependencies": {
+    "oldPackages": 870,
+    "newPackages": 707,
+    "removed": 163,
+    "added": []
+  },
+  "removedDirectPackages": [
+    "@base-ui/react",
+    "@hookform/resolvers",
+    "@shadcn/react",
+    "class-variance-authority",
+    "clsx",
+    "cmdk",
+    "date-fns",
+    "embla-carousel-react",
+    "input-otp",
+    "next-themes",
+    "radix-ui",
+    "react-day-picker",
+    "react-hook-form",
+    "react-resizable-panels",
+    "recharts",
+    "sonner",
+    "tailwind-merge",
+    "vaul",
+    "@tailwindcss/postcss",
+    "tailwindcss",
+    "tw-animate-css"
+  ],
+  "staticReview": {
+    "trackedFilesAtStart": 1621,
+    "moduleFilesBefore": 443,
+    "moduleFilesAfterCleanup": 378,
+    "remainingUnreachable": [
+      "lib/connector-errors.mts",
+      "lib/connector-preview.d.ts",
+      "lib/connectors.ts"
+    ],
+    "keptReason": "Request-scoped connector contract/ambient declarations and extension entrypoints used with existing Sites preview tooling; import reachability alone cannot justify removing them. All CLI, protocol/migration, raw specs, release audits, licenses and used 3D assets preserved.",
+    "duplicateProductionFunctionBodiesOver220Chars": [],
+    "duplicateCodeFiles": 0,
+    "newUnusedChecks": [
+      "TypeScript noUnusedLocals/noUnusedParameters",
+      "ESLint max-warnings0 without starter-wide suppressions",
+      "offline Markdown local paths/headings and Agent Skill structure"
+    ]
+  },
+  "documentation": {
+    "wordCounts": {
+      "AGENTS.md": {
+        "beforeWords": 428,
+        "afterWords": 456
+      },
+      "CODEX_HANDOFF.md": {
+        "beforeWords": 569,
+        "afterWords": 428
+      },
+      "docs/TESTING.md": {
+        "beforeWords": 3113,
+        "afterWords": 1346
+      }
+    },
+    "changes": [
+      "Handoff current context only; TESTING commands and scope rather than copied experiment results.",
+      "DATA_MODEL/ARCHITECTURE corrected23→24source tables,0012peer journal; no live schema claim.",
+      "Original specs, license and historical release proof preserved."
+    ]
+  },
+  "buildComparison": {
+    "css": [
+      {
+        "path": "server/_next/static/css/page.eGVK3jGk.css",
+        "sameBytes": true
+      },
+      {
+        "path": "server/_next/static/css/index.C_92P4z3.css",
+        "sameBytes": true
+      },
+      {
+        "path": "server/_next/static/css/page.XEbVwUT-.css",
+        "sameBytes": true
+      },
+      {
+        "path": "client/_next/static/css/page.eGVK3jGk.css",
+        "sameBytes": true
+      },
+      {
+        "path": "client/_next/static/css/index.C_92P4z3.css",
+        "sameBytes": true
+      },
+      {
+        "path": "client/_next/static/css/page.XEbVwUT-.css",
+        "sameBytes": true
+      }
+    ],
+    "note": "Build IDs and dependent JS chunk/manifest hashes vary between Vinext builds; full-bundle byte identity is not claimed. Active app/renderer/learning/DB code unchanged."
+  },
+  "packaging": {
+    "regression": [
+      {
+        "version": "before",
+        "sourceUntouched": false,
+        "manifestInZip": true
+      },
+      {
+        "version": "after",
+        "sourceUntouched": true,
+        "manifestInZip": true
+      }
+    ],
+    "persistentTest": "scripts/test-repository-hygiene.mjs: repeated real ZIP integrity/manifest/checksums plus Markdown Unicode/duplicate-heading/missing-file/anchor/image/fence/inline/external fixtures",
+    "fullSourceArchive": null
+  },
+  "checks": {
+    "baselineUnit": {
+      "total": 89,
+      "passed": 89
+    },
+    "afterRemovalUnit": {
+      "total": 89,
+      "passed": 89
+    },
+    "finalUnit": "running with new hygiene suite",
+    "check": "pass",
+    "lint": "pass, zero warnings",
+    "build": "pass after pruned frozen install",
+    "frozenInstall": "pass, supply-chain policies verified;163lock packages removed and no versions added. Offline metadata initially missing; online verification succeeded without bypass.",
+    "docs": "34tracked Markdown files, zero local path/anchor errors",
+    "skills": "6validated"
+  },
+  "release": {
+    "workCleanup": "de2b645",
+    "exportFix": "dca593e",
+    "qaSource": null,
+    "qaStatus": "not yet merged/pushed",
+    "mainUnchanged": "402df57027278c599aab6f4932adbde1609e6979"
+  },
+  "limits": [
+    "Static import scan is not proof every framework/CLI extension is dead.",
+    "No schema migration, real DB/data reset, model promotion, new service or scheduler.",
+    "No fresh live QA authenticated learning/quota/CPU readback.",
+    "Browser regression on QA release still pending."
+  ]
+}
