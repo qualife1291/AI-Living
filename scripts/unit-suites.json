@@ -267,5 +267,8 @@
   ],
   [
     "scripts/test-render-visibility.mjs"
+  ],
+  [
+    "scripts/test-repository-hygiene.mjs"
   ]
 ]
