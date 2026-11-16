@@ -1,6 +1,6 @@
 # Việc chưa hoàn tất
 
-Backlog duy nhất của dự án; `main`402df57, QA`cf90e43`ngày16/11/2026 (Asia/Saigon). Local test/build không thay runtime readback. Context hiện tại ở [handoff](CODEX_HANDOFF.md); số liệu/SHA test ở validation và release ledger.
+Backlog duy nhất của dự án; `main`402df57, QA`3631067`ngày16/11/2026 (Asia/Saigon). Local test/build không thay runtime readback. Context hiện tại ở [handoff](CODEX_HANDOFF.md); số liệu/SHA test ở validation và release ledger.
 
 **Trạng thái:** *Chưa có* = thiếu implementation; *Một phần* = có nền tảng nhưng thiếu phần được nêu; *Chờ nghiệm thu* = có code/bằng chứng ở phạm vi hẹp hơn; *Nhánh riêng* = chưa hợp nhất vào work/main; *Chưa đạt* = đã nghiên cứu nhưng chưa đủ gates để bật; *Hoãn* = ngoài phạm vi đang triển khai.
 
@@ -8,7 +8,7 @@ Backlog duy nhất của dự án; `main`402df57, QA`cf90e43`ngày16/11/2026 (As
 
 | Mục | Trạng thái | Phần còn làm và điều kiện đóng |
 |---|---|---|
-| QA cùng source | Chờ nghiệm thu runtime | QA`cf90e43`có105suite, compiled API/resource budgets/write churn/GND2–3 và browser desktop/mobile local đạt. Pipeline/App theo [cost/crowd evidence](docs/validation/system-budgets-2026-11-16.json). Còn traffic100%/config/D1/Cron/authenticated browser/API và independent review cùng source; native/Access thiếu. Ops audit chỉ đối chiếu file offline; không kế thừa native Cron proof cũ. [QA](docs/CLOUDFLARE_AGENT_QA.md). |
+| QA cùng source | Chờ nghiệm thu runtime | QA`3631067`có105suite, compiled API/resource budgets/write churn/GND2–3 và browser desktop/mobile local đạt. Pipeline/App theo [cost/crowd evidence](docs/validation/system-budgets-2026-11-16.json). Còn traffic100%/config/D1/Cron/authenticated browser/API và independent review cùng source; native/Access thiếu. Ops audit chỉ đối chiếu file offline; không kế thừa native Cron proof cũ. [QA](docs/CLOUDFLARE_AGENT_QA.md). |
 | Production/cutover | Chờ nghiệm thu | Lấy capability hiện hành, full backup DB/schema, dựng candidate từ source đã duyệt, migration append-only theo DB thật và readback đầy đủ. Gói 77d1d1f chưa deploy; giữ một writer/scheduler, IDs/born/history/memory/policy và rollback. Staging/QA/Sites A có auth và DB riêng. [Runbook](docs/PRODUCTION_RUNBOOK.md). |
 | GPU, soak và chi phí | Chờ nghiệm thu |16/11 đã sửa policy rewrite/retained archive, rest từ arm thiếu tiền, nap sau wake và fare learning-first; cần native post-release writes/CPU và matched cohort/day rest/quality theo [evidence](docs/validation/learning-repair-2026-11-16.json). Đo thiết bị thật ở 60/120/240 actor trước tăng density; mobile pin/nhiệt, tài nguyên/dispose và phiên dài/24 giờ. Đã có pulse60s/gate55s/telemetry coalescing và72actor recovery local; còn native CPU/D1/polling/history growth, GND2 catch-up/scale60 và crowd liveness live. Log/progress CLI đã có; snapshot 15 phút không thay soak hoặc bảo đảm 24/7. [Testing](docs/TESTING.md), [Observability](docs/OBSERVABILITY.md). |
 | Backup ZIP nguồn | Một phần | Kiểm vault theo manifest và tạo backup ngoài workspace bằng kênh được cấp quyền; lần upload được ghi nhận trước trả 401. Giữ license/hash và nguyên bản, chia ZIP4 nếu đích giới hạn 2 GiB. Không đưa raw ZIP hoặc credential vào repo công khai. [Asset](docs/ASSETS.md). |

@@ -1,7 +1,7 @@
 {
   "schema": "xom-system-budget-review-v1",
   "date": "2026-11-16",
-  "status": "CI dependency fix pushed, new exact-source pipeline running",
+  "status": "Exact-source Cloudflare version and deploy gate passed; full browser CI pending",
   "userObservation": "Cloudflare warning80% yesterday; current native rows_written unavailable",
   "source": "ba0951b",
   "preserved": [
@@ -608,6 +608,13 @@
         "docs/screenshots/system-budgets-2026-11-16/desktop-connection.png",
         "docs/screenshots/system-budgets-2026-11-16/mobile-connection.png"
       ]
+    },
+    "qaExactSourceCiUnit": {
+      "source": "36310678bb420f50208986b04513720e6baaa513",
+      "total": 105,
+      "passed": 105,
+      "workers": 4,
+      "seconds": 88.69
     }
   },
   "limits": [
@@ -641,12 +648,14 @@
     "qaSource": "36310678bb420f50208986b04513720e6baaa513",
     "mainUnchanged": "402df57027278c599aab6f4932adbde1609e6979",
     "cloudflareBuildId": "a1548a09-5d9d-4e4d-8d0a-f938de271a86",
-    "platformCheckId": 133421902172,
-    "platformReportedVersion": null,
-    "deploymentGateConclusion": "in_progress",
+    "platformCheckId": 133423181863,
+    "platformReportedVersion": "41ac37f1-33c6-448e-beca-3dab29905f6f",
+    "deploymentGateConclusion": "success",
     "browserConclusion": "in_progress",
     "deployGateRun": "https://github.com/qualife1291/AI-Living/actions/runs/43902428413",
     "browserRun": "https://github.com/qualife1291/AI-Living/actions/runs/43902310672",
-    "nativeTrafficEnvD1CronQuotaReadback": false
+    "nativeTrafficEnvD1CronQuotaReadback": false,
+    "actionUpload": "skipped: scoped token absent; independently confirmed exact-source Cloudflare App version",
+    "pipeline": "Cloudflare App and deploy gate success; full browser CI running"
   }
 }

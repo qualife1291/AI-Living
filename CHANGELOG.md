@@ -4,6 +4,8 @@ Chỉ ghi mốc sản phẩm. Chi tiết commit/review nằm trong Git; số ver
 
 ## 16/11/2026
 
+- Gộp nhịp background writes và telemetry, bỏ audit tick trùng, hạn chế stream body và đọc archive nhẹ hơn. Sửa deadlock/đi vòng khi đông người, gộp retry và cải thiện thông báo mất kết nối. Giữ lịch sử/học cá nhân và authority ground. [Nghiệm thu](docs/validation/system-budgets-2026-11-16.json).
+
 - Giảm ghi D1 khi policy không đổi và replay archive; giữ revision/CAS, lịch sử và policy cá nhân. Sửa nap sau giờ thức dậy; QA lọc hành động thiếu tiền trước chọn để tránh vòng nghỉ lặp. Thêm kiểm chứng D1/Worker và3skill theo tác vụ từ ZIP chủ dự án. [Evidence](docs/validation/learning-repair-2026-11-16.json).
 
 ## 05/11/2026

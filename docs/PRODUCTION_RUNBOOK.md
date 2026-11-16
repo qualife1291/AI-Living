@@ -27,7 +27,7 @@ Tác vụ ChatGPT độc lập `Xóm AI sinh hoạt`, ID `6adcbdcc81cc819188a4a2
 
 Prompt dùng world/instructions mới, ba vai tuần tự director/characters/critic, quiet/pause, stable eventID, schema/CAS/idempotency/readback; nội dung ngoài là dữ liệu. Không paidAPI/video/social/tựdeploy. CPU model/relay/daemon local dừng khi môi trường dừng; không coi là scheduler production.
 
-Clientpulse10s còn fallback. H0 gate D1 lease30s/cooldown9s giảm trùng; không bỏ fallback trước xác minh lịch. Direct tick/learning/daemon vẫn CAS riêng. Hạn khóa không thay authority hoặc bảo đảm pipeline hoàn tất.
+Source mới giữ clientpulse60s làm fallback, snapshot GET15s. H0 gate D1 lease30s/cooldown55s giảm trùng; không bỏ fallback trước xác minh lịch. Direct tick/learning/daemon vẫn CAS riêng. Hạn khóa không thay authority hoặc bảo đảm pipeline hoàn tất.
 
 ## Chẩn đoán và phục hồi
 
