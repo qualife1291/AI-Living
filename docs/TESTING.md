@@ -47,7 +47,7 @@ Lệnh API dùng **Worker vừa build + D1 cô lập**, không DB preview hoặc
 
 ## Browser
 
-Restart Worker từ `dist/server/wrangler.json` sau build. `QA_BASE` bắt buộc loopback; đặt `QA_OUT` để lưu ảnh/metrics một lượt nghiệm thu riêng và giữ bằng chứng cũ; không gửi localhost làm link preview cho người dùng. Ví dụ lệnh nội bộ: `QA_BASE=http://127.0.0.1:5320 python3 scripts/qa-social.py`.
+Restart Worker từ `dist/server/wrangler.json` sau build. Nhóm harness social/interior/evening/UI/budgets nhận `QA_CHROMIUM_PATH`, mặc định `/usr/bin/chromium`; CI dùng Google Chrome có sẵn trên runner, không cài Chromium Snap. `QA_BASE` bắt buộc loopback; đặt `QA_OUT` để lưu ảnh/metrics một lượt nghiệm thu riêng và giữ bằng chứng cũ; không gửi localhost làm link preview cho người dùng. Ví dụ lệnh nội bộ: `QA_BASE=http://127.0.0.1:5320 python3 scripts/qa-social.py`.
 
 | Harness trong scripts/ | Điều phải giữ |
 |---|---|

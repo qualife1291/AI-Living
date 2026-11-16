@@ -8,7 +8,7 @@ root=Path(__file__).resolve().parent.parent
 base=os.environ.get('QA_BASE','http://127.0.0.1:5340');assert urlparse(base).hostname in ('127.0.0.1','localhost')
 out=Path(os.environ.get('QA_OUT','work/evening-life/browser'));out.mkdir(parents=True,exist_ok=True);report=[]
 with sync_playwright() as p:
- b=p.chromium.launch(executable_path='/usr/bin/chromium',headless=True,args=['--no-sandbox','--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader'])
+ b=p.chromium.launch(executable_path=os.environ.get('QA_CHROMIUM_PATH','/usr/bin/chromium'),headless=True,args=['--no-sandbox','--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader'])
  try:
   for label,w,h in [('desktop',1440,900),('mobile',390,844)]:
    page=b.new_page(viewport={'width':w,'height':h},is_mobile=w<700,has_touch=w<700);errors=[]

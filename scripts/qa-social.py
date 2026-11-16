@@ -47,7 +47,7 @@ def assert_visible_interior(page, mode):
             'actorSamples':sample_count}
 
 with sync_playwright() as p:
- b=p.chromium.launch(executable_path='/usr/bin/chromium',headless=True,args=['--no-sandbox','--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader'])
+ b=p.chromium.launch(executable_path=os.environ.get('QA_CHROMIUM_PATH','/usr/bin/chromium'),headless=True,args=['--no-sandbox','--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader'])
  try:
   for name,width,height,dpr in [('desktop',1440,900,1.5),('mobile',390,844,3)]:
    if os.environ.get('QA_VIEWPORT') and os.environ['QA_VIEWPORT']!=name:continue

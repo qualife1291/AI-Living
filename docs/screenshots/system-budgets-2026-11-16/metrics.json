@@ -1,0 +1,42 @@
+{
+  "legacy": false,
+  "source": "cf90e43bd7bb2f93c6dc6071a0fc59a569a6e538",
+  "transport": "intercepted API, synthetic fixture, no D1 writes",
+  "clock": "Playwright30s warm-up +60s steady foreground",
+  "cases": [
+    {
+      "viewport": "desktop",
+      "worldGetsPerSimulatedMinute": 5,
+      "pulsePostsPerSimulatedMinute": 1,
+      "ctrlHChangedHud": false,
+      "retryBurst": 25,
+      "maxPendingWorldReads": 1,
+      "forcedWorldReads": 1,
+      "retrySize": {
+        "x": 862.2421875,
+        "y": 107,
+        "width": 44,
+        "height": 44
+      },
+      "cachedStateExplained": true,
+      "pageErrors": []
+    },
+    {
+      "viewport": "mobile",
+      "worldGetsPerSimulatedMinute": 5,
+      "pulsePostsPerSimulatedMinute": 1,
+      "ctrlHChangedHud": false,
+      "retryBurst": 25,
+      "maxPendingWorldReads": 1,
+      "forcedWorldReads": 1,
+      "retrySize": {
+        "x": 316,
+        "y": 107,
+        "width": 44,
+        "height": 44
+      },
+      "cachedStateExplained": true,
+      "pageErrors": []
+    }
+  ]
+}
