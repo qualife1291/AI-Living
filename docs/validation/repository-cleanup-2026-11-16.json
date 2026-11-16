@@ -675,13 +675,14 @@
       ".json": 232,
       ".sh": 6
     },
-    "portableHygieneRetest": "pass after Gitless checker extension; QA CI will rerun full101 at exact source"
+    "portableHygieneRetest": "pass standalone and full101-suite CI at exact QA source",
+    "browser": "Existing CI passed qa-social.py, qa-interior-native.py, qa-evening-life.py and qa-ui-review.py on loopback Worker with actual screenshots. No new manual image review or authenticated remote browser acceptance this task."
   },
   "release": {
     "workCleanup": "de2b645",
     "exportFix": "dca593e",
     "qaSource": "a7eaea052ae65675cc7044223059efb48029f707",
-    "qaStatus": "pushed; Cloudflare App exact-source success and deploy gate success; browser CI running",
+    "qaStatus": "Cloudflare App exact-source build/version success; both GitHub CI gates success",
     "mainUnchanged": "402df57027278c599aab6f4932adbde1609e6979",
     "cloudflareBuildId": "fcbb4805-7f8a-4c9b-9a7c-13083672d7a8",
     "platformReportedVersion": "d2c1af6b-2973-4010-a5b2-95e9fe43fbb1",
@@ -689,13 +690,19 @@
     "deployGateRun": "https://github.com/qualife1291/AI-Living/actions/runs/43838098143",
     "browserRun": "https://github.com/qualife1291/AI-Living/actions/runs/43838098166",
     "deploymentGateConclusion": "success",
-    "browserConclusion": "in_progress",
-    "nativeTrafficEnvD1CronReadback": false
+    "browserConclusion": "success",
+    "nativeTrafficEnvD1CronReadback": false,
+    "actionUpload": "skipped: scoped Cloudflare token not configured; Cloudflare App is the independently confirmed version source",
+    "browserArtifact": {
+      "expired": false,
+      "id": 14211798540,
+      "name": "qa-contextual-social-a7eaea052ae65675cc7044223059efb48029f707",
+      "size_in_bytes": 20346908
+    }
   },
   "limits": [
     "Static import scan is not proof every framework/CLI extension is dead.",
     "No schema migration, real DB/data reset, model promotion, new service or scheduler.",
-    "No fresh live QA authenticated learning/quota/CPU readback.",
-    "Browser regression on QA release still pending."
+    "No fresh live QA authenticated learning/quota/CPU readback."
   ]
 }
