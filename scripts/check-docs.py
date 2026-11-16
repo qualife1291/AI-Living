@@ -1,5 +1,6 @@
 """Check tracked Markdown inline local paths and heading anchors; never fetch URLs."""
 import re
+import os
 import subprocess
 import sys
 from pathlib import Path
@@ -69,10 +70,27 @@ def check_documents(root, files):
     return errors
 
 
+def markdown_paths(root):
+    try:
+        paths = subprocess.check_output(
+            ['git', 'ls-files', '-z', '--', '*.md'], cwd=root, stderr=subprocess.DEVNULL,
+        ).decode().split('\0')
+        return [path for path in paths if path]
+    except (subprocess.CalledProcessError, FileNotFoundError):
+        # Source handoffs have no .git; prune dependency/build/runtime trees.
+        excluded = {'.git', 'node_modules', 'dist', '.next', '.vinext', '.wrangler',
+                    '.sites-runtime', 'work', 'outputs', '__pycache__'}
+        paths = []
+        for folder, directories, files in os.walk(root):
+            directories[:] = [name for name in directories if name not in excluded]
+            paths.extend(str((Path(folder) / name).relative_to(root))
+                         for name in files if name.endswith('.md'))
+        return sorted(paths)
+
+
 if __name__ == '__main__':
     root = Path(__file__).resolve().parents[1]
-    files = subprocess.check_output(['git', 'ls-files', '-z', '--', '*.md'], cwd=root).decode().split('\0')
-    files = [file for file in files if file]
+    files = markdown_paths(root)
     errors = check_documents(root, files)
     for error in errors:
         print(error, file=sys.stderr)
