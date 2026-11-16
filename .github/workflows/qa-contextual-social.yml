@@ -71,12 +71,18 @@ jobs:
           node scripts/test-api-resource-budgets.mjs
           node scripts/test-write-churn-api.mjs
       - name: Install isolated browser test dependencies
+        timeout-minutes: 5
         run: |
-          sudo apt-get update -qq
-          sudo apt-get install -y chromium
+          qa_browser="$(command -v google-chrome || command -v google-chrome-stable || true)"
+          if [ -z "$qa_browser" ]; then
+            echo "::error::Runner image lacks preinstalled Google Chrome; refusing Chromium Snap installation"
+            exit 1
+          fi
+          "$qa_browser" --version
+          echo "QA_CHROMIUM_PATH=$qa_browser" >> "$GITHUB_ENV"
           python3 -m venv /tmp/ai-living-browser-venv
-          /tmp/ai-living-browser-venv/bin/pip install playwright pillow
-          curl --fail --silent --show-error https://cdn.jsdelivr.net/npm/axe-core@4.11.0/axe.min.js -o /tmp/ai-living-axe-4.11.0.min.js
+          /tmp/ai-living-browser-venv/bin/pip install --timeout 30 --retries 2 playwright pillow
+          curl --fail --silent --show-error --connect-timeout 15 --max-time 120 --retry 2 https://cdn.jsdelivr.net/npm/axe-core@4.11.0/axe.min.js -o /tmp/ai-living-axe-4.11.0.min.js
       - name: Start local Worker (no remote D1 or QA writes)
         run: |
           mkdir -p qa-evidence/social
