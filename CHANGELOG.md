@@ -2,6 +2,10 @@
 
 Chỉ ghi mốc sản phẩm. Chi tiết commit/review nằm trong Git; số version/deployment và readback nằm ở [releases](docs/releases/).
 
+## 16/11/2026
+
+- Giảm ghi D1 khi policy không đổi và replay archive; giữ revision/CAS, lịch sử và policy cá nhân. Sửa nap sau giờ thức dậy; QA lọc hành động thiếu tiền trước chọn để tránh vòng nghỉ lặp. Thêm kiểm chứng D1/Worker và3skill theo tác vụ từ ZIP chủ dự án. [Evidence](docs/validation/learning-repair-2026-11-16.json).
+
 ## 05/11/2026
 
 - Rà soát UI/UX thành phố, nội thất, Studio và thư viện model; sửa tương phản, khung thoại, bố cục ngang thấp, camera/floor giữ canvas và WebGL retry. Giảm GPU draws khi bị che/ngoài vùng nhìn, OSM vẽ theo nhu cầu và Studio30Hz; thêm kiểm tra accessibility và race visibility. [Nghiệm thu](docs/validation/ui-review-2026-11-05.json).
