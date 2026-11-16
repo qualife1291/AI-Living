@@ -47,7 +47,15 @@ yarn-error.log*
 /.sites-runtime/
 
 # Workspace scaffolding and publication archives
-/.agents/
+/.agents/*
+!/.agents/skills/
+/.agents/skills/*
+!/.agents/skills/database-engineer/
+!/.agents/skills/qa-debugger/
+!/.agents/skills/observability-sre/
+!/.agents/skills/refactor-safely/
+!/.agents/skills/documentation-engineer/
+!/.agents/skills/linter-typecheck/
 /.codex/
 /outputs/
 /work/

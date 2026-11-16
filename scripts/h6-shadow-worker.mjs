@@ -34,7 +34,7 @@ for(const [profileIndex,profile] of ['ordinary-v1','cold-stress-v1'].entries()){
   const transcript=createHash('sha256');
   const profileStart=performance.now();
   const options={variant:'personal-v1',profile,agents:budget.trainAgents,days:budget.trainDays,seeds:trainSeeds,shiftDay:Math.floor(budget.trainDays/2)};
-  const trainReport=runHierarchyRollout(options,undefined,(seed,outcome)=>{
+  runHierarchyRollout(options,undefined,(seed,outcome)=>{
     const record=trainer.observe(seed,outcome);
     transcript.update(JSON.stringify({seed,record})+'\n');
   });
