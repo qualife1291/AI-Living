@@ -33,7 +33,7 @@ def capture(page,host,label):
     (out/(label+'.png')).write_bytes(png)
     return {'case':label,'brightFraction':bright,'stats':stats}
 with sync_playwright() as p:
-    browser=p.chromium.launch(executable_path='/usr/bin/chromium',headless=True,args=['--no-sandbox','--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader'])
+    browser=p.chromium.launch(executable_path=os.environ.get('QA_CHROMIUM_PATH','/usr/bin/chromium'),headless=True,args=['--no-sandbox','--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader'])
     try:
       for name,width,height in [('desktop',1440,900),('mobile',390,844)]:
         fixture=json.loads(subprocess.check_output(['node','scripts/social-preview-fixture.mjs','--detail=read'],cwd=root,text=True))

@@ -13,7 +13,7 @@ legacy=os.environ.get('QA_EXPECT_LEGACY')=='1'
 fixture=json.loads(subprocess.check_output(['node','scripts/social-preview-fixture.mjs','--detail=read'],text=True))
 reports=[]
 with sync_playwright() as p:
- browser=p.chromium.launch(executable_path='/usr/bin/chromium',headless=True,args=['--no-sandbox','--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader'])
+ browser=p.chromium.launch(executable_path=os.environ.get('QA_CHROMIUM_PATH','/usr/bin/chromium'),headless=True,args=['--no-sandbox','--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader'])
  try:
   for label,w,h in ([('desktop',1365,900)] if legacy else [('desktop',1365,900),('mobile',390,844)]):
    page=browser.new_page(viewport={'width':w,'height':h});errors=[];state={'world':0,'pulse':0,'fail':False,'hold':False,'pending':[]}

@@ -18,7 +18,7 @@ fixture=json.loads(subprocess.check_output(['node','scripts/social-preview-fixtu
 def save():
  (out/'metrics.json').write_text(json.dumps({'production':False,'source':os.environ.get('QA_SOURCE_SHA') or subprocess.check_output(['git','rev-parse','HEAD'],cwd=root,text=True).strip(),'renderer':'Chromium SwiftShader','axe':'4.11.0','fixture':'Synthetic world; intercepted API writes; no remote D1','cases':report},ensure_ascii=False,indent=2)+'\n')
 with sync_playwright() as p:
- browser=p.chromium.launch(executable_path='/usr/bin/chromium',headless=True,args=['--no-sandbox','--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader'])
+ browser=p.chromium.launch(executable_path=os.environ.get('QA_CHROMIUM_PATH','/usr/bin/chromium'),headless=True,args=['--no-sandbox','--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader'])
  try:
   for label,w,h,dpr in [('desktop',1440,900,2),('mobile',390,844,3),('compact',320,568,2),('landscape',844,390,2)]:
    page=browser.new_page(viewport={'width':w,'height':h},device_scale_factor=dpr,is_mobile=w<700,has_touch=True);errors=[];writes=[]

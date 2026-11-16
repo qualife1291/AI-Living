@@ -8,7 +8,7 @@ base=os.environ.get('QA_BASE','http://127.0.0.1:5177');assert urlparse(base).hos
 out=Path(os.environ.get('QA_OUT',str(root/'docs/screenshots/social')));out.mkdir(parents=True,exist_ok=True)
 report=[];diagnostics=[];console=[];errors=[]
 with sync_playwright() as p:
- b=p.chromium.launch(executable_path='/usr/bin/chromium',headless=True,args=['--no-sandbox','--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader'])
+ b=p.chromium.launch(executable_path=os.environ.get('QA_CHROMIUM_PATH','/usr/bin/chromium'),headless=True,args=['--no-sandbox','--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader'])
  try:
   for name,width,height,dpr in [('desktop',1440,900,1.5),('mobile',390,844,3)]:
    if os.environ.get('QA_VIEWPORT') and os.environ['QA_VIEWPORT']!=name:continue
