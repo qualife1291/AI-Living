@@ -99,6 +99,9 @@ try {
  assert.deepEqual((await db.prepare('SELECT * FROM learning_policies ORDER BY actor_id').all()).results,afterRows,'Optimized writer rolls back all policies and references');
  mixed.living.learningCommit='wrong-nonce';
  const wrongNonce=await preparePolicyWrite(db,mixed,6,'different-nonce',retryBaseline);
+ // Match the writer's target revision so this isolates the nonce fence,
+ // rather than passing merely because the world revision is still5.
+ await db.prepare("UPDATE worlds SET revision=6 WHERE id='home' AND revision=5").run();
  await db.batch(wrongNonce.statements);
  assert.deepEqual((await db.prepare('SELECT * FROM learning_policies ORDER BY actor_id').all()).results,afterRows,'Nonce blocks detached policy writes');
  mixed=JSON.parse(beforeRetry);
