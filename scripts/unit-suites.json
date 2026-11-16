@@ -279,5 +279,8 @@
   ],
   [
     "scripts/test-pulse-write-budget.mjs"
+  ],
+  [
+    "scripts/test-crowd-recovery.mjs"
   ]
 ]

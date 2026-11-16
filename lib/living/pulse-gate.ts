@@ -48,7 +48,8 @@ export async function runCoalescedPulse(
     return result;
   } finally {
     // Cooldown is relative to admission; the60s viewer has5s jitter headroom.
-    // Shared ground still advances outside this durable learning/tick gate. Failure is retryable immediately. An expired worker
+    // Shared ground advances outside this durable learning/tick gate.
+    // Failure is retryable immediately. An expired worker
     // cannot release/shorten a newer worker's lease (nonce ownership).
     await db.prepare(`UPDATE context_cache SET expires_at=?
       WHERE id=? AND json_extract(data,'$.nonce')=?`)

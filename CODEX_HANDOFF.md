@@ -4,7 +4,7 @@
 
 ## WIP — giảm rows_written và gỡ tụ tập
 
-Ưu tiên chủ dự án: hôm qua Cloudflare cảnh báo80%, nhân vật lag/tụ nhóm. Đang test gate55s/browser60s (shared ground1s giữ), bỏ audit duplicate tick, telemetry sample60s/critical15s/backoff, JSONL không hydrate và7route bounded streaming. Cost fixture coordination721→121rows/giờ; telemetry41→11POST/10phút. Viewer-only congestion recovery đang kiểm72người; **chưa nghiệm thu/phát hành**. GND authority mặc định giữ algorithm cũ, không migrate/reset/model promote. API/body/queue tests đạt, còn build/full/browser cùng source và bổ sung evidence.
+Ưu tiên chủ dự án: hôm qua Cloudflare cảnh báo80%, nhân vật lag/tụ nhóm. Đang test gate55s/browser60s (shared ground1s giữ), bỏ audit duplicate tick, telemetry sample60s/critical15s/backoff, JSONL không hydrate và7route bounded streaming. Cost fixture coordination721→121rows/giờ; telemetry41→11POST/10phút. Viewer-only congestion recovery đạt72/72đến đích trong180s mô phỏng, swept collision/no-teleport/pause/world unchanged đạt; đang chạy full/API/browser, **chưa phát hành**. GND authority mặc định giữ algorithm cũ, không migrate/reset/model promote. API/body/queue tests đạt, còn build/full/browser cùng source và bổ sung evidence.
 
 ## Trạng thái nền
 
