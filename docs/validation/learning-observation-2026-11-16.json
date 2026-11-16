@@ -1,0 +1,102 @@
+{
+  "schema": "xom-learning-observation-v1",
+  "observedAt": "2026-11-16T07:35:43.673601+00:00",
+  "timezone": "Asia/Ho_Chi_Minh",
+  "scope": "Cloudflare QA only; native management API and SELECT aggregates; no browser, runtime mutation or deployment",
+  "source": {
+    "work": "b2af77f",
+    "qa": "f133a88",
+    "activeWorkerVersion": "a59d61e1-9d58-41c5-aac4-44cd5be52065",
+    "deploymentCreatedAt": "2026-11-05T01:34:57.872291Z"
+  },
+  "snapshot": {
+    "worldRevision": 16034,
+    "paused": false,
+    "born": "2026-10-28T17:30:05.083Z",
+    "completedTurns": 5331,
+    "latestTurnAt": "2026-11-16T07:30:50.794Z",
+    "experiences": 52827,
+    "memories": 52827,
+    "personalPolicies": 105,
+    "observedArms": 8807,
+    "sumPolicySamples": 52827
+  },
+  "recentWindow": {
+    "fromInclusive": "2026-11-15T07:30:00Z",
+    "completedTurns": 287,
+    "requestCompleted": 289,
+    "requestFailed": 1,
+    "note": "Status classes count different records; not a browser uptime or Cron provenance measurement."
+  },
+  "dailyUTC": [
+    {
+      "day": "2026-11-13",
+      "samples": 2364,
+      "actors": 97,
+      "actions": 99,
+      "meanSimulationReward": 0.0508,
+      "restHomeSamples": 1024,
+      "restPercent": 43.3
+    },
+    {
+      "day": "2026-11-14",
+      "samples": 2354,
+      "actors": 101,
+      "actions": 97,
+      "meanSimulationReward": 0.0559,
+      "restHomeSamples": 965,
+      "restPercent": 41.0
+    },
+    {
+      "day": "2026-11-15",
+      "samples": 2312,
+      "actors": 104,
+      "actions": 97,
+      "meanSimulationReward": 0.0554,
+      "restHomeSamples": 975,
+      "restPercent": 42.2
+    },
+    {
+      "day": "2026-11-16",
+      "partial": true,
+      "samples": 1197,
+      "actors": 105,
+      "actions": 95,
+      "meanSimulationReward": 0.0348,
+      "restHomeSamples": 669,
+      "restPercent": 55.9
+    }
+  ],
+  "coreActorLifetimeSamples": {
+    "an": {
+      "samples": 2238,
+      "distinctActions": 62
+    },
+    "binh": {
+      "samples": 3350,
+      "distinctActions": 109
+    },
+    "chi": {
+      "samples": 3523,
+      "distinctActions": 109
+    }
+  },
+  "learningScope": {
+    "latest3000Samples": {
+      "source": "simulation",
+      "model": "disjoint-linucb-v1"
+    },
+    "h6Mode": "shadow-only",
+    "ruleSchedulerEnabled": true,
+    "qualityGainEstablished": false,
+    "llmFineTuningEstablished": false,
+    "physicalProductiveCompletionEstablished": false
+  },
+  "interpretation": [
+    "Personal policy samples persist and match experience count; sample growth is not evidence of improved decision quality.",
+    "Night activities have real recorded simulation outcomes; H6 remains shadow-only.",
+    "Rest-home accounts for 41–43.3 percent of samples on three complete UTC days; sample share is not duration share or proof of a bug.",
+    "Compare frozen policies on matched context/cohorts and independently assess dialogue before claiming intelligence gain.",
+    "No authenticated browser, human listening, GPU profiling, production readback or model promotion performed."
+  ]
+}
