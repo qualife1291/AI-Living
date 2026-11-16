@@ -1,7 +1,7 @@
 {
   "schema": "xom-system-budget-review-v1",
   "date": "2026-11-16",
-  "status": "Local code/API gates passed; desktop browser passed, mobile and QA release pending",
+  "status": "Cloudflare App exact-source version success; deploy gate success; browser CI pending",
   "userObservation": "Cloudflare warning80% yesterday; current native rows_written unavailable",
   "source": "ba0951b",
   "preserved": [
@@ -16,7 +16,8 @@
     "node": "24.19.0",
     "database": "Miniflare/workerd isolated D1, no production access",
     "navigation": "Node synthetic72 actors,15Hz180seconds; no GPU claim",
-    "browser": "Chromium/SwiftShader compiled loopback, intercepted synthetic API"
+    "browser": "Chromium/SwiftShader compiled loopback, intercepted synthetic API",
+    "machine": "Hosted x86_64,5 exposed vCPU,32GiB memory; shared load, no hardware GPU measurements"
   },
   "measurements": {
     "write": {
@@ -112,8 +113,21 @@
         "frameMedianMs": 0.5417640000000574,
         "frameP95Ms": 5.9367469999999685,
         "scope": "Node synthetic navigation, not GPU or live QA"
+      },
+      "cpuTradeoff": "Recovery graph can increase tail navigation CPU during replans; arrival/swept safety passed, overall GPU frame improvement is unproven.",
+      "additionalStress108": {
+        "actors": 108,
+        "seconds": 180,
+        "frameMedianMs": 1.0742040000004636,
+        "frameP95Ms": 12.545313999999962,
+        "unfinished": 0,
+        "stalledFor60Seconds": 0,
+        "noPath": 0,
+        "stalledIds": [],
+        "scope": "Synthetic Node navigation only, arrival and60s travel check; the72actor regression separately verifies all swept collision/no-teleport invariants"
       }
-    }
+    },
+    "telemetryScope": "41→11 inserted client_logs batches, not total rows_written including admission/index/retention costs"
   },
   "checks": {
     "workUnit": {
@@ -278,11 +292,342 @@
           "productionAccess": false
         }
       ]
+    },
+    "qaUnit": {
+      "total": 105,
+      "passed": 105
+    },
+    "qaTypeLintBuildAssets": "pass, zero lint warnings",
+    "frozenLearningEvidence": {
+      "artifacts": 76,
+      "comparisons": 42,
+      "holdout12000to12019": "unobserved"
+    },
+    "qaCompiledApi": {
+      "resources": [
+        {
+          "suite": "api-resource-budgets",
+          "compiledWorker": true,
+          "isolatedD1": true,
+          "archiveReaders": 12,
+          "invalidCursorWithoutDatabase": true,
+          "archiveRequiresWorldOrPolicy": false,
+          "streamLimitedRoutes": 7,
+          "overflowReads": 1,
+          "nonCooperativeCancel": true,
+          "invalidUtf8": true,
+          "ownerBeforeBody": true,
+          "noWrites": true,
+          "productionAccess": false
+        }
+      ],
+      "churn": [
+        {
+          "suite": "write-churn-api",
+          "compiledWorker": true,
+          "isolatedD1": true,
+          "duplicateTicks": 12,
+          "duplicateAuditRows": 0,
+          "rejectedAuditPreserved": true,
+          "telemetryLogs": 121,
+          "telemetryRowsBefore": 41,
+          "telemetryRowsAfter": 11,
+          "worldAndLearningPreserved": true,
+          "productionAccess": false
+        }
+      ],
+      "diagnostics": [
+        {
+          "suite": "local-diagnostics-http",
+          "ownerReadGuard": true,
+          "ownerWriteGuard": true,
+          "streamByteLimit": true,
+          "schema": true,
+          "origin": true,
+          "ack": true,
+          "jsonlReadback": true,
+          "rateLimit": true,
+          "retention": true,
+          "diagnosticsReadOnly": true,
+          "pulsePersistence": true,
+          "pulseRetry": true,
+          "pulseConcurrentViewers": 12,
+          "pulseNoDuplicateAudit": true,
+          "pulsePause": true,
+          "healthSchemaBatch": true,
+          "bulkReplay": true,
+          "memoryBackfill": true,
+          "productionAccess": false
+        }
+      ],
+      "legacy": [
+        {
+          "kind": "legacy-compiled-http-acceptance",
+          "isolated": true,
+          "productionAccess": false,
+          "results": [
+            {
+              "name": "world",
+              "exitCode": 0
+            },
+            {
+              "name": "living",
+              "exitCode": 0
+            },
+            {
+              "name": "learning",
+              "exitCode": 0
+            },
+            {
+              "name": "liveness",
+              "exitCode": 0
+            },
+            {
+              "name": "appearance",
+              "exitCode": 0
+            },
+            {
+              "name": "proposal",
+              "exitCode": 0
+            }
+          ]
+        }
+      ],
+      "evening": [
+        {
+          "suite": "evening-api",
+          "pass": true,
+          "compiledWorker": true,
+          "isolatedD1": true,
+          "newActionsSettled": 9,
+          "subsequentSettlements": 1,
+          "onlyChangedPolicyRows": 1,
+          "unchangedPoliciesByteIdenticalAfterTick": true,
+          "retainedArchiveSequenceUnchanged": true,
+          "namespaceEvidence": true,
+          "retries": 3,
+          "duplicateSamples": 0,
+          "identityAndPetOwnersPreserved": true,
+          "productionAccess": false,
+          "physicalCompletionProven": false
+        }
+      ],
+      "mobility": [
+        {
+          "suite": "mobility-learning-api",
+          "compiledWorker": true,
+          "isolatedD1": true,
+          "concurrentLearningRequests": 8,
+          "completedFares": 3,
+          "doubleCharges": 0,
+          "duplicateSamples": 0,
+          "unchangedPolicies": true,
+          "productionAccess": false
+        }
+      ],
+      "shared-ground": [
+        {
+          "suite": "shared-ground-api",
+          "ownerLocalAndRemoteDenied": true,
+          "strictBodyOriginUtf8": true,
+          "missingSchemaNoBootstrap": true,
+          "worldAtomicImmutableJournal": true,
+          "allActorAndTrafficFrame": true,
+          "zeroStepDurableRetry": true,
+          "concurrentOneCommit": true,
+          "sourceTriggerAbortWorldRollback": true,
+          "silentReceiptD1Rollback": true,
+          "sharedWorldReadback": true,
+          "pulseReused": true,
+          "userHistoryMemoryPreserved": true,
+          "productionAccess": false,
+          "eligibleForReward": false,
+          "eligibleForP2P": false
+        }
+      ],
+      "authority": [
+        {
+          "suite": "ground-authority-api",
+          "compiledWorker": true,
+          "ephemeralD1": true,
+          "ownerLocalRemoteAndOriginGuards": true,
+          "bodyUtf8And2KiB": true,
+          "noBootstrapOrClientPositions": true,
+          "optionalInactive0011": true,
+          "explicitStartBaseline": true,
+          "coupledCAS": true,
+          "concurrentOneCommit": true,
+          "actualReplayCounts": {
+            "arrivals": 8,
+            "presence": 5,
+            "encounters": 1,
+            "heard": 2
+          },
+          "immutableReceipts": true,
+          "silentIgnoreRollback": 4,
+          "lostAckNoCredit": true,
+          "worldViewParentBound": true,
+          "reusedPulse": true,
+          "preflightBeforeWorldWrite": true,
+          "userMemoryPreserved": true,
+          "productionAccess": false,
+          "eligibleForReward": false,
+          "eligibleForP2P": false
+        }
+      ],
+      "chat": [
+        {
+          "suite": "chat-admission-compiled-http",
+          "concurrentUnique": 60,
+          "concurrentDuplicate": 16,
+          "workerIsolates": 2,
+          "sharedD1": true,
+          "limit": 30,
+          "windowMs": 60000,
+          "atomicRollbackCases": 6,
+          "originOwnerBodyPauseActorGuards": true,
+          "retryAfter": true,
+          "rejectedUuidReusable": true,
+          "historyPreserved": true,
+          "productionAccess": false
+        }
+      ]
+    },
+    "browser": {
+      "before": {
+        "legacy": true,
+        "source": "baf125b27ae32e91a9b7a27d3b96f0f424b2f1cd",
+        "transport": "intercepted API, synthetic fixture, no D1 writes",
+        "clock": "Playwright30s warm-up +60s steady foreground",
+        "cases": [
+          {
+            "viewport": "desktop",
+            "worldGetsPerSimulatedMinute": 8,
+            "pulsePostsPerSimulatedMinute": 6,
+            "ctrlHChangedHud": true,
+            "retryBurst": 25,
+            "maxPendingWorldReads": 25,
+            "forcedWorldReads": 25,
+            "retrySize": {
+              "x": 776.8125,
+              "y": 107,
+              "width": 27,
+              "height": 20
+            },
+            "cachedStateExplained": false,
+            "pageErrors": []
+          }
+        ]
+      },
+      "workAfter": {
+        "legacy": false,
+        "source": "ba0951b7753a1063b137ef1d5996fc522c3a8841",
+        "transport": "intercepted API, synthetic fixture, no D1 writes",
+        "clock": "Playwright30s warm-up +60s steady foreground",
+        "cases": [
+          {
+            "viewport": "desktop",
+            "worldGetsPerSimulatedMinute": 5,
+            "pulsePostsPerSimulatedMinute": 1,
+            "ctrlHChangedHud": false,
+            "retryBurst": 25,
+            "maxPendingWorldReads": 1,
+            "forcedWorldReads": 1,
+            "retrySize": {
+              "x": 862.2421875,
+              "y": 107,
+              "width": 44,
+              "height": 44
+            },
+            "cachedStateExplained": true,
+            "pageErrors": []
+          },
+          {
+            "viewport": "mobile",
+            "worldGetsPerSimulatedMinute": 5,
+            "pulsePostsPerSimulatedMinute": 1,
+            "ctrlHChangedHud": false,
+            "retryBurst": 25,
+            "maxPendingWorldReads": 1,
+            "forcedWorldReads": 1,
+            "retrySize": {
+              "x": 316,
+              "y": 107,
+              "width": 44,
+              "height": 44
+            },
+            "cachedStateExplained": true,
+            "pageErrors": []
+          }
+        ]
+      },
+      "qaAfter": {
+        "legacy": false,
+        "source": "cf90e43bd7bb2f93c6dc6071a0fc59a569a6e538",
+        "transport": "intercepted API, synthetic fixture, no D1 writes",
+        "clock": "Playwright30s warm-up +60s steady foreground",
+        "cases": [
+          {
+            "viewport": "desktop",
+            "worldGetsPerSimulatedMinute": 5,
+            "pulsePostsPerSimulatedMinute": 1,
+            "ctrlHChangedHud": false,
+            "retryBurst": 25,
+            "maxPendingWorldReads": 1,
+            "forcedWorldReads": 1,
+            "retrySize": {
+              "x": 862.2421875,
+              "y": 107,
+              "width": 44,
+              "height": 44
+            },
+            "cachedStateExplained": true,
+            "pageErrors": []
+          },
+          {
+            "viewport": "mobile",
+            "worldGetsPerSimulatedMinute": 5,
+            "pulsePostsPerSimulatedMinute": 1,
+            "ctrlHChangedHud": false,
+            "retryBurst": 25,
+            "maxPendingWorldReads": 1,
+            "forcedWorldReads": 1,
+            "retrySize": {
+              "x": 316,
+              "y": 107,
+              "width": 44,
+              "height": 44
+            },
+            "cachedStateExplained": true,
+            "pageErrors": []
+          }
+        ]
+      },
+      "manualReview": "Both QA desktop/mobile recovery-banner screenshots opened and reviewed; cached-state text and44px retry visible, no page errors/overflow in harness. Not a whole-project accessibility certification.",
+      "screenshots": [
+        "docs/screenshots/system-budgets-2026-11-16/desktop-connection.png",
+        "docs/screenshots/system-budgets-2026-11-16/mobile-connection.png"
+      ]
     }
   },
   "limits": [
     "No authenticated remote traffic/env/D1/Cron/quota/CPU/GPU/soak readback",
     "No migration, reset, new scheduler, dependency or model promotion",
     "Local navigation CPU costs do not measure entire frame rendering or live FPS"
-  ]
+  ],
+  "release": {
+    "qaSource": "cf90e43bd7bb2f93c6dc6071a0fc59a569a6e538",
+    "mainUnchanged": "402df57027278c599aab6f4932adbde1609e6979",
+    "pipeline": "Cloudflare App version successful; GitHub browser still running",
+    "authenticatedRootProbe": "HEAD302 Access redirect on2026-11-16; unauthenticated, no database access",
+    "cloudflareBuildId": "ee072d26-5616-48f8-a711-bbbee7c6bd24",
+    "platformCheckId": 133407882330,
+    "deployGateRun": "https://github.com/qualife1291/AI-Living/actions/runs/43898088887",
+    "browserRun": "https://github.com/qualife1291/AI-Living/actions/runs/43898088782",
+    "platformReportedVersion": "00ca65f4-eb3a-4a13-a6ae-058a87d71719",
+    "deploymentGateConclusion": "success",
+    "browserConclusion": "in_progress",
+    "nativeTrafficEnvD1CronQuotaReadback": false,
+    "actionUpload": "skipped: scoped Cloudflare token not configured; independently confirmed Cloudflare App supplied exact-source version"
+  }
 }
