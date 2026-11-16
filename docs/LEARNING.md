@@ -14,6 +14,8 @@ Tám domain thực hành: học tập, kỹ thuật, phục vụ, công việc/m
 
 Migration 0007 `learning_policies` tách ma trận theo actor/exact revision, ghi chung CAS/nonce transaction với world/archive. Snapshot giữ needs/tabular/memories/pending/policyRevision; world polling không hydrate, planner/learning có hydrate. Legacy inline dùng trước migration; dữ liệu conflict/corrupt/missing ref phải dừng, không xóa để chữa. Fixture240actor×41arm:5.135.422B inline→62.302B snapshot/11chunks; không là SLA live. Rollback binary cũ cần đối chiếu backup/rows trước writer.
 
+Từ16/11, planner/settlement capture baseline trước khi đổi learning: chỉ ghi ma trận đổi, giữ `policyRevision` cũ cho actor không học thêm, snapshot có thể tham chiếu nhiều revision. CAS/nonce và hydrate exact-ref vẫn bắt buộc; legacy inline migrate một lần. Archive lọc ID đã có trước INSERT để tránh cập nhật AUTOINCREMENT khi replay retained200; không bỏ backfill hoặc xóa history. QA lọc arm di chuyển không đủ tiền **trước scoring** để arm chưa thử không thắng khám phá mãi rồi bị đổi thành rest-home; free actions và ưu tiên nhu cầu vẫn có hiệu lực, không cấp wallet hoặc sửa samples cũ. Sleep sau giờ wake riêng dùng nap60phút, không wrap gần24giờ. [Kiểm chứng local và giới hạn](validation/learning-repair-2026-11-16.json).
+
 Animal policy có4 action rest/forage/play/shelter, giữ lịch sử riêng; không gọi là model động vật chuyên biệt. Pet walk ngắt pending tự kiếm ăn/chơi phải cancel, không nhận thưởng hoạt động chưa hoàn tất.
 
 ## Memory và bối cảnh

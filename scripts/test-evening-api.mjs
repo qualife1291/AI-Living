@@ -39,5 +39,26 @@ try{
  assert.equal(policies.length,9);for(const row of policies)assert.equal(Object.values(JSON.parse(row.data))[0].samples,1,'Personal LinUCB posterior must persist separately');
  const retries=await Promise.all([request(),request(),request()]);assert(retries.every(r=>[200,409].includes(r.status)));
  assert.equal((await db.prepare('SELECT count(*) AS n FROM agent_experiences').first()).n,9,'Retries cannot duplicate earned samples');
- console.log(JSON.stringify({suite:'evening-api',pass:true,compiledWorker:true,isolatedD1:true,newActionsSettled:9,namespaceEvidence:true,retries:3,duplicateSamples:0,identityAndPetOwnersPreserved:true,productionAccess:false,physicalCompletionProven:false}));
+ // One subsequent settlement must not rewrite the other eight referenced
+ // posteriors; all API paths must preserve mixed policy/world revisions.
+ const policyRows=async()=>(await db.prepare('SELECT * FROM learning_policies ORDER BY actor_id').all()).results;
+ const beforeSecond=await policyRows(),snapshot=JSON.parse((await db.prepare("SELECT data FROM worlds WHERE id='home'").first()).data);
+ const actor=actors[0],a=snapshot.living.learning[actor.id];
+ a.pending={...world.living.learning[actor.id].pending,id:'evening-second-settlement'};
+ await db.prepare("UPDATE worlds SET data=? WHERE id='home'").bind(JSON.stringify(snapshot)).run();
+ const second=await request();assert.equal(second.status,200,await second.clone().text());
+ const afterSecond=await policyRows();
+ const changed=afterSecond.filter((row,i)=>JSON.stringify(row)!==JSON.stringify(beforeSecond[i]));
+ assert.equal(changed.length,1);assert.equal(changed[0].actor_id,actor.id);
+ assert.equal((await db.prepare('SELECT count(*) AS n FROM agent_experiences').first()).n,10);
+ const archiveBefore=(await db.prepare('SELECT * FROM agent_experiences ORDER BY seq').all()).results;
+ const seqBefore=(await db.prepare("SELECT seq FROM sqlite_sequence WHERE name='agent_experiences'").first()).seq;
+ const tick=await mf.dispatchFetch('http://localhost/api/living/tick',{method:'POST',headers:{Origin:'http://localhost','content-type':'application/json'},body:'{}'});
+ assert.equal(tick.status,200,await tick.clone().text());
+ const afterTick=await policyRows();
+ for(const row of afterSecond)assert.deepEqual(afterTick.find(r=>r.actor_id===row.actor_id),row,'Planning must not rewrite an unchanged referenced model');
+ assert.deepEqual((await db.prepare('SELECT * FROM agent_experiences ORDER BY seq').all()).results,archiveBefore);
+ assert.equal((await db.prepare("SELECT seq FROM sqlite_sequence WHERE name='agent_experiences'").first()).seq,seqBefore,'Retained archive retries do not consume IDs');
+ const exported=await mf.dispatchFetch(url);assert.equal(exported.status,200,'Mixed policy revisions hydrate through the real GET');
+ console.log(JSON.stringify({suite:'evening-api' ,pass:true,compiledWorker:true,isolatedD1:true,newActionsSettled:9,subsequentSettlements:1,onlyChangedPolicyRows:changed.length,unchangedPoliciesByteIdenticalAfterTick:true,retainedArchiveSequenceUnchanged:true,namespaceEvidence:true,retries:3,duplicateSamples:0,identityAndPetOwnersPreserved:true,productionAccess:false,physicalCompletionProven:false}));
 }finally{await mf.dispose();}
