@@ -400,7 +400,9 @@
       "TypeScript noUnusedLocals/noUnusedParameters",
       "ESLint max-warnings0 without starter-wide suppressions",
       "offline Markdown local paths/headings and Agent Skill structure"
-    ]
+    ],
+    "finalModuleCount": 379,
+    "activeAppTree": "git diff54ca2ec..a7eaea0 empty for worker, app/api, auth, living/city/data/db/drizzle, app/page and city/Studio/assets/living components. CLI/tooling changes covered separately."
   },
   "documentation": {
     "wordCounts": {
@@ -466,7 +468,20 @@
       }
     ],
     "persistentTest": "scripts/test-repository-hygiene.mjs: repeated real ZIP integrity/manifest/checksums plus Markdown Unicode/duplicate-heading/missing-file/anchor/image/fence/inline/external fixtures",
-    "fullSourceArchive": null
+    "fullSourceArchive": {
+      "archive": "/tmp/xom-ai-clean-source-final.zip",
+      "source_files": 1560,
+      "bytes": 72350939,
+      "sha256": "8cfaacae813845718eefddab380a766806ee0abe4394a751756a5826d627ad23",
+      "verified": "ZIP integrity, dotfiles (.gitignore/.npmrc), required files, per-file SHA256 and exclusion/credential scan passed",
+      "sourceCommit": "cac4e988010e02b54559a3452bf9e604bc2ae25c"
+    },
+    "portableUnpackedSource": {
+      "sourceFiles": 1560,
+      "gitlessMarkdown": "Checked 34 Markdown files; 0 local path/anchor errors",
+      "gitlessSkills": "Validated 6 skills",
+      "sourceUntouched": true
+    }
   },
   "checks": {
     "baselineUnit": {
@@ -477,20 +492,205 @@
       "total": 89,
       "passed": 89
     },
-    "finalUnit": "running with new hygiene suite",
+    "finalUnit": {
+      "total": 90,
+      "passed": 90
+    },
     "check": "pass",
     "lint": "pass, zero warnings",
     "build": "pass after pruned frozen install",
     "frozenInstall": "pass, supply-chain policies verified;163lock packages removed and no versions added. Offline metadata initially missing; online verification succeeded without bypass.",
     "docs": "34tracked Markdown files, zero local path/anchor errors",
-    "skills": "6validated"
+    "skills": "6validated",
+    "qaUnit": {
+      "total": 101,
+      "passed": 101
+    },
+    "qaDocs": "38Markdown files, zero local path/anchor errors",
+    "qaTypeLintBuildAssets": "pass; zero lint warnings",
+    "compiledApi": {
+      "evening-api": [
+        {
+          "suite": "evening-api",
+          "pass": true,
+          "compiledWorker": true,
+          "isolatedD1": true,
+          "newActionsSettled": 9,
+          "subsequentSettlements": 1,
+          "onlyChangedPolicyRows": 1,
+          "unchangedPoliciesByteIdenticalAfterTick": true,
+          "retainedArchiveSequenceUnchanged": true,
+          "namespaceEvidence": true,
+          "retries": 3,
+          "duplicateSamples": 0,
+          "identityAndPetOwnersPreserved": true,
+          "productionAccess": false,
+          "physicalCompletionProven": false
+        }
+      ],
+      "mobility-api": [
+        {
+          "suite": "mobility-learning-api",
+          "compiledWorker": true,
+          "isolatedD1": true,
+          "concurrentLearningRequests": 8,
+          "completedFares": 3,
+          "doubleCharges": 0,
+          "duplicateSamples": 0,
+          "unchangedPolicies": true,
+          "productionAccess": false
+        }
+      ],
+      "diagnostics": [
+        {
+          "suite": "local-diagnostics-http",
+          "ownerReadGuard": true,
+          "ownerWriteGuard": true,
+          "streamByteLimit": true,
+          "schema": true,
+          "origin": true,
+          "ack": true,
+          "jsonlReadback": true,
+          "rateLimit": true,
+          "retention": true,
+          "diagnosticsReadOnly": true,
+          "pulsePersistence": true,
+          "pulseRetry": true,
+          "pulseConcurrentViewers": 12,
+          "pulseNoDuplicateAudit": true,
+          "pulsePause": true,
+          "healthSchemaBatch": true,
+          "bulkReplay": true,
+          "memoryBackfill": true,
+          "productionAccess": false
+        }
+      ],
+      "legacy": [
+        {
+          "kind": "legacy-compiled-http-acceptance",
+          "isolated": true,
+          "productionAccess": false,
+          "results": [
+            {
+              "name": "world",
+              "exitCode": 0
+            },
+            {
+              "name": "living",
+              "exitCode": 0
+            },
+            {
+              "name": "learning",
+              "exitCode": 0
+            },
+            {
+              "name": "liveness",
+              "exitCode": 0
+            },
+            {
+              "name": "appearance",
+              "exitCode": 0
+            },
+            {
+              "name": "proposal",
+              "exitCode": 0
+            }
+          ]
+        }
+      ],
+      "progress": [
+        {
+          "suite": "progress-private-aliases",
+          "results": [
+            {
+              "path": "/api/system/progress",
+              "status": 403
+            },
+            {
+              "path": "/api/system/progress/",
+              "status": 403
+            },
+            {
+              "path": "//api/system/progress",
+              "status": 404
+            },
+            {
+              "path": "/api/%73ystem/progress",
+              "status": 404
+            },
+            {
+              "path": "/api/system/%70rogress",
+              "status": 404
+            },
+            {
+              "path": "/api/system%2Fprogress",
+              "status": 404
+            }
+          ]
+        },
+        {
+          "suite": "progress-compiled-http",
+          "concurrentReaders": 12,
+          "ownerGate": true,
+          "loopbackGate": true,
+          "noBootstrap": true,
+          "noWrites": true,
+          "noPrivatePayloads": true,
+          "missingSchema503": true,
+          "requestCorrelation": true,
+          "productionAccess": false
+        }
+      ],
+      "chat-api": [
+        {
+          "suite": "chat-admission-compiled-http",
+          "concurrentUnique": 60,
+          "concurrentDuplicate": 16,
+          "workerIsolates": 2,
+          "sharedD1": true,
+          "limit": 30,
+          "windowMs": 60000,
+          "atomicRollbackCases": 6,
+          "originOwnerBodyPauseActorGuards": true,
+          "retryAfter": true,
+          "rejectedUuidReusable": true,
+          "historyPreserved": true,
+          "productionAccess": false
+        }
+      ]
+    },
+    "frozenLearningEvidence": [
+      {
+        "kind": "frozen-learning-evidence-acceptance-v1",
+        "artifacts": 76,
+        "comparisons": 42,
+        "holdout": {
+          "reserved12000to12019": "unobserved",
+          "plans": 0
+        }
+      }
+    ],
+    "pythonJsonShellSyntax": {
+      ".py": 49,
+      ".json": 232,
+      ".sh": 6
+    },
+    "portableHygieneRetest": "pass after Gitless checker extension; QA CI will rerun full101 at exact source"
   },
   "release": {
     "workCleanup": "de2b645",
     "exportFix": "dca593e",
-    "qaSource": null,
-    "qaStatus": "not yet merged/pushed",
-    "mainUnchanged": "402df57027278c599aab6f4932adbde1609e6979"
+    "qaSource": "a7eaea052ae65675cc7044223059efb48029f707",
+    "qaStatus": "pushed; Cloudflare App exact-source success and deploy gate success; browser CI running",
+    "mainUnchanged": "402df57027278c599aab6f4932adbde1609e6979",
+    "cloudflareBuildId": "fcbb4805-7f8a-4c9b-9a7c-13083672d7a8",
+    "platformReportedVersion": "d2c1af6b-2973-4010-a5b2-95e9fe43fbb1",
+    "platformCheckId": 133200363228,
+    "deployGateRun": "https://github.com/qualife1291/AI-Living/actions/runs/43838098143",
+    "browserRun": "https://github.com/qualife1291/AI-Living/actions/runs/43838098166",
+    "deploymentGateConclusion": "success",
+    "browserConclusion": "in_progress",
+    "nativeTrafficEnvD1CronReadback": false
   },
   "limits": [
     "Static import scan is not proof every framework/CLI extension is dead.",

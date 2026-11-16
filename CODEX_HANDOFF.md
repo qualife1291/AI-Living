@@ -4,7 +4,7 @@
 
 ## Đang làm
 
-Review ZIP skill mới và dọn source/tài liệu. Đã chọn6skill, bỏ UI starter không có đường import, dependency chỉ phục vụ chúng và ngoại lệ lint cũ. Đang chốt kiểm tra/đóng gói; bản QA đã xác minh trước cleanup là54ca2ec. Không thay renderer, schema, hành vi học hoặc dữ liệu thật.
+Review ZIP skill mới và dọn source/tài liệu. Đã chọn6skill, bỏ67file starter không dùng/21dependency trực tiếp, siết lint/unused checks, gọn TESTING và sửa export không sinh manifest trong source. Work90/QA101suite, type/lint/build/assets/API và ZIP thật đạt; QAa7eaea0 đã push, Cloudflare App success; chờ browser CI. [Evidence](docs/validation/repository-cleanup-2026-11-16.json). Không thay renderer, schema, hành vi học hoặc dữ liệu thật.
 
 ## Trạng thái nền
 
