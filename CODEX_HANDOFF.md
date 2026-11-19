@@ -2,9 +2,11 @@
 
 Đọc [AGENTS](AGENTS.md) → file này → [ROADMAP](ROADMAP.md). Chỉ mở tài liệu đúng chủ đề từ [README](README.md); ROADMAP là backlog duy nhất.
 
-## WIP — Ontology 19/11/2026
+## Ontology — 19/11/2026
 
-Theo yêu cầu chủ dự án: agent phát triển + domain mô phỏng. Audit/kiến trúc và O1–O5 ở [ONTOLOGY](docs/ONTOLOGY.md). Tái sử dụng D1/Zod/CAS/audit/owner guard, domain projection chỉ đọc; role nghề nghiệp không là quyền. Core opt-in, policy, registry, SDK, GitHub verifier và D1 fixture đã có; test core40/GitHub17/D1 đang nghiệm thu, còn build/compiled API/full regression. Không migrate DB thật, không auto merge/deploy hoặc bật model. QA đã phát hành3631067 vẫn giữ nguyên.
+[ONTOLOGY](docs/ONTOLOGY.md) là audit/design/schema/API/SDK/ví dụ/migration. O1–O4 đã có code opt-in: policy độc lập LLM, typed registry, D1 CAS/audit/token, workflow/dependency/bug ownership/GitHub read-only gates và simulation projection. Local97/97suite,26ca compiled API, legacy/diagnostics/progress và frozen learning đạt theo [evidence](docs/validation/ontology-2026-11-19.json). Feature OFF mặc định,0013 chỉ fixture; không merge/deploy/migrate QA/main hoặc đổi world/policy/model/Cron.
+
+**Push đang bị chặn:** phiên cloud mới không có GitHub write credential; `git push` không đọc được Username. Commit nằm trên local`work`, remote vẫnf0d2f8a; không tìm token cũ hoặc giả định đã push. Chưa remote CI cho source này. O5 còn backup/migrate/credential/native QA+usage và evidence CI cùng SHA trước mở rộng. QA3631067 vẫn là bản phát hành trước tác vụ ontology.
 
 ## Trạng thái nền
 

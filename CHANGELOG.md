@@ -2,6 +2,10 @@
 
 Chỉ ghi mốc sản phẩm. Chi tiết commit/review nằm trong Git; số version/deployment và readback nằm ở [releases](docs/releases/).
 
+## 19/11/2026
+
+- Thêm ontology công việc opt-in: Agent/Role/Task/Workflow/PR, policy không LLM, registry typed, D1 CAS/audit và credential scoped. Domain mô phỏng chỉ đọc từ nguồn cũ; GitHub verifier không có merge/deploy executor. Local acceptance đạt, chưa rollout/migrate live. [Thiết kế](docs/ONTOLOGY.md).
+
 ## 16/11/2026
 
 - Gộp nhịp background writes và telemetry, bỏ audit tick trùng, hạn chế stream body và đọc archive nhẹ hơn. Sửa deadlock/đi vòng khi đông người, gộp retry và cải thiện thông báo mất kết nối. Giữ lịch sử/học cá nhân và authority ground. [Nghiệm thu](docs/validation/system-budgets-2026-11-16.json).
