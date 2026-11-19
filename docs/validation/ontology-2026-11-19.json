@@ -1,13 +1,12 @@
 {
   "schema": "xom-ontology-acceptance-v1",
   "date": "2026-11-19",
-  "status": "PASS local code, integration and regression; remote push/CI/rollout blocked by unavailable write identity",
+  "status": "PASS local and exact-source GitHub CI; source pushed, feature OFF, live rollout not performed",
   "scope": "development agents plus read-only simulation domain",
   "migration": "0013, three new tables; isolated fixtures only",
   "liveDatabaseWrites": false,
   "githubWrites": false,
-  "pushBlocker": "Current environment has no GitHub write credential; git push cannot read Username. Local commits preserved; no connector capable of pushing is available.",
-  "implementationCommit": "b46696e7ef61312cd4e84c3ab03681654e2bd960",
+  "implementationCommit": "b9429fd1bab4fb9aa42016daf5928fd2658b6734",
   "architecture": {
     "storage": "Existing D1, bounded development snapshot + immutable audit + hash credentials",
     "sourceOfTruth": "Development D1 head; simulation remains existing worlds/policies/journals, read-only projection",
@@ -208,7 +207,60 @@
     "compiledApiLog": "ontology-api-accepted.log",
     "legacyLog": "ontology-legacy-accepted.log",
     "diagnosticsLog": "ontology-diagnostics-accepted.log",
-    "querySchemaContract": "Actual compiled Role/entity/relationship payloads validate against public query schemas; persistent schema remains closed to readonly types"
+    "querySchemaContract": "Actual compiled Role/entity/relationship payloads validate against public query schemas; persistent schema remains closed to readonly types",
+    "githubLiveReadOnly": {
+      "kind": "ontology-github-readonly-smoke",
+      "repository": "qualife1291/AI-Living",
+      "pullRequest": 23,
+      "headSha": "46bbbc9211d98c9b92ff24548cdf35a848aaf224",
+      "draft": false,
+      "definitionSha": "5043cccbac04bec319f1faf0effb80ab8814518b",
+      "source": "Existing public metadata via gh read-only GET; test-only sampled workflow pin, not an approved policy or promotion",
+      "mutations": false,
+      "evidence": {
+        "repositoryId": 1432348228,
+        "number": 23,
+        "headSha": "46bbbc9211d98c9b92ff24548cdf35a848aaf224",
+        "verifiedAt": 1795102319292,
+        "checks": [
+          {
+            "workflow": ".github/workflows/asset-maintenance.yml",
+            "job": "verify",
+            "definitionSha": "5043cccbac04bec319f1faf0effb80ab8814518b",
+            "workflowId": 397802571,
+            "runId": 41386176962,
+            "attempt": 1,
+            "status": "success"
+          }
+        ]
+      },
+      "outcome": "schema-compatible"
+    },
+    "remoteCI": [
+      {
+        "suite": "unit-summary",
+        "total": 97,
+        "passed": 97,
+        "failed": [],
+        "workers": 4,
+        "seconds": 122.44
+      },
+      {
+        "suite": "ontology-compiled-api",
+        "cases": 27,
+        "compiledWorker": true,
+        "passed": true,
+        "isolatedD1": true,
+        "featureOffNoRead": true,
+        "scopeDoesNotGrantLegacyOwner": true,
+        "headerRolesIgnored": true,
+        "overflowSingleRead": true,
+        "nonCooperativeCancel": true,
+        "noWorldBootstrap": true,
+        "realNetwork": false,
+        "productionAccess": false
+      }
+    ]
   },
   "invariants": [
     "No real database migration/reset/world resume",
@@ -221,8 +273,8 @@
     "No model promotion, paid service, new scheduler or graph database"
   ],
   "limits": [
-    "Real GitHub API and private GitHub credentials not tested; verifier uses controlled HTTP fixture",
-    "No remote CI for new commits: git push requires unavailable username/credential; no sufficient GitHub connector",
+    "Public GitHub payload schema compatibility checked using read-only gh adapter on existing PR23; test pin not a trusted approval; direct Worker egress/private installation-token acceptance remains to verify",
+    "GitHub quality CI passed for exact implementation source b9429fd; later handoff-only documentation is not a deployment",
     "No QA/main merge, deploy, live migration, Access/traffic/usage readback",
     "HTTP API and bound host tools implemented; no new public MCP transport",
     "512entity/2048relationship/256KiB workspace and8PR completion budget; larger deployments need indexed D1 expansion",
@@ -232,9 +284,14 @@
     "mainUnchanged": "402df57027278c599aab6f4932adbde1609e6979",
     "qaUnchanged": "36310678bb420f50208986b04513720e6baaa513",
     "remoteWorkBeforeTask": "f0d2f8a3580150dfb86c803a0c11a0bd0e623a4f",
-    "pushed": false,
+    "pushed": true,
     "deployed": false,
-    "migratedLive": false
+    "migratedLive": false,
+    "codeSourceSha": "b9429fd1bab4fb9aa42016daf5928fd2658b6734",
+    "remoteWorkHeadObserved": "b9429fd1bab4fb9aa42016daf5928fd2658b6734",
+    "ciRun": "https://github.com/qualife1291/AI-Living/actions/runs/44555336202",
+    "ciJobId": 135669772385,
+    "ciConclusion": "success"
   },
   "delivery": {
     "baseCommit": "f0d2f8a3580150dfb86c803a0c11a0bd0e623a4f",
@@ -242,5 +299,7 @@
     "bundle": "AI-Living-ontology.bundle",
     "import": "git bundle verify AI-Living-ontology.bundle; git fetch AI-Living-ontology.bundle work:ontology-review",
     "note": "Import creates review branch only; remote CI/QA required before merge/rollout"
-  }
+  },
+  "initialPushError": "An implementation push returned cannot read Username; later retry succeeded. No credential search or audience change was used.",
+  "pushBlocker": null
 }

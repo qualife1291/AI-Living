@@ -15,7 +15,7 @@ Backlog duy nhất của dự án; `main`402df57, QA`3631067`ngày16/11/2026 (As
 
 ## Ontology — triển khai theo phần nhỏ
 
-O1–O4 đã có code và local97suite/27ca compiled API đạt theo [thiết kế](docs/ONTOLOGY.md), [evidence](docs/validation/ontology-2026-11-19.json). Còn push/remote CI vì phiên cloud thiếu write identity; O5 backup/migrate/credential/native QA/usage và review cùng SHA trước bật rộng. Feature OFF, không tự merge hoặc thay nguồn world/policy.
+O1–O4 đã có code và local97suite/27ca compiled API đạt theo [thiết kế](docs/ONTOLOGY.md), [evidence](docs/validation/ontology-2026-11-19.json). Implementation đã pushwork b9429fd, CI44555336202đã đạt cùng source; O5 backup/migrate/credential/native QA/usage và review cùng SHA trước bật rộng. Feature OFF, không tự merge hoặc thay nguồn world/policy.
 
 ## Ưu tiên 1 — nối các nền tảng đã có và đóng integration
 

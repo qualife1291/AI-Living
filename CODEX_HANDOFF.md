@@ -6,7 +6,7 @@
 
 [ONTOLOGY](docs/ONTOLOGY.md) là audit/design/schema/API/SDK/ví dụ/migration. O1–O4 đã có code opt-in: policy độc lập LLM, typed registry, D1 CAS/audit/token, workflow/dependency/bug ownership/GitHub read-only gates và simulation projection. Local97/97suite,27ca compiled API, legacy/diagnostics/progress và frozen learning đạt theo [evidence](docs/validation/ontology-2026-11-19.json). Feature OFF mặc định,0013 chỉ fixture; không merge/deploy/migrate QA/main hoặc đổi world/policy/model/Cron.
 
-**Push đang bị chặn:** phiên cloud mới không có GitHub write credential; `git push` không đọc được Username. Commit nằm trên local`work`, remote vẫnf0d2f8a; không tìm token cũ hoặc giả định đã push. Chưa remote CI cho source này. O5 còn backup/migrate/credential/native QA+usage và evidence CI cùng SHA trước mở rộng. QA3631067 vẫn là bản phát hành trước tác vụ ontology.
+Implementation đã push`work`ở`b9429fd` sau khi retry lỗi xác thực tạm thời; CI44555336202đã đạt đúng source, gồm97suite/build/27ca compiled API. Không tìm token cũ hoặc mở audience. O5 còn backup/migrate/credential/native QA+usage và evidence CI cùng SHA trước mở rộng. QA3631067 vẫn là bản phát hành trước tác vụ ontology.
 
 ## Trạng thái nền
 
