@@ -51,3 +51,63 @@ GitHub verifier chỉ GET `api.github.com`, không nhận URL tùy ý. Required 
 Rollback vận hành: tắt `XOM_ONTOLOGY_ENABLED`; giữ bảng/audit/credential để điều tra. Trước bật remote phải backup+restore rehearsal, kiểm schema/binding/auth hiện hành theo [runbook](PRODUCTION_RUNBOOK.md). Không tự xóa bảng để rollback. Database hiện hành chưa được migrate bởi tác vụ này.
 
 API, ví dụ và kết quả nghiệm thu được cập nhật cùng implementation. Backlog rollout duy nhất ở [ROADMAP](../ROADMAP.md).
+
+## API và Agent integration v1
+
+`XOM_ONTOLOGY_ENABLED=true` bật namespace; mặc định OFF. Tất cả GET và POST cần owner hiện hữu hoặc `Authorization: Bearer ont1_…` do owner cấp. Bearer luôn được giảm xuống agent đã lưu, kể cả localhost/owner session; role header và principal trong body không có tác dụng. HTTPS bắt buộc ngoài loopback. Không đưa owner credential, DB binding hoặc raw network tools vào LLM. Trên QA còn cần Access hiện hành; không thay audience để bật ontology.
+
+| Endpoint | Hợp đồng |
+|---|---|
+| GET `/api/ontology?view=schema` | Entity/relationship schema, permission-role catalog chỉ đọc và limits. Simulation profession không thuộc catalog này. |
+| GET `?view=actions` | JSON Schema input registry và tên action; merge/deploy không tồn tại. |
+| GET `?view=entities&kind=task&limit=50` | Keyset paging; `revision` optional làm fence giữa các trang, `next` là cursor tiếp theo. Role entities/has_permission_role được dẫn xuất từ catalog code và agent.roles. |
+| GET `?view=relationships&from=task:bug` | Quan hệ typed, lọc kind/from/to. Không ghi hoặc sửa khi đọc. |
+| GET `?view=analysis` | Blocking dependency, task không owner/owner inactive, bug chưa giao, QA stale/head mismatch và domain reference đã mất/khác born. |
+| GET `?view=domain` | Cần domain-reader; core/resident/profession/household/plan metadata + world revision/born. Không memory, policy, transcript hoặc physical receipt. |
+| GET `?view=audit&after=0&limit=50` | Chỉ owner/auditor. Cursor sequence tăng dần; input an toàn, role/policy version, source/CI facts và kết quả. Không secret, title/free text hoặc Authorization. |
+| POST `/api/ontology/actions` | Envelope `{operationId,expectedRevision,action:{type,input}}`; strict JSON UTF8 ≤8KiB, Origin có mặt phải cùng site. Output typed `{ok,code,revision,changed,duplicate,data?}`. |
+
+Validation và permission do server quyết định. 400=input;403=quyền/credential;409=state/dependency/QA conflict;413=body;503=OFF/schema/storage/provider. Mutation bị từ chối sau envelope hợp lệ có audit, không đổi head. Unauthenticated/malformed envelope bị chặn trước ghi để tránh biến request rác thành D1 writes. Retry dùng **cùng envelope/operationId**; UUID chuẩn hóa lowercase, không tự đổi UUID sau timeout. Credential issue chỉ trả secret trong ACK đầu; duplicate chỉ trả credentialId. Owner revoke token cũ rồi cấp mới nếu mất ACK, không lấy lại plaintext từ journal.
+
+Permission catalog duy nhất ở `policy.ts`: reader; developer (own task progress); reviewer (review độc lập); maintainer (manage tasks/workflow/PR); auditor; domain-reader. Agent không được grant role/issue credential/register repository policy. Chủ sở hữu có các action quản trị này nhưng vẫn phải qua consistency/QA/CAS. Việc chọn profile repository+required workflows là quyết định owner; definitionSha là Git blob SHA của workflow đã review. Dùng `git rev-parse <reviewed_commit>:.github/workflows/asset-maintenance.yml`, không lấy pin từ đề xuất LLM chưa review. Thay QA profile cần repository entity mới có ID phiên bản; không sửa âm thầm bằng chứng lịch sử.
+
+GitHub workflow/job/latest attempt và workflow **definition blob SHA** đều được kiểm bằng API ở source head. Repository public đọc không token; private có thể cung cấp `XOM_ONTOLOGY_GITHUB_TOKEN` read-only qua secret runtime hoặc inject verifier trong host. Không ghi token đó vào DB/prompt/audit/Git. Fork PR, pagination thiếu jobs, source đang đổi, workflow đã thay, pending/failed/skipped/missing đều không được duyệt. CI observation không thay independent review/native QA theo runbook.
+
+### Ví dụ host và quy trình sửa bug
+
+```ts
+import { createOntologyAgentTools } from './lib/ontology/agent.ts';
+
+// verifiedAgentId phải do host xác thực, không lấy từ tool arguments của LLM.
+const tools = createOntologyAgentTools(env.DB, {
+  kind: 'agent', id: verifiedAgentId,
+});
+const graph = await tools.query();
+const request = {
+  operationId: crypto.randomUUID(), expectedRevision: graph.revision,
+  action: { type: 'task.transition', input: {
+    id: 'task:graphics-bug', state: 'in_review',
+  } },
+};
+const result = await tools.request(request);
+// Mất ACK: gửi lại request này;409 thì đọc state và lập đề xuất mới.
+```
+
+Owner initialize → register builder/reviewer với role khác nhau → issue token có expiry → register repository profile (fullName, workflow path/job/pin) → maintainer tạo bug và assign builder → thêm dependency/workflow/domain pointer bằng relationship.add → builder in_progress/in_review → track PR bằng server verifier → reviewer yêu cầu done với `expectedHeadSha` đúng head đã xem → server đọc lại CI/head → done. Workflow complete cũng đọc lại evidence; không gọi GitHub merge.
+
+Có thể chạy toàn bộ ví dụ nhiều agent, token revoke/expiry, bug lifecycle, GitHub fixture và concurrency trên D1 mới bằng `node scripts/test-ontology-d1.mjs`; không dùng DB thật hoặc mạng GitHub. SDK/tool factory cung cấp query/relationships/domain/request và Zod schemas để host gắn vào MCP hiện hữu; v1 đã có HTTP API, **chưa mở MCP server/transport mới**.
+
+## Giới hạn và mở rộng
+
+Working set ≤512entities/2048relations/256KiB; một completion tối đa8PR. Đây là state giao việc trong một project, không phải archive vô hạn. Audit giữ lâu dài và đọc theo seq; mỗi mutation explicit ghi head+audit, credential action thêm credential row, không có tick/cron/retention writer mới. SQLite có envelope/uniqueness/immutability constraints; semantic graph validation chạy cả trước ghi và khi đọc, exact-state CAS bảo vệ các lần kiểm tra khỏi race. Dữ liệu sai trả lỗi, không sửa/ngầm bootstrap.
+
+Domain v1 chỉ projection metadata con người/nghề nghiệp/nhà/plan và pointer actor; chưa biến tâm trạng, tiền, UI pose hoặc reward thành quyền công việc. Các writer mô phỏng hiện hành giữ contracts cũ; token ontology không gọi được API legacy. GitHub verifier chỉ đọc, không phải bot merge, webhook hoặc scheduler. Rollout credential/Access và readback DB thật nằm O5; không tuyên bố đã bật multi-user hoặc đã migrate production.
+
+## Kiểm thử
+
+- `test-ontology-core.mjs`: schema/role/ownership/DAG/transitions, self approval, QA/source mismatch và no-merge.
+- `test-ontology-github.mjs`: spoof repo/workflow/job/head, workflow definition đổi, run mới failed/pending, skipped job, truncation/giới hạn response/offline.
+- `test-ontology-d1.mjs`: migration từ schema cũ, hai agent dùng cùng state, token/expiry/revoke, denied audit, source fence,12request khác ID/12request cùng ID, concurrent cycle, silent-ignore/tamper rollback và giữ world/memory/policy.
+- `test-ontology-api.mjs`: Worker vừa build, OFF/missing schema, owner/private readers, streamed cap/non-cooperative cancel/UTF8, namespace token không thừa hưởng legacy owner.
+
+Bằng chứng máy đọc ở [validation](validation/ontology-2026-11-19.json); CI remote/native rollout chỉ được ghi đạt khi có kết quả thực.

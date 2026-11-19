@@ -1,6 +1,6 @@
 # Mô hình dữ liệu hiện hành
 
-Nguồn: db/schema.ts, lib/world.ts, lib/event-schema.ts, lib/living/schema.ts. Source có24bảng; số bảng/migration production phải xác minh live, không suy ra từ schema local.
+Nguồn: db/schema.ts, lib/world.ts, lib/event-schema.ts, lib/living/schema.ts. Source có27bảng; số bảng/migration production phải xác minh live, không suy ra từ schema local.
 
 ## D1 và migration append-only
 
@@ -30,6 +30,9 @@ Nguồn: db/schema.ts, lib/world.ts, lib/event-schema.ts, lib/living/schema.ts. 
 | ground_authority_states | GND3 local checkpoint: epoch/plan/window/contact/utterance, bind exact shared parent, protocol SHA | 0011 |
 | ground_authority_batches | Immutable operation/sequence/records receipt, CAS cùng shared head; không cấp reward/P2P | 0011 |
 | peer_offers | Journal H5b1 trước publication, exact world/shared/authority CAS; chưa app importer hoặc live migration | 0012 |
+| ontology_states | Opt-in development graph bounded JSON, revision/nonce CAS; không bản sao world | 0013 |
+| ontology_audit | Immutable operation/principal/input hash/decision, safe context và seq cursor; không secret | 0013 |
+| ontology_credentials | Hash token ngẫu nhiên gắn agent, expiry/revocation; mutation cùng head/audit | 0013 |
 
 0004 là reconciliation schema cho lịch sử0000–0003; không đăng ký lại các SQL đã áp dụng hoặc sửa migration cũ. Dùng setup-local.mjs/Drizzle journal. Backup trước migration/repair production. memories/commitments có schema nhưng luồng sống vẫn giữ nhiều dữ liệu trong snapshot; không coi các bảng đó đã được khai thác đầy đủ.
 
@@ -68,3 +71,5 @@ Ground0009 là opt-in local session/ledger riêng, không thêm pose/receipt và
 GND2/0010 tách shared home khỏi GND1. Journal trigger chỉ hoạt động sau explicit start; capture raw source cùng world transaction, engine time không được đứng trước committed cursor/source trước. Unique world/revision, source UPDATE/DELETE bị chặn. State giữ serialized Walk/Tag/Pet/Traffic, all-actor occupancy và20frame; source/plan/roster lifecycle receipt không là activity completion. Canonical ground clock tích phân accepted pause/scale, không rewrite world clock hoặc reward evidence. No-op advance vẫn durable operation; source/state/batch lỗi rollback thật. Chỉ bảng mới thay đổi, không reset hoặc sửa history/memory/policy hiện có. Xem ARCHITECTURE cho scope/replay/renderer và giới hạn; reward/P2P vẫn false.
 
 GND3/0011 quan sát physics GND2 đã nhận, ledger riêng được kích hoạt explicit trên shared session hiện có. Shared marker pin protocol SHA/start sequence; authority state pin parent checkpoint/sequence và source cursor. Hai head+receipt cùng CAS/postassert trong một batch; thiếu active schema/state chặn trước pulse world write. State/receipt≤1,8MiB, pair/record≤8192, recent utterance≤64; durable batches không bị xóa theo giới hạn working set. Arrival/presence chỉ có phạm vi hiện diện mô phỏng; co-presence chỉ hai bên và heard chỉ named listener của câu đã phát đủ cửa sổ. Chưa tự import sang memories/learning hoặc ghi world; chưa migrate DB người dùng/production. [Protocol](validation/ground-authority-contract-v1.json) và [kiến trúc](ARCHITECTURE.md) giữ hợp đồng chi tiết.
+
+Ontology0013 chỉ được nghiệm thu fixture; [thiết kế/API/migration](ONTOLOGY.md) phân biệt permission-role và profession, server policy độc lập LLM và GitHub read-only gates. Không bootstrap/migrate DB thật từ GET hoặc pulse.

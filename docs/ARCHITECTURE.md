@@ -17,7 +17,7 @@ Planner/rules hoặc local LLM sinh kế hoạch và hội thoại có nguồn r
 | UI/framework | TypeScript5.9.3 strict, React19.2.6, Vinext1.0.0-beta.5/Vite8.0.13; Next/eslint-config-next16.4.1 theo lockfile |
 | 3D | Three.js0.186.1/WebGL2, GLTFLoader, SkeletonUtils, InstancedMesh/LOD; 41 modelKenney +239 Gobkit/KayKit canonical CC0 |
 | API/schema | Worker nodejs_compat, Zod4.6.6; endpoint mutations có origin/schema/body limits và owner guard |
-| Persistence | D1 SQLite, Drizzle0.45.2; 24bảng trong db/schema.ts, migration0000–0012 (0004reconciliation); ground0009–0011 và peer0012 chỉ được nghiệm thu local |
+| Persistence | D1 SQLite, Drizzle0.45.2; 27bảng trong db/schema.ts, migration0000–0013 (0004reconciliation); ground0009–0011 và peer0012 chỉ được nghiệm thu local |
 | AI local | llama.cpp/CPU opt-in; rule fallback, narrative guard, không cần paid API để chạy ứng dụng |
 | Production | Sites project cũ, owner-private; native credential/deploy/readback theo PRODUCTION_RUNBOOK |
 
@@ -103,3 +103,7 @@ npm run ground:authority -- --origin=http://127.0.0.1:PORT --action=start --sess
 ```
 
 Advance tiếp bằng `ground:shared` hoặc pulse có sẵn. API `/api/living/ground/authority` vẫn owner+local-admin+loopback, body≤2KiB; CLI≤32KiB và không tự retry. Shared GET world trả DTO `sharedAuthority` riêng, buộc đúng parent checkpoint/sequence/source/time. Viewer chỉ lấy utterance tại sample time, ưu tiên render hai người tham gia, Talk/Listen chỉ là pose; ACK hiển thị không tạo ký ức viewer. Không TTS hoặc claim nhân vật hiểu/suy nghĩ từ caption. GND3 receipt luôn `eligibleForReward:false`, `eligibleForP2P:false`; H3b/H5 cần protocol/namespace/admission riêng.0011 chưa migrate production hoặc DB người dùng; không gọi local acceptance là rollout.
+
+## Ontology công việc
+
+[ONTOLOGY](ONTOLOGY.md) quản lý Agent/Task/Workflow/PR bằng registry/policy/CAS/audit riêng, namespace API opt-in và credential scoped. Domain mô phỏng chỉ được project metadata theo world revision/born; nghề nghiệp không cấp quyền và không đổi planner/learning/ground. GitHub verifier chỉ đọc, không executor merge/deploy.0013 chưa migrate live.

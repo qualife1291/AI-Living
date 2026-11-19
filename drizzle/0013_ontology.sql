@@ -14,6 +14,7 @@ CREATE TABLE ontology_audit (
  principal TEXT NOT NULL,
  request_hash TEXT NOT NULL CHECK(length(request_hash)=64),
  action TEXT NOT NULL,
+ context TEXT NOT NULL CHECK(json_valid(context)),
  before_revision INTEGER NOT NULL CHECK(before_revision>=0),
  after_revision INTEGER NOT NULL CHECK(after_revision>=before_revision),
  result TEXT NOT NULL CHECK(json_valid(result)),

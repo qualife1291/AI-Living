@@ -8,7 +8,7 @@ import {mayRead,permissionRoleEntities,permissionRelationships} from './policy.t
 import {analyze} from './graph.ts';
 import {readDomain,domainRefProblems} from './domain.ts';
 import {createGitHubVerifier} from './github.ts';
-type Settings={DB?:D1Database;XOM_ONTOLOGY_ENABLED?:string;XOM_ADMIN_USER_ID?:string;XOM_LOCAL_ADMIN?:string;XOM_OWNER_PRIVATE_ORIGIN?:string};
+type Settings={DB?:D1Database;XOM_ONTOLOGY_ENABLED?:string;XOM_ONTOLOGY_GITHUB_TOKEN?:string;XOM_ADMIN_USER_ID?:string;XOM_LOCAL_ADMIN?:string;XOM_OWNER_PRIVATE_ORIGIN?:string};
 export const ontologyPath=(path:string)=>path==='/api/ontology'||path.startsWith('/api/ontology/');
 const json=(value:unknown,status=200)=>Response.json(value,{status,headers:{'Cache-Control':'private, no-store','X-Content-Type-Options':'nosniff'}});
 /** Tokens grant access only inside this namespace. Roles never come from headers. */
@@ -24,7 +24,7 @@ export async function authenticateOntology(req:Request,settings:Settings,db:D1Da
  }
  return adminAllowed(req,{ownerId:settings.XOM_ADMIN_USER_ID,localAdmin:settings.XOM_LOCAL_ADMIN,privateOrigin:settings.XOM_OWNER_PRIVATE_ORIGIN})?{kind:'owner'}:null;
 }
-const querySchema=z.object({view:z.enum(['schema','actions','entities','relationships','analysis','domain','audit']).default('entities'),kind:z.string().max(60).optional(),from:z.string().max(160).optional(),to:z.string().max(160).optional(),after:z.string().max(180).default(''),limit:z.coerce.number().int().min(1).max(100).default(50),revision:z.coerce.number().int().nonnegative().optional()}).strict();
+const querySchema=z.object({view:z.enum(['schema','actions','entities','relationships','analysis','domain','audit']).default('entities'),kind:z.string().max(60).optional(),from:z.string().max(160).optional(),to:z.string().max(160).optional(),after:z.string().max(512).default(''),limit:z.coerce.number().int().min(1).max(100).default(50),revision:z.coerce.number().int().nonnegative().optional()}).strict();
 const statusFor=(code:string)=>code.startsWith('GITHUB_')?503:['PERMISSION_DENIED','OWNER_REQUIRED','REVIEWER_REQUIRED','MAINTAINER_REQUIRED','ASSIGNEE_REQUIRED','SELF_APPROVAL_DENIED','AGENT_INACTIVE','CREDENTIAL_INACTIVE'].includes(code)?403:code==='INVALID_ACTION'?400:409;
 /** Explicit opt-in transport. Existing app APIs and scheduler remain untouched. */
 export async function handleOntologyHttp(req:Request,settings:Settings):Promise<Response>{
@@ -37,7 +37,7 @@ export async function handleOntologyHttp(req:Request,settings:Settings):Promise<
   if(path==='/api/ontology/actions'&&req.method==='POST'){
    const origin=req.headers.get('origin');if(origin&&origin!==url.origin)return json({error:'ORIGIN_REJECTED'},403);
    const input=await readBoundedJson(req,LIMITS.requestBytes);if(!input.ok)return json({error:input.error},input.status);
-   const result=await executeOntology(db,principal,input.value,{verifyGitHub:createGitHubVerifier()});return json(result,result.ok?200:statusFor(result.code));
+   const result=await executeOntology(db,principal,input.value,{verifyGitHub:createGitHubVerifier(fetch,settings.XOM_ONTOLOGY_GITHUB_TOKEN)});return json(result,result.ok?200:statusFor(result.code));
   }
   if(path!=='/api/ontology')return json({error:'NOT_FOUND'},404);
   if(req.method!=='GET')return json({error:'METHOD_NOT_ALLOWED'},405);
@@ -53,7 +53,7 @@ export async function handleOntologyHttp(req:Request,settings:Settings):Promise<
   }
   if(q.view==='audit'){
    if(q.after&&(!/^\d+$/.test(q.after)||!Number.isSafeInteger(Number(q.after))))return json({error:'INVALID_CURSOR'},400);
-   const rows=(await db.prepare('SELECT seq,id,operation_id,kind,principal,action,before_revision,after_revision,result,created_at FROM ontology_audit WHERE seq>? ORDER BY seq LIMIT ?').bind(q.after?Number(q.after):0,q.limit+1).all()).results;
+   const rows=(await db.prepare('SELECT seq,id,operation_id,kind,principal,action,context,before_revision,after_revision,result,created_at FROM ontology_audit WHERE seq>? ORDER BY seq LIMIT ?').bind(q.after?Number(q.after):0,q.limit+1).all()).results;
    const page=rows.slice(0,q.limit);return json({revision,items:page,next:rows.length>q.limit?String(page.at(-1)?.seq):null});
   }
   const rows=q.view==='entities'?[...state.entities,...permissionRoleEntities].filter(e=>!q.kind||e.kind===q.kind).map(e=>({key:e.id,value:e})):[...state.relationships,...permissionRelationships(state)].filter(r=>(!q.kind||r.kind===q.kind)&&(!q.from||r.from===q.from)&&(!q.to||r.to===q.to)).map(r=>({key:r.kind+':'+r.from+':'+r.to,value:r}));

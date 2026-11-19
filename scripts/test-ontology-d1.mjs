@@ -71,6 +71,11 @@ try{
  const staleHost=await (await mf.dispatchFetch('http://localhost/__sdk',{method:'POST',body:JSON.stringify({principal:{kind:'agent',id:'agent:dev',credentialId:expiryId},request:envelope(revision,'task.transition',{id:'task:domainrace',state:'in_progress'})})})).json();assert.equal(staleHost.code,'CREDENTIAL_INACTIVE');cases++;
  await run('agent.configure',{id:'agent:reader',roles:['reader'],active:false});
  assert.equal((await mf.dispatchFetch('http://localhost/api/ontology',{headers:{Authorization:'Bearer '+reader}})).status,403);cases++;
+ await run('task.create',{id:'task:cycle-a',title:'Private title not in audit',category:'review'});await run('task.create',{id:'task:cycle-b',title:'Dependency',category:'review'});
+ const cycleRevision=revision,edges=[{kind:'depends_on',from:'task:cycle-a',to:'task:cycle-b'},{kind:'depends_on',from:'task:cycle-b',to:'task:cycle-a'}];
+ const races=await Promise.all(edges.map(relationship=>post(envelope(cycleRevision,'relationship.add',{relationship})).then(r=>r.json())));assert.equal(races.filter(r=>r.ok).length,1);revision++;cases++;
+ await reject('relationship.add',{relationship:edges[races.findIndex(r=>!r.ok)]},'INCONSISTENT_CHANGE');
+ const contexts=(await db.prepare('SELECT context FROM ontology_audit').all()).results.map(r=>r.context).join('');assert(!contexts.includes('Private title not in audit'));assert(contexts.includes('ontology-policy-v1'));cases++;
  const stored=await snapshot();assert(!stored.includes(devToken));assert(!stored.includes(qa));assert(!stored.includes(reader));cases++;
  await assert.rejects(db.prepare("UPDATE ontology_audit SET action='fake'").run());await assert.rejects(db.prepare('DELETE FROM ontology_audit').run());await assert.rejects(db.prepare("UPDATE ontology_states SET revision=revision+1,nonce='invalid',data='{}'").run());cases++;
  assert.equal(await protectedSnapshot(),before,'Ontology must preserve every simulation/history/policy row');cases++;

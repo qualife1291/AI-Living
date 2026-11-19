@@ -40,10 +40,10 @@ export const actionSchema=z.discriminatedUnion('type',[
  action('pull_request.track',{id:idSchema,repositoryId:idSchema,number:z.number().int().positive()}),
  action('checks.refresh',{id:idSchema}),
  action('credential.issue',{agentId:idSchema,ttlSeconds:z.number().int().min(60).max(604800)}),
- action('credential.revoke',{credentialId:z.string().uuid()}),
+ action('credential.revoke',{credentialId:z.string().uuid().toLowerCase()}),
 ]);
 export type Action=z.infer<typeof actionSchema>;
-export const attemptSchema=z.object({operationId:z.string().uuid(),expectedRevision:revision,action:z.object({type:z.string().min(1).max(60),input:z.unknown()}).strict()}).strict();
+export const attemptSchema=z.object({operationId:z.string().uuid().toLowerCase(),expectedRevision:revision,action:z.object({type:z.string().min(1).max(60),input:z.unknown()}).strict()}).strict();
 export type Attempt=z.infer<typeof attemptSchema>;
 export const resultSchema=z.object({ok:z.boolean(),code:z.string().max(64),revision,changed:z.boolean(),duplicate:z.boolean(),data:z.object({id:z.string().max(180).optional(),credentialId:z.string().uuid().optional(),token:z.string().regex(/^ont1_[a-f0-9]{64}$/).optional()}).strict().optional()}).strict();
 export type Result=z.infer<typeof resultSchema>;

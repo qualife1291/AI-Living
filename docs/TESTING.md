@@ -25,6 +25,7 @@ npm run test:api:legacy
 node scripts/test-evening-api.mjs
 node scripts/test-api-resource-budgets.mjs
 node scripts/test-write-churn-api.mjs
+node scripts/test-ontology-api.mjs
 node scripts/test-chat-admission-api.mjs
 node scripts/test-progress-api.mjs
 npm run audit:learning-evidence
@@ -85,3 +86,5 @@ Chat UI/D1 thật dùng `node --import ./scripts/sites-env.mjs scripts/prepare-c
 Browser GND local dùng `qa-shared-ground.py`/`qa-ground-authority.py`; transport/checkpoint có fixture, không là production authority. Studio có thể chọn `QA_SCENARIOS=kitten-care`; sound cần unit transform-types và `qa-studio-sound.py` cho AudioContext thật. Human listening/MOS, GPU và soak giữ trạng thái chưa kiểm nếu chưa có bằng chứng tương ứng.
 
 Sau commit/push: `python3 scripts/package-handoff.py /tmp/xom-ai-source.zip`. Export quét credential patterns/exclusions, kiểm required files và checksum/đọc lại ZIP. `TRANSFER_MANIFEST.json` chỉ ở trong ZIP; không tạo file sinh trong source. Đây là source export, khác archive production của [runbook](PRODUCTION_RUNBOOK.md). Giữ license, raw specs và release audit; không gọi file ít import là vô dụng nếu đó là CLI, framework entrypoint hoặc hợp đồng tích hợp.
+
+Ontology:3suite core/GitHub/D1 nằm trong unit registry; compiled `test-ontology-api.mjs` chạy sau build trong workflow quality hiện hữu. Fixtures không network/DB thật; migration0013 chỉ apply vào D1 mới trong test. [Contract](ONTOLOGY.md#kiểm-thử).

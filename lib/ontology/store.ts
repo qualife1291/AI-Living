@@ -3,6 +3,7 @@ import {assertConsistent,entity} from './graph.ts';
 import {authorize,rolesFor} from './policy.ts';
 import {applyAction,evidenceTargets,type ActionContext} from './registry.ts';
 import {createGitHubVerifier,type GitHubVerifier} from './github.ts';
+import {auditContext,actionLabel} from './audit.ts';
 import {readDomain} from './domain.ts';
 type Head={revision:number;data:string;nonce:string};
 type Receipt={principal:string;request_hash:string;result:string};
@@ -20,7 +21,7 @@ function replay(row:Receipt,key:string,hash:string):Result|null {
 }
 async function logDenial(db:D1Database,a:Attempt,key:string,hash:string,revision:number,code:string,now:number,conflict=false):Promise<Result>{
  const result:Result={ok:false,code,revision,changed:false,duplicate:false},raw=JSON.stringify(result),id=crypto.randomUUID();
- const statement=db.prepare(`INSERT INTO ontology_audit(id,operation_id,kind,principal,request_hash,action,before_revision,after_revision,result,created_at) VALUES (?,?,?,?,?,?,?,?,?,?)`).bind(id,a.operationId,conflict?'replay_conflict':'decision',key,hash,a.action.type,revision,revision,raw,now);
+ const statement=db.prepare(`INSERT INTO ontology_audit(id,operation_id,kind,principal,request_hash,action,context,before_revision,after_revision,result,created_at) VALUES (?,?,?,?,?,?,?,?,?,?,?)`).bind(id,a.operationId,conflict?'replay_conflict':'decision',key,hash,actionLabel(a.action),JSON.stringify(auditContext(a.action)),revision,revision,raw,now);
  try{
   await db.batch([statement,db.prepare("SELECT CASE WHEN EXISTS(SELECT 1 FROM ontology_audit WHERE id=? AND result=? AND principal=? AND request_hash=?) THEN 1 ELSE json('ontology_audit_assertion') END ok").bind(id,raw,key,hash)]);
  }catch{
@@ -85,10 +86,10 @@ export async function executeOntology(db:D1Database,p:Principal,value:unknown,op
   statements.push(db.prepare(`UPDATE ontology_credentials SET revoked_at=? WHERE id=? AND agent_id=? AND token_hash=? AND expires_at=? AND revoked_at IS NULL AND ${headGuard}`).bind(now,old.id,old.agent_id,old.token_hash,old.expires_at,...headArgs));
   effectGuard='EXISTS(SELECT 1 FROM ontology_credentials WHERE id=? AND agent_id=? AND token_hash=? AND expires_at=? AND revoked_at=?)';effectArgs=[old.id,old.agent_id,old.token_hash,old.expires_at,now];result.data={credentialId:old.id};
  }
- const stored=JSON.stringify(resultSchema.parse(result));
- statements.push(db.prepare(`INSERT INTO ontology_audit(id,operation_id,kind,principal,request_hash,action,before_revision,after_revision,result,created_at) VALUES (?,?,'decision',?,?,?,?,?,CASE WHEN ${headGuard} AND (${effectGuard}) THEN ? ELSE NULL END,?)`).bind(auditId,attempt.operationId,key,hash,a.type,current.revision,revision,...headArgs,...effectArgs,stored,now));
+ const stored=JSON.stringify(resultSchema.parse(result)),details=JSON.stringify(auditContext(a,p,current.state,context));
+ statements.push(db.prepare(`INSERT INTO ontology_audit(id,operation_id,kind,principal,request_hash,action,context,before_revision,after_revision,result,created_at) VALUES (?,?,'decision',?,?,?,?,?,?,CASE WHEN ${headGuard} AND (${effectGuard}) THEN ? ELSE NULL END,?)`).bind(auditId,attempt.operationId,key,hash,a.type,details,current.revision,revision,...headArgs,...effectArgs,stored,now));
  // SELECT has no write cost; a malformed JSON branch aborts the entire D1 batch.
- statements.push(db.prepare(`SELECT CASE WHEN ${headGuard} AND (${effectGuard}) AND EXISTS(SELECT 1 FROM ontology_audit WHERE id=? AND operation_id=? AND principal=? AND request_hash=? AND result=?) THEN 1 ELSE json('ontology_atomicity_assertion') END ok`).bind(...headArgs,...effectArgs,auditId,attempt.operationId,key,hash,stored));
+ statements.push(db.prepare(`SELECT CASE WHEN ${headGuard} AND (${effectGuard}) AND EXISTS(SELECT 1 FROM ontology_audit WHERE id=? AND operation_id=? AND principal=? AND request_hash=? AND result=? AND context=?) THEN 1 ELSE json('ontology_atomicity_assertion') END ok`).bind(...headArgs,...effectArgs,auditId,attempt.operationId,key,hash,stored,details));
  try{await db.batch(statements);}catch{
   const existing=await lookup(db,attempt.operationId);if(existing){const r=replay(existing,key,hash);if(r)return r;return logDenial(db,attempt,key,hash,(await readOntology(db)).revision,'OPERATION_CONFLICT',now,true);}
   const latest=await readOntology(db);if(latest.revision!==current.revision)return logDenial(db,attempt,key,hash,latest.revision,'REVISION_CONFLICT',now);

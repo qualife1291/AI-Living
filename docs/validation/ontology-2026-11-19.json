@@ -1,0 +1,10 @@
+{
+ "schema":"xom-ontology-acceptance-v1",
+ "date":"2026-11-19",
+ "status":"WIP: core/GitHub/D1 passed; final build and compiled/legacy regression pending",
+ "scope":"development agents plus read-only simulation domain",
+ "migration":"0013, three new tables; isolated fixtures only",
+ "liveDatabaseWrites":false,
+ "githubWrites":false,
+ "pushBlocker":"Current environment has no GitHub write credential; git push cannot read Username. Local commits preserved; no connector capable of pushing is available."
+}

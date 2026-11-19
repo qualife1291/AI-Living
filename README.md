@@ -41,3 +41,5 @@ Setup chỉ áp dụng D1 local, giữ dữ liệu đã có. `npm run dev` dùng
 [CHANGELOG](CHANGELOG.md) ghi mốc sản phẩm; Git lưu lịch sử review/WIP đã gộp. [candidate.json](docs/releases/candidate.json) là gói chuẩn bị, [latest.json](docs/releases/latest.json) là deploy đã xác minh cuối. Push GitHub không chứng minh đang chạy production.
 
 Chuyển động/rules, kịch bản biên tập và lượt LLM có nguồn riêng. Kết quả học theo kế hoạch mô phỏng chưa chứng minh đến nơi bằng ground. Không fine-tune tự động, xuất video hoặc mở public trong phạm vi hiện tại.
+
+Ontology công việc (opt-in) và projection domain mô phỏng: [audit, schema, API, quyền và migration](docs/ONTOLOGY.md). Feature mặc định OFF; không tự merge/migrate hoặc đổi nguồn world/policy.

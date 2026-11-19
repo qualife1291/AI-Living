@@ -44,3 +44,7 @@ Chat admission chỉ giới hạn exchange mới đã lưu, không giới hạn 
 Postassert kiểm cả payload/columns exchange và counter thuộc nonce của batch, count nguyên/previousCount nhất quán; trigger bỏ qua/sửa/xóa ghi không được ACK thành công. Counter hai trường phiên bản cũ vẫn giữ count trong TTL. Exchange lưu hỏng JSON hoặc lệch actor/time trả503, không tự sửa hay xóa lịch sử. [Rà soát đối kháng](validation/phase-verification-2026-10-29.json) kiểm hai Worker isolate dùng chung D1 và rollback thật.
 
 Trong panel trò chuyện đang mở, lỗi mạng/timeout/ACK sai giữ draft và UUID cho cùng actor+nội dung đã trim khi người xem chủ động gửi lại. Thành công mới xóa pending; gửi mới sau đó dùng UUID mới. ACK phải khớp id/actor/message và có reply. Deadline10giây, không tự retry write; đổi/đóng panel hủy request đang chờ. Pending không lưu xuống đĩa và không có bảo đảm giữ UUID qua reload/remount.
+
+## Ontology opt-in
+
+`/api/ontology` và `/api/ontology/actions` có auth riêng, feature OFF mặc định; agent bearer không thừa hưởng owner hoặc cấp quyền API legacy. Contract, typed actions, pagination và credential expiry/revocation ở [ONTOLOGY](ONTOLOGY.md#api-và-agent-integration-v1). Không thêm world writes, LLM authorization, cron hoặc auto-merge.
