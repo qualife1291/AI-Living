@@ -7,7 +7,7 @@
   "liveDatabaseWrites": false,
   "githubWrites": false,
   "pushBlocker": "Current environment has no GitHub write credential; git push cannot read Username. Local commits preserved; no connector capable of pushing is available.",
-  "implementationCommit": "3403be795bf476db1819814eb29789a1d4fb24a6",
+  "implementationCommit": "b46696e7ef61312cd4e84c3ab03681654e2bd960",
   "architecture": {
     "storage": "Existing D1, bounded development snapshot + immutable audit + hash credentials",
     "sourceOfTruth": "Development D1 head; simulation remains existing worlds/policies/journals, read-only projection",
@@ -27,7 +27,7 @@
         "passed": 97,
         "failed": [],
         "workers": 4,
-        "seconds": 105.97
+        "seconds": 89.28
       }
     ],
     "ontologyD1": [
@@ -46,13 +46,14 @@
         "ciGates": true,
         "worldPolicyMemoryUnchanged": true,
         "realNetwork": false,
-        "productionAccess": false
+        "productionAccess": false,
+        "legacyFixture": "Nonempty opaque policy, outcome, event and memory fixtures retained byte-identical; ontology never hydrates them"
       }
     ],
     "compiledApi": [
       {
         "suite": "ontology-compiled-api",
-        "cases": 26,
+        "cases": 27,
         "compiledWorker": true,
         "passed": true,
         "isolatedD1": true,
@@ -179,7 +180,7 @@
     ],
     "core": {
       "suite": "ontology-core",
-      "cases": 40,
+      "cases": 41,
       "passed": true,
       "deterministicPolicy": true,
       "cyclesAndOwnership": true,
@@ -198,10 +199,16 @@
     },
     "typecheck": "pass",
     "lint": "pass, zero warnings",
-    "build": "pass after final implementation changes",
+    "build": "pass after published query-schema fix",
     "docs": "38 Markdown files, no local link/anchor errors",
     "skills": "9 validated",
-    "gitDiffCheck": "pass"
+    "gitDiffCheck": "pass",
+    "unitLog": "ontology-unit-accepted.log",
+    "ontologyD1Log": "ontology-d1-accepted.log",
+    "compiledApiLog": "ontology-api-accepted.log",
+    "legacyLog": "ontology-legacy-accepted.log",
+    "diagnosticsLog": "ontology-diagnostics-accepted.log",
+    "querySchemaContract": "Actual compiled Role/entity/relationship payloads validate against public query schemas; persistent schema remains closed to readonly types"
   },
   "invariants": [
     "No real database migration/reset/world resume",
@@ -228,5 +235,12 @@
     "pushed": false,
     "deployed": false,
     "migratedLive": false
+  },
+  "delivery": {
+    "baseCommit": "f0d2f8a3580150dfb86c803a0c11a0bd0e623a4f",
+    "localBranch": "work",
+    "bundle": "AI-Living-ontology.bundle",
+    "import": "git bundle verify AI-Living-ontology.bundle; git fetch AI-Living-ontology.bundle work:ontology-review",
+    "note": "Import creates review branch only; remote CI/QA required before merge/rollout"
   }
 }

@@ -19,6 +19,10 @@ try{
  const world={...structuredClone(seed),born:'2026-11-18T00:00:00Z'};world.people[0].role='owner';
  await db.prepare("INSERT INTO worlds VALUES('home',17,?)").bind(JSON.stringify(world)).run();
  await db.prepare("INSERT INTO memories(id,person_id,event_id,text,created_at) VALUES('keep','an','old','preserve','2026-11-18')").run();
+ // Opaque legacy fixtures must survive without ontology hydrating/reformatting them.
+ await db.prepare('INSERT INTO learning_policies(actor_id,data,updated_revision,updated_at) VALUES (?,?,?,?)').bind('an',JSON.stringify({marker:'legacy-policy',samples:9}),17,'2026-11-18T00:00:00Z').run();
+ await db.prepare('INSERT INTO agent_experiences(id,actor_id,created_at,data) VALUES (?,?,?,?)').bind('keep-sample','an','2026-11-18T00:00:00Z',JSON.stringify({marker:'legacy-outcome'})).run();
+ await db.prepare('INSERT INTO episodes(id,created_at,source,data) VALUES (?,?,?,?)').bind('keep-event','2026-11-18T00:00:00Z','fixture',JSON.stringify({marker:'legacy-event'})).run();
  const protectedSnapshot=async()=>JSON.stringify(await Promise.all(['worlds','memories','episodes','learning_policies','agent_experiences'].map(async t=>[t,(await db.prepare('SELECT * FROM '+t).all()).results])));
  const before=await protectedSnapshot();for(const sql of migrations.at(-1).sql)await db.prepare(sql).run();assert.equal(await protectedSnapshot(),before);cases++;
  assert.equal((await mf.dispatchFetch('http://localhost/api/ontology?off=1')).status,503);
