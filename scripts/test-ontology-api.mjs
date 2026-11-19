@@ -4,6 +4,7 @@ import {realpathSync,readdirSync} from 'node:fs';
 import {createRequire} from 'node:module';
 import {resolve} from 'node:path';
 import {readMigrationFiles} from 'drizzle-orm/migrator';
+import {queryEntitySchema,queryRelationshipSchema} from '../lib/ontology/view.ts';
 const require=createRequire(realpathSync(resolve('node_modules/wrangler/package.json'))),{Miniflare,Log,LogLevel}=require('miniflare');
 const paths=readdirSync('dist/server',{recursive:true}).filter(p=>p.endsWith('.js')&&p!=='index.js'&&!p.split('/').includes('.wrangler'));
 const probe=`import worker from './index.js';export default{async fetch(req,env,ctx){if(new URL(req.url).pathname!=='/__probe')return worker.fetch(req,env,ctx);let reads=0,cancelled=false;const stream=new ReadableStream({pull(c){reads++;if(reads===1)c.enqueue(new Uint8Array(8193));else c.error(Error('Must not read tail'));},cancel(){cancelled=true;return new Promise(()=>{})}},{highWaterMark:0});const r=await worker.fetch(new Request('http://localhost/api/ontology/actions',{method:'POST',headers:{Origin:'http://localhost'},body:stream,duplex:'half'}),env,ctx);return Response.json({status:r.status,reads,cancelled});}};`;
@@ -23,6 +24,7 @@ try{
  await action('workspace.initialize');await action('agent.register',{id:'agent:limited',name:'Limited',roles:['reader']});const issued=await action('credential.issue',{agentId:'agent:limited',ttlSeconds:3600}),token=issued.data.token;cases++;
  const headers={Authorization:'Bearer '+token,'X-Ontology-Role':'owner','oai-authenticated-user-id':'fake'};
  for(const view of ['schema','actions','entities','relationships','analysis']){assert.equal((await mf.dispatchFetch('http://localhost/api/ontology?view='+view,{headers})).status,200,view);cases++;}
+ const actualEntities=await(await mf.dispatchFetch('http://localhost/api/ontology?view=entities',{headers})).json();actualEntities.items.forEach(e=>queryEntitySchema.parse(e));const actualLinks=await(await mf.dispatchFetch('http://localhost/api/ontology?view=relationships',{headers})).json();actualLinks.items.forEach(e=>queryRelationshipSchema.parse(e));cases++;
  for(const url of ['/api/world','/api/events','/api/living/tick','/api/living/learning','/api/living/catalog','/api/living/appearance','/api/living/pets','/api/living/ground','/api/system/progress','/api/diagnostics']){
   assert.equal((await mf.dispatchFetch('http://localhost'+url,{method:'POST',headers,body:'{}'})).status,403,url);cases++;
  }

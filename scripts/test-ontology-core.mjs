@@ -3,6 +3,8 @@ import {emptyState,actionSchema,canonical,OntologyError} from '../lib/ontology/s
 import {assertConsistent,analyze} from '../lib/ontology/graph.ts';
 import {applyAction} from '../lib/ontology/registry.ts';
 import {mayRead} from '../lib/ontology/policy.ts';
+import {queryEntitySchema,queryRelationshipSchema} from '../lib/ontology/view.ts';
+import {permissionRoleEntities,permissionRelationships} from '../lib/ontology/policy.ts';
 const owner={kind:'owner'},now=Date.now(),context=()=>({now,evidence:new Map()});
 let state=emptyState(),cases=0;
 const act=(type,input,p=owner,c=context())=>{state=applyAction(state,p,actionSchema.parse({type,input}),c);cases++;};
@@ -38,4 +40,5 @@ assert(!actionSchema.safeParse({type:'agent.register',input:{id:'agent:hack',nam
 assert(!actionSchema.safeParse({type:'merge',input:{passed:true}}).success);cases++;
 assert.equal(canonical({b:1,a:{z:2,c:3}}),canonical({a:{c:3,z:2},b:1}));cases++;
 let nested={};for(let i=0;i<70;i++)nested={n:nested};denied(()=>canonical(nested),'INPUT_DEPTH_LIMIT');
+for(const value of [...state.entities,...permissionRoleEntities])queryEntitySchema.parse(value);for(const value of [...state.relationships,...permissionRelationships(state)])queryRelationshipSchema.parse(value);cases++;
 console.log(JSON.stringify({suite:'ontology-core',cases,passed:true,deterministicPolicy:true,cyclesAndOwnership:true,noLlmPrivileges:true,noMergeAction:true}));

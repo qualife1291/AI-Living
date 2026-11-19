@@ -7,6 +7,7 @@ import {actionCatalog} from './registry.ts';
 import {mayRead,permissionRoleEntities,permissionRelationships} from './policy.ts';
 import {analyze} from './graph.ts';
 import {readDomain,domainRefProblems} from './domain.ts';
+import {queryEntitySchema,queryRelationshipSchema} from './view.ts';
 import {createGitHubVerifier} from './github.ts';
 type Settings={DB?:D1Database;XOM_ONTOLOGY_ENABLED?:string;XOM_ONTOLOGY_GITHUB_TOKEN?:string;XOM_ADMIN_USER_ID?:string;XOM_LOCAL_ADMIN?:string;XOM_OWNER_PRIVATE_ORIGIN?:string};
 export const ontologyPath=(path:string)=>path==='/api/ontology'||path.startsWith('/api/ontology/');
@@ -45,7 +46,7 @@ export async function handleOntologyHttp(req:Request,settings:Settings):Promise<
   const parsed=querySchema.safeParse(params);if(!parsed.success)return json({error:'INVALID_QUERY'},400);
   const q=parsed.data,{state,revision}=await readOntology(db);mayRead(state,principal,q.view);
   if(q.revision!==undefined&&q.revision!==revision)return json({error:'REVISION_CONFLICT'},409);
-  if(q.view==='schema')return json({version:1,entitySchema:z.toJSONSchema(entitySchema),relationshipSchema:z.toJSONSchema(relationshipSchema),limits:LIMITS,permissionRoles:permissionRoleEntities});
+  if(q.view==='schema')return json({version:1,entitySchema:z.toJSONSchema(queryEntitySchema),relationshipSchema:z.toJSONSchema(queryRelationshipSchema),persistentEntitySchema:z.toJSONSchema(entitySchema),persistentRelationshipSchema:z.toJSONSchema(relationshipSchema),limits:LIMITS,permissionRoles:permissionRoleEntities});
   if(q.view==='actions')return json(actionCatalog());
   if(q.view==='domain')return json(await readDomain(db));
   if(q.view==='analysis'){
