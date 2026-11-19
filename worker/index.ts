@@ -3,6 +3,7 @@ import { tickLiving, learnCompleted, advanceResidentSocial } from "../lib/living
 import handler from "vinext/server/fetch-handler";
 import { runWithConnectorBinding } from "../lib/connector-context";
 import type { ConnectorBinding } from "../lib/connector-contract.mjs";
+import { ontologyPath, handleOntologyHttp } from "../lib/ontology/http";
 import { observeHttp } from "../lib/system-log";
 
 const worker = {
@@ -27,6 +28,9 @@ const worker = {
     // Vinext accepts trailing-slash aliases without redirecting. Classify the
     // canonical path before authorization, including existing private readers.
     const path = url.pathname.replace(/\/+$/, "") || "/";
+    if (ontologyPath(path)) return handleOntologyHttp(request, env as unknown as Parameters<typeof handleOntologyHttp>[1]);
+    if (path.startsWith('/api/') && request.headers.get('authorization')?.startsWith('Bearer ont1_'))
+      return Response.json({error:'Token ontology không cấp quyền API khác.'},{status:403});
     const mutation = path.startsWith("/api/") && !["GET", "HEAD", "OPTIONS"].includes(request.method);
     const diagnostic = path === "/api/diagnostics";
     const privateMemories = path === "/api/living/memories";

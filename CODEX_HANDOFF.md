@@ -4,7 +4,7 @@
 
 ## WIP — Ontology 19/11/2026
 
-Theo yêu cầu chủ dự án: agent phát triển + domain mô phỏng. Audit/kiến trúc và O1–O5 ở [ONTOLOGY](docs/ONTOLOGY.md). Tái sử dụng D1/Zod/CAS/audit/owner guard, domain projection chỉ đọc; role nghề nghiệp không là quyền. Đang làm foundation opt-in, test từng phần trước tích hợp. Không migrate DB thật, không auto merge/deploy hoặc bật model. QA đã phát hành3631067 vẫn giữ nguyên.
+Theo yêu cầu chủ dự án: agent phát triển + domain mô phỏng. Audit/kiến trúc và O1–O5 ở [ONTOLOGY](docs/ONTOLOGY.md). Tái sử dụng D1/Zod/CAS/audit/owner guard, domain projection chỉ đọc; role nghề nghiệp không là quyền. Core opt-in, policy, registry, SDK, GitHub verifier và D1 fixture đã có; test core40/GitHub17/D1 đang nghiệm thu, còn build/compiled API/full regression. Không migrate DB thật, không auto merge/deploy hoặc bật model. QA đã phát hành3631067 vẫn giữ nguyên.
 
 ## Trạng thái nền
 

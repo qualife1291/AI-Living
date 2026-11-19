@@ -1,3 +1,4 @@
+import { sql } from "drizzle-orm";
 import { index, integer, sqliteTable, text, uniqueIndex } from "drizzle-orm/sqlite-core";
 
 export const worlds = sqliteTable("worlds", {
@@ -151,3 +152,14 @@ export const peerOffers = sqliteTable('peer_offers', {
  id:text('id').primaryKey(),sessionId:text('session_id').notNull(),recipientId:text('recipient_id').notNull(),
  data:text('data').notNull(),checksum:text('checksum').notNull(),createdAt:integer('created_at').notNull(),
 },t=>[index('idx_peer_offers_recipient').on(t.sessionId,t.recipientId)]);
+
+/** Opt-in development ontology, separate from simulation world and learned state. */
+export const ontologyStates = sqliteTable('ontology_states', {
+ id:text('id').primaryKey(), revision:integer('revision').notNull(), data:text('data').notNull(), nonce:text('nonce').notNull(), updatedAt:integer('updated_at').notNull(),
+});
+export const ontologyAudit = sqliteTable('ontology_audit', {
+ seq:integer('seq').primaryKey({autoIncrement:true}),id:text('id').notNull().unique(),operationId:text('operation_id').notNull(),kind:text('kind').notNull(),principal:text('principal').notNull(),requestHash:text('request_hash').notNull(),action:text('action').notNull(),beforeRevision:integer('before_revision').notNull(),afterRevision:integer('after_revision').notNull(),result:text('result').notNull(),createdAt:integer('created_at').notNull(),
+},t=>[uniqueIndex('idx_ontology_operation').on(t.operationId).where(sql`${t.kind}='decision'`)]);
+export const ontologyCredentials = sqliteTable('ontology_credentials', {
+ id:text('id').primaryKey(),agentId:text('agent_id').notNull(),tokenHash:text('token_hash').notNull().unique(),createdAt:integer('created_at').notNull(),expiresAt:integer('expires_at').notNull(),revokedAt:integer('revoked_at'),
+});

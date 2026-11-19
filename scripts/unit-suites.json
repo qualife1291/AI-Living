@@ -282,5 +282,14 @@
   ],
   [
     "scripts/test-crowd-recovery.mjs"
+  ],
+  [
+    "scripts/test-ontology-core.mjs"
+  ],
+  [
+    "scripts/test-ontology-github.mjs"
+  ],
+  [
+    "scripts/test-ontology-d1.mjs"
   ]
 ]
