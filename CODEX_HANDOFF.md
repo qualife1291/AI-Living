@@ -2,9 +2,9 @@
 
 Đọc [AGENTS](AGENTS.md) → file này → [ROADMAP](ROADMAP.md). Chỉ mở tài liệu đúng chủ đề từ [README](README.md); ROADMAP là backlog duy nhất.
 
-## Bản giảm ghi và gỡ tụ tập
+## WIP — Ontology 19/11/2026
 
-QA `3631067` đã push; app code bằng`cf90e43`, thêm CI browser fix. Pulse60s/gate55s, snapshot15s; shared ground1s giữ ngoài gate. Duplicate tick không thêm audit, telemetry sample60s/critical15s/backoff; JSONL không hydrate và7route bounded stream. Viewer recovery đạt72/72arrival trong180s mô phỏng, swept collision/no-teleport/pause/world unchanged. Local work94/QA105suite, compiled API, learning/fare/GND2–3 và desktop/mobile browser đạt. [Evidence](docs/validation/system-budgets-2026-11-16.json) giữ cost/scope/source và App version`41ac37f1`và deploy gate cùng`3631067`đạt; browser CI đã đạt. Không migrate/reset/promote model hoặc đổi Cron. GND authority giữ algorithm mặc định.
+Theo yêu cầu chủ dự án: agent phát triển + domain mô phỏng. Audit/kiến trúc và O1–O5 ở [ONTOLOGY](docs/ONTOLOGY.md). Tái sử dụng D1/Zod/CAS/audit/owner guard, domain projection chỉ đọc; role nghề nghiệp không là quyền. Đang làm foundation opt-in, test từng phần trước tích hợp. Không migrate DB thật, không auto merge/deploy hoặc bật model. QA đã phát hành3631067 vẫn giữ nguyên.
 
 ## Trạng thái nền
 

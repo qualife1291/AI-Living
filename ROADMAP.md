@@ -13,6 +13,10 @@ Backlog duy nhất của dự án; `main`402df57, QA`3631067`ngày16/11/2026 (As
 | GPU, soak và chi phí | Chờ nghiệm thu |16/11 đã sửa policy rewrite/retained archive, rest từ arm thiếu tiền, nap sau wake và fare learning-first; cần native post-release writes/CPU và matched cohort/day rest/quality theo [evidence](docs/validation/learning-repair-2026-11-16.json). Đo thiết bị thật ở 60/120/240 actor trước tăng density; mobile pin/nhiệt, tài nguyên/dispose và phiên dài/24 giờ. Đã có pulse60s/gate55s/telemetry coalescing và72actor recovery local; còn native CPU/D1/polling/history growth, GND2 catch-up/scale60 và crowd liveness live. Log/progress CLI đã có; snapshot 15 phút không thay soak hoặc bảo đảm 24/7. [Testing](docs/TESTING.md), [Observability](docs/OBSERVABILITY.md). |
 | Backup ZIP nguồn | Một phần | Kiểm vault theo manifest và tạo backup ngoài workspace bằng kênh được cấp quyền; lần upload được ghi nhận trước trả 401. Giữ license/hash và nguyên bản, chia ZIP4 nếu đích giới hạn 2 GiB. Không đưa raw ZIP hoặc credential vào repo công khai. [Asset](docs/ASSETS.md). |
 
+## Ontology — triển khai theo phần nhỏ
+
+O1 schema/policy → O2 registry/D1/audit → O3 API/agent/projection → O4 GitHub evidence; đang triển khai local theo [thiết kế](docs/ONTOLOGY.md). O5 còn backup/migrate/credential/native QA/usage và review trên cùng SHA trước bật rộng. Không tự merge hoặc thay nguồn world/policy.
+
 ## Ưu tiên 1 — nối các nền tảng đã có và đóng integration
 
 | Mục | Trạng thái | Phần còn làm và điều kiện đóng |
